@@ -38,26 +38,25 @@ icons='ic_notification audio_service_play_arrow audio_service_pause
 
 for icon in $icons; do
   # The entry, and everything under it up to the next resource.
-  block=$(printf '%s\n' "$table" |
-    awk -v n="drawable/$icon" '
+  block=$(awk -v n="drawable/$icon" '
       $0 ~ ("resource .* " n "$") || $0 ~ ("resource .* " n "[^_a-zA-Z0-9]") {on = 1; print; next}
       on && /resource 0x/ {exit}
       on {print}
-    ')
+    ' <<<"$table")
   if [ -z "$block" ]; then
     echo "$icon: NO ENTRY in the resource table"
     missing=1
     continue
   fi
   if [ -n "$verbose" ]; then
-    printf '%s\n' "$block" | sed 's/^/    /'
+    sed 's/^/    /' <<<"$block"
   fi
 
   # Every density's file, and the largest of them. A real icon is hundreds of
   # bytes even at mdpi; the shrinker's placeholder is under a hundred.
   biggest=0
-  for path in $(printf '%s\n' "$block" | grep -oE 'res/[^ ")]+' | sort -u); do
-    size=$(printf '%s\n' "$listing" | awk -v p="$path" '$4 == p {print $1; exit}')
+  for path in $(grep -oE 'res/[^ ")]+' <<<"$block" | sort -u); do
+    size=$(awk -v p="$path" '$4 == p {print $1; exit}' <<<"$listing")
     [ -n "$size" ] && [ "$size" -gt "$biggest" ] && biggest=$size
   done
 

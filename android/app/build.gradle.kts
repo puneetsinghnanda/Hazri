@@ -46,8 +46,12 @@ android {
             // just_audio and not the service, but there is no notification and
             // so no lock-screen controls -- which is exactly what happened.
             // The saving on a 22 MB app is a few hundred kilobytes.
-            // CI asserts the icon survives into the APK, and builds a
-            // throwaway APK with this on to show what it takes out.
+            // Measured, not assumed: building this app with shrinking on and
+            // off and reading both resource tables, all seven of those icons
+            // are simply absent from the shrunk one -- no entry at all, not
+            // even a placeholder. Turning it off costs about 220 KB in the
+            // APK. Left settable so that comparison can be run again; CI
+            // asserts the icons are in whatever gets built.
             isShrinkResources = project.findProperty("hazri.shrinkResources") == "true"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
