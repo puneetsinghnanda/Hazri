@@ -9,11 +9,12 @@ Usage:  python3 tools/content_pipeline/build_content_db.py
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import sqlite3
 import sys
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SRC = os.path.join(ROOT, "content", "source")
@@ -355,6 +356,21 @@ def build_cities(con: sqlite3.Connection, report: dict) -> None:
     report["cities"] = len(cities)
 
 
+def source_digest() -> str:
+    """sha256 over every input that can change the database."""
+    h = hashlib.sha256()
+    inputs = [
+        os.path.join(SRC, "japji_sahib.json"),
+        os.path.join(SRC, "gurpurab-558.json"),
+        os.path.join(os.path.dirname(__file__), "cities.json"),
+        os.path.abspath(__file__),
+    ]
+    for path in inputs:
+        with open(path, "rb") as fh:
+            h.update(hashlib.sha256(fh.read()).digest())
+    return h.hexdigest()[:16]
+
+
 def main() -> int:
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     if os.path.exists(OUT):
@@ -373,8 +389,10 @@ def main() -> int:
     build_cities(con, report)
 
     con.execute("INSERT INTO meta(key,value) VALUES('content_version',?)", (str(CONTENT_VERSION),))
-    con.execute("INSERT INTO meta(key,value) VALUES('built_at',?)",
-                (datetime.now().isoformat(timespec="seconds"),))
+    # A digest of the inputs rather than a wall-clock timestamp, so the same
+    # sources always produce a byte-identical database and CI can verify that
+    # the committed file really is what the pipeline builds.
+    con.execute("INSERT INTO meta(key,value) VALUES('source_digest',?)", (source_digest(),))
     # drift records its schema version in `user_version`. Stamping it here
     # means the shipped file never has to be written to on first open, which
     # keeps the read-only `query_only` pragma the app sets from failing.
@@ -384,6 +402,7 @@ def main() -> int:
     con.close()
 
     report["content_version"] = CONTENT_VERSION
+    report["source_digest"] = source_digest()
     report["bytes"] = os.path.getsize(OUT)
     with open(REPORT, "w", encoding="utf-8") as fh:
         json.dump(report, fh, ensure_ascii=False, indent=2)

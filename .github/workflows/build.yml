@@ -34,11 +34,11 @@ jobs:
         run: flutter pub get
 
       - name: Rebuild the content database from source
-        # Proves the shipped assets/content/content.db is exactly what the
-        # pipeline produces from content/source/ (PRD §8).
+        # The pipeline is reproducible, so the committed database must be
+        # byte-identical to what content/source/ produces (PRD §8).
         run: |
           python3 tools/content_pipeline/build_content_db.py
-          git diff --stat -- assets/content/content.db
+          git diff --exit-code -- assets/content/content.db
 
       - name: Verify generated code is up to date
         run: |
