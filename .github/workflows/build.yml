@@ -52,10 +52,33 @@ jobs:
       - name: Test
         run: flutter test --reporter expanded
 
+      - name: What resource shrinking does to the media notification
+        # Evidence, not a build step. audio_service resolves every icon in the
+        # media notification by name at runtime -- getIdentifier(), from a
+        # string that lives in the Dart snapshot and so is invisible to the
+        # resource shrinker. This builds one throwaway APK with shrinking on
+        # and prints what is left of those icons. It never fails the build; the
+        # assertion is on the real APK below.
+        continue-on-error: true
+        run: |
+          flutter build apk --release --split-per-abi \
+            --target-platform android-arm64 -Phazri.shrinkResources=true
+          bash .github/check_notification_icons.sh \
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk || true
+
       - name: Build debug-signed release APK (arm64)
         # Split per ABI: a phone only needs its own slice, and arm64-v8a covers
         # every Android device sold in the last several years.
         run: flutter build apk --release --split-per-abi --target-platform android-arm64
+
+      - name: The media notification's icons survived the build
+        # A missing small icon makes startForeground() throw, which loses the
+        # notification and with it the lock-screen controls, while the
+        # recitation carries on playing. Invisible in a build log and invisible
+        # in a widget test, so look in the APK itself.
+        run: |
+          bash .github/check_notification_icons.sh \
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 
       - name: Name the artifact
         id: name

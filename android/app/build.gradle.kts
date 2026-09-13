@@ -36,7 +36,19 @@ android {
             // Signing with an upload key kept outside the repository.
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = true
-            isShrinkResources = true
+            // Resource shrinking is OFF, and must stay off. audio_service
+            // resolves every icon it puts in the media notification by name at
+            // runtime -- getResources().getIdentifier("ic_notification", ...)
+            // and the same for its play/pause/skip icons. Nothing in the code
+            // or the XML refers to them, so the shrinker takes them out, the
+            // small icon resolves to 0, and startForeground() throws "invalid
+            // notification". The recitation keeps playing, because that is
+            // just_audio and not the service, but there is no notification and
+            // so no lock-screen controls -- which is exactly what happened.
+            // The saving on a 22 MB app is a few hundred kilobytes.
+            // CI asserts the icon survives into the APK, and builds a
+            // throwaway APK with this on to show what it takes out.
+            isShrinkResources = project.findProperty("hazri.shrinkResources") == "true"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
