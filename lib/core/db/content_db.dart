@@ -162,6 +162,24 @@ class Timings extends Table {
   Set<Column> get primaryKey => {audioTrackId};
 }
 
+/// One line of Gurbani a day, with its meaning (PRD 1.11).
+///
+/// [idx] is the position in the cycle, not an Ang: this dataset carries no Ang
+/// numbers, and the app does not invent one.
+@DataClassName('VicharRow')
+class Vichars extends Table {
+  @override
+  String get tableName => 'vichar';
+
+  IntColumn get idx => integer()();
+  TextColumn get gurmukhi => text()();
+  TextColumn get meaningPa => text().named('meaning_pa')();
+  TextColumn get meaningEn => text().named('meaning_en')();
+
+  @override
+  Set<Column> get primaryKey => {idx};
+}
+
 /// The Naam Simran recitation. Not a bani, so it has no bani_version and does
 /// not belong in [AudioTracks]; its json carries the shape the Simran ring
 /// follows (PRD 1.13).
@@ -280,6 +298,7 @@ class Metas extends Table {
     AudioTracks,
     Timings,
     SimranTracks,
+    Vichars,
     NanakshahiMonths,
     CalendarEvents,
     Cities,
@@ -305,7 +324,7 @@ class ContentDb extends _$ContentDb {
   );
 
   /// The content version baked in by the pipeline.
-  static const int expectedVersion = 5;
+  static const int expectedVersion = 6;
 
   /// Copies `assets/content/content.db` into app storage if it is missing or
   /// out of date, and returns the opened database.

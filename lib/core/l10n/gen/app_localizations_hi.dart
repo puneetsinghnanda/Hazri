@@ -372,9 +372,6 @@ class LHi extends L {
   String get greeting => 'सत श्री अकाल जी';
 
   @override
-  String get todayHukamnama => 'आज का हुकमनामा';
-
-  @override
   String get ctaStartNitnem => 'नितनेम शुरू करें';
 
   @override
@@ -440,40 +437,6 @@ class LHi extends L {
 
   @override
   String get helpAboutLink => 'बारे में और आभार';
-
-  @override
-  String get hukamnamaOfflineEmpty => 'इंटरनेट आने पर हुकमनामा दिखाई देगा';
-
-  @override
-  String get hukamnamaNotConfigured =>
-      'इस बिल्ड में हुकमनामे का कोई स्रोत नहीं जुड़ा';
-
-  @override
-  String get hukamnamaNotConfiguredBody =>
-      'हाज़िरी अभी रोज़ाना हुकमनामा नहीं लाती। जब अनुमति वाला स्रोत जुड़ेगा, आज का हुकमनामा यहाँ आएगा और कार्ड के रूप में शेयर किया जा सकेगा।';
-
-  @override
-  String hukamnamaSavedOn(String date) {
-    return '$date को सहेजा';
-  }
-
-  @override
-  String get hukamnamaTitle => 'हुकमनामा';
-
-  @override
-  String get hukamnamaMeaningIn => 'अर्थ इस भाषा में';
-
-  @override
-  String get hukamnamaSource => 'श्री दरबार साहिब, अमृतसर';
-
-  @override
-  String get hukamnamaRahao => 'रहाउ';
-
-  @override
-  String get hukamnamaSavedOffline => 'बिना इंटरनेट पढ़ने के लिए सहेजा';
-
-  @override
-  String get hukamnamaReadDailyOn => 'रोज़ाना पढ़ें';
 
   @override
   String get nitnemTitle => 'नितनेम';
@@ -1136,7 +1099,7 @@ class LHi extends L {
   String get notifActionOpenCalendar => 'कैलेंडर खोलें';
 
   @override
-  String get shareCardTitle => 'आज का हुकमनामा';
+  String get shareCardTitle => 'आज का विचार';
 
   @override
   String get shareCardFooter => 'हाज़िरी पर रोज़ाना पढ़ें';
@@ -1193,6 +1156,44 @@ class LHi extends L {
 
   @override
   String get playerStillPlaying => 'अभी चल रहा है';
+
+  @override
+  String get vicharTitle => 'आज का विचार';
+
+  @override
+  String get vicharNative => 'ਅੱਜ ਦਾ ਵਿਚਾਰ';
+
+  @override
+  String get vicharSource => 'श्री गुरु ग्रंथ साहिब जी';
+
+  @override
+  String get vicharExplore => 'और देखें';
+
+  @override
+  String get vicharShareTitle => 'यह विचार साझा करें';
+
+  @override
+  String get vicharShareBody => 'भेजने का तरीका चुनें';
+
+  @override
+  String get vicharShareAsText => 'पाठ के रूप में';
+
+  @override
+  String get vicharShareAsImage => 'छवि के रूप में';
+
+  @override
+  String get vicharMeaningPa => 'पंजाबी में';
+
+  @override
+  String get vicharMeaningEn => 'अंग्रेज़ी में';
+
+  @override
+  String get vicharNone => 'इस बिल्ड में अभी विचार नहीं है';
+
+  @override
+  String vicharDayOf(int day, int total) {
+    return '$total में से पंक्ति $day';
+  }
 
   @override
   String get errorGeneric => 'कुछ गलत हो गया।';

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show BaniSlot;
-import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
@@ -14,7 +13,7 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../hukamnama/data/hukamnama_repository.dart';
+import '../../../core/db/content_repository.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../reminders/data/reminders_controller.dart';
 import '../data/today_controller.dart';
@@ -37,7 +36,7 @@ class ElderTodayScreen extends ConsumerWidget {
     final progress = ref.watch(dayProgressProvider).value;
     final cta = ref.watch(todayCtaProvider);
     final slotTimes = ref.watch(slotTimesProvider).value;
-    final hukamnama = ref.watch(todayHukamnamaProvider).value;
+    final vichar = ref.watch(todayVicharProvider).value;
 
     final (done, total) =
         progress == null ? (0, 5) : TodayLogic.morningCount(banis: banis, progress: progress);
@@ -123,12 +122,10 @@ class ElderTodayScreen extends ConsumerWidget {
                 ),
               const SizedBox(height: 14),
               _ElderCard(
-                icon: HazriIconData.book,
-                title: l.todayHukamnama,
-                subtitle: hukamnama?.ang != null
-                    ? 'Ang ${hukamnama!.ang} · ${l.hukamnamaSource}'
-                    : l.hukamnamaNotConfigured,
-                onTap: () => context.push(Routes.hukamnama),
+                icon: HazriIconData.sparkle,
+                title: l.vicharTitle,
+                subtitle: vichar?.gurmukhi ?? l.vicharNone,
+                onTap: () => context.push(Routes.vichar),
               ),
               const SizedBox(height: 14),
               HazriCard(

@@ -22,7 +22,7 @@ import '../data/today_controller.dart';
 import '../domain/today_state.dart';
 import 'elder_today.dart';
 import 'help_sheet.dart';
-import 'hukamnama_card.dart';
+import '../../vichar/ui/vichar_card.dart';
 
 /// The Today tab (Design 09/10), or its elder-mode variant (Design 11).
 class TodayScreen extends ConsumerWidget {
@@ -74,9 +74,11 @@ class TodayScreen extends ConsumerWidget {
               const SizedBox(height: 12),
               const _DayArcCard(),
               const SizedBox(height: 12),
-              const HukamnamaCard(),
+              const VicharCard(),
               const SizedBox(height: 12),
               const _Tiles(),
+              const SizedBox(height: 12),
+              const _GurpurabCard(),
             ],
           ),
         ),
@@ -249,34 +251,25 @@ class _Tiles extends ConsumerWidget {
     final simranDone = ref.watch(simranDoneTodayProvider).value ?? false;
     final simranMinutes = ref.watch(simranMinutesTodayProvider).value ?? 0;
 
-    // IntrinsicHeight gives the two tiles a shared height without asking the
-    // Row for an unbounded one inside the page's ListView.
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: _Tile(
-              icon: HazriIconData.simranDots,
-              iconBg: c.sageSoft,
-              iconFg: c.sage,
-              title: l.simranTitle,
-              subtitle: simranDone
-                  ? l.simranTileDone
-                  : l.simranTileProgress(simranMinutes, settings.simranMinutes),
-              onTap: () => context.go(Routes.simran),
-            ),
-          ),
-          const SizedBox(width: 10),
-          const Expanded(child: _GurpurabTile()),
-        ],
-      ),
+    return _Tile(
+      icon: HazriIconData.simranDots,
+      iconBg: c.sageSoft,
+      iconFg: c.sage,
+      title: l.simranTitle,
+      subtitle: simranDone
+          ? l.simranTileDone
+          : l.simranTileProgress(simranMinutes, settings.simranMinutes),
+      onTap: () => context.go(Routes.simran),
     );
   }
 }
 
-class _GurpurabTile extends ConsumerWidget {
-  const _GurpurabTile();
+/// The Gurpurab calendar, full width on Today (PRD 1.3).
+///
+/// A card rather than half a row: it has both the next event and today's
+/// Nanakshahi date to show, and neither fits in a tile without truncating.
+class _GurpurabCard extends ConsumerWidget {
+  const _GurpurabCard();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -298,36 +291,72 @@ class _GurpurabTile extends ConsumerWidget {
       }
     }
 
-    if (next != null) {
-      final days = DateTime.parse(next.date).difference(today).inDays;
-      final title = days == 0
-          ? l.gurpurabTileToday
-          : days == 1
-          ? l.gurpurabTileTomorrow
-          : l.gurpurabTileUpcoming;
-      return _Tile(
-        icon: HazriIconData.calendar,
-        iconBg: c.kesriSoft,
-        iconFg: c.kesriInk,
-        title: title,
-        titleColour: c.kesriInk,
-        subtitle: switch (lang) {
-          'pa' => next.namePa,
-          'hi' => next.nameHi,
-          _ => next.nameEn,
-        },
-        onTap: () => context.push(Routes.gurpurab),
-      );
-    }
-
     final ns = calendar?.dateFor(today);
-    return _Tile(
-      icon: HazriIconData.calendar,
-      iconBg: c.kesriSoft,
-      iconFg: c.kesriInk,
-      title: l.gurpurabTitle,
-      subtitle: ns?.labelWithYear(lang) ?? l.gurpurabNoData,
+    final when = next == null
+        ? null
+        : switch (DateTime.parse(next.date).difference(today).inDays) {
+            0 => l.gurpurabTileToday,
+            1 => l.gurpurabTileTomorrow,
+            _ => l.gurpurabTileUpcoming,
+          };
+    final name = next == null
+        ? null
+        : switch (lang) {
+            'pa' => next.namePa,
+            'hi' => next.nameHi,
+            _ => next.nameEn,
+          };
+
+    return HazriCard(
       onTap: () => context.push(Routes.gurpurab),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: c.kesriSoft,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Center(
+              child: AppIcon(HazriIconData.calendar, size: 22, color: c.kesriInk),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  when ?? l.gurpurabTitle,
+                  style: HazriText.caption.copyWith(
+                    color: next == null ? c.muted : c.kesriInk,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  name ?? ns?.labelWithYear(lang) ?? l.gurpurabNoData,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: HazriText.bodyStrong.copyWith(color: c.ink),
+                ),
+                // With an event on the card, today's Nanakshahi date still has
+                // somewhere to go.
+                if (next != null && ns != null) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    ns.labelWithYear(lang),
+                    style: HazriText.caption.copyWith(color: c.muted),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
+        ],
+      ),
     );
   }
 }
@@ -340,7 +369,6 @@ class _Tile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onTap,
-    this.titleColour,
   });
 
   final String icon;
@@ -349,7 +377,6 @@ class _Tile extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
-  final Color? titleColour;
 
   @override
   Widget build(BuildContext context) {
@@ -375,7 +402,7 @@ class _Tile extends StatelessWidget {
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: HazriText.bodyStrong.copyWith(fontSize: 14, color: titleColour ?? c.ink),
+                  style: HazriText.bodyStrong.copyWith(fontSize: 14, color: c.ink),
                 ),
                 Text(
                   subtitle,

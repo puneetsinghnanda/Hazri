@@ -69,7 +69,9 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   lives in `simran_track` rather than `audio_track`.
 - **Line timings are unverified** (`"verified": false`). They are derived, not
   hand-checked; the PRD requires human verification before release (§8).
-- **No Hukamnama source is configured.** `HukamnamaSource` has an
-  `Unconfigured` implementation; the screen, cache and share card are built.
+- **The daily Hukamnama is gone**, replaced by ਅੱਜ ਦਾ ਵਿਚਾਰ (PRD 1.11): 200
+  bundled lines from Sri Guru Granth Sahib Ji, one a day by date, shareable as
+  text or as an image. It needs no network, which is what the Hukamnama did
+  need. The dataset carries no Ang numbers and the app does not invent one.
 - **The Nanakshahi calendar covers 17 Aug - 15 Dec 2026 only**, derived from
   the supplied SGPC sample. Dates outside it report that rather than guessing.

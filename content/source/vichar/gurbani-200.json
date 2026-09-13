@@ -1,0 +1,1407 @@
+{
+  "gurbani_lines": [
+    {
+      "id": 1,
+      "punjabi_line1": "ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਇਕ ਸਰਬ-ਵਿਆਪਕ ਸਿਰਜਣਹਾਰ ਹੈ; ਉਸ ਦਾ ਨਾਮ ਸਦਾ ਸੱਚਾ ਹੈ। ਉਹ ਨਿਡਰ, ਨਿਰਵੈਰ, ਅਜਨਮਾ ਅਤੇ ਆਪਣੇ ਆਪ ਤੋਂ ਪ੍ਰਕਾਸ਼ਮਾਨ ਹੈ।",
+      "english_meaning": "The One Universal Creator exists; His Name is eternally true. He is fearless, without enmity, unborn and self-existent."
+    },
+    {
+      "id": 2,
+      "punjabi_line1": "ਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਹ ਅਕਾਲ ਪੁਰਖ ਗੁਰੂ ਦੀ ਕਿਰਪਾ ਰਾਹੀਂ ਪ੍ਰਾਪਤ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "The Eternal One is realized through the Guru's grace."
+    },
+    {
+      "id": 3,
+      "punjabi_line1": "ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਹ ਆਦਿ ਤੋਂ ਸੱਚਾ ਹੈ ਅਤੇ ਯੁਗਾਂ ਦੇ ਆਰੰਭ ਤੋਂ ਸੱਚਾ ਹੈ।",
+      "english_meaning": "He was true in the beginning and has been true throughout the ages."
+    },
+    {
+      "id": 4,
+      "punjabi_line1": "ਹੈ ਭੀ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ ॥੧॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਹ ਅੱਜ ਵੀ ਸੱਚਾ ਹੈ ਅਤੇ ਅੱਗੇ ਵੀ ਸਦਾ ਕਾਇਮ ਰਹੇਗਾ।",
+      "english_meaning": "He is true now, and Nanak says, He shall remain true forever."
+    },
+    {
+      "id": 5,
+      "punjabi_line1": "ਸੋਚੈ ਸੋਚਿ ਨ ਹੋਵਈ ਜੇ ਸੋਚੀ ਲਖ ਵਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਿਰਫ਼ ਸੋਚਣ ਜਾਂ ਮਨ ਨੂੰ ਵਾਰ-ਵਾਰ ਵਿਚਾਰਾਂ ਵਿੱਚ ਲਾਉਣ ਨਾਲ ਆਤਮਕ ਪਵਿੱਤਰਤਾ ਨਹੀਂ ਮਿਲਦੀ।",
+      "english_meaning": "Purity is not attained merely by thinking, even if one thinks hundreds of thousands of times."
+    },
+    {
+      "id": 6,
+      "punjabi_line1": "ਚੁਪੈ ਚੁਪ ਨ ਹੋਵਈ ਜੇ ਲਾਇ ਰਹਾ ਲਿਵ ਤਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੇਵਲ ਚੁੱਪ ਰਹਿਣ ਨਾਲ ਮਨ ਦੀ ਅਸਲ ਚੁੱਪ ਜਾਂ ਸ਼ਾਂਤੀ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹੁੰਦੀ।",
+      "english_meaning": "Merely remaining silent does not bring true inner silence or peace."
+    },
+    {
+      "id": 7,
+      "punjabi_line1": "ਭੁਖਿਆ ਭੁਖ ਨ ਉਤਰੀ ਜੇ ਬੰਨਾ ਪੁਰੀਆ ਭਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਦੁਨਿਆਵੀ ਵਸਤਾਂ ਇਕੱਠੀਆਂ ਕਰ ਲੈਣ ਨਾਲ ਮਨ ਦੀ ਲਾਲਸਾ ਮੁੱਕਦੀ ਨਹੀਂ।",
+      "english_meaning": "Worldly possessions cannot satisfy the mind's endless hunger and desires."
+    },
+    {
+      "id": 8,
+      "punjabi_line1": "ਸਹਸ ਸਿਆਣਪਾ ਲਖ ਹੋਹਿ ਤ ਇਕ ਨ ਚਲੈ ਨਾਲਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਲੱਖਾਂ ਚਤੁਰਾਈਆਂ ਵੀ ਅੰਤ ਸਮੇਂ ਕੋਈ ਸਾਥ ਨਹੀਂ ਦਿੰਦੀਆਂ।",
+      "english_meaning": "Even countless clevernesses and skills do not accompany a person in the end."
+    },
+    {
+      "id": 9,
+      "punjabi_line1": "ਕਿਵ ਸਚਿਆਰਾ ਹੋਈਐ ਕਿਵ ਕੂੜੈ ਤੁਟੈ ਪਾਲਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚੇ ਜੀਵਨ ਵਾਲਾ ਕਿਵੇਂ ਬਣੀਏ ਅਤੇ ਝੂਠ ਦਾ ਪਰਦਾ ਕਿਵੇਂ ਟੁੱਟੇ?",
+      "english_meaning": "How can one become truthful, and how can the wall of falsehood be broken?"
+    },
+    {
+      "id": 10,
+      "punjabi_line1": "ਹੁਕਮਿ ਰਜਾਈ ਚਲਣਾ ਨਾਨਕ ਲਿਖਿਆ ਨਾਲਿ ॥੧॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਅਕਾਲ ਪੁਰਖ ਦੇ ਹੁਕਮ ਅਨੁਸਾਰ ਜੀਵਨ ਚਲਾਉਣਾ ਹੀ ਸੱਚੇ ਜੀਵਨ ਦਾ ਰਸਤਾ ਹੈ।",
+      "english_meaning": "Nanak says: Live according to the Divine Will written for us."
+    },
+    {
+      "id": 11,
+      "punjabi_line1": "ਹੁਕਮੀ ਹੋਵਨਿ ਆਕਾਰ ਹੁਕਮੁ ਨ ਕਹਿਆ ਜਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਰੇ ਜੀਵ ਅਤੇ ਰੂਪ ਉਸ ਦੇ ਹੁਕਮ ਨਾਲ ਬਣਦੇ ਹਨ, ਪਰ ਉਸ ਦੇ ਹੁਕਮ ਦੀ ਪੂਰੀ ਵਿਆਖਿਆ ਨਹੀਂ ਹੋ ਸਕਦੀ।",
+      "english_meaning": "All forms are created according to His Will, yet His Will cannot be fully described."
+    },
+    {
+      "id": 12,
+      "punjabi_line1": "ਹੁਕਮੀ ਹੋਵਨਿ ਜੀਅ ਹੁਕਮਿ ਮਿਲੈ ਵਡਿਆਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੀਵ ਵੀ ਉਸ ਦੇ ਹੁਕਮ ਨਾਲ ਪੈਦਾ ਹੁੰਦੇ ਹਨ ਅਤੇ ਮਾਣ-ਵਡਿਆਈ ਵੀ ਉਸ ਦੇ ਹੁਕਮ ਨਾਲ ਮਿਲਦੀ ਹੈ।",
+      "english_meaning": "Beings are created by His Will, and honor and greatness are also received according to His Will."
+    },
+    {
+      "id": 13,
+      "punjabi_line1": "ਨਾਨਕ ਹੁਕਮੈ ਜੇ ਬੁਝੈ ਤ ਹਉਮੈ ਕਹੈ ਨ ਕੋਇ ॥੨॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਮਨੁੱਖ ਹੁਕਮ ਨੂੰ ਸਮਝ ਲੈਂਦਾ ਹੈ, ਉਸ ਵਿੱਚ ਹਉਮੈ ਨਹੀਂ ਰਹਿੰਦੀ।",
+      "english_meaning": "One who understands the Divine Will no longer speaks from ego."
+    },
+    {
+      "id": 14,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਤਾਣੁ ਹੋਵੈ ਕਿਸੈ ਤਾਣੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰ ਕੋਈ ਆਪਣੀ ਸਮਰੱਥਾ ਅਨੁਸਾਰ ਪ੍ਰਭੂ ਦੀ ਵਡਿਆਈ ਗਾਂਦਾ ਹੈ।",
+      "english_meaning": "Everyone praises the Lord according to their own ability and strength."
+    },
+    {
+      "id": 15,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਦਾਤਿ ਜਾਣੈ ਨੀਸਾਣੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੋਈ ਉਸ ਦੀਆਂ ਦਾਤਾਂ ਨੂੰ ਸਮਝ ਕੇ ਉਸ ਦੀ ਸਿਫ਼ਤ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "Some praise Him by recognizing His gifts and blessings."
+    },
+    {
+      "id": 16,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਗੁਣ ਵਡਿਆਈਆ ਚਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੋਈ ਉਸ ਦੇ ਗੁਣਾਂ ਅਤੇ ਵਡਿਆਈਆਂ ਦਾ ਗਾਇਨ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "Some sing of His virtues and greatness."
+    },
+    {
+      "id": 17,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਵਿਦਿਆ ਵਿਖਮੁ ਵੀਚਾਰੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੋਈ ਗਿਆਨ ਅਤੇ ਡੂੰਘੇ ਵਿਚਾਰ ਰਾਹੀਂ ਉਸ ਨੂੰ ਸਮਝਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "Some seek to understand Him through knowledge and deep reflection."
+    },
+    {
+      "id": 18,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਸਾਜਿ ਕਰੇ ਤਨੁ ਖੇਹ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੋਈ ਉਸ ਨੂੰ ਸਰੀਰ ਬਣਾਉਣ ਅਤੇ ਫਿਰ ਮਿੱਟੀ ਵਿੱਚ ਮਿਲਾਉਣ ਵਾਲਾ ਜਾਣ ਕੇ ਯਾਦ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "Some praise the One who creates the body and returns it to dust."
+    },
+    {
+      "id": 19,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਜੀਅ ਲੈ ਫਿਰਿ ਦੇਹ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੋਈ ਉਸ ਨੂੰ ਜੀਵਨ ਦੇਣ ਅਤੇ ਵਾਪਸ ਲੈਣ ਵਾਲਾ ਜਾਣ ਕੇ ਸਿਮਰਦਾ ਹੈ।",
+      "english_meaning": "Some remember Him as the One who gives life and takes it back."
+    },
+    {
+      "id": 20,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਜਾਪੈ ਦਿਸੈ ਦੂਰਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੋਈ ਉਸ ਨੂੰ ਦੂਰ ਜਾਪਦਾ ਸਮਝ ਕੇ ਉਸ ਦੀ ਖੋਜ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "Some seek the One whom they perceive as far away."
+    },
+    {
+      "id": 21,
+      "punjabi_line1": "ਗਾਵੈ ਕੋ ਵੇਖੈ ਹਾਦਰਾ ਹਦੂਰਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕੋਈ ਉਸ ਨੂੰ ਹਰ ਥਾਂ ਹਾਜ਼ਰ-ਨਾਜ਼ਰ ਦੇਖਦਾ ਹੈ।",
+      "english_meaning": "Some behold Him as present and near everywhere."
+    },
+    {
+      "id": 22,
+      "punjabi_line1": "ਕਥਨਾ ਕਥੀ ਨ ਆਵੈ ਤੋਟਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਸ ਦੀ ਸਿਫ਼ਤ-ਸਾਲਾਹ ਦਾ ਅੰਤ ਨਹੀਂ ਆ ਸਕਦਾ।",
+      "english_meaning": "There is no end to speaking of His praise."
+    },
+    {
+      "id": 23,
+      "punjabi_line1": "ਕਥਿ ਕਥਿ ਕਥੀ ਕੋਟੀ ਕੋਟਿ ਕੋਟਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਕਰੋੜਾਂ ਜੀਵ ਉਸ ਦੀਆਂ ਬੇਅੰਤ ਵਡਿਆਈਆਂ ਬਿਆਨ ਕਰਦੇ ਹਨ।",
+      "english_meaning": "Millions upon millions of beings describe His countless virtues."
+    },
+    {
+      "id": 24,
+      "punjabi_line1": "ਦੇਦਾ ਦੇ ਲੈਦੇ ਥਕਿ ਪਾਹਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਹ ਸਦਾ ਦਿੰਦਾ ਹੈ, ਪਰ ਲੈਣ ਵਾਲੇ ਥੱਕ ਜਾਂਦੇ ਹਨ।",
+      "english_meaning": "He continually gives, while those who receive eventually grow weary."
+    },
+    {
+      "id": 25,
+      "punjabi_line1": "ਜੁਗਾ ਜੁਗੰਤਰਿ ਖਾਹੀ ਖਾਹਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਯੁਗਾਂ-ਯੁਗਾਂ ਤੋਂ ਜੀਵ ਉਸ ਦੀਆਂ ਦਾਤਾਂ ਵਰਤਦੇ ਆ ਰਹੇ ਹਨ।",
+      "english_meaning": "Beings have been enjoying His gifts throughout the ages."
+    },
+    {
+      "id": 26,
+      "punjabi_line1": "ਹੁਕਮੀ ਹੁਕਮੁ ਚਲਾਏ ਰਾਹੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਸ ਦਾ ਹੁਕਮ ਸਾਰੀ ਸ੍ਰਿਸ਼ਟੀ ਵਿੱਚ ਚੱਲਦਾ ਹੈ।",
+      "english_meaning": "His Divine Will governs the path of the entire creation."
+    },
+    {
+      "id": 27,
+      "punjabi_line1": "ਨਾਨਕ ਵਿਗਸੈ ਵੇਪਰਵਾਹੁ ॥੩॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਕਹਿੰਦਾ ਹੈ ਕਿ ਉਹ ਪ੍ਰਭੂ ਨਿਰਲੇਪ ਰਹਿ ਕੇ ਆਪਣੀ ਰਚਨਾ ਵਿੱਚ ਪ੍ਰਸੰਨ ਹੈ।",
+      "english_meaning": "Nanak says that the carefree Lord rejoices in His creation."
+    },
+    {
+      "id": 28,
+      "punjabi_line1": "ਆਸਾ ਮਹਲਾ ੧ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਇਹ ਪੰਕਤੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਦੀ ਬਾਣੀ ਦੇ ਰਾਗ ਆਸਾ ਦੇ ਸੰਦਰਭ ਨੂੰ ਦਰਸਾਉਂਦੀ ਹੈ।",
+      "english_meaning": "This is the heading identifying the composition as Guru Nanak Dev Ji's Bani in Raag Aasaa."
+    },
+    {
+      "id": 29,
+      "punjabi_line1": "ਸਭਨਾ ਜੀਆ ਕਾ ਇਕੁ ਦਾਤਾ ਸੋ ਮੈ ਵਿਸਰਿ ਨ ਜਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਰੇ ਜੀਵਾਂ ਦਾ ਇਕੋ ਦਾਤਾ ਹੈ; ਮੇਰੇ ਮਨ ਵਿੱਚ ਉਹ ਕਦੇ ਨਾ ਭੁੱਲੇ।",
+      "english_meaning": "There is one Giver for all beings; may I never forget Him."
+    },
+    {
+      "id": 30,
+      "punjabi_line1": "ਏਕੁ ਪਿਤਾ ਏਕਸ ਕੇ ਹਮ ਬਾਰਿਕ ਤੂ ਮੇਰਾ ਗੁਰ ਹਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਇਕੋ ਪ੍ਰਭੂ ਸਾਡਾ ਪਿਤਾ ਹੈ ਅਤੇ ਅਸੀਂ ਉਸ ਦੇ ਬੱਚੇ ਹਾਂ; ਉਹ ਮੇਰਾ ਗੁਰੂ ਹੈ।",
+      "english_meaning": "The One Lord is our Father, and we are His children; He is my Guru."
+    },
+    {
+      "id": 31,
+      "punjabi_line1": "ਤੂੰ ਮੇਰਾ ਪਿਤਾ ਤੂੰਹੈ ਮੇਰਾ ਮਾਤਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਤੂੰ ਹੀ ਮੇਰਾ ਪਿਤਾ ਹੈਂ ਅਤੇ ਤੂੰ ਹੀ ਮੇਰੀ ਮਾਤਾ ਹੈਂ।",
+      "english_meaning": "You alone are my Father and You alone are my Mother."
+    },
+    {
+      "id": 32,
+      "punjabi_line1": "ਤੂੰ ਮੇਰਾ ਬੰਧਪੁ ਤੂੰ ਮੇਰਾ ਭ੍ਰਾਤਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਤੂੰ ਹੀ ਮੇਰਾ ਸਾਕ-ਸੰਬੰਧੀ ਅਤੇ ਭਰਾ ਹੈਂ।",
+      "english_meaning": "You alone are my relative and my brother."
+    },
+    {
+      "id": 33,
+      "punjabi_line1": "ਤੂੰ ਮੇਰਾ ਰਾਖਾ ਸਭਨੀ ਥਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰ ਥਾਂ ਤੂੰ ਹੀ ਮੇਰਾ ਰਾਖਾ ਹੈਂ।",
+      "english_meaning": "You alone are my protector everywhere."
+    },
+    {
+      "id": 34,
+      "punjabi_line1": "ਤੈਸਾ ਮਾਨੁ ਜੈਸਾ ਤੂ ਧਰਨਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਵੇਂ ਤੂੰ ਚਾਹੁੰਦਾ ਹੈਂ, ਮਨੁੱਖ ਨੂੰ ਉਸੇ ਅਨੁਸਾਰ ਆਪਣਾ ਜੀਵਨ ਬਣਾਉਣਾ ਚਾਹੀਦਾ ਹੈ।",
+      "english_meaning": "A person should shape life according to the Divine Will."
+    },
+    {
+      "id": 35,
+      "punjabi_line1": "ਜਿਸੁ ਸਿਮਰਤ ਸਭਿ ਕਿਲਵਿਖ ਜਾਹਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਪ੍ਰਭੂ ਨੂੰ ਸਿਮਰਨ ਨਾਲ ਸਾਰੇ ਪਾਪ ਅਤੇ ਵਿਕਾਰ ਦੂਰ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "Remembering the Lord removes all sins and vices."
+    },
+    {
+      "id": 36,
+      "punjabi_line1": "ਜਿਸੁ ਸਿਮਰਤ ਜਮੁ ਕਿਛੁ ਨ ਕਹੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਦੇ ਸਿਮਰਨ ਨਾਲ ਮੌਤ ਦਾ ਡਰ ਮਨੁੱਖ ਉੱਤੇ ਹਾਵੀ ਨਹੀਂ ਰਹਿੰਦਾ।",
+      "english_meaning": "Remembering Him removes the hold of the fear of death."
+    },
+    {
+      "id": 37,
+      "punjabi_line1": "ਜਿਸੁ ਸਿਮਰਤ ਸੁਖੁ ਸਹਜੁ ਸਦਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਦੇ ਸਿਮਰਨ ਨਾਲ ਸਦਾ ਆਤਮਕ ਸੁਖ ਅਤੇ ਸਹਜ ਦੀ ਅਵਸਥਾ ਮਿਲਦੀ ਹੈ।",
+      "english_meaning": "Remembering Him brings lasting spiritual peace and natural serenity."
+    },
+    {
+      "id": 38,
+      "punjabi_line1": "ਤਿਸੁ ਸਿਮਰਤ ਜਨੁ ਜੀਵੈ ਸਦਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਸ ਨੂੰ ਸਿਮਰ ਕੇ ਮਨੁੱਖ ਆਤਮਕ ਜੀਵਨ ਪ੍ਰਾਪਤ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "Remembering Him, a person receives true spiritual life."
+    },
+    {
+      "id": 39,
+      "punjabi_line1": "ਹਰਿ ਸਿਮਰਤ ਕਿਛੁ ਬਿਘਨੁ ਨ ਲਾਗੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਨੂੰ ਸਿਮਰਨ ਨਾਲ ਮਨੁੱਖ ਨੂੰ ਆਤਮਕ ਰਾਹ ਵਿੱਚ ਰੁਕਾਵਟਾਂ ਘੱਟ ਮਹਿਸੂਸ ਹੁੰਦੀਆਂ ਹਨ।",
+      "english_meaning": "Remembering the Lord helps remove obstacles from the spiritual path."
+    },
+    {
+      "id": 40,
+      "punjabi_line1": "ਹਰਿ ਸਿਮਰਤ ਦੂਖੁ ਸਭੁ ਭਾਗੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੇ ਸਿਮਰਨ ਨਾਲ ਦੁੱਖ ਅਤੇ ਚਿੰਤਾ ਦੂਰ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "Remembering the Lord makes sorrow and anxiety depart."
+    },
+    {
+      "id": 41,
+      "punjabi_line1": "ਹਰਿ ਸਿਮਰਤ ਨਾਮੁ ਅੰਤਰਿ ਵਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਸਿਮਰਨ ਕਰਨ ਨਾਲ ਨਾਮ ਹਿਰਦੇ ਵਿੱਚ ਵੱਸਦਾ ਹੈ।",
+      "english_meaning": "Remembering the Lord causes the Naam to dwell within the heart."
+    },
+    {
+      "id": 42,
+      "punjabi_line1": "ਹਰਿ ਸਿਮਰਤ ਕਲਮਲ ਸਭਿ ਨਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਿਮਰਨ ਨਾਲ ਮਨ ਦੇ ਸਾਰੇ ਵਿਕਾਰ ਦੂਰ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "Remembering Him removes the mind's impurities and vices."
+    },
+    {
+      "id": 43,
+      "punjabi_line1": "ਸਿਮਰਉ ਸਿਮਰਿ ਸਿਮਰਿ ਸੁਖੁ ਪਾਵਉ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਮੈਂ ਵਾਰ-ਵਾਰ ਪ੍ਰਭੂ ਨੂੰ ਸਿਮਰ ਕੇ ਆਤਮਕ ਸੁਖ ਪ੍ਰਾਪਤ ਕਰਦਾ ਹਾਂ।",
+      "english_meaning": "I remember the Lord again and again and find spiritual peace."
+    },
+    {
+      "id": 44,
+      "punjabi_line1": "ਕਲਿ ਕਲੇਸ ਤਨ ਮਾਹਿ ਮਿਟਾਵਉ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਿਮਰਨ ਨਾਲ ਮਨ ਅਤੇ ਸਰੀਰ ਦੇ ਕਲੇਸ਼ ਘਟਦੇ ਹਨ।",
+      "english_meaning": "Remembrance helps remove inner suffering and distress."
+    },
+    {
+      "id": 45,
+      "punjabi_line1": "ਸਿਮਰਉ ਜਾਸੁ ਬਿਸੰਭਰੁ ਏਕੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਮੈਂ ਉਸ ਇਕ ਸਰਬ-ਪਾਲਕ ਪ੍ਰਭੂ ਨੂੰ ਸਿਮਰਦਾ ਹਾਂ।",
+      "english_meaning": "I remember the One who sustains and protects all."
+    },
+    {
+      "id": 46,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਅਗਨਤ ਅਨੇਕੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਅਨੇਕਾਂ ਜੀਵ ਉਸ ਦਾ ਨਾਮ ਜਪ ਕੇ ਆਤਮਕ ਲਾਭ ਪ੍ਰਾਪਤ ਕਰਦੇ ਹਨ।",
+      "english_meaning": "Countless beings chant His Name and receive spiritual benefit."
+    },
+    {
+      "id": 47,
+      "punjabi_line1": "ਗੁਰ ਪ੍ਰਸਾਦਿ ਕੋ ਵਿਰਲਾ ਜਾਪੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੀ ਕਿਰਪਾ ਨਾਲ ਕੋਈ ਵਿਰਲਾ ਮਨੁੱਖ ਹੀ ਪ੍ਰਭੂ ਨੂੰ ਸੱਚਮੁੱਚ ਜਾਣਦਾ ਹੈ।",
+      "english_meaning": "By the Guru's grace, only a rare person truly realizes the Lord."
+    },
+    {
+      "id": 48,
+      "punjabi_line1": "ਨਾਨਕ ਨਾਮੁ ਜਪਹੁ ਤਰੁ ਤਾਪੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਕਹਿੰਦਾ ਹੈ, ਨਾਮ ਜਪੋ ਅਤੇ ਅੰਦਰਲੇ ਦੁੱਖ-ਤਾਪ ਤੋਂ ਪਾਰ ਲੰਘੋ।",
+      "english_meaning": "Nanak says: Chant the Naam and cross beyond inner suffering and distress."
+    },
+    {
+      "id": 49,
+      "punjabi_line1": "ਸਤਿਗੁਰੁ ਮੇਰਾ ਸਦਾ ਸਦਾ ਨਾ ਆਵੈ ਨ ਜਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚਾ ਗੁਰੂ ਸਦਾ ਕਾਇਮ ਹੈ; ਉਹ ਆਉਣ-ਜਾਣ ਵਾਲਾ ਨਹੀਂ।",
+      "english_meaning": "My True Guru is eternal; He does not come and go."
+    },
+    {
+      "id": 50,
+      "punjabi_line1": "ਸਤਿਗੁਰੁ ਮੇਰਾ ਸਦਾ ਸਦਾ ਨਾਉ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਮੇਰੇ ਸੱਚੇ ਗੁਰੂ ਦੀ ਮਹਿਮਾ ਸਦਾ ਕਾਇਮ ਹੈ।",
+      "english_meaning": "The glory of my True Guru remains forever."
+    },
+    {
+      "id": 51,
+      "punjabi_line1": "ਜਿਸੁ ਸਿਮਰਤ ਦੁਖੁ ਜਾਇ ਸੁਖੁ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਨੂੰ ਸਿਮਰਨ ਨਾਲ ਦੁੱਖ ਦੂਰ ਹੁੰਦਾ ਅਤੇ ਸੁਖ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Remembering Him removes suffering and brings peace."
+    },
+    {
+      "id": 52,
+      "punjabi_line1": "ਗੁਰ ਕਾ ਸਬਦੁ ਰਿਦੈ ਧਾਰਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੇ ਸ਼ਬਦ ਨੂੰ ਹਿਰਦੇ ਵਿੱਚ ਵਸਾਓ।",
+      "english_meaning": "Enshrine the Guru's Word within your heart."
+    },
+    {
+      "id": 53,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਹੁ ਜੀਅ ਕੇ ਦਾਤਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਜੀਵੋ, ਜੀਵਨ ਦੇ ਦਾਤੇ ਪ੍ਰਭੂ ਦਾ ਨਾਮ ਜਪੋ।",
+      "english_meaning": "Chant the Name of the Giver of life."
+    },
+    {
+      "id": 54,
+      "punjabi_line1": "ਜਿਨਿ ਤੂੰ ਕੀਆ ਤਿਸੁ ਚਿਤਿ ਕਰਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਨੇ ਤੈਨੂੰ ਬਣਾਇਆ ਹੈ, ਉਸ ਨੂੰ ਆਪਣੇ ਚਿੱਤ ਵਿੱਚ ਯਾਦ ਰੱਖ।",
+      "english_meaning": "Remember in your consciousness the One who created you."
+    },
+    {
+      "id": 55,
+      "punjabi_line1": "ਘਟਿ ਘਟਿ ਰਵਿ ਰਹਿਆ ਸੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਹ ਪ੍ਰਭੂ ਹਰ ਇਕ ਹਿਰਦੇ ਵਿੱਚ ਵੱਸ ਰਿਹਾ ਹੈ।",
+      "english_meaning": "He pervades every heart."
+    },
+    {
+      "id": 56,
+      "punjabi_line1": "ਸਦਾ ਸਦਾ ਤੂੰ ਏਕੋ ਏਕ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਤੂੰ ਸਦਾ ਇਕੋ-ਇਕ ਹੈਂ।",
+      "english_meaning": "You are forever the One, the only One."
+    },
+    {
+      "id": 57,
+      "punjabi_line1": "ਜਲਿ ਥਲਿ ਮਹੀਅਲਿ ਪੂਰਿਆ ਸੁਆਮੀ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਜਲ, ਧਰਤੀ ਅਤੇ ਆਕਾਸ਼—ਹਰ ਥਾਂ ਵਿਆਪਕ ਹੈ।",
+      "english_meaning": "The Lord pervades the water, land and sky; He is everywhere."
+    },
+    {
+      "id": 58,
+      "punjabi_line1": "ਜਿਸੁ ਆਪਿ ਬੁਝਾਏ ਸੋਈ ਜਨੁ ਜਾਣੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਨੂੰ ਪ੍ਰਭੂ ਆਪ ਸਮਝ ਬਖ਼ਸ਼ਦਾ ਹੈ, ਉਹੀ ਉਸ ਨੂੰ ਜਾਣਦਾ ਹੈ।",
+      "english_meaning": "Only the person whom the Lord Himself enlightens comes to know Him."
+    },
+    {
+      "id": 59,
+      "punjabi_line1": "ਮਨਿ ਜੀਤੈ ਜਗੁ ਜੀਤੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਆਪਣੇ ਮਨ ਨੂੰ ਜਿੱਤ ਲੈਂਦਾ ਹੈ, ਉਹ ਸੰਸਾਰਕ ਮੋਹ ਉੱਤੇ ਵੀ ਜਿੱਤ ਪਾ ਲੈਂਦਾ ਹੈ।",
+      "english_meaning": "One who conquers the mind conquers worldly attachment."
+    },
+    {
+      "id": 60,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਨਾਮੁ ਜਪਹੁ ਮਨ ਮੇਰੇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਮੇਰੇ ਮਨ, ਗੁਰੂ ਦੇ ਸਨਮੁਖ ਹੋ ਕੇ ਨਾਮ ਜਪ।",
+      "english_meaning": "O my mind, chant the Naam while walking in the Guru's way."
+    },
+    {
+      "id": 61,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਮਨੁ ਨਿਰਮਲੁ ਹੋਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਜਪਣ ਨਾਲ ਮਨ ਪਵਿੱਤਰ ਹੋ ਜਾਂਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Naam makes the mind pure."
+    },
+    {
+      "id": 62,
+      "punjabi_line1": "ਹਰਿ ਕੇ ਨਾਮ ਬਿਨੁ ਝੂਠੇ ਸਗਲ ਪਾਸਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੇ ਨਾਮ ਤੋਂ ਬਿਨਾ ਦੁਨਿਆਵੀ ਪਸਾਰਾ ਅਸਥਿਰ ਅਤੇ ਨਾਸਵੰਤ ਹੈ।",
+      "english_meaning": "Without the Lord's Naam, the entire worldly expanse is false and impermanent."
+    },
+    {
+      "id": 63,
+      "punjabi_line1": "ਸਾਧਸੰਗਤਿ ਕੈ ਬਸਿ ਬਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਵਿੱਚ ਰਹਿਣ ਨਾਲ ਮਨ ਪ੍ਰਭੂ ਦੇ ਨੇੜੇ ਟਿਕਦਾ ਹੈ।",
+      "english_meaning": "Living in the company of the holy keeps the mind close to the Lord."
+    },
+    {
+      "id": 64,
+      "punjabi_line1": "ਸਾਧਸੰਗਤਿ ਕੈ ਸੰਗਿ ਵਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਦੀ ਸੰਗਤ ਮਨੁੱਖ ਨੂੰ ਆਤਮਕ ਜੀਵਨ ਵੱਲ ਲੈ ਜਾਂਦੀ ਹੈ।",
+      "english_meaning": "The company of the holy leads a person toward spiritual life."
+    },
+    {
+      "id": 65,
+      "punjabi_line1": "ਸਾਧਸੰਗਿ ਹਰਿ ਹਰਿ ਨਾਮੁ ਵਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਵਿੱਚ ਪ੍ਰਭੂ ਦਾ ਨਾਮ ਹਿਰਦੇ ਵਿੱਚ ਵੱਸਦਾ ਹੈ।",
+      "english_meaning": "In the company of the holy, the Lord's Naam comes to dwell in the heart."
+    },
+    {
+      "id": 66,
+      "punjabi_line1": "ਸਾਧਸੰਗਿ ਸਭੁ ਦੂਖੁ ਪਰਹਰੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਨਾਲ ਮਨੁੱਖ ਦੇ ਦੁੱਖ ਅਤੇ ਵਿਕਾਰ ਦੂਰ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "In the company of the holy, suffering and vices are removed."
+    },
+    {
+      "id": 67,
+      "punjabi_line1": "ਸਾਧਸੰਗਿ ਸਭੁ ਭਉ ਬਿਨਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਵਿੱਚ ਟਿਕ ਕੇ ਡਰ ਘਟ ਜਾਂਦਾ ਹੈ।",
+      "english_meaning": "In the company of the holy, fear is diminished."
+    },
+    {
+      "id": 68,
+      "punjabi_line1": "ਸਾਧਸੰਗਿ ਪਾਪਾ ਮਲੁ ਧੋਵੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਮਨ ਦੀ ਪਾਪ-ਵਿਕਾਰਾਂ ਵਾਲੀ ਮੈਲ ਧੋਣ ਵਿੱਚ ਸਹਾਇਕ ਹੈ।",
+      "english_meaning": "The company of the holy helps wash away the mind's impurities and vices."
+    },
+    {
+      "id": 69,
+      "punjabi_line1": "ਸਾਧਸੰਗਿ ਨਾਮੁ ਮਨਿ ਪਰੋਵੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਵਿੱਚ ਨਾਮ ਮਨ ਵਿੱਚ ਪੱਕਾ ਵੱਸਦਾ ਹੈ।",
+      "english_meaning": "In the company of the holy, the Naam becomes firmly rooted in the mind."
+    },
+    {
+      "id": 70,
+      "punjabi_line1": "ਸਾਧਸੰਗਿ ਸਭੁ ਨਿਰਮਲੁ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਨਾਲ ਜੀਵਨ ਪਵਿੱਤਰ ਬਣਦਾ ਹੈ।",
+      "english_meaning": "The company of the holy makes life spiritually pure."
+    },
+    {
+      "id": 71,
+      "punjabi_line1": "ਸਾਧਸੰਗਿ ਮਿਲਿ ਹਰਿ ਗੁਣ ਗਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਧ ਸੰਗਤ ਵਿੱਚ ਮਿਲ ਕੇ ਪ੍ਰਭੂ ਦੇ ਗੁਣ ਗਾਉਣੇ ਚਾਹੀਦੇ ਹਨ।",
+      "english_meaning": "In the company of the holy, join together and sing the Lord's virtues."
+    },
+    {
+      "id": 72,
+      "punjabi_line1": "ਸਭੁ ਕਿਛੁ ਤੇਰਾ ਤੂੰ ਅੰਤਰਜਾਮੀ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਭ ਕੁਝ ਤੇਰਾ ਹੈ ਅਤੇ ਤੂੰ ਹਿਰਦੇ ਦੀਆਂ ਅੰਦਰਲੀਆਂ ਗੱਲਾਂ ਜਾਣਦਾ ਹੈਂ।",
+      "english_meaning": "Everything belongs to You, and You know the innermost thoughts of every heart."
+    },
+    {
+      "id": 73,
+      "punjabi_line1": "ਤੂੰ ਕਰਤਾ ਕਰਣਾ ਮੈ ਨਾਹੀ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਕਰਤਾ, ਸਭ ਕੁਝ ਤੂੰ ਕਰਦਾ ਹੈਂ; ਮੇਰੇ ਅੰਦਰ ਆਪਣੀ ਕੋਈ ਵੱਖਰੀ ਸਮਰੱਥਾ ਨਹੀਂ।",
+      "english_meaning": "O Creator, You do everything; I possess no separate power of my own."
+    },
+    {
+      "id": 74,
+      "punjabi_line1": "ਮੈ ਮੂਰਖ ਕੀ ਕੇਤਕ ਬਾਤ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਮੈਂ ਅਗਿਆਨੀ ਹਾਂ; ਮੇਰੀ ਆਪਣੀ ਸਮਝ ਬਹੁਤ ਸੀਮਿਤ ਹੈ।",
+      "english_meaning": "I am ignorant; my own understanding is very limited."
+    },
+    {
+      "id": 75,
+      "punjabi_line1": "ਤੂੰ ਸਰਬ ਜੀਆ ਪ੍ਰਤਿਪਾਲਕ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਤੂੰ ਸਾਰੇ ਜੀਵਾਂ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲਾ ਹੈਂ।",
+      "english_meaning": "You are the Sustainer of all beings."
+    },
+    {
+      "id": 76,
+      "punjabi_line1": "ਤੂੰ ਦਾਤਾ ਜੀਅ ਕਾ ਦਾਤਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਤੂੰ ਸਾਰੇ ਜੀਵਾਂ ਨੂੰ ਜੀਵਨ ਅਤੇ ਦਾਤਾਂ ਦੇਣ ਵਾਲਾ ਹੈਂ।",
+      "english_meaning": "You are the Giver of life and the Giver of all gifts."
+    },
+    {
+      "id": 77,
+      "punjabi_line1": "ਨਾਨਕ ਨਾਮੁ ਜਪਹੁ ਜੀਅ ਸਦਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਕਹਿੰਦਾ ਹੈ, ਹੇ ਜੀਵੋ, ਸਦਾ ਨਾਮ ਜਪੋ।",
+      "english_meaning": "Nanak says: O beings, always chant the Naam."
+    },
+    {
+      "id": 78,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਮਨੁ ਤਨੁ ਸਭੁ ਹਰਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਜਪਣ ਨਾਲ ਮਨ ਅਤੇ ਸਰੀਰ ਆਤਮਕ ਤੌਰ ਤੇ ਤਾਜ਼ਗੀ ਨਾਲ ਭਰਦੇ ਹਨ।",
+      "english_meaning": "Chanting the Naam fills the mind and body with spiritual freshness."
+    },
+    {
+      "id": 79,
+      "punjabi_line1": "ਹਰਿ ਕੇ ਨਾਮ ਕੀ ਵਡਿਆਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੇ ਨਾਮ ਦੀ ਮਹਿਮਾ ਬਹੁਤ ਉੱਚੀ ਹੈ।",
+      "english_meaning": "The glory of the Lord's Naam is supreme."
+    },
+    {
+      "id": 80,
+      "punjabi_line1": "ਨਾਮੁ ਅਮੋਲਕੁ ਰਤਨੁ ਹੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦਾ ਨਾਮ ਅਮੋਲਕ ਰਤਨ ਵਰਗਾ ਹੈ।",
+      "english_meaning": "The Lord's Naam is a priceless jewel."
+    },
+    {
+      "id": 81,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਅੰਮ੍ਰਿਤੁ ਸਦਾ ਮੀਠਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਅੰਮ੍ਰਿਤ ਵਰਗਾ ਅਤੇ ਸਦਾ ਮਿੱਠਾ ਹੈ।",
+      "english_meaning": "The Lord's Naam is like nectar and is forever sweet."
+    },
+    {
+      "id": 82,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਹਰਿ ਰਸੁ ਪਾਈਐ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਜਪਣ ਨਾਲ ਪ੍ਰਭੂ-ਪ੍ਰੇਮ ਦਾ ਆਤਮਕ ਰਸ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Naam brings the spiritual sweetness of divine love."
+    },
+    {
+      "id": 83,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਸਦਾ ਸੁਖਦਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦਾ ਨਾਮ ਸਦਾ ਆਤਮਕ ਸੁਖ ਦੇਣ ਵਾਲਾ ਹੈ।",
+      "english_meaning": "The Lord's Naam is always a source of spiritual peace."
+    },
+    {
+      "id": 84,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਜਪਤ ਸਭੁ ਦੁਖੁ ਜਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਜਪਣ ਨਾਲ ਮਨ ਦੇ ਦੁੱਖ ਦੂਰ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "Chanting the Naam removes inner suffering."
+    },
+    {
+      "id": 85,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਮਨੁ ਸਦਾ ਅਨੰਦਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਸਿਮਰਨ ਨਾਲ ਮਨ ਸਦਾ ਆਨੰਦ ਵਿੱਚ ਟਿਕ ਸਕਦਾ ਹੈ।",
+      "english_meaning": "Through Naam remembrance, the mind can remain in lasting bliss."
+    },
+    {
+      "id": 86,
+      "punjabi_line1": "ਅਨਦੁ ਭਇਆ ਮੇਰੀ ਮਾਏ ਸਤਿਗੁਰੂ ਮੈ ਪਾਇਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਤਿਗੁਰੂ ਦੀ ਪ੍ਰਾਪਤੀ ਨਾਲ ਮੇਰੇ ਅੰਦਰ ਆਤਮਕ ਆਨੰਦ ਪੈਦਾ ਹੋ ਗਿਆ।",
+      "english_meaning": "I have found the True Guru, and spiritual joy has arisen within me."
+    },
+    {
+      "id": 87,
+      "punjabi_line1": "ਸਤਿਗੁਰੁ ਤ ਪਾਇਆ ਸਹਜ ਸੇਤੀ ਮਨਿ ਵਜੀਆ ਵਾਧਾਈਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਤਿਗੁਰੂ ਮਿਲਣ ਨਾਲ ਮਨ ਸਹਜ ਵਿੱਚ ਟਿਕਿਆ ਅਤੇ ਅੰਦਰ ਖੁਸ਼ੀ ਦੀਆਂ ਵਧਾਈਆਂ ਵੱਜੀਆਂ।",
+      "english_meaning": "Meeting the True Guru brings the mind into natural serenity and fills it with joy."
+    },
+    {
+      "id": 88,
+      "punjabi_line1": "ਰਾਗੁ ਗਉੜੀ ਮਹਲਾ ੫ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਇਹ ਪੰਕਤੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ ਦੀ ਗਉੜੀ ਰਾਗ ਵਾਲੀ ਬਾਣੀ ਦਾ ਸਿਰਲੇਖ ਹੈ।",
+      "english_meaning": "This is the heading identifying the composition as Guru Arjan Dev Ji's Bani in Raag Gauree."
+    },
+    {
+      "id": 89,
+      "punjabi_line1": "ਸੁਖੁ ਹੋਆ ਸਦਾ ਅਨੰਦੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੀ ਯਾਦ ਨਾਲ ਸਦਾ ਆਤਮਕ ਸੁਖ ਅਤੇ ਆਨੰਦ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "The remembrance of the Lord brings lasting spiritual peace and bliss."
+    },
+    {
+      "id": 90,
+      "punjabi_line1": "ਹਰਿ ਕੀਰਤਨੁ ਸਦਾ ਸੁਖਦਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੀ ਕੀਰਤਨ-ਸਿਫ਼ਤ ਸਦਾ ਆਤਮਕ ਸੁਖ ਦੇਣ ਵਾਲੀ ਹੈ।",
+      "english_meaning": "Singing the Lord's praises is always spiritually comforting."
+    },
+    {
+      "id": 91,
+      "punjabi_line1": "ਮੇਰੇ ਮਨ ਹਰਿ ਹਰਿ ਨਾਮੁ ਧਿਆਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਮੇਰੇ ਮਨ, ਹਰੀ ਦਾ ਨਾਮ ਧਿਆਨ ਨਾਲ ਸਿਮਰ।",
+      "english_meaning": "O my mind, meditate upon the Lord's Naam."
+    },
+    {
+      "id": 92,
+      "punjabi_line1": "ਜਿਨਿ ਜਿਨਿ ਨਾਮੁ ਧਿਆਇਆ ਤਿਨ ਕੇ ਕਾਜ ਸਰੇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਨ੍ਹਾਂ ਨੇ ਨਾਮ ਸਿਮਰਿਆ, ਉਨ੍ਹਾਂ ਦੇ ਆਤਮਕ ਕਾਰਜ ਸਫਲ ਹੋਏ।",
+      "english_meaning": "Those who meditate on the Naam find their spiritual purposes fulfilled."
+    },
+    {
+      "id": 93,
+      "punjabi_line1": "ਹਰਿ ਹਰਿ ਨਾਮੁ ਜਪਹੁ ਮੇਰੇ ਭਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਮੇਰੇ ਭਾਈ, ਹਰੀ ਦਾ ਨਾਮ ਜਪੋ।",
+      "english_meaning": "O my brother, chant the Lord's Naam."
+    },
+    {
+      "id": 94,
+      "punjabi_line1": "ਸਦਾ ਸਦਾ ਹਰਿ ਧਿਆਈਐ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਮੇਸ਼ਾਂ ਪ੍ਰਭੂ ਦਾ ਧਿਆਨ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ।",
+      "english_meaning": "Always meditate upon the Lord."
+    },
+    {
+      "id": 95,
+      "punjabi_line1": "ਗੁਰ ਕੈ ਸਬਦਿ ਹਰਿ ਨਾਮੁ ਵਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੇ ਸ਼ਬਦ ਰਾਹੀਂ ਹਰੀ ਦਾ ਨਾਮ ਹਿਰਦੇ ਵਿੱਚ ਵੱਸਦਾ ਹੈ।",
+      "english_meaning": "Through the Guru's Word, the Lord's Naam comes to dwell in the heart."
+    },
+    {
+      "id": 96,
+      "punjabi_line1": "ਗੁਰ ਕੈ ਸਬਦਿ ਮਨੁ ਨਿਰਮਲੁ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੇ ਸ਼ਬਦ ਨਾਲ ਮਨ ਪਵਿੱਤਰ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Through the Guru's Word, the mind becomes pure."
+    },
+    {
+      "id": 97,
+      "punjabi_line1": "ਗੁਰ ਕੈ ਸਬਦਿ ਸਚੁ ਕਮਾਈਐ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੇ ਸ਼ਬਦ ਅਨੁਸਾਰ ਸੱਚਾ ਜੀਵਨ ਕਮਾਇਆ ਜਾਂਦਾ ਹੈ।",
+      "english_meaning": "By following the Guru's Word, one lives and practices truth."
+    },
+    {
+      "id": 98,
+      "punjabi_line1": "ਗੁਰ ਕੈ ਸਬਦਿ ਹਰਿ ਮਿਲਿਆ ਆਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੇ ਸ਼ਬਦ ਰਾਹੀਂ ਪ੍ਰਭੂ ਨਾਲ ਮਿਲਾਪ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Through the Guru's Word, one attains union with the Lord."
+    },
+    {
+      "id": 99,
+      "punjabi_line1": "ਸਚੁ ਨਾਮੁ ਮੇਰਾ ਆਧਾਰੋ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚਾ ਨਾਮ ਹੀ ਮੇਰਾ ਜੀਵਨ-ਆਸਰਾ ਹੈ।",
+      "english_meaning": "The True Naam is my support and foundation."
+    },
+    {
+      "id": 100,
+      "punjabi_line1": "ਤੂੰ ਮੇਰਾ ਸਤਿਗੁਰੁ ਤੂੰ ਮੇਰਾ ਸਾਧੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਤੂੰ ਹੀ ਮੇਰਾ ਸੱਚਾ ਗੁਰੂ ਅਤੇ ਮੇਰਾ ਆਤਮਕ ਸਹਾਰਾ ਹੈਂ।",
+      "english_meaning": "You are my True Guru and my spiritual guide and support."
+    },
+    {
+      "id": 101,
+      "punjabi_line1": "ਹਰਿ ਹਰਿ ਨਾਮੁ ਅੰਮ੍ਰਿਤੁ ਮੀਠਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਅੰਮ੍ਰਿਤ ਵਾਂਗ ਮਿੱਠਾ ਹੈ।",
+      "english_meaning": "The Lord's Naam is sweet like nectar."
+    },
+    {
+      "id": 102,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਹੋਵੈ ਪਰਗਾਸੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਜਪਣ ਨਾਲ ਅੰਦਰ ਆਤਮਕ ਚਾਨਣ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Naam brings inner spiritual illumination."
+    },
+    {
+      "id": 103,
+      "punjabi_line1": "ਮਨੁ ਤਨੁ ਸੀਤਲੁ ਸਾਂਤਿ ਸੁਭਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਦੀ ਯਾਦ ਨਾਲ ਮਨ ਅਤੇ ਤਨ ਵਿੱਚ ਠੰਢਕ ਤੇ ਸ਼ਾਂਤੀ ਆਉਂਦੀ ਹੈ।",
+      "english_meaning": "Remembrance brings coolness and peace to the mind and body."
+    },
+    {
+      "id": 104,
+      "punjabi_line1": "ਜਿਸੁ ਤੂ ਰਾਖਹਿ ਤਿਸੁ ਕੋਇ ਨ ਮਾਰੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਦੀ ਤੂੰ ਰੱਖਿਆ ਕਰਦਾ ਹੈਂ, ਉਸ ਨੂੰ ਕੋਈ ਨੁਕਸਾਨ ਨਹੀਂ ਪਹੁੰਚਾ ਸਕਦਾ।",
+      "english_meaning": "One whom You protect cannot be harmed by anyone."
+    },
+    {
+      "id": 105,
+      "punjabi_line1": "ਜਿਸੁ ਤੂ ਬਖਸਹਿ ਤਿਸੁ ਨਾਮੁ ਧਿਆਵਹਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਉੱਤੇ ਤੇਰੀ ਕਿਰਪਾ ਹੁੰਦੀ ਹੈ, ਉਹ ਨਾਮ ਸਿਮਰਦਾ ਹੈ।",
+      "english_meaning": "One upon whom You bestow Your grace is moved to meditate on the Naam."
+    },
+    {
+      "id": 106,
+      "punjabi_line1": "ਕਰਿ ਕਿਰਪਾ ਜਿਸੁ ਦੇਵਹਿ ਨਾਮੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਨੂੰ ਤੂੰ ਕਿਰਪਾ ਕਰਕੇ ਨਾਮ ਦੀ ਦਾਤ ਦਿੰਦਾ ਹੈਂ।",
+      "english_meaning": "You graciously bless a person with the gift of the Naam."
+    },
+    {
+      "id": 107,
+      "punjabi_line1": "ਨਾਨਕ ਤਿਨ ਕੈ ਸਦ ਬਲਿਹਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਅਜਿਹੇ ਪ੍ਰਭੂ-ਪ੍ਰੇਮੀ ਜਨਾਂ ਤੋਂ ਸਦਾ ਕੁਰਬਾਨ ਜਾਂਦਾ ਹੈ।",
+      "english_meaning": "Nanak is forever a sacrifice to such devotees of the Lord."
+    },
+    {
+      "id": 108,
+      "punjabi_line1": "ਧੰਨੁ ਧੰਨੁ ਰਾਮਦਾਸ ਗੁਰੁ ਜਿਨਿ ਸਿਰਿਆ ਤਿਨੈ ਸਵਾਰਿਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ ਧੰਨ ਹਨ, ਜਿਨ੍ਹਾਂ ਨੇ ਸਿੱਖਾਂ ਨੂੰ ਆਤਮਕ ਰਾਹ ਉੱਤੇ ਸੰਵਾਰਿਆ।",
+      "english_meaning": "Blessed, blessed is Guru Ram Das, who created and spiritually uplifted the community."
+    },
+    {
+      "id": 109,
+      "punjabi_line1": "ਹਰਿ ਹਰਿ ਨਾਮੁ ਜਪਹੁ ਜੀਅ ਸਦਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਜੀਵੋ, ਸਦਾ ਹਰੀ ਦਾ ਨਾਮ ਜਪੋ।",
+      "english_meaning": "O beings, always chant the Lord's Naam."
+    },
+    {
+      "id": 110,
+      "punjabi_line1": "ਜਨਮ ਮਰਣ ਦੁਖੁ ਕਾਟਿਆ ਹਰਿ ਹਰਿ ਨਾਮੁ ਧਿਆਇਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਸਿਮਰਨ ਨਾਲ ਜਨਮ-ਮਰਨ ਦੇ ਡਰ ਅਤੇ ਦੁੱਖ ਤੋਂ ਮੁਕਤੀ ਦਾ ਰਾਹ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Remembering the Lord's Naam provides a path beyond the suffering and fear of birth and death."
+    },
+    {
+      "id": 111,
+      "punjabi_line1": "ਜਿਸੁ ਨਾਮੁ ਨ ਚੇਤਹਿ ਮੂਰਖਾ ਸੇ ਕਾਹੇ ਜਗਿ ਆਏ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਮਨੁੱਖ ਨਾਮ ਨੂੰ ਨਹੀਂ ਯਾਦ ਕਰਦੇ, ਉਹ ਆਪਣੇ ਮਨੁੱਖਾ ਜੀਵਨ ਦੇ ਅਸਲ ਮਕਸਦ ਤੋਂ ਵਾਂਝੇ ਰਹਿੰਦੇ ਹਨ।",
+      "english_meaning": "Those who do not remember the Naam miss the true purpose of human life."
+    },
+    {
+      "id": 112,
+      "punjabi_line1": "ਭਾਈ ਰੇ ਰਾਮੁ ਕਹਹੁ ਚਿਤੁ ਲਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਭਾਈ, ਮਨ ਲਾ ਕੇ ਪ੍ਰਭੂ ਦਾ ਨਾਮ ਜਪੋ।",
+      "english_meaning": "O brother, chant the Lord's Name with focused attention."
+    },
+    {
+      "id": 113,
+      "punjabi_line1": "ਰਾਮ ਨਾਮੁ ਉਰ ਧਾਰਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੇ ਨਾਮ ਨੂੰ ਹਿਰਦੇ ਵਿੱਚ ਵਸਾਓ।",
+      "english_meaning": "Enshrine the Lord's Name within your heart."
+    },
+    {
+      "id": 114,
+      "punjabi_line1": "ਹਰਿ ਹਰਿ ਨਾਮੁ ਅੰਤਰਿ ਵਸਾਇਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਅੰਦਰ ਵਸਾ ਲਿਆ।",
+      "english_meaning": "The Lord's Naam has been enshrined within."
+    },
+    {
+      "id": 115,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਨਾਮੁ ਜਪਹੁ ਮੇਰੇ ਭਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਭਾਈ, ਗੁਰੂ ਦੇ ਸਨਮੁਖ ਹੋ ਕੇ ਨਾਮ ਜਪੋ।",
+      "english_meaning": "O brother, chant the Naam while walking in the Guru's way."
+    },
+    {
+      "id": 116,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਨਾਮੁ ਧਿਆਇ ਮਨ ਮੇਰੇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਮੇਰੇ ਮਨ, ਗੁਰਮੁਖ ਬਣ ਕੇ ਨਾਮ ਦਾ ਧਿਆਨ ਕਰ।",
+      "english_meaning": "O my mind, become Gurmukh and meditate upon the Naam."
+    },
+    {
+      "id": 117,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਨਾਮੁ ਸਦਾ ਸੁਖੁ ਪਾਏ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰਮੁਖ ਮਨੁੱਖ ਨਾਮ ਰਾਹੀਂ ਸਦਾ ਆਤਮਕ ਸੁਖ ਪਾਉਂਦਾ ਹੈ।",
+      "english_meaning": "The Gurmukh finds lasting spiritual peace through the Naam."
+    },
+    {
+      "id": 118,
+      "punjabi_line1": "ਮਨਮੁਖਿ ਅੰਧਾ ਅੰਧੁ ਕਮਾਏ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਮਨਮੁਖ ਮਨੁੱਖ ਅਗਿਆਨਤਾ ਵਿੱਚ ਅੰਨ੍ਹਾ ਹੋ ਕੇ ਗਲਤ ਕਰਮ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "The self-willed person acts blindly in ignorance."
+    },
+    {
+      "id": 119,
+      "punjabi_line1": "ਮਨਮੁਖਿ ਮੋਹੁ ਗੁਬਾਰੁ ਹੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਮਨਮੁਖਤਾ ਮੋਹ ਅਤੇ ਅਗਿਆਨਤਾ ਦਾ ਹਨੇਰਾ ਹੈ।",
+      "english_meaning": "Self-willed living is darkness caused by attachment and ignorance."
+    },
+    {
+      "id": 120,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਗਿਆਨੁ ਪਰਗਟੁ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੇ ਸਨਮੁਖ ਹੋਣ ਨਾਲ ਆਤਮਕ ਗਿਆਨ ਦਾ ਚਾਨਣ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Walking in the Guru's way brings the light of spiritual wisdom."
+    },
+    {
+      "id": 121,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਸਚੁ ਕਮਾਵੈ ਕੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰਮੁਖ ਮਨੁੱਖ ਸੱਚ ਨੂੰ ਆਪਣੇ ਜੀਵਨ ਵਿੱਚ ਕਮਾਉਂਦਾ ਹੈ।",
+      "english_meaning": "The Gurmukh lives and practices truth."
+    },
+    {
+      "id": 122,
+      "punjabi_line1": "ਸਚੁ ਸਚਾ ਸਭੁ ਕੋਇ ਕਹੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਾਰੇ ਲੋਕ ਸੱਚ ਦੀ ਗੱਲ ਕਰਦੇ ਹਨ।",
+      "english_meaning": "Everyone speaks of truth."
+    },
+    {
+      "id": 123,
+      "punjabi_line1": "ਸਚੁ ਕਮਾਏ ਤਾ ਸਚੁ ਲਹੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਸੱਚ ਨੂੰ ਜੀਵਨ ਵਿੱਚ ਕਮਾਉਂਦਾ ਹੈ, ਉਹੀ ਸੱਚ ਦੀ ਪ੍ਰਾਪਤੀ ਕਰਦਾ ਹੈ।",
+      "english_meaning": "One who practices truth attains truth."
+    },
+    {
+      "id": 124,
+      "punjabi_line1": "ਸਚੁ ਸਬਦੁ ਵੀਚਾਰਿ ਮਨਿ ਵਸਾਈਐ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚੇ ਗੁਰੂ-ਸ਼ਬਦ ਦਾ ਵਿਚਾਰ ਕਰਕੇ ਉਸ ਨੂੰ ਮਨ ਵਿੱਚ ਵਸਾਉਣਾ ਚਾਹੀਦਾ ਹੈ।",
+      "english_meaning": "Reflect upon the True Word and enshrine it within the mind."
+    },
+    {
+      "id": 125,
+      "punjabi_line1": "ਸਚੁ ਤਾ ਪਰੁ ਜਾਣੀਐ ਜਾ ਰਿਦੈ ਸਚਾ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚ ਦੀ ਅਸਲ ਪਛਾਣ ਤਦ ਹੁੰਦੀ ਹੈ ਜਦੋਂ ਹਿਰਦਾ ਆਪ ਸੱਚਾ ਹੋ ਜਾਵੇ।",
+      "english_meaning": "Truth is truly known when the heart itself becomes truthful."
+    },
+    {
+      "id": 126,
+      "punjabi_line1": "ਸਚੁ ਸਭਨਾ ਹੋਇ ਦਾਰੂ ਪਾਪ ਕਢੈ ਧੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚ ਜੀਵਨ ਲਈ ਦਵਾਈ ਵਰਗਾ ਹੈ ਜੋ ਪਾਪ-ਵਿਕਾਰਾਂ ਨੂੰ ਧੋ ਦਿੰਦਾ ਹੈ।",
+      "english_meaning": "Truth is like medicine for life; it washes away sins and impurities."
+    },
+    {
+      "id": 127,
+      "punjabi_line1": "ਸਚੁ ਸਿਰਿ ਸਚਾ ਨਾਇ ਭਾਖਿਆ ਭਾਉ ਅਪਾਰੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚਾ ਨਾਮ ਅਤੇ ਅਪਾਰ ਪ੍ਰੇਮ ਹੀ ਆਤਮਕ ਜੀਵਨ ਦੀ ਉੱਚੀ ਪਛਾਣ ਹਨ।",
+      "english_meaning": "The True Naam and boundless love are the highest signs of spiritual life."
+    },
+    {
+      "id": 128,
+      "punjabi_line1": "ਜਿਨਾ ਸਤਿਗੁਰੁ ਭੇਟਿਆ ਤਿਨਾ ਭਉ ਗਿਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਨ੍ਹਾਂ ਨੂੰ ਸਤਿਗੁਰੂ ਮਿਲ ਪਿਆ, ਉਨ੍ਹਾਂ ਦਾ ਡਰ ਦੂਰ ਹੋ ਗਿਆ।",
+      "english_meaning": "Those who meet the True Guru become free from fear."
+    },
+    {
+      "id": 129,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਸਦਾ ਸਲਾਹੀਐ ਸਚੇ ਕਉ ਬਲਿਹਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰਮੁਖ ਬਣ ਕੇ ਸਦਾ ਸੱਚੇ ਪ੍ਰਭੂ ਦੀ ਸਿਫ਼ਤ ਕਰਨੀ ਅਤੇ ਉਸ ਤੋਂ ਕੁਰਬਾਨ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ।",
+      "english_meaning": "As Gurmukh, continually praise the True Lord and offer yourself in devotion."
+    },
+    {
+      "id": 130,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਧਿਆਇ ਹਰਿ ਨਾਮੁ ਧਿਆਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਵਾਰ-ਵਾਰ ਹਰੀ ਦੇ ਨਾਮ ਦਾ ਧਿਆਨ ਕਰ।",
+      "english_meaning": "Meditate upon the Lord's Naam again and again."
+    },
+    {
+      "id": 131,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਤੇਰੀ ਸਭੁ ਚਿੰਤਾ ਜਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਸਿਮਰਨ ਨਾਲ ਮਨ ਦੀ ਚਿੰਤਾ ਘਟਦੀ ਹੈ।",
+      "english_meaning": "Through Naam remembrance, the mind's worries are diminished."
+    },
+    {
+      "id": 132,
+      "punjabi_line1": "ਚਿੰਤਾ ਤਾ ਕੀ ਕੀਜੀਐ ਜੋ ਅਨਹੋਨੀ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਚਿੰਤਾ ਉਸ ਗੱਲ ਦੀ ਕਰੋ ਜੋ ਅਸੰਭਵ ਹੋਵੇ; ਪ੍ਰਭੂ ਦੀ ਰਜ਼ਾ ਵਿੱਚ ਰਹਿਣਾ ਸਿੱਖੋ।",
+      "english_meaning": "Worry only about what would be impossible; learn to live in the Divine Will."
+    },
+    {
+      "id": 133,
+      "punjabi_line1": "ਜੋ ਕਿਛੁ ਕਰਣਾ ਸੋ ਕਰਿ ਰਹਿਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਕੁਝ ਹੋ ਰਿਹਾ ਹੈ, ਉਹ ਪ੍ਰਭੂ ਦੀ ਵਿਵਸਥਾ ਅਨੁਸਾਰ ਹੋ ਰਿਹਾ ਹੈ।",
+      "english_meaning": "Whatever is happening is taking place according to the Divine order."
+    },
+    {
+      "id": 134,
+      "punjabi_line1": "ਤੇਰਾ ਕੀਤਾ ਮੀਠਾ ਲਾਗੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਜੋ ਕੁਝ ਤੂੰ ਕਰਦਾ ਹੈਂ ਉਹ ਮੈਨੂੰ ਮਿੱਠਾ ਅਤੇ ਕਬੂਲ ਹੈ।",
+      "english_meaning": "O Lord, whatever You do is sweet and acceptable to me."
+    },
+    {
+      "id": 135,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਪਦਾਰਥੁ ਸਦਾ ਸੁਖਦਾਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਸਭ ਤੋਂ ਕੀਮਤੀ ਆਤਮਕ ਧਨ ਹੈ ਅਤੇ ਸਦਾ ਸੁਖ ਦਿੰਦਾ ਹੈ।",
+      "english_meaning": "The Lord's Naam is the most precious spiritual wealth and always brings peace."
+    },
+    {
+      "id": 136,
+      "punjabi_line1": "ਦੁਖੁ ਦਰਦੁ ਭ੍ਰਮੁ ਭਉ ਗਇਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੀ ਯਾਦ ਨਾਲ ਦੁੱਖ, ਦਰਦ, ਭਰਮ ਅਤੇ ਡਰ ਦੂਰ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "Through remembrance of the Lord, suffering, pain, confusion and fear depart."
+    },
+    {
+      "id": 137,
+      "punjabi_line1": "ਸਹਜਿ ਸਮਾਧਿ ਹਰਿ ਨਾਮੁ ਧਿਆਇਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਹਜ ਦੀ ਅਵਸਥਾ ਵਿੱਚ ਟਿਕ ਕੇ ਹਰੀ ਦੇ ਨਾਮ ਦਾ ਧਿਆਨ ਕੀਤਾ।",
+      "english_meaning": "One meditates upon the Lord's Naam while remaining established in natural spiritual serenity."
+    },
+    {
+      "id": 138,
+      "punjabi_line1": "ਮਨੁ ਤਨੁ ਨਿਰਮਲੁ ਹੋਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਅਤੇ ਗੁਰੂ ਦੀ ਕਿਰਪਾ ਨਾਲ ਮਨ ਅਤੇ ਜੀਵਨ ਪਵਿੱਤਰ ਹੋਏ।",
+      "english_meaning": "The mind and life become pure through Naam and the Guru's grace."
+    },
+    {
+      "id": 139,
+      "punjabi_line1": "ਸਭੁ ਕਿਛੁ ਘਰ ਮਹਿ ਬਾਹਰਿ ਨਾਹੀ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਸ ਸੱਚ ਦੀ ਖੋਜ ਬਾਹਰ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ, ਉਹ ਅੰਦਰ ਹੀ ਮੌਜੂਦ ਹੈ।",
+      "english_meaning": "Everything that is sought outside is already present within."
+    },
+    {
+      "id": 140,
+      "punjabi_line1": "ਸਚੁ ਖੋਜਿ ਸਚੁ ਘਰਿ ਪਾਵੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਸੱਚ ਦੀ ਖੋਜ ਕਰਦਾ ਹੈ, ਉਹ ਆਪਣੇ ਅੰਦਰ ਹੀ ਸੱਚ ਨੂੰ ਪਾ ਲੈਂਦਾ ਹੈ।",
+      "english_meaning": "One who searches for Truth finds it within the inner home."
+    },
+    {
+      "id": 141,
+      "punjabi_line1": "ਮਨੁ ਮਾਰੇ ਧੰਨੁ ਸੋ ਜਨੁ ਪੂਰਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਆਪਣੇ ਮਨ ਦੇ ਵਿਕਾਰਾਂ ਨੂੰ ਜਿੱਤ ਲੈਂਦਾ ਹੈ, ਉਹ ਧੰਨ ਅਤੇ ਪੂਰਨ ਜੀਵਨ ਵਾਲਾ ਹੈ।",
+      "english_meaning": "Blessed and complete is the person who conquers the mind's vices."
+    },
+    {
+      "id": 142,
+      "punjabi_line1": "ਆਪੁ ਗਵਾਇ ਸਚਿ ਲਿਵ ਲਾਗੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਉਮੈ ਨੂੰ ਤਿਆਗ ਕੇ ਸੱਚੇ ਪ੍ਰਭੂ ਨਾਲ ਪ੍ਰੇਮ ਜੋੜਿਆ ਜਾਂਦਾ ਹੈ।",
+      "english_meaning": "By abandoning ego, one develops loving devotion to the True Lord."
+    },
+    {
+      "id": 143,
+      "punjabi_line1": "ਹਉਮੈ ਦੀਰਘ ਰੋਗੁ ਹੈ ਦਾਰੂ ਭੀ ਇਸੁ ਮਾਹਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਉਮੈ ਲੰਮਾ ਚੱਲਣ ਵਾਲਾ ਰੋਗ ਹੈ, ਪਰ ਇਸ ਦੀ ਦਵਾਈ ਵੀ ਇਸੇ ਅੰਦਰ ਹੈ—ਗੁਰ-ਸ਼ਬਦ ਅਤੇ ਸੱਚੀ ਸਮਝ।",
+      "english_meaning": "Ego is a deep and lasting disease, yet its remedy is found within it through the Guru's Word and true understanding."
+    },
+    {
+      "id": 144,
+      "punjabi_line1": "ਗੁਰ ਕੈ ਸਬਦਿ ਹਉਮੈ ਮਾਰੀਐ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰੂ ਦੇ ਸ਼ਬਦ ਰਾਹੀਂ ਹਉਮੈ ਨੂੰ ਜਿੱਤਿਆ ਜਾ ਸਕਦਾ ਹੈ।",
+      "english_meaning": "Through the Guru's Word, ego can be conquered."
+    },
+    {
+      "id": 145,
+      "punjabi_line1": "ਹਉਮੈ ਨਾਵੈ ਨਾਲਿ ਵਿਰੋਧੁ ਹੈ ਦੁਇ ਨ ਵਸਹਿ ਇਕ ਠਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਉਮੈ ਅਤੇ ਨਾਮ ਇਕੱਠੇ ਨਹੀਂ ਟਿਕਦੇ; ਨਾਮ ਲਈ ਹਉਮੈ ਛੱਡਣੀ ਪੈਂਦੀ ਹੈ।",
+      "english_meaning": "Ego and the Naam cannot dwell together; ego must be relinquished for the Naam."
+    },
+    {
+      "id": 146,
+      "punjabi_line1": "ਨਾਮੁ ਧਿਆਇ ਹਉਮੈ ਬਿਨਸੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਦੇ ਧਿਆਨ ਨਾਲ ਹਉਮੈ ਦਾ ਨਾਸ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Meditating on the Naam destroys ego."
+    },
+    {
+      "id": 147,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਧਿਆਇ ਸੁਖੁ ਪਾਵੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਧਿਆਨ ਕਰਨ ਨਾਲ ਆਤਮਕ ਸੁਖ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Meditating on the Lord's Naam brings spiritual peace."
+    },
+    {
+      "id": 148,
+      "punjabi_line1": "ਕਰਮੀ ਆਵੈ ਕਪੜਾ ਨਦਰੀ ਮੋਖੁ ਦੁਆਰੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੀਵਨ ਦੀ ਪ੍ਰਾਪਤੀ ਕਰਮਾਂ ਨਾਲ ਹੁੰਦੀ ਹੈ, ਪਰ ਮੁਕਤੀ ਦਾ ਦਰਵਾਜ਼ਾ ਪ੍ਰਭੂ ਦੀ ਕਿਰਪਾ ਨਾਲ ਖੁਲ੍ਹਦਾ ਹੈ।",
+      "english_meaning": "Human life is received through one's actions, but the door of liberation opens through Divine grace."
+    },
+    {
+      "id": 149,
+      "punjabi_line1": "ਨਾਨਕ ਏਵੈ ਜਾਣੀਐ ਸਭੁ ਆਪੇ ਸਚਿਆਰੁ ॥੪॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਕਹਿੰਦਾ ਹੈ ਕਿ ਸਾਰੀ ਸ੍ਰਿਸ਼ਟੀ ਦਾ ਅਸਲ ਮਾਲਕ ਆਪ ਸੱਚਾ ਪ੍ਰਭੂ ਹੀ ਹੈ।",
+      "english_meaning": "Nanak says: The True Lord Himself is the real Master of all creation."
+    },
+    {
+      "id": 150,
+      "punjabi_line1": "ਪਵਣੁ ਗੁਰੂ ਪਾਣੀ ਪਿਤਾ ਮਾਤਾ ਧਰਤਿ ਮਹਤੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਵਾ ਨੂੰ ਗੁਰੂ, ਪਾਣੀ ਨੂੰ ਪਿਤਾ ਅਤੇ ਵਿਸ਼ਾਲ ਧਰਤੀ ਨੂੰ ਮਾਤਾ ਸਮਾਨ ਆਦਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
+      "english_meaning": "The air is revered as Guru, water as Father, and the great earth as Mother."
+    },
+    {
+      "id": 151,
+      "punjabi_line1": "ਦਿਨੁ ਰਾਤਿ ਦੁਇ ਦਾਈ ਦਾਇਆ ਖੇਲੈ ਸਗਲ ਜਗਤੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਦਿਨ ਅਤੇ ਰਾਤ ਜਿਵੇਂ ਦੋ ਸਹਾਇਕ ਹਨ ਅਤੇ ਸਾਰਾ ਜਗਤ ਜੀਵਨ ਦੀ ਖੇਡ ਵਿੱਚ ਰੁੱਝਿਆ ਹੈ।",
+      "english_meaning": "Day and night are like two attendants, while the whole world participates in the play of life."
+    },
+    {
+      "id": 152,
+      "punjabi_line1": "ਜੀਅ ਦਾਤਿ ਤੂੰ ਅੰਤੁ ਨ ਜਾਣਿਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਤੂੰ ਜੀਵਨ ਦੀ ਦਾਤ ਦਿੰਦਾ ਹੈਂ ਅਤੇ ਤੇਰਾ ਅੰਤ ਕੋਈ ਨਹੀਂ ਜਾਣ ਸਕਦਾ।",
+      "english_meaning": "O Lord, You give the gift of life, and no one can know Your limits."
+    },
+    {
+      "id": 153,
+      "punjabi_line1": "ਤੇਰਾ ਅੰਤੁ ਨ ਜਾਣਾ ਲਖ ਵਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਲੱਖਾਂ ਯਤਨਾਂ ਨਾਲ ਵੀ ਤੇਰਾ ਅੰਤ ਨਹੀਂ ਜਾਣਿਆ ਜਾ ਸਕਦਾ।",
+      "english_meaning": "O Lord, even after countless efforts, Your limits cannot be known."
+    },
+    {
+      "id": 154,
+      "punjabi_line1": "ਨਾਨਕ ਨਾਮੁ ਚੜ੍ਹਦੀ ਕਲਾ ਤੇਰੇ ਭਾਣੇ ਸਰਬੱਤ ਦਾ ਭਲਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਨਾਲ ਆਤਮਕ ਉੱਚਤਾ ਵਿੱਚ ਰਹਿ ਕੇ ਪ੍ਰਭੂ ਦੀ ਰਜ਼ਾ ਵਿੱਚ ਸਭ ਦੇ ਭਲੇ ਦੀ ਭਾਵਨਾ ਰੱਖਣੀ ਚਾਹੀਦੀ ਹੈ।",
+      "english_meaning": "Through the Naam, remain spiritually uplifted, accept the Divine Will, and wish for the welfare of all."
+    },
+    {
+      "id": 155,
+      "punjabi_line1": "ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿ ਜੀਉ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਇਹ ਨਾਮ-ਸਿਮਰਨ ਵਾਲੀ ਭਾਵਨਾ ਪ੍ਰਭੂ ਦੀ ਵਡਿਆਈ ਅਤੇ ਅਚਰਜ ਨੂੰ ਪ੍ਰਗਟ ਕਰਦੀ ਹੈ।",
+      "english_meaning": "This expression of Naam remembrance conveys praise, wonder and reverence for the Lord."
+    },
+    {
+      "id": 156,
+      "punjabi_line1": "ਰਾਮੁ ਗੁਸਾਈਂ ਜੀਅ ਕਾ ਦਾਤਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਸਾਰੇ ਜੀਵਾਂ ਨੂੰ ਜੀਵਨ ਦੇਣ ਵਾਲਾ ਹੈ।",
+      "english_meaning": "The Lord is the Giver of life to all beings."
+    },
+    {
+      "id": 157,
+      "punjabi_line1": "ਤਿਸੁ ਬਿਨੁ ਅਵਰੁ ਨ ਕੋਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਉਸ ਪ੍ਰਭੂ ਤੋਂ ਬਿਨਾ ਅਸਲ ਆਸਰਾ ਹੋਰ ਕੋਈ ਨਹੀਂ।",
+      "english_meaning": "Without that Lord, there is no other ultimate support."
+    },
+    {
+      "id": 158,
+      "punjabi_line1": "ਤੂੰ ਮੇਰਾ ਪ੍ਰਾਣ ਅਧਾਰੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਤੂੰ ਹੀ ਮੇਰੇ ਪ੍ਰਾਣਾਂ ਦਾ ਆਸਰਾ ਹੈਂ।",
+      "english_meaning": "O Lord, You alone are the support of my life and breath."
+    },
+    {
+      "id": 159,
+      "punjabi_line1": "ਹਰਿ ਬਿਨੁ ਦੂਜਾ ਅਵਰੁ ਨ ਕੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਤੋਂ ਬਿਨਾ ਕੋਈ ਹੋਰ ਅੰਤਿਮ ਸਹਾਰਾ ਨਹੀਂ।",
+      "english_meaning": "Without the Lord, there is no other ultimate support."
+    },
+    {
+      "id": 160,
+      "punjabi_line1": "ਮੇਰੇ ਸਾਹਿਬਾ ਤੇਰੇ ਚੋਜ ਵਿਡਾਣਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਮੇਰੇ ਸਾਹਿਬ, ਤੇਰੀਆਂ ਲੀਲਾਵਾਂ ਅਦਭੁਤ ਹਨ।",
+      "english_meaning": "O my Lord, Your divine play and ways are wondrous."
+    },
+    {
+      "id": 161,
+      "punjabi_line1": "ਤੂੰ ਕਰਤਾ ਸਚਿਆਰੁ ਮੈਡਾ ਸਾਂਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਤੂੰ ਸੱਚਾ ਕਰਤਾ ਅਤੇ ਮੇਰਾ ਮਾਲਕ ਹੈਂ।",
+      "english_meaning": "You are the True Creator and my Master."
+    },
+    {
+      "id": 162,
+      "punjabi_line1": "ਜੋ ਤੁਧੁ ਭਾਵੈ ਸਾਈ ਭਲੀ ਕਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਕੁਝ ਤੈਨੂੰ ਭਾਉਂਦਾ ਹੈ, ਉਹੀ ਅਸਲ ਵਿੱਚ ਭਲਾ ਹੈ।",
+      "english_meaning": "Whatever pleases You is ultimately the right and good way."
+    },
+    {
+      "id": 163,
+      "punjabi_line1": "ਤੂ ਸਦਾ ਸਲਾਮਤਿ ਨਿਰੰਕਾਰ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਨਿਰੰਕਾਰ, ਤੂੰ ਸਦਾ ਅਟੱਲ ਅਤੇ ਕਾਇਮ ਹੈਂ।",
+      "english_meaning": "O Formless One, You are forever secure, eternal and unchanging."
+    },
+    {
+      "id": 164,
+      "punjabi_line1": "ਨਾਨਕ ਨਾਮੁ ਮਿਲੈ ਤਾਂ ਜੀਵਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਕਹਿੰਦਾ ਹੈ, ਨਾਮ ਦੀ ਪ੍ਰਾਪਤੀ ਨਾਲ ਹੀ ਮੇਰਾ ਅਸਲ ਆਤਮਕ ਜੀਵਨ ਹੈ।",
+      "english_meaning": "Nanak says: I truly live when I receive the Naam."
+    },
+    {
+      "id": 165,
+      "punjabi_line1": "ਨਾਮੁ ਤੇਰਾ ਮੇਰੇ ਪ੍ਰਾਣ ਅਧਾਰੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਤੇਰਾ ਨਾਮ ਮੇਰੇ ਪ੍ਰਾਣਾਂ ਦਾ ਆਸਰਾ ਹੈ।",
+      "english_meaning": "Your Naam is the support of my very life."
+    },
+    {
+      "id": 166,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਮੇਰਾ ਸਦਾ ਸਦਾ ਸਾਥੀ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਹੀ ਸਦਾ ਮੇਰਾ ਸੱਚਾ ਸਾਥੀ ਹੈ।",
+      "english_meaning": "The Lord's Naam alone is forever my true companion."
+    },
+    {
+      "id": 167,
+      "punjabi_line1": "ਜਨ ਕੀ ਪੈਜ ਰਖੀ ਗੋਬਿੰਦ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੋਬਿੰਦ ਆਪਣੇ ਸੇਵਕਾਂ ਦੀ ਲਾਜ ਰੱਖਦਾ ਹੈ।",
+      "english_meaning": "Govind protects and preserves the honor of His servants."
+    },
+    {
+      "id": 168,
+      "punjabi_line1": "ਪ੍ਰਭ ਕੈ ਸਿਮਰਨਿ ਕਾਜ ਸਗਲ ਪੂਰੇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੇ ਸਿਮਰਨ ਨਾਲ ਜੀਵਨ ਦੇ ਆਤਮਕ ਕਾਰਜ ਸਫਲ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "Remembering the Lord brings spiritual fulfillment to life's essential purposes."
+    },
+    {
+      "id": 169,
+      "punjabi_line1": "ਪ੍ਰਭ ਕੈ ਸਿਮਰਨਿ ਕਦੇ ਨ ਝੂਰੇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਨੂੰ ਯਾਦ ਕਰਨ ਵਾਲਾ ਮਨੁੱਖ ਅੰਦਰੋਂ ਪਛਤਾਵੇ ਅਤੇ ਪਛੋਤੇ ਵਿੱਚ ਨਹੀਂ ਡੁੱਬਦਾ।",
+      "english_meaning": "One who remembers the Lord does not sink into inner regret."
+    },
+    {
+      "id": 170,
+      "punjabi_line1": "ਪ੍ਰਭ ਕੈ ਸਿਮਰਨਿ ਅਨਦਿਨੁ ਜਾਗੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦਾ ਸਿਮਰਨ ਮਨੁੱਖ ਨੂੰ ਆਤਮਕ ਜਾਗਰੂਕਤਾ ਵਿੱਚ ਰੱਖਦਾ ਹੈ।",
+      "english_meaning": "Remembering the Lord keeps a person spiritually awake day and night."
+    },
+    {
+      "id": 171,
+      "punjabi_line1": "ਪ੍ਰਭ ਕੈ ਸਿਮਰਨਿ ਸਦਾ ਸੁਖੁ ਪਾਵੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੇ ਸਿਮਰਨ ਨਾਲ ਸਦਾ ਆਤਮਕ ਸੁਖ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Remembering the Lord brings lasting spiritual peace."
+    },
+    {
+      "id": 172,
+      "punjabi_line1": "ਪ੍ਰਭ ਕੈ ਸਿਮਰਨਿ ਸਭੁ ਕਿਛੁ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੀ ਯਾਦ ਨਾਲ ਜੀਵਨ ਦੀ ਦ੍ਰਿਸ਼ਟੀ ਬਦਲਦੀ ਹੈ ਅਤੇ ਆਤਮਕ ਸਹਾਰਾ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Through remembrance of the Lord, life is understood as resting in Divine support."
+    },
+    {
+      "id": 173,
+      "punjabi_line1": "ਪ੍ਰਭ ਕੈ ਸਿਮਰਨਿ ਅਵਰੁ ਨ ਕੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਦੇ ਸਿਮਰਨ ਵਿੱਚ ਮਨੁੱਖ ਨੂੰ ਅਸਲ ਆਸਰਾ ਹੋਰ ਕਿਸੇ ਵਿੱਚ ਨਹੀਂ ਲੱਭਦਾ।",
+      "english_meaning": "In remembrance of the Lord, one finds no other ultimate support."
+    },
+    {
+      "id": 174,
+      "punjabi_line1": "ਸਿਮਰਿ ਸਿਮਰਿ ਸੁਖੁ ਪਾਵਹੁ ਸਾਚਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚੇ ਪ੍ਰਭੂ ਨੂੰ ਵਾਰ-ਵਾਰ ਸਿਮਰ ਕੇ ਸੱਚਾ ਆਤਮਕ ਸੁਖ ਪਾਓ।",
+      "english_meaning": "Remember the True Lord again and again and attain true spiritual peace."
+    },
+    {
+      "id": 175,
+      "punjabi_line1": "ਹਰਿ ਹਰਿ ਨਾਮੁ ਜਪਤ ਸੁਖੁ ਹੋਈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਜਪਣ ਨਾਲ ਆਤਮਕ ਸੁਖ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Lord's Naam brings spiritual peace."
+    },
+    {
+      "id": 176,
+      "punjabi_line1": "ਕਰਿ ਕਿਰਪਾ ਪ੍ਰਭ ਅਪੁਨਾ ਨਾਮੁ ਦੇਹੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਪ੍ਰਭੂ, ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਨਾਮ ਬਖ਼ਸ਼।",
+      "english_meaning": "O Lord, in Your grace, please bless me with Your Naam."
+    },
+    {
+      "id": 177,
+      "punjabi_line1": "ਨਾਨਕ ਨਾਮੁ ਜਪਤ ਸੁਖੁ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਕਹਿੰਦਾ ਹੈ, ਨਾਮ ਜਪਣ ਨਾਲ ਆਤਮਕ ਸੁਖ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Nanak says: Chanting the Naam brings spiritual peace."
+    },
+    {
+      "id": 178,
+      "punjabi_line1": "ਮਿਠਤੁ ਨੀਵੀ ਨਾਨਕਾ ਗੁਣ ਚੰਗਿਆਈਆ ਤਤੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਿਮਰਤਾ ਮਿੱਠਾਸ ਦਾ ਮੂਲ ਹੈ ਅਤੇ ਇਹੀ ਅਸਲ ਚੰਗਿਆਈਆਂ ਦਾ ਸਾਰ ਹੈ।",
+      "english_meaning": "Humility is sweetness, and it is the essence of true goodness."
+    },
+    {
+      "id": 179,
+      "punjabi_line1": "ਨਾਨਕ ਨਾਮੁ ਜਹਾਜੁ ਹੈ ਚੜੇ ਸੋ ਉਤਰੇ ਪਾਰਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਨੂੰ ਜੀਵਨ ਦੀ ਨੌਕਾ ਸਮਝੋ; ਜੋ ਇਸ ਨਾਲ ਜੁੜਦਾ ਹੈ ਉਹ ਸੰਸਾਰਕ ਭਵਸਾਗਰ ਤੋਂ ਪਾਰ ਲੰਘਦਾ ਹੈ।",
+      "english_meaning": "Nanak says the Naam is like a boat; whoever boards it crosses over the world-ocean."
+    },
+    {
+      "id": 180,
+      "punjabi_line1": "ਸਤਿਗੁਰ ਕੀ ਸੇਵਾ ਸਫਲ ਹੈ ਜੇ ਕੋ ਕਰੇ ਚਿਤੁ ਲਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਤਿਗੁਰੂ ਦੀ ਸੇਵਾ ਮਨ ਲਾ ਕੇ ਕਰਨ ਨਾਲ ਜੀਵਨ ਸਫਲ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Serving the True Guru with focused devotion makes life fruitful."
+    },
+    {
+      "id": 181,
+      "punjabi_line1": "ਸੇਵਾ ਕਰਤ ਹੋਇ ਨਿਹਕਾਮੀ ਤਿਸ ਕਉ ਹੋਤ ਪਰਾਪਤਿ ਸੁਆਮੀ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਨਿਸ਼ਕਾਮ ਸੇਵਾ ਕਰਦਾ ਹੈ, ਉਹ ਪ੍ਰਭੂ ਦੀ ਪ੍ਰਾਪਤੀ ਵੱਲ ਵਧਦਾ ਹੈ।",
+      "english_meaning": "One who performs selfless service moves toward realization of the Lord."
+    },
+    {
+      "id": 182,
+      "punjabi_line1": "ਜਿਨੀ ਨਾਮੁ ਧਿਆਇਆ ਗਏ ਮਸਕਤਿ ਘਾਲਿ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਿਨ੍ਹਾਂ ਨੇ ਨਾਮ ਸਿਮਰਿਆ, ਉਨ੍ਹਾਂ ਦੀ ਜੀਵਨ-ਮਿਹਨਤ ਆਤਮਕ ਤੌਰ ਤੇ ਸਫਲ ਹੋਈ।",
+      "english_meaning": "Those who meditated upon the Naam completed their life's spiritual labor."
+    },
+    {
+      "id": 183,
+      "punjabi_line1": "ਨਾਨਕ ਤੇ ਮੁਖ ਉਜਲੇ ਕੇਤੀ ਛੁਟੀ ਨਾਲਿ ॥੧॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਨਕ ਕਹਿੰਦਾ ਹੈ, ਅਜਿਹੇ ਜਨਾਂ ਦੇ ਚਿਹਰੇ ਆਤਮਕ ਚਾਨਣ ਨਾਲ ਰੌਸ਼ਨ ਹੁੰਦੇ ਹਨ ਅਤੇ ਉਨ੍ਹਾਂ ਨਾਲ ਹੋਰ ਵੀ ਲਾਭ ਪਾਉਂਦੇ ਹਨ।",
+      "english_meaning": "Nanak says their faces shine with spiritual radiance, and many others are uplifted through them."
+    },
+    {
+      "id": 184,
+      "punjabi_line1": "ਵਡਾ ਸਾਹਿਬੁ ਵਡੀ ਨਾਈ ਕੀਤਾ ਜਾ ਕਾ ਹੋਵੈ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਪ੍ਰਭੂ ਮਹਾਨ ਹੈ ਅਤੇ ਉਸ ਦੀ ਮਹਿਮਾ ਮਹਾਨ ਹੈ; ਸਭ ਕੁਝ ਉਸ ਦੀ ਰਚਨਾ ਹੈ।",
+      "english_meaning": "The Lord is great and His glory is great; everything is brought forth by Him."
+    },
+    {
+      "id": 185,
+      "punjabi_line1": "ਕਰਿ ਕਰਿ ਵੇਖੈ ਸਿਰਜਣਹਾਰੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸਿਰਜਣਹਾਰ ਰਚਨਾ ਕਰਕੇ ਉਸ ਨੂੰ ਆਪਣੀ ਨਿਗਾਹ ਨਾਲ ਵੇਖਦਾ ਅਤੇ ਸੰਭਾਲਦਾ ਹੈ।",
+      "english_meaning": "The Creator creates, observes and sustains His creation."
+    },
+    {
+      "id": 186,
+      "punjabi_line1": "ਨਾਨਕ ਹੁਕਮੈ ਜੇ ਬੁਝੈ ਤ ਹਉਮੈ ਕਹੈ ਨ ਕੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਪ੍ਰਭੂ ਦੇ ਹੁਕਮ ਨੂੰ ਸਮਝਦਾ ਹੈ, ਉਸ ਵਿੱਚ ਹਉਮੈ ਨਹੀਂ ਰਹਿੰਦੀ।",
+      "english_meaning": "One who understands the Divine Will no longer acts from ego."
+    },
+    {
+      "id": 187,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਨਾਮੁ ਜਪਹੁ ਜੀਅ ਮੇਰੇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹੇ ਮੇਰੇ ਜੀਵਨ, ਗੁਰੂ ਦੇ ਸਨਮੁਖ ਹੋ ਕੇ ਨਾਮ ਜਪ।",
+      "english_meaning": "O my soul, chant the Naam while walking in the Guru's way."
+    },
+    {
+      "id": 188,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਹੁ ਤਾ ਸੁਖੁ ਪਾਵਹੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਜਪਣ ਨਾਲ ਆਤਮਕ ਸੁਖ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Chant the Naam and you will attain spiritual peace."
+    },
+    {
+      "id": 189,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਜਪਤ ਮਨੁ ਨਿਰਮਲੁ ਹੋਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਜਪਣ ਨਾਲ ਮਨ ਪਵਿੱਤਰ ਹੋ ਜਾਂਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Lord's Naam makes the mind pure."
+    },
+    {
+      "id": 190,
+      "punjabi_line1": "ਸਚੁ ਕਮਾਵੈ ਸੋ ਸਚਾ ਹੋਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜੋ ਸੱਚ ਨੂੰ ਜੀਵਨ ਵਿੱਚ ਕਮਾਉਂਦਾ ਹੈ, ਉਹ ਸੱਚਾ ਮਨੁੱਖ ਬਣਦਾ ਹੈ।",
+      "english_meaning": "One who practices truth becomes truthful."
+    },
+    {
+      "id": 191,
+      "punjabi_line1": "ਸਚੁ ਧਿਆਇ ਸਚੇ ਸੁਖੁ ਪਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚੇ ਪ੍ਰਭੂ ਦਾ ਧਿਆਨ ਕਰਨ ਨਾਲ ਸੱਚਾ ਆਤਮਕ ਸੁਖ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "Meditating upon the True Lord brings true spiritual peace."
+    },
+    {
+      "id": 192,
+      "punjabi_line1": "ਗੁਰਮੁਖਿ ਸਚੁ ਸਦਾ ਸਲਾਹੀਐ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਗੁਰਮੁਖ ਬਣ ਕੇ ਸਦਾ ਸੱਚੇ ਪ੍ਰਭੂ ਦੀ ਸਿਫ਼ਤ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ।",
+      "english_meaning": "As Gurmukh, continually praise the True Lord."
+    },
+    {
+      "id": 193,
+      "punjabi_line1": "ਸਚੁ ਨਾਮੁ ਸਦਾ ਸੁਖਦਾਤਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਸੱਚਾ ਨਾਮ ਸਦਾ ਸੁਖ ਦੇਣ ਵਾਲਾ ਹੈ।",
+      "english_meaning": "The True Naam is forever the giver of spiritual peace."
+    },
+    {
+      "id": 194,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਜਪਤ ਸਭੁ ਰੋਗੁ ਗਵਾਇਆ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਹਰੀ ਦਾ ਨਾਮ ਜਪਣ ਨਾਲ ਮਨ ਦੇ ਵਿਕਾਰਾਂ ਰੂਪੀ ਰੋਗ ਦੂਰ ਹੁੰਦੇ ਹਨ।",
+      "english_meaning": "Chanting the Lord's Naam removes the diseases of inner vice and impurity."
+    },
+    {
+      "id": 195,
+      "punjabi_line1": "ਨਾਮੁ ਧਿਆਇ ਮਨੁ ਤਨੁ ਸੁਖੀ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਦਾ ਧਿਆਨ ਮਨ ਅਤੇ ਜੀਵਨ ਨੂੰ ਆਤਮਕ ਸੁਖ ਦਿੰਦਾ ਹੈ।",
+      "english_meaning": "Meditating on the Naam brings peace to the mind and life."
+    },
+    {
+      "id": 196,
+      "punjabi_line1": "ਹਰਿ ਨਾਮੁ ਜਪਤ ਮਨੁ ਤ੍ਰਿਪਤਾਇ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਜਪਣ ਨਾਲ ਮਨ ਦੀ ਭਟਕਣਾ ਅਤੇ ਅਤ੍ਰਿਪਤੀ ਘਟਦੀ ਹੈ।",
+      "english_meaning": "Chanting the Naam satisfies and steadies the mind."
+    },
+    {
+      "id": 197,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਦਰਗਹ ਪਤਿ ਪਾਏ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਸਿਮਰਨ ਨਾਲ ਮਨੁੱਖ ਆਤਮਕ ਦਰਗਾਹ ਵਿੱਚ ਇੱਜ਼ਤ ਪਾਉਂਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Naam brings spiritual honor before the Divine."
+    },
+    {
+      "id": 198,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਜਮੁ ਨੇੜਿ ਨ ਆਏ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਸਿਮਰਨ ਨਾਲ ਮੌਤ ਅਤੇ ਡਰ ਦਾ ਭੈ ਘਟਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Naam keeps the fear of death at a distance."
+    },
+    {
+      "id": 199,
+      "punjabi_line1": "ਨਾਮੁ ਜਪਤ ਸਭੁ ਮਿਟੈ ਅੰਧੇਰਾ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਨਾਮ ਦੇ ਚਾਨਣ ਨਾਲ ਅਗਿਆਨਤਾ ਦਾ ਹਨੇਰਾ ਦੂਰ ਹੁੰਦਾ ਹੈ।",
+      "english_meaning": "Chanting the Naam removes the darkness of ignorance."
+    },
+    {
+      "id": 200,
+      "punjabi_line1": "ਗੁਰ ਕਾ ਸਬਦੁ ਮਨਿ ਵਸੈ ਤਾ ਸਦਾ ਅਨੰਦੁ ॥",
+      "punjabi_line2": "",
+      "punjabi_meaning": "ਜਦੋਂ ਗੁਰੂ ਦਾ ਸ਼ਬਦ ਮਨ ਵਿੱਚ ਵੱਸਦਾ ਹੈ ਤਾਂ ਸਦਾ ਆਤਮਕ ਆਨੰਦ ਮਿਲਦਾ ਹੈ।",
+      "english_meaning": "When the Guru's Word dwells within the mind, there is lasting spiritual bliss."
+    }
+  ],
+  "count": 200,
+  "scripture": "Sri Guru Granth Sahib Ji",
+  "note": "English meanings are provided for all 200 entries. They are clear English renderings of the Punjabi meanings supplied in this dataset, not verbatim reproductions of a published translation."
+}

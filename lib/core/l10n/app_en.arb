@@ -135,7 +135,6 @@
   "daySun": "S",
 
   "greeting": "Sat Sri Akal ji",
-  "todayHukamnama": "Today's Hukamnama",
   "ctaStartNitnem": "Start my Nitnem",
   "ctaContinueBani": "Continue {bani}",
   "@ctaContinueBani": { "placeholders": { "bani": { "type": "String" } } },
@@ -160,17 +159,6 @@
   "helpTip3": "Reminders follow sunrise and sunset for your city, or a time you pick yourself.",
   "helpAboutLink": "About & credits",
 
-  "hukamnamaOfflineEmpty": "Hukamnama will appear when you're online",
-  "hukamnamaNotConfigured": "No Hukamnama source is set up in this build",
-  "hukamnamaNotConfiguredBody": "Hazri does not fetch the daily Hukamnama yet. When a permitted source is configured, today's Hukamnama appears here and can be shared as a card.",
-  "hukamnamaSavedOn": "Saved {date}",
-  "@hukamnamaSavedOn": { "placeholders": { "date": { "type": "String" } } },
-  "hukamnamaTitle": "Hukamnama",
-  "hukamnamaMeaningIn": "Meaning in",
-  "hukamnamaSource": "Sri Darbar Sahib, Amritsar",
-  "hukamnamaRahao": "Rahao",
-  "hukamnamaSavedOffline": "Saved for offline reading",
-  "hukamnamaReadDailyOn": "Read daily on",
 
   "nitnemTitle": "Nitnem",
   "nitnemVersionLine": "SGPC version",
@@ -411,7 +399,7 @@
   "notifActionSkipToday": "Skip today",
   "notifActionOpenCalendar": "Open calendar",
 
-  "shareCardTitle": "Today's Hukamnama",
+  "shareCardTitle": "Today's Vichar",
   "shareCardFooter": "Read daily on Hazri",
   "shareCardTruncated": "…read in Hazri",
   "shareCardPreview": "Share card preview",
@@ -437,6 +425,20 @@
 
   "actionStop": "Stop",
   "playerStillPlaying": "Still playing",
+
+  "vicharTitle": "Today's Vichar",
+  "vicharNative": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
+  "vicharSource": "Sri Guru Granth Sahib Ji",
+  "vicharExplore": "Explore",
+  "vicharShareTitle": "Share this Vichar",
+  "vicharShareBody": "Choose how to send it",
+  "vicharShareAsText": "As text",
+  "vicharShareAsImage": "As image",
+  "vicharMeaningPa": "In Punjabi",
+  "vicharMeaningEn": "In English",
+  "vicharNone": "No Vichar in this build yet",
+  "vicharDayOf": "Line {day} of {total}",
+  "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
 
   "errorGeneric": "Something went wrong.",
   "errorContentDb": "The bundled content could not be opened. Reinstalling Hazri should fix it."

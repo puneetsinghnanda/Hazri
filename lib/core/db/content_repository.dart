@@ -6,7 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/audio/domain/timings.dart';
 import '../../features/nitnem/domain/bani.dart';
 import '../../features/simran/domain/simran_track.dart';
+import '../../features/vichar/domain/vichar.dart';
 import '../settings/app_settings.dart';
+import '../time/clock.dart';
 import '../time/nanakshahi.dart';
 import 'content_db.dart';
 
@@ -156,6 +158,23 @@ class ContentRepository {
     };
   }
 
+  /// The line of Gurbani for [date], out of the whole cycle (PRD 1.11).
+  Future<Vichar?> vicharFor(DateTime date) async {
+    final count = await _db.vichars.count().getSingle();
+    if (count == 0) return null;
+    final row = await (_db.select(_db.vichars)
+          ..where((v) => v.idx.equals(VicharCycle.indexFor(date, count))))
+        .getSingleOrNull();
+    return row == null
+        ? null
+        : Vichar(
+            idx: row.idx,
+            gurmukhi: row.gurmukhi,
+            meaningPa: row.meaningPa,
+            meaningEn: row.meaningEn,
+          );
+  }
+
   /// The Naam Simran recitation, or null in a build without one.
   Future<SimranTrack?> simranTrack() async {
     final row = await _db.select(_db.simranTracks).getSingleOrNull();
@@ -218,6 +237,12 @@ final contentSourcesProvider = FutureProvider<List<SourceRow>>(
 final audioTracksProvider = FutureProvider<Map<String, AudioTrackRow>>(
   (ref) => ref.watch(contentRepositoryProvider).audioTracksByBani(),
 );
+
+/// Today's line of Gurbani.
+final todayVicharProvider = FutureProvider<Vichar?>((ref) {
+  final today = ref.watch(clockProvider).today();
+  return ref.watch(contentRepositoryProvider).vicharFor(today);
+});
 
 /// The Naam Simran recitation this build ships, if any.
 final simranTrackProvider = FutureProvider<SimranTrack?>(

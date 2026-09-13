@@ -127,7 +127,6 @@
   "daySun": "र",
 
   "greeting": "सत श्री अकाल जी",
-  "todayHukamnama": "आज का हुकमनामा",
   "ctaStartNitnem": "नितनेम शुरू करें",
   "ctaContinueBani": "{bani} जारी रखें",
   "ctaStartBani": "{bani} शुरू करें",
@@ -147,16 +146,6 @@
   "helpTip3": "याद आपके शहर के सूर्योदय-सूर्यास्त के अनुसार, या आपके चुने समय पर आती है।",
   "helpAboutLink": "बारे में और आभार",
 
-  "hukamnamaOfflineEmpty": "इंटरनेट आने पर हुकमनामा दिखाई देगा",
-  "hukamnamaNotConfigured": "इस बिल्ड में हुकमनामे का कोई स्रोत नहीं जुड़ा",
-  "hukamnamaNotConfiguredBody": "हाज़िरी अभी रोज़ाना हुकमनामा नहीं लाती। जब अनुमति वाला स्रोत जुड़ेगा, आज का हुकमनामा यहाँ आएगा और कार्ड के रूप में शेयर किया जा सकेगा।",
-  "hukamnamaSavedOn": "{date} को सहेजा",
-  "hukamnamaTitle": "हुकमनामा",
-  "hukamnamaMeaningIn": "अर्थ इस भाषा में",
-  "hukamnamaSource": "श्री दरबार साहिब, अमृतसर",
-  "hukamnamaRahao": "रहाउ",
-  "hukamnamaSavedOffline": "बिना इंटरनेट पढ़ने के लिए सहेजा",
-  "hukamnamaReadDailyOn": "रोज़ाना पढ़ें",
 
   "nitnemTitle": "नितनेम",
   "nitnemVersionLine": "एसजीपीसी वाला रूप",
@@ -364,7 +353,7 @@
   "notifActionSkipToday": "आज छोड़ें",
   "notifActionOpenCalendar": "कैलेंडर खोलें",
 
-  "shareCardTitle": "आज का हुकमनामा",
+  "shareCardTitle": "आज का विचार",
   "shareCardFooter": "हाज़िरी पर रोज़ाना पढ़ें",
   "shareCardTruncated": "…हाज़िरी में पढ़ें",
   "shareCardPreview": "शेयर कार्ड की झलक",
@@ -390,6 +379,20 @@
 
   "actionStop": "बंद करें",
   "playerStillPlaying": "अभी चल रहा है",
+
+  "vicharTitle": "आज का विचार",
+  "vicharNative": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
+  "vicharSource": "श्री गुरु ग्रंथ साहिब जी",
+  "vicharExplore": "और देखें",
+  "vicharShareTitle": "यह विचार साझा करें",
+  "vicharShareBody": "भेजने का तरीका चुनें",
+  "vicharShareAsText": "पाठ के रूप में",
+  "vicharShareAsImage": "छवि के रूप में",
+  "vicharMeaningPa": "पंजाबी में",
+  "vicharMeaningEn": "अंग्रेज़ी में",
+  "vicharNone": "इस बिल्ड में अभी विचार नहीं है",
+  "vicharDayOf": "{total} में से पंक्ति {day}",
+  "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
 
   "errorGeneric": "कुछ गलत हो गया।",
   "errorContentDb": "ऐप के साथ आई सामग्री नहीं खुल सकी। हाज़िरी फिर इंस्टॉल करने से ठीक हो जाएगा।"

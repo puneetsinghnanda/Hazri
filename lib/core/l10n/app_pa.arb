@@ -127,7 +127,6 @@
   "daySun": "ਐ",
 
   "greeting": "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ",
-  "todayHukamnama": "ਅੱਜ ਦਾ ਹੁਕਮਨਾਮਾ",
   "ctaStartNitnem": "ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ",
   "ctaContinueBani": "{bani} ਜਾਰੀ ਰੱਖੋ",
   "ctaStartBani": "{bani} ਸ਼ੁਰੂ ਕਰੋ",
@@ -147,16 +146,6 @@
   "helpTip3": "ਚੇਤੇ ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਦੇ ਸੂਰਜ ਚੜ੍ਹਨ-ਛਿਪਣ ਮੁਤਾਬਕ, ਜਾਂ ਤੁਹਾਡੇ ਚੁਣੇ ਵੇਲੇ ਉੱਤੇ ਆਉਂਦੇ ਹਨ।",
   "helpAboutLink": "ਬਾਰੇ ਤੇ ਸ਼ੁਕਰਾਨਾ",
 
-  "hukamnamaOfflineEmpty": "ਇੰਟਰਨੈੱਟ ਆਉਣ ਉੱਤੇ ਹੁਕਮਨਾਮਾ ਵਿਖਾਈ ਦੇਵੇਗਾ",
-  "hukamnamaNotConfigured": "ਇਸ ਬਿਲਡ ਵਿੱਚ ਹੁਕਮਨਾਮੇ ਦਾ ਕੋਈ ਸਰੋਤ ਨਹੀਂ ਜੁੜਿਆ",
-  "hukamnamaNotConfiguredBody": "ਹਾਜ਼ਰੀ ਹਾਲੇ ਰੋਜ਼ਾਨਾ ਹੁਕਮਨਾਮਾ ਨਹੀਂ ਲਿਆਉਂਦੀ। ਜਦੋਂ ਇਜਾਜ਼ਤ ਵਾਲਾ ਸਰੋਤ ਜੁੜੇਗਾ, ਅੱਜ ਦਾ ਹੁਕਮਨਾਮਾ ਇੱਥੇ ਆਵੇਗਾ ਅਤੇ ਕਾਰਡ ਵਜੋਂ ਸਾਂਝਾ ਕੀਤਾ ਜਾ ਸਕੇਗਾ।",
-  "hukamnamaSavedOn": "{date} ਨੂੰ ਸੰਭਾਲਿਆ",
-  "hukamnamaTitle": "ਹੁਕਮਨਾਮਾ",
-  "hukamnamaMeaningIn": "ਅਰਥ ਇਸ ਬੋਲੀ ਵਿੱਚ",
-  "hukamnamaSource": "ਸ੍ਰੀ ਦਰਬਾਰ ਸਾਹਿਬ, ਅੰਮ੍ਰਿਤਸਰ",
-  "hukamnamaRahao": "ਰਹਾਉ",
-  "hukamnamaSavedOffline": "ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਪੜ੍ਹਨ ਲਈ ਸੰਭਾਲਿਆ",
-  "hukamnamaReadDailyOn": "ਰੋਜ਼ਾਨਾ ਪੜ੍ਹੋ",
 
   "nitnemTitle": "ਨਿਤਨੇਮ",
   "nitnemVersionLine": "ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਵਾਲਾ ਰੂਪ",
@@ -364,7 +353,7 @@
   "notifActionSkipToday": "ਅੱਜ ਛੱਡੋ",
   "notifActionOpenCalendar": "ਕੈਲੰਡਰ ਖੋਲ੍ਹੋ",
 
-  "shareCardTitle": "ਅੱਜ ਦਾ ਹੁਕਮਨਾਮਾ",
+  "shareCardTitle": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
   "shareCardFooter": "ਹਾਜ਼ਰੀ ਉੱਤੇ ਰੋਜ਼ਾਨਾ ਪੜ੍ਹੋ",
   "shareCardTruncated": "…ਹਾਜ਼ਰੀ ਵਿੱਚ ਪੜ੍ਹੋ",
   "shareCardPreview": "ਸਾਂਝੇ ਕਰਨ ਵਾਲੇ ਕਾਰਡ ਦੀ ਝਲਕ",
@@ -390,6 +379,20 @@
 
   "actionStop": "ਬੰਦ ਕਰੋ",
   "playerStillPlaying": "ਹਾਲੇ ਚੱਲ ਰਿਹਾ ਹੈ",
+
+  "vicharTitle": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
+  "vicharNative": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
+  "vicharSource": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ",
+  "vicharExplore": "ਹੋਰ ਵੇਖੋ",
+  "vicharShareTitle": "ਇਹ ਵਿਚਾਰ ਸਾਂਝਾ ਕਰੋ",
+  "vicharShareBody": "ਕਿਵੇਂ ਭੇਜਣਾ ਹੈ, ਚੁਣੋ",
+  "vicharShareAsText": "ਲਿਖਤ ਵਜੋਂ",
+  "vicharShareAsImage": "ਤਸਵੀਰ ਵਜੋਂ",
+  "vicharMeaningPa": "ਪੰਜਾਬੀ ਵਿੱਚ",
+  "vicharMeaningEn": "ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ",
+  "vicharNone": "ਇਸ ਬਿਲਡ ਵਿੱਚ ਹਾਲੇ ਵਿਚਾਰ ਨਹੀਂ ਹੈ",
+  "vicharDayOf": "{total} ਵਿੱਚੋਂ ਸਤਰ {day}",
+  "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
 
   "errorGeneric": "ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।",
   "errorContentDb": "ਐਪ ਨਾਲ ਆਈ ਸਮੱਗਰੀ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ। ਹਾਜ਼ਰੀ ਮੁੜ ਇੰਸਟਾਲ ਕਰਨ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।"

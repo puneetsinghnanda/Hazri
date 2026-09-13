@@ -23,8 +23,9 @@ REPORT = os.path.join(ROOT, "content", "build-report.json")
 AUDIO_DIR = os.path.join(ROOT, "assets", "audio")
 TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 SIMRAN_DIR = os.path.join(ROOT, "content", "source", "simran")
+VICHAR_DIR = os.path.join(ROOT, "content", "source", "vichar")
 
-CONTENT_VERSION = 5
+CONTENT_VERSION = 6
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -80,6 +81,13 @@ CREATE TABLE timing(audio_track_id TEXT PRIMARY KEY, json TEXT NOT NULL);
 -- Naam Simran is not a bani, so it has no bani_version and cannot ride in
 -- audio_track. Its json carries the loudness envelope and the utterance
 -- onsets the Simran ring is drawn from (PRD 1.13).
+-- One line of Gurbani a day, with its meaning (PRD 1.11). `idx` is the
+-- position in the cycle, not an Ang: this dataset carries no Ang numbers and
+-- the app does not invent one.
+CREATE TABLE vichar(
+  idx INTEGER PRIMARY KEY, gurmukhi TEXT NOT NULL,
+  meaning_pa TEXT NOT NULL, meaning_en TEXT NOT NULL);
+
 CREATE TABLE simran_track(
   id TEXT PRIMARY KEY, file TEXT NOT NULL, duration_ms INTEGER, bytes INTEGER,
   json TEXT NOT NULL);
@@ -342,6 +350,43 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
     report["audio"] = built
 
 
+def build_vichar(con: sqlite3.Connection, report: dict) -> None:
+    """Loads the daily Gurbani lines the Today card cycles through.
+
+    Nothing here is written by the app: the lines and both meanings come from
+    the reviewed file in content/source/vichar, exactly as every other piece of
+    Gurbani does (PRD §0.3).
+    """
+    path = os.path.join(VICHAR_DIR, "gurbani-200.json")
+    if not os.path.exists(path):
+        report["vichar"] = None
+        return
+    with open(path, encoding="utf-8") as fh:
+        doc = json.load(fh)
+
+    rows = []
+    for idx, entry in enumerate(doc["gurbani_lines"]):
+        line = " ".join(
+            part.strip()
+            for part in (entry.get("punjabi_line1"), entry.get("punjabi_line2"))
+            if part and part.strip()
+        )
+        pa = (entry.get("punjabi_meaning") or "").strip()
+        en = (entry.get("english_meaning") or "").strip()
+        if not line or not pa:
+            raise SystemExit(f"vichar entry {entry.get('id')} has no line or no meaning")
+        rows.append((idx, line, pa, en))
+
+    con.executemany(
+        "INSERT INTO vichar(idx,gurmukhi,meaning_pa,meaning_en) VALUES(?,?,?,?)", rows
+    )
+    report["vichar"] = {
+        "lines": len(rows),
+        "scripture": doc.get("scripture"),
+        "with_english": sum(1 for r in rows if r[3]),
+    }
+
+
 def build_simran(con: sqlite3.Connection, report: dict) -> None:
     """Registers the Naam Simran recitation and the shape the ring follows."""
     built = []
@@ -446,7 +491,7 @@ def source_digest() -> str:
         os.path.join(os.path.dirname(__file__), "cities.json"),
         os.path.abspath(__file__),
     ]
-    for folder in (TIMINGS_DIR, SIMRAN_DIR):
+    for folder in (TIMINGS_DIR, SIMRAN_DIR, VICHAR_DIR):
         if os.path.isdir(folder):
             inputs += sorted(
                 os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".json")
@@ -473,6 +518,7 @@ def main() -> int:
     build_japji(con, report)
     build_audio(con, report)
     build_simran(con, report)
+    build_vichar(con, report)
     build_calendar(con, report)
     build_cities(con, report)
 

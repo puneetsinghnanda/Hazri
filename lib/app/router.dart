@@ -9,7 +9,7 @@ import '../features/about/ui/privacy_screen.dart';
 import '../features/diary/ui/diary_screen.dart';
 import '../features/goals/ui/goals_screen.dart';
 import '../features/gurpurab/ui/gurpurab_screen.dart';
-import '../features/hukamnama/ui/hukamnama_screen.dart';
+import '../features/vichar/ui/vichar_screen.dart';
 import '../features/nitnem/ui/nitnem_screen.dart';
 import '../features/onboarding/ui/intro_screen.dart';
 import '../features/onboarding/ui/setup_screen.dart';
@@ -31,7 +31,7 @@ abstract final class Routes {
   static const simran = '/simran';
   static const diary = '/diary';
   static const settings = '/settings';
-  static const hukamnama = '/hukamnama';
+  static const vichar = '/vichar';
   static const gurpurab = '/gurpurab';
   static const goals = '/goals';
   static const about = '/about';
@@ -93,7 +93,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           autoplay: state.uri.queryParameters['autoplay'] == '1',
         ),
       ),
-      GoRoute(path: Routes.hukamnama, builder: (_, _) => const HukamnamaScreen()),
+      GoRoute(path: Routes.vichar, builder: (_, _) => const VicharScreen()),
       GoRoute(path: Routes.gurpurab, builder: (_, _) => const GurpurabScreen()),
       GoRoute(path: Routes.goals, builder: (_, _) => const GoalsScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),

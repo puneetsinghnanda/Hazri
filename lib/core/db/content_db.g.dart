@@ -4542,6 +4542,304 @@ class SimranTracksCompanion extends UpdateCompanion<SimranTrackRow> {
   }
 }
 
+class $VicharsTable extends Vichars with TableInfo<$VicharsTable, VicharRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VicharsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idxMeta = const VerificationMeta('idx');
+  @override
+  late final GeneratedColumn<int> idx = GeneratedColumn<int>(
+    'idx',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _gurmukhiMeta = const VerificationMeta(
+    'gurmukhi',
+  );
+  @override
+  late final GeneratedColumn<String> gurmukhi = GeneratedColumn<String>(
+    'gurmukhi',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _meaningPaMeta = const VerificationMeta(
+    'meaningPa',
+  );
+  @override
+  late final GeneratedColumn<String> meaningPa = GeneratedColumn<String>(
+    'meaning_pa',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _meaningEnMeta = const VerificationMeta(
+    'meaningEn',
+  );
+  @override
+  late final GeneratedColumn<String> meaningEn = GeneratedColumn<String>(
+    'meaning_en',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [idx, gurmukhi, meaningPa, meaningEn];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'vichar';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<VicharRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('idx')) {
+      context.handle(
+        _idxMeta,
+        idx.isAcceptableOrUnknown(data['idx']!, _idxMeta),
+      );
+    }
+    if (data.containsKey('gurmukhi')) {
+      context.handle(
+        _gurmukhiMeta,
+        gurmukhi.isAcceptableOrUnknown(data['gurmukhi']!, _gurmukhiMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_gurmukhiMeta);
+    }
+    if (data.containsKey('meaning_pa')) {
+      context.handle(
+        _meaningPaMeta,
+        meaningPa.isAcceptableOrUnknown(data['meaning_pa']!, _meaningPaMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_meaningPaMeta);
+    }
+    if (data.containsKey('meaning_en')) {
+      context.handle(
+        _meaningEnMeta,
+        meaningEn.isAcceptableOrUnknown(data['meaning_en']!, _meaningEnMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_meaningEnMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {idx};
+  @override
+  VicharRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VicharRow(
+      idx: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}idx'],
+      )!,
+      gurmukhi: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}gurmukhi'],
+      )!,
+      meaningPa: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}meaning_pa'],
+      )!,
+      meaningEn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}meaning_en'],
+      )!,
+    );
+  }
+
+  @override
+  $VicharsTable createAlias(String alias) {
+    return $VicharsTable(attachedDatabase, alias);
+  }
+}
+
+class VicharRow extends DataClass implements Insertable<VicharRow> {
+  final int idx;
+  final String gurmukhi;
+  final String meaningPa;
+  final String meaningEn;
+  const VicharRow({
+    required this.idx,
+    required this.gurmukhi,
+    required this.meaningPa,
+    required this.meaningEn,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['idx'] = Variable<int>(idx);
+    map['gurmukhi'] = Variable<String>(gurmukhi);
+    map['meaning_pa'] = Variable<String>(meaningPa);
+    map['meaning_en'] = Variable<String>(meaningEn);
+    return map;
+  }
+
+  VicharsCompanion toCompanion(bool nullToAbsent) {
+    return VicharsCompanion(
+      idx: Value(idx),
+      gurmukhi: Value(gurmukhi),
+      meaningPa: Value(meaningPa),
+      meaningEn: Value(meaningEn),
+    );
+  }
+
+  factory VicharRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return VicharRow(
+      idx: serializer.fromJson<int>(json['idx']),
+      gurmukhi: serializer.fromJson<String>(json['gurmukhi']),
+      meaningPa: serializer.fromJson<String>(json['meaningPa']),
+      meaningEn: serializer.fromJson<String>(json['meaningEn']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'idx': serializer.toJson<int>(idx),
+      'gurmukhi': serializer.toJson<String>(gurmukhi),
+      'meaningPa': serializer.toJson<String>(meaningPa),
+      'meaningEn': serializer.toJson<String>(meaningEn),
+    };
+  }
+
+  VicharRow copyWith({
+    int? idx,
+    String? gurmukhi,
+    String? meaningPa,
+    String? meaningEn,
+  }) => VicharRow(
+    idx: idx ?? this.idx,
+    gurmukhi: gurmukhi ?? this.gurmukhi,
+    meaningPa: meaningPa ?? this.meaningPa,
+    meaningEn: meaningEn ?? this.meaningEn,
+  );
+  VicharRow copyWithCompanion(VicharsCompanion data) {
+    return VicharRow(
+      idx: data.idx.present ? data.idx.value : this.idx,
+      gurmukhi: data.gurmukhi.present ? data.gurmukhi.value : this.gurmukhi,
+      meaningPa: data.meaningPa.present ? data.meaningPa.value : this.meaningPa,
+      meaningEn: data.meaningEn.present ? data.meaningEn.value : this.meaningEn,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VicharRow(')
+          ..write('idx: $idx, ')
+          ..write('gurmukhi: $gurmukhi, ')
+          ..write('meaningPa: $meaningPa, ')
+          ..write('meaningEn: $meaningEn')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(idx, gurmukhi, meaningPa, meaningEn);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VicharRow &&
+          other.idx == this.idx &&
+          other.gurmukhi == this.gurmukhi &&
+          other.meaningPa == this.meaningPa &&
+          other.meaningEn == this.meaningEn);
+}
+
+class VicharsCompanion extends UpdateCompanion<VicharRow> {
+  final Value<int> idx;
+  final Value<String> gurmukhi;
+  final Value<String> meaningPa;
+  final Value<String> meaningEn;
+  const VicharsCompanion({
+    this.idx = const Value.absent(),
+    this.gurmukhi = const Value.absent(),
+    this.meaningPa = const Value.absent(),
+    this.meaningEn = const Value.absent(),
+  });
+  VicharsCompanion.insert({
+    this.idx = const Value.absent(),
+    required String gurmukhi,
+    required String meaningPa,
+    required String meaningEn,
+  }) : gurmukhi = Value(gurmukhi),
+       meaningPa = Value(meaningPa),
+       meaningEn = Value(meaningEn);
+  static Insertable<VicharRow> custom({
+    Expression<int>? idx,
+    Expression<String>? gurmukhi,
+    Expression<String>? meaningPa,
+    Expression<String>? meaningEn,
+  }) {
+    return RawValuesInsertable({
+      if (idx != null) 'idx': idx,
+      if (gurmukhi != null) 'gurmukhi': gurmukhi,
+      if (meaningPa != null) 'meaning_pa': meaningPa,
+      if (meaningEn != null) 'meaning_en': meaningEn,
+    });
+  }
+
+  VicharsCompanion copyWith({
+    Value<int>? idx,
+    Value<String>? gurmukhi,
+    Value<String>? meaningPa,
+    Value<String>? meaningEn,
+  }) {
+    return VicharsCompanion(
+      idx: idx ?? this.idx,
+      gurmukhi: gurmukhi ?? this.gurmukhi,
+      meaningPa: meaningPa ?? this.meaningPa,
+      meaningEn: meaningEn ?? this.meaningEn,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (idx.present) {
+      map['idx'] = Variable<int>(idx.value);
+    }
+    if (gurmukhi.present) {
+      map['gurmukhi'] = Variable<String>(gurmukhi.value);
+    }
+    if (meaningPa.present) {
+      map['meaning_pa'] = Variable<String>(meaningPa.value);
+    }
+    if (meaningEn.present) {
+      map['meaning_en'] = Variable<String>(meaningEn.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VicharsCompanion(')
+          ..write('idx: $idx, ')
+          ..write('gurmukhi: $gurmukhi, ')
+          ..write('meaningPa: $meaningPa, ')
+          ..write('meaningEn: $meaningEn')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $NanakshahiMonthsTable extends NanakshahiMonths
     with TableInfo<$NanakshahiMonthsTable, NanakshahiMonthRow> {
   @override
@@ -6797,6 +7095,7 @@ abstract class _$ContentDb extends GeneratedDatabase {
   late final $AudioTracksTable audioTracks = $AudioTracksTable(this);
   late final $TimingsTable timings = $TimingsTable(this);
   late final $SimranTracksTable simranTracks = $SimranTracksTable(this);
+  late final $VicharsTable vichars = $VicharsTable(this);
   late final $NanakshahiMonthsTable nanakshahiMonths = $NanakshahiMonthsTable(
     this,
   );
@@ -6818,6 +7117,7 @@ abstract class _$ContentDb extends GeneratedDatabase {
     audioTracks,
     timings,
     simranTracks,
+    vichars,
     nanakshahiMonths,
     calendarEvents,
     cities,
@@ -9178,6 +9478,184 @@ typedef $$SimranTracksTableProcessedTableManager =
       SimranTrackRow,
       PrefetchHooks Function()
     >;
+typedef $$VicharsTableCreateCompanionBuilder =
+    VicharsCompanion Function({
+      Value<int> idx,
+      required String gurmukhi,
+      required String meaningPa,
+      required String meaningEn,
+    });
+typedef $$VicharsTableUpdateCompanionBuilder =
+    VicharsCompanion Function({
+      Value<int> idx,
+      Value<String> gurmukhi,
+      Value<String> meaningPa,
+      Value<String> meaningEn,
+    });
+
+class $$VicharsTableFilterComposer
+    extends Composer<_$ContentDb, $VicharsTable> {
+  $$VicharsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get idx => $composableBuilder(
+    column: $table.idx,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get gurmukhi => $composableBuilder(
+    column: $table.gurmukhi,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get meaningPa => $composableBuilder(
+    column: $table.meaningPa,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get meaningEn => $composableBuilder(
+    column: $table.meaningEn,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$VicharsTableOrderingComposer
+    extends Composer<_$ContentDb, $VicharsTable> {
+  $$VicharsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get idx => $composableBuilder(
+    column: $table.idx,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get gurmukhi => $composableBuilder(
+    column: $table.gurmukhi,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get meaningPa => $composableBuilder(
+    column: $table.meaningPa,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get meaningEn => $composableBuilder(
+    column: $table.meaningEn,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$VicharsTableAnnotationComposer
+    extends Composer<_$ContentDb, $VicharsTable> {
+  $$VicharsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get idx =>
+      $composableBuilder(column: $table.idx, builder: (column) => column);
+
+  GeneratedColumn<String> get gurmukhi =>
+      $composableBuilder(column: $table.gurmukhi, builder: (column) => column);
+
+  GeneratedColumn<String> get meaningPa =>
+      $composableBuilder(column: $table.meaningPa, builder: (column) => column);
+
+  GeneratedColumn<String> get meaningEn =>
+      $composableBuilder(column: $table.meaningEn, builder: (column) => column);
+}
+
+class $$VicharsTableTableManager
+    extends
+        RootTableManager<
+          _$ContentDb,
+          $VicharsTable,
+          VicharRow,
+          $$VicharsTableFilterComposer,
+          $$VicharsTableOrderingComposer,
+          $$VicharsTableAnnotationComposer,
+          $$VicharsTableCreateCompanionBuilder,
+          $$VicharsTableUpdateCompanionBuilder,
+          (VicharRow, BaseReferences<_$ContentDb, $VicharsTable, VicharRow>),
+          VicharRow,
+          PrefetchHooks Function()
+        > {
+  $$VicharsTableTableManager(_$ContentDb db, $VicharsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$VicharsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$VicharsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$VicharsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> idx = const Value.absent(),
+                Value<String> gurmukhi = const Value.absent(),
+                Value<String> meaningPa = const Value.absent(),
+                Value<String> meaningEn = const Value.absent(),
+              }) => VicharsCompanion(
+                idx: idx,
+                gurmukhi: gurmukhi,
+                meaningPa: meaningPa,
+                meaningEn: meaningEn,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> idx = const Value.absent(),
+                required String gurmukhi,
+                required String meaningPa,
+                required String meaningEn,
+              }) => VicharsCompanion.insert(
+                idx: idx,
+                gurmukhi: gurmukhi,
+                meaningPa: meaningPa,
+                meaningEn: meaningEn,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$VicharsTable, VicharRow>(table),
+                  BaseReferences<_$ContentDb, $VicharsTable, VicharRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$VicharsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$ContentDb,
+      $VicharsTable,
+      VicharRow,
+      $$VicharsTableFilterComposer,
+      $$VicharsTableOrderingComposer,
+      $$VicharsTableAnnotationComposer,
+      $$VicharsTableCreateCompanionBuilder,
+      $$VicharsTableUpdateCompanionBuilder,
+      (VicharRow, BaseReferences<_$ContentDb, $VicharsTable, VicharRow>),
+      VicharRow,
+      PrefetchHooks Function()
+    >;
 typedef $$NanakshahiMonthsTableCreateCompanionBuilder =
     NanakshahiMonthsCompanion Function({
       required int nsYear,
@@ -10406,6 +10884,8 @@ class $ContentDbManager {
       $$TimingsTableTableManager(_db, _db.timings);
   $$SimranTracksTableTableManager get simranTracks =>
       $$SimranTracksTableTableManager(_db, _db.simranTracks);
+  $$VicharsTableTableManager get vichars =>
+      $$VicharsTableTableManager(_db, _db.vichars);
   $$NanakshahiMonthsTableTableManager get nanakshahiMonths =>
       $$NanakshahiMonthsTableTableManager(_db, _db.nanakshahiMonths);
   $$CalendarEventsTableTableManager get calendarEvents =>

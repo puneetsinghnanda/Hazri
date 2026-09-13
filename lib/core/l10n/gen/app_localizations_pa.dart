@@ -372,9 +372,6 @@ class LPa extends L {
   String get greeting => 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ';
 
   @override
-  String get todayHukamnama => 'ਅੱਜ ਦਾ ਹੁਕਮਨਾਮਾ';
-
-  @override
   String get ctaStartNitnem => 'ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ';
 
   @override
@@ -440,40 +437,6 @@ class LPa extends L {
 
   @override
   String get helpAboutLink => 'ਬਾਰੇ ਤੇ ਸ਼ੁਕਰਾਨਾ';
-
-  @override
-  String get hukamnamaOfflineEmpty => 'ਇੰਟਰਨੈੱਟ ਆਉਣ ਉੱਤੇ ਹੁਕਮਨਾਮਾ ਵਿਖਾਈ ਦੇਵੇਗਾ';
-
-  @override
-  String get hukamnamaNotConfigured =>
-      'ਇਸ ਬਿਲਡ ਵਿੱਚ ਹੁਕਮਨਾਮੇ ਦਾ ਕੋਈ ਸਰੋਤ ਨਹੀਂ ਜੁੜਿਆ';
-
-  @override
-  String get hukamnamaNotConfiguredBody =>
-      'ਹਾਜ਼ਰੀ ਹਾਲੇ ਰੋਜ਼ਾਨਾ ਹੁਕਮਨਾਮਾ ਨਹੀਂ ਲਿਆਉਂਦੀ। ਜਦੋਂ ਇਜਾਜ਼ਤ ਵਾਲਾ ਸਰੋਤ ਜੁੜੇਗਾ, ਅੱਜ ਦਾ ਹੁਕਮਨਾਮਾ ਇੱਥੇ ਆਵੇਗਾ ਅਤੇ ਕਾਰਡ ਵਜੋਂ ਸਾਂਝਾ ਕੀਤਾ ਜਾ ਸਕੇਗਾ।';
-
-  @override
-  String hukamnamaSavedOn(String date) {
-    return '$date ਨੂੰ ਸੰਭਾਲਿਆ';
-  }
-
-  @override
-  String get hukamnamaTitle => 'ਹੁਕਮਨਾਮਾ';
-
-  @override
-  String get hukamnamaMeaningIn => 'ਅਰਥ ਇਸ ਬੋਲੀ ਵਿੱਚ';
-
-  @override
-  String get hukamnamaSource => 'ਸ੍ਰੀ ਦਰਬਾਰ ਸਾਹਿਬ, ਅੰਮ੍ਰਿਤਸਰ';
-
-  @override
-  String get hukamnamaRahao => 'ਰਹਾਉ';
-
-  @override
-  String get hukamnamaSavedOffline => 'ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਪੜ੍ਹਨ ਲਈ ਸੰਭਾਲਿਆ';
-
-  @override
-  String get hukamnamaReadDailyOn => 'ਰੋਜ਼ਾਨਾ ਪੜ੍ਹੋ';
 
   @override
   String get nitnemTitle => 'ਨਿਤਨੇਮ';
@@ -1137,7 +1100,7 @@ class LPa extends L {
   String get notifActionOpenCalendar => 'ਕੈਲੰਡਰ ਖੋਲ੍ਹੋ';
 
   @override
-  String get shareCardTitle => 'ਅੱਜ ਦਾ ਹੁਕਮਨਾਮਾ';
+  String get shareCardTitle => 'ਅੱਜ ਦਾ ਵਿਚਾਰ';
 
   @override
   String get shareCardFooter => 'ਹਾਜ਼ਰੀ ਉੱਤੇ ਰੋਜ਼ਾਨਾ ਪੜ੍ਹੋ';
@@ -1194,6 +1157,44 @@ class LPa extends L {
 
   @override
   String get playerStillPlaying => 'ਹਾਲੇ ਚੱਲ ਰਿਹਾ ਹੈ';
+
+  @override
+  String get vicharTitle => 'ਅੱਜ ਦਾ ਵਿਚਾਰ';
+
+  @override
+  String get vicharNative => 'ਅੱਜ ਦਾ ਵਿਚਾਰ';
+
+  @override
+  String get vicharSource => 'ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ';
+
+  @override
+  String get vicharExplore => 'ਹੋਰ ਵੇਖੋ';
+
+  @override
+  String get vicharShareTitle => 'ਇਹ ਵਿਚਾਰ ਸਾਂਝਾ ਕਰੋ';
+
+  @override
+  String get vicharShareBody => 'ਕਿਵੇਂ ਭੇਜਣਾ ਹੈ, ਚੁਣੋ';
+
+  @override
+  String get vicharShareAsText => 'ਲਿਖਤ ਵਜੋਂ';
+
+  @override
+  String get vicharShareAsImage => 'ਤਸਵੀਰ ਵਜੋਂ';
+
+  @override
+  String get vicharMeaningPa => 'ਪੰਜਾਬੀ ਵਿੱਚ';
+
+  @override
+  String get vicharMeaningEn => 'ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ';
+
+  @override
+  String get vicharNone => 'ਇਸ ਬਿਲਡ ਵਿੱਚ ਹਾਲੇ ਵਿਚਾਰ ਨਹੀਂ ਹੈ';
+
+  @override
+  String vicharDayOf(int day, int total) {
+    return '$total ਵਿੱਚੋਂ ਸਤਰ $day';
+  }
 
   @override
   String get errorGeneric => 'ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।';

@@ -372,9 +372,6 @@ class LEn extends L {
   String get greeting => 'Sat Sri Akal ji';
 
   @override
-  String get todayHukamnama => 'Today\'s Hukamnama';
-
-  @override
   String get ctaStartNitnem => 'Start my Nitnem';
 
   @override
@@ -440,41 +437,6 @@ class LEn extends L {
 
   @override
   String get helpAboutLink => 'About & credits';
-
-  @override
-  String get hukamnamaOfflineEmpty =>
-      'Hukamnama will appear when you\'re online';
-
-  @override
-  String get hukamnamaNotConfigured =>
-      'No Hukamnama source is set up in this build';
-
-  @override
-  String get hukamnamaNotConfiguredBody =>
-      'Hazri does not fetch the daily Hukamnama yet. When a permitted source is configured, today\'s Hukamnama appears here and can be shared as a card.';
-
-  @override
-  String hukamnamaSavedOn(String date) {
-    return 'Saved $date';
-  }
-
-  @override
-  String get hukamnamaTitle => 'Hukamnama';
-
-  @override
-  String get hukamnamaMeaningIn => 'Meaning in';
-
-  @override
-  String get hukamnamaSource => 'Sri Darbar Sahib, Amritsar';
-
-  @override
-  String get hukamnamaRahao => 'Rahao';
-
-  @override
-  String get hukamnamaSavedOffline => 'Saved for offline reading';
-
-  @override
-  String get hukamnamaReadDailyOn => 'Read daily on';
 
   @override
   String get nitnemTitle => 'Nitnem';
@@ -1142,7 +1104,7 @@ class LEn extends L {
   String get notifActionOpenCalendar => 'Open calendar';
 
   @override
-  String get shareCardTitle => 'Today\'s Hukamnama';
+  String get shareCardTitle => 'Today\'s Vichar';
 
   @override
   String get shareCardFooter => 'Read daily on Hazri';
@@ -1198,6 +1160,44 @@ class LEn extends L {
 
   @override
   String get playerStillPlaying => 'Still playing';
+
+  @override
+  String get vicharTitle => 'Today\'s Vichar';
+
+  @override
+  String get vicharNative => 'ਅੱਜ ਦਾ ਵਿਚਾਰ';
+
+  @override
+  String get vicharSource => 'Sri Guru Granth Sahib Ji';
+
+  @override
+  String get vicharExplore => 'Explore';
+
+  @override
+  String get vicharShareTitle => 'Share this Vichar';
+
+  @override
+  String get vicharShareBody => 'Choose how to send it';
+
+  @override
+  String get vicharShareAsText => 'As text';
+
+  @override
+  String get vicharShareAsImage => 'As image';
+
+  @override
+  String get vicharMeaningPa => 'In Punjabi';
+
+  @override
+  String get vicharMeaningEn => 'In English';
+
+  @override
+  String get vicharNone => 'No Vichar in this build yet';
+
+  @override
+  String vicharDayOf(int day, int total) {
+    return 'Line $day of $total';
+  }
 
   @override
   String get errorGeneric => 'Something went wrong.';

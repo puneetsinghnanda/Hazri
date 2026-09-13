@@ -22,6 +22,11 @@
       "onsets": 396
     }
   ],
+  "vichar": {
+    "lines": 200,
+    "scripture": "Sri Guru Granth Sahib Ji",
+    "with_english": 200
+  },
   "calendar": {
     "events": 10,
     "months_covered": [
@@ -34,7 +39,7 @@
     "covered_to": "2026-12-15"
   },
   "cities": 92,
-  "content_version": 5,
-  "source_digest": "0931bd9f89e28717",
-  "bytes": 880640
+  "content_version": 6,
+  "source_digest": "1b5d7474be4e2746",
+  "bytes": 942080
 }

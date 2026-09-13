@@ -121,16 +121,6 @@ class EventReminderOverrides extends Table {
   Set<Column> get primaryKey => {eventId};
 }
 
-class HukamnamaCache extends Table {
-  TextColumn get date => text()();
-  TextColumn get payloadJson => text()();
-  TextColumn get source => text()();
-  DateTimeColumn get fetchedAt => dateTime()();
-
-  @override
-  Set<Column> get primaryKey => {date};
-}
-
 /// Everything the user creates.
 ///
 /// Every row carries a UUID id and `updated_at` in UTC so that optional sync
@@ -145,7 +135,6 @@ class HukamnamaCache extends Table {
     Reminders,
     GraceDays,
     EventReminderOverrides,
-    HukamnamaCache,
   ],
 )
 class UserDb extends _$UserDb {
@@ -155,10 +144,15 @@ class UserDb extends _$UserDb {
   UserDb.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (m, from, to) async {
+      // 2: the daily Hukamnama gave way to ਅੱਜ ਦਾ ਵਿਚਾਰ, which is bundled
+      // content and needs no cache of its own.
+      if (from < 2) await customStatement('DROP TABLE IF EXISTS hukamnama_cache');
+    },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     },

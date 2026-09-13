@@ -25,7 +25,7 @@ ang-sang-phase1/
    ├─ html/NN-Name.dark.html   ← same screen, dark theme
    ├─ html/00-Foundations.html ← design-system sheet (colours, type, components, motif)
    ├─ screens/NN-Name.{light,dark}.png ← 2× renders of each screen
-   └─ data/                    ← dev fixtures: sample-japji.json, sample-hukamnama.json, gurpurab-558.sample.json
+   └─ data/                    ← dev fixtures: sample-japji.json, gurpurab-558.sample.json
 ```
 
 Live design canvas (all screens side by side, with notes): https://claude.ai/code/artifact/f601efc5-8bb5-4b87-8dfc-fc70dd4f08c5
@@ -35,7 +35,7 @@ Live design canvas (all screens side by side, with notes): https://claude.ai/cod
 1. **The HTML files are the visual spec, not code to port.** Frames are 390 × 844 CSS px = 390 × 844 dp. Match layout, spacing, radii, colours and type from the HTML/CSS; build with Flutter widgets. Artboards titled "full scroll" are taller than a phone and show the whole scrolling content.
 2. **Behaviour comes from this PRD.** Where a design and this PRD disagree, the PRD wins. Flag the conflict in the PR description.
 3. **Never create, paraphrase, auto-translate or AI-generate Gurbani text, Gurbani audio, meanings or images of the Gurus.** All Gurbani and meanings come only from the content pipeline (§8). Sample text in the designs and `design/data/` is a placeholder. English/Hindi meanings in the designs are placeholder paraphrases.
-4. **No ads SDKs, no login, no own server in Phase 1.** Network is used only for Firebase (Analytics/Crashlytics), the daily Hukamnama fetch and Play Asset Delivery.
+4. **No ad SDKs, no login, no own server in Phase 1.** This build makes no network requests at all; `INTERNET` is removed from the merged manifest. ਅੱਜ ਦਾ ਵਿਚਾਰ is bundled rather than fetched, which is what allows that.
 5. **All UI strings are localised** (Punjabi, Hindi, English) from day one. No hard-coded user-facing strings.
 6. **Keep platform-specific code behind interfaces** (§6.4) so the iOS app in Phase 3 needs new adapters, not rewrites.
 7. Work milestone by milestone (§15). Each milestone ends with passing tests, `flutter analyze` clean, and a short changelog.
@@ -51,7 +51,7 @@ Ang Sang is a free, offline-first Nitnem app in Punjabi, Hindi and English. Its 
 - **Text follows the paath**: the current line and word are highlighted and the page auto-scrolls with the audio.
 - **Paath keeps playing** when the app is minimised or the phone is locked.
 - **Reminders at the user's own times** or automatically from local sunrise/sunset.
-- A gentle **Nitnem Diary**, **Paath goals**, **Daily Simran (5 min)**, the **daily Hukamnama** with a share card, and a **Gurpurab / Nanakshahi calendar**.
+- A gentle **Nitnem Diary**, **Paath goals**, **Daily Simran (5 min)**, **ਅੱਜ ਦਾ ਵਿਚਾਰ** with a share card, and a **Gurpurab / Nanakshahi calendar**.
 - **Works offline · No login · No ads on Gurbani — ever.**
 
 ### 1.1 Target users
@@ -67,7 +67,7 @@ Ang Sang is a free, offline-first Nitnem app in Punjabi, Hindi and English. Its 
 
 1. **Respect (maryada) first.** No ads or promotions near Gurbani. No points or XP for Gurbani. No guilt-tripping streak messages. Gurbani in notifications is limited to bani names.
 2. **Accuracy.** Only reviewed text and licensed meanings. Every source is credited in About.
-3. **Offline by default.** Everything except the daily Hukamnama refresh works with no network.
+3. **Offline by default.** Everything works with no network.
 4. **Calm design.** "Amrit Vela" visual language: dawn-mist light, deep-night dark, Neela (navy) + Kesri (saffron), the day-arc motif.
 5. **Budget phones matter.** Small download, fast start, smooth scrolling on 3 GB RAM devices.
 
@@ -81,7 +81,7 @@ Ang Sang is a free, offline-first Nitnem app in Punjabi, Hindi and English. Its 
 | Retention | Day-30 retention | ≥ 25 % |
 | Follow-along value | Share of bani sessions with audio playing | ≥ 40 % |
 | Simran | Daily Simran completions per weekly active user | ≥ 2 |
-| Growth | Hukamnama share cards sent per weekly active user | ≥ 0.5 |
+| Growth | Vichar share cards sent per weekly active user | ≥ 0.5 |
 | Quality | Crash-free users | ≥ 99.5 % |
 | Store | Play rating | ≥ 4.6 |
 
@@ -95,7 +95,7 @@ Ang Sang is a free, offline-first Nitnem app in Punjabi, Hindi and English. Its 
 |---|---|---|
 | 1.1 | Splash + 3 intro screens | 01–04 |
 | 1.2 | Setup: language → reading preferences & elder mode → reminders; audio downloads in background | 05–08 |
-| 1.3 | Today: Hukamnama card, Start/Continue Nitnem, day arc | 09, 10 |
+| 1.3 | Today: Vichar card, Start/Continue Nitnem, day arc, Gurpurab card | 09, 10 |
 | 1.4 | Nitnem list grouped into Amrit Vela, Evening, Bedtime (+ More banis) | 12 |
 | 1.5 | Reader: scripts, meanings, pause marks, Larivaar, text size, next/prev bani, resume, keep screen on | 13–16 |
 | 1.6 | Follow audio: line + word highlight, auto-scroll, "Back to paath", tap a line to jump | 13, 15 |
@@ -103,7 +103,7 @@ Ang Sang is a free, offline-first Nitnem app in Punjabi, Hindi and English. Its 
 | 1.8 | Background playback: notification & lock-screen controls, Bluetooth, pause for calls / unplugged headphones, sleep timer | 18 |
 | 1.9 | Nitnem Diary: calendar, gentle streak with grace days, Google backup | 26 |
 | 1.10 | Reminders per bani: Auto (sunrise/sunset) or My time; move a bani to Morning/Evening/Bedtime | 07, 08, 23, 27 |
-| 1.11 | Daily Hukamnama: saved offline, shareable image card | 24, 25 |
+| 1.11 | ਅੱਜ ਦਾ ਵਿਚਾਰ: one bundled line a day, shareable as text or image | 24, 25 |
 | 1.12 | Elder mode | 11 |
 | 1.13 | Daily Simran — 5 minutes | 21 |
 | 1.14 | Gurpurab & Nanakshahi calendar with reminders | 22 |
@@ -157,7 +157,7 @@ Android 15+/16 behaviour to respect: enforced **edge-to-edge** (handle system-ba
 | Background/media session | `audio_service` | Notification, lock screen, Bluetooth/headset buttons, Android Auto-safe metadata |
 | Audio focus & interruptions | `audio_session` | Calls, "becoming noisy" (unplug), ducking |
 | Local notifications | `flutter_local_notifications` + `timezone` + `flutter_timezone` | Exact alarms when granted; boot/timezone reschedule |
-| Background jobs | `workmanager` | Daily Hukamnama refresh + reminder re-scheduling |
+| Background jobs | `workmanager` | Reminder re-scheduling |
 | Audio asset packs | **Custom Kotlin plugin** wrapping Play Asset Delivery (`com.google.android.play:asset-delivery` + `-ktx`) via a platform channel | No official Flutter plugin; keep it in `packages/asset_packs/` with a Dart interface |
 | Sunrise/sunset | Pure-Dart NOAA solar algorithm (own implementation, unit-tested) | No network needed |
 | Location | Bundled city list (offline) + optional one-shot coarse location via `geolocator` | Location permission is optional |
@@ -166,7 +166,6 @@ Android 15+/16 behaviour to respect: enforced **edge-to-edge** (handle system-ba
 | Keep screen on | `wakelock_plus` | Reader and Simran only |
 | Share card | `RepaintBoundary` → PNG, `share_plus` | 1080 × 1920 |
 | Scroll-to-line | `scrollable_positioned_list` | Variable-height lines with alignment |
-| HTTP | `dio` (or `http`) | Hukamnama only |
 | Analytics / crashes | `firebase_core`, `firebase_analytics`, `firebase_crashlytics` | No Auth/Firestore in Phase 1 |
 | Haptics | Flutter `HapticFeedback` | Simran counting |
 | Splash | `flutter_native_splash` (Android 12 SplashScreen API) | |
@@ -187,12 +186,12 @@ Every launch:  (system splash) → Today (or the deep-link target)
 Bottom navigation (5 tabs):  Today · Nitnem · Simran · Diary · Settings
 Elder mode navigation (3 tabs): Today · Nitnem · Settings
 
-Pushed screens: Reader (+ text-settings sheet), Full-screen player, Hukamnama, Share card preview,
+Pushed screens: Reader (+ text-settings sheet), Full-screen player, Vichar, Share sheet,
                 Gurpurab calendar, Paath goals (+ Add goal sheet), Reminder time sheet, City picker,
                 About & credits, Privacy, Open-source licences
 ```
 
-Routes (go_router): `/intro`, `/setup/:step`, `/today`, `/nitnem`, `/simran`, `/diary`, `/settings`, `/reader/:baniSlug?line=&autoplay=`, `/player`, `/hukamnama`, `/gurpurab`, `/goals`, `/about`, `/privacy`.
+Routes (go_router): `/intro`, `/setup/:step`, `/today`, `/nitnem`, `/simran`, `/diary`, `/settings`, `/reader/:baniSlug?line=&autoplay=`, `/player`, `/vichar`, `/gurpurab`, `/goals`, `/about`, `/privacy`.
 Back from a tab root exits the app (predictive back). Notification taps open the target route on top of Today.
 
 ---
@@ -215,7 +214,7 @@ lib/
     widgets/                 # shared widgets: DayArc, ProgressRing, Chip, Card, IconButton, BottomNav
   features/
     onboarding/  today/  nitnem/  reader/  audio/  diary/  reminders/
-    hukamnama/   simran/ gurpurab/ goals/  settings/ about/
+    vichar/      simran/ gurpurab/ goals/  settings/ about/
       └─ each: data/ (repos, sources)  domain/ (models, logic)  ui/ (screens, widgets, controllers)
 packages/
   asset_packs/               # Kotlin plugin for Play Asset Delivery + Dart interface
@@ -242,7 +241,7 @@ test/  integration_test/
 | `FollowController` | Maps audio position → current line/word; owns follow/detached state for the reader |
 | `ReminderScheduler` | Computes occurrences (auto/fixed), schedules a rolling 7-day window, handles permissions |
 | `SolarService` | Sunrise/sunset for the chosen city/coordinates and date |
-| `HukamnamaRepository` | Fetch, cache (30 days), expose today's/latest |
+| `ContentRepository.vicharFor` | The bundled line for a given date |
 | `CalendarService` | Nanakshahi date for any Gregorian date; upcoming Gurpurabs |
 | `GoalsRepository` | Goals CRUD, daily progress |
 | `SimranController` | 5-min session timer, count, sounds, logging |
@@ -308,7 +307,6 @@ reminder(id, target_type[slot|bani|simran|gurpurab|goal], target_id, mode[auto|f
      anchor[sunrise|sunset]?, offset_min?, time_hhmm?, days_mask, slot_override?, updated_at)
 grace_day(local_date PK, month_key)
 event_reminder_override(event_id PK, enabled)
-hukamnama_cache(date PK, payload_json, source, fetched_at)
 ```
 
 Prefs (`shared_preferences`): `app_locale`, `script[gur|dev|rom]`, `show_roman_under_gurmukhi`, `meanings_on`, `meanings_lang`, `visraam_on`, `larivaar_on`, `reader_font_size`, `keep_screen_on`, `follow_audio`, `theme[auto|light|dark]`, `elder_mode`, `city_id`/`lat`/`lon`, `voice_id`, `speed`, `onboarding_done`, `exact_alarm_asked`, `analytics_enabled`.
@@ -408,7 +406,7 @@ Three steps with a 3-dash progress indicator. **Back** returns to the previous s
 
 ### 1.3 Today — Design 09 (English, light), 10 (Hindi, dark)
 
-**Layout (top → bottom):** header (app mark + "Ang Sang", help icon), date ("Friday, 11 September", localised), greeting "Sat Sri Akal ji" (ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ / सत श्री अकाल जी); **Day arc card**; **CTA button**; **Today's Hukamnama card**; two tiles (Daily Simran, next Gurpurab); bottom nav.
+**Layout (top → bottom):** header (app mark + "Ang Sang", help icon), date ("Friday, 11 September", localised), greeting "Sat Sri Akal ji" (ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ / सत श्री अकाल जी); **Day arc card**; **CTA button**; **ਅੱਜ ਦਾ ਵਿਚਾਰ card**; **Daily Simran tile**; **Gurpurab card** (full width); bottom nav.
 
 **Day arc (`DayArc` widget)**
 - Semicircular track with three nodes: Amrit Vela, Rehras, Sohila, each labelled with its time ("Rehras · 8 PM"). Node states: `done` (filled sage + check), `active` (kesri ring), `todo` (outline).
@@ -426,7 +424,7 @@ Three steps with a 3-dash progress indicator. **Back** returns to the previous s
 | All done | ✓ Today's Nitnem complete (secondary style) → opens Diary |
 Tap → Reader for that bani with autoplay if audio is available and the user last used audio; otherwise reader only.
 
-**Hukamnama card:** "Today's Hukamnama" + "Ang 666 · Dhanasari"; first line in the chosen script; its meaning in `meanings_lang`; actions **Listen** (hidden unless a licensed audio source is configured, §1.11), **Share card**, **Read**. Offline/stale: shows the last saved one with "Saved {date}".
+**Vichar card:** "Today's Vichar" + "Sri Guru Granth Sahib Ji"; the day's line in Gurmukhi; its meaning in the UI language; actions **Explore** and **Share** (§1.11).
 
 **Tiles:** *Daily Simran* ("0 of 5 min" / "Done today ✓") → Simran tab. *Gurpurab* tile shows the next calendar event within 7 days ("Tomorrow · Gurpurab — Pehla Prakash Purab"); if none, shows today's Nanakshahi date ("26 Bhadon 558") → Gurpurab calendar.
 
@@ -434,7 +432,7 @@ Tap → Reader for that bani with autoplay if audio is available and the user la
 
 **AC**
 - [ ] CTA state is correct for each row of the table (unit + widget tests with a fake clock).
-- [ ] Today renders fully offline with no Hukamnama ever fetched (card shows "Hukamnama will appear when you're online").
+- [ ] Today renders fully offline, the Vichar card included: nothing on this screen is fetched.
 - [ ] Hindi UI: every string on Today is Hindi (Design 10).
 
 ### 1.4 Nitnem list — Design 12
@@ -566,21 +564,54 @@ Offsets are adjustable later (store `offset_min`); Phase 1 UI shows only Auto vs
 - [ ] Changing a reminder to My time 20:00 fires at 20:00 ± 1 min with exact alarm allowed (manual QA, Doze on).
 - [ ] After reboot, reminders still fire.
 
-### 1.11 Daily Hukamnama — Design 24 (screen), 25 (share card)
+### 1.11 ਅੱਜ ਦਾ ਵਿਚਾਰ — Today's Vichar
 
-- **Source:** `HukamnamaSource` interface. Default implementation: the chosen provider for Sri Darbar Sahib's daily Hukamnama (candidate: BaniDB API "today's Hukamnama"; confirm terms, §18). Payload: date, Ang, raag, writer, lines (Gurmukhi + Devanagari + Roman), meanings (pa/hi/en if available).
-- **Fetch:** on app start if the cached date < today's IST date and time ≥ 04:00 IST (Hukamnama is issued early morning in Amritsar); daily `workmanager` job with network constraint; manual pull-to-refresh on the Hukamnama screen. Cache the last 30 days in `hukamnama_cache`. Diaspora users simply see the latest available one with its date.
-- **Screen:** top bar with script switch; header card "Sri Darbar Sahib, Amritsar · Friday, 11 September · Ang 666 · Raag Dhanasari · Guru Ram Das Ji"; "Meaning in {lang}" selector; lines with meanings; "Rahao" line emphasised; actions **Listen** (feature-flagged — shown only if a licensed/permitted audio source is configured; SGPC has stated relaying its content without permission is not allowed), **Share card**; footer "Saved for offline reading · updated 4:02 AM".
-- **Share card (1080 × 1920 PNG):** dark card (Design 25): app mark + "Ang Sang", "Today's Hukamnama", date + "Sri Darbar Sahib", the first two lines (Gurmukhi), the first line in Devanagari, English meaning of the first two lines, "Ang 666 · Raag Dhanasari · Guru Ram Das Ji", footer "Read daily on Ang Sang" + store link text. Rendered offscreen, previewed, then shared with `share_plus` (WhatsApp Status friendly). Card language follows `meanings_lang`.
+Replaces the daily Hukamnama. The Hukamnama is issued fresh each morning at Sri
+Darbar Sahib and cannot be known offline, so it needs a network provider and a
+terms agreement (was §18 D4). ਅੱਜ ਦਾ ਵਿਚਾਰ needs neither: one line of Gurbani a
+day, bundled, working in airplane mode like the rest of the app.
+
+- **Content:** 200 reviewed lines from Sri Guru Granth Sahib Ji, each with a
+  Punjabi meaning and an English meaning, in
+  `content/source/vichar/gurbani-200.json` → the `vichar` table in content.db.
+  Nothing is written by the app (§0.3).
+- **Which line:** round robin on the date itself — days since the epoch, modulo
+  the collection size. Everyone opening the app on a given day sees the same
+  line; a phone that was off for a week has no backlog; reinstalling changes
+  nothing. After 200 days it begins again.
+- **Attribution:** "Sri Guru Granth Sahib Ji". This dataset carries no Ang
+  numbers and the app does not invent one. If Angs are supplied later the card
+  gains "Ang N · Sri Guru Granth Sahib Ji".
+- **Languages:** Punjabi and English meanings ship. Hindi falls back to the
+  Punjabi meaning — closer for that reader than English — until a reviewed
+  Hindi rendering exists.
+- **Today card (full width):** title, source, the line in Gurmukhi, the meaning
+  in the UI language, and two actions — **Explore** (opens the screen) and
+  **Share**.
+- **Screen (`/vichar`):** the line, then its meaning in Punjabi and in English
+  as separate cards, then **Share**.
+- **Share:** a sheet offering **As text** or **As image**.
+  - *As text* — the line, the meaning, "— Sri Guru Granth Sahib Ji" and the app
+    footer, through `share_plus`. Quotable and replyable in a family group.
+  - *As image* — a 1080 × 1920 PNG rendered offscreen from a 360 × 640 layout
+    at 3x, dark ground, ਅੱਜ ਦਾ ਵਿਚਾਰ wordmark, the line, a rule, the meaning,
+    the attribution and the footer. Sized for a WhatsApp status. The card keeps
+    its own palette rather than following the app theme, so it reads the same
+    whichever theme the sender is in.
 
 **AC**
-- [ ] Airplane mode on day 2 shows day 1's Hukamnama with its date.
-- [ ] Share card text never overflows for long Hukamnamas (truncate after the Rahao line or 2 lines with "…read in Ang Sang").
+- [ ] The line changes at local midnight and is the same on two phones in the
+      same place on the same day.
+- [ ] Everything works in airplane mode; no `INTERNET` permission is needed.
+- [ ] A Hindi reader sees the Punjabi meaning, never an English one.
+- [ ] No Ang is shown anywhere while the dataset has none.
+- [ ] The share image never overflows for the longest line and meaning in the
+      collection.
 
 ### 1.12 Elder mode — Design 11
 
 - Toggle in Setup 2 and Settings → Display. Applies app-wide: text ≥1.6× (reader minimum 30 sp), touch targets ≥ 64 dp, high-contrast colours, no small chips, no swipe-to-dismiss, bottom nav with **3 tabs** (Today, Nitnem, Settings) and larger labels.
-- Elder Today (Design 11): "Large text on" chip; greeting; date; big primary card "Start Nitnem · from Japji Sahib · 63 min"; card "Listen to today's Hukamnama · Ang 666"; Amrit Vela status card (big ring, "5 banis · Japji Sahib in progress"); Rehras card with time.
+- Elder Today (Design 11): "Large text on" chip; greeting; date; big primary card "Start Nitnem · from Japji Sahib · 63 min"; card "ਅੱਜ ਦਾ ਵਿਚਾਰ" with the day's line; Amrit Vela status card (big ring, "5 banis · Japji Sahib in progress"); Rehras card with time.
 - Elder mode never hides content (Simran, Diary remain reachable from Today/Settings).
 - Phase 3 hook: "Set up a parent's phone by QR" — not in Phase 1.
 
@@ -660,7 +691,6 @@ Source: `design/tokens.json` and `design/html/00-Foundations.html`.
 
 | Permission | Why | When requested |
 |---|---|---|
-| `INTERNET`, `ACCESS_NETWORK_STATE` | Hukamnama, Firebase, asset packs | Normal |
 | `POST_NOTIFICATIONS` | Reminders (13+) | Setup step 3 |
 | `SCHEDULE_EXACT_ALARM` | On-time reminders (12+) | "Allow on-time reminders" card; never `USE_EXACT_ALARM` (reserved for alarm/calendar apps) |
 | `RECEIVE_BOOT_COMPLETED` | Re-schedule reminders after reboot | Normal |
@@ -681,7 +711,7 @@ Source: `design/tokens.json` and `design/html/00-Foundations.html`.
 ## 13. Analytics, privacy and non-functional requirements
 
 **Analytics events** (no PII, no free text; respect `analytics_enabled`):
-`onboarding_step{step}`, `onboarding_complete{lang,script,elder}`, `bani_open{bani,source}`, `bani_complete{bani,slot,mode(read|listen)}`, `audio_play{bani,speed}`, `follow_detach`, `follow_back`, `play_all`, `sleep_timer_set{value}`, `reminder_set{target,mode}`, `reminder_open{target}`, `exact_alarm_result{granted}`, `hukamnama_view`, `hukamnama_share`, `simran_complete{count_used}`, `goal_create{bani,times,duration}`, `goal_tick`, `gurpurab_view`, `setting_change{key}`, `audio_pack_state{pack,state}`.
+`onboarding_step{step}`, `onboarding_complete{lang,script,elder}`, `bani_open{bani,source}`, `bani_complete{bani,slot,mode(read|listen)}`, `audio_play{bani,speed}`, `follow_detach`, `follow_back`, `play_all`, `sleep_timer_set{value}`, `reminder_set{target,mode}`, `reminder_open{target}`, `exact_alarm_result{granted}`, `vichar_view`, `vichar_share`, `simran_complete{count_used}`, `goal_create{bani,times,duration}`, `goal_tick`, `gurpurab_view`, `setting_change{key}`, `audio_pack_state{pack,state}`.
 User properties: `app_lang`, `script`, `elder_mode`, `theme`.
 
 **Privacy:** no accounts, no advertising ID (`com.google.android.gms.permission.AD_ID` removed from the merged manifest; Analytics ad personalisation disabled), no location upload. Opt-out toggle disables Analytics and Crashlytics collection.
@@ -695,7 +725,7 @@ User properties: `app_lang`, `script`, `elder_mode`, `theme`.
 | Smoothness | Reader scroll and highlight at 60 fps (no jank > 16 ms in profile mode for a 10-minute run) |
 | Sync accuracy | Highlight within 100 ms (target) / 150 ms (max) of timing data |
 | Battery | Position ticks only while reader/player UI is visible; background playback uses the media session only |
-| Offline | Everything except Hukamnama refresh and pack downloads works in airplane mode |
+| Offline | Everything except pack downloads works in airplane mode |
 | Reliability | Crash-free users ≥ 99.5 %; DB migrations tested |
 | Security | No secrets in the repo; Firebase config via `google-services.json` (not committed for release builds if the repo is public) |
 
@@ -703,7 +733,7 @@ User properties: `app_lang`, `script`, `elder_mode`, `theme`.
 
 ## 14. Testing strategy
 
-- **Unit:** solar calculations; Auto reminder times; rolling schedule builder (≤ 60 pending); streak & grace; completion rules; goal progress; Nanakshahi date; timing lookup (binary search, word interpolation); CTA state machine; Hukamnama cache freshness.
+- **Unit:** solar calculations; Auto reminder times; rolling schedule builder (≤ 60 pending); streak & grace; completion rules; goal progress; Nanakshahi date; timing lookup (binary search, word interpolation); CTA state machine; the Vichar day cycle.
 - **Widget / golden:** every screen in `design/screens.json`, light + dark, en + pa + hi for Today, Reader, Settings. Compare against `design/screens/*.png` by eye during review (goldens protect against regressions, not pixel-match to HTML).
 - **Integration (`integration_test`):** onboarding flow; open reader → play → auto-scroll → detach → Back to paath → tap line seek; Play all advancing banis; reminder deep link opens reader; Simran session logs to Diary.
 - **Manual QA matrix:** Android 10 / 13 / 14 / 16 on Samsung, Xiaomi/Redmi, Pixel (or emulator), one 3 GB RAM device. Background playback, Bluetooth car kit, calls, unplug, Doze, reboot, time-zone change, low storage, pack download on mobile data.
@@ -725,7 +755,7 @@ Work in order. Each milestone = one or more PRs with tests; demo build at the en
 | M5 | Onboarding + Today + Nitnem list | Splash, intros, setup 1–3 (without real scheduling), Today (day arc, CTA), Nitnem list | Fresh-install flow end to end |
 | M6 | Reminders | Solar service, city picker, reminder model + sheet, scheduler, permissions, boot/time-zone handling, notification actions & deep links, help page | 1.10 ACs pass |
 | M7 | Diary + goals + Simran | Completion logging, Diary screen, streak/grace, manual ticks, Paath goals + sheet + reminders, Daily Simran | 1.9, 1.13, 1.15 ACs pass |
-| M8 | Hukamnama + share | Source adapter, cache, workmanager job, screen, share card | 1.11 ACs pass |
+| M8 | Vichar + share | Content pipeline, day cycle, card, screen, text and image share | 1.11 ACs pass |
 | M9 | Gurpurab | Calendar service, events screen, per-event reminders, Today tile | 1.14 done |
 | M10 | Settings, elder mode, About | Settings screen, elder mode app-wide, About/credits/privacy/licences, analytics opt-out | 1.12, 1.16, 1.17 done |
 | M11 | Hardening | Performance passes, accessibility, goldens, QA matrix, backup rules, R8, store assets | NFRs met; closed test build uploaded |
@@ -768,7 +798,6 @@ Decision: **Android only in Phases 1–2; iPhone app ships in Phase 3.** Everyth
 | Background audio | Foreground service | `UIBackgroundModes: audio`; `audio_service` iOS setup; Now Playing info & remote commands |
 | Reminders | Exact alarm permission + rolling 7-day window | No exact-alarm permission; **max 64 pending local notifications** → scheduler cap of 60 (already built in) |
 | Notification permission | `POST_NOTIFICATIONS` | Provisional/standard authorisation prompt |
-| Background refresh (Hukamnama) | WorkManager | `BGAppRefreshTask` best effort + fetch on open |
 | Backup | Android Auto Backup | iCloud device backup of app documents |
 | Sign-in (from Phase 2) | Google | Must also offer Sign in with Apple or an equivalent privacy-focused login if third-party login is used (App Store guideline 4.8) |
 | Widgets (3.5) | Jetpack Glance/AppWidget | WidgetKit (Swift extension) via `home_widget` |
@@ -785,7 +814,6 @@ Decision: **Android only in Phases 1–2; iPhone app ships in Phase 3.** Everyth
 | D1 | **Gurbani text licence** — BaniDB is NPOSL-3.0 (non-profit, no revenue); confirm eligibility or get BaniDB Alliance approval; else choose another licensed source | Before public release (blocker) | Build pipeline source-agnostic; use fixtures in dev |
 | D2 | Meanings/teeka sources for pa, hi, en and their licences | M1 content freeze | Ship with meanings off for any language not licensed |
 | D3 | **Audio**: commission paathi recordings with written rights assignment (SGPC versions) | M3 final timings | Placeholder audio in dev |
-| D4 | Hukamnama provider + terms; Hukamnama audio permission | M8 | Text only, Listen hidden |
 | D5 | Bani versions beyond SGPC (Taksal/AKJ) | M2 | SGPC only |
 | D6 | Analytics consent for EEA/UK users | M10 | Opt-out toggle; ask on first launch if device region is EEA/UK |
 | D7 | Domain for privacy policy & share links | M10 | — |
@@ -823,11 +851,11 @@ Decision: **Android only in Phases 1–2; iPhone app ships in Phase 3.** Everyth
 | `21-DailySimran` | Daily Simran — 5 minutes | 1.13 | 390×844 | dark |
 | `22-GurpurabCalendar` | Gurpurab & Nanakshahi calendar (full scroll) | 1.14 | 390×1370 | light |
 | `23-Notifications` | Reminder notifications | 1.10 | 390×844 | dark |
-| `24-Hukamnama` | Hukamnama | 1.11 | 390×900 | light |
-| `25-ShareCard` | Hukamnama share card (WhatsApp Status) | 1.11 | 360×640 | dark |
+| `24-Hukamnama` | Superseded by ਅੱਜ ਦਾ ਵਿਚਾਰ (1.11) | 1.11 | 390×900 | light |
+| `25-ShareCard` | Vichar share card (WhatsApp Status) | 1.11 | 360×640 | dark |
 | `26-Diary` | Nitnem Diary | 1.9 | 390×844 | light |
 | `27-Settings` | Settings (full scroll) | 1.16 / 1.17 | 390×2240 | light |
 
 Every screen except Foundations has both `.light` and `.dark` HTML and PNG. The **designed theme** column is how the screen appears on the canvas; implement both.
 
-*Sample content:* English and Hindi meanings in the designs are placeholder paraphrases; the paathi name, durations and download sizes are placeholders; Gurbani lines are from Japji Sahib, Sukhmani Sahib and the 11 Sep 2026 Hukamnama (Ang 666); Gurpurab dates follow the SGPC calendar for 558 NS.
+*Sample content:* English and Hindi meanings in the designs are placeholder paraphrases; the paathi name, durations and download sizes are placeholders; Gurbani lines are from Japji Sahib and Sukhmani Sahib; Gurpurab dates follow the SGPC calendar for 558 NS.

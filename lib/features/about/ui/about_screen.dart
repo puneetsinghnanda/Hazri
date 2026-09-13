@@ -8,7 +8,6 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/app_mark.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../hukamnama/data/hukamnama_repository.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../../settings/ui/settings_screen.dart' show appVersion;
 
@@ -25,7 +24,6 @@ class AboutScreen extends ConsumerWidget {
     final c = context.colors;
     final l = L.of(context);
     final sources = ref.watch(contentSourcesProvider).value ?? const <SourceRow>[];
-    final hukamnama = ref.watch(hukamnamaRepositoryProvider);
 
     List<SourceRow> of(String kind) => sources.where((s) => s.kind == kind).toList();
 
@@ -59,8 +57,7 @@ class AboutScreen extends ConsumerWidget {
         ),
         _PlainGroup(title: l.aboutFonts, body: l.aboutFontsBody),
         _PlainGroup(title: l.aboutAudioHeading, body: l.aboutNoAudioYet),
-        if (!hukamnama.isConfigured)
-          _PlainGroup(title: l.hukamnamaTitle, body: l.hukamnamaNotConfiguredBody),
+        _PlainGroup(title: l.vicharTitle, body: l.vicharSource),
         const SizedBox(height: 16),
         HazriCard(
           colour: c.card2,

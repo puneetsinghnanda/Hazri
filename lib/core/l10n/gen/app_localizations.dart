@@ -777,12 +777,6 @@ abstract class L {
   /// **'Sat Sri Akal ji'**
   String get greeting;
 
-  /// No description provided for @todayHukamnama.
-  ///
-  /// In en, this message translates to:
-  /// **'Today\'s Hukamnama'**
-  String get todayHukamnama;
-
   /// No description provided for @ctaStartNitnem.
   ///
   /// In en, this message translates to:
@@ -890,66 +884,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'About & credits'**
   String get helpAboutLink;
-
-  /// No description provided for @hukamnamaOfflineEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'Hukamnama will appear when you\'re online'**
-  String get hukamnamaOfflineEmpty;
-
-  /// No description provided for @hukamnamaNotConfigured.
-  ///
-  /// In en, this message translates to:
-  /// **'No Hukamnama source is set up in this build'**
-  String get hukamnamaNotConfigured;
-
-  /// No description provided for @hukamnamaNotConfiguredBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Hazri does not fetch the daily Hukamnama yet. When a permitted source is configured, today\'s Hukamnama appears here and can be shared as a card.'**
-  String get hukamnamaNotConfiguredBody;
-
-  /// No description provided for @hukamnamaSavedOn.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved {date}'**
-  String hukamnamaSavedOn(String date);
-
-  /// No description provided for @hukamnamaTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hukamnama'**
-  String get hukamnamaTitle;
-
-  /// No description provided for @hukamnamaMeaningIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Meaning in'**
-  String get hukamnamaMeaningIn;
-
-  /// No description provided for @hukamnamaSource.
-  ///
-  /// In en, this message translates to:
-  /// **'Sri Darbar Sahib, Amritsar'**
-  String get hukamnamaSource;
-
-  /// No description provided for @hukamnamaRahao.
-  ///
-  /// In en, this message translates to:
-  /// **'Rahao'**
-  String get hukamnamaRahao;
-
-  /// No description provided for @hukamnamaSavedOffline.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved for offline reading'**
-  String get hukamnamaSavedOffline;
-
-  /// No description provided for @hukamnamaReadDailyOn.
-  ///
-  /// In en, this message translates to:
-  /// **'Read daily on'**
-  String get hukamnamaReadDailyOn;
 
   /// No description provided for @nitnemTitle.
   ///
@@ -2100,7 +2034,7 @@ abstract class L {
   /// No description provided for @shareCardTitle.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s Hukamnama'**
+  /// **'Today\'s Vichar'**
   String get shareCardTitle;
 
   /// No description provided for @shareCardFooter.
@@ -2204,6 +2138,78 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Still playing'**
   String get playerStillPlaying;
+
+  /// No description provided for @vicharTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Vichar'**
+  String get vicharTitle;
+
+  /// No description provided for @vicharNative.
+  ///
+  /// In en, this message translates to:
+  /// **'ਅੱਜ ਦਾ ਵਿਚਾਰ'**
+  String get vicharNative;
+
+  /// No description provided for @vicharSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Sri Guru Granth Sahib Ji'**
+  String get vicharSource;
+
+  /// No description provided for @vicharExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get vicharExplore;
+
+  /// No description provided for @vicharShareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this Vichar'**
+  String get vicharShareTitle;
+
+  /// No description provided for @vicharShareBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to send it'**
+  String get vicharShareBody;
+
+  /// No description provided for @vicharShareAsText.
+  ///
+  /// In en, this message translates to:
+  /// **'As text'**
+  String get vicharShareAsText;
+
+  /// No description provided for @vicharShareAsImage.
+  ///
+  /// In en, this message translates to:
+  /// **'As image'**
+  String get vicharShareAsImage;
+
+  /// No description provided for @vicharMeaningPa.
+  ///
+  /// In en, this message translates to:
+  /// **'In Punjabi'**
+  String get vicharMeaningPa;
+
+  /// No description provided for @vicharMeaningEn.
+  ///
+  /// In en, this message translates to:
+  /// **'In English'**
+  String get vicharMeaningEn;
+
+  /// No description provided for @vicharNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No Vichar in this build yet'**
+  String get vicharNone;
+
+  /// No description provided for @vicharDayOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Line {day} of {total}'**
+  String vicharDayOf(int day, int total);
 
   /// No description provided for @errorGeneric.
   ///
