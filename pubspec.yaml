@@ -11,6 +11,9 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  # Material's platform-adaptive widgets reference CupertinoIcons, and the icon
+  # tree-shaker warns when the font is absent.
+  cupertino_icons: ^1.0.8
 
   # State & navigation
   flutter_riverpod: ^2.6.1

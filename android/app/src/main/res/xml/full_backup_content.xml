@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Backup rules for Android 11 and below; see data_extraction_rules.xml. -->
+<!--
+  Backup rules for Android 11 and below; see data_extraction_rules.xml for what
+  lives where and why the bundled content database is left out.
+-->
 <full-backup-content>
-    <include domain="database" path="user.db" />
-    <include domain="file" path="user.db" />
+    <include domain="root" path="app_flutter" />
     <include domain="sharedpref" path="." />
-    <exclude domain="file" path="content.db" />
-    <exclude domain="file" path="content.version" />
-    <exclude domain="external" path="." />
 </full-backup-content>
