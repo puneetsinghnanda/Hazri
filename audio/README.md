@@ -54,18 +54,47 @@ derives them from the recording:
 2. Each line gets a weight — an estimate of how long it takes to recite,
    counting syllable nuclei rather than characters.
 3. A dynamic program assigns one detected pause to each line boundary, in
-   order, choosing the assignment whose segment durations best fit the weights
-   while preferring longer pauses. Mid-line breaths are skipped by the same
-   search.
-4. Word spans inside a line are split by syllable weight — the fallback the
+   order, choosing the assignment whose segment durations best fit the weights.
+   Mid-line breaths are skipped by the same search.
+4. That alignment is then used to re-estimate what each line *should* take, and
+   the search is run again — three rounds. Two things the first pass cannot
+   know:
+   - **the local pace**, since a reciter speeds up and slows down across
+     nineteen minutes, so one global seconds-per-syllable misjudges whole
+     passages;
+   - **repeated lines**. Japji repeats eight lines verbatim, and identical text
+     takes near-identical time. The median duration across a line's occurrences
+     is a far better expectation than its syllable count, and it is robust: one
+     occurrence coming out at double the length is outvoted rather than
+     accepted.
+5. Word spans inside a line are split by syllable weight — the fallback the
    PRD allows (§8) when an aligner cannot give word timings.
+
+### Why the detector is deliberately conservative
+
+`QUIET_DB` and `MIN_PAUSE_MS` were chosen by measuring, not by taste. Loosening
+them finds more candidate pauses and makes the alignment much *worse*, because
+the search gains enough freedom to fit noise:
+
+| threshold | candidates | acoustic separation |
+|---|---|---|
+| −27 dB / 100 ms | 702 | **4.65 σ** |
+| −25 dB / 80 ms | 1256 | 0.82 σ |
+| −24 dB / 60 ms | 1908 | 0.14 σ |
+
+Do not loosen them without re-running `verify_timings.py`.
 
 `verify_timings.py` checks the result acoustically rather than taking it on
 trust. Japji repeats eight lines verbatim; the tool compares the audio under
 each repeat with dynamic time warping and reports how far matched pairs sit
 from unrelated ones. On the shipped alignment, matched pairs average a DTW
-distance of 0.136 against 0.311 for controls — **4.3 standard deviations** of
+distance of 0.125 against 0.310 for controls — **4.65 standard deviations** of
 separation.
+
+`align_timings.py --report` also prints the duration of every repeated line
+side by side. A group whose durations disagree by more than about a third means
+a boundary was missed in it; that is how the drift at 7:55 was found and
+fixed.
 
 ## Still to do
 

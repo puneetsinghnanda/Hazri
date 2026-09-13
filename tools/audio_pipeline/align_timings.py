@@ -58,8 +58,20 @@ MIN_PAUSE_MS = 100
 # a missed boundary.
 MAX_PAUSES_PER_LINE = 5
 
-# Weight of the "prefer a long pause" term against the duration-fit term.
-PAUSE_REWARD = 0.9
+# Weight of the "prefer a long pause" term against the duration-fit term. Kept
+# small: a longer pause is weak evidence of a line boundary, and letting it
+# outvote the duration fit is what made the search skip real boundaries in
+# favour of the biggest nearby gap.
+PAUSE_REWARD = 0.25
+
+# How many times to re-estimate the expected line durations from the alignment
+# and realign. Two extra passes is enough to settle.
+REFINEMENT_ROUNDS = 3
+
+# Half-width, in lines, of the window used to estimate the local speaking pace.
+# A reciter speeds up and slows down across nineteen minutes, so one global
+# rate misjudges whole passages.
+RATE_WINDOW = 20
 
 # Gurmukhi code points, by role.
 _INDEPENDENT_VOWELS = range(0x0A05, 0x0A15)
@@ -157,7 +169,7 @@ def find_pauses(db: np.ndarray) -> tuple[list[tuple[float, float]], float, float
 
 
 def align(
-    weights: list[float],
+    expected: list[float],
     pauses: list[tuple[float, float]],
     speech_start: float,
     speech_end: float,
@@ -165,9 +177,10 @@ def align(
     """Picks one pause per line boundary; returns the chosen pause indices.
 
     A dynamic program over (boundary, pause) minimising how far each line's
-    duration strays from its weight, less a reward for landing on a long pause.
+    duration strays from [expected], less a small reward for landing on a long
+    pause.
     """
-    n_lines = len(weights)
+    n_lines = len(expected)
     n_bounds = n_lines - 1
     n_pauses = len(pauses)
     if n_pauses < n_bounds:
@@ -176,30 +189,25 @@ def align(
             "loosen QUIET_DB or MIN_PAUSE_MS"
         )
 
-    total_weight = sum(weights)
-    seconds_per_weight = (speech_end - speech_start) / total_weight
-
     starts = np.array([p[0] for p in pauses])
     ends = np.array([p[1] for p in pauses])
     rewards = (ends - starts) * PAUSE_REWARD
 
-    def segment_cost(duration: float, weight: float) -> float:
+    def segment_cost(duration: float, want: float) -> float:
         # Squared log-ratio, so being 2x too fast costs the same as 2x too
         # slow. A plain squared difference barely notices a line collapsing to
         # a fraction of its expected length, which is exactly the failure to
         # avoid.
-        expected = weight * seconds_per_weight
-        return math.log(max(duration, 0.05) / expected) ** 2
+        return math.log(max(duration, 0.05) / max(want, 0.05)) ** 2
 
     INF = math.inf
-    # best[j] = cost of placing the current boundary at pause j
     best = np.full(n_pauses, INF)
     back = np.full((n_bounds, n_pauses), -1, dtype=np.int32)
 
     # Boundary 0 closes line 0, which starts where speech starts.
     lo, hi = 0, n_pauses - n_bounds
     for j in range(lo, hi + 1):
-        best[j] = segment_cost(starts[j] - speech_start, weights[0]) - rewards[j]
+        best[j] = segment_cost(starts[j] - speech_start, expected[0]) - rewards[j]
 
     for b in range(1, n_bounds):
         nxt = np.full(n_pauses, INF)
@@ -211,7 +219,7 @@ def align(
                 prev = best[k]
                 if prev == INF:
                     continue
-                cost = prev + segment_cost(starts[j] - ends[k], weights[b])
+                cost = prev + segment_cost(starts[j] - ends[k], expected[b])
                 if cost < best_cost:
                     best_cost, best_k = cost, k
             if best_k >= 0:
@@ -219,12 +227,11 @@ def align(
                 back[b, j] = best_k
         best = nxt
 
-    # Close the last line against the end of speech.
     final_cost, final_j = INF, -1
     for j in range(n_bounds - 1, n_pauses):
         if best[j] == INF:
             continue
-        cost = best[j] + segment_cost(speech_end - ends[j], weights[-1])
+        cost = best[j] + segment_cost(speech_end - ends[j], expected[-1])
         if cost < final_cost:
             final_cost, final_j = cost, j
 
@@ -236,6 +243,86 @@ def align(
     for b in range(n_bounds - 1, -1, -1):
         chosen[b] = j
         j = int(back[b, j]) if b > 0 else j
+    return chosen
+
+
+def spans_for(
+    chosen: list[int],
+    pauses: list[tuple[float, float]],
+    speech_start: float,
+    speech_end: float,
+    n_lines: int,
+) -> list[tuple[float, float]]:
+    spans: list[tuple[float, float]] = []
+    prev_end = speech_start
+    for i in range(n_lines):
+        if i < len(chosen):
+            spans.append((prev_end, pauses[chosen[i]][0]))
+            prev_end = pauses[chosen[i]][1]
+        else:
+            spans.append((prev_end, speech_end))
+    return spans
+
+
+def align_refined(
+    texts: list[str],
+    weights: list[float],
+    pauses: list[tuple[float, float]],
+    speech_start: float,
+    speech_end: float,
+) -> list[int]:
+    """Aligns, then re-aligns using what the first pass revealed.
+
+    Two things a single pass cannot know:
+
+    * **The local pace.** One global seconds-per-syllable misjudges passages
+      the reciter takes slower or faster, so the expected durations are
+      re-estimated from a smoothed window of the previous pass.
+    * **Repeated lines.** Japji repeats eight lines verbatim. Identical text
+      takes near-identical time to recite, so the median duration across a
+      line's occurrences is a far better expectation than its syllable count --
+      and it is robust: one occurrence coming out at twice the length is
+      outvoted by the others rather than accepted.
+
+    That second point is what fixes a boundary the search skipped: a line
+    stretched to double its twins' length no longer looks acceptable.
+    """
+    total_weight = sum(weights)
+    rate = (speech_end - speech_start) / total_weight
+    expected = [w * rate for w in weights]
+
+    groups: dict[str, list[int]] = {}
+    for i, text in enumerate(texts):
+        groups.setdefault(text, []).append(i)
+
+    chosen: list[int] = []
+    for _ in range(REFINEMENT_ROUNDS):
+        chosen = align(expected, pauses, speech_start, speech_end)
+        spans = spans_for(chosen, pauses, speech_start, speech_end, len(texts))
+        durations = [e - s for s, e in spans]
+
+        # Local pace, smoothed so one odd line cannot swing it.
+        observed = np.array([d / w for d, w in zip(durations, weights)])
+        smoothed = np.empty_like(observed)
+        for i in range(len(observed)):
+            lo = max(0, i - RATE_WINDOW)
+            hi = min(len(observed), i + RATE_WINDOW + 1)
+            smoothed[i] = float(np.median(observed[lo:hi]))
+
+        nxt: list[float] = []
+        for i, text in enumerate(texts):
+            from_pace = weights[i] * smoothed[i]
+            peers = groups[text]
+            if len(peers) >= 2:
+                median_peer = float(np.median([durations[j] for j in peers]))
+                # Half the peers' median, half the local pace: the median
+                # anchors repeated lines without letting a single bad pass
+                # lock the answer in.
+                nxt.append(0.5 * median_peer + 0.5 * from_pace)
+            else:
+                nxt.append(from_pace)
+        expected = nxt
+
     return chosen
 
 
@@ -282,18 +369,9 @@ def main() -> int:
 
     pauses, speech_start, speech_end = find_pauses(db)
     duration_ms = int(round(len(db) * FRAME_S * 1000))
-    chosen = align(weights, pauses, speech_start, speech_end)
-
-    # Turn the chosen pauses into per-line spans.
-    spans: list[tuple[float, float]] = []
-    prev_end = speech_start
-    for i in range(len(lines)):
-        if i < len(chosen):
-            end = pauses[chosen[i]][0]
-            spans.append((prev_end, end))
-            prev_end = pauses[chosen[i]][1]
-        else:
-            spans.append((prev_end, speech_end))
+    texts = [l["gurmukhi"] for l in lines]
+    chosen = align_refined(texts, weights, pauses, speech_start, speech_end)
+    spans = spans_for(chosen, pauses, speech_start, speech_end, len(lines))
 
     timings = {
         "track": f"{args.bani}_sgpc_voice1",
@@ -347,6 +425,25 @@ def report(lines, spans, weights, pauses, chosen, speech_start, speech_end) -> N
         print(f"pause mid-pauri          : mean {mp.mean()*1000:6.0f}ms  (n={len(mp)})")
         print(f"ratio                    : {pe.mean()/mp.mean():.2f}x  "
               f"(>1.2 means boundaries landed on real line ends)")
+
+    # Identical text should take near-identical time. A group with a wide
+    # spread means a boundary was missed somewhere in it.
+    groups: dict[str, list[int]] = {}
+    for i, l in enumerate(lines):
+        groups.setdefault(l["gurmukhi"], []).append(i)
+    repeats = {t: v for t, v in groups.items() if len(v) > 1}
+    if repeats:
+        print("\nrepeated lines (durations should match):")
+        worst_spread = 0.0
+        for text, idxs in sorted(repeats.items(), key=lambda kv: -len(kv[1])):
+            ds = [durs[i] for i in idxs]
+            spread = max(ds) / min(ds)
+            worst_spread = max(worst_spread, spread)
+            flag = "  <-- CHECK" if spread > 1.35 else ""
+            print(f"  x{len(idxs)}  {[f'{d:.2f}' for d in ds]}  "
+                  f"spread {spread:.2f}x  {text[:34]}{flag}")
+        print(f"  worst spread: {worst_spread:.2f}x  "
+              f"({'ok' if worst_spread <= 1.35 else 'a boundary is probably wrong'})")
 
     worst = np.argsort(-np.abs(rate - np.median(rate)))[:8]
     print("\nlines whose pace strays furthest from the median:")

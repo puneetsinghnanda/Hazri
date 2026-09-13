@@ -123,10 +123,24 @@ class HazriAudioHandler extends BaseAudioHandler
     // onto the speaker (PRD 1.8).
     session.becomingNoisyEventStream.listen((_) => pause());
 
+    // Every stream that can change what the media session should report.
+    //
+    // `playbackEventStream` alone is not enough: a PlaybackEvent carries the
+    // processing state and position but not whether the player is playing, so
+    // relying on it can leave the session reporting paused forever -- and
+    // Android only puts controls on the lock screen for a session that says it
+    // is playing.
+    void publish() => playbackState.add(_currentState());
+
     _player.playbackEventStream.listen(
-      (event) => playbackState.add(_transform(event)),
+      (_) => publish(),
       onError: (Object e, StackTrace st) => debugPrint('Hazri audio: $e'),
     );
+    _player.playingStream.listen((_) => publish());
+    _player.speedStream.listen((_) => publish());
+    _player.currentIndexStream.listen((_) => publish());
+    _player.processingStateStream.listen((_) => publish());
+    publish();
 
     _player.currentIndexStream.listen((index) {
       if (index != null && index >= 0 && index < _tracks.length) {
@@ -151,8 +165,27 @@ class HazriAudioHandler extends BaseAudioHandler
     });
   }
 
-  PlaybackState _transform(PlaybackEvent event) {
-    final playing = _player.playing;
+  PlaybackState _currentState() => buildPlaybackState(
+    playing: _player.playing,
+    processingState: _player.processingState,
+    position: _player.position,
+    bufferedPosition: _player.bufferedPosition,
+    speed: _player.speed,
+    queueIndex: _player.currentIndex,
+  );
+
+  /// Builds what the media session reports to Android.
+  ///
+  /// Pure, so the mapping that decides whether the lock screen shows controls
+  /// can be tested without an audio device.
+  static PlaybackState buildPlaybackState({
+    required bool playing,
+    required ProcessingState processingState,
+    required Duration position,
+    required Duration bufferedPosition,
+    required double speed,
+    int? queueIndex,
+  }) {
     return PlaybackState(
       controls: [
         MediaControl.skipToPrevious,
@@ -161,9 +194,21 @@ class HazriAudioHandler extends BaseAudioHandler
         MediaControl.fastForward,
         MediaControl.skipToNext,
       ],
-      systemActions: const {MediaAction.seek, MediaAction.setSpeed},
+      // Named so the lock screen and Bluetooth controls offer them even when
+      // they are not among the notification's own buttons.
+      systemActions: const {
+        MediaAction.play,
+        MediaAction.pause,
+        MediaAction.playPause,
+        MediaAction.seek,
+        MediaAction.seekForward,
+        MediaAction.seekBackward,
+        MediaAction.skipToNext,
+        MediaAction.skipToPrevious,
+        MediaAction.setSpeed,
+      },
       androidCompactActionIndices: const [1, 2, 3],
-      processingState: switch (_player.processingState) {
+      processingState: switch (processingState) {
         ProcessingState.idle => AudioProcessingState.idle,
         ProcessingState.loading => AudioProcessingState.loading,
         ProcessingState.buffering => AudioProcessingState.buffering,
@@ -171,10 +216,10 @@ class HazriAudioHandler extends BaseAudioHandler
         ProcessingState.completed => AudioProcessingState.completed,
       },
       playing: playing,
-      updatePosition: _player.position,
-      bufferedPosition: _player.bufferedPosition,
-      speed: _player.speed,
-      queueIndex: event.currentIndex,
+      updatePosition: position,
+      bufferedPosition: bufferedPosition,
+      speed: speed,
+      queueIndex: queueIndex,
     );
   }
 
