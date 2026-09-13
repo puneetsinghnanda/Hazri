@@ -12,6 +12,7 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/audio_controller.dart';
+import '../../audio/data/notification_access.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../reminders/data/reminder_service.dart';
 import '../../reminders/data/reminders_controller.dart';
@@ -139,6 +140,22 @@ class SettingsScreen extends ConsumerWidget {
                     subtitle: hasAudio ? l.audioIncludedSub : l.audioNotInBuildSub,
                     value: hasAudio ? l.settingsAudioOnPhone : l.comingSoonShort,
                   ),
+                  if (hasAudio)
+                    SettingsRow(
+                      title: l.settingsLockScreenControls,
+                      subtitle: switch (ref.watch(notificationsAllowedProvider).value) {
+                        null => null,
+                        true => l.settingsLockScreenAllowed,
+                        false => l.settingsLockScreenBlocked,
+                      },
+                      value: ref.watch(notificationsAllowedProvider).value == false
+                          ? l.actionAllow
+                          : null,
+                      onTap: ref.watch(notificationsAllowedProvider).value == false
+                          ? () =>
+                              ref.read(notificationsAllowedProvider.notifier).allow()
+                          : null,
+                    ),
                   _SegmentedRow(
                     title: l.playerSpeed,
                     options: const [('0.75', '0.75×'), ('1.0', '1.0×'), ('1.5', '1.5×')],

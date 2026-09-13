@@ -2,15 +2,27 @@
 """Check an aligned timing file against the recording itself.
 
 Alignment quality cannot be judged from the timings alone, so this measures it
-acoustically. Japji Sahib repeats eight lines verbatim -- "ਆਦੇਸੁ ਤਿਸੈ ਆਦੇਸੁ ॥"
-four times, and so on. If the alignment is tracking the recitation, the audio
-under two occurrences of the same line should sound nearly the same, while the
-audio under two unrelated lines should not.
+against the recording, and deliberately by means the aligner does not use --
+a check the aligner optimises is no check at all.
 
-The test compares log-mel spectra with dynamic time warping, and reports the
-separation between matched pairs (same text) and control pairs (different
-text). A large separation means the spans really do sit on the words they
-claim to.
+Three of them, strongest first:
+
+1. **Anchors.** If `content/source/timings/<slug>.anchors.json` exists, it
+   holds times somebody listened to and wrote down, and the aligner never sees
+   it. The error at those lines is the only measurement here that is ground
+   truth rather than evidence.
+2. **Pauses.** Line boundaries are found by warping the text onto the audio,
+   which knows nothing about the recording's energy. So a boundary landing in
+   a stretch the reciter was silent for is agreement between two independent
+   readings of the same recording. Compared against times drawn at random,
+   which land in silence often enough in a recitation that the comparison is
+   the point.
+3. **Repeated lines.** Japji Sahib repeats eight lines verbatim -- "ਆਦੇਸੁ ਤਿਸੈ
+   ਆਦੇਸੁ ॥" four times, and so on. Two occurrences of the same line should
+   sound alike and two unrelated lines should not, which this measures by
+   warping log-mel spectra. It is the weakest of the three: it says the spans
+   sit on the right words, but an alignment that had slid a constant amount
+   late everywhere would still pass it.
 
 Usage:
     python3 tools/audio_pipeline/verify_timings.py japji-sahib
@@ -94,6 +106,71 @@ def dtw(a: np.ndarray, b: np.ndarray) -> float:
     return float(acc[n, m] / (n + m))
 
 
+QUIET_DB = -27.0
+MIN_PAUSE_S = 0.10
+FRAME_S = 0.020
+
+
+def pauses_of(path: str) -> list[tuple[float, float]]:
+    """The stretches the reciter was silent for, from the energy alone."""
+    with wave.open(path) as w:
+        x = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0
+    hop = int(FRAME_S * RATE)
+    frames = x[: len(x) // hop * hop].reshape(-1, hop)
+    db = 20 * np.log10(np.sqrt((frames ** 2).mean(axis=1)) + 1e-12)
+    quiet = db < QUIET_DB
+    edges = np.flatnonzero(np.diff(np.concatenate(([0], quiet.view(np.int8), [0]))))
+    return [
+        (float(a * FRAME_S), float(b * FRAME_S))
+        for a, b in zip(edges[::2], edges[1::2])
+        if (b - a) * FRAME_S >= MIN_PAUSE_S
+    ]
+
+
+def in_a_pause(times: np.ndarray, pauses: list[tuple[float, float]]) -> np.ndarray:
+    lo = np.array([a for a, _ in pauses])
+    hi = np.array([b for _, b in pauses])
+    i = np.clip(np.searchsorted(lo, times, side="right") - 1, 0, len(lo) - 1)
+    return (times >= lo[i]) & (times <= hi[i])
+
+
+def check_pauses(spans: dict[int, tuple[float, float]], wav: str, seed: int) -> bool:
+    pauses = pauses_of(wav)
+    starts = np.array([s for _, (s, _) in sorted(spans.items())][1:])
+    hit = in_a_pause(starts, pauses)
+    rng = np.random.default_rng(seed)
+    control = in_a_pause(rng.uniform(starts.min(), starts.max(), 20000), pauses)
+    print(f"\nline starts inside one of the reciter's {len(pauses)} pauses: "
+          f"{hit.mean() * 100:.0f}%  (times drawn at random: {control.mean() * 100:.0f}%)")
+    return bool(hit.mean() > 0.85)
+
+
+def check_anchors(bani: str, spans: dict[int, tuple[float, float]]) -> bool | None:
+    """Compares against times a person listened to, if any have been written down."""
+    path = os.path.join(TIMINGS_DIR, f"{bani}.anchors.json")
+    if not os.path.exists(path):
+        print("\nno anchors file: nothing here has been checked by ear yet.")
+        print(f"  write one at {os.path.relpath(path, ROOT)} as")
+        print('  [{"line": 167, "s": 472.96}, ...] and this will measure against it.')
+        return None
+    with open(path, encoding="utf-8") as fh:
+        anchors = json.load(fh)
+    errors = []
+    for a in anchors:
+        if a["line"] in spans:
+            errors.append(spans[a["line"]][0] - a["s"])
+    if not errors:
+        print("\nanchors file holds no line this timing file covers")
+        return None
+    e = np.abs(np.array(errors))
+    print(f"\nagainst {len(e)} anchors somebody listened to: "
+          f"median error {np.median(e):.2f}s, worst {e.max():.2f}s")
+    for a, err in zip(anchors, errors):
+        if abs(err) > 0.5:
+            print(f"  line {a['line']:>4}: {err:+.2f}s")
+    return bool(np.median(e) < 0.30 and e.max() < 1.0)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("bani")
@@ -118,6 +195,7 @@ def main() -> int:
     for idx, text in rows:
         groups.setdefault(text, []).append(idx)
     repeats = {t: v for t, v in groups.items() if len(v) > 1}
+    print(f"bani: {args.bani}   lines: {len(rows)}   repeat groups: {len(repeats)}")
 
     with tempfile.TemporaryDirectory() as tmp:
         wav = os.path.join(tmp, "a.wav")
@@ -127,6 +205,8 @@ def main() -> int:
             check=True,
         )
         feats = log_mel(wav)
+        anchors_ok = check_anchors(args.bani, spans)
+        pauses_ok = check_pauses(spans, wav, args.seed)
 
     def segment(idx: int) -> np.ndarray | None:
         s, e = spans[idx]
@@ -158,7 +238,6 @@ def main() -> int:
 
     m = np.array(matched)
     c = np.array(controls)
-    print(f"bani: {args.bani}   lines: {len(rows)}   repeat groups: {len(repeats)}")
     print(f"\nsame line, different occurrence  (n={len(m):>3}): "
           f"mean {m.mean():.4f}  median {np.median(m):.4f}")
     print(f"different lines (control)        (n={len(c):>3}): "
@@ -175,9 +254,14 @@ def main() -> int:
             continue
         print(f"  {np.mean(dists):.4f}  x{len(dists)+1 if len(dists)<3 else 4}  {text[:46]}")
 
-    verdict = "ALIGNED" if sep > 2.0 and m.mean() < c.mean() * 0.75 else "WEAK"
-    print(f"\nverdict: {verdict}")
-    return 0 if verdict == "ALIGNED" else 1
+    repeats_ok = sep > 2.0 and m.mean() < c.mean() * 0.75
+    print(f"\nrepeated lines: {'consistent' if repeats_ok else 'WEAK'}")
+
+    checks = [pauses_ok, repeats_ok]
+    if anchors_ok is not None:
+        checks.append(anchors_ok)
+    print(f"\nverdict: {'ALIGNED' if all(checks) else 'NEEDS A LISTEN'}")
+    return 0 if all(checks) else 1
 
 
 if __name__ == "__main__":

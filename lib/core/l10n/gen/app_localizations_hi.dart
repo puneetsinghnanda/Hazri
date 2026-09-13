@@ -1183,6 +1183,24 @@ class LHi extends L {
       'पाठ वहीं से शुरू करने के लिए किसी भी पंक्ति पर टैप करें';
 
   @override
+  String get readerLockControlsOff => 'लॉक-स्क्रीन नियंत्रण बंद हैं';
+
+  @override
+  String get readerLockControlsOffSub =>
+      'सूचनाओं की अनुमति दें, फिर पाठ लॉक स्क्रीन से रोका जा सकेगा।';
+
+  @override
+  String get settingsLockScreenControls => 'लॉक-स्क्रीन नियंत्रण';
+
+  @override
+  String get settingsLockScreenAllowed =>
+      'अनुमति है — फ़ोन लॉक होने पर चलाएँ और रोकें दिखते हैं';
+
+  @override
+  String get settingsLockScreenBlocked =>
+      'अनुमति नहीं — हाज़री के लिए सूचनाएँ बंद हैं';
+
+  @override
   String get errorGeneric => 'कुछ गलत हो गया।';
 
   @override

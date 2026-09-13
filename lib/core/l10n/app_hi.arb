@@ -386,6 +386,12 @@
 
   "readerTapLineToSeek": "पाठ वहीं से शुरू करने के लिए किसी भी पंक्ति पर टैप करें",
 
+  "readerLockControlsOff": "लॉक-स्क्रीन नियंत्रण बंद हैं",
+  "readerLockControlsOffSub": "सूचनाओं की अनुमति दें, फिर पाठ लॉक स्क्रीन से रोका जा सकेगा।",
+  "settingsLockScreenControls": "लॉक-स्क्रीन नियंत्रण",
+  "settingsLockScreenAllowed": "अनुमति है — फ़ोन लॉक होने पर चलाएँ और रोकें दिखते हैं",
+  "settingsLockScreenBlocked": "अनुमति नहीं — हाज़री के लिए सूचनाएँ बंद हैं",
+
   "errorGeneric": "कुछ गलत हो गया।",
   "errorContentDb": "ऐप के साथ आई सामग्री नहीं खुल सकी। हाज़िरी फिर इंस्टॉल करने से ठीक हो जाएगा।"
 }

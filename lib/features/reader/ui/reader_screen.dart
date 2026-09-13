@@ -21,6 +21,7 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/audio_controller.dart';
+import '../../audio/data/notification_access.dart';
 import '../../audio/domain/paath_player.dart';
 import '../../audio/domain/timings.dart';
 import '../../audio/ui/player_bar.dart';
@@ -408,6 +409,8 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                   },
                 ),
               ),
+              if (hasAudio && ref.watch(notificationsAllowedProvider).value == false)
+                const _LockScreenControlsBanner(),
               if (hasAudio)
                 PlayerBar(
                   bani: bani,
@@ -701,6 +704,58 @@ class _EndOfBaniCard extends ConsumerWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Offers the way back when notifications are blocked.
+///
+/// audio_service publishes the media session through the playback service's
+/// foreground notification, so a denied POST_NOTIFICATIONS means the paath
+/// plays with nothing in the shade and no controls on the lock screen.
+class _LockScreenControlsBanner extends ConsumerWidget {
+  const _LockScreenControlsBanner();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.colors;
+    final l = L.of(context);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(18, 10, 12, 10),
+      color: c.card,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: AppIcon(HazriIconData.lock, size: 18, color: c.muted),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l.readerLockControlsOff,
+                  style: HazriText.caption.copyWith(color: c.ink),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  l.readerLockControlsOffSub,
+                  style: HazriText.caption.copyWith(color: c.muted),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 4),
+          TextButton(
+            onPressed: () =>
+                ref.read(notificationsAllowedProvider.notifier).allow(),
+            child: Text(l.actionAllow),
+          ),
+        ],
       ),
     );
   }

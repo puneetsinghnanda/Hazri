@@ -2187,6 +2187,36 @@ abstract class L {
   /// **'Tap any line to start the paath there'**
   String get readerTapLineToSeek;
 
+  /// No description provided for @readerLockControlsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock-screen controls are off'**
+  String get readerLockControlsOff;
+
+  /// No description provided for @readerLockControlsOffSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications and the paath can be paused from the lock screen.'**
+  String get readerLockControlsOffSub;
+
+  /// No description provided for @settingsLockScreenControls.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock-screen controls'**
+  String get settingsLockScreenControls;
+
+  /// No description provided for @settingsLockScreenAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed — play and pause show while the phone is locked'**
+  String get settingsLockScreenAllowed;
+
+  /// No description provided for @settingsLockScreenBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not allowed — notifications are turned off for Hazri'**
+  String get settingsLockScreenBlocked;
+
   /// No description provided for @errorGeneric.
   ///
   /// In en, this message translates to:

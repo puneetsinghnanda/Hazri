@@ -433,6 +433,12 @@
 
   "readerTapLineToSeek": "Tap any line to start the paath there",
 
+  "readerLockControlsOff": "Lock-screen controls are off",
+  "readerLockControlsOffSub": "Allow notifications and the paath can be paused from the lock screen.",
+  "settingsLockScreenControls": "Lock-screen controls",
+  "settingsLockScreenAllowed": "Allowed — play and pause show while the phone is locked",
+  "settingsLockScreenBlocked": "Not allowed — notifications are turned off for Hazri",
+
   "errorGeneric": "Something went wrong.",
   "errorContentDb": "The bundled content could not be opened. Reinstalling Hazri should fix it."
 }

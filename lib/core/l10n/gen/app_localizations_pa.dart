@@ -1184,6 +1184,24 @@ class LPa extends L {
       'ਪਾਠ ਉੱਥੋਂ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਸੇ ਵੀ ਪੰਕਤੀ ਉੱਤੇ ਟੈਪ ਕਰੋ';
 
   @override
+  String get readerLockControlsOff => 'ਲਾਕ-ਸਕਰੀਨ ਕੰਟਰੋਲ ਬੰਦ ਹਨ';
+
+  @override
+  String get readerLockControlsOffSub =>
+      'ਨੋਟੀਫਿਕੇਸ਼ਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ, ਫੇਰ ਪਾਠ ਲਾਕ ਸਕਰੀਨ ਤੋਂ ਰੋਕਿਆ ਜਾ ਸਕੇਗਾ।';
+
+  @override
+  String get settingsLockScreenControls => 'ਲਾਕ-ਸਕਰੀਨ ਕੰਟਰੋਲ';
+
+  @override
+  String get settingsLockScreenAllowed =>
+      'ਇਜਾਜ਼ਤ ਹੈ — ਫ਼ੋਨ ਲਾਕ ਹੋਣ ਉੱਤੇ ਚਲਾਓ ਤੇ ਰੋਕੋ ਦਿਸਦੇ ਹਨ';
+
+  @override
+  String get settingsLockScreenBlocked =>
+      'ਇਜਾਜ਼ਤ ਨਹੀਂ — ਹਾਜ਼ਰੀ ਲਈ ਨੋਟੀਫਿਕੇਸ਼ਨ ਬੰਦ ਹਨ';
+
+  @override
   String get errorGeneric => 'ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।';
 
   @override

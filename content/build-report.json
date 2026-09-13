@@ -10,7 +10,7 @@
     {
       "bani": "japji-sahib",
       "bytes": 9405288,
-      "duration_ms": 1139300,
+      "duration_ms": 1139314,
       "has_timings": true
     }
   ],
@@ -27,6 +27,6 @@
   },
   "cities": 92,
   "content_version": 4,
-  "source_digest": "fbc695e05a9965a6",
-  "bytes": 856064
+  "source_digest": "490725d2f21d3f88",
+  "bytes": 851968
 }

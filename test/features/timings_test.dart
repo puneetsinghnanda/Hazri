@@ -77,8 +77,18 @@ void main() {
       expect(t.wordIndexAt(line, const Duration(milliseconds: 2999)), 2);
     });
 
-    test('reports none outside the line', () {
-      expect(t.wordIndexAt(t.lines.first, const Duration(seconds: 9)), -1);
+    test('holds the last word past the line, and reports none before it', () {
+      // Past the end is the pause after the line, which the reader spends
+      // holding this line; the last word stays lit for it.
+      expect(t.wordIndexAt(t.lines.first, const Duration(seconds: 9)), 2);
+      final late = BaniTimings.fromJson({
+        'track': 't',
+        'durationMs': 3000,
+        'lines': [
+          {'line': 0, 's': 0, 'e': 3000, 'w': [[500, 3000]]},
+        ],
+      });
+      expect(late.wordIndexAt(late.lines.first, Duration.zero), -1);
     });
 
     test('a line with no word spans highlights as a whole', () {
@@ -101,7 +111,7 @@ void main() {
 
     setUpAll(() {
       final file = File('content/source/timings/japji-sahib.json');
-      expect(file.existsSync(), isTrue, reason: 'run align_timings.py first');
+      expect(file.existsSync(), isTrue, reason: 'run forced_align.py first');
       timings = BaniTimings.fromJson(
         jsonDecode(file.readAsStringSync()) as Map<String, dynamic>,
       );
@@ -134,18 +144,41 @@ void main() {
       expect(timings.lines.first.start >= Duration.zero, isTrue);
     });
 
-    test('every line has word spans that tile its own span', () {
+    test('every line has word spans that fill it, in order', () {
       for (final line in timings.lines) {
         expect(line.words, isNotEmpty, reason: 'line ${line.line}');
         expect(line.words.first.$1, line.start, reason: 'line ${line.line} first word');
         expect(line.words.last.$2, line.end, reason: 'line ${line.line} last word');
-        for (var w = 1; w < line.words.length; w++) {
-          expect(
-            line.words[w].$1,
-            line.words[w - 1].$2,
-            reason: 'gap between words on line ${line.line}',
-          );
+        for (var w = 0; w < line.words.length; w++) {
+          final (s, e) = line.words[w];
+          expect(e > s, isTrue, reason: 'word $w of line ${line.line} has no duration');
+          if (w > 0) {
+            // Words may have a gap between them -- a breath mid-line -- but
+            // never run backwards or overlap.
+            expect(
+              s >= line.words[w - 1].$2,
+              isTrue,
+              reason: 'word $w of line ${line.line} starts before the one before it',
+            );
+          }
         }
+      }
+    });
+
+    test('the word highlight holds through a mid-line breath', () {
+      final line = timings.lines.firstWhere(
+        (l) => [
+          for (var w = 1; w < l.words.length; w++)
+            if (l.words[w].$1 > l.words[w - 1].$2) w,
+        ].isNotEmpty,
+        orElse: () => timings.lines.first,
+      );
+      for (var w = 1; w < line.words.length; w++) {
+        if (line.words[w].$1 <= line.words[w - 1].$2) continue;
+        final inGap = line.words[w - 1].$2 +
+            (line.words[w].$1 - line.words[w - 1].$2) ~/ 2;
+        expect(timings.wordIndexAt(line, inGap), w - 1);
+        return;
       }
     });
 

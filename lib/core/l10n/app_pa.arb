@@ -386,6 +386,12 @@
 
   "readerTapLineToSeek": "ਪਾਠ ਉੱਥੋਂ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਸੇ ਵੀ ਪੰਕਤੀ ਉੱਤੇ ਟੈਪ ਕਰੋ",
 
+  "readerLockControlsOff": "ਲਾਕ-ਸਕਰੀਨ ਕੰਟਰੋਲ ਬੰਦ ਹਨ",
+  "readerLockControlsOffSub": "ਨੋਟੀਫਿਕੇਸ਼ਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ, ਫੇਰ ਪਾਠ ਲਾਕ ਸਕਰੀਨ ਤੋਂ ਰੋਕਿਆ ਜਾ ਸਕੇਗਾ।",
+  "settingsLockScreenControls": "ਲਾਕ-ਸਕਰੀਨ ਕੰਟਰੋਲ",
+  "settingsLockScreenAllowed": "ਇਜਾਜ਼ਤ ਹੈ — ਫ਼ੋਨ ਲਾਕ ਹੋਣ ਉੱਤੇ ਚਲਾਓ ਤੇ ਰੋਕੋ ਦਿਸਦੇ ਹਨ",
+  "settingsLockScreenBlocked": "ਇਜਾਜ਼ਤ ਨਹੀਂ — ਹਾਜ਼ਰੀ ਲਈ ਨੋਟੀਫਿਕੇਸ਼ਨ ਬੰਦ ਹਨ",
+
   "errorGeneric": "ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।",
   "errorContentDb": "ਐਪ ਨਾਲ ਆਈ ਸਮੱਗਰੀ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ। ਹਾਜ਼ਰੀ ਮੁੜ ਇੰਸਟਾਲ ਕਰਨ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।"
 }

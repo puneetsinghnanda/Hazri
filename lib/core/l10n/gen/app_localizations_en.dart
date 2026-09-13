@@ -1188,6 +1188,24 @@ class LEn extends L {
   String get readerTapLineToSeek => 'Tap any line to start the paath there';
 
   @override
+  String get readerLockControlsOff => 'Lock-screen controls are off';
+
+  @override
+  String get readerLockControlsOffSub =>
+      'Allow notifications and the paath can be paused from the lock screen.';
+
+  @override
+  String get settingsLockScreenControls => 'Lock-screen controls';
+
+  @override
+  String get settingsLockScreenAllowed =>
+      'Allowed — play and pause show while the phone is locked';
+
+  @override
+  String get settingsLockScreenBlocked =>
+      'Not allowed — notifications are turned off for Hazri';
+
+  @override
   String get errorGeneric => 'Something went wrong.';
 
   @override

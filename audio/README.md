@@ -32,7 +32,7 @@ table.
 python3 tools/audio_pipeline/build_audio.py japji-sahib
 
 # recitation -> line and word timings
-python3 tools/audio_pipeline/align_timings.py japji-sahib --report
+python3 tools/audio_pipeline/forced_align.py japji-sahib --report
 
 # check the alignment against the recording itself
 python3 tools/audio_pipeline/verify_timings.py japji-sahib
@@ -41,64 +41,74 @@ python3 tools/audio_pipeline/verify_timings.py japji-sahib
 python3 tools/content_pipeline/build_content_db.py
 ```
 
-Both audio steps need `ffmpeg` on the PATH. They are not run in CI: their
-outputs are committed, and CI only checks that `content.db` still matches them.
+The alignment step also needs `espeak-ng`; both audio steps need `ffmpeg`.
+Neither runs in CI: their outputs are committed, and CI only checks that
+`content.db` still matches them.
 
 ## How the timings are made
 
-There is no forced aligner for Gurmukhi available, so `align_timings.py`
-derives them from the recording:
+`forced_align.py` is a forced aligner. The first version of this pipeline was
+not: it found the recording's pauses, estimated how long each line ought to
+take from its syllable count, and assigned pauses to boundaries so the
+durations fitted. Nothing in that search ever looked at *what was said*, so two
+lines of similar length were interchangeable to it, and partway through the
+bani it slid one line late and stayed there. Adding rounds of re-estimation
+made it worse, and the check that said otherwise was measuring something the
+re-estimation was directly optimising.
 
-1. Pauses are found from a 20 ms energy envelope (the paathi pauses between
-   lines, so most line boundaries show up as a dip).
-2. Each line gets a weight — an estimate of how long it takes to recite,
-   counting syllable nuclei rather than characters.
-3. A dynamic program assigns one detected pause to each line boundary, in
-   order, choosing the assignment whose segment durations best fit the weights.
-   Mid-line breaths are skipped by the same search.
-4. That alignment is then used to re-estimate what each line *should* take, and
-   the search is run again — three rounds. Two things the first pass cannot
-   know:
-   - **the local pace**, since a reciter speeds up and slows down across
-     nineteen minutes, so one global seconds-per-syllable misjudges whole
-     passages;
-   - **repeated lines**. Japji repeats eight lines verbatim, and identical text
-     takes near-identical time. The median duration across a line's occurrences
-     is a far better expectation than its syllable count, and it is robust: one
-     occurrence coming out at double the length is outvoted rather than
-     accepted.
-5. Word spans inside a line are split by syllable weight — the fallback the
-   PRD allows (§8) when an aligner cannot give word timings.
+What the aligner does instead:
 
-### Why the detector is deliberately conservative
+1. **Speak the text.** Every word of the bani is spoken once by `espeak-ng`'s
+   Punjabi voice, trimmed of its padding and concatenated. The result sounds
+   nothing like a paathi, but it says the same words in the same order, and
+   every word boundary in it is known exactly.
+2. **Reduce both to MFCCs.** Mean/variance normalised per recording, which
+   takes out the fixed differences in voice and channel and leaves the part
+   that moves with the phonemes.
+3. **Warp one onto the other.** Dynamic time warping finds the monotonic
+   mapping between them — coarsely first, in 100 ms frames across the whole
+   nineteen minutes, then finely in 20 ms frames inside a 3-second band around
+   the coarse path. One real frame is consumed per step and the text advances
+   0, 1 or 2, so the reciter may hold a pause as long as they like without the
+   text running on.
+4. **Read the words off the mapping.** Each word's known span in the synthesis
+   becomes a span in the recording; a line runs from its first word to its
+   last. Word timings are measured here, not divided up by syllable count.
+5. **Snap to the reciter's own pauses.** The warp lands in the right pause but
+   rarely on its edges. A second dynamic program assigns the detected pauses to
+   the boundaries, in order and one each, so the previous line ends where the
+   reciter stopped and the next begins where they started again.
+6. **Trim the ends.** The recording closes with words that are not in the text.
+   Since the warp must account for every frame, that would otherwise be
+   absorbed into the last line and highlight it for twelve seconds.
 
-`QUIET_DB` and `MIN_PAUSE_MS` were chosen by measuring, not by taste. Loosening
-them finds more candidate pauses and makes the alignment much *worse*, because
-the search gains enough freedom to fit noise:
+Two parameters were tuned against the stretch of the old timing file that had
+been checked by ear, and both sit on a plateau rather than a peak:
+`STEP_PENALTY` (0.6; anywhere from 0.4 to 1.2 gives the same result, 2.0
+collapses) and `SNAP_WINDOW_S` (1.0; 0.45 upwards gives the same result).
 
-| threshold | candidates | acoustic separation |
-|---|---|---|
-| −27 dB / 100 ms | 702 | **4.65 σ** |
-| −25 dB / 80 ms | 1256 | 0.82 σ |
-| −24 dB / 60 ms | 1908 | 0.14 σ |
+### How it is checked
 
-Do not loosen them without re-running `verify_timings.py`.
+`verify_timings.py` runs three checks, and deliberately not the one the aligner
+would pass by construction:
 
-`verify_timings.py` checks the result acoustically rather than taking it on
-trust. Japji repeats eight lines verbatim; the tool compares the audio under
-each repeat with dynamic time warping and reports how far matched pairs sit
-from unrelated ones. On the shipped alignment, matched pairs average a DTW
-distance of 0.125 against 0.310 for controls — **4.65 standard deviations** of
-separation.
-
-`align_timings.py --report` also prints the duration of every repeated line
-side by side. A group whose durations disagree by more than about a third means
-a boundary was missed in it; that is how the drift at 7:55 was found and
-fixed.
+- **Pauses.** The warp knows nothing about the recording's energy, so a line
+  boundary landing in a stretch the reciter was silent for is two independent
+  readings agreeing. 98% of the 384 boundaries do, against 17% for times drawn
+  at random.
+- **Repeated lines.** Japji repeats eight lines verbatim. The audio under two
+  occurrences of the same line should sound alike and two unrelated lines
+  should not: matched pairs average a DTW distance of 0.132 against 0.319 for
+  controls, 3.1 standard deviations apart. This one is invariant to an
+  alignment that has slid a constant amount late everywhere, which is why it is
+  not the headline number.
+- **Anchors.** `content/source/timings/<slug>.anchors.json`, if it exists,
+  holds times somebody listened to and wrote down; the aligner never sees it.
+  That is the only ground truth here, and there is none yet.
 
 ## Still to do
 
 Line timings are marked `"verified": false`. The PRD requires a human to check
-them before release (§8). The alignment is good enough to read along with, but
-it is an estimate, and the word highlight in particular drifts where the paathi
-lingers.
+them before release (§8). `tools/timing_tool/` opens the recitation next to the
+text so the lines the aligner was least sure of can be corrected by ear, and
+writes the corrections back into the timing file.

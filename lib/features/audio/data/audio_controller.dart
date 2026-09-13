@@ -12,6 +12,7 @@ import '../../../core/settings/settings_controller.dart';
 import '../../nitnem/domain/bani.dart';
 import '../domain/paath_player.dart';
 import 'audio_handler.dart';
+import 'notification_access.dart';
 
 /// Set during bootstrap in `main.dart`. Null when the media session could not
 /// start, so the app still runs as a text-only reader.
@@ -131,8 +132,17 @@ class PlaybackController {
   /// Plays one bani, optionally from a position.
   Future<bool> playBani(Bani bani, {Duration? at, required String language}) async {
     if (!await prepare(bani, at: at, language: language)) return false;
+    _askForLockScreen();
     await _ref.read(paathPlayerProvider)!.play();
     return true;
+  }
+
+  /// The transport controls on the lock screen are the playback service's
+  /// notification, so ask for the permission at the first paath rather than
+  /// only during setup. Never awaited: a pending dialog must not hold up the
+  /// recitation, and it shows nothing once a denial has been recorded.
+  void _askForLockScreen() {
+    unawaited(_ref.read(notificationsAllowedProvider.notifier).request());
   }
 
   /// What the play button does: load the bani first if it is not loaded, then
@@ -143,7 +153,12 @@ class PlaybackController {
     if (player.currentSlug != bani.slug || !player.isLoaded) {
       return playBani(bani, language: language);
     }
-    player.isPlaying ? await player.pause() : await player.play();
+    if (player.isPlaying) {
+      await player.pause();
+    } else {
+      _askForLockScreen();
+      await player.play();
+    }
     return true;
   }
 
@@ -160,6 +175,7 @@ class PlaybackController {
           if (_trackFor(b, tracks, language) case final t?) t,
     ];
     if (queue.isEmpty) return false;
+    _askForLockScreen();
     await player.setQueue(queue);
     await player.setSpeed(_ref.read(settingsProvider).speed);
     await player.play();

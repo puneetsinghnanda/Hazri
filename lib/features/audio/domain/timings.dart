@@ -105,12 +105,19 @@ class BaniTimings {
   }
 
   /// The word index within [line] being recited at [at], or -1.
+  ///
+  /// Words have gaps between them -- the breath a reciter takes mid-line -- so
+  /// as with [indexAt] the word just finished is held rather than dropped,
+  /// which would blink the highlight off between every pair of words.
   int wordIndexAt(LineTiming line, Duration at) {
+    var held = -1;
     for (var i = 0; i < line.words.length; i++) {
       final (s, e) = line.words[i];
-      if (at >= s && at < e) return i;
+      if (at < s) break;
+      if (at < e) return i;
+      held = i;
     }
-    return -1;
+    return held;
   }
 
   /// Where a line starts, for tap-to-seek.
