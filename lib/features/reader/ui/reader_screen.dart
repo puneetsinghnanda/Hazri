@@ -21,6 +21,7 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/audio_controller.dart';
+import '../../audio/domain/paath_player.dart';
 import '../../audio/domain/timings.dart';
 import '../../audio/ui/player_bar.dart';
 import '../../nitnem/domain/bani.dart';
@@ -53,6 +54,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   Timer? _saveTimer;
   int _topLine = 0;
   int _lastSavedLine = -1;
+  int _lastSavedAudioMs = 0;
   bool _jumped = false;
   bool _completionLogged = false;
   final _expandedCommentary = <int>{};
@@ -60,6 +62,10 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   /// Captured at startup: `dispose` still has to write the resume point, and
   /// `ref` is no longer usable by then.
   late final UserRepository _repo;
+
+  /// Captured alongside the repository: `dispose` writes the audio position
+  /// too, and `ref` is gone by then.
+  PaathPlayer? _player;
 
   /// The version being read, once the bani has resolved.
   String? _versionId;
@@ -71,10 +77,14 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   bool _attached = true;
   bool _autoScrolling = false;
 
+  /// The recitation is loaded once per visit to this screen.
+  bool _prepared = false;
+
   @override
   void initState() {
     super.initState();
     _repo = ref.read(userRepositoryProvider);
+    _player = ref.read(paathPlayerProvider);
     if (widget.autoplay) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _startAudio());
     }
@@ -231,9 +241,17 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
 
   void _saveProgress() {
     final versionId = _versionId;
-    if (versionId == null || _topLine == _lastSavedLine) return;
+    if (versionId == null) return;
+    // The audio position moves even when the page does not, so progress is
+    // written whenever either has changed.
+    final player = _player;
+    final audioMs = player != null && player.currentSlug == widget.slug
+        ? player.position.inMilliseconds
+        : _lastSavedAudioMs;
+    if (_topLine == _lastSavedLine && audioMs == _lastSavedAudioMs) return;
     _lastSavedLine = _topLine;
-    unawaited(_repo.saveProgress(versionId, _topLine));
+    _lastSavedAudioMs = audioMs;
+    unawaited(_repo.saveProgress(versionId, _topLine, audioPosMs: audioMs));
   }
 
   /// Jumps to the resume point, or the line a deep link asked for.
@@ -277,6 +295,27 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
         ? null
         : ref.watch(baniTimingsProvider(track.id)).value;
     final isPlayingThisBani = ref.watch(playingSlugProvider) == bani.slug;
+
+    // Load the recitation as soon as the reader opens, so the scrubber shows a
+    // real duration and the play button has something to start.
+    if (hasAudio && !_prepared) {
+      _prepared = true;
+      // The language is read before the await, so no BuildContext is used
+      // across the gap.
+      final language = L.of(context).localeName;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        final saved = await _repo.progressFor(bani.versionId!);
+        if (!mounted) return;
+        await ref.read(playbackControllerProvider).prepare(
+          bani,
+          at: saved != null && saved.audioPosMs > 0
+              ? Duration(milliseconds: saved.audioPosMs)
+              : null,
+          language: language,
+        );
+      });
+    }
 
     // The highlight only moves while this bani is the one being recited and
     // the user has follow turned on.
@@ -371,6 +410,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
               ),
               if (hasAudio)
                 PlayerBar(
+                  bani: bani,
                   following: isPlayingThisBani && _attached && _followLine >= 0,
                   onBackToPaath: _followLine >= 0 && !_attached ? _backToPaath : null,
                 )

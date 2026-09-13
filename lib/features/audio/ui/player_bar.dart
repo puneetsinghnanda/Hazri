@@ -8,12 +8,21 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
+import '../../nitnem/domain/bani.dart';
 import '../data/audio_controller.dart';
 import 'sleep_timer_sheet.dart';
 
 /// The player bar at the foot of the reader (Design 13).
 class PlayerBar extends ConsumerWidget {
-  const PlayerBar({super.key, required this.following, this.onBackToPaath});
+  const PlayerBar({
+    super.key,
+    required this.bani,
+    required this.following,
+    this.onBackToPaath,
+  });
+
+  /// The bani on screen. Pressing play loads this one if nothing is loaded.
+  final Bani bani;
 
   /// True when the bani on screen is the one playing.
   final bool following;
@@ -113,7 +122,10 @@ class PlayerBar extends ConsumerWidget {
                 tooltip: '-10s',
                 onTap: () => ref.read(audioHandlerProvider)?.rewind(),
               ),
-              _PlayButton(playing: playing, onTap: controller.togglePlayPause),
+              _PlayButton(
+                playing: playing,
+                onTap: () => controller.playOrToggle(bani, language: l.localeName),
+              ),
               _SeekControl(
                 icon: HazriIconData.forward10,
                 tooltip: '+10s',

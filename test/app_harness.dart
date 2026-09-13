@@ -60,12 +60,15 @@ class FakeReminderService extends ReminderService {
 /// database, an empty user database, and stubs for the plugins that would
 /// otherwise reach for a platform.
 class TestApp {
-  TestApp._(this.container, this.contentDb, this.userDb, this.reminders);
+  TestApp._(this.container, this.contentDb, this.userDb, this.reminders, this.overrides);
 
   final ProviderContainer container;
   final ContentDb contentDb;
   final UserDb userDb;
   final FakeReminderService reminders;
+
+  /// The same overrides the container was built from, so a test can add one.
+  final List<Override> overrides;
 
   static const _silencedChannels = {
     'dexterous.com/flutter/local_notifications': <String, Object?>{
@@ -111,17 +114,16 @@ class TestApp {
     final userDb = UserDb.memory();
     final reminders = FakeReminderService();
 
-    final container = ProviderContainer(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-        contentDbProvider.overrideWithValue(contentDb),
-        userDbProvider.overrideWithValue(userDb),
-        reminderServiceProvider.overrideWithValue(reminders),
-        if (now != null) clockProvider.overrideWithValue(FixedClock(now)),
-      ],
-    );
+    final overrides = <Override>[
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      contentDbProvider.overrideWithValue(contentDb),
+      userDbProvider.overrideWithValue(userDb),
+      reminderServiceProvider.overrideWithValue(reminders),
+      if (now != null) clockProvider.overrideWithValue(FixedClock(now)),
+    ];
+    final container = ProviderContainer(overrides: overrides);
 
-    return TestApp._(container, contentDb, userDb, reminders);
+    return TestApp._(container, contentDb, userDb, reminders, overrides);
   }
 
   /// Tears the container down and lets the databases go.

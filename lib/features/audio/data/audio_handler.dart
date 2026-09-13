@@ -1,42 +1,22 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
-/// One bani queued for playback.
-@immutable
-class PaathTrack {
-  const PaathTrack({
-    required this.baniId,
-    required this.slug,
-    required this.title,
-    required this.nativeTitle,
-    required this.assetPath,
-    required this.duration,
-  });
+import '../domain/paath_player.dart';
 
-  final String baniId;
-  final String slug;
-  final String title;
-  final String nativeTitle;
-
-  /// The bundled asset key, e.g. `assets/audio/japji-sahib.m4a`.
-  final String assetPath;
-  final Duration duration;
-}
+export '../domain/paath_player.dart' show PaathTrack;
 
 /// The single source of truth for playback (PRD §6.2).
 ///
 /// It runs inside `audio_service`, so the paath keeps going when the app is
 /// minimised or the phone is locked, and the notification and lock screen
 /// drive the same player the reader is following.
-class HazriAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
+class HazriAudioHandler extends BaseAudioHandler
+    with QueueHandler, SeekHandler
+    implements PaathPlayer {
   HazriAudioHandler(this._player);
 
   final AudioPlayer _player;
@@ -62,11 +42,30 @@ class HazriAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler 
   /// True once a bani has been reported complete, so the 95% rule fires once.
   final Set<int> _reportedComplete = {};
 
-  Stream<Duration> get position => _player.positionStream;
+  /// The playhead, ticking. The synchronous [position] getter is the
+  /// PaathPlayer one.
+  Stream<Duration> get positionStream => _player.positionStream;
 
   AudioPlayer get player => _player;
 
   List<PaathTrack> get tracks => List.unmodifiable(_tracks);
+
+  @override
+  String? get currentSlug => currentTrack?.slug;
+
+  @override
+  bool get isLoaded =>
+      _player.audioSource != null &&
+      _player.processingState != ProcessingState.idle;
+
+  @override
+  bool get isPlaying => _player.playing;
+
+  @override
+  int get queueLength => _tracks.length;
+
+  @override
+  Duration get position => _player.position;
 
   PaathTrack? get currentTrack {
     final i = _player.currentIndex;
@@ -189,10 +188,8 @@ class HazriAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler 
     duration: t.duration,
   );
 
-  /// Loads a queue and starts at [startIndex].
-  ///
-  /// Bundled assets cannot be read by the platform player directly, so each is
-  /// copied into app storage once and played from there.
+  /// Loads a queue and parks it at [startIndex], without starting playback.
+  @override
   Future<void> setQueue(List<PaathTrack> tracks, {int startIndex = 0, Duration? at}) async {
     _tracks
       ..clear()
@@ -200,32 +197,14 @@ class HazriAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler 
     _reportedComplete.clear();
     queue.add([for (final t in tracks) _mediaItemFor(t)]);
 
-    final sources = <AudioSource>[];
-    for (final t in tracks) {
-      sources.add(AudioSource.file(await _materialise(t.assetPath)));
-    }
     await _player.setAudioSource(
-      ConcatenatingAudioSource(children: sources),
+      ConcatenatingAudioSource(
+        children: [for (final t in tracks) AudioSource.asset(t.assetPath)],
+      ),
       initialIndex: startIndex,
       initialPosition: at ?? Duration.zero,
     );
     if (tracks.isNotEmpty) mediaItem.add(_mediaItemFor(tracks[startIndex]));
-  }
-
-  static final Map<String, String> _materialised = {};
-
-  Future<String> _materialise(String assetPath) async {
-    final cached = _materialised[assetPath];
-    if (cached != null) return cached;
-    final dir = await getApplicationSupportDirectory();
-    final file = File(p.join(dir.path, 'audio', p.basename(assetPath)));
-    if (!file.existsSync()) {
-      await file.parent.create(recursive: true);
-      final data = await rootBundle.load(assetPath);
-      await file.writeAsBytes(data.buffer.asUint8List(), flush: true);
-    }
-    _materialised[assetPath] = file.path;
-    return file.path;
   }
 
   @override

@@ -10,11 +10,17 @@ import '../../../core/db/user_db.dart' show BaniSlotValue, CompletionSource;
 import '../../../core/db/user_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../nitnem/domain/bani.dart';
+import '../domain/paath_player.dart';
 import 'audio_handler.dart';
 
 /// Set during bootstrap in `main.dart`. Null when the media session could not
 /// start, so the app still runs as a text-only reader.
 final audioHandlerProvider = Provider<HazriAudioHandler?>((ref) => null);
+
+/// The player the controller drives. Overridden with a fake in tests.
+final paathPlayerProvider = Provider<PaathPlayer?>(
+  (ref) => ref.watch(audioHandlerProvider),
+);
 
 /// True when this build has any recitation at all.
 final hasAudioProvider = Provider<bool>((ref) {
@@ -36,7 +42,7 @@ final playbackStateProvider = StreamProvider<PlaybackState>((ref) {
 /// The playhead, ticking while audio is loaded.
 final positionProvider = StreamProvider<Duration>((ref) {
   final handler = ref.watch(audioHandlerProvider);
-  return handler?.position ?? const Stream<Duration>.empty();
+  return handler?.positionStream ?? const Stream<Duration>.empty();
 });
 
 final currentMediaItemProvider = StreamProvider<MediaItem?>((ref) {
@@ -102,29 +108,50 @@ class PlaybackController {
     );
   }
 
-  /// Plays one bani, optionally from a position.
-  Future<bool> playBani(Bani bani, {Duration? at, required String language}) async {
-    final handler = _ref.read(audioHandlerProvider);
-    if (handler == null) return false;
+  /// Loads a bani so it is ready to play, without starting it.
+  ///
+  /// The reader calls this on open, which is what puts a real duration on the
+  /// scrubber and lets the play button work. A player with no source accepts
+  /// play() and silently does nothing.
+  Future<bool> prepare(Bani bani, {Duration? at, required String language}) async {
+    final player = _ref.read(paathPlayerProvider);
+    if (player == null) return false;
+    if (player.currentSlug == bani.slug && player.isLoaded && player.queueLength == 1) {
+      if (at != null) await player.seek(at);
+      return true;
+    }
     final tracks = await _ref.read(audioTracksProvider.future);
     final track = _trackFor(bani, tracks, language);
     if (track == null) return false;
+    await player.setQueue([track], at: at);
+    await player.setSpeed(_ref.read(settingsProvider).speed);
+    return true;
+  }
 
-    if (handler.currentTrack?.slug != bani.slug || handler.tracks.length != 1) {
-      await handler.setQueue([track], at: at);
-    } else if (at != null) {
-      await handler.seek(at);
+  /// Plays one bani, optionally from a position.
+  Future<bool> playBani(Bani bani, {Duration? at, required String language}) async {
+    if (!await prepare(bani, at: at, language: language)) return false;
+    await _ref.read(paathPlayerProvider)!.play();
+    return true;
+  }
+
+  /// What the play button does: load the bani first if it is not loaded, then
+  /// start or stop it.
+  Future<bool> playOrToggle(Bani bani, {required String language}) async {
+    final player = _ref.read(paathPlayerProvider);
+    if (player == null) return false;
+    if (player.currentSlug != bani.slug || !player.isLoaded) {
+      return playBani(bani, language: language);
     }
-    await handler.setSpeed(_ref.read(settingsProvider).speed);
-    await handler.play();
+    player.isPlaying ? await player.pause() : await player.play();
     return true;
   }
 
   /// Queues every bani in a slot that has audio and starts the first
   /// (PRD 1.7, "Play all").
   Future<bool> playSlot(BaniSlot slot, {required String language}) async {
-    final handler = _ref.read(audioHandlerProvider);
-    if (handler == null) return false;
+    final player = _ref.read(paathPlayerProvider);
+    if (player == null) return false;
     final banis = await _ref.read(contentRepositoryProvider).banis();
     final tracks = await _ref.read(audioTracksProvider.future);
     final queue = <PaathTrack>[
@@ -133,16 +160,10 @@ class PlaybackController {
           if (_trackFor(b, tracks, language) case final t?) t,
     ];
     if (queue.isEmpty) return false;
-    await handler.setQueue(queue);
-    await handler.setSpeed(_ref.read(settingsProvider).speed);
-    await handler.play();
+    await player.setQueue(queue);
+    await player.setSpeed(_ref.read(settingsProvider).speed);
+    await player.play();
     return true;
-  }
-
-  Future<void> togglePlayPause() async {
-    final handler = _ref.read(audioHandlerProvider);
-    if (handler == null) return;
-    handler.playbackState.value.playing ? await handler.pause() : await handler.play();
   }
 
   /// Flips between normal pace and 1.5x, and remembers the choice.
@@ -150,13 +171,13 @@ class PlaybackController {
     final settings = _ref.read(settingsProvider);
     final next = settings.speed >= 1.5 ? 1.0 : 1.5;
     await _ref.read(settingsProvider.notifier).setSpeed(next);
-    await _ref.read(audioHandlerProvider)?.setSpeed(next);
+    await _ref.read(paathPlayerProvider)?.setSpeed(next);
     return next;
   }
 
   Future<void> setSpeed(double speed) async {
     await _ref.read(settingsProvider.notifier).setSpeed(speed);
-    await _ref.read(audioHandlerProvider)?.setSpeed(speed);
+    await _ref.read(paathPlayerProvider)?.setSpeed(speed);
   }
 
   void dispose() => _completion?.cancel();
