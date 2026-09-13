@@ -5,18 +5,16 @@ import '../../../core/time/clock.dart';
 import '../domain/goal_progress.dart';
 
 /// Every goal with today's progress attached.
-final goalProgressProvider = StreamProvider<List<GoalProgress>>((ref) async* {
+final goalProgressProvider = StreamProvider<List<GoalProgress>>((ref) {
   final repo = ref.watch(userRepositoryProvider);
-  final clock = ref.watch(clockProvider);
+  final today = ref.watch(clockProvider).today();
 
-  await for (final goals in repo.watchGoals()) {
-    final today = clock.today();
-    final ticks = await repo.goalTicksOn(today);
-    yield [
-      for (final g in goals)
-        GoalCalculator.progressFor(goal: g, ticksToday: ticks, today: today),
-    ];
-  }
+  // Goals and today's ticks arrive together, so finishing a bani moves the
+  // count while the screen is open.
+  return repo.watchGoalsAndTicks(today).map((data) => [
+        for (final g in data.goals)
+          GoalCalculator.progressFor(goal: g, ticksToday: data.ticks, today: today),
+      ]);
 });
 
 /// The one-line summary shown on the Nitnem list.

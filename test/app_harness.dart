@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hazri/core/db/content_db.dart';
 import 'package:hazri/core/db/content_repository.dart';
 import 'package:hazri/core/db/user_db.dart';
@@ -203,6 +204,25 @@ class TestApp {
     container.dispose();
     unawaited(contentDb.close());
     unawaited(userDb.close());
+  }
+
+  /// Same as [wrap], but with a router in context.
+  ///
+  /// A screen that can push another one asks for the GoRouter while it builds,
+  /// and asserts without it; this gives it a one-route router to find.
+  Widget wrapRouted(Widget child, {Locale locale = const Locale('en'), bool dark = false}) {
+    return UncontrolledProviderScope(
+      container: container,
+      child: MaterialApp.router(
+        locale: locale,
+        localizationsDelegates: L.localizationsDelegates,
+        supportedLocales: L.supportedLocales,
+        theme: dark ? HazriTheme.dark() : HazriTheme.light(),
+        routerConfig: GoRouter(
+          routes: [GoRoute(path: '/', builder: (_, _) => child)],
+        ),
+      ),
+    );
   }
 
   /// Wraps [child] in the app's theme and localisations, without the router,

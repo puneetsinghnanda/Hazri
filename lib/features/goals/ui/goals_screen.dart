@@ -156,7 +156,6 @@ class _GoalCard extends ConsumerWidget {
                       ? null
                       : () async {
                           await ref.read(userRepositoryProvider).tickGoal(goal.id);
-                          ref.invalidate(goalProgressProvider);
                         },
                   icon: AppIcon(
                     HazriIconData.check,
@@ -207,7 +206,6 @@ class _GoalMenu extends ConsumerWidget {
           case 'delete':
             await repo.deleteGoal(goal.id);
         }
-        ref.invalidate(goalProgressProvider);
       },
       itemBuilder: (context) => [
         PopupMenuItem(value: 'pause', child: Text(goal.active ? l.goalPause : l.actionResume)),

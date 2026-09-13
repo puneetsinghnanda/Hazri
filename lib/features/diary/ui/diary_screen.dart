@@ -388,6 +388,9 @@ class _TickSheet extends ConsumerWidget {
                         source: CompletionSource.manual,
                         on: day.date,
                       );
+                      // Ticking a bani here counts towards its goals exactly
+                      // as reading or listening to it does.
+                      await repo.creditGoalsFor(bani.id, on: day.date);
                       day.slots.add(slot);
                     } else {
                       await repo.removeCompletion(
@@ -395,6 +398,7 @@ class _TickSheet extends ConsumerWidget {
                         slot: slot,
                         on: day.date,
                       );
+                      await repo.removeGoalCreditFor(bani.id, on: day.date);
                       day.slots.remove(slot);
                     }
                     setState(() {});

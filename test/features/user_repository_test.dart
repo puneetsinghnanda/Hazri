@@ -120,6 +120,62 @@ void main() {
       expect(await repo.goalTicksOn(today), isEmpty);
     });
 
+    test('the progress stream moves when a bani is finished', () async {
+      // The bug this exists for: the stream watched the goals table, and a
+      // tick writes to goal_tick, so the count stayed at whatever it was when
+      // the screen opened however many banis were finished afterwards.
+      final id = await addGoal(times: 2);
+      final seen = <int>[];
+      final sub = repo.watchGoalsAndTicks(today).listen((data) =>
+          seen.add(data.ticks.where((t) => t.goalId == id).length));
+
+      await pumpEventQueue();
+      await repo.creditGoalsFor('JAPJ');
+      await pumpEventQueue();
+      await repo.creditGoalsFor('JAPJ');
+      await pumpEventQueue();
+      await sub.cancel();
+
+      expect(seen.first, 0, reason: 'starts at nothing done');
+      expect(seen.last, 2, reason: 'the stream never reported the ticks');
+    });
+
+    test('the stream carries the goal even before anything is ticked', () async {
+      await addGoal();
+      final data = await repo.watchGoalsAndTicks(today).first;
+      expect(data.goals.length, 1);
+      expect(data.ticks, isEmpty);
+    });
+
+    test('a goal ticked twice is not reported twice by the join', () async {
+      await addGoal(times: 3);
+      await repo.creditGoalsFor('JAPJ');
+      await repo.creditGoalsFor('JAPJ');
+      final data = await repo.watchGoalsAndTicks(today).first;
+      expect(data.goals.length, 1, reason: 'the join repeats a goal per tick');
+      expect(data.ticks.length, 2);
+    });
+
+    test('undoing a completion takes back only the credit it gave', () async {
+      final id = await addGoal(times: 3);
+      await repo.creditGoalsFor('JAPJ');
+      await repo.tickGoal(id); // somebody added this one by hand
+      expect((await repo.goalTicksOn(today)).length, 2);
+
+      await repo.removeGoalCreditFor('JAPJ');
+      final left = await repo.goalTicksOn(today);
+      expect(left.length, 1);
+      expect(left.single.source, 'manual', reason: 'the hand-added tick is theirs');
+    });
+
+    test('a goal credited for an earlier day lands on that day', () async {
+      final id = await addGoal();
+      final yesterday = today.subtract(const Duration(days: 1));
+      await repo.creditGoalsFor('JAPJ', on: yesterday);
+      expect(await repo.goalTicksOn(today), isEmpty);
+      expect((await repo.goalTicksOn(yesterday)).single.goalId, id);
+    });
+
     test('a manual +1 adds a tick beyond the automatic ones', () async {
       final id = await addGoal(times: 5);
       await repo.creditGoalsFor('JAPJ');

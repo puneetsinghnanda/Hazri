@@ -235,6 +235,41 @@ class UserRepository {
 
   Stream<List<GoalTick>> watchGoalTicks() => _db.select(_db.goalTicks).watch();
 
+  /// Every goal, with the ticks recorded on [date], as one stream.
+  ///
+  /// A join, rather than watching the goals table and reading the ticks
+  /// alongside it. drift re-runs a watched query when any table the query
+  /// touches changes, and a tick writes to goal_tick, not goal -- so watching
+  /// goals alone left the count frozen at whatever it was when the screen
+  /// opened, however many banis were finished afterwards.
+  Stream<({List<Goal> goals, List<GoalTick> ticks})> watchGoalsAndTicks(
+    DateTime date,
+  ) {
+    final key = localDateKey(date);
+    final query = _db.select(_db.goals).join([
+      leftOuterJoin(
+        _db.goalTicks,
+        _db.goalTicks.goalId.equalsExp(_db.goals.id) &
+            _db.goalTicks.localDate.equals(key),
+      ),
+    ])
+      ..orderBy([OrderingTerm(expression: _db.goals.createdAt)]);
+
+    return query.watch().map((rows) {
+      // The join repeats a goal once per tick, so both sides are de-duplicated
+      // by id rather than collected straight off the rows.
+      final goals = <String, Goal>{};
+      final ticks = <String, GoalTick>{};
+      for (final row in rows) {
+        final goal = row.readTable(_db.goals);
+        goals[goal.id] = goal;
+        final tick = row.readTableOrNull(_db.goalTicks);
+        if (tick != null) ticks[tick.id] = tick;
+      }
+      return (goals: goals.values.toList(), ticks: ticks.values.toList());
+    });
+  }
+
   Future<List<GoalTick>> goalTicksOn(DateTime date) {
     final key = localDateKey(date);
     return (_db.select(_db.goalTicks)..where((t) => t.localDate.equals(key))).get();
@@ -253,15 +288,39 @@ class UserRepository {
 
   /// Adds a tick to every active goal for [baniId] that has not met its daily
   /// target yet (PRD 1.15).
-  Future<void> creditGoalsFor(String baniId) async {
-    final today = _clock.today();
+  Future<void> creditGoalsFor(String baniId, {DateTime? on}) async {
+    final day = on ?? _clock.today();
     final goals = await activeGoals();
-    final ticks = await goalTicksOn(today);
+    final ticks = await goalTicksOn(day);
     for (final g in goals) {
       if (g.baniId != baniId) continue;
       final done = ticks.where((t) => t.goalId == g.id).length;
       if (done >= g.timesPerDay) continue;
-      await tickGoal(g.id, source: 'auto', on: today);
+      await tickGoal(g.id, source: 'auto', on: day);
+    }
+  }
+
+  /// Takes back the credit a completion gave, when that completion is undone.
+  ///
+  /// Only the ticks this credited automatically: a tick somebody added by hand
+  /// on the Goals screen is theirs, and unticking a bani in the Diary should
+  /// not quietly delete it.
+  Future<void> removeGoalCreditFor(String baniId, {DateTime? on}) async {
+    final key = localDateKey(on ?? _clock.today());
+    final goals = await activeGoals();
+    for (final g in goals) {
+      if (g.baniId != baniId) continue;
+      final mine = await (_db.select(_db.goalTicks)
+            ..where((t) =>
+                t.goalId.equals(g.id) &
+                t.localDate.equals(key) &
+                t.source.equals('auto'))
+            ..orderBy([(t) => OrderingTerm(expression: t.at, mode: OrderingMode.desc)])
+            ..limit(1))
+          .getSingleOrNull();
+      if (mine != null) {
+        await (_db.delete(_db.goalTicks)..where((t) => t.id.equals(mine.id))).go();
+      }
     }
   }
 
