@@ -1,0 +1,58 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Full-screen player</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&amp;family=Mukta:wght@400;500;600;700&amp;family=Noto+Serif+Gurmukhi:wght@400;500;600;700&amp;family=Noto+Serif+Devanagari:wght@400;500;600&amp;display=swap">
+  
+  <style>
+body{margin:0;background:#0C0F24}
+a{color:#D9730D} a:hover{color:#9A4F00}
+.app{--bg:#F4F3F8;--card:#FFFFFF;--card2:#ECEBF3;--ink:#1B1D3A;--ink2:#4D5070;--muted:#85879F;--rule:#E1E1EA;--primary:#262C63;--onPrimary:#FFFFFF;--kesri:#D9730D;--kesriSoft:#FBE8D2;--kesriInk:#9A4F00;--sage:#2E7A57;--sageSoft:#DCEFE5;--teal:#1F7A8C;--hl:#FBE5CB;--word:#A04F00;--shadow:0 1px 2px rgba(27,29,58,.06),0 10px 28px rgba(27,29,58,.07);--scrim:rgba(20,22,45,.45);
+  width:390px;height:844px;background:var(--bg);color:var(--ink);font-family:Mukta,'Noto Sans Devanagari',system-ui,sans-serif;position:relative;overflow:hidden;box-sizing:border-box;font-size:15px;line-height:1.45}
+.app.dark{--bg:#0C0F24;--card:#161A37;--card2:#1F2447;--ink:#EDECF6;--ink2:#B9BAD3;--muted:#8084A6;--rule:#2A2F55;--primary:#F2A24E;--onPrimary:#1C1206;--kesri:#F2A24E;--kesriSoft:#3A2A1A;--kesriInk:#FFC27E;--sage:#6CCB9C;--sageSoft:#173327;--teal:#6FC3D3;--hl:rgba(242,162,78,.17);--word:#FFC27E;--shadow:0 0 0 1px rgba(255,255,255,.04);--scrim:rgba(0,0,0,.55)}
+.app *{box-sizing:border-box}
+.gur{font-family:'Noto Serif Gurmukhi','Noto Sans Gurmukhi',serif}
+.dev{font-family:'Noto Serif Devanagari','Noto Sans Devanagari',serif}
+.disp{font-family:'Baloo Paaji 2',Mukta,system-ui,sans-serif}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+svg.i{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:16px;min-height:52px;font-weight:600;font-size:16px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+</style>
+
+<style>body{margin:0;background:#888}</style></head><body>
+
+<div class="app dark" style="width: 390px; height: 844px;">
+
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 14px 20px 0;">
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M5 9l7 7 7-7"/></svg></div>
+    <div style="display: flex; flex-direction: column; align-items: center;"><div class="eyebrow">Now playing</div><div style="font-weight: 700; font-size: 14px;">Morning Nitnem · 1 of 5</div></div>
+    <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><circle cx="12" cy="5.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="18.5" r="1.3" fill="currentColor"/></svg></div>
+  </div>
+  <div style="position: relative; display: flex; justify-content: center;">
+    <svg width="240" height="240" viewBox="0 0 240 240" style="display:block"><circle cx="120" cy="120" r="104" fill="none" stroke="var(--rule)" stroke-width="6"/><path d="M120 16 A104 104 0 0 1 178.5 34.0" fill="none" stroke="var(--kesri)" stroke-width="6" stroke-linecap="round"/><circle cx="178.5" cy="34.0" r="8" fill="var(--kesri)"/></svg>
+    <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
+      <div class="gur" style="font-size: 30px; font-weight: 600; line-height: 1.3;">ਜਪੁਜੀ ਸਾਹਿਬ</div>
+      <div style="font-size: 15px; color: var(--ink2); font-weight: 500;">Japji Sahib</div>
+      <div style="font-size: 12px; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums;">1:48 / 19:04 · Pauri 1</div>
+    </div>
+  </div>
+  <div class="card" style="padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; background: var(--hl); box-shadow: none;">
+    <div class="gur" style="font-size: 19px; line-height: 1.7; font-weight: 500;">ਸੋਚੈ ਸੋਚਿ ਨ ਹੋਵਈ <span style="color: var(--word); text-decoration: underline; text-decoration-color: var(--kesri); text-decoration-thickness: 3px; text-underline-offset: 7px; font-weight: 700;">ਜੇ</span> ਸੋਚੀ ਲਖ ਵਾਰ ॥</div>
+    <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-weight: 600;"><div>Paathi: [Paathi name]</div><div style="color: var(--kesriInk);">Open reader</div></div>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 4px;">
+    <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M18 6l-9 6 9 6z" fill="currentColor"/><path d="M6 6v12"/></svg></div><div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.2 3.8v3.6h3.6"/><text x="12" y="15.2" text-anchor="middle" font-size="7.2" font-weight="700" fill="currentColor" stroke="none" font-family="Mukta,sans-serif">10</text></svg></div>
+    <div style="width: 72px; height: 72px; border-radius: 36px; background: var(--primary); color: var(--onPrimary); display: flex; align-items: center; justify-content: center;"><svg class="i" width="32" height="32" viewBox="0 0 24 24" style=""><rect x="6.5" y="5" width="3.8" height="14" rx="1.2" fill="currentColor" stroke="none"/><rect x="13.7" y="5" width="3.8" height="14" rx="1.2" fill="currentColor" stroke="none"/></svg></div>
+    <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.8 3.8v3.6h-3.6"/><text x="12" y="15.2" text-anchor="middle" font-size="7.2" font-weight="700" fill="currentColor" stroke="none" font-family="Mukta,sans-serif">10</text></svg></div><div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M6 6l9 6-9 6z" fill="currentColor"/><path d="M18 6v12"/></svg></div>
+  </div>
+  <div style="display: flex; gap: 8px;"><div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; background: var(--card2);"><div style="color: var(--ink2);"><svg class="i" width="18" height="18" viewBox="0 0 24 24" style=""><path d="M4.5 16a8 8 0 1 1 15 0"/><path d="M12 12l4-3.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></div><div style="font-size: 11px; color: var(--muted); font-weight: 600;">Speed</div><div style="font-size: 13px; font-weight: 700;">1.0×</div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; background: var(--card2);"><div style="color: var(--ink2);"><svg class="i" width="18" height="18" viewBox="0 0 24 24" style=""><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div><div style="font-size: 11px; color: var(--muted); font-weight: 600;">Sleep timer</div><div style="font-size: 13px; font-weight: 700;">Off</div></div><div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; background: var(--card2);"><div style="color: var(--ink2);"><svg class="i" width="18" height="18" viewBox="0 0 24 24" style=""><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3.5" y="14" width="4" height="6" rx="1.5"/><rect x="16.5" y="14" width="4" height="6" rx="1.5"/></svg></div><div style="font-size: 11px; color: var(--muted); font-weight: 600;">Voice</div><div style="font-size: 13px; font-weight: 700;">[Paathi]</div></div></div>
+  <div style="display: flex; flex-direction: column;">
+    <div class="eyebrow" style="padding-bottom: 6px;">Up next</div>
+    <div style="display: flex; align-items: center; gap: 12px; min-height: 48px; border-top: 1px solid var(--rule);"><div style="flex: 1; display: flex; flex-direction: column;"><div style="font-weight: 600; font-size: 15px;">Jaap Sahib</div><div class="gur" style="font-size: 13px; color: var(--muted);">ਜਾਪੁ ਸਾਹਿਬ</div></div><div style="font-size: 13px; color: var(--muted);">14 min</div></div><div style="display: flex; align-items: center; gap: 12px; min-height: 48px; border-top: 1px solid var(--rule);"><div style="flex: 1; display: flex; flex-direction: column;"><div style="font-weight: 600; font-size: 15px;">Tav Prasad Savaiye</div><div class="gur" style="font-size: 13px; color: var(--muted);">ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵਯੇ</div></div><div style="font-size: 13px; color: var(--muted);">5 min</div></div><div style="display: flex; align-items: center; gap: 12px; min-height: 48px; border-top: 1px solid var(--rule);"><div style="flex: 1; display: flex; flex-direction: column;"><div style="font-weight: 600; font-size: 15px;">Chaupai Sahib</div><div class="gur" style="font-size: 13px; color: var(--muted);">ਚੌਪਈ ਸਾਹਿਬ</div></div><div style="font-size: 13px; color: var(--muted);">8 min</div></div>
+  </div>
+</div>
+</div>
+
+</body></html>

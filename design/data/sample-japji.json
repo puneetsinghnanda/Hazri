@@ -1,0 +1,84 @@
+{
+ "_note": "Placeholder fixture for UI/dev only. English meanings are placeholder paraphrases, NOT the licensed teeka. Real text comes from the content pipeline (PRD §8).",
+ "bani": "Japji Sahib",
+ "lines": [
+  {
+   "gur": "ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+   "dev": "ੴ सति नामु करता पुरखु निरभउ निरवैरु अकाल मूरति अजूनी सैभं गुर प्रसादि ॥",
+   "rom": "ik oankaar sat naam karataa purakh nirabhau niravair akaal moorat ajoonee saibha(n) gur prasaad ||",
+   "en": "One Creator. Truth is the Name. Creator of all, without fear, without hate, timeless, beyond birth, self-existent; known by the Guru’s grace."
+  },
+  {
+   "gur": "॥ ਜਪੁ ॥",
+   "dev": "॥ जपु ॥",
+   "rom": "|| jap ||",
+   "en": "Jap — recite and remember."
+  },
+  {
+   "gur": "ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥",
+   "dev": "आदि सचु जुगादि सचु ॥",
+   "rom": "aad sach jugaad sach ||",
+   "en": "True in the beginning, true through the ages."
+  },
+  {
+   "gur": "ਹੈ ਭੀ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ ॥੧॥",
+   "dev": "है भी सचु नानक होसी भी सचु ॥१॥",
+   "rom": "hai bhee sach naanak hosee bhee sach ||1||",
+   "en": "True now and, says Nanak, true forever. ||1||"
+  },
+  {
+   "gur": "ਸੋਚੈ ਸੋਚਿ ਨ ਹੋਵਈ ਜੇ ਸੋਚੀ ਲਖ ਵਾਰ ॥",
+   "dev": "सोचै सोचि न होवई जे सोची लख वार ॥",
+   "rom": "sochai soch na hovee je sochee lakh vaar ||",
+   "en": "Outer cleansing cannot purify the mind, even if done a hundred thousand times."
+  },
+  {
+   "gur": "ਚੁਪੈ ਚੁਪ ਨ ਹੋਵਈ ਜੇ ਲਾਇ ਰਹਾ ਲਿਵ ਤਾਰ ॥",
+   "dev": "चुपै चुप न होवई जे लाइ रहा लिव तार ॥",
+   "rom": "chupai chup na hovee je laai rahaa liv taar ||",
+   "en": "Keeping quiet does not bring inner silence, even with unbroken focus."
+  },
+  {
+   "gur": "ਭੁਖਿਆ ਭੁਖ ਨ ਉਤਰੀ ਜੇ ਬੰਨਾ ਪੁਰੀਆ ਭਾਰ ॥",
+   "dev": "भुखिआ भुख न उतरी जे बंना पुरीआ भार ॥",
+   "rom": "bhukhiaa bhukh na utaree je ba(n)naa pureeaa bhaar ||",
+   "en": "The hunger of the hungry does not end, even with loads of worldly goods."
+  },
+  {
+   "gur": "ਸਹਸ ਸਿਆਣਪਾ ਲਖ ਹੋਹਿ ਤ ਇਕ ਨ ਚਲੈ ਨਾਲਿ ॥",
+   "dev": "सहस सिआणपा लख होहि त इक न चलै नालि ॥",
+   "rom": "sahas siaanapaa lakh hohi ta ik na chalai naal ||",
+   "en": "A hundred thousand clever tricks — not one goes along in the end."
+  },
+  {
+   "gur": "ਕਿਵ ਸਚਿਆਰਾ ਹੋਈਐ ਕਿਵ ਕੂੜੈ ਤੁਟੈ ਪਾਲਿ ॥",
+   "dev": "किव सचिआरा होईऐ किव कूड़ै तुटै पालि ॥",
+   "rom": "kiv sachiaaraa hoieeai kiv koorrai tuttai paal ||",
+   "en": "How then to become truthful? How is the wall of falsehood broken?"
+  },
+  {
+   "gur": "ਹੁਕਮਿ ਰਜਾਈ ਚਲਣਾ ਨਾਨਕ ਲਿਖਿਆ ਨਾਲਿ ॥੧॥",
+   "dev": "हुकमि रजाई चलणा नानक लिखिआ नालि ॥१॥",
+   "rom": "hukam rajaaee chalanaa naanak likhiaa naal ||1||",
+   "en": "By walking in the Divine Will, says Nanak, as it is written. ||1||"
+  },
+  {
+   "gur": "ਹੁਕਮੀ ਹੋਵਨਿ ਆਕਾਰ ਹੁਕਮੁ ਨ ਕਹਿਆ ਜਾਈ ॥",
+   "dev": "हुकमी होवनि आकार हुकमु न कहिआ जाई ॥",
+   "rom": "hukamee hovan aakaar hukam na kahiaa jaaee ||",
+   "en": "By the Divine Command all forms are made; the Command cannot be described."
+  },
+  {
+   "gur": "ਹੁਕਮੀ ਹੋਵਨਿ ਜੀਅ ਹੁਕਮਿ ਮਿਲੈ ਵਡਿਆਈ ॥",
+   "dev": "हुकमी होवनि जीअ हुकमि मिलै वडिआई ॥",
+   "rom": "hukamee hovan jeea hukam milai vaddiaaee ||",
+   "en": "By the Command souls come into being; by the Command greatness is given."
+  },
+  {
+   "gur": "ਹੁਕਮੀ ਉਤਮੁ ਨੀਚੁ ਹੁਕਮਿ ਲਿਖਿ ਦੁਖ ਸੁਖ ਪਾਈਅਹਿ ॥",
+   "dev": "हुकमी उतमु नीचु हुकमि लिखि दुख सुख पाईअहि ॥",
+   "rom": "hukamee utam neech hukam likh dukh sukh paaeeah ||",
+   "en": "By the Command some are high, some low; by the written Command come pain and joy."
+  }
+ ]
+}

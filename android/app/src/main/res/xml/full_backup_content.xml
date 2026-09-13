@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Backup rules for Android 11 and below; see data_extraction_rules.xml. -->
+<full-backup-content>
+    <include domain="database" path="user.db" />
+    <include domain="file" path="user.db" />
+    <include domain="sharedpref" path="." />
+    <exclude domain="file" path="content.db" />
+    <exclude domain="file" path="content.version" />
+    <exclude domain="external" path="." />
+</full-backup-content>

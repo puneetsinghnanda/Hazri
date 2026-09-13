@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- tokens.json -> color.light.bg -->
+    <color name="ic_launcher_background">#F4F3F8</color>
+    <!-- tokens.json -> color.dark.bg; the splash is always the night sky. -->
+    <color name="splash_background">#0C0F24</color>
+</resources>

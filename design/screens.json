@@ -1,0 +1,254 @@
+[
+ {
+  "name": "Splash",
+  "title": "Splash — first open",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "01-Splash"
+ },
+ {
+  "name": "IntroAlwaysWithYou",
+  "title": "Intro 1 · Always with you",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "02-IntroAlwaysWithYou"
+ },
+ {
+  "name": "IntroReadAlong",
+  "title": "Intro 2 · Read along",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "03-IntroReadAlong"
+ },
+ {
+  "name": "IntroYourLanguage",
+  "title": "Intro 3 · Your language",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "04-IntroYourLanguage"
+ },
+ {
+  "name": "SetupLanguage",
+  "title": "1 · Setup — language",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "05-SetupLanguage"
+ },
+ {
+  "name": "SetupReading",
+  "title": "2 · Setup — reading",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "06-SetupReading"
+ },
+ {
+  "name": "SetupReminders",
+  "title": "3 · Setup — reminders (full scroll)",
+  "w": 390,
+  "h": 1010,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "07-SetupReminders"
+ },
+ {
+  "name": "ReminderTime",
+  "title": "Pick your own reminder time",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "08-ReminderTime"
+ },
+ {
+  "name": "Main",
+  "title": "Today (English)",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "09-Today"
+ },
+ {
+  "name": "TodayHindi",
+  "title": "Today — हिन्दी, Amrit Vela dark",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "10-TodayHindi"
+ },
+ {
+  "name": "ElderMode",
+  "title": "Elder mode — ਪੰਜਾਬੀ",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "11-ElderMode"
+ },
+ {
+  "name": "NitnemList",
+  "title": "Nitnem list (full scroll)",
+  "w": 390,
+  "h": 1230,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "12-NitnemList"
+ },
+ {
+  "name": "ReaderFollowing",
+  "title": "Reader — following the audio",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "13-ReaderFollowing"
+ },
+ {
+  "name": "ReaderMeanings",
+  "title": "Reader — meanings & pause marks",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "14-ReaderMeanings"
+ },
+ {
+  "name": "ReaderHindiScrolled",
+  "title": "Reader — हिन्दी, scrolled away → Back to paath",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "15-ReaderHindiScrolled"
+ },
+ {
+  "name": "ReaderNight",
+  "title": "Reader — Amrit Vela dark",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "16-ReaderNight"
+ },
+ {
+  "name": "Player",
+  "title": "Full-screen player",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "17-Player"
+ },
+ {
+  "name": "BackgroundPlayback",
+  "title": "Minimised — notification & lock screen",
+  "w": 390,
+  "h": 880,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "18-BackgroundPlayback"
+ },
+ {
+  "name": "PaathGoals",
+  "title": "Paath goals",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "19-PaathGoals"
+ },
+ {
+  "name": "AddGoal",
+  "title": "Add a paath goal",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "20-AddGoal"
+ },
+ {
+  "name": "DailySimran",
+  "title": "Daily Simran — 5 minutes",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "21-DailySimran"
+ },
+ {
+  "name": "GurpurabCalendar",
+  "title": "Gurpurab & Nanakshahi calendar (full scroll)",
+  "w": 390,
+  "h": 1370,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "22-GurpurabCalendar"
+ },
+ {
+  "name": "Notifications",
+  "title": "Reminder notifications",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "23-Notifications"
+ },
+ {
+  "name": "Hukamnama",
+  "title": "Hukamnama",
+  "w": 390,
+  "h": 900,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "24-Hukamnama"
+ },
+ {
+  "name": "ShareCard",
+  "title": "Hukamnama share card (WhatsApp Status)",
+  "w": 360,
+  "h": 640,
+  "designed_theme": "dark",
+  "page": "page-1",
+  "file": "25-ShareCard"
+ },
+ {
+  "name": "Diary",
+  "title": "Nitnem Diary",
+  "w": 390,
+  "h": 844,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "26-Diary"
+ },
+ {
+  "name": "Settings",
+  "title": "Settings (full scroll)",
+  "w": 390,
+  "h": 2240,
+  "designed_theme": "light",
+  "page": "page-1",
+  "file": "27-Settings"
+ },
+ {
+  "name": "Foundations",
+  "title": "Foundations — design system",
+  "w": 1280,
+  "h": 1580,
+  "designed_theme": "light",
+  "page": "page-2",
+  "file": "00-Foundations"
+ }
+]

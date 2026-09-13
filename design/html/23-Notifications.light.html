@@ -1,0 +1,57 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Reminder notifications</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&amp;family=Mukta:wght@400;500;600;700&amp;family=Noto+Serif+Gurmukhi:wght@400;500;600;700&amp;family=Noto+Serif+Devanagari:wght@400;500;600&amp;display=swap">
+  
+  <style>
+body{margin:0;background:#0C0F24}
+a{color:#D9730D} a:hover{color:#9A4F00}
+.app{--bg:#F4F3F8;--card:#FFFFFF;--card2:#ECEBF3;--ink:#1B1D3A;--ink2:#4D5070;--muted:#85879F;--rule:#E1E1EA;--primary:#262C63;--onPrimary:#FFFFFF;--kesri:#D9730D;--kesriSoft:#FBE8D2;--kesriInk:#9A4F00;--sage:#2E7A57;--sageSoft:#DCEFE5;--teal:#1F7A8C;--hl:#FBE5CB;--word:#A04F00;--shadow:0 1px 2px rgba(27,29,58,.06),0 10px 28px rgba(27,29,58,.07);--scrim:rgba(20,22,45,.45);
+  width:390px;height:844px;background:var(--bg);color:var(--ink);font-family:Mukta,'Noto Sans Devanagari',system-ui,sans-serif;position:relative;overflow:hidden;box-sizing:border-box;font-size:15px;line-height:1.45}
+.app.dark{--bg:#0C0F24;--card:#161A37;--card2:#1F2447;--ink:#EDECF6;--ink2:#B9BAD3;--muted:#8084A6;--rule:#2A2F55;--primary:#F2A24E;--onPrimary:#1C1206;--kesri:#F2A24E;--kesriSoft:#3A2A1A;--kesriInk:#FFC27E;--sage:#6CCB9C;--sageSoft:#173327;--teal:#6FC3D3;--hl:rgba(242,162,78,.17);--word:#FFC27E;--shadow:0 0 0 1px rgba(255,255,255,.04);--scrim:rgba(0,0,0,.55)}
+.app *{box-sizing:border-box}
+.gur{font-family:'Noto Serif Gurmukhi','Noto Sans Gurmukhi',serif}
+.dev{font-family:'Noto Serif Devanagari','Noto Sans Devanagari',serif}
+.disp{font-family:'Baloo Paaji 2',Mukta,system-ui,sans-serif}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+svg.i{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:16px;min-height:52px;font-weight:600;font-size:16px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+</style>
+
+<style>body{margin:0;background:#888}</style></head><body>
+
+<div class="app light" style="width: 390px; height: 844px;">
+
+<div style="position: absolute; inset: 0; background: radial-gradient(120% 70% at 50% 110%, #3B2A55 0%, #141836 55%, #0B0E22 100%);"></div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px; padding: 26px 18px 0; color: #EDECF6;">
+  <div style="display: flex; flex-direction: column; gap: 2px; padding: 0 4px 4px;">
+    <div class="eyebrow" style="color: #F2A24E;">Reminders</div>
+    <div class="disp" style="font-size: 24px; font-weight: 700; line-height: 1.2;">Arrive as gentle notifications</div>
+  </div>
+  <div style="background: rgba(34,39,74,.94); border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; border: 1px solid rgba(255,255,255,.06);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #A9ABC8;"><div style="width: 22px; height: 22px; border-radius: 7px; background: #1C2150; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 40 40" style="display:block;flex:none"><path d="M4 27a16 16 0 0 1 32 0" fill="none" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/><path d="M12 27a8 8 0 0 1 16 0z" fill="#F2A24E"/><path d="M6 31.5h28" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/></svg></div><div>Ang Sang · 4:30 AM</div></div>
+      <div style="display: flex; gap: 12px; align-items: flex-start;"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px;"><div style="font-weight: 700; font-size: 15px; color: #EDECF6;">Amrit Vela</div><div style="font-size: 13.5px; color: #C9CAE0; line-height: 1.4;">Japji Sahib is ready — sunrise today is at 6:04 AM.</div></div><div style="color: #F2A24E;"><svg class="i" width="24" height="24" viewBox="0 0 24 24" style=""><path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 5v3M5.2 9.2l1.8 1.8M18.8 9.2L17 11M3 14h1.5M19.5 14H21"/></svg></div></div>
+      <div style="display: flex; gap: 20px;"><div style="font-size: 13px; font-weight: 700; color: #F2A24E; min-height: 36px; display: flex; align-items: center;">Start Nitnem</div><div style="font-size: 13px; font-weight: 700; color: #F2A24E; min-height: 36px; display: flex; align-items: center;">Later</div></div>
+    </div>
+  <div style="background: rgba(34,39,74,.94); border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; border: 1px solid rgba(255,255,255,.06);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #A9ABC8;"><div style="width: 22px; height: 22px; border-radius: 7px; background: #1C2150; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 40 40" style="display:block;flex:none"><path d="M4 27a16 16 0 0 1 32 0" fill="none" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/><path d="M12 27a8 8 0 0 1 16 0z" fill="#F2A24E"/><path d="M6 31.5h28" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/></svg></div><div>Ang Sang · 6:00 AM</div></div>
+      <div style="display: flex; gap: 12px; align-items: flex-start;"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px;"><div style="font-weight: 700; font-size: 15px; color: #EDECF6;">Daily Simran</div><div style="font-size: 13.5px; color: #C9CAE0; line-height: 1.4;">Five quiet minutes of Waheguru Simran.</div></div><div style="color: #F2A24E;"><svg class="i" width="24" height="24" viewBox="0 0 24 24" style=""><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="3.8" r="1.4" fill="currentColor"/><circle cx="17.8" cy="6.2" r="1.4" fill="currentColor"/><circle cx="20.2" cy="12" r="1.4" fill="currentColor"/><circle cx="17.8" cy="17.8" r="1.4" fill="currentColor"/><circle cx="12" cy="20.2" r="1.4" fill="currentColor"/><circle cx="6.2" cy="17.8" r="1.4" fill="currentColor"/><circle cx="3.8" cy="12" r="1.4" fill="currentColor"/><circle cx="6.2" cy="6.2" r="1.4" fill="currentColor"/></svg></div></div>
+      <div style="display: flex; gap: 20px;"><div style="font-size: 13px; font-weight: 700; color: #F2A24E; min-height: 36px; display: flex; align-items: center;">Begin</div><div style="font-size: 13px; font-weight: 700; color: #F2A24E; min-height: 36px; display: flex; align-items: center;">Skip today</div></div>
+    </div>
+  <div style="background: rgba(34,39,74,.94); border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; border: 1px solid rgba(255,255,255,.06);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #A9ABC8;"><div style="width: 22px; height: 22px; border-radius: 7px; background: #1C2150; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 40 40" style="display:block;flex:none"><path d="M4 27a16 16 0 0 1 32 0" fill="none" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/><path d="M12 27a8 8 0 0 1 16 0z" fill="#F2A24E"/><path d="M6 31.5h28" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/></svg></div><div>Ang Sang · 8:00 PM</div></div>
+      <div style="display: flex; gap: 12px; align-items: flex-start;"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px;"><div style="font-weight: 700; font-size: 15px; color: #EDECF6;">Tomorrow is a Gurpurab</div><div style="font-size: 13.5px; color: #C9CAE0; line-height: 1.4;">Pehla Prakash Purab, Sri Guru Granth Sahib Ji · 27 Bhadon</div></div><div style="color: #F2A24E;"><svg class="i" width="24" height="24" viewBox="0 0 24 24" style=""><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></div></div>
+      <div style="display: flex; gap: 20px;"><div style="font-size: 13px; font-weight: 700; color: #F2A24E; min-height: 36px; display: flex; align-items: center;">Open calendar</div></div>
+    </div>
+  <div style="background: rgba(34,39,74,.94); border-radius: 22px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; border: 1px solid rgba(255,255,255,.06);">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #A9ABC8;"><div style="width: 22px; height: 22px; border-radius: 7px; background: #1C2150; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 40 40" style="display:block;flex:none"><path d="M4 27a16 16 0 0 1 32 0" fill="none" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/><path d="M12 27a8 8 0 0 1 16 0z" fill="#F2A24E"/><path d="M6 31.5h28" stroke="#EDECF6" stroke-width="2.4" stroke-linecap="round"/></svg></div><div>Ang Sang · 8:00 PM</div></div>
+      <div style="display: flex; gap: 12px; align-items: flex-start;"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px;"><div style="font-weight: 700; font-size: 15px; color: #EDECF6;">Rehras Sahib</div><div style="font-size: 13.5px; color: #C9CAE0; line-height: 1.4;">Your evening bani, at the time you chose — 18 minutes.</div></div><div style="color: #F2A24E;"><svg class="i" width="24" height="24" viewBox="0 0 24 24" style=""><path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 3v5M9.5 6L12 8.5 14.5 6"/></svg></div></div>
+      <div style="display: flex; gap: 20px;"><div style="font-size: 13px; font-weight: 700; color: #F2A24E; min-height: 36px; display: flex; align-items: center;">Start</div><div style="font-size: 13px; font-weight: 700; color: #F2A24E; min-height: 36px; display: flex; align-items: center;">Later</div></div>
+    </div>
+  <div style="font-size: 12.5px; color: #A9ABC8; padding: 4px 6px; line-height: 1.45;">Every reminder can be switched off or re-timed in Settings. Times follow local sunrise and sunset.</div>
+</div>
+</div>
+
+</body></html>

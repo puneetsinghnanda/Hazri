@@ -1,0 +1,105 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Add a paath goal</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&amp;family=Mukta:wght@400;500;600;700&amp;family=Noto+Serif+Gurmukhi:wght@400;500;600;700&amp;family=Noto+Serif+Devanagari:wght@400;500;600&amp;display=swap">
+  
+  <style>
+body{margin:0;background:#0C0F24}
+a{color:#D9730D} a:hover{color:#9A4F00}
+.app{--bg:#F4F3F8;--card:#FFFFFF;--card2:#ECEBF3;--ink:#1B1D3A;--ink2:#4D5070;--muted:#85879F;--rule:#E1E1EA;--primary:#262C63;--onPrimary:#FFFFFF;--kesri:#D9730D;--kesriSoft:#FBE8D2;--kesriInk:#9A4F00;--sage:#2E7A57;--sageSoft:#DCEFE5;--teal:#1F7A8C;--hl:#FBE5CB;--word:#A04F00;--shadow:0 1px 2px rgba(27,29,58,.06),0 10px 28px rgba(27,29,58,.07);--scrim:rgba(20,22,45,.45);
+  width:390px;height:844px;background:var(--bg);color:var(--ink);font-family:Mukta,'Noto Sans Devanagari',system-ui,sans-serif;position:relative;overflow:hidden;box-sizing:border-box;font-size:15px;line-height:1.45}
+.app.dark{--bg:#0C0F24;--card:#161A37;--card2:#1F2447;--ink:#EDECF6;--ink2:#B9BAD3;--muted:#8084A6;--rule:#2A2F55;--primary:#F2A24E;--onPrimary:#1C1206;--kesri:#F2A24E;--kesriSoft:#3A2A1A;--kesriInk:#FFC27E;--sage:#6CCB9C;--sageSoft:#173327;--teal:#6FC3D3;--hl:rgba(242,162,78,.17);--word:#FFC27E;--shadow:0 0 0 1px rgba(255,255,255,.04);--scrim:rgba(0,0,0,.55)}
+.app *{box-sizing:border-box}
+.gur{font-family:'Noto Serif Gurmukhi','Noto Sans Gurmukhi',serif}
+.dev{font-family:'Noto Serif Devanagari','Noto Sans Devanagari',serif}
+.disp{font-family:'Baloo Paaji 2',Mukta,system-ui,sans-serif}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+svg.i{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:16px;min-height:52px;font-weight:600;font-size:16px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+</style>
+
+<style>body{margin:0;background:#888}</style></head><body>
+
+<div class="app dark" style="width: 390px; height: 844px;">
+
+<div style="display: flex; align-items: center; gap: 6px; padding: 14px 12px 6px;"><div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M15 5l-7 7 7 7"/></svg></div><div style="flex: 1; font-weight: 700; font-size: 17px;">My paath goals</div></div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 4px 16px 0;">
+  <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px;">
+    <div class="disp" style="font-size: 26px; font-weight: 700;">1 of 3 done today</div>
+    <div style="font-size: 13px; color: var(--muted);">Fri, 11 Sep</div>
+  </div>
+  <div class="card" style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div style="width: 48px; height: 48px; border-radius: 24px; background: var(--sage); color: var(--card); display: flex; align-items: center; justify-content: center; flex: none;"><svg class="i" width="24" height="24" viewBox="0 0 24 24" style=""><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <div style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+        <div style="font-weight: 700; font-size: 16px;">Sukhmani Sahib</div><div class="gur" style="font-size: 13px; color: var(--ink2);">ਸੁਖਮਨੀ ਸਾਹਿਬ</div>
+        <div style="font-size: 13px; color: var(--ink2);">Once a day</div>
+      </div>
+      <div style="width: 44px; height: 44px; border-radius: 22px; background: var(--primary); color: var(--onPrimary); display: flex; align-items: center; justify-content: center; flex: none;"><svg class="i" width="20" height="20" viewBox="0 0 24 24" style=""><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; border-top: 1px solid var(--rule); padding-top: 8px;">
+      <div style="font-weight: 700; color: var(--sage);">Done today</div>
+      <div style="display: flex; align-items: center; gap: 4px; color: var(--muted); white-space: nowrap;"><svg class="i" width="14" height="14" viewBox="0 0 24 24" style=""><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg><div>7:00 AM</div></div>
+    </div>
+  </div>
+  <div class="card" style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <svg width="48" height="48" viewBox="0 0 48 48" style="display:block;flex:none"><circle cx="24.0" cy="24.0" r="19.0" fill="none" stroke="var(--rule)" stroke-width="5"/><path d="M24.0 5.0 A19.0 19.0 0 1 1 12.8 39.4" fill="none" stroke="var(--kesri)" stroke-width="5" stroke-linecap="round"/></svg>
+      <div style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+        <div style="font-weight: 700; font-size: 16px;">Chaupai Sahib</div><div class="gur" style="font-size: 13px; color: var(--ink2);">ਚੌਪਈ ਸਾਹਿਬ</div>
+        <div style="font-size: 13px; color: var(--ink2);">5 times a day</div>
+      </div>
+      <div style="width: 44px; height: 44px; border-radius: 22px; background: var(--primary); color: var(--onPrimary); display: flex; align-items: center; justify-content: center; flex: none;"><svg class="i" width="20" height="20" viewBox="0 0 24 24" style=""><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; border-top: 1px solid var(--rule); padding-top: 8px;">
+      <div style="font-weight: 700; color: var(--kesriInk);">3 of 5 today</div>
+      <div style="display: flex; align-items: center; gap: 4px; color: var(--muted); white-space: nowrap;"><svg class="i" width="14" height="14" viewBox="0 0 24 24" style=""><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg><div>9:00 PM</div></div>
+    </div>
+  </div>
+  <div class="card" style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <svg width="48" height="48" viewBox="0 0 48 48" style="display:block;flex:none"><circle cx="24.0" cy="24.0" r="19.0" fill="none" stroke="var(--rule)" stroke-width="5"/><path d="M24.0 5.0 A19.0 19.0 0 0 1 24.0 5.0" fill="none" stroke="var(--kesri)" stroke-width="5" stroke-linecap="round"/></svg>
+      <div style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+        <div style="font-weight: 700; font-size: 16px;">Japji Sahib</div><div class="gur" style="font-size: 13px; color: var(--ink2);">ਜਪੁਜੀ ਸਾਹਿਬ</div>
+        <div style="font-size: 13px; color: var(--ink2);">For 40 days · 1 extra paath a day</div>
+      </div>
+      <div style="width: 44px; height: 44px; border-radius: 22px; background: var(--primary); color: var(--onPrimary); display: flex; align-items: center; justify-content: center; flex: none;"><svg class="i" width="20" height="20" viewBox="0 0 24 24" style=""><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg></div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 3px;"><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesri);"></div><div style="height: 6px; border-radius: 3px; background: var(--kesriSoft);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div><div style="height: 6px; border-radius: 3px; background: var(--rule);"></div></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; border-top: 1px solid var(--rule); padding-top: 8px;">
+      <div style="font-weight: 700; color: var(--kesriInk);">Day 12 of 40 · pending</div>
+      <div style="display: flex; align-items: center; gap: 4px; color: var(--muted); white-space: nowrap;"><svg class="i" width="14" height="14" viewBox="0 0 24 24" style=""><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg><div>1:00 PM</div></div>
+    </div>
+  </div>
+  <div class="btn" style="background: var(--kesriSoft); color: var(--kesriInk); border: 1.5px dashed var(--kesri);"><svg class="i" width="20" height="20" viewBox="0 0 24 24" style=""><path d="M12 3.5v4M12 16.5v4M3.5 12h4M16.5 12h4"/></svg><div>Add a paath goal</div></div>
+  <div style="font-size: 12px; color: var(--muted); text-align: center; padding: 0 10px;">Goals, counts and reminders stay on this phone and appear in your Diary.</div>
+</div>
+
+<div style="position: absolute; inset: 0; z-index: 8; background: var(--scrim);"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 9; background: var(--card); border-radius: 28px 28px 0 0; padding: 10px 20px 26px; display: flex; flex-direction: column; gap: 14px;">
+  <div style="width: 40px; height: 4px; border-radius: 2px; background: var(--rule); align-self: center;"></div>
+  <div style="display: flex; align-items: center;"><div style="flex: 1; font-weight: 700; font-size: 19px;">Add a paath goal</div><div style="width: 40px; height: 40px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M6 6l12 12M18 6L6 18"/></svg></div></div>
+  <div style="display: flex; flex-direction: column; gap: 8px;"><div class="eyebrow">Bani</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;"><div class="chip " style="background: var(--card2); color: var(--ink2); min-height: 40px; font-size: 14px; padding: 8px 14px;">Japji Sahib</div><div class="chip " style="background: var(--card2); color: var(--ink2); min-height: 40px; font-size: 14px; padding: 8px 14px;">Chaupai Sahib</div><div class="chip " style="background: var(--card2); color: var(--ink2); min-height: 40px; font-size: 14px; padding: 8px 14px;">Sukhmani Sahib</div><div class="chip " style="background: var(--primary); color: var(--onPrimary); min-height: 40px; font-size: 14px; padding: 8px 14px;">Anand Sahib</div><div class="chip " style="background: var(--card2); color: var(--ink2); min-height: 40px; font-size: 14px; padding: 8px 14px;">Rehras Sahib</div><div class="chip " style="background: var(--card2); color: var(--ink2); min-height: 40px; font-size: 14px; padding: 8px 14px;">More…</div></div></div>
+  <div style="display: flex; flex-direction: column; gap: 8px;"><div class="eyebrow">How many times a day</div>
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div style="width: 44px; height: 44px; border-radius: 22px; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700;">−</div>
+      <div class="disp" style="font-size: 30px; font-weight: 700; min-width: 36px; text-align: center;">1</div>
+      <div style="width: 44px; height: 44px; border-radius: 22px; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700;">+</div>
+      <div style="font-size: 13px; color: var(--muted);">about 20 min each</div>
+    </div></div>
+  <div style="display: flex; flex-direction: column; gap: 8px;"><div class="eyebrow">For how long</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;"><div class="chip " style="background: var(--primary); color: var(--onPrimary); min-height: 40px; font-size: 14px; padding: 8px 14px;">Every day</div><div class="chip " style="background: var(--card2); color: var(--ink2); min-height: 40px; font-size: 14px; padding: 8px 14px;">40 days</div><div class="chip " style="background: var(--card2); color: var(--ink2); min-height: 40px; font-size: 14px; padding: 8px 14px;">Until a date</div></div></div>
+  <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--rule); padding-top: 12px;">
+    <div style="color: var(--kesriInk);"><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg></div>
+    <div style="flex: 1; display: flex; flex-direction: column;"><div style="font-size: 15px; font-weight: 600;">Reminder</div><div style="font-size: 12.5px; color: var(--muted);">Every day at 7:30 PM</div></div><div style="width: 48px; height: 28px; border-radius: 14px; background: var(--primary); padding: 4px; flex: none; display: flex;"><div style="width: 20px; height: 20px; border-radius: 10px; background: var(--onPrimary); margin-left: 20px;"></div></div>
+  </div>
+  <div class="btn" style="background: var(--primary); color: var(--onPrimary);">Save goal</div>
+</div>
+</div>
+
+</body></html>

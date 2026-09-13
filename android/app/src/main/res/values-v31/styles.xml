@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ uses the platform SplashScreen API rather than a window
+     background, so the mark and ground are declared here instead. -->
+<resources>
+    <style name="LaunchTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowSplashScreenBackground">@color/splash_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_mark</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowBackground">@color/splash_background</item>
+    </style>
+</resources>

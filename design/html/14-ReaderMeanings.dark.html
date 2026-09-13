@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Reader — meanings & pause marks</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&amp;family=Mukta:wght@400;500;600;700&amp;family=Noto+Serif+Gurmukhi:wght@400;500;600;700&amp;family=Noto+Serif+Devanagari:wght@400;500;600&amp;display=swap">
+  
+  <style>
+body{margin:0;background:#0C0F24}
+a{color:#D9730D} a:hover{color:#9A4F00}
+.app{--bg:#F4F3F8;--card:#FFFFFF;--card2:#ECEBF3;--ink:#1B1D3A;--ink2:#4D5070;--muted:#85879F;--rule:#E1E1EA;--primary:#262C63;--onPrimary:#FFFFFF;--kesri:#D9730D;--kesriSoft:#FBE8D2;--kesriInk:#9A4F00;--sage:#2E7A57;--sageSoft:#DCEFE5;--teal:#1F7A8C;--hl:#FBE5CB;--word:#A04F00;--shadow:0 1px 2px rgba(27,29,58,.06),0 10px 28px rgba(27,29,58,.07);--scrim:rgba(20,22,45,.45);
+  width:390px;height:844px;background:var(--bg);color:var(--ink);font-family:Mukta,'Noto Sans Devanagari',system-ui,sans-serif;position:relative;overflow:hidden;box-sizing:border-box;font-size:15px;line-height:1.45}
+.app.dark{--bg:#0C0F24;--card:#161A37;--card2:#1F2447;--ink:#EDECF6;--ink2:#B9BAD3;--muted:#8084A6;--rule:#2A2F55;--primary:#F2A24E;--onPrimary:#1C1206;--kesri:#F2A24E;--kesriSoft:#3A2A1A;--kesriInk:#FFC27E;--sage:#6CCB9C;--sageSoft:#173327;--teal:#6FC3D3;--hl:rgba(242,162,78,.17);--word:#FFC27E;--shadow:0 0 0 1px rgba(255,255,255,.04);--scrim:rgba(0,0,0,.55)}
+.app *{box-sizing:border-box}
+.gur{font-family:'Noto Serif Gurmukhi','Noto Sans Gurmukhi',serif}
+.dev{font-family:'Noto Serif Devanagari','Noto Sans Devanagari',serif}
+.disp{font-family:'Baloo Paaji 2',Mukta,system-ui,sans-serif}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+svg.i{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:16px;min-height:52px;font-weight:600;font-size:16px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+</style>
+
+<style>body{margin:0;background:#888}</style></head><body>
+
+<div class="app dark" style="width: 390px; height: 844px;">
+
+<div style="position: absolute; top: 0; left: 0; right: 0; z-index: 3; background: var(--bg); display: flex; align-items: center; gap: 6px; padding: 14px 12px 10px;">
+  <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M15 5l-7 7 7 7"/></svg></div>
+  <div style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div style="font-weight: 700; font-size: 17px; line-height: 1.2;">Japji Sahib</div>
+    <div class="gur" style="font-size: 12px; color: var(--muted);">ਜਪੁਜੀ ਸਾਹਿਬ · Pauri 1 of 38</div>
+  </div>
+  <div style="display: flex; gap: 2px; padding: 3px; border-radius: 13px; background: var(--card2);"><div class="gur" style="width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; background: var(--card); color: var(--ink); box-shadow: var(--shadow);">ਅ</div><div class="dev" style="width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: var(--muted);">अ</div><div class="" style="width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: var(--muted);">A</div></div>
+  <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: var(--ink);">Aa</div>
+</div>
+<div style="position: absolute; top: 80px; left: 0; right: 0; bottom: 0; padding: 0 28px; display: flex; flex-direction: column; gap: 16px;">
+  <div style="display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--ink2); font-weight: 600; margin-bottom: 2px;">
+      <div class="chip" style="background: var(--card); box-shadow: var(--shadow);"><div style="width: 8px; height: 8px; border-radius: 4px; background: var(--teal);"></div><div>Short pause</div><div style="width: 8px; height: 8px; border-radius: 4px; background: var(--kesri); margin-left: 6px;"></div><div>Long pause</div></div>
+      <div class="chip" style="background: var(--card); box-shadow: var(--shadow);"><svg class="i" width="14" height="14" viewBox="0 0 24 24" style=""><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.5 5.5 3.5 8.5s-1 5.9-3.5 8.5c-2.5-2.6-3.5-5.5-3.5-8.5s1-5.9 3.5-8.5z"/></svg><div>Meaning: English</div></div></div>
+  <div style="display: flex; flex-direction: column; gap: 4px;"><div class="gur" style="font-size: 22px; line-height: 1.75; color: var(--muted); font-weight: 500; text-wrap: pretty;">ਆਦਿ <span style="color: var(--teal);">ਸਚੁ</span> ਜੁਗਾਦਿ ਸਚੁ ॥</div><div style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4;">aad sach jugaad sach ||</div><div style="font-size: 14.5px; color: var(--ink2); line-height: 1.45;">True in the beginning, true through the ages.</div></div><div style="display: flex; flex-direction: column; gap: 4px;"><div class="gur" style="font-size: 22px; line-height: 1.75; color: var(--muted); font-weight: 500; text-wrap: pretty;">ਹੈ ਭੀ <span style="color: var(--kesriInk);">ਸਚੁ</span> ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ ॥੧॥</div><div style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4;">hai bhee sach naanak hosee bhee sach ||1||</div><div style="font-size: 14.5px; color: var(--ink2); line-height: 1.45;">True now and, says Nanak, true forever. ||1||</div></div><div style="background: var(--hl); border-radius: 16px; padding: 10px 14px; margin: 0 -14px; display: flex; flex-direction: column; gap: 4px;"><div class="gur" style="font-size: 22px; line-height: 1.75; color: var(--ink); font-weight: 500; text-wrap: pretty;">ਸੋਚੈ ਸੋਚਿ ਨ <span style="color: var(--kesriInk);">ਹੋਵਈ</span> <span style="color: var(--word); text-decoration: underline; text-decoration-color: var(--kesri); text-decoration-thickness: 3px; text-underline-offset: 7px; font-weight: 700;">ਜੇ</span> ਸੋਚੀ ਲਖ ਵਾਰ ॥</div><div style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4;">sochai soch na hovee je sochee lakh vaar ||</div><div style="font-size: 14.5px; color: var(--ink2); line-height: 1.45;">Outer cleansing cannot purify the mind, even if done a hundred thousand times.</div></div><div style="display: flex; flex-direction: column; gap: 4px;"><div class="gur" style="font-size: 22px; line-height: 1.75; color: var(--ink); font-weight: 500; text-wrap: pretty;">ਚੁਪੈ ਚੁਪ ਨ <span style="color: var(--kesriInk);">ਹੋਵਈ</span> ਜੇ ਲਾਇ ਰਹਾ ਲਿਵ ਤਾਰ ॥</div><div style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4;">chupai chup na hovee je laai rahaa liv taar ||</div><div style="font-size: 14.5px; color: var(--ink2); line-height: 1.45;">Keeping quiet does not bring inner silence, even with unbroken focus.</div></div><div style="display: flex; flex-direction: column; gap: 4px;"><div class="gur" style="font-size: 22px; line-height: 1.75; color: var(--ink); font-weight: 500; text-wrap: pretty;">ਭੁਖਿਆ ਭੁਖ ਨ <span style="color: var(--kesriInk);">ਉਤਰੀ</span> ਜੇ ਬੰਨਾ ਪੁਰੀਆ ਭਾਰ ॥</div><div style="font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4;">bhukhiaa bhukh na utaree je ba(n)naa pureeaa bhaar ||</div><div style="font-size: 14.5px; color: var(--ink2); line-height: 1.45;">The hunger of the hungry does not end, even with loads of worldly goods.</div></div>
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 64px; height: 36px; z-index: 2; background: linear-gradient(var(--bg), transparent);"></div>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; background: var(--card); border-radius: 24px 24px 0 0; box-shadow: 0 -8px 30px rgba(20,22,45,.10); padding: 12px 18px 24px; display: flex; flex-direction: column; gap: 10px;">
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <div class="chip" style="background: var(--sageSoft); color: var(--sage); padding: 5px 10px;"><div style="width: 7px; height: 7px; border-radius: 4px; background: var(--sage);"></div><div>Following audio</div></div>
+    <div class="chip" style="background: var(--card2); color: var(--ink2); padding: 5px 10px;">1.0×</div>
+    <div style="flex: 1;"></div>
+    <div style="font-size: 12px; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums;">1:48 / 19:04</div>
+  </div>
+  <div style="height: 4px; border-radius: 2px; background: var(--rule); position: relative;">
+    <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 9.5%; border-radius: 2px; background: var(--kesri);"></div>
+    <div style="position: absolute; left: 9.5%; top: -5px; width: 14px; height: 14px; margin-left: -7px; border-radius: 7px; background: var(--kesri);"></div>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: space-between; color: var(--ink); padding: 0 6px;">
+    <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M18 6l-9 6 9 6z" fill="currentColor"/><path d="M6 6v12"/></svg></div><div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.2 3.8v3.6h3.6"/><text x="12" y="15.2" text-anchor="middle" font-size="7.2" font-weight="700" fill="currentColor" stroke="none" font-family="Mukta,sans-serif">10</text></svg></div>
+    <div style="width: 60px; height: 60px; border-radius: 30px; background: var(--primary); color: var(--onPrimary); display: flex; align-items: center; justify-content: center;"><svg class="i" width="28" height="28" viewBox="0 0 24 24" style=""><rect x="6.5" y="5" width="3.8" height="14" rx="1.2" fill="currentColor" stroke="none"/><rect x="13.7" y="5" width="3.8" height="14" rx="1.2" fill="currentColor" stroke="none"/></svg></div>
+    <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.8 3.8v3.6h-3.6"/><text x="12" y="15.2" text-anchor="middle" font-size="7.2" font-weight="700" fill="currentColor" stroke="none" font-family="Mukta,sans-serif">10</text></svg></div><div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); "><svg class="i" width="22" height="22" viewBox="0 0 24 24" style=""><path d="M6 6l9 6-9 6z" fill="currentColor"/><path d="M18 6v12"/></svg></div>
+  </div>
+</div>
+</div>
+
+</body></html>

@@ -1,0 +1,23 @@
+{
+  "japji": {
+    "lines": 385,
+    "word_misaligned_lines": [
+      1
+    ],
+    "vishraam_unparsed_lines": []
+  },
+  "calendar": {
+    "events": 10,
+    "months_covered": [
+      "Bhadon",
+      "Assu",
+      "Katak",
+      "Maghar"
+    ],
+    "covered_from": "2026-08-17",
+    "covered_to": "2026-12-15"
+  },
+  "cities": 92,
+  "content_version": 3,
+  "bytes": 802816
+}
