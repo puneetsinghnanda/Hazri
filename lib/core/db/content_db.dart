@@ -118,6 +118,50 @@ class Meanings extends Table {
   Set<Column> get primaryKey => {lineId, lang, isAlt};
 }
 
+@DataClassName('VoiceRow')
+class Voices extends Table {
+  @override
+  String get tableName => 'voice';
+
+  TextColumn get id => text()();
+  TextColumn get name => text().nullable()();
+  TextColumn get creditEn => text().named('credit_en').nullable()();
+  TextColumn get creditPa => text().named('credit_pa').nullable()();
+  TextColumn get creditHi => text().named('credit_hi').nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DataClassName('AudioTrackRow')
+class AudioTracks extends Table {
+  @override
+  String get tableName => 'audio_track';
+
+  TextColumn get id => text()();
+  TextColumn get baniVersionId => text().named('bani_version_id')();
+  TextColumn get voiceId => text().named('voice_id').nullable()();
+  TextColumn get pack => text()();
+  TextColumn get file => text()();
+  IntColumn get durationMs => integer().named('duration_ms').nullable()();
+  IntColumn get bytes => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DataClassName('TimingRow')
+class Timings extends Table {
+  @override
+  String get tableName => 'timing';
+
+  TextColumn get audioTrackId => text().named('audio_track_id')();
+  TextColumn get json => text()();
+
+  @override
+  Set<Column> get primaryKey => {audioTrackId};
+}
+
 @DataClassName('NanakshahiMonthRow')
 class NanakshahiMonths extends Table {
   @override
@@ -214,6 +258,9 @@ class Metas extends Table {
     BaniVersions,
     Lines,
     Meanings,
+    Voices,
+    AudioTracks,
+    Timings,
     NanakshahiMonths,
     CalendarEvents,
     Cities,
@@ -239,7 +286,7 @@ class ContentDb extends _$ContentDb {
   );
 
   /// The content version baked in by the pipeline.
-  static const int expectedVersion = 3;
+  static const int expectedVersion = 4;
 
   /// Copies `assets/content/content.db` into app storage if it is missing or
   /// out of date, and returns the opened database.

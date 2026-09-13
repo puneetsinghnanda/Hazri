@@ -11,6 +11,7 @@ import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../audio/data/audio_controller.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../reminders/data/reminder_service.dart';
 import '../../reminders/data/reminders_controller.dart';
@@ -37,6 +38,7 @@ class SettingsScreen extends ConsumerWidget {
     final reminders = ref.watch(remindersProvider).value ?? const <Reminder>[];
     final goals = ref.watch(goalsSummaryProvider);
     final exact = ref.watch(_exactAlarmProvider).value;
+    final hasAudio = ref.watch(hasAudioProvider);
     final city = ref
         .watch(citiesProvider)
         .value
@@ -134,8 +136,15 @@ class SettingsScreen extends ConsumerWidget {
                 children: [
                   SettingsRow(
                     title: l.settingsNitnemAudio,
-                    subtitle: l.audioNotInBuildSub,
-                    value: l.comingSoonShort,
+                    subtitle: hasAudio ? l.audioIncludedSub : l.audioNotInBuildSub,
+                    value: hasAudio ? l.settingsAudioOnPhone : l.comingSoonShort,
+                  ),
+                  _SegmentedRow(
+                    title: l.playerSpeed,
+                    options: const [('0.75', '0.75×'), ('1.0', '1.0×'), ('1.5', '1.5×')],
+                    value: s.speed.toStringAsFixed(s.speed == 0.75 ? 2 : 1),
+                    onChanged: (v) =>
+                        ref.read(playbackControllerProvider).setSpeed(double.parse(v)),
                   ),
                 ],
               ),

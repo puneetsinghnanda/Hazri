@@ -314,11 +314,11 @@ class LPa extends L {
   String get beginMyNitnem => 'ਮੇਰਾ ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ';
 
   @override
-  String get audioNotInBuild => 'ਇਸ ਬਿਲਡ ਵਿੱਚ ਹਾਲੇ ਆਵਾਜ਼ ਨਹੀਂ ਹੈ';
+  String get audioNotInBuild => 'ਇਸ ਬਾਣੀ ਦੀ ਆਵਾਜ਼ ਹਾਲੇ ਇਸ ਬਿਲਡ ਵਿੱਚ ਨਹੀਂ ਹੈ';
 
   @override
   String get audioNotInBuildSub =>
-      'ਪਾਠ, ਅਰਥ ਅਤੇ ਚੇਤੇ ਸਭ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੇ ਹਨ। ਰਿਕਾਰਡ ਕੀਤਾ ਪਾਠ ਅਗਲੇ ਬਿਲਡ ਵਿੱਚ ਆਵੇਗਾ।';
+      'ਜਪੁ ਜੀ ਸਾਹਿਬ ਦਾ ਪਾਠ ਮੌਜੂਦ ਹੈ। ਬਾਕੀ ਬਾਣੀਆਂ ਦੀਆਂ ਰਿਕਾਰਡਿੰਗਾਂ ਤਿਆਰ ਹੋਣ ਉੱਤੇ ਆਉਣਗੀਆਂ।';
 
   @override
   String reminderSheetTitle(String bani) {
@@ -638,14 +638,6 @@ class LPa extends L {
 
   @override
   String get playerSleepTimer => 'ਸੌਣ ਦਾ ਵੇਲਾ';
-
-  @override
-  String get playerVoice => 'ਆਵਾਜ਼';
-
-  @override
-  String playerPaathi(String name) {
-    return 'ਪਾਠੀ: $name';
-  }
 
   @override
   String get diaryTitle => 'ਨਿਤਨੇਮ ਡਾਇਰੀ';
@@ -1078,7 +1070,7 @@ class LPa extends L {
 
   @override
   String get aboutNoAudioYet =>
-      'ਇਸ ਬਿਲਡ ਵਿੱਚ ਆਵਾਜ਼ ਨਹੀਂ ਹੈ। ਰਿਲੀਜ਼ ਤੋਂ ਪਹਿਲਾਂ ਲਿਖਤੀ ਹੱਕਾਂ ਨਾਲ ਰਿਕਾਰਡਿੰਗ ਕਰਵਾਈ ਜਾਵੇਗੀ।';
+      'ਐਪ ਨਾਲ ਆਈ ਪਾਠ ਦੀ ਰਿਕਾਰਡਿੰਗ ਫ਼ੋਨ ਤੋਂ ਹੀ ਚੱਲਦੀ ਹੈ, ਕਦੇ ਸਟ੍ਰੀਮ ਨਹੀਂ ਹੁੰਦੀ।';
 
   @override
   String get privacyTitle => 'ਨਿੱਜਤਾ';
@@ -1173,6 +1165,23 @@ class LPa extends L {
 
   @override
   String get comingSoonShort => 'ਜਲਦੀ';
+
+  @override
+  String get audioIncluded => 'ਪਾਠ ਦੀ ਆਵਾਜ਼ ਸ਼ਾਮਲ ਹੈ';
+
+  @override
+  String get audioIncludedSub =>
+      'ਜਪੁ ਜੀ ਸਾਹਿਬ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦਾ ਹੈ, ਅਤੇ ਲਿਖਤ ਨਾਲ-ਨਾਲ ਚੱਲਦੀ ਹੈ।';
+
+  @override
+  String get settingsAudioOnPhone => 'ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲੀ ਹੈ';
+
+  @override
+  String get aboutAudioHeading => 'ਪਾਠ ਦੀ ਰਿਕਾਰਡਿੰਗ';
+
+  @override
+  String get readerTapLineToSeek =>
+      'ਪਾਠ ਉੱਥੋਂ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਸੇ ਵੀ ਪੰਕਤੀ ਉੱਤੇ ਟੈਪ ਕਰੋ';
 
   @override
   String get errorGeneric => 'ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।';

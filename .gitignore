@@ -49,3 +49,7 @@ app.*.map.json
 
 # Local Android SDK path, written by the Flutter tool.
 /android/local.properties
+
+# Recitation masters. They live on the `audio-masters` GitHub release, not in
+# git: see audio/README.md. Only the converted, shipping audio is committed.
+/audio/source/

@@ -314,11 +314,11 @@ class LEn extends L {
   String get beginMyNitnem => 'Begin my Nitnem';
 
   @override
-  String get audioNotInBuild => 'Audio is not part of this build yet';
+  String get audioNotInBuild => 'Audio for this bani is not in this build yet';
 
   @override
   String get audioNotInBuildSub =>
-      'Text, meanings and reminders all work offline. Recorded paath arrives in a later build.';
+      'Japji Sahib has its recitation. The other banis follow once their recordings are ready.';
 
   @override
   String reminderSheetTitle(String bani) {
@@ -640,14 +640,6 @@ class LEn extends L {
 
   @override
   String get playerSleepTimer => 'Sleep timer';
-
-  @override
-  String get playerVoice => 'Voice';
-
-  @override
-  String playerPaathi(String name) {
-    return 'Paathi: $name';
-  }
 
   @override
   String get diaryTitle => 'Nitnem Diary';
@@ -1083,7 +1075,7 @@ class LEn extends L {
 
   @override
   String get aboutNoAudioYet =>
-      'Audio is not in this build. Recordings will be commissioned with written rights before release.';
+      'The recitation shipped with the app is played from the phone and never streamed.';
 
   @override
   String get privacyTitle => 'Privacy';
@@ -1178,6 +1170,22 @@ class LEn extends L {
 
   @override
   String get comingSoonShort => 'Soon';
+
+  @override
+  String get audioIncluded => 'Recitation included';
+
+  @override
+  String get audioIncludedSub =>
+      'Japji Sahib plays offline, with the text following along.';
+
+  @override
+  String get settingsAudioOnPhone => 'Saved on this phone';
+
+  @override
+  String get aboutAudioHeading => 'Recitation';
+
+  @override
+  String get readerTapLineToSeek => 'Tap any line to start the paath there';
 
   @override
   String get errorGeneric => 'Something went wrong.';

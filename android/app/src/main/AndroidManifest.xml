@@ -8,6 +8,11 @@
          reserved for alarm and calendar apps. -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Background paath: the media session runs as a foreground service so
+         the recitation keeps going when the phone is locked (PRD 1.8). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
     <!-- The Simran timer holds the screen on while it is visible. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -53,6 +58,25 @@
                 <data android:scheme="hazri" />
             </intent-filter>
         </activity>
+
+        <!-- The media session. audio_service owns the notification, the lock
+             screen controls and the Bluetooth/headset buttons. -->
+        <service
+            android:name="com.ryanheise.audioservice.AudioService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.ryanheise.audioservice.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
 
         <!-- Re-schedules the rolling reminder window after a reboot, a clock
              change or a time-zone change. -->

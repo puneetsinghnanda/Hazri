@@ -89,6 +89,20 @@ def main() -> None:
             sun_colour=(0, 0, 0, 255),
         ).save(os.path.join(fg_folder, "ic_launcher_monochrome.png"))
 
+    # The media-notification icon: Android renders it as a white silhouette on
+    # a transparent ground, at 24dp.
+    NOTIF = {"mdpi": 24, "hdpi": 36, "xhdpi": 48, "xxhdpi": 72, "xxxhdpi": 96}
+    for density, size in NOTIF.items():
+        folder = os.path.join(RES, f"drawable-{density}")
+        os.makedirs(folder, exist_ok=True)
+        draw_mark(
+            size,
+            inset=0.92,
+            background=None,
+            arc_colour=(255, 255, 255, 255),
+            sun_colour=(255, 255, 255, 255),
+        ).save(os.path.join(folder, "ic_notification.png"))
+
     # The splash mark, used by the launch theme.
     splash = os.path.join(RES, "drawable-xxhdpi")
     os.makedirs(splash, exist_ok=True)

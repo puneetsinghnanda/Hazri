@@ -30,16 +30,27 @@ class HomeShell extends ConsumerWidget {
     final tabs = elder ? _elderTabs : HomeTab.values;
     final c = context.colors;
 
-    return Scaffold(
-      backgroundColor: c.bg,
-      body: shell,
-      bottomNavigationBar: _BottomNav(
-        tabs: tabs,
-        currentIndex: shell.currentIndex,
-        elder: elder,
-        onSelect: (tab) => shell.goBranch(
-          tab.index,
-          initialLocation: tab.index == shell.currentIndex,
+    final onToday = shell.currentIndex == HomeTab.today.index;
+
+    // Back always returns to Today first, and only leaves the app from there,
+    // so the hardware button never drops someone out of the app mid-Nitnem.
+    return PopScope(
+      canPop: onToday,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        shell.goBranch(HomeTab.today.index);
+      },
+      child: Scaffold(
+        backgroundColor: c.bg,
+        body: shell,
+        bottomNavigationBar: _BottomNav(
+          tabs: tabs,
+          currentIndex: shell.currentIndex,
+          elder: elder,
+          onSelect: (tab) => shell.goBranch(
+            tab.index,
+            initialLocation: tab.index == shell.currentIndex,
+          ),
         ),
       ),
     );

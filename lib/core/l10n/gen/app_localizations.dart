@@ -678,13 +678,13 @@ abstract class L {
   /// No description provided for @audioNotInBuild.
   ///
   /// In en, this message translates to:
-  /// **'Audio is not part of this build yet'**
+  /// **'Audio for this bani is not in this build yet'**
   String get audioNotInBuild;
 
   /// No description provided for @audioNotInBuildSub.
   ///
   /// In en, this message translates to:
-  /// **'Text, meanings and reminders all work offline. Recorded paath arrives in a later build.'**
+  /// **'Japji Sahib has its recitation. The other banis follow once their recordings are ready.'**
   String get audioNotInBuildSub;
 
   /// No description provided for @reminderSheetTitle.
@@ -1226,18 +1226,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Sleep timer'**
   String get playerSleepTimer;
-
-  /// No description provided for @playerVoice.
-  ///
-  /// In en, this message translates to:
-  /// **'Voice'**
-  String get playerVoice;
-
-  /// No description provided for @playerPaathi.
-  ///
-  /// In en, this message translates to:
-  /// **'Paathi: {name}'**
-  String playerPaathi(String name);
 
   /// No description provided for @diaryTitle.
   ///
@@ -1998,7 +1986,7 @@ abstract class L {
   /// No description provided for @aboutNoAudioYet.
   ///
   /// In en, this message translates to:
-  /// **'Audio is not in this build. Recordings will be commissioned with written rights before release.'**
+  /// **'The recitation shipped with the app is played from the phone and never streamed.'**
   String get aboutNoAudioYet;
 
   /// No description provided for @privacyTitle.
@@ -2168,6 +2156,36 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Soon'**
   String get comingSoonShort;
+
+  /// No description provided for @audioIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Recitation included'**
+  String get audioIncluded;
+
+  /// No description provided for @audioIncludedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Japji Sahib plays offline, with the text following along.'**
+  String get audioIncludedSub;
+
+  /// No description provided for @settingsAudioOnPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone'**
+  String get settingsAudioOnPhone;
+
+  /// No description provided for @aboutAudioHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Recitation'**
+  String get aboutAudioHeading;
+
+  /// No description provided for @readerTapLineToSeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any line to start the paath there'**
+  String get readerTapLineToSeek;
 
   /// No description provided for @errorGeneric.
   ///

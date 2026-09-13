@@ -58,7 +58,7 @@ class AboutScreen extends ConsumerWidget {
               'and never sent anywhere.',
         ),
         _PlainGroup(title: l.aboutFonts, body: l.aboutFontsBody),
-        _PlainGroup(title: l.settingsSectionAudio, body: l.aboutNoAudioYet),
+        _PlainGroup(title: l.aboutAudioHeading, body: l.aboutNoAudioYet),
         if (!hukamnama.isConfigured)
           _PlainGroup(title: l.hukamnamaTitle, body: l.hukamnamaNotConfiguredBody),
         const SizedBox(height: 16),

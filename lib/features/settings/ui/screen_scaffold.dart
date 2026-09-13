@@ -18,12 +18,7 @@ class HazriScreen extends StatelessWidget {
     this.subtitle,
     this.actions = const [],
     this.footer,
-    this.padding = const EdgeInsets.fromLTRB(
-      HazriSize.gutter,
-      8,
-      HazriSize.gutter,
-      24,
-    ),
+    this.padding = const EdgeInsets.fromLTRB(HazriSize.gutter, 8, HazriSize.gutter, 24),
   });
 
   final String title;
@@ -36,50 +31,55 @@ class HazriScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    return Scaffold(
-      backgroundColor: c.bg,
-      body: SafeArea(
-        child: PhoneWidth(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 8, HazriSize.gutter, 4),
-                child: Row(
-                  children: [
-                    CardIconButton(
-                      icon: HazriIconData.chevronLeft,
-                      tooltip: L.of(context).actionBack,
-                      onPressed: () =>
-                          context.canPop() ? context.pop() : context.go(Routes.today),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: HazriText.display22.copyWith(color: c.ink),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          if (subtitle != null)
-                            Text(
-                              subtitle!,
-                              style: HazriText.caption.copyWith(color: c.muted),
-                            ),
-                        ],
+    // A screen reached from a notification has nothing beneath it, so back
+    // goes to Today rather than closing the app.
+    return PopScope(
+      canPop: context.canPop(),
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) context.go(Routes.today);
+      },
+      child: Scaffold(
+        backgroundColor: c.bg,
+        body: SafeArea(
+          child: PhoneWidth(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 8, HazriSize.gutter, 4),
+                  child: Row(
+                    children: [
+                      CardIconButton(
+                        icon: HazriIconData.chevronLeft,
+                        tooltip: L.of(context).actionBack,
+                        onPressed: () =>
+                            context.canPop() ? context.pop() : context.go(Routes.today),
                       ),
-                    ),
-                    ...actions,
-                  ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: HazriText.display22.copyWith(color: c.ink),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            if (subtitle != null)
+                              Text(subtitle!, style: HazriText.caption.copyWith(color: c.muted)),
+                          ],
+                        ),
+                      ),
+                      ...actions,
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView(padding: padding, children: children),
-              ),
-              if (footer != null) footer!,
-            ],
+                Expanded(
+                  child: ListView(padding: padding, children: children),
+                ),
+                if (footer != null) footer!,
+              ],
+            ),
           ),
         ),
       ),
@@ -100,10 +100,7 @@ class SettingsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(4, 18, 4, 8),
-          child: Eyebrow(title),
-        ),
+        Padding(padding: const EdgeInsets.fromLTRB(4, 18, 4, 8), child: Eyebrow(title)),
         HazriCard(
           padding: EdgeInsets.zero,
           child: Column(
@@ -165,10 +162,7 @@ class SettingsRow extends StatelessWidget {
                   if (subtitle != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 2),
-                      child: Text(
-                        subtitle!,
-                        style: HazriText.bodySmall.copyWith(color: c.muted),
-                      ),
+                      child: Text(subtitle!, style: HazriText.bodySmall.copyWith(color: c.muted)),
                     ),
                 ],
               ),
@@ -176,12 +170,10 @@ class SettingsRow extends StatelessWidget {
             if (value != null)
               Padding(
                 padding: const EdgeInsets.only(left: 12),
-                child: Text(
-                  value!,
-                  style: HazriText.chip.copyWith(color: c.ink2),
-                ),
+                child: Text(value!, style: HazriText.chip.copyWith(color: c.ink2)),
               ),
-            if (trailing != null) Padding(padding: const EdgeInsets.only(left: 8), child: trailing!),
+            if (trailing != null)
+              Padding(padding: const EdgeInsets.only(left: 8), child: trailing!),
           ],
         ),
       ),

@@ -20,8 +20,10 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SRC = os.path.join(ROOT, "content", "source")
 OUT = os.path.join(ROOT, "assets", "content", "content.db")
 REPORT = os.path.join(ROOT, "content", "build-report.json")
+AUDIO_DIR = os.path.join(ROOT, "assets", "audio")
+TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 
-CONTENT_VERSION = 3
+CONTENT_VERSION = 4
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -286,6 +288,52 @@ def build_japji(con: sqlite3.Connection, report: dict) -> None:
          "सुखमनी साहिब", "SHABADOS"))
 
 
+def build_audio(con: sqlite3.Connection, report: dict) -> None:
+    """Registers any converted recitation and its timing file.
+
+    Audio is optional: a bani with no recording gets no audio_track row, and
+    the app falls back to a text-only reader for it.
+    """
+    built = []
+    for bani_id, slug in con.execute("SELECT id, slug FROM bani").fetchall():
+        audio = os.path.join(AUDIO_DIR, f"{slug}.m4a")
+        timings = os.path.join(TIMINGS_DIR, f"{slug}.json")
+        if not os.path.exists(audio):
+            continue
+        version = con.execute(
+            "SELECT id FROM bani_version WHERE bani_id = ? AND is_default = 1", (bani_id,)
+        ).fetchone()
+        if version is None:
+            continue
+        version_id = version[0]
+
+        duration_ms = None
+        timing_json = None
+        if os.path.exists(timings):
+            with open(timings, encoding="utf-8") as fh:
+                doc = json.load(fh)
+            duration_ms = doc.get("durationMs")
+            timing_json = json.dumps(doc, ensure_ascii=False, separators=(",", ":"))
+
+        track_id = f"{slug}_sgpc"
+        con.execute(
+            "INSERT INTO audio_track(id,bani_version_id,voice_id,pack,file,duration_ms,bytes) "
+            "VALUES(?,?,?,?,?,?,?)",
+            (track_id, version_id, None, "nitnem_audio", f"{slug}.m4a",
+             duration_ms, os.path.getsize(audio)),
+        )
+        if timing_json:
+            con.execute("INSERT INTO timing(audio_track_id,json) VALUES(?,?)",
+                        (track_id, timing_json))
+        built.append({
+            "bani": slug,
+            "bytes": os.path.getsize(audio),
+            "duration_ms": duration_ms,
+            "has_timings": timing_json is not None,
+        })
+    report["audio"] = built
+
+
 def build_calendar(con: sqlite3.Connection, report: dict) -> None:
     with open(os.path.join(SRC, "gurpurab-558.json"), encoding="utf-8") as fh:
         doc = json.load(fh)
@@ -365,6 +413,10 @@ def source_digest() -> str:
         os.path.join(os.path.dirname(__file__), "cities.json"),
         os.path.abspath(__file__),
     ]
+    if os.path.isdir(TIMINGS_DIR):
+        inputs += sorted(
+            os.path.join(TIMINGS_DIR, f) for f in os.listdir(TIMINGS_DIR) if f.endswith(".json")
+        )
     for path in inputs:
         with open(path, "rb") as fh:
             h.update(hashlib.sha256(fh.read()).digest())
@@ -385,6 +437,7 @@ def main() -> int:
             "est_minutes,author_en,has_text) VALUES(?,?,?,?,?,?,?,?,?,?,0)", row)
 
     build_japji(con, report)
+    build_audio(con, report)
     build_calendar(con, report)
     build_cities(con, report)
 

@@ -24,15 +24,16 @@ system in [`design/`](design).
 | Gurpurab calendar | Nanakshahi date, this week and coming up, per-event bell |
 | Settings, About, Privacy, Licences | Complete |
 | Elder mode | App-wide, 3-tab navigation, larger everything |
-| Audio | **Not in this build** — see below |
+| Audio | Japji Sahib: 19 min recitation, plays offline, keeps going when the phone is locked. Line and word highlighting follow the paathi; tap a line to jump there. Speed toggle, ±10 s, sleep timer |
 | Hukamnama fetch | **No source configured** — see below |
 
 ### Deliberate gaps
 
-- **Audio.** The PRD's follow-audio, background playback and player screens are
-  not built. The reader, Nitnem list and setup all say so rather than showing
-  dead controls. Recordings need commissioning with written rights first
-  (PRD §18, D3).
+- **Audio for the other eight banis.** Japji Sahib has its recitation; the rest
+  show a "not in this build" state rather than a dead control.
+- **Line timings are unverified.** They are derived from the recording rather
+  than hand-checked (see `audio/README.md`), and the PRD requires a human pass
+  before release (§18, D3). The word highlight in particular is an estimate.
 - **Hukamnama.** `HukamnamaSource` has only an `Unconfigured` implementation, so
   this build makes **no network requests at all** — `INTERNET` is removed from
   the merged manifest. The screen, the 30-day cache and the share card are

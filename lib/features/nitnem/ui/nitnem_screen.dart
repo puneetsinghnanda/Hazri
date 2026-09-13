@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show BaniSlot;
+import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_db.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
@@ -13,6 +14,7 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../audio/data/audio_controller.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../reminders/data/reminders_controller.dart';
 import '../../reminders/domain/reminder_plan.dart';
@@ -32,6 +34,7 @@ class NitnemScreen extends ConsumerWidget {
     final slotTimes = ref.watch(slotTimesProvider).value;
     final dates = HazriDates.of(context);
     final reminders = ref.watch(remindersProvider).value ?? const <Reminder>[];
+    final hasAnyAudio = ref.watch(hasAudioProvider);
 
     String? subtitleFor(BaniSlot slot) {
       if (slot == BaniSlot.morning) {
@@ -72,9 +75,11 @@ class NitnemScreen extends ConsumerWidget {
                   Flexible(
                     child: HazriChip(
                       icon: HazriIconData.headphones,
-                      label: l.nitnemAudioNotAvailable,
-                      background: c.card2,
-                      foreground: c.muted,
+                      label: hasAnyAudio
+                          ? l.nitnemAudioSavedOffline
+                          : l.nitnemAudioNotAvailable,
+                      background: hasAnyAudio ? c.sageSoft : c.card2,
+                      foreground: hasAnyAudio ? c.sage : c.muted,
                       minHeight: 30,
                     ),
                   ),
@@ -91,6 +96,7 @@ class NitnemScreen extends ConsumerWidget {
               ])
                 if ((sections[slot] ?? const []).isNotEmpty)
                   _Section(
+                    slot: slot,
                     title: switch (slot) {
                       BaniSlot.morning => l.slotAmritVela,
                       BaniSlot.evening => l.slotEvening,
@@ -163,16 +169,28 @@ class _GoalsSummaryCard extends ConsumerWidget {
   }
 }
 
-class _Section extends StatelessWidget {
-  const _Section({required this.title, required this.subtitle, required this.banis});
+class _Section extends ConsumerWidget {
+  const _Section({
+    required this.slot,
+    required this.title,
+    required this.subtitle,
+    required this.banis,
+  });
 
+  final BaniSlot slot;
   final String title;
   final String? subtitle;
   final List<Bani> banis;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
+    final l = L.of(context);
+    // "Play all" queues every bani in the slot that has a recitation, gapless
+    // (PRD 1.4).
+    final playable = ref.watch(audioTracksProvider).value ?? const {};
+    final canPlayAll = ref.watch(audioHandlerProvider) != null &&
+        banis.where((b) => playable.containsKey(b.id)).length > 1;
     return Padding(
       padding: const EdgeInsets.only(bottom: 18),
       child: Column(
@@ -195,6 +213,17 @@ class _Section extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (canPlayAll)
+                  HazriChip(
+                    icon: HazriIconData.play,
+                    label: l.nitnemPlayAll,
+                    background: c.kesriSoft,
+                    foreground: c.kesriInk,
+                    minHeight: 34,
+                    onTap: () => ref
+                        .read(playbackControllerProvider)
+                        .playSlot(slot, language: l.localeName),
+                  ),
               ],
             ),
           ),

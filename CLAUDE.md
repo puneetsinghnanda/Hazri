@@ -52,12 +52,22 @@ flutter gen-l10n                                      # lib/core/l10n/gen
 dart run build_runner build                           # drift *.g.dart
 ```
 
+## Audio
+
+Masters are **not** in git; they live on the `audio-masters` GitHub release.
+See `audio/README.md` for how to fetch one, rebuild the shipping AAC, generate
+timings and verify the alignment acoustically.
+
+The paathi is deliberately uncredited: there is no name placeholder anywhere in
+the app. Add the credit to `voice` in the content pipeline when one is agreed.
+
 ## Known gaps in this build
 
-- **Audio** is not implemented. The reader, Nitnem list and setup say so; the
-  follow-audio state and player screens are not built yet.
-- **Only Japji Sahib has text.** The other eight banis are real rows with a
-  "not in this build" reader state, waiting on reviewed text.
+- **Only Japji Sahib has text and audio.** The other eight banis are real rows
+  with a "not in this build" reader state, waiting on reviewed text and
+  recordings.
+- **Line timings are unverified** (`"verified": false`). They are derived, not
+  hand-checked; the PRD requires human verification before release (§8).
 - **No Hukamnama source is configured.** `HukamnamaSource` has an
   `Unconfigured` implementation; the screen, cache and share card are built.
 - **The Nanakshahi calendar covers 17 Aug - 15 Dec 2026 only**, derived from

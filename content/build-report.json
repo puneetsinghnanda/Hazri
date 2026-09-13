@@ -6,6 +6,14 @@
     ],
     "vishraam_unparsed_lines": []
   },
+  "audio": [
+    {
+      "bani": "japji-sahib",
+      "bytes": 9405288,
+      "duration_ms": 1139300,
+      "has_timings": true
+    }
+  ],
   "calendar": {
     "events": 10,
     "months_covered": [
@@ -18,7 +26,7 @@
     "covered_to": "2026-12-15"
   },
   "cities": 92,
-  "content_version": 3,
-  "source_digest": "25e00d302d967747",
-  "bytes": 802816
+  "content_version": 4,
+  "source_digest": "89eb6888c9c9c419",
+  "bytes": 856064
 }

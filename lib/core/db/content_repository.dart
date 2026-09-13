@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/audio/domain/timings.dart';
 import '../../features/nitnem/domain/bani.dart';
 import '../settings/app_settings.dart';
 import '../time/nanakshahi.dart';
@@ -136,6 +137,30 @@ class ContentRepository {
     ]);
   }
 
+  /// The recitation for a bani version, or null when none has shipped.
+  Future<AudioTrackRow?> audioTrack(String baniVersionId) =>
+      (_db.select(_db.audioTracks)..where((t) => t.baniVersionId.equals(baniVersionId)))
+          .getSingleOrNull();
+
+  /// Every bani that has a recording, keyed by bani id.
+  Future<Map<String, AudioTrackRow>> audioTracksByBani() async {
+    final tracks = await _db.select(_db.audioTracks).get();
+    final versions = await _db.select(_db.baniVersions).get();
+    final baniOf = {for (final v in versions) v.id: v.baniId};
+    return {
+      for (final t in tracks)
+        if (baniOf[t.baniVersionId] != null) baniOf[t.baniVersionId]!: t,
+    };
+  }
+
+  /// The line and word timings for a track (PRD §7.3).
+  Future<BaniTimings?> timings(String audioTrackId) async {
+    final row = await (_db.select(_db.timings)
+          ..where((t) => t.audioTrackId.equals(audioTrackId)))
+        .getSingleOrNull();
+    return row == null ? null : BaniTimings.tryDecode(row.json);
+  }
+
   Future<QuoteRow?> quote(String id) =>
       (_db.select(_db.quotes)..where((q) => q.id.equals(id))).getSingleOrNull();
 
@@ -173,4 +198,13 @@ final calendarEventsProvider = FutureProvider<List<CalendarEventRow>>(
 
 final contentSourcesProvider = FutureProvider<List<SourceRow>>(
   (ref) => ref.watch(contentRepositoryProvider).sources(),
+);
+
+/// Which banis have a recitation in this build.
+final audioTracksProvider = FutureProvider<Map<String, AudioTrackRow>>(
+  (ref) => ref.watch(contentRepositoryProvider).audioTracksByBani(),
+);
+
+final baniTimingsProvider = FutureProvider.family<BaniTimings?, String>(
+  (ref, trackId) => ref.watch(contentRepositoryProvider).timings(trackId),
 );

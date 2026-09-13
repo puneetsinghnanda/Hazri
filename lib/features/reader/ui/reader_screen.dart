@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show ScrollDirection;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -19,6 +20,9 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../audio/data/audio_controller.dart';
+import '../../audio/domain/timings.dart';
+import '../../audio/ui/player_bar.dart';
 import '../../nitnem/domain/bani.dart';
 import 'gurbani_line_view.dart';
 import 'text_settings_sheet.dart';
@@ -60,10 +64,20 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   /// The version being read, once the bani has resolved.
   String? _versionId;
 
+  /// Follow state: which line the paathi is on, and whether the page is still
+  /// tracking it (PRD 1.6).
+  int _followLine = -1;
+  int _followWord = -1;
+  bool _attached = true;
+  bool _autoScrolling = false;
+
   @override
   void initState() {
     super.initState();
     _repo = ref.read(userRepositoryProvider);
+    if (widget.autoplay) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _startAudio());
+    }
     _itemPositions.itemPositions.addListener(_onScroll);
     // Progress is written every five seconds while reading, and again on exit,
     // so a process death loses at most a few lines (PRD 1.5).
@@ -77,6 +91,92 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     _saveProgress();
     WakelockPlus.disable();
     super.dispose();
+  }
+
+  /// Starts this bani playing, used by the `autoplay=1` deep link from a
+  /// reminder notification.
+  Future<void> _startAudio() async {
+    final bani = ref.read(baniBySlugProvider(widget.slug)).value;
+    if (bani == null || !mounted) return;
+    await ref.read(playbackControllerProvider).playBani(
+      bani,
+      language: L.of(context).localeName,
+    );
+  }
+
+  /// Moves the highlight, and scrolls if the page is still attached.
+  void _applyFollow(BaniTimings timings, Duration position) {
+    final index = timings.indexAt(position);
+    if (index < 0) return;
+    final timing = timings.lines[index];
+    final word = timings.wordIndexAt(timing, position);
+    if (timing.line == _followLine && word == _followWord) return;
+
+    final lineChanged = timing.line != _followLine;
+    setState(() {
+      _followLine = timing.line;
+      _followWord = word;
+    });
+    if (lineChanged && _attached) _scrollToCurrent();
+  }
+
+  /// Puts the current line about a third of the way down, unless it is already
+  /// comfortably on screen (PRD 1.6).
+  void _scrollToCurrent({bool force = false}) {
+    if (_followLine < 0 || !_scroller.isAttached) return;
+    if (!force) {
+      final visible = _itemPositions.itemPositions.value
+          .where((p) => p.index == _followLine);
+      if (visible.isNotEmpty) {
+        final edge = visible.first.itemLeadingEdge;
+        if (edge >= 0.15 && edge <= 0.60) return;
+      }
+    }
+    _autoScrolling = true;
+    _scroller
+        .scrollTo(
+          index: _followLine,
+          alignment: 0.3,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+        )
+        .whenComplete(() => _autoScrolling = false);
+  }
+
+  /// Any drag by hand detaches the page; the highlight keeps moving.
+  void _detach() {
+    if (_autoScrolling || !_attached || _followLine < 0) return;
+    setState(() => _attached = false);
+  }
+
+  void _backToPaath() {
+    setState(() => _attached = true);
+    _scrollToCurrent(force: true);
+  }
+
+  /// Tapping a line seeks the recitation there and re-attaches, leaving the
+  /// play/pause state alone (PRD 1.6).
+  Future<void> _seekToLine(BaniTimings timings, int lineIdx) async {
+    final at = timings.startOfLine(lineIdx);
+    if (at == null) return;
+    final handler = ref.read(audioHandlerProvider);
+    if (handler == null) return;
+    if (ref.read(playingSlugProvider) != widget.slug) {
+      final bani = ref.read(baniBySlugProvider(widget.slug)).value;
+      if (bani == null) return;
+      await ref.read(playbackControllerProvider).playBani(
+        bani,
+        at: at,
+        language: L.of(context).localeName,
+      );
+    } else {
+      await handler.seek(at);
+    }
+    setState(() {
+      _attached = true;
+      _followLine = lineIdx;
+    });
+    _scrollToCurrent(force: true);
   }
 
   void _onScroll() {
@@ -170,6 +270,26 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     _versionId = bani.versionId;
 
     final linesAsync = ref.watch(baniLinesProvider(bani.versionId!));
+    final tracks = ref.watch(audioTracksProvider).value ?? const {};
+    final track = tracks[bani.id];
+    final hasAudio = ref.watch(audioHandlerProvider) != null && track != null;
+    final timings = track == null
+        ? null
+        : ref.watch(baniTimingsProvider(track.id)).value;
+    final isPlayingThisBani = ref.watch(playingSlugProvider) == bani.slug;
+
+    // The highlight only moves while this bani is the one being recited and
+    // the user has follow turned on.
+    if (hasAudio && timings != null && isPlayingThisBani && settings.followAudio) {
+      ref.listen<AsyncValue<Duration>>(positionProvider, (_, next) {
+        final position = next.value;
+        if (position != null && mounted) _applyFollow(timings, position);
+      });
+    } else if (_followLine != -1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() => _followLine = -1);
+      });
+    }
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -202,36 +322,101 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                     WidgetsBinding.instance.addPostFrameCallback(
                       (_) => _jumpToStart(bani.versionId!),
                     );
-                    return ScrollablePositionedList.builder(
-                      itemScrollController: _scroller,
-                      itemPositionsListener: _itemPositions,
-                      padding: const EdgeInsets.fromLTRB(28, 8, 28, 40),
-                      itemCount: lines.length + 1,
-                      itemBuilder: (context, i) {
-                        if (i == lines.length) {
-                          return _EndOfBaniCard(bani: bani);
-                        }
-                        final line = lines[i];
-                        return GurbaniLineView(
-                          line: line,
-                          settings: settings,
-                          commentaryLabel: l.readerCommentaryExpand(
-                            line.meaningIn(settings.meaningsLang)?.sourceId ?? '',
-                          ),
-                          commentaryNote: l.readerCommentaryNote,
-                          showCommentaryExpanded: _expandedCommentary.contains(line.id),
-                          onToggleCommentary: () => setState(() {
-                            _expandedCommentary.contains(line.id)
-                                ? _expandedCommentary.remove(line.id)
-                                : _expandedCommentary.add(line.id);
-                          }),
-                        );
+                    return NotificationListener<UserScrollNotification>(
+                      onNotification: (n) {
+                        if (n.direction != ScrollDirection.idle) _detach();
+                        return false;
                       },
+                      child: ScrollablePositionedList.builder(
+                        itemScrollController: _scroller,
+                        itemPositionsListener: _itemPositions,
+                        padding: const EdgeInsets.fromLTRB(28, 8, 28, 40),
+                        itemCount: lines.length + 1,
+                        itemBuilder: (context, i) {
+                          if (i == lines.length) {
+                            return _EndOfBaniCard(bani: bani);
+                          }
+                          final line = lines[i];
+                          final isCurrent = line.idx == _followLine;
+                          return GurbaniLineView(
+                            line: line,
+                            settings: settings,
+                            highlight: _followLine < 0
+                                ? LineHighlight.upcoming
+                                : isCurrent
+                                    ? LineHighlight.current
+                                    : line.idx < _followLine
+                                        ? LineHighlight.past
+                                        : LineHighlight.upcoming,
+                            currentWord: isCurrent ? _followWord : null,
+                            onTap: timings == null
+                                ? null
+                                : () => _seekToLine(timings, line.idx),
+                            commentaryLabel: l.readerCommentaryExpand(
+                              line.meaningIn(settings.meaningsLang)?.sourceId ?? '',
+                            ),
+                            commentaryNote: l.readerCommentaryNote,
+                            showCommentaryExpanded: _expandedCommentary.contains(line.id),
+                            onToggleCommentary: () => setState(() {
+                              _expandedCommentary.contains(line.id)
+                                  ? _expandedCommentary.remove(line.id)
+                                  : _expandedCommentary.add(line.id);
+                            }),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
               ),
-              const _AudioUnavailableBar(),
+              if (hasAudio)
+                PlayerBar(
+                  following: isPlayingThisBani && _attached && _followLine >= 0,
+                  onBackToPaath: _followLine >= 0 && !_attached ? _backToPaath : null,
+                )
+              else
+                const _AudioUnavailableBar(),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: (_followLine >= 0 && !_attached)
+          ? _BackToPaathPill(line: _followLine + 1, onTap: _backToPaath)
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+/// The pill that appears once the page has been scrolled away from the paath
+/// (Design 15).
+class _BackToPaathPill extends StatelessWidget {
+  const _BackToPaathPill({required this.line, required this.onTap});
+
+  final int line;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Material(
+      color: c.primary,
+      borderRadius: BorderRadius.circular(HazriRadius.chip),
+      elevation: 6,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(HazriRadius.chip),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppIcon(HazriIconData.arrowUp, size: 18, color: c.onPrimary),
+              const SizedBox(width: 8),
+              Text(
+                L.of(context).readerBackToPaath(line),
+                style: HazriText.chip.copyWith(color: c.onPrimary),
+              ),
             ],
           ),
         ),

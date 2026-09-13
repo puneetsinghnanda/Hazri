@@ -112,8 +112,8 @@
   "usingCityForSun": "Using {city} for sunrise and sunset",
   "@usingCityForSun": { "placeholders": { "city": { "type": "String" } } },
   "beginMyNitnem": "Begin my Nitnem",
-  "audioNotInBuild": "Audio is not part of this build yet",
-  "audioNotInBuildSub": "Text, meanings and reminders all work offline. Recorded paath arrives in a later build.",
+  "audioNotInBuild": "Audio for this bani is not in this build yet",
+  "audioNotInBuildSub": "Japji Sahib has its recitation. The other banis follow once their recordings are ready.",
 
   "reminderSheetTitle": "{bani} reminder",
   "@reminderSheetTitle": { "placeholders": { "bani": { "type": "String" } } },
@@ -234,8 +234,6 @@
   "playerUpNext": "Up next",
   "playerSpeed": "Speed",
   "playerSleepTimer": "Sleep timer",
-  "playerVoice": "Voice",
-  "playerPaathi": "Paathi: {name}",
   "@playerPaathi": { "placeholders": { "name": { "type": "String" } } },
 
   "diaryTitle": "Nitnem Diary",
@@ -387,7 +385,7 @@
   "aboutFonts": "Fonts",
   "aboutFontsBody": "Mukta, Baloo Paaji 2, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.",
   "aboutContact": "Contact",
-  "aboutNoAudioYet": "Audio is not in this build. Recordings will be commissioned with written rights before release.",
+  "aboutNoAudioYet": "The recitation shipped with the app is played from the phone and never streamed.",
 
   "privacyTitle": "Privacy",
   "privacyBody": "Hazri has no account and collects no personal data. Your diary, goals and settings stay on this phone and in your own Google backup. If you pick a city or use your location, it stays on the phone and is used only to work out sunrise and sunset.",
@@ -424,6 +422,16 @@
   "shareCardShare": "Share",
 
   "comingSoonShort": "Soon",
+
+  "audioIncluded": "Recitation included",
+
+  "audioIncludedSub": "Japji Sahib plays offline, with the text following along.",
+
+  "settingsAudioOnPhone": "Saved on this phone",
+
+  "aboutAudioHeading": "Recitation",
+
+  "readerTapLineToSeek": "Tap any line to start the paath there",
 
   "errorGeneric": "Something went wrong.",
   "errorContentDb": "The bundled content could not be opened. Reinstalling Hazri should fix it."

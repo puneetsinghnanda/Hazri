@@ -552,27 +552,28 @@ class _StepRemindersState extends ConsumerState<_StepReminders> {
                 ),
               ),
               const SizedBox(height: 10),
-              // Audio is not part of this build, so the setup step says so
-              // rather than showing a download that never starts (PRD 1.2).
+              // The recitation ships inside the app, so there is no download
+              // to wait for (PRD 1.2 shows one; this build has nothing to
+              // fetch).
               HazriCard(
-                colour: c.card2,
+                colour: c.sageSoft,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppIcon(HazriIconData.headphones, size: 20, color: c.muted),
+                    AppIcon(HazriIconData.headphones, size: 20, color: c.sage),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            l.audioNotInBuild,
-                            style: HazriText.bodyStrong.copyWith(color: c.ink2),
+                            l.audioIncluded,
+                            style: HazriText.bodyStrong.copyWith(color: c.sage),
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            l.audioNotInBuildSub,
-                            style: HazriText.bodySmall.copyWith(color: c.muted),
+                            l.audioIncludedSub,
+                            style: HazriText.bodySmall.copyWith(color: c.sage),
                           ),
                         ],
                       ),

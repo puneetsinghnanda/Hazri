@@ -3147,6 +3147,1047 @@ class MeaningsCompanion extends UpdateCompanion<MeaningRow> {
   }
 }
 
+class $VoicesTable extends Voices with TableInfo<$VoicesTable, VoiceRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VoicesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _creditEnMeta = const VerificationMeta(
+    'creditEn',
+  );
+  @override
+  late final GeneratedColumn<String> creditEn = GeneratedColumn<String>(
+    'credit_en',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _creditPaMeta = const VerificationMeta(
+    'creditPa',
+  );
+  @override
+  late final GeneratedColumn<String> creditPa = GeneratedColumn<String>(
+    'credit_pa',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _creditHiMeta = const VerificationMeta(
+    'creditHi',
+  );
+  @override
+  late final GeneratedColumn<String> creditHi = GeneratedColumn<String>(
+    'credit_hi',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    creditEn,
+    creditPa,
+    creditHi,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'voice';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<VoiceRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    }
+    if (data.containsKey('credit_en')) {
+      context.handle(
+        _creditEnMeta,
+        creditEn.isAcceptableOrUnknown(data['credit_en']!, _creditEnMeta),
+      );
+    }
+    if (data.containsKey('credit_pa')) {
+      context.handle(
+        _creditPaMeta,
+        creditPa.isAcceptableOrUnknown(data['credit_pa']!, _creditPaMeta),
+      );
+    }
+    if (data.containsKey('credit_hi')) {
+      context.handle(
+        _creditHiMeta,
+        creditHi.isAcceptableOrUnknown(data['credit_hi']!, _creditHiMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  VoiceRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VoiceRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      ),
+      creditEn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}credit_en'],
+      ),
+      creditPa: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}credit_pa'],
+      ),
+      creditHi: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}credit_hi'],
+      ),
+    );
+  }
+
+  @override
+  $VoicesTable createAlias(String alias) {
+    return $VoicesTable(attachedDatabase, alias);
+  }
+}
+
+class VoiceRow extends DataClass implements Insertable<VoiceRow> {
+  final String id;
+  final String? name;
+  final String? creditEn;
+  final String? creditPa;
+  final String? creditHi;
+  const VoiceRow({
+    required this.id,
+    this.name,
+    this.creditEn,
+    this.creditPa,
+    this.creditHi,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || creditEn != null) {
+      map['credit_en'] = Variable<String>(creditEn);
+    }
+    if (!nullToAbsent || creditPa != null) {
+      map['credit_pa'] = Variable<String>(creditPa);
+    }
+    if (!nullToAbsent || creditHi != null) {
+      map['credit_hi'] = Variable<String>(creditHi);
+    }
+    return map;
+  }
+
+  VoicesCompanion toCompanion(bool nullToAbsent) {
+    return VoicesCompanion(
+      id: Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      creditEn: creditEn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(creditEn),
+      creditPa: creditPa == null && nullToAbsent
+          ? const Value.absent()
+          : Value(creditPa),
+      creditHi: creditHi == null && nullToAbsent
+          ? const Value.absent()
+          : Value(creditHi),
+    );
+  }
+
+  factory VoiceRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return VoiceRow(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String?>(json['name']),
+      creditEn: serializer.fromJson<String?>(json['creditEn']),
+      creditPa: serializer.fromJson<String?>(json['creditPa']),
+      creditHi: serializer.fromJson<String?>(json['creditHi']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String?>(name),
+      'creditEn': serializer.toJson<String?>(creditEn),
+      'creditPa': serializer.toJson<String?>(creditPa),
+      'creditHi': serializer.toJson<String?>(creditHi),
+    };
+  }
+
+  VoiceRow copyWith({
+    String? id,
+    Value<String?> name = const Value.absent(),
+    Value<String?> creditEn = const Value.absent(),
+    Value<String?> creditPa = const Value.absent(),
+    Value<String?> creditHi = const Value.absent(),
+  }) => VoiceRow(
+    id: id ?? this.id,
+    name: name.present ? name.value : this.name,
+    creditEn: creditEn.present ? creditEn.value : this.creditEn,
+    creditPa: creditPa.present ? creditPa.value : this.creditPa,
+    creditHi: creditHi.present ? creditHi.value : this.creditHi,
+  );
+  VoiceRow copyWithCompanion(VoicesCompanion data) {
+    return VoiceRow(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      creditEn: data.creditEn.present ? data.creditEn.value : this.creditEn,
+      creditPa: data.creditPa.present ? data.creditPa.value : this.creditPa,
+      creditHi: data.creditHi.present ? data.creditHi.value : this.creditHi,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VoiceRow(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('creditEn: $creditEn, ')
+          ..write('creditPa: $creditPa, ')
+          ..write('creditHi: $creditHi')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, creditEn, creditPa, creditHi);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VoiceRow &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.creditEn == this.creditEn &&
+          other.creditPa == this.creditPa &&
+          other.creditHi == this.creditHi);
+}
+
+class VoicesCompanion extends UpdateCompanion<VoiceRow> {
+  final Value<String> id;
+  final Value<String?> name;
+  final Value<String?> creditEn;
+  final Value<String?> creditPa;
+  final Value<String?> creditHi;
+  final Value<int> rowid;
+  const VoicesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.creditEn = const Value.absent(),
+    this.creditPa = const Value.absent(),
+    this.creditHi = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  VoicesCompanion.insert({
+    required String id,
+    this.name = const Value.absent(),
+    this.creditEn = const Value.absent(),
+    this.creditPa = const Value.absent(),
+    this.creditHi = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id);
+  static Insertable<VoiceRow> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? creditEn,
+    Expression<String>? creditPa,
+    Expression<String>? creditHi,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (creditEn != null) 'credit_en': creditEn,
+      if (creditPa != null) 'credit_pa': creditPa,
+      if (creditHi != null) 'credit_hi': creditHi,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  VoicesCompanion copyWith({
+    Value<String>? id,
+    Value<String?>? name,
+    Value<String?>? creditEn,
+    Value<String?>? creditPa,
+    Value<String?>? creditHi,
+    Value<int>? rowid,
+  }) {
+    return VoicesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      creditEn: creditEn ?? this.creditEn,
+      creditPa: creditPa ?? this.creditPa,
+      creditHi: creditHi ?? this.creditHi,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (creditEn.present) {
+      map['credit_en'] = Variable<String>(creditEn.value);
+    }
+    if (creditPa.present) {
+      map['credit_pa'] = Variable<String>(creditPa.value);
+    }
+    if (creditHi.present) {
+      map['credit_hi'] = Variable<String>(creditHi.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VoicesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('creditEn: $creditEn, ')
+          ..write('creditPa: $creditPa, ')
+          ..write('creditHi: $creditHi, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AudioTracksTable extends AudioTracks
+    with TableInfo<$AudioTracksTable, AudioTrackRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AudioTracksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _baniVersionIdMeta = const VerificationMeta(
+    'baniVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> baniVersionId = GeneratedColumn<String>(
+    'bani_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _voiceIdMeta = const VerificationMeta(
+    'voiceId',
+  );
+  @override
+  late final GeneratedColumn<String> voiceId = GeneratedColumn<String>(
+    'voice_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _packMeta = const VerificationMeta('pack');
+  @override
+  late final GeneratedColumn<String> pack = GeneratedColumn<String>(
+    'pack',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fileMeta = const VerificationMeta('file');
+  @override
+  late final GeneratedColumn<String> file = GeneratedColumn<String>(
+    'file',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationMsMeta = const VerificationMeta(
+    'durationMs',
+  );
+  @override
+  late final GeneratedColumn<int> durationMs = GeneratedColumn<int>(
+    'duration_ms',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bytesMeta = const VerificationMeta('bytes');
+  @override
+  late final GeneratedColumn<int> bytes = GeneratedColumn<int>(
+    'bytes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    baniVersionId,
+    voiceId,
+    pack,
+    file,
+    durationMs,
+    bytes,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'audio_track';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AudioTrackRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('bani_version_id')) {
+      context.handle(
+        _baniVersionIdMeta,
+        baniVersionId.isAcceptableOrUnknown(
+          data['bani_version_id']!,
+          _baniVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_baniVersionIdMeta);
+    }
+    if (data.containsKey('voice_id')) {
+      context.handle(
+        _voiceIdMeta,
+        voiceId.isAcceptableOrUnknown(data['voice_id']!, _voiceIdMeta),
+      );
+    }
+    if (data.containsKey('pack')) {
+      context.handle(
+        _packMeta,
+        pack.isAcceptableOrUnknown(data['pack']!, _packMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_packMeta);
+    }
+    if (data.containsKey('file')) {
+      context.handle(
+        _fileMeta,
+        file.isAcceptableOrUnknown(data['file']!, _fileMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fileMeta);
+    }
+    if (data.containsKey('duration_ms')) {
+      context.handle(
+        _durationMsMeta,
+        durationMs.isAcceptableOrUnknown(data['duration_ms']!, _durationMsMeta),
+      );
+    }
+    if (data.containsKey('bytes')) {
+      context.handle(
+        _bytesMeta,
+        bytes.isAcceptableOrUnknown(data['bytes']!, _bytesMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AudioTrackRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AudioTrackRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      baniVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}bani_version_id'],
+      )!,
+      voiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}voice_id'],
+      ),
+      pack: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pack'],
+      )!,
+      file: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file'],
+      )!,
+      durationMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_ms'],
+      ),
+      bytes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}bytes'],
+      ),
+    );
+  }
+
+  @override
+  $AudioTracksTable createAlias(String alias) {
+    return $AudioTracksTable(attachedDatabase, alias);
+  }
+}
+
+class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
+  final String id;
+  final String baniVersionId;
+  final String? voiceId;
+  final String pack;
+  final String file;
+  final int? durationMs;
+  final int? bytes;
+  const AudioTrackRow({
+    required this.id,
+    required this.baniVersionId,
+    this.voiceId,
+    required this.pack,
+    required this.file,
+    this.durationMs,
+    this.bytes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['bani_version_id'] = Variable<String>(baniVersionId);
+    if (!nullToAbsent || voiceId != null) {
+      map['voice_id'] = Variable<String>(voiceId);
+    }
+    map['pack'] = Variable<String>(pack);
+    map['file'] = Variable<String>(file);
+    if (!nullToAbsent || durationMs != null) {
+      map['duration_ms'] = Variable<int>(durationMs);
+    }
+    if (!nullToAbsent || bytes != null) {
+      map['bytes'] = Variable<int>(bytes);
+    }
+    return map;
+  }
+
+  AudioTracksCompanion toCompanion(bool nullToAbsent) {
+    return AudioTracksCompanion(
+      id: Value(id),
+      baniVersionId: Value(baniVersionId),
+      voiceId: voiceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(voiceId),
+      pack: Value(pack),
+      file: Value(file),
+      durationMs: durationMs == null && nullToAbsent
+          ? const Value.absent()
+          : Value(durationMs),
+      bytes: bytes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bytes),
+    );
+  }
+
+  factory AudioTrackRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AudioTrackRow(
+      id: serializer.fromJson<String>(json['id']),
+      baniVersionId: serializer.fromJson<String>(json['baniVersionId']),
+      voiceId: serializer.fromJson<String?>(json['voiceId']),
+      pack: serializer.fromJson<String>(json['pack']),
+      file: serializer.fromJson<String>(json['file']),
+      durationMs: serializer.fromJson<int?>(json['durationMs']),
+      bytes: serializer.fromJson<int?>(json['bytes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'baniVersionId': serializer.toJson<String>(baniVersionId),
+      'voiceId': serializer.toJson<String?>(voiceId),
+      'pack': serializer.toJson<String>(pack),
+      'file': serializer.toJson<String>(file),
+      'durationMs': serializer.toJson<int?>(durationMs),
+      'bytes': serializer.toJson<int?>(bytes),
+    };
+  }
+
+  AudioTrackRow copyWith({
+    String? id,
+    String? baniVersionId,
+    Value<String?> voiceId = const Value.absent(),
+    String? pack,
+    String? file,
+    Value<int?> durationMs = const Value.absent(),
+    Value<int?> bytes = const Value.absent(),
+  }) => AudioTrackRow(
+    id: id ?? this.id,
+    baniVersionId: baniVersionId ?? this.baniVersionId,
+    voiceId: voiceId.present ? voiceId.value : this.voiceId,
+    pack: pack ?? this.pack,
+    file: file ?? this.file,
+    durationMs: durationMs.present ? durationMs.value : this.durationMs,
+    bytes: bytes.present ? bytes.value : this.bytes,
+  );
+  AudioTrackRow copyWithCompanion(AudioTracksCompanion data) {
+    return AudioTrackRow(
+      id: data.id.present ? data.id.value : this.id,
+      baniVersionId: data.baniVersionId.present
+          ? data.baniVersionId.value
+          : this.baniVersionId,
+      voiceId: data.voiceId.present ? data.voiceId.value : this.voiceId,
+      pack: data.pack.present ? data.pack.value : this.pack,
+      file: data.file.present ? data.file.value : this.file,
+      durationMs: data.durationMs.present
+          ? data.durationMs.value
+          : this.durationMs,
+      bytes: data.bytes.present ? data.bytes.value : this.bytes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AudioTrackRow(')
+          ..write('id: $id, ')
+          ..write('baniVersionId: $baniVersionId, ')
+          ..write('voiceId: $voiceId, ')
+          ..write('pack: $pack, ')
+          ..write('file: $file, ')
+          ..write('durationMs: $durationMs, ')
+          ..write('bytes: $bytes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, baniVersionId, voiceId, pack, file, durationMs, bytes);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AudioTrackRow &&
+          other.id == this.id &&
+          other.baniVersionId == this.baniVersionId &&
+          other.voiceId == this.voiceId &&
+          other.pack == this.pack &&
+          other.file == this.file &&
+          other.durationMs == this.durationMs &&
+          other.bytes == this.bytes);
+}
+
+class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
+  final Value<String> id;
+  final Value<String> baniVersionId;
+  final Value<String?> voiceId;
+  final Value<String> pack;
+  final Value<String> file;
+  final Value<int?> durationMs;
+  final Value<int?> bytes;
+  final Value<int> rowid;
+  const AudioTracksCompanion({
+    this.id = const Value.absent(),
+    this.baniVersionId = const Value.absent(),
+    this.voiceId = const Value.absent(),
+    this.pack = const Value.absent(),
+    this.file = const Value.absent(),
+    this.durationMs = const Value.absent(),
+    this.bytes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AudioTracksCompanion.insert({
+    required String id,
+    required String baniVersionId,
+    this.voiceId = const Value.absent(),
+    required String pack,
+    required String file,
+    this.durationMs = const Value.absent(),
+    this.bytes = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       baniVersionId = Value(baniVersionId),
+       pack = Value(pack),
+       file = Value(file);
+  static Insertable<AudioTrackRow> custom({
+    Expression<String>? id,
+    Expression<String>? baniVersionId,
+    Expression<String>? voiceId,
+    Expression<String>? pack,
+    Expression<String>? file,
+    Expression<int>? durationMs,
+    Expression<int>? bytes,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (baniVersionId != null) 'bani_version_id': baniVersionId,
+      if (voiceId != null) 'voice_id': voiceId,
+      if (pack != null) 'pack': pack,
+      if (file != null) 'file': file,
+      if (durationMs != null) 'duration_ms': durationMs,
+      if (bytes != null) 'bytes': bytes,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AudioTracksCompanion copyWith({
+    Value<String>? id,
+    Value<String>? baniVersionId,
+    Value<String?>? voiceId,
+    Value<String>? pack,
+    Value<String>? file,
+    Value<int?>? durationMs,
+    Value<int?>? bytes,
+    Value<int>? rowid,
+  }) {
+    return AudioTracksCompanion(
+      id: id ?? this.id,
+      baniVersionId: baniVersionId ?? this.baniVersionId,
+      voiceId: voiceId ?? this.voiceId,
+      pack: pack ?? this.pack,
+      file: file ?? this.file,
+      durationMs: durationMs ?? this.durationMs,
+      bytes: bytes ?? this.bytes,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (baniVersionId.present) {
+      map['bani_version_id'] = Variable<String>(baniVersionId.value);
+    }
+    if (voiceId.present) {
+      map['voice_id'] = Variable<String>(voiceId.value);
+    }
+    if (pack.present) {
+      map['pack'] = Variable<String>(pack.value);
+    }
+    if (file.present) {
+      map['file'] = Variable<String>(file.value);
+    }
+    if (durationMs.present) {
+      map['duration_ms'] = Variable<int>(durationMs.value);
+    }
+    if (bytes.present) {
+      map['bytes'] = Variable<int>(bytes.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AudioTracksCompanion(')
+          ..write('id: $id, ')
+          ..write('baniVersionId: $baniVersionId, ')
+          ..write('voiceId: $voiceId, ')
+          ..write('pack: $pack, ')
+          ..write('file: $file, ')
+          ..write('durationMs: $durationMs, ')
+          ..write('bytes: $bytes, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TimingsTable extends Timings with TableInfo<$TimingsTable, TimingRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TimingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _audioTrackIdMeta = const VerificationMeta(
+    'audioTrackId',
+  );
+  @override
+  late final GeneratedColumn<String> audioTrackId = GeneratedColumn<String>(
+    'audio_track_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
+  @override
+  late final GeneratedColumn<String> json = GeneratedColumn<String>(
+    'json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [audioTrackId, json];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'timing';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TimingRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('audio_track_id')) {
+      context.handle(
+        _audioTrackIdMeta,
+        audioTrackId.isAcceptableOrUnknown(
+          data['audio_track_id']!,
+          _audioTrackIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_audioTrackIdMeta);
+    }
+    if (data.containsKey('json')) {
+      context.handle(
+        _jsonMeta,
+        json.isAcceptableOrUnknown(data['json']!, _jsonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_jsonMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {audioTrackId};
+  @override
+  TimingRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TimingRow(
+      audioTrackId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}audio_track_id'],
+      )!,
+      json: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}json'],
+      )!,
+    );
+  }
+
+  @override
+  $TimingsTable createAlias(String alias) {
+    return $TimingsTable(attachedDatabase, alias);
+  }
+}
+
+class TimingRow extends DataClass implements Insertable<TimingRow> {
+  final String audioTrackId;
+  final String json;
+  const TimingRow({required this.audioTrackId, required this.json});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['audio_track_id'] = Variable<String>(audioTrackId);
+    map['json'] = Variable<String>(json);
+    return map;
+  }
+
+  TimingsCompanion toCompanion(bool nullToAbsent) {
+    return TimingsCompanion(
+      audioTrackId: Value(audioTrackId),
+      json: Value(json),
+    );
+  }
+
+  factory TimingRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TimingRow(
+      audioTrackId: serializer.fromJson<String>(json['audioTrackId']),
+      json: serializer.fromJson<String>(json['json']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'audioTrackId': serializer.toJson<String>(audioTrackId),
+      'json': serializer.toJson<String>(json),
+    };
+  }
+
+  TimingRow copyWith({String? audioTrackId, String? json}) => TimingRow(
+    audioTrackId: audioTrackId ?? this.audioTrackId,
+    json: json ?? this.json,
+  );
+  TimingRow copyWithCompanion(TimingsCompanion data) {
+    return TimingRow(
+      audioTrackId: data.audioTrackId.present
+          ? data.audioTrackId.value
+          : this.audioTrackId,
+      json: data.json.present ? data.json.value : this.json,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TimingRow(')
+          ..write('audioTrackId: $audioTrackId, ')
+          ..write('json: $json')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(audioTrackId, json);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TimingRow &&
+          other.audioTrackId == this.audioTrackId &&
+          other.json == this.json);
+}
+
+class TimingsCompanion extends UpdateCompanion<TimingRow> {
+  final Value<String> audioTrackId;
+  final Value<String> json;
+  final Value<int> rowid;
+  const TimingsCompanion({
+    this.audioTrackId = const Value.absent(),
+    this.json = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TimingsCompanion.insert({
+    required String audioTrackId,
+    required String json,
+    this.rowid = const Value.absent(),
+  }) : audioTrackId = Value(audioTrackId),
+       json = Value(json);
+  static Insertable<TimingRow> custom({
+    Expression<String>? audioTrackId,
+    Expression<String>? json,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (audioTrackId != null) 'audio_track_id': audioTrackId,
+      if (json != null) 'json': json,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TimingsCompanion copyWith({
+    Value<String>? audioTrackId,
+    Value<String>? json,
+    Value<int>? rowid,
+  }) {
+    return TimingsCompanion(
+      audioTrackId: audioTrackId ?? this.audioTrackId,
+      json: json ?? this.json,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (audioTrackId.present) {
+      map['audio_track_id'] = Variable<String>(audioTrackId.value);
+    }
+    if (json.present) {
+      map['json'] = Variable<String>(json.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TimingsCompanion(')
+          ..write('audioTrackId: $audioTrackId, ')
+          ..write('json: $json, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $NanakshahiMonthsTable extends NanakshahiMonths
     with TableInfo<$NanakshahiMonthsTable, NanakshahiMonthRow> {
   @override
@@ -5398,6 +6439,9 @@ abstract class _$ContentDb extends GeneratedDatabase {
   late final $BaniVersionsTable baniVersions = $BaniVersionsTable(this);
   late final $LinesTable lines = $LinesTable(this);
   late final $MeaningsTable meanings = $MeaningsTable(this);
+  late final $VoicesTable voices = $VoicesTable(this);
+  late final $AudioTracksTable audioTracks = $AudioTracksTable(this);
+  late final $TimingsTable timings = $TimingsTable(this);
   late final $NanakshahiMonthsTable nanakshahiMonths = $NanakshahiMonthsTable(
     this,
   );
@@ -5415,6 +6459,9 @@ abstract class _$ContentDb extends GeneratedDatabase {
     baniVersions,
     lines,
     meanings,
+    voices,
+    audioTracks,
+    timings,
     nanakshahiMonths,
     calendarEvents,
     cities,
@@ -6963,6 +8010,607 @@ typedef $$MeaningsTableProcessedTableManager =
       MeaningRow,
       PrefetchHooks Function()
     >;
+typedef $$VoicesTableCreateCompanionBuilder =
+    VoicesCompanion Function({
+      required String id,
+      Value<String?> name,
+      Value<String?> creditEn,
+      Value<String?> creditPa,
+      Value<String?> creditHi,
+      Value<int> rowid,
+    });
+typedef $$VoicesTableUpdateCompanionBuilder =
+    VoicesCompanion Function({
+      Value<String> id,
+      Value<String?> name,
+      Value<String?> creditEn,
+      Value<String?> creditPa,
+      Value<String?> creditHi,
+      Value<int> rowid,
+    });
+
+class $$VoicesTableFilterComposer extends Composer<_$ContentDb, $VoicesTable> {
+  $$VoicesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get creditEn => $composableBuilder(
+    column: $table.creditEn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get creditPa => $composableBuilder(
+    column: $table.creditPa,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get creditHi => $composableBuilder(
+    column: $table.creditHi,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$VoicesTableOrderingComposer
+    extends Composer<_$ContentDb, $VoicesTable> {
+  $$VoicesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get creditEn => $composableBuilder(
+    column: $table.creditEn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get creditPa => $composableBuilder(
+    column: $table.creditPa,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get creditHi => $composableBuilder(
+    column: $table.creditHi,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$VoicesTableAnnotationComposer
+    extends Composer<_$ContentDb, $VoicesTable> {
+  $$VoicesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get creditEn =>
+      $composableBuilder(column: $table.creditEn, builder: (column) => column);
+
+  GeneratedColumn<String> get creditPa =>
+      $composableBuilder(column: $table.creditPa, builder: (column) => column);
+
+  GeneratedColumn<String> get creditHi =>
+      $composableBuilder(column: $table.creditHi, builder: (column) => column);
+}
+
+class $$VoicesTableTableManager
+    extends
+        RootTableManager<
+          _$ContentDb,
+          $VoicesTable,
+          VoiceRow,
+          $$VoicesTableFilterComposer,
+          $$VoicesTableOrderingComposer,
+          $$VoicesTableAnnotationComposer,
+          $$VoicesTableCreateCompanionBuilder,
+          $$VoicesTableUpdateCompanionBuilder,
+          (VoiceRow, BaseReferences<_$ContentDb, $VoicesTable, VoiceRow>),
+          VoiceRow,
+          PrefetchHooks Function()
+        > {
+  $$VoicesTableTableManager(_$ContentDb db, $VoicesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$VoicesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$VoicesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$VoicesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String?> name = const Value.absent(),
+                Value<String?> creditEn = const Value.absent(),
+                Value<String?> creditPa = const Value.absent(),
+                Value<String?> creditHi = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VoicesCompanion(
+                id: id,
+                name: name,
+                creditEn: creditEn,
+                creditPa: creditPa,
+                creditHi: creditHi,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                Value<String?> name = const Value.absent(),
+                Value<String?> creditEn = const Value.absent(),
+                Value<String?> creditPa = const Value.absent(),
+                Value<String?> creditHi = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VoicesCompanion.insert(
+                id: id,
+                name: name,
+                creditEn: creditEn,
+                creditPa: creditPa,
+                creditHi: creditHi,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$VoicesTable, VoiceRow>(table),
+                  BaseReferences<_$ContentDb, $VoicesTable, VoiceRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$VoicesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$ContentDb,
+      $VoicesTable,
+      VoiceRow,
+      $$VoicesTableFilterComposer,
+      $$VoicesTableOrderingComposer,
+      $$VoicesTableAnnotationComposer,
+      $$VoicesTableCreateCompanionBuilder,
+      $$VoicesTableUpdateCompanionBuilder,
+      (VoiceRow, BaseReferences<_$ContentDb, $VoicesTable, VoiceRow>),
+      VoiceRow,
+      PrefetchHooks Function()
+    >;
+typedef $$AudioTracksTableCreateCompanionBuilder =
+    AudioTracksCompanion Function({
+      required String id,
+      required String baniVersionId,
+      Value<String?> voiceId,
+      required String pack,
+      required String file,
+      Value<int?> durationMs,
+      Value<int?> bytes,
+      Value<int> rowid,
+    });
+typedef $$AudioTracksTableUpdateCompanionBuilder =
+    AudioTracksCompanion Function({
+      Value<String> id,
+      Value<String> baniVersionId,
+      Value<String?> voiceId,
+      Value<String> pack,
+      Value<String> file,
+      Value<int?> durationMs,
+      Value<int?> bytes,
+      Value<int> rowid,
+    });
+
+class $$AudioTracksTableFilterComposer
+    extends Composer<_$ContentDb, $AudioTracksTable> {
+  $$AudioTracksTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get baniVersionId => $composableBuilder(
+    column: $table.baniVersionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get voiceId => $composableBuilder(
+    column: $table.voiceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pack => $composableBuilder(
+    column: $table.pack,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get file => $composableBuilder(
+    column: $table.file,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get durationMs => $composableBuilder(
+    column: $table.durationMs,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$AudioTracksTableOrderingComposer
+    extends Composer<_$ContentDb, $AudioTracksTable> {
+  $$AudioTracksTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get baniVersionId => $composableBuilder(
+    column: $table.baniVersionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get voiceId => $composableBuilder(
+    column: $table.voiceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pack => $composableBuilder(
+    column: $table.pack,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get file => $composableBuilder(
+    column: $table.file,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get durationMs => $composableBuilder(
+    column: $table.durationMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AudioTracksTableAnnotationComposer
+    extends Composer<_$ContentDb, $AudioTracksTable> {
+  $$AudioTracksTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get baniVersionId => $composableBuilder(
+    column: $table.baniVersionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get voiceId =>
+      $composableBuilder(column: $table.voiceId, builder: (column) => column);
+
+  GeneratedColumn<String> get pack =>
+      $composableBuilder(column: $table.pack, builder: (column) => column);
+
+  GeneratedColumn<String> get file =>
+      $composableBuilder(column: $table.file, builder: (column) => column);
+
+  GeneratedColumn<int> get durationMs => $composableBuilder(
+    column: $table.durationMs,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get bytes =>
+      $composableBuilder(column: $table.bytes, builder: (column) => column);
+}
+
+class $$AudioTracksTableTableManager
+    extends
+        RootTableManager<
+          _$ContentDb,
+          $AudioTracksTable,
+          AudioTrackRow,
+          $$AudioTracksTableFilterComposer,
+          $$AudioTracksTableOrderingComposer,
+          $$AudioTracksTableAnnotationComposer,
+          $$AudioTracksTableCreateCompanionBuilder,
+          $$AudioTracksTableUpdateCompanionBuilder,
+          (
+            AudioTrackRow,
+            BaseReferences<_$ContentDb, $AudioTracksTable, AudioTrackRow>,
+          ),
+          AudioTrackRow,
+          PrefetchHooks Function()
+        > {
+  $$AudioTracksTableTableManager(_$ContentDb db, $AudioTracksTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AudioTracksTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AudioTracksTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AudioTracksTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> baniVersionId = const Value.absent(),
+                Value<String?> voiceId = const Value.absent(),
+                Value<String> pack = const Value.absent(),
+                Value<String> file = const Value.absent(),
+                Value<int?> durationMs = const Value.absent(),
+                Value<int?> bytes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AudioTracksCompanion(
+                id: id,
+                baniVersionId: baniVersionId,
+                voiceId: voiceId,
+                pack: pack,
+                file: file,
+                durationMs: durationMs,
+                bytes: bytes,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String baniVersionId,
+                Value<String?> voiceId = const Value.absent(),
+                required String pack,
+                required String file,
+                Value<int?> durationMs = const Value.absent(),
+                Value<int?> bytes = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AudioTracksCompanion.insert(
+                id: id,
+                baniVersionId: baniVersionId,
+                voiceId: voiceId,
+                pack: pack,
+                file: file,
+                durationMs: durationMs,
+                bytes: bytes,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$AudioTracksTable, AudioTrackRow>(table),
+                  BaseReferences<_$ContentDb, $AudioTracksTable, AudioTrackRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$AudioTracksTableProcessedTableManager =
+    ProcessedTableManager<
+      _$ContentDb,
+      $AudioTracksTable,
+      AudioTrackRow,
+      $$AudioTracksTableFilterComposer,
+      $$AudioTracksTableOrderingComposer,
+      $$AudioTracksTableAnnotationComposer,
+      $$AudioTracksTableCreateCompanionBuilder,
+      $$AudioTracksTableUpdateCompanionBuilder,
+      (
+        AudioTrackRow,
+        BaseReferences<_$ContentDb, $AudioTracksTable, AudioTrackRow>,
+      ),
+      AudioTrackRow,
+      PrefetchHooks Function()
+    >;
+typedef $$TimingsTableCreateCompanionBuilder =
+    TimingsCompanion Function({
+      required String audioTrackId,
+      required String json,
+      Value<int> rowid,
+    });
+typedef $$TimingsTableUpdateCompanionBuilder =
+    TimingsCompanion Function({
+      Value<String> audioTrackId,
+      Value<String> json,
+      Value<int> rowid,
+    });
+
+class $$TimingsTableFilterComposer
+    extends Composer<_$ContentDb, $TimingsTable> {
+  $$TimingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get audioTrackId => $composableBuilder(
+    column: $table.audioTrackId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TimingsTableOrderingComposer
+    extends Composer<_$ContentDb, $TimingsTable> {
+  $$TimingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get audioTrackId => $composableBuilder(
+    column: $table.audioTrackId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TimingsTableAnnotationComposer
+    extends Composer<_$ContentDb, $TimingsTable> {
+  $$TimingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get audioTrackId => $composableBuilder(
+    column: $table.audioTrackId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get json =>
+      $composableBuilder(column: $table.json, builder: (column) => column);
+}
+
+class $$TimingsTableTableManager
+    extends
+        RootTableManager<
+          _$ContentDb,
+          $TimingsTable,
+          TimingRow,
+          $$TimingsTableFilterComposer,
+          $$TimingsTableOrderingComposer,
+          $$TimingsTableAnnotationComposer,
+          $$TimingsTableCreateCompanionBuilder,
+          $$TimingsTableUpdateCompanionBuilder,
+          (TimingRow, BaseReferences<_$ContentDb, $TimingsTable, TimingRow>),
+          TimingRow,
+          PrefetchHooks Function()
+        > {
+  $$TimingsTableTableManager(_$ContentDb db, $TimingsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TimingsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TimingsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TimingsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> audioTrackId = const Value.absent(),
+                Value<String> json = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TimingsCompanion(
+                audioTrackId: audioTrackId,
+                json: json,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String audioTrackId,
+                required String json,
+                Value<int> rowid = const Value.absent(),
+              }) => TimingsCompanion.insert(
+                audioTrackId: audioTrackId,
+                json: json,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TimingsTable, TimingRow>(table),
+                  BaseReferences<_$ContentDb, $TimingsTable, TimingRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TimingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$ContentDb,
+      $TimingsTable,
+      TimingRow,
+      $$TimingsTableFilterComposer,
+      $$TimingsTableOrderingComposer,
+      $$TimingsTableAnnotationComposer,
+      $$TimingsTableCreateCompanionBuilder,
+      $$TimingsTableUpdateCompanionBuilder,
+      (TimingRow, BaseReferences<_$ContentDb, $TimingsTable, TimingRow>),
+      TimingRow,
+      PrefetchHooks Function()
+    >;
 typedef $$NanakshahiMonthsTableCreateCompanionBuilder =
     NanakshahiMonthsCompanion Function({
       required int nsYear,
@@ -8183,6 +9831,12 @@ class $ContentDbManager {
       $$LinesTableTableManager(_db, _db.lines);
   $$MeaningsTableTableManager get meanings =>
       $$MeaningsTableTableManager(_db, _db.meanings);
+  $$VoicesTableTableManager get voices =>
+      $$VoicesTableTableManager(_db, _db.voices);
+  $$AudioTracksTableTableManager get audioTracks =>
+      $$AudioTracksTableTableManager(_db, _db.audioTracks);
+  $$TimingsTableTableManager get timings =>
+      $$TimingsTableTableManager(_db, _db.timings);
   $$NanakshahiMonthsTableTableManager get nanakshahiMonths =>
       $$NanakshahiMonthsTableTableManager(_db, _db.nanakshahiMonths);
   $$CalendarEventsTableTableManager get calendarEvents =>

@@ -314,11 +314,11 @@ class LHi extends L {
   String get beginMyNitnem => 'मेरा नितनेम शुरू करें';
 
   @override
-  String get audioNotInBuild => 'इस बिल्ड में अभी आवाज़ नहीं है';
+  String get audioNotInBuild => 'इस बाणी की आवाज़ अभी इस बिल्ड में नहीं है';
 
   @override
   String get audioNotInBuildSub =>
-      'पाठ, अर्थ और याद सब बिना इंटरनेट चलते हैं। रिकॉर्ड किया पाठ अगले बिल्ड में आएगा।';
+      'जपु जी साहिब का पाठ मौजूद है। बाकी बाणियों की रिकॉर्डिंग तैयार होने पर आएँगी।';
 
   @override
   String reminderSheetTitle(String bani) {
@@ -638,14 +638,6 @@ class LHi extends L {
 
   @override
   String get playerSleepTimer => 'सोने का समय';
-
-  @override
-  String get playerVoice => 'आवाज़';
-
-  @override
-  String playerPaathi(String name) {
-    return 'पाठी: $name';
-  }
 
   @override
   String get diaryTitle => 'नितनेम डायरी';
@@ -1077,7 +1069,7 @@ class LHi extends L {
 
   @override
   String get aboutNoAudioYet =>
-      'इस बिल्ड में आवाज़ नहीं है। रिलीज़ से पहले लिखित अधिकारों के साथ रिकॉर्डिंग करवाई जाएगी।';
+      'ऐप के साथ आई पाठ की रिकॉर्डिंग फ़ोन से ही चलती है, कभी स्ट्रीम नहीं होती।';
 
   @override
   String get privacyTitle => 'निजता';
@@ -1172,6 +1164,23 @@ class LHi extends L {
 
   @override
   String get comingSoonShort => 'जल्द';
+
+  @override
+  String get audioIncluded => 'पाठ की आवाज़ शामिल है';
+
+  @override
+  String get audioIncludedSub =>
+      'जपु जी साहिब बिना इंटरनेट चलता है, और लिखाई साथ-साथ चलती है।';
+
+  @override
+  String get settingsAudioOnPhone => 'इसी फ़ोन में सहेजी है';
+
+  @override
+  String get aboutAudioHeading => 'पाठ की रिकॉर्डिंग';
+
+  @override
+  String get readerTapLineToSeek =>
+      'पाठ वहीं से शुरू करने के लिए किसी भी पंक्ति पर टैप करें';
 
   @override
   String get errorGeneric => 'कुछ गलत हो गया।';

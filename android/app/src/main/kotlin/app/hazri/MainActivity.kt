@@ -3,9 +3,11 @@ package app.hazri
 import android.os.Build
 import android.os.Bundle
 import androidx.core.view.WindowCompat
-import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 
-class MainActivity : FlutterActivity() {
+// AudioServiceActivity, so a notification or lock-screen tap reaches the
+// running instance rather than starting a second one.
+class MainActivity : AudioServiceActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Android 15+ enforces edge-to-edge; opting in on every version keeps
         // one layout path, and Flutter handles the insets per screen.
