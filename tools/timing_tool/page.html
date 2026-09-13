@@ -1,0 +1,255 @@
+<!-- Template for tools/timing_tool/build.py. __DATA__ is replaced with JSON. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hazri timing tool</title>
+<style>
+  :root {
+    --bg: #faf7f2; --card: #fff; --ink: #23201c; --muted: #7c746a;
+    --rule: #e7e0d6; --kesri: #c8672a; --sage: #4a7c59; --hl: #fdf0d5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16150f; --card: #1f1d16; --ink: #efe9dd; --muted: #9a9186;
+      --rule: #33302a; --kesri: #e08a4c; --sage: #7aa888; --hl: #3a3120;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.5 system-ui, -apple-system, sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--card);
+           border-bottom: 1px solid var(--rule); padding: 10px 14px; }
+  h1 { font-size: 15px; margin: 0 0 8px; font-weight: 600; }
+  h1 small { color: var(--muted); font-weight: 400; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  button { font: inherit; padding: 7px 12px; border-radius: 8px; cursor: pointer;
+           border: 1px solid var(--rule); background: var(--card); color: var(--ink); }
+  button.primary { background: var(--kesri); border-color: var(--kesri); color: #fff;
+                   font-weight: 600; padding: 10px 16px; }
+  button:disabled { opacity: .45; cursor: default; }
+  audio { width: 100%; margin-top: 8px; }
+  .clock { font-variant-numeric: tabular-nums; color: var(--muted); }
+  main { padding: 12px 14px 60vh; max-width: 760px; margin: 0 auto; }
+  .line { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px;
+          align-items: baseline; padding: 7px 8px; border-radius: 8px;
+          border: 1px solid transparent; }
+  .line:hover { background: var(--card); }
+  .line.now { background: var(--hl); border-color: var(--kesri); }
+  .line.edited .idx::after { content: " ●"; color: var(--sage); }
+  .line.flag .idx { color: var(--kesri); font-weight: 700; }
+  .idx { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums;
+         cursor: pointer; }
+  .guru { font-size: 19px; line-height: 1.7; }
+  .when { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums;
+          white-space: nowrap; }
+  .nudge { border: none; background: none; color: var(--muted); padding: 0 4px;
+           font-size: 13px; }
+  .hint { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+  dialog { border: 1px solid var(--rule); border-radius: 12px; background: var(--card);
+           color: var(--ink); max-width: 92vw; width: 700px; padding: 16px; }
+  textarea { width: 100%; height: 44vh; font: 12px/1.4 ui-monospace, monospace;
+             background: var(--bg); color: var(--ink); border: 1px solid var(--rule);
+             border-radius: 8px; padding: 8px; }
+</style>
+
+<header>
+  <h1>Hazri timing tool — <span id="slug"></span>
+    <small id="stat"></small></h1>
+  <audio id="a" controls preload="metadata"></audio>
+  <div class="row" style="margin-top:8px">
+    <button class="primary" id="tap">Line starts now</button>
+    <button id="back">◀ 3s</button>
+    <button id="prev">Previous line</button>
+    <button id="next">Next flagged</button>
+    <label class="clock"><input type="checkbox" id="follow" checked> follow</label>
+    <select id="rate">
+      <option value="0.75">0.75×</option><option value="1" selected>1×</option>
+      <option value="1.25">1.25×</option><option value="1.5">1.5×</option>
+    </select>
+    <span class="clock" id="clock">0:00.00</span>
+    <span style="flex:1"></span>
+    <button id="reset">Discard edits</button>
+    <button id="save">Save file</button>
+  </div>
+  <p class="hint">Play, and press <b>Line starts now</b> (or the space bar) the
+    moment each line begins — that sets the boundary and moves on. Click a
+    line number to jump there. ● marks a line you have changed; orange numbers
+    are the ones the aligner was least sure of.</p>
+</header>
+
+<main id="list"></main>
+
+<dialog id="out">
+  <p class="hint" style="margin-top:0">Replace
+    <code id="path"></code> with this, then rerun
+    <code>python3 tools/content_pipeline/build_content_db.py</code>.</p>
+  <textarea id="json" readonly></textarea>
+  <div class="row" style="margin-top:10px">
+    <button class="primary" id="copy">Copy</button>
+    <button id="download">Download</button>
+    <button id="close">Close</button>
+  </div>
+</dialog>
+
+<script>
+const D = __DATA__;
+const KEY = "hazri-timing-" + D.slug;
+const a = document.getElementById("a");
+a.src = D.audio;
+
+// Say so rather than sitting there silent: the page has to be served, not
+// opened from disk, and a browser without AAC will not play the shipping m4a.
+a.addEventListener("error", () => {
+  const p = document.createElement("p");
+  p.className = "hint";
+  p.style.color = "var(--kesri)";
+  p.textContent = `Could not play ${D.audio}. Serve the repository root `
+    + "(python3 -m http.server) and open this page over http, in a browser "
+    + "that plays AAC.";
+  a.after(p);
+});
+
+// Edits live in the browser until they are saved out, so a reload mid-session
+// does not throw away an hour of listening.
+let lines = JSON.parse(localStorage.getItem(KEY) || "null") || structuredClone(D.timings.lines);
+let edited = new Set(JSON.parse(localStorage.getItem(KEY + "-edited") || "[]"));
+let cursor = 0;
+
+const fmt = ms => `${Math.floor(ms / 60000)}:${String(Math.floor(ms % 60000 / 1000)).padStart(2, "0")}.${String(Math.floor(ms % 1000 / 10)).padStart(2, "0")}`;
+const now = () => Math.round(a.currentTime * 1000);
+
+function persist() {
+  localStorage.setItem(KEY, JSON.stringify(lines));
+  localStorage.setItem(KEY + "-edited", JSON.stringify([...edited]));
+  document.getElementById("stat").textContent =
+    `${lines.length} lines, ${edited.size} corrected by ear`;
+}
+
+// A line's words keep their shares of it when the line itself moves, which is
+// what the aligner does too: the warp measured their proportions, and a
+// correction by ear only knows where the line began.
+function rescale(l, s, e) {
+  const from = l.s, width = Math.max(l.e - l.s, 1), k = (e - s) / width;
+  l.w = (l.w || []).map(([ws, we]) =>
+    [Math.round(s + (ws - from) * k), Math.round(s + (we - from) * k)]);
+  l.s = s; l.e = e;
+}
+
+function setStart(i, ms) {
+  if (i <= 0 || i >= lines.length) return;
+  ms = Math.max(ms, lines[i - 1].s + 100);
+  ms = Math.min(ms, lines[i].e - 100);
+  rescale(lines[i - 1], lines[i - 1].s, ms);
+  rescale(lines[i], ms, lines[i].e);
+  edited.add(lines[i].line).add(lines[i - 1].line);
+  persist(); render();
+}
+
+const list = document.getElementById("list");
+function render() {
+  list.innerHTML = "";
+  lines.forEach((l, i) => {
+    const el = document.createElement("div");
+    el.className = "line" + (edited.has(l.line) ? " edited" : "")
+      + (D.flagged.includes(l.line) ? " flag" : "");
+    el.id = "l" + i;
+    el.innerHTML = `<span class="idx" data-i="${i}">${l.line}</span>`
+      + `<span class="guru">${D.text[i]}</span>`
+      + `<span class="when">${fmt(l.s)}<button class="nudge" data-n="${i}" data-d="-100">−</button>`
+      + `<button class="nudge" data-n="${i}" data-d="100">+</button></span>`;
+    list.append(el);
+  });
+  mark();
+}
+
+list.addEventListener("click", ev => {
+  const idx = ev.target.closest(".idx");
+  if (idx) { a.currentTime = lines[+idx.dataset.i].s / 1000; cursor = +idx.dataset.i; mark(); return; }
+  const n = ev.target.closest(".nudge");
+  if (n) setStart(+n.dataset.n, lines[+n.dataset.n].s + +n.dataset.d);
+});
+
+function at(ms) {
+  let lo = 0, hi = lines.length - 1, held = 0;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (ms < lines[mid].s) hi = mid - 1;
+    else { held = mid; lo = mid + 1; }
+  }
+  return held;
+}
+
+let shown = -1;
+function mark() {
+  const i = a.paused ? cursor : at(now());
+  // Not just when the line changes: render() rebuilds the rows and takes the
+  // highlight with them, so the class has to be checked, not assumed.
+  if (i === shown && document.querySelector(".line.now")) return;
+  document.querySelectorAll(".line.now").forEach(el => el.classList.remove("now"));
+  const el = document.getElementById("l" + i);
+  el?.classList.add("now");
+  if (document.getElementById("follow").checked)
+    el?.scrollIntoView({ block: "center", behavior: "smooth" });
+  shown = i;
+}
+
+a.addEventListener("timeupdate", () => {
+  document.getElementById("clock").textContent = fmt(now());
+  if (!a.paused) { cursor = at(now()); mark(); }
+});
+
+// The tap lands a little after the word does, which is the one systematic
+// error a person makes doing this; TAP_LAG_MS takes it back out.
+const TAP_LAG_MS = 120;
+document.getElementById("tap").onclick = () => {
+  const i = Math.min(cursor + 1, lines.length - 1);
+  setStart(i, now() - TAP_LAG_MS);
+  cursor = i; shown = -1; mark();
+};
+document.getElementById("back").onclick = () => { a.currentTime = Math.max(0, a.currentTime - 3); };
+document.getElementById("prev").onclick = () => {
+  cursor = Math.max(0, cursor - 1); a.currentTime = lines[cursor].s / 1000; shown = -1; mark();
+};
+document.getElementById("next").onclick = () => {
+  const after = D.flagged.filter(n => n > lines[cursor].line);
+  const target = after.length ? after[0] : D.flagged[0];
+  cursor = lines.findIndex(l => l.line === target);
+  a.currentTime = Math.max(0, lines[cursor].s / 1000 - 1.5); shown = -1; mark();
+};
+document.getElementById("rate").onchange = ev => { a.playbackRate = +ev.target.value; };
+document.getElementById("reset").onclick = () => {
+  if (!confirm("Throw away every correction and start from the aligner's file?")) return;
+  localStorage.removeItem(KEY); localStorage.removeItem(KEY + "-edited");
+  lines = structuredClone(D.timings.lines); edited = new Set(); persist(); render();
+};
+
+addEventListener("keydown", ev => {
+  if (ev.target.tagName === "TEXTAREA" || ev.target.tagName === "INPUT") return;
+  if (ev.code === "Space") { ev.preventDefault(); document.getElementById("tap").click(); }
+  if (ev.code === "Enter") { ev.preventDefault(); a.paused ? a.play() : a.pause(); }
+  if (ev.code === "ArrowLeft") { ev.preventDefault(); document.getElementById("back").click(); }
+});
+
+const out = document.getElementById("out");
+document.getElementById("save").onclick = () => {
+  const doc = { ...D.timings, lines,
+    verified: edited.size > 0 && confirm(
+      "Mark this file verified? Say yes only once you have heard every line."),
+    handChecked: [...edited].sort((x, y) => x - y) };
+  document.getElementById("json").value = JSON.stringify(doc);
+  document.getElementById("path").textContent = D.out;
+  out.showModal();
+};
+document.getElementById("copy").onclick = () =>
+  navigator.clipboard.writeText(document.getElementById("json").value);
+document.getElementById("download").onclick = () => {
+  const blob = new Blob([document.getElementById("json").value + "\n"], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = D.slug + ".json";
+  link.click();
+};
+document.getElementById("close").onclick = () => out.close();
+
+document.getElementById("slug").textContent = D.slug;
+persist(); render();
+</script>
