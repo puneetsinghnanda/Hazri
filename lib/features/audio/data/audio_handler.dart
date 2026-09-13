@@ -231,6 +231,7 @@ class HazriAudioHandler extends BaseAudioHandler
     album: t.nativeTitle,
     artist: 'Hazri',
     duration: t.duration,
+    extras: {'route': t.route},
   );
 
   /// Loads a queue and parks it at [startIndex], without starting playback.

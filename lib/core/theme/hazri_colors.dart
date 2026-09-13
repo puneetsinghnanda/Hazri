@@ -26,6 +26,8 @@ class HazriColors extends ThemeExtension<HazriColors> {
     required this.teal,
     required this.hl,
     required this.word,
+    required this.simranField,
+    required this.simranThread,
     required this.scrim,
     required this.shadows,
   });
@@ -81,6 +83,12 @@ class HazriColors extends ThemeExtension<HazriColors> {
   /// Current-word colour and underline in the reader.
   final Color word;
 
+  /// The Simran ring's own night field, and the thread of the standing wave
+  /// drawn on it. The same in both themes on purpose: a luminous thread has
+  /// nothing to be luminous against on a light ground (PRD 1.13).
+  final Color simranField;
+  final Color simranThread;
+
   /// Bottom-sheet scrim.
   final Color scrim;
 
@@ -106,6 +114,8 @@ class HazriColors extends ThemeExtension<HazriColors> {
     teal: Color(0xFF1F7A8C),
     hl: Color(0xFFFBE5CB),
     word: Color(0xFFA04F00),
+    simranField: Color(0xFF080B1C),
+    simranThread: Color(0xFFE8F4F8),
     scrim: Color(0x7314162D),
     shadows: [
       BoxShadow(color: Color(0x0F1B1D3A), blurRadius: 2, offset: Offset(0, 1)),
@@ -131,6 +141,8 @@ class HazriColors extends ThemeExtension<HazriColors> {
     teal: Color(0xFF6FC3D3),
     hl: Color(0x2BF2A24E),
     word: Color(0xFFFFC27E),
+    simranField: Color(0xFF080B1C),
+    simranThread: Color(0xFFE8F4F8),
     scrim: Color(0x8C000000),
     shadows: [BoxShadow(color: Color(0x0AFFFFFF), spreadRadius: 1)],
   );
@@ -154,6 +166,8 @@ class HazriColors extends ThemeExtension<HazriColors> {
     Color? teal,
     Color? hl,
     Color? word,
+    Color? simranField,
+    Color? simranThread,
     Color? scrim,
     List<BoxShadow>? shadows,
   }) {
@@ -175,6 +189,8 @@ class HazriColors extends ThemeExtension<HazriColors> {
       teal: teal ?? this.teal,
       hl: hl ?? this.hl,
       word: word ?? this.word,
+      simranField: simranField ?? this.simranField,
+      simranThread: simranThread ?? this.simranThread,
       scrim: scrim ?? this.scrim,
       shadows: shadows ?? this.shadows,
     );
@@ -201,6 +217,8 @@ class HazriColors extends ThemeExtension<HazriColors> {
       teal: Color.lerp(teal, other.teal, t)!,
       hl: Color.lerp(hl, other.hl, t)!,
       word: Color.lerp(word, other.word, t)!,
+      simranField: Color.lerp(simranField, other.simranField, t)!,
+      simranThread: Color.lerp(simranThread, other.simranThread, t)!,
       scrim: Color.lerp(scrim, other.scrim, t)!,
       shadows: BoxShadow.lerpList(shadows, other.shadows, t)!,
     );

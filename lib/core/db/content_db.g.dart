@@ -4188,6 +4188,360 @@ class TimingsCompanion extends UpdateCompanion<TimingRow> {
   }
 }
 
+class $SimranTracksTable extends SimranTracks
+    with TableInfo<$SimranTracksTable, SimranTrackRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SimranTracksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fileMeta = const VerificationMeta('file');
+  @override
+  late final GeneratedColumn<String> file = GeneratedColumn<String>(
+    'file',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationMsMeta = const VerificationMeta(
+    'durationMs',
+  );
+  @override
+  late final GeneratedColumn<int> durationMs = GeneratedColumn<int>(
+    'duration_ms',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _bytesMeta = const VerificationMeta('bytes');
+  @override
+  late final GeneratedColumn<int> bytes = GeneratedColumn<int>(
+    'bytes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
+  @override
+  late final GeneratedColumn<String> json = GeneratedColumn<String>(
+    'json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, file, durationMs, bytes, json];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'simran_track';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SimranTrackRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('file')) {
+      context.handle(
+        _fileMeta,
+        file.isAcceptableOrUnknown(data['file']!, _fileMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fileMeta);
+    }
+    if (data.containsKey('duration_ms')) {
+      context.handle(
+        _durationMsMeta,
+        durationMs.isAcceptableOrUnknown(data['duration_ms']!, _durationMsMeta),
+      );
+    }
+    if (data.containsKey('bytes')) {
+      context.handle(
+        _bytesMeta,
+        bytes.isAcceptableOrUnknown(data['bytes']!, _bytesMeta),
+      );
+    }
+    if (data.containsKey('json')) {
+      context.handle(
+        _jsonMeta,
+        json.isAcceptableOrUnknown(data['json']!, _jsonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_jsonMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SimranTrackRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SimranTrackRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      file: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file'],
+      )!,
+      durationMs: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_ms'],
+      ),
+      bytes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}bytes'],
+      ),
+      json: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}json'],
+      )!,
+    );
+  }
+
+  @override
+  $SimranTracksTable createAlias(String alias) {
+    return $SimranTracksTable(attachedDatabase, alias);
+  }
+}
+
+class SimranTrackRow extends DataClass implements Insertable<SimranTrackRow> {
+  final String id;
+  final String file;
+  final int? durationMs;
+  final int? bytes;
+  final String json;
+  const SimranTrackRow({
+    required this.id,
+    required this.file,
+    this.durationMs,
+    this.bytes,
+    required this.json,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['file'] = Variable<String>(file);
+    if (!nullToAbsent || durationMs != null) {
+      map['duration_ms'] = Variable<int>(durationMs);
+    }
+    if (!nullToAbsent || bytes != null) {
+      map['bytes'] = Variable<int>(bytes);
+    }
+    map['json'] = Variable<String>(json);
+    return map;
+  }
+
+  SimranTracksCompanion toCompanion(bool nullToAbsent) {
+    return SimranTracksCompanion(
+      id: Value(id),
+      file: Value(file),
+      durationMs: durationMs == null && nullToAbsent
+          ? const Value.absent()
+          : Value(durationMs),
+      bytes: bytes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bytes),
+      json: Value(json),
+    );
+  }
+
+  factory SimranTrackRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SimranTrackRow(
+      id: serializer.fromJson<String>(json['id']),
+      file: serializer.fromJson<String>(json['file']),
+      durationMs: serializer.fromJson<int?>(json['durationMs']),
+      bytes: serializer.fromJson<int?>(json['bytes']),
+      json: serializer.fromJson<String>(json['json']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'file': serializer.toJson<String>(file),
+      'durationMs': serializer.toJson<int?>(durationMs),
+      'bytes': serializer.toJson<int?>(bytes),
+      'json': serializer.toJson<String>(json),
+    };
+  }
+
+  SimranTrackRow copyWith({
+    String? id,
+    String? file,
+    Value<int?> durationMs = const Value.absent(),
+    Value<int?> bytes = const Value.absent(),
+    String? json,
+  }) => SimranTrackRow(
+    id: id ?? this.id,
+    file: file ?? this.file,
+    durationMs: durationMs.present ? durationMs.value : this.durationMs,
+    bytes: bytes.present ? bytes.value : this.bytes,
+    json: json ?? this.json,
+  );
+  SimranTrackRow copyWithCompanion(SimranTracksCompanion data) {
+    return SimranTrackRow(
+      id: data.id.present ? data.id.value : this.id,
+      file: data.file.present ? data.file.value : this.file,
+      durationMs: data.durationMs.present
+          ? data.durationMs.value
+          : this.durationMs,
+      bytes: data.bytes.present ? data.bytes.value : this.bytes,
+      json: data.json.present ? data.json.value : this.json,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SimranTrackRow(')
+          ..write('id: $id, ')
+          ..write('file: $file, ')
+          ..write('durationMs: $durationMs, ')
+          ..write('bytes: $bytes, ')
+          ..write('json: $json')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, file, durationMs, bytes, json);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SimranTrackRow &&
+          other.id == this.id &&
+          other.file == this.file &&
+          other.durationMs == this.durationMs &&
+          other.bytes == this.bytes &&
+          other.json == this.json);
+}
+
+class SimranTracksCompanion extends UpdateCompanion<SimranTrackRow> {
+  final Value<String> id;
+  final Value<String> file;
+  final Value<int?> durationMs;
+  final Value<int?> bytes;
+  final Value<String> json;
+  final Value<int> rowid;
+  const SimranTracksCompanion({
+    this.id = const Value.absent(),
+    this.file = const Value.absent(),
+    this.durationMs = const Value.absent(),
+    this.bytes = const Value.absent(),
+    this.json = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SimranTracksCompanion.insert({
+    required String id,
+    required String file,
+    this.durationMs = const Value.absent(),
+    this.bytes = const Value.absent(),
+    required String json,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       file = Value(file),
+       json = Value(json);
+  static Insertable<SimranTrackRow> custom({
+    Expression<String>? id,
+    Expression<String>? file,
+    Expression<int>? durationMs,
+    Expression<int>? bytes,
+    Expression<String>? json,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (file != null) 'file': file,
+      if (durationMs != null) 'duration_ms': durationMs,
+      if (bytes != null) 'bytes': bytes,
+      if (json != null) 'json': json,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SimranTracksCompanion copyWith({
+    Value<String>? id,
+    Value<String>? file,
+    Value<int?>? durationMs,
+    Value<int?>? bytes,
+    Value<String>? json,
+    Value<int>? rowid,
+  }) {
+    return SimranTracksCompanion(
+      id: id ?? this.id,
+      file: file ?? this.file,
+      durationMs: durationMs ?? this.durationMs,
+      bytes: bytes ?? this.bytes,
+      json: json ?? this.json,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (file.present) {
+      map['file'] = Variable<String>(file.value);
+    }
+    if (durationMs.present) {
+      map['duration_ms'] = Variable<int>(durationMs.value);
+    }
+    if (bytes.present) {
+      map['bytes'] = Variable<int>(bytes.value);
+    }
+    if (json.present) {
+      map['json'] = Variable<String>(json.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SimranTracksCompanion(')
+          ..write('id: $id, ')
+          ..write('file: $file, ')
+          ..write('durationMs: $durationMs, ')
+          ..write('bytes: $bytes, ')
+          ..write('json: $json, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $NanakshahiMonthsTable extends NanakshahiMonths
     with TableInfo<$NanakshahiMonthsTable, NanakshahiMonthRow> {
   @override
@@ -6442,6 +6796,7 @@ abstract class _$ContentDb extends GeneratedDatabase {
   late final $VoicesTable voices = $VoicesTable(this);
   late final $AudioTracksTable audioTracks = $AudioTracksTable(this);
   late final $TimingsTable timings = $TimingsTable(this);
+  late final $SimranTracksTable simranTracks = $SimranTracksTable(this);
   late final $NanakshahiMonthsTable nanakshahiMonths = $NanakshahiMonthsTable(
     this,
   );
@@ -6462,6 +6817,7 @@ abstract class _$ContentDb extends GeneratedDatabase {
     voices,
     audioTracks,
     timings,
+    simranTracks,
     nanakshahiMonths,
     calendarEvents,
     cities,
@@ -8611,6 +8967,217 @@ typedef $$TimingsTableProcessedTableManager =
       TimingRow,
       PrefetchHooks Function()
     >;
+typedef $$SimranTracksTableCreateCompanionBuilder =
+    SimranTracksCompanion Function({
+      required String id,
+      required String file,
+      Value<int?> durationMs,
+      Value<int?> bytes,
+      required String json,
+      Value<int> rowid,
+    });
+typedef $$SimranTracksTableUpdateCompanionBuilder =
+    SimranTracksCompanion Function({
+      Value<String> id,
+      Value<String> file,
+      Value<int?> durationMs,
+      Value<int?> bytes,
+      Value<String> json,
+      Value<int> rowid,
+    });
+
+class $$SimranTracksTableFilterComposer
+    extends Composer<_$ContentDb, $SimranTracksTable> {
+  $$SimranTracksTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get file => $composableBuilder(
+    column: $table.file,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get durationMs => $composableBuilder(
+    column: $table.durationMs,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SimranTracksTableOrderingComposer
+    extends Composer<_$ContentDb, $SimranTracksTable> {
+  $$SimranTracksTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get file => $composableBuilder(
+    column: $table.file,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get durationMs => $composableBuilder(
+    column: $table.durationMs,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get bytes => $composableBuilder(
+    column: $table.bytes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SimranTracksTableAnnotationComposer
+    extends Composer<_$ContentDb, $SimranTracksTable> {
+  $$SimranTracksTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get file =>
+      $composableBuilder(column: $table.file, builder: (column) => column);
+
+  GeneratedColumn<int> get durationMs => $composableBuilder(
+    column: $table.durationMs,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get bytes =>
+      $composableBuilder(column: $table.bytes, builder: (column) => column);
+
+  GeneratedColumn<String> get json =>
+      $composableBuilder(column: $table.json, builder: (column) => column);
+}
+
+class $$SimranTracksTableTableManager
+    extends
+        RootTableManager<
+          _$ContentDb,
+          $SimranTracksTable,
+          SimranTrackRow,
+          $$SimranTracksTableFilterComposer,
+          $$SimranTracksTableOrderingComposer,
+          $$SimranTracksTableAnnotationComposer,
+          $$SimranTracksTableCreateCompanionBuilder,
+          $$SimranTracksTableUpdateCompanionBuilder,
+          (
+            SimranTrackRow,
+            BaseReferences<_$ContentDb, $SimranTracksTable, SimranTrackRow>,
+          ),
+          SimranTrackRow,
+          PrefetchHooks Function()
+        > {
+  $$SimranTracksTableTableManager(_$ContentDb db, $SimranTracksTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SimranTracksTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SimranTracksTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SimranTracksTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> file = const Value.absent(),
+                Value<int?> durationMs = const Value.absent(),
+                Value<int?> bytes = const Value.absent(),
+                Value<String> json = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SimranTracksCompanion(
+                id: id,
+                file: file,
+                durationMs: durationMs,
+                bytes: bytes,
+                json: json,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String file,
+                Value<int?> durationMs = const Value.absent(),
+                Value<int?> bytes = const Value.absent(),
+                required String json,
+                Value<int> rowid = const Value.absent(),
+              }) => SimranTracksCompanion.insert(
+                id: id,
+                file: file,
+                durationMs: durationMs,
+                bytes: bytes,
+                json: json,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SimranTracksTable, SimranTrackRow>(table),
+                  BaseReferences<
+                    _$ContentDb,
+                    $SimranTracksTable,
+                    SimranTrackRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SimranTracksTableProcessedTableManager =
+    ProcessedTableManager<
+      _$ContentDb,
+      $SimranTracksTable,
+      SimranTrackRow,
+      $$SimranTracksTableFilterComposer,
+      $$SimranTracksTableOrderingComposer,
+      $$SimranTracksTableAnnotationComposer,
+      $$SimranTracksTableCreateCompanionBuilder,
+      $$SimranTracksTableUpdateCompanionBuilder,
+      (
+        SimranTrackRow,
+        BaseReferences<_$ContentDb, $SimranTracksTable, SimranTrackRow>,
+      ),
+      SimranTrackRow,
+      PrefetchHooks Function()
+    >;
 typedef $$NanakshahiMonthsTableCreateCompanionBuilder =
     NanakshahiMonthsCompanion Function({
       required int nsYear,
@@ -9837,6 +10404,8 @@ class $ContentDbManager {
       $$AudioTracksTableTableManager(_db, _db.audioTracks);
   $$TimingsTableTableManager get timings =>
       $$TimingsTableTableManager(_db, _db.timings);
+  $$SimranTracksTableTableManager get simranTracks =>
+      $$SimranTracksTableTableManager(_db, _db.simranTracks);
   $$NanakshahiMonthsTableTableManager get nanakshahiMonths =>
       $$NanakshahiMonthsTableTableManager(_db, _db.nanakshahiMonths);
   $$CalendarEventsTableTableManager get calendarEvents =>

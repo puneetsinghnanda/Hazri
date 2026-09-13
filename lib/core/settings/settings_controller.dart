@@ -27,7 +27,6 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kElder = 'elder_mode';
   static const _kCity = 'city_id';
   static const _kSpeed = 'speed';
-  static const _kSimranSound = 'simran_sound';
   static const _kSimranMinutes = 'simran_minutes';
   static const _kOnboardingDone = 'onboarding_done';
   static const _kExactAlarmAsked = 'exact_alarm_asked';
@@ -64,7 +63,6 @@ class SettingsController extends Notifier<AppSettings> {
       elderMode: p.getBool(_kElder) ?? base.elderMode,
       cityId: p.getString(_kCity) ?? base.cityId,
       speed: p.getDouble(_kSpeed) ?? base.speed,
-      simranSound: _enum(SimranSound.values, p.getString(_kSimranSound), base.simranSound),
       simranMinutes: p.getInt(_kSimranMinutes) ?? base.simranMinutes,
       onboardingDone: p.getBool(_kOnboardingDone) ?? base.onboardingDone,
       exactAlarmAsked: p.getBool(_kExactAlarmAsked) ?? base.exactAlarmAsked,
@@ -161,11 +159,6 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setSpeed(double v) async {
     await _prefs.setDouble(_kSpeed, v);
     state = state.copyWith(speed: v);
-  }
-
-  Future<void> setSimranSound(SimranSound v) async {
-    await _prefs.setString(_kSimranSound, v.name);
-    state = state.copyWith(simranSound: v);
   }
 
   Future<void> setOnboardingDone(bool v) async {

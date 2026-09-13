@@ -51,7 +51,10 @@ class MiniPlayer extends ConsumerWidget {
       child: Material(
         color: c.card,
         child: InkWell(
-          onTap: () => context.push(Routes.reader(item.id)),
+          // Naam Simran has no reader; the track says where it belongs.
+          onTap: () => context.push(
+            item.extras?['route'] as String? ?? Routes.reader(item.id),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

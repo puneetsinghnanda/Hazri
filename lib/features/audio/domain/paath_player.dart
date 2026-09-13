@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-/// One bani queued for playback.
+/// One recitation queued for playback.
 @immutable
 class PaathTrack {
   const PaathTrack({
@@ -10,6 +10,7 @@ class PaathTrack {
     required this.nativeTitle,
     required this.assetPath,
     required this.duration,
+    required this.route,
   });
 
   final String baniId;
@@ -20,6 +21,10 @@ class PaathTrack {
   /// The bundled asset key, e.g. `assets/audio/japji-sahib.m4a`.
   final String assetPath;
   final Duration duration;
+
+  /// Where the mini player goes when tapped. Usually the reader for this bani,
+  /// but Naam Simran has no reader and belongs on its own screen.
+  final String route;
 }
 
 /// The commands the app issues to whatever is playing the paath.

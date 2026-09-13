@@ -41,6 +41,19 @@ python3 tools/audio_pipeline/verify_timings.py japji-sahib
 python3 tools/content_pipeline/build_content_db.py
 ```
 
+The Naam Simran recitation is not a bani and takes a different path:
+
+```bash
+# the session is five minutes and the master is sixteen, so only the part
+# that plays is shipped -- 2.6 MB rather than 8
+python3 tools/audio_pipeline/build_audio.py naam-simran --seconds 330
+
+# measure the shape the Simran ring follows
+python3 tools/audio_pipeline/simran_envelope.py naam-simran
+
+python3 tools/content_pipeline/build_content_db.py
+```
+
 The alignment step also needs `espeak-ng`; both audio steps need `ffmpeg`.
 Neither runs in CI: their outputs are committed, and CI only checks that
 `content.db` still matches them.
@@ -105,6 +118,18 @@ would pass by construction:
 - **Anchors.** `content/source/timings/<slug>.anchors.json`, if it exists,
   holds times somebody listened to and wrote down; the aligner never sees it.
   That is the only ground truth here, and there is none yet.
+
+## The Simran ring
+
+Android offers no way to read audio as it plays -- the player the app uses has
+no visualiser -- so the ring cannot react to the recitation at runtime. Instead
+`simran_envelope.py` measures the shipped `.m4a` once: its loudness 25 times a
+second, and the moment each Waheguru begins. Both ride in content.db, and the
+ring reads them against the session clock. A bloom in the app is a real
+utterance, not a timer.
+
+It reads the shipped file rather than the master, so what was measured is
+exactly what will play.
 
 ## Still to do
 

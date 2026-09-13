@@ -65,7 +65,8 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
 - **Only Japji Sahib has text and audio.** The other eight banis are real rows
   with a "not in this build" reader state, waiting on reviewed text and
-  recordings.
+  recordings. Daily Simran has its own recitation, which is not a bani and
+  lives in `simran_track` rather than `audio_track`.
 - **Line timings are unverified** (`"verified": false`). They are derived, not
   hand-checked; the PRD requires human verification before release (§8).
 - **No Hukamnama source is configured.** `HukamnamaSource` has an

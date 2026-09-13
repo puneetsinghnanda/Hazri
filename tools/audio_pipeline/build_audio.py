@@ -45,6 +45,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("bani")
     ap.add_argument("--source", help="override the master path")
+    ap.add_argument(
+        "--seconds", type=float,
+        help="ship only the first N seconds. The Naam Simran master runs 16 "
+             "minutes and the session is 5, so shipping all of it would put "
+             "megabytes of unplayed audio in every install.")
     args = ap.parse_args()
 
     src = args.source or os.path.join(SRC, f"{args.bani}.mp3")
@@ -66,9 +71,11 @@ def main() -> int:
         f":offset={m['target_offset']}:linear=true:print_format=summary"
     )
 
-    print("encoding mono AAC 64 kbps ...")
+    trim = ["-t", str(args.seconds)] if args.seconds else []
+    print(f"encoding mono AAC {BITRATE}"
+          + (f", first {args.seconds:.0f}s" if args.seconds else "") + " ...")
     subprocess.run(
-        ["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", src,
+        ["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", src, *trim,
          "-af", loudnorm, "-ac", "1", "-ar", "44100",
          "-c:a", "aac", "-b:a", BITRATE, "-movflags", "+faststart",
          "-map_metadata", "-1", "-y", dst],

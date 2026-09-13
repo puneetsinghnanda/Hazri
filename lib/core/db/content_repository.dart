@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/audio/domain/timings.dart';
 import '../../features/nitnem/domain/bani.dart';
+import '../../features/simran/domain/simran_track.dart';
 import '../settings/app_settings.dart';
 import '../time/nanakshahi.dart';
 import 'content_db.dart';
@@ -153,6 +156,17 @@ class ContentRepository {
     };
   }
 
+  /// The Naam Simran recitation, or null in a build without one.
+  Future<SimranTrack?> simranTrack() async {
+    final row = await _db.select(_db.simranTracks).getSingleOrNull();
+    if (row == null) return null;
+    return SimranTrack.fromJson(
+      jsonDecode(row.json) as Map<String, dynamic>,
+      id: row.id,
+      file: row.file,
+    );
+  }
+
   /// The line and word timings for a track (PRD §7.3).
   Future<BaniTimings?> timings(String audioTrackId) async {
     final row = await (_db.select(_db.timings)
@@ -203,6 +217,11 @@ final contentSourcesProvider = FutureProvider<List<SourceRow>>(
 /// Which banis have a recitation in this build.
 final audioTracksProvider = FutureProvider<Map<String, AudioTrackRow>>(
   (ref) => ref.watch(contentRepositoryProvider).audioTracksByBani(),
+);
+
+/// The Naam Simran recitation this build ships, if any.
+final simranTrackProvider = FutureProvider<SimranTrack?>(
+  (ref) => ref.watch(contentRepositoryProvider).simranTrack(),
 );
 
 final baniTimingsProvider = FutureProvider.family<BaniTimings?, String>(

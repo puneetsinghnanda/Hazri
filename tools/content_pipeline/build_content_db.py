@@ -22,8 +22,9 @@ OUT = os.path.join(ROOT, "assets", "content", "content.db")
 REPORT = os.path.join(ROOT, "content", "build-report.json")
 AUDIO_DIR = os.path.join(ROOT, "assets", "audio")
 TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
+SIMRAN_DIR = os.path.join(ROOT, "content", "source", "simran")
 
-CONTENT_VERSION = 4
+CONTENT_VERSION = 5
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -75,6 +76,13 @@ CREATE TABLE audio_track(
   pack TEXT NOT NULL, file TEXT NOT NULL, duration_ms INTEGER, bytes INTEGER);
 
 CREATE TABLE timing(audio_track_id TEXT PRIMARY KEY, json TEXT NOT NULL);
+
+-- Naam Simran is not a bani, so it has no bani_version and cannot ride in
+-- audio_track. Its json carries the loudness envelope and the utterance
+-- onsets the Simran ring is drawn from (PRD 1.13).
+CREATE TABLE simran_track(
+  id TEXT PRIMARY KEY, file TEXT NOT NULL, duration_ms INTEGER, bytes INTEGER,
+  json TEXT NOT NULL);
 
 CREATE TABLE nanakshahi_month(
   ns_year INTEGER NOT NULL, idx INTEGER NOT NULL,
@@ -334,6 +342,31 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
     report["audio"] = built
 
 
+def build_simran(con: sqlite3.Connection, report: dict) -> None:
+    """Registers the Naam Simran recitation and the shape the ring follows."""
+    built = []
+    for name in sorted(os.listdir(SIMRAN_DIR)) if os.path.isdir(SIMRAN_DIR) else []:
+        if not name.endswith(".json"):
+            continue
+        with open(os.path.join(SIMRAN_DIR, name), encoding="utf-8") as fh:
+            doc = json.load(fh)
+        audio = os.path.join(AUDIO_DIR, doc["file"])
+        if not os.path.exists(audio):
+            continue
+        con.execute(
+            "INSERT INTO simran_track(id,file,duration_ms,bytes,json) VALUES(?,?,?,?,?)",
+            (doc["track"], doc["file"], doc.get("durationMs"), os.path.getsize(audio),
+             json.dumps(doc, ensure_ascii=False, separators=(",", ":"))),
+        )
+        built.append({
+            "track": doc["track"],
+            "bytes": os.path.getsize(audio),
+            "duration_ms": doc.get("durationMs"),
+            "onsets": len(doc.get("onsets", [])),
+        })
+    report["simran"] = built
+
+
 def build_calendar(con: sqlite3.Connection, report: dict) -> None:
     with open(os.path.join(SRC, "gurpurab-558.json"), encoding="utf-8") as fh:
         doc = json.load(fh)
@@ -413,10 +446,11 @@ def source_digest() -> str:
         os.path.join(os.path.dirname(__file__), "cities.json"),
         os.path.abspath(__file__),
     ]
-    if os.path.isdir(TIMINGS_DIR):
-        inputs += sorted(
-            os.path.join(TIMINGS_DIR, f) for f in os.listdir(TIMINGS_DIR) if f.endswith(".json")
-        )
+    for folder in (TIMINGS_DIR, SIMRAN_DIR):
+        if os.path.isdir(folder):
+            inputs += sorted(
+                os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".json")
+            )
     for path in inputs:
         with open(path, "rb") as fh:
             h.update(hashlib.sha256(fh.read()).digest())
@@ -438,6 +472,7 @@ def main() -> int:
 
     build_japji(con, report)
     build_audio(con, report)
+    build_simran(con, report)
     build_calendar(con, report)
     build_cities(con, report)
 

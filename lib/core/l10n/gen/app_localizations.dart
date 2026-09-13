@@ -1365,30 +1365,6 @@ abstract class L {
   /// **'Tap anywhere on the screen to count each Waheguru — optional'**
   String get simranCountHint;
 
-  /// No description provided for @simranSound.
-  ///
-  /// In en, this message translates to:
-  /// **'Sound'**
-  String get simranSound;
-
-  /// No description provided for @simranSoundSilence.
-  ///
-  /// In en, this message translates to:
-  /// **'Silence'**
-  String get simranSoundSilence;
-
-  /// No description provided for @simranSoundDrone.
-  ///
-  /// In en, this message translates to:
-  /// **'Soft drone'**
-  String get simranSoundDrone;
-
-  /// No description provided for @simranSoundBell.
-  ///
-  /// In en, this message translates to:
-  /// **'Bell at the end'**
-  String get simranSoundBell;
-
   /// No description provided for @simranRecent.
   ///
   /// In en, this message translates to:

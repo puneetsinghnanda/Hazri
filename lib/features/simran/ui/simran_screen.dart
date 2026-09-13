@@ -17,7 +17,9 @@ import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../audio/data/audio_controller.dart';
 import '../../today/data/today_controller.dart';
+import 'anhad_ring.dart';
 
 /// Daily Simran — five quiet minutes (Design 21).
 ///
@@ -63,6 +65,11 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
   }
 
   void _start() {
+    final track = ref.read(simranTrackProvider).value;
+    if (track != null) {
+      unawaited(ref.read(playbackControllerProvider)
+          .playSimran(track, title: L.of(context).simranTitle));
+    }
     setState(() {
       _startedAt = DateTime.now();
       _count = 0;
@@ -98,6 +105,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
           completed: completed,
         );
 
+    await ref.read(paathPlayerProvider)?.stop();
     if (completed) {
       await HapticFeedback.mediumImpact();
     }
@@ -149,24 +157,32 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
                     progress: _total.inSeconds == 0
                         ? 0
                         : _elapsed.inMilliseconds / _total.inMilliseconds,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          _waheguru(settings.script),
-                          style: _waheguruStyle(settings.script).copyWith(color: c.ink),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          HazriDates.duration(_running ? remaining : _total),
-                          style: HazriText.display34.copyWith(color: c.kesriInk),
-                        ),
-                        Text(
-                          l.simranLeftOf(HazriDates.duration(_total)),
-                          style: HazriText.caption.copyWith(color: c.muted),
-                        ),
-                      ],
+                    child: AnhadRing(
+                      elapsed: _elapsed,
+                      total: _total,
+                      running: _running,
+                      track: ref.watch(simranTrackProvider).value,
+                      child: Text(
+                        _waheguru(settings.script),
+                        style: _waheguruStyle(settings.script)
+                            .copyWith(color: c.simranThread),
+                      ),
                     ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // The countdown sits under the circle so nothing competes with
+                // the wave inside it.
+                Center(
+                  child: Text(
+                    HazriDates.duration(_running ? remaining : _total),
+                    style: HazriText.display34.copyWith(color: c.kesriInk),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    l.simranLeftOf(HazriDates.duration(_total)),
+                    style: HazriText.caption.copyWith(color: c.muted),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -197,7 +213,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
                     onPressed: _start,
                   ),
                 const SizedBox(height: 20),
-                const _SoundPicker(),
                 const SizedBox(height: 16),
                 const _RecentCard(),
                 const SizedBox(height: 16),
@@ -221,44 +236,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     GurbaniScript.devanagari => HazriText.devanagari(24, weight: FontWeight.w600),
     GurbaniScript.roman => HazriText.roman(22, weight: FontWeight.w600),
   };
-}
-
-class _SoundPicker extends ConsumerWidget {
-  const _SoundPicker();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final c = context.colors;
-    final l = L.of(context);
-    final current = ref.watch(settingsProvider.select((s) => s.simranSound));
-
-    return HazriCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l.simranSound, style: HazriText.bodyStrong.copyWith(color: c.ink)),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final sound in SimranSound.values)
-                HazriChip(
-                  label: switch (sound) {
-                    SimranSound.silence => l.simranSoundSilence,
-                    SimranSound.drone => l.simranSoundDrone,
-                    SimranSound.bell => l.simranSoundBell,
-                  },
-                  background: current == sound ? c.kesriSoft : c.card2,
-                  foreground: current == sound ? c.kesriInk : c.ink2,
-                  onTap: () => ref.read(settingsProvider.notifier).setSimranSound(sound),
-                ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _RecentCard extends ConsumerWidget {

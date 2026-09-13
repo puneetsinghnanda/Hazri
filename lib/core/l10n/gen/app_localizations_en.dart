@@ -722,18 +722,6 @@ class LEn extends L {
       'Tap anywhere on the screen to count each Waheguru — optional';
 
   @override
-  String get simranSound => 'Sound';
-
-  @override
-  String get simranSoundSilence => 'Silence';
-
-  @override
-  String get simranSoundDrone => 'Soft drone';
-
-  @override
-  String get simranSoundBell => 'Bell at the end';
-
-  @override
   String simranRecent(int done, int total) {
     return 'Done $done of the last $total days';
   }

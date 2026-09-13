@@ -719,18 +719,6 @@ class LPa extends L {
       'ਹਰ ਵਾਹਿਗੁਰੂ ਗਿਣਨ ਲਈ ਸਕਰੀਨ ਉੱਤੇ ਕਿਤੇ ਵੀ ਟੈਪ ਕਰੋ — ਮਰਜ਼ੀ ਦੀ ਗੱਲ';
 
   @override
-  String get simranSound => 'ਆਵਾਜ਼';
-
-  @override
-  String get simranSoundSilence => 'ਚੁੱਪ';
-
-  @override
-  String get simranSoundDrone => 'ਮੱਧਮ ਸੁਰ';
-
-  @override
-  String get simranSoundBell => 'ਅੰਤ ਉੱਤੇ ਘੰਟੀ';
-
-  @override
   String simranRecent(int done, int total) {
     return 'ਪਿਛਲੇ $total ਦਿਨਾਂ ਵਿੱਚੋਂ $done ਦਿਨ ਕੀਤਾ';
   }

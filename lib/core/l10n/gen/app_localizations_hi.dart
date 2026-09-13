@@ -719,18 +719,6 @@ class LHi extends L {
       'हर वाहिगुरू गिनने के लिए स्क्रीन पर कहीं भी टैप करें — वैकल्पिक';
 
   @override
-  String get simranSound => 'आवाज़';
-
-  @override
-  String get simranSoundSilence => 'मौन';
-
-  @override
-  String get simranSoundDrone => 'मद्धम सुर';
-
-  @override
-  String get simranSoundBell => 'अंत में घंटी';
-
-  @override
   String simranRecent(int done, int total) {
     return 'पिछले $total दिनों में से $done दिन किया';
   }

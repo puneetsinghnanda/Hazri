@@ -162,6 +162,24 @@ class Timings extends Table {
   Set<Column> get primaryKey => {audioTrackId};
 }
 
+/// The Naam Simran recitation. Not a bani, so it has no bani_version and does
+/// not belong in [AudioTracks]; its json carries the shape the Simran ring
+/// follows (PRD 1.13).
+@DataClassName('SimranTrackRow')
+class SimranTracks extends Table {
+  @override
+  String get tableName => 'simran_track';
+
+  TextColumn get id => text()();
+  TextColumn get file => text()();
+  IntColumn get durationMs => integer().named('duration_ms').nullable()();
+  IntColumn get bytes => integer().nullable()();
+  TextColumn get json => text()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 @DataClassName('NanakshahiMonthRow')
 class NanakshahiMonths extends Table {
   @override
@@ -261,6 +279,7 @@ class Metas extends Table {
     Voices,
     AudioTracks,
     Timings,
+    SimranTracks,
     NanakshahiMonths,
     CalendarEvents,
     Cities,
@@ -286,7 +305,7 @@ class ContentDb extends _$ContentDb {
   );
 
   /// The content version baked in by the pipeline.
-  static const int expectedVersion = 4;
+  static const int expectedVersion = 5;
 
   /// Copies `assets/content/content.db` into app storage if it is missing or
   /// out of date, and returns the opened database.

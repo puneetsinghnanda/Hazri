@@ -4,12 +4,14 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show AudioTrackRow, BaniSlot;
 import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_db.dart' show BaniSlotValue, CompletionSource;
 import '../../../core/db/user_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../nitnem/domain/bani.dart';
+import '../../simran/domain/simran_track.dart';
 import '../domain/paath_player.dart';
 import 'audio_handler.dart';
 import 'notification_access.dart';
@@ -106,6 +108,7 @@ class PlaybackController {
       nativeTitle: bani.nativeName,
       assetPath: 'assets/audio/${row.file}',
       duration: Duration(milliseconds: row.durationMs ?? 0),
+      route: Routes.reader(bani.slug),
     );
   }
 
@@ -178,6 +181,33 @@ class PlaybackController {
     _askForLockScreen();
     await player.setQueue(queue);
     await player.setSpeed(_ref.read(settingsProvider).speed);
+    await player.play();
+    return true;
+  }
+
+  /// Plays the Naam Simran recitation for a Simran session (PRD 1.13).
+  ///
+  /// It goes through the same player as a paath, so starting Simran stops
+  /// whatever was being recited and the lock-screen controls follow the
+  /// session rather than a bani that is no longer playing.
+  Future<bool> playSimran(SimranTrack track, {required String title}) async {
+    final player = _ref.read(paathPlayerProvider);
+    if (player == null) return false;
+    _askForLockScreen();
+    await player.setQueue([
+      PaathTrack(
+        baniId: track.id,
+        slug: track.id,
+        title: title,
+        nativeTitle: 'ਵਾਹਿਗੁਰੂ',
+        assetPath: track.assetPath,
+        duration: track.duration,
+        route: Routes.simran,
+      ),
+    ]);
+    // Always at the pace it was recited: speed belongs to the reader, and a
+    // simran sped up is not a simran.
+    await player.setSpeed(1);
     await player.play();
     return true;
   }

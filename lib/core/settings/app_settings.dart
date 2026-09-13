@@ -6,9 +6,6 @@ enum GurbaniScript { gurmukhi, devanagari, roman }
 /// Which language meanings are shown in.
 enum MeaningLanguage { pa, hi, en }
 
-/// What plays during a Simran session.
-enum SimranSound { silence, drone, bell }
-
 /// Every user preference that lives in `shared_preferences` (PRD §7.2).
 @immutable
 class AppSettings {
@@ -27,7 +24,6 @@ class AppSettings {
     this.elderMode = false,
     this.cityId = 'new_delhi',
     this.speed = 1.0,
-    this.simranSound = SimranSound.silence,
     this.simranMinutes = 5,
     this.onboardingDone = false,
     this.exactAlarmAsked = false,
@@ -48,7 +44,6 @@ class AppSettings {
   final bool elderMode;
   final String cityId;
   final double speed;
-  final SimranSound simranSound;
   final int simranMinutes;
   final bool onboardingDone;
   final bool exactAlarmAsked;
@@ -73,7 +68,6 @@ class AppSettings {
     bool? elderMode,
     String? cityId,
     double? speed,
-    SimranSound? simranSound,
     int? simranMinutes,
     bool? onboardingDone,
     bool? exactAlarmAsked,
@@ -94,7 +88,6 @@ class AppSettings {
       elderMode: elderMode ?? this.elderMode,
       cityId: cityId ?? this.cityId,
       speed: speed ?? this.speed,
-      simranSound: simranSound ?? this.simranSound,
       simranMinutes: simranMinutes ?? this.simranMinutes,
       onboardingDone: onboardingDone ?? this.onboardingDone,
       exactAlarmAsked: exactAlarmAsked ?? this.exactAlarmAsked,
