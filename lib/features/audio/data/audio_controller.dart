@@ -10,7 +10,6 @@ import '../../../core/db/user_db.dart' show BaniSlotValue, CompletionSource;
 import '../../../core/db/user_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../nitnem/domain/bani.dart';
-import '../domain/timings.dart';
 import 'audio_handler.dart';
 
 /// Set during bootstrap in `main.dart`. Null when the media session could not

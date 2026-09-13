@@ -22,11 +22,13 @@ class _PlaybackOptionsSheet extends ConsumerWidget {
   /// The speeds from the PRD. Pitch is preserved by the platform player.
   static const _speeds = [0.75, 0.9, 1.0, 1.1, 1.25, 1.5];
 
-  static const _sleepOptions = <(String, Duration?)>[
-    ('off', null),
-    ('15', Duration(minutes: 15)),
-    ('30', Duration(minutes: 30)),
-    ('60', Duration(minutes: 60)),
+  /// Off, then the durations from the PRD. The label is built from the
+  /// duration so it follows the app language.
+  static const _sleepOptions = <Duration?>[
+    null,
+    Duration(minutes: 15),
+    Duration(minutes: 30),
+    Duration(minutes: 60),
   ];
 
   @override
@@ -79,7 +81,7 @@ class _PlaybackOptionsSheet extends ConsumerWidget {
               spacing: 8,
               runSpacing: 8,
               children: [
-                for (final (label, duration) in _sleepOptions)
+                for (final duration in _sleepOptions)
                   HazriChip(
                     label: duration == null ? l.off : l.minutes(duration.inMinutes),
                     minHeight: 40,
