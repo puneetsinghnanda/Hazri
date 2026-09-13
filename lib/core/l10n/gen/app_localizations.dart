@@ -2217,6 +2217,18 @@ abstract class L {
   /// **'Not allowed — notifications are turned off for Hazri'**
   String get settingsLockScreenBlocked;
 
+  /// No description provided for @actionStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get actionStop;
+
+  /// No description provided for @playerStillPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Still playing'**
+  String get playerStillPlaying;
+
   /// No description provided for @errorGeneric.
   ///
   /// In en, this message translates to:

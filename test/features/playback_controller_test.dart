@@ -3,62 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/content_db.dart' show BaniSlot;
 import 'package:hazri/core/settings/settings_controller.dart';
 import 'package:hazri/features/audio/data/audio_controller.dart';
-import 'package:hazri/features/audio/domain/paath_player.dart';
 import 'package:hazri/features/nitnem/domain/bani.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_harness.dart';
-
-/// A player that records what it was told to do.
-///
-/// It behaves like the real one in the way that matters: `play()` on a player
-/// with nothing loaded does nothing, which is exactly the bug these tests
-/// exist to catch.
-class FakePaathPlayer implements PaathPlayer {
-  List<PaathTrack> queued = [];
-  bool _playing = false;
-  double speed = 1.0;
-  @override
-  Duration position = Duration.zero;
-  int playCalls = 0;
-  int setQueueCalls = 0;
-
-  @override
-  String? get currentSlug => queued.isEmpty ? null : queued.first.slug;
-
-  @override
-  bool get isLoaded => queued.isNotEmpty;
-
-  @override
-  bool get isPlaying => _playing;
-
-  @override
-  int get queueLength => queued.length;
-
-  @override
-  Future<void> setQueue(List<PaathTrack> tracks, {int startIndex = 0, Duration? at}) async {
-    setQueueCalls++;
-    queued = tracks;
-    position = at ?? Duration.zero;
-  }
-
-  @override
-  Future<void> play() async {
-    playCalls++;
-    // A real player cannot start what it has not loaded.
-    if (queued.isEmpty) return;
-    _playing = true;
-  }
-
-  @override
-  Future<void> pause() async => _playing = false;
-
-  @override
-  Future<void> seek(Duration p) async => position = p;
-
-  @override
-  Future<void> setSpeed(double s) async => speed = s;
-}
 
 void main() {
   late FakePaathPlayer player;

@@ -16,8 +16,69 @@ import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/core/settings/settings_controller.dart';
 import 'package:hazri/core/theme/hazri_theme.dart';
 import 'package:hazri/core/time/clock.dart';
+import 'package:hazri/features/audio/domain/paath_player.dart';
 import 'package:hazri/features/reminders/data/reminder_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// A player that records what it was told to do.
+///
+/// It behaves like the real one in the way that matters: `play()` on a player
+/// with nothing loaded does nothing, which is exactly the bug these tests
+/// exist to catch.
+class FakePaathPlayer implements PaathPlayer {
+  List<PaathTrack> queued = [];
+  bool _playing = false;
+  double speed = 1.0;
+  @override
+  Duration position = Duration.zero;
+  int playCalls = 0;
+  int setQueueCalls = 0;
+
+  @override
+  String? get currentSlug => queued.isEmpty ? null : queued.first.slug;
+
+  @override
+  bool get isLoaded => queued.isNotEmpty;
+
+  @override
+  bool get isPlaying => _playing;
+
+  @override
+  int get queueLength => queued.length;
+
+  @override
+  Future<void> setQueue(List<PaathTrack> tracks, {int startIndex = 0, Duration? at}) async {
+    setQueueCalls++;
+    queued = tracks;
+    position = at ?? Duration.zero;
+  }
+
+  @override
+  Future<void> play() async {
+    playCalls++;
+    // A real player cannot start what it has not loaded.
+    if (queued.isEmpty) return;
+    _playing = true;
+  }
+
+  @override
+  Future<void> pause() async => _playing = false;
+
+  int stopCalls = 0;
+
+  @override
+  Future<void> stop() async {
+    stopCalls++;
+    _playing = false;
+    queued = [];
+  }
+
+  @override
+  Future<void> seek(Duration p) async => position = p;
+
+  @override
+  Future<void> setSpeed(double s) async => speed = s;
+}
 
 /// Stands in for the local-notifications plugin, which is not registered in a
 /// widget test and throws if its platform instance is asked for.
@@ -91,6 +152,9 @@ class TestApp {
   static Future<TestApp> create({
     Map<String, Object> prefs = const {},
     DateTime? now,
+    /// Extra overrides for what a particular test is exercising -- a fake
+    /// player, a media session that says it is playing.
+    List<Override> extra = const [],
   }) async {
     TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -120,6 +184,7 @@ class TestApp {
       userDbProvider.overrideWithValue(userDb),
       reminderServiceProvider.overrideWithValue(reminders),
       if (now != null) clockProvider.overrideWithValue(FixedClock(now)),
+      ...extra,
     ];
     final container = ProviderContainer(overrides: overrides);
 

@@ -1202,6 +1202,12 @@ class LPa extends L {
       'ਇਜਾਜ਼ਤ ਨਹੀਂ — ਹਾਜ਼ਰੀ ਲਈ ਨੋਟੀਫਿਕੇਸ਼ਨ ਬੰਦ ਹਨ';
 
   @override
+  String get actionStop => 'ਬੰਦ ਕਰੋ';
+
+  @override
+  String get playerStillPlaying => 'ਹਾਲੇ ਚੱਲ ਰਿਹਾ ਹੈ';
+
+  @override
   String get errorGeneric => 'ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।';
 
   @override

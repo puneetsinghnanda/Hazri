@@ -392,6 +392,9 @@
   "settingsLockScreenAllowed": "अनुमति है — फ़ोन लॉक होने पर चलाएँ और रोकें दिखते हैं",
   "settingsLockScreenBlocked": "अनुमति नहीं — हाज़री के लिए सूचनाएँ बंद हैं",
 
+  "actionStop": "बंद करें",
+  "playerStillPlaying": "अभी चल रहा है",
+
   "errorGeneric": "कुछ गलत हो गया।",
   "errorContentDb": "ऐप के साथ आई सामग्री नहीं खुल सकी। हाज़िरी फिर इंस्टॉल करने से ठीक हो जाएगा।"
 }

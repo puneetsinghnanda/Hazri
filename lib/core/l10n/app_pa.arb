@@ -392,6 +392,9 @@
   "settingsLockScreenAllowed": "ਇਜਾਜ਼ਤ ਹੈ — ਫ਼ੋਨ ਲਾਕ ਹੋਣ ਉੱਤੇ ਚਲਾਓ ਤੇ ਰੋਕੋ ਦਿਸਦੇ ਹਨ",
   "settingsLockScreenBlocked": "ਇਜਾਜ਼ਤ ਨਹੀਂ — ਹਾਜ਼ਰੀ ਲਈ ਨੋਟੀਫਿਕੇਸ਼ਨ ਬੰਦ ਹਨ",
 
+  "actionStop": "ਬੰਦ ਕਰੋ",
+  "playerStillPlaying": "ਹਾਲੇ ਚੱਲ ਰਿਹਾ ਹੈ",
+
   "errorGeneric": "ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।",
   "errorContentDb": "ਐਪ ਨਾਲ ਆਈ ਸਮੱਗਰੀ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ। ਹਾਜ਼ਰੀ ਮੁੜ ਇੰਸਟਾਲ ਕਰਨ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।"
 }

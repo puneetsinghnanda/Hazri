@@ -1206,6 +1206,12 @@ class LEn extends L {
       'Not allowed — notifications are turned off for Hazri';
 
   @override
+  String get actionStop => 'Stop';
+
+  @override
+  String get playerStillPlaying => 'Still playing';
+
+  @override
   String get errorGeneric => 'Something went wrong.';
 
   @override

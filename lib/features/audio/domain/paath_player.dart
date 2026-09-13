@@ -50,6 +50,10 @@ abstract interface class PaathPlayer {
 
   Future<void> pause();
 
+  /// Ends the paath and clears the media session, which is what the mini
+  /// player's close button does.
+  Future<void> stop();
+
   Future<void> seek(Duration position);
 
   Future<void> setSpeed(double speed);

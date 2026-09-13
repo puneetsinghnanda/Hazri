@@ -439,6 +439,9 @@
   "settingsLockScreenAllowed": "Allowed — play and pause show while the phone is locked",
   "settingsLockScreenBlocked": "Not allowed — notifications are turned off for Hazri",
 
+  "actionStop": "Stop",
+  "playerStillPlaying": "Still playing",
+
   "errorGeneric": "Something went wrong.",
   "errorContentDb": "The bundled content could not be opened. Reinstalling Hazri should fix it."
 }

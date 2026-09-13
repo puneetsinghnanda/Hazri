@@ -1201,6 +1201,12 @@ class LHi extends L {
       'अनुमति नहीं — हाज़री के लिए सूचनाएँ बंद हैं';
 
   @override
+  String get actionStop => 'बंद करें';
+
+  @override
+  String get playerStillPlaying => 'अभी चल रहा है';
+
+  @override
   String get errorGeneric => 'कुछ गलत हो गया।';
 
   @override

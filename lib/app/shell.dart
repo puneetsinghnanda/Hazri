@@ -8,6 +8,7 @@ import '../core/theme/hazri_colors.dart';
 import '../core/theme/hazri_text.dart';
 import '../core/theme/icon_data.dart';
 import '../core/widgets/app_icon.dart';
+import '../features/audio/ui/mini_player.dart';
 
 /// The five tabs, in branch order.
 enum HomeTab { today, nitnem, simran, diary, settings }
@@ -43,14 +44,22 @@ class HomeShell extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: c.bg,
         body: shell,
-        bottomNavigationBar: _BottomNav(
-          tabs: tabs,
-          currentIndex: shell.currentIndex,
-          elder: elder,
-          onSelect: (tab) => shell.goBranch(
-            tab.index,
-            initialLocation: tab.index == shell.currentIndex,
-          ),
+        // The mini player rides above the nav rather than floating over the
+        // page, so nothing it covers is content.
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const MiniPlayer(),
+            _BottomNav(
+              tabs: tabs,
+              currentIndex: shell.currentIndex,
+              elder: elder,
+              onSelect: (tab) => shell.goBranch(
+                tab.index,
+                initialLocation: tab.index == shell.currentIndex,
+              ),
+            ),
+          ],
         ),
       ),
     );
