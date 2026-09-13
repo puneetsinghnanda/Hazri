@@ -50,7 +50,6 @@ flutter:
   generate: true
   assets:
     - assets/content/
-    - assets/images/
   fonts:
     - family: Mukta
       fonts:
