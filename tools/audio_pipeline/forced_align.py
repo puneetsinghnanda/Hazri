@@ -264,7 +264,8 @@ def dtw(real: np.ndarray, synth: np.ndarray, band: int,
     back = np.zeros((n, width), dtype=np.int8)
     offsets = np.arange(width) - band
 
-    # Which (row, column) pairs name a real synthetic frame.
+    # One row of the cost table, in band coordinates: prev[k] is the cost of
+    # reaching synthetic frame i - 1 + offsets[k] at the previous real frame.
     prev = np.full(width, INF, dtype=np.float32)
     prev[band] = 0.0  # the recitation starts at the start of the text
 
@@ -311,7 +312,7 @@ def dtw(real: np.ndarray, synth: np.ndarray, band: int,
     return np.clip(path, 0, n - 1)
 
 
-def resample_to(seq: np.ndarray, n: int) -> np.ndarray:
+def resample_to(seq: np.ndarray, n: int) -> tuple[np.ndarray, np.ndarray]:
     """Nearest-frame resampling, plus the index map that undoes it."""
     idx = np.clip(np.round(np.linspace(0, len(seq) - 1, n)).astype(np.int64), 0, len(seq) - 1)
     return seq[idx], idx

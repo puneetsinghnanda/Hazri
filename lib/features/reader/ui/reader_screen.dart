@@ -724,7 +724,16 @@ class _LockScreenControlsBanner extends ConsumerWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(18, 10, 12, 10),
-      color: c.card,
+      decoration: BoxDecoration(
+        color: c.card,
+        // The player bar below carries the same rounded top on the same
+        // surface, so the two read as one panel with a rule between them.
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        border: Border(
+          top: BorderSide(color: c.rule),
+          bottom: BorderSide(color: c.rule),
+        ),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
