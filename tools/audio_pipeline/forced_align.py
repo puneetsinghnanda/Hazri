@@ -592,6 +592,56 @@ def verified_sha_for(slug: str) -> str | None:
         return ((json.load(fh).get(slug) or {}).get("linesSha"))
 
 
+def skip_audio_for(slug: str) -> list[list[float]]:
+    """Stretches of the recording that carry no text, in seconds.
+
+    A recitation may say something the text does not at either end or in the
+    middle -- an invocation, a closing salutation, a line said twice. The warp
+    has to account for every frame it is given, so anything it is given that
+    the text does not cover gets absorbed into the lines around it, and the
+    highlight drags. These stretches are taken out before the warp and added
+    back to the times afterwards; the recording itself is untouched and still
+    plays them.
+    """
+    if not os.path.exists(AUDIO_START_FILE):
+        return []
+    with open(AUDIO_START_FILE, encoding="utf-8") as fh:
+        entry = json.load(fh).get(slug) or {}
+    return [[float(a), float(b)] for a, b in entry.get("skipAudio", [])]
+
+
+class Timebase:
+    """Maps a time in the spliced recording back to the real one."""
+
+    def __init__(self, skips: list[list[float]], total: float):
+        self.keep: list[tuple[float, float]] = []
+        cursor = 0.0
+        for a, b in sorted(skips):
+            a, b = max(0.0, a), min(total, b)
+            if b <= a:
+                continue
+            if a > cursor:
+                self.keep.append((cursor, a))
+            cursor = max(cursor, b)
+        if cursor < total:
+            self.keep.append((cursor, total))
+        self.offsets: list[tuple[float, float]] = []
+        t = 0.0
+        for a, b in self.keep:
+            self.offsets.append((t, a - t))
+            t += b - a
+        self.trimmed = t
+
+    def to_real(self, t: float) -> float:
+        off = self.offsets[0][1] if self.offsets else 0.0
+        for start, o in self.offsets:
+            if t >= start:
+                off = o
+            else:
+                break
+        return t + off
+
+
 def recited_ranges_for(slug: str) -> list[list[int]] | None:
     """Which 1-based line ranges of the text this recitation actually says.
 
@@ -690,12 +740,20 @@ def main() -> int:
         synth_wav, word_spans = synthesise(words, tmp, verbose)
         real_wav = os.path.join(tmp, "real.wav")
         decode(audio, real_wav)
-        full_len = len(read_wav(real_wav)[1]) / SR
-        if lead:
-            # Everything from here on works in the trimmed recording's own
-            # timebase; `lead` is added back once, where the times are written.
-            rate, x = read_wav(real_wav)
-            write_wav(real_wav, rate, x[int(round(lead * SR)):])
+        rate, x = read_wav(real_wav)
+        full_len = len(x) / SR
+        skips = ([[0.0, lead]] if lead else []) + skip_audio_for(args.bani)
+        base = Timebase(skips, full_len)
+        if skips:
+            # Everything from here on works in the spliced recording's own
+            # timebase; `base` maps back to the real one where times are
+            # written. The file on disk is never changed.
+            kept = np.concatenate([x[int(a * SR):int(b * SR)] for a, b in base.keep])
+            write_wav(real_wav, rate, kept)
+            if verbose:
+                total = sum(b - a for a, b in skips)
+                print(f"leaving {total:.1f}s of the recording unattributed "
+                      f"({len(skips)} stretch(es))", file=sys.stderr)
         real_len = len(read_wav(real_wav)[1]) / SR
         if verbose:
             print(f"warping {real_len:.0f}s of recitation onto "
@@ -751,10 +809,10 @@ def main() -> int:
             words_out.append([int(round(ws * 1000)), int(round(we * 1000))])
         out_lines.append({
             "line": line["idx"],
-            "s": int(round((s + lead) * 1000)),
-            "e": int(round((e + lead) * 1000)),
-            "w": [[a + int(round(lead * 1000)), b + int(round(lead * 1000))]
-                  for a, b in words_out],
+            "s": int(round(base.to_real(s) * 1000)),
+            "e": int(round(base.to_real(e) * 1000)),
+            "w": [[int(round(base.to_real(a / 1000) * 1000)),
+                   int(round(base.to_real(b / 1000) * 1000))] for a, b in words_out],
         })
         stats.append((i, s, e, float(spoken[i])))
 
@@ -763,7 +821,8 @@ def main() -> int:
         "baniVersionId": version_id,
         "durationMs": int(round(full_len * 1000)),
         "leadInMs": int(round(lead * 1000)),
-        "version": 5,
+        "unattributedMs": int(round(sum(b - a for a, b in skips) * 1000)),
+        "version": 6,
         "method": "espeak-ng synthesis + two-pass MFCC dynamic time warping, snapped to pauses",
         # True only when somebody has listened to exactly these timings.
         "verified": lines_sha(out_lines) == verified_sha_for(args.bani),

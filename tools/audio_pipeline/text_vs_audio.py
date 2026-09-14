@@ -41,6 +41,52 @@ AUDIO = os.path.join(ROOT, "assets", "audio")
 PHRASE_PAUSE_S = 0.35
 
 
+def stretched_lines(slug: str, lines: list[dict], top: int = 6) -> None:
+    """Lines held far longer than their words justify, with speech underneath.
+
+    A line the warp stretched over a pause is nothing; a line stretched over
+    somebody still talking is the recitation saying what the text does not
+    carry, and it is where the highlight sits while the voice moves on.
+    """
+    import sqlite3
+    con = sqlite3.connect(f"file:{fa.CONTENT_DB}?mode=ro", uri=True)
+    wc = dict(con.execute(
+        "SELECT l.idx, l.word_count FROM line l "
+        "JOIN bani_version v ON v.id = l.bani_version_id "
+        "JOIN bani b ON b.id = v.bani_id WHERE b.slug = ?", (slug,)))
+    with tempfile.TemporaryDirectory() as tmp:
+        wav = os.path.join(tmp, "a.wav")
+        fa.decode(os.path.join(AUDIO, f"{slug}.m4a"), wav)
+        _, x = fa.read_wav(wav)
+    hop = int(fa.FINE_HOP * fa.SR)
+    frames = x[: len(x) // hop * hop].reshape(-1, hop)
+    db = 20 * np.log10(np.sqrt((frames ** 2).mean(axis=1)) + 1e-12)
+
+    per = np.array([(l["e"] - l["s"]) / max(wc.get(l["line"], 1), 1) for l in lines])
+    med = float(np.median(per))
+    rows = []
+    for i, l in enumerate(lines):
+        if per[i] < med * 2.0:
+            continue
+        a, b = int(l["s"] / 1000 / fa.FINE_HOP), int(l["e"] / 1000 / fa.FINE_HOP)
+        seg = db[a:b]
+        if not len(seg):
+            continue
+        speech = float((seg > fa.QUIET_DB).mean())
+        excess = (l["e"] - l["s"]) / 1000 - med * max(wc.get(l["line"], 1), 1) / 1000
+        rows.append((excess * speech, l, excess, speech))
+    rows.sort(key=lambda r: -r[0])
+    if not rows:
+        print("  no line is held far past its words over speech")
+        return
+    print(f"  held far past their words, over speech -- listen to these:")
+    for _, l, excess, speech in rows[:top]:
+        s0, s1 = l["s"] / 1000, l["e"] / 1000
+        print(f"    line {l['line']:5}  {int(s0)//60}:{s0%60:05.2f} - "
+              f"{int(s1)//60}:{s1%60:05.2f}   {excess:5.1f}s more than its words "
+              f"need, {speech*100:3.0f}% speech")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("bani", nargs="+", help="bani slug, e.g. chaupai-sahib")
@@ -78,6 +124,7 @@ def main() -> int:
             flag = "  <<< listen here" if r < med * 0.6 else ""
             print(f"  {int(t) // 60:3d}:{int(t) % 60:02d}  pauses {p:3d}  "
                   f"lines {n:3d}  {r:5.2f}{flag}")
+        stretched_lines(slug, lines)
     return 0
 
 
