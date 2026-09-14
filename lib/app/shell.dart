@@ -8,6 +8,9 @@ import '../core/theme/hazri_colors.dart';
 import '../core/theme/hazri_text.dart';
 import '../core/theme/icon_data.dart';
 import '../core/widgets/app_icon.dart';
+import '../core/widgets/brand_bar.dart';
+import '../core/widgets/surfaces.dart';
+import '../features/today/ui/help_sheet.dart';
 import '../features/audio/ui/mini_player.dart';
 
 /// The five tabs, in branch order.
@@ -43,7 +46,17 @@ class HomeShell extends ConsumerWidget {
       },
       child: Scaffold(
         backgroundColor: c.bg,
-        body: shell,
+        // The brand bar belongs to the shell, so every tab carries it and
+        // none of them has to draw its own.
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              BrandBar(onHelp: () => showHelpSheet(context)),
+              Expanded(child: PhoneWidth(child: shell)),
+            ],
+          ),
+        ),
         // The mini player rides above the nav rather than floating over the
         // page, so nothing it covers is content.
         bottomNavigationBar: Column(

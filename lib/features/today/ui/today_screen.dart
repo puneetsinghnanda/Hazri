@@ -13,7 +13,6 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
-import '../../../core/widgets/app_mark.dart';
 import '../../../core/widgets/day_arc.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
@@ -21,7 +20,6 @@ import '../../reminders/data/reminders_controller.dart';
 import '../data/today_controller.dart';
 import '../domain/today_state.dart';
 import 'elder_today.dart';
-import 'help_sheet.dart';
 import '../../vichar/ui/vichar_card.dart';
 
 /// The Today tab (Design 09/10), or its elder-mode variant (Design 11).
@@ -47,21 +45,6 @@ class TodayScreen extends ConsumerWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 20),
             children: [
-              Row(
-                children: [
-                  const AppMark(size: 30),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(l.appName, style: HazriText.brand.copyWith(color: c.ink)),
-                  ),
-                  CardIconButton(
-                    icon: HazriIconData.help,
-                    tooltip: l.helpSheetTitle,
-                    onPressed: () => showHelpSheet(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
               Text(
                 dates.longDate(now),
                 style: HazriText.body.copyWith(

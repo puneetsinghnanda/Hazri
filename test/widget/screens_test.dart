@@ -49,7 +49,9 @@ void main() {
         await pumpScreen(tester, const TodayScreen(), locale: locale, dark: dark);
         final l = await L.delegate.load(locale);
         expect(find.text(l.greeting), findsOneWidget);
-        expect(find.text(l.appName), findsOneWidget);
+        // The app's name is the shell's brand bar now, not a heading Today
+        // repeats underneath it.
+        expect(find.text(l.appName), findsNothing);
       });
 
       testWidgets('Nitnem renders in $label', (tester) async {
