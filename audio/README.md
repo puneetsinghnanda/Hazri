@@ -67,38 +67,46 @@ Neither runs in CI: their outputs are committed, and CI only checks that
 
 ## Where the alignment stands
 
-Measured by `verify_timings.py` against a fixed -27 dB notion of silence, on
-the recitations as they ship. None of it has been checked by ear yet -- every
-timing file says `"verified": false`, and the PRD requires a person to listen
-before release (§8).
+Two checks, and they answer different questions.
 
-| bani | line starts in a pause | random | gap between lines |
-|---|---|---|---|
-| Japji Sahib | 98% | 17% | 360 ms |
-| Jaap Sahib | 44% | 11% | 0 ms |
-| Tav Prasad Savaiye | 83% | 16% | 370 ms |
-| Chaupai Sahib | 100% | 35% | 140 ms |
-| Anand Sahib | 98% | 17% | 400 ms |
-| Rehras Sahib | 70% | 9% | 220 ms |
-| Kirtan Sohila | 94% | 18% | 420 ms |
-| Ardas | 100% | 27% | 490 ms |
-| Sukhmani Sahib | 64% | 11% | 120 ms |
+`<bani>.anchors.json` holds times somebody listened to and wrote down. The
+aligner never sees them, and they are the only thing here that can catch a
+recitation being aligned to the wrong place altogether -- which is exactly
+what happened when these eight arrived, and what the pause check missed. There
+is one anchor per bani so far, at the first line, so they prove where each
+recitation starts and nothing further.
 
-The last column is what decides how much the first one is worth. The check
-looks for line boundaries landing in the reciter's silences, so it can only
-speak where the reciter is silent between lines. Read the table in that light:
+The pause check asks whether line boundaries land in the reciter's silences.
+It can only speak where the reciter is silent between lines, which the last
+column measures.
 
-* **Rehras is the one to listen to first.** Its reciter does break between
-  lines -- 220 ms -- so the check has something to find, and it found 70%.
-  That is a real shortfall, not a blind spot.
-* **Tav Prasad Savaiye** is marginal for the same reason: a clear 370 ms gap
-  and 83%, just under the bar.
-* **Jaap Sahib and Sukhmani Sahib score low because the check goes blind**,
-  not because the alignment is known to be wrong. Jaap's chhands are recited
-  with no gap at all between lines, so almost every boundary falls mid-flow
-  however well it is placed. That makes them *more* in need of an ear than the
-  rest, not less: nothing here has vouched for them either way.
+| bani | anchor error | line starts in a pause | random | gap between lines |
+|---|---|---|---|---|
+| Japji Sahib | -- | 98% | 17% | 360 ms |
+| Jaap Sahib | 0.00s | 44% | 11% | 0 ms |
+| Tav Prasad Savaiye | -- | 88% | 16% | 370 ms |
+| Chaupai Sahib | 0.00s | 99% | 35% | 140 ms |
+| Anand Sahib | 0.00s | 98% | 17% | 400 ms |
+| Rehras Sahib | 0.10s | 72% | 17% | 220 ms |
+| Kirtan Sohila | 0.00s | 94% | 18% | 420 ms |
+| Ardas | 0.14s | 100% | 27% | 490 ms |
+| Sukhmani Sahib | 0.22s | 64% | 11% | 120 ms |
 
+Nothing is verified: every timing file says `"verified": false`, and the PRD
+requires a person to listen before release (§8). What to listen for:
+
+* **Rehras** first. Its reciter breaks between lines, so the pause check has
+  something to find, and 72% is short of the 85% the others clear. Its start
+  is right; what is not established is whether it stays right.
+* **Jaap and Sukhmani** score lowest and mean least. Jaap's chhands are
+  recited with no gap at all between lines and Sukhmani's with 120 ms, so most
+  of their boundaries fall mid-flow however well they are placed. Their
+  openings are exact; past that, nothing here has looked.
+* **Tav Prasad Savaiye** has no anchor yet.
+
+A second anchor near the end of a bani would be worth more than any of this.
+One at the first line proves where a recitation starts; two, far apart, prove
+it does not drift -- which is the failure the pause check cannot see either.
 
 ## How the timings are made
 
