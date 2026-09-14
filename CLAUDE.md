@@ -77,8 +77,12 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   outright that those are not editorial labels, so the unit number is stored
   and no word is invented for it. Japji keeps its labels because its source
   file names its sections.
-- **Line timings are unverified** (`"verified": false`). They are derived, not
-  hand-checked; the PRD requires human verification before release (§8).
+- **Line timings are unverified** (`"verified": false`) for all nine banis.
+  They are derived, not hand-checked; the PRD requires human verification
+  before release (§8). `audio/README.md` has the measured state per bani and
+  which to listen to first -- Rehras, where the check has power and found a
+  real shortfall, then Jaap and Sukhmani, where the reciter runs lines
+  together and the check cannot see anything at all.
 - **The daily Hukamnama is gone**, replaced by ਅੱਜ ਦਾ ਵਿਚਾਰ (PRD 1.11): 200
   bundled lines from Sri Guru Granth Sahib Ji, one a day by date, shareable as
   text or as an image. It needs no network, which is what the Hukamnama did
