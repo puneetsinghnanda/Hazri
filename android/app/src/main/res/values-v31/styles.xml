@@ -2,12 +2,22 @@
 <!-- Android 12+ uses the platform SplashScreen API rather than a window
      background, so the mark and ground are declared here instead. -->
 <resources>
+    <!-- DeviceDefault.DayNight is where the splash attributes live, and unlike
+         the NoTitleBar themes the other configurations use, it brings an
+         ActionBar with it. That put a second header above every screen,
+         showing android:label in the system font over the app's own. Turn it
+         off explicitly: the app draws its own header (BrandBar) and the
+         platform must not draw one too. -->
     <style name="LaunchTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="android:windowSplashScreenBackground">@color/splash_background</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_mark</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_background</item>
     </style>
     <style name="NormalTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/splash_background</item>
     </style>
 </resources>

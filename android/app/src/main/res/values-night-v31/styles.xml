@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Night mode outranks the version qualifier when Android picks a resource,
+     so without this file a phone on Android 12+ in dark mode falls back to
+     values-night/ and loses the platform splash screen. The themes are the
+     v31 ones; DayNight already handles the dark colours. -->
+<resources>
+    <style name="LaunchTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowSplashScreenBackground">@color/splash_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_mark</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/splash_background</item>
+    </style>
+</resources>
