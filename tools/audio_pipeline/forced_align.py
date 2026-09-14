@@ -49,6 +49,14 @@ CONTENT_DB = os.path.join(ROOT, "assets", "content", "content.db")
 AUDIO_SRC = os.path.join(ROOT, "audio", "source")
 TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 
+# Some recitations open with something the text does not carry -- an
+# invocation, a spoken dedication, the reciter naming the bani. The warp has to
+# account for every frame of the recording, and it is anchored at the start, so
+# it cannot skip that: it spreads the mismatch across the opening lines and the
+# whole alignment reads early. This file says, per bani, at what second the
+# text's own first word is spoken; everything before it is left unattributed.
+LEAD_IN_FILE = os.path.join(TIMINGS_DIR, "lead-in.json")
+
 SR = 16000
 
 # espeak-ng's Punjabi voice. The speed only has to be in the same range as the
@@ -545,6 +553,14 @@ def spoken_words(text: str) -> list[str]:
     return words
 
 
+def lead_in_for(slug: str) -> float:
+    """This bani's lead-in from the reviewed file, or zero if it has none."""
+    if not os.path.exists(LEAD_IN_FILE):
+        return 0.0
+    with open(LEAD_IN_FILE, encoding="utf-8") as fh:
+        return float(json.load(fh).get(slug, 0.0))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("bani", help="bani slug, e.g. japji-sahib")
@@ -552,6 +568,10 @@ def main() -> int:
     ap.add_argument("--report", action="store_true", help="rank the lines by how well they matched")
     ap.add_argument("--worst", type=int, default=20, help="how many lines --report lists")
     ap.add_argument("--out", help="write the timings here instead of content/source/timings")
+    ap.add_argument(
+        "--lead-in", type=float, default=None,
+        help="seconds of the recording before the text's first word. Defaults "
+             "to this bani's entry in timings/lead-in.json, or 0.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
@@ -561,6 +581,10 @@ def main() -> int:
 
     version_id, lines = load_lines(args.bani)
     verbose = not args.quiet
+    lead = args.lead_in if args.lead_in is not None else lead_in_for(args.bani)
+    if lead and verbose:
+        print(f"skipping the first {lead:.2f}s: the text starts there",
+              file=sys.stderr)
 
     # Every spoken word of the bani, and which line it belongs to.
     words: list[str] = []
@@ -579,6 +603,12 @@ def main() -> int:
         synth_wav, word_spans = synthesise(words, tmp, verbose)
         real_wav = os.path.join(tmp, "real.wav")
         decode(audio, real_wav)
+        full_len = len(read_wav(real_wav)[1]) / SR
+        if lead:
+            # Everything from here on works in the trimmed recording's own
+            # timebase; `lead` is added back once, where the times are written.
+            rate, x = read_wav(real_wav)
+            write_wav(real_wav, rate, x[int(round(lead * SR)):])
         real_len = len(read_wav(real_wav)[1]) / SR
         if verbose:
             print(f"warping {real_len:.0f}s of recitation onto "
@@ -633,17 +663,19 @@ def main() -> int:
             words_out.append([int(round(ws * 1000)), int(round(we * 1000))])
         out_lines.append({
             "line": line["idx"],
-            "s": int(round(s * 1000)),
-            "e": int(round(e * 1000)),
-            "w": words_out,
+            "s": int(round((s + lead) * 1000)),
+            "e": int(round((e + lead) * 1000)),
+            "w": [[a + int(round(lead * 1000)), b + int(round(lead * 1000))]
+                  for a, b in words_out],
         })
         stats.append((i, s, e, float(spoken[i])))
 
     timings = {
         "track": f"{args.bani}_sgpc_voice1",
         "baniVersionId": version_id,
-        "durationMs": int(round(real_len * 1000)),
-        "version": 4,
+        "durationMs": int(round(full_len * 1000)),
+        "leadInMs": int(round(lead * 1000)),
+        "version": 5,
         "method": "espeak-ng synthesis + two-pass MFCC dynamic time warping, snapped to pauses",
         "verified": False,
         "lines": out_lines,
