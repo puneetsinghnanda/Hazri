@@ -104,6 +104,21 @@ requires a person to listen before release (§8). What to listen for:
   openings are exact; past that, nothing here has looked.
 * **Tav Prasad Savaiye** has no anchor yet.
 
+`text_vs_audio.py` is the third check, and the one that found what the other
+two could not. The aligner cannot refuse: given a text and a recording it
+always produces a mapping, so text the reciter never says gets absorbed rather
+than reported, and the highlight runs ahead of the voice from there on. The
+tool compares how often the reciter stops for breath against how many lines
+the timing file puts in the same stretch. Phrasing rate is roughly constant
+through a bani, so where the line count climbs against a flat pause count, the
+text is being packed in.
+
+On Chaupai it is unmistakable: the reciter takes 6 to 8 phrase pauses in every
+30 seconds from beginning to end, while the lines assigned climb from 11 to 23
+after 1:30 -- right after ॥੩੮੮॥, which is where the Benti Chaupai of Nitnem
+ends and this source file carries on into ੩੮੯-੪੦੫. It says where to listen,
+not which lines; only an ear can say that.
+
 A second anchor near the end of a bani would be worth more than any of this.
 One at the first line proves where a recitation starts; two, far apart, prove
 it does not drift -- which is the failure the pause check cannot see either.
