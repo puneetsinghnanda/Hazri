@@ -477,11 +477,19 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
             con.execute(
                 "UPDATE bani SET est_minutes = ? WHERE id = ?",
                 (max(1, -(-duration_ms // 60000)), bani_id))
+        verified = None
+        if os.path.exists(timings):
+            with open(timings, encoding="utf-8") as fh:
+                verified = json.load(fh).get("verified")
         built.append({
             "bani": slug,
             "bytes": os.path.getsize(audio),
             "duration_ms": duration_ms,
             "has_timings": timing_json is not None,
+            # Whether a person has listened to this alignment. Nothing in the
+            # app reads it; it is here so the build report says plainly which
+            # recitations are still riding on a machine's word (PRD §8).
+            "timings_verified": verified,
         })
     report["audio"] = built
 

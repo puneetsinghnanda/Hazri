@@ -112,20 +112,22 @@ void main() {
     });
 
     test('reports failure for a bani with no recitation', () async {
-      const sukhmani = Bani(
-        id: 'SUKH',
-        slug: 'sukhmani-sahib',
-        nameEn: 'Sukhmani Sahib',
-        namePa: 'ਸੁਖਮਨੀ ਸਾਹਿਬ',
-        nameHi: 'सुखमनी साहिब',
+      // Every bundled bani has a recitation now, so this is the shape of a
+      // bani added ahead of its recording rather than one that ships that way.
+      const unrecorded = Bani(
+        id: 'NONE',
+        slug: 'not-recorded',
+        nameEn: 'Not recorded',
+        namePa: 'ਨਹੀਂ',
+        nameHi: 'नहीं',
         category: 'other',
         defaultSlot: BaniSlot.none,
-        sort: 9,
-        estMinutes: 60,
-        hasText: false,
-        versionId: 'SUKH_SGPC',
+        sort: 99,
+        estMinutes: 5,
+        hasText: true,
+        versionId: 'NONE_SGPC',
       );
-      expect(await controller().prepare(sukhmani, language: 'en'), isFalse);
+      expect(await controller().prepare(unrecorded, language: 'en'), isFalse);
       expect(player.isLoaded, isFalse);
     });
   });
@@ -150,16 +152,23 @@ void main() {
   });
 
   group('play all', () {
-    test('queues every morning bani that has a recitation', () async {
+    test('queues every morning bani, in the order they are recited', () async {
       final ok = await controller().playSlot(BaniSlot.morning, language: 'en');
-      // Only Japji has audio in this build, so the queue is one long.
       expect(ok, isTrue);
-      expect(player.queued.map((t) => t.slug), ['japji-sahib']);
+      expect(player.queued.map((t) => t.slug), [
+        'japji-sahib',
+        'jaap-sahib',
+        'tav-prasad-savaiye',
+        'chaupai-sahib',
+        'anand-sahib',
+      ]);
       expect(player.isPlaying, isTrue);
     });
 
-    test('reports failure for a slot with no recitations', () async {
-      expect(await controller().playSlot(BaniSlot.bedtime, language: 'en'), isFalse);
+    test('the bedtime slot plays Sohila', () async {
+      // This used to assert the opposite: the slot had no recitation to play.
+      expect(await controller().playSlot(BaniSlot.bedtime, language: 'en'), isTrue);
+      expect(player.queued.map((t) => t.slug), ['kirtan-sohila']);
     });
   });
 

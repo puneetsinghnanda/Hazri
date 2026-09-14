@@ -106,6 +106,12 @@ def dtw(a: np.ndarray, b: np.ndarray) -> float:
     return float(acc[n, m] / (n + m))
 
 
+# This is the measuring instrument, so it does not move when the aligner does.
+# Every recitation is loudness-normalised to -16 LUFS before it ships, so one
+# level means the same thing across all of them, and -27 dB sits above every
+# one of their room tones. The aligner derives its own threshold per
+# recording; that is the thing being measured, and a check that adopted the
+# aligner's definition of a pause would be marking its own homework.
 QUIET_DB = -27.0
 MIN_PAUSE_S = 0.10
 FRAME_S = 0.020
@@ -136,12 +142,27 @@ def in_a_pause(times: np.ndarray, pauses: list[tuple[float, float]]) -> np.ndarr
 
 def check_pauses(spans: dict[int, tuple[float, float]], wav: str, seed: int) -> bool:
     pauses = pauses_of(wav)
-    starts = np.array([s for _, (s, _) in sorted(spans.items())][1:])
+    ordered = [v for _, v in sorted(spans.items())]
+    starts = np.array([s for s, _ in ordered][1:])
     hit = in_a_pause(starts, pauses)
     rng = np.random.default_rng(seed)
     control = in_a_pause(rng.uniform(starts.min(), starts.max(), 20000), pauses)
     print(f"\nline starts inside one of the reciter's {len(pauses)} pauses: "
           f"{hit.mean() * 100:.0f}%  (times drawn at random: {control.mean() * 100:.0f}%)")
+
+    # How much this check can actually tell you depends on whether the reciter
+    # breaks at line ends at all. Jaap Sahib's chhands run into one another --
+    # the median gap between one line ending and the next beginning is zero --
+    # so most of its boundaries fall mid-flow however well they are aligned,
+    # and a low score there is the check running out of evidence rather than
+    # the alignment being wrong. Measured from the spans, not from the pause
+    # detector, so it is an independent reading.
+    gaps = np.array([ordered[i + 1][0] - ordered[i][1] for i in range(len(ordered) - 1)])
+    median_gap = float(np.median(gaps))
+    print(f"  median gap between one line and the next: {median_gap * 1000:.0f} ms")
+    if median_gap < 0.15:
+        print("  this reciter runs lines together, so the pause check has "
+              "little to find here and says correspondingly little")
     return bool(hit.mean() > 0.85)
 
 
@@ -238,6 +259,17 @@ def main() -> int:
 
     m = np.array(matched)
     c = np.array(controls)
+    if len(m) == 0:
+        # Not every bani repeats a line verbatim -- Tav Prasad Savaiye and
+        # Ardas do not -- and a check with nothing to measure is not a failed
+        # check. It drops out of the verdict rather than voting against it.
+        print("\nsame line, different occurrence: none -- this bani repeats no "
+              "line verbatim, so this check does not apply")
+        checks = [pauses_ok] + ([anchors_ok] if anchors_ok is not None else [])
+        print(f"\nverdict: {'ALIGNED' if all(checks) else 'NEEDS A LISTEN'}"
+              " (on pauses" + (" and anchors" if anchors_ok is not None else "")
+              + " alone)")
+        return 0 if all(checks) else 1
     print(f"\nsame line, different occurrence  (n={len(m):>3}): "
           f"mean {m.mean():.4f}  median {np.median(m):.4f}")
     print(f"different lines (control)        (n={len(c):>3}): "

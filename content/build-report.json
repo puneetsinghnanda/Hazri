@@ -117,7 +117,64 @@
       "bani": "japji-sahib",
       "bytes": 9405288,
       "duration_ms": 1139314,
-      "has_timings": true
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "jaap-sahib",
+      "bytes": 8430605,
+      "duration_ms": 1019298,
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "tav-prasad-savaiye",
+      "bytes": 1495726,
+      "duration_ms": 181145,
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "chaupai-sahib",
+      "bytes": 1755741,
+      "duration_ms": 212287,
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "anand-sahib",
+      "bytes": 10797991,
+      "duration_ms": 1304174,
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "rehras-sahib",
+      "bytes": 7080401,
+      "duration_ms": 858067,
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "kirtan-sohila",
+      "bytes": 1569014,
+      "duration_ms": 189731,
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "ardas",
+      "bytes": 1527384,
+      "duration_ms": 185066,
+      "has_timings": true,
+      "timings_verified": false
+    },
+    {
+      "bani": "sukhmani-sahib",
+      "bytes": 31985656,
+      "duration_ms": 3867278,
+      "has_timings": true,
+      "timings_verified": false
     }
   ],
   "simran": [
@@ -146,6 +203,6 @@
   },
   "cities": 92,
   "content_version": 7,
-  "source_digest": "e97fdc4dd0973292",
-  "bytes": 4349952
+  "source_digest": "7454e2914d414ce0",
+  "bytes": 4820992
 }

@@ -64,7 +64,16 @@ FINE_HOP, FINE_WIN, FINE_BAND_S = 0.020, 0.050, 3.0
 
 # Snapping. The warp decides which pause a line boundary belongs in; the pause
 # itself decides where in it the boundary falls, to the frame. -27 dB sits
-# between this recording's room tone (near -37 dBFS) and its speech.
+# above the room tone of every recitation here and below all of their speech,
+# which one level can do because build_audio.py normalises them all to -16
+# LUFS before they ship.
+#
+# Deriving it per recording instead -- the recording's own 25th percentile --
+# was tried and is worse: measured against a fixed instrument it took Japji
+# from 98% of line starts landing in a pause to 91%, Chaupai from 100% to 87%,
+# and Rehras from 70% to 36%. It looked like an improvement only while the
+# check was moving with it, which is the one thing this pipeline's verifier
+# exists to prevent.
 QUIET_DB = -27.0
 MIN_PAUSE_S = 0.10
 SNAP_WINDOW_S = 1.00

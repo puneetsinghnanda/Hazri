@@ -101,13 +101,17 @@ void main() {
     }
   }
 
-  testWidgets('a bani with no shipped text says so rather than showing nothing',
-      (tester) async {
+  testWidgets('Sukhmani, the longest bani, opens on its own text', (tester) async {
+    // This test used to assert the opposite -- that Sukhmani said it was not
+    // in the build. Every bani has its text now, so the reader's
+    // "not in this build" branch is unreachable from bundled content and is
+    // left in place only for a bani added ahead of its text.
     usePhoneFrame(tester);
     await tester.pumpWidget(app.wrap(const ReaderScreen(slug: 'sukhmani-sahib')));
     await settle(tester);
     final l = await L.delegate.load(const Locale('en'));
-    expect(find.text(l.baniNotInBuild), findsOneWidget);
+    expect(find.text(l.baniNotInBuild), findsNothing);
+    expect(find.textContaining('ਸੁਖਮਨੀ'), findsWidgets);
     expect(tester.takeException(), isNull);
   });
 
