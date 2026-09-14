@@ -33,6 +33,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -56,6 +57,12 @@ TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 # it spreads the mismatch across the opening lines and the whole alignment
 # reads early. This file says where each recitation starts saying the text.
 AUDIO_START_FILE = os.path.join(TIMINGS_DIR, "audio-start.json")
+
+# Which alignments a person has listened to and accepted (PRD §8). Keyed by a
+# hash of the exact timings they heard, so re-aligning a bani drops it back to
+# unverified on its own rather than carrying somebody's word onto a file they
+# never checked.
+VERIFIED_FILE = os.path.join(TIMINGS_DIR, "verified.json")
 
 SR = 16000
 
@@ -573,6 +580,34 @@ def audio_start_for(slug: str) -> tuple[float, int]:
     return float(entry.get("seconds", 0.0)), int(entry.get("fromLine", 1))
 
 
+def lines_sha(out_lines: list[dict]) -> str:
+    payload = json.dumps(out_lines, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
+
+
+def verified_sha_for(slug: str) -> str | None:
+    if not os.path.exists(VERIFIED_FILE):
+        return None
+    with open(VERIFIED_FILE, encoding="utf-8") as fh:
+        return ((json.load(fh).get(slug) or {}).get("linesSha"))
+
+
+def recited_ranges_for(slug: str) -> list[list[int]] | None:
+    """Which 1-based line ranges of the text this recitation actually says.
+
+    A recording may leave out a stretch in the middle as well as at the ends --
+    a colophon the reciter passes over, a section the arrangement does not
+    include. Lines outside these ranges keep their text and get no timing, so
+    they read and are never highlighted.
+    """
+    if not os.path.exists(AUDIO_START_FILE):
+        return None
+    with open(AUDIO_START_FILE, encoding="utf-8") as fh:
+        entry = json.load(fh).get(slug) or {}
+    ranges = entry.get("lines")
+    return [[int(a), int(b)] for a, b in ranges] if ranges else None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("bani", help="bani slug, e.g. japji-sahib")
@@ -589,6 +624,12 @@ def main() -> int:
         help="the 1-based line the recitation begins at, when it skips the "
              "text's opening lines. Those lines keep their text and simply "
              "get no timing.")
+    ap.add_argument(
+        "--lines",
+        help="1-based line ranges the recitation actually says, e.g. "
+             "'3-102,121-128'. Overrides this bani's `lines` in "
+             "timings/audio-start.json. Lines outside them keep their text "
+             "and get no timing.")
     ap.add_argument("--hold-penalty", type=float, default=STEP_PENALTY,
                     help="cost of the text waiting while the recitation goes on")
     ap.add_argument("--skip-penalty", type=float, default=None,
@@ -606,6 +647,19 @@ def main() -> int:
     file_lead, file_from = audio_start_for(args.bani)
     lead = args.lead_in if args.lead_in is not None else file_lead
     from_line = args.from_line if args.from_line is not None else file_from
+    ranges = ([[int(a), int(b)] for a, b in
+               (r.split("-") for r in args.lines.split(","))]
+              if args.lines else recited_ranges_for(args.bani))
+    if ranges:
+        keep = [ln for ln in lines
+                if any(a <= ln["idx"] + 1 <= b for a, b in ranges)]
+        if not keep:
+            raise SystemExit(f"--lines {ranges} leaves no text to align")
+        if verbose:
+            print(f"the recitation says {len(keep)} of {len(lines)} lines "
+                  f"({ranges}); the rest get no timing", file=sys.stderr)
+        lines = keep
+        from_line = 1
     if from_line > 1:
         skipped = lines[: from_line - 1]
         lines = lines[from_line - 1:]
@@ -711,7 +765,8 @@ def main() -> int:
         "leadInMs": int(round(lead * 1000)),
         "version": 5,
         "method": "espeak-ng synthesis + two-pass MFCC dynamic time warping, snapped to pauses",
-        "verified": False,
+        # True only when somebody has listened to exactly these timings.
+        "verified": lines_sha(out_lines) == verified_sha_for(args.bani),
         "lines": out_lines,
     }
 

@@ -140,7 +140,7 @@
       "bytes": 1495726,
       "duration_ms": 181145,
       "has_timings": true,
-      "timings_verified": false
+      "timings_verified": true
     },
     {
       "bani": "chaupai-sahib",
@@ -154,7 +154,7 @@
       "bytes": 10797991,
       "duration_ms": 1304174,
       "has_timings": true,
-      "timings_verified": false
+      "timings_verified": true
     },
     {
       "bani": "rehras-sahib",
@@ -168,14 +168,14 @@
       "bytes": 1569014,
       "duration_ms": 189731,
       "has_timings": true,
-      "timings_verified": false
+      "timings_verified": true
     },
     {
       "bani": "ardas",
       "bytes": 1527384,
       "duration_ms": 185066,
       "has_timings": true,
-      "timings_verified": false
+      "timings_verified": true
     },
     {
       "bani": "sukhmani-sahib",
@@ -211,6 +211,6 @@
   },
   "cities": 92,
   "content_version": 7,
-  "source_digest": "6261d1aa915f1869",
-  "bytes": 4804608
+  "source_digest": "caefd4cff18de8df",
+  "bytes": 4800512
 }

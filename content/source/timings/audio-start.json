@@ -1,13 +1,46 @@
 {
-  "_note": "Where each shipped recitation starts saying the text, taken by ear. `seconds` is how far into the recording the first word of the text is spoken -- several of these recordings open with an invocation or a dedication the text does not carry, and the warp is anchored at the start, so without this it spreads that mismatch across the opening lines and the whole alignment reads early. `fromLine` is the 1-based line of the source file the recitation begins at, for a recording that skips the opening lines entirely. Nothing before either point is cut from the recording; it simply belongs to no line.",
-
-  "japji-sahib": {"seconds": 0},
-  "jaap-sahib": {"seconds": 7.5},
-  "tav-prasad-savaiye": {"seconds": 0},
-  "chaupai-sahib": {"seconds": 10, "fromLine": 3},
-  "anand-sahib": {"seconds": 6},
-  "rehras-sahib": {"seconds": 7.5},
-  "kirtan-sohila": {"seconds": 6.5},
-  "ardas": {"seconds": 6},
-  "sukhmani-sahib": {"seconds": 7}
+  "_note": "Where each shipped recitation starts saying the text, and which lines it says, taken by ear. `seconds` is how far into the recording the first word of the text is spoken -- several of these open with an invocation the text does not carry, and the warp is anchored at the start, so without this the whole alignment reads early. `lines` are the 1-based line ranges the recitation actually covers, for a recording that leaves out a stretch: lines outside them keep their text and get no timing, so they read and are never highlighted. Nothing is cut from any recording.",
+  "japji-sahib": {
+    "seconds": 0
+  },
+  "jaap-sahib": {
+    "seconds": 13,
+    "lines": [
+      [
+        2,
+        801
+      ]
+    ]
+  },
+  "tav-prasad-savaiye": {
+    "seconds": 0
+  },
+  "chaupai-sahib": {
+    "seconds": 10,
+    "lines": [
+      [
+        3,
+        102
+      ],
+      [
+        126,
+        128
+      ]
+    ]
+  },
+  "anand-sahib": {
+    "seconds": 6
+  },
+  "rehras-sahib": {
+    "seconds": 7.5
+  },
+  "kirtan-sohila": {
+    "seconds": 6.5
+  },
+  "ardas": {
+    "seconds": 6
+  },
+  "sukhmani-sahib": {
+    "seconds": 7
+  }
 }

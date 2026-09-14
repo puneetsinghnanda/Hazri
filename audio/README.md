@@ -67,42 +67,36 @@ Neither runs in CI: their outputs are committed, and CI only checks that
 
 ## Where the alignment stands
 
-Two checks, and they answer different questions.
+Three checks, answering different questions.
 
-`<bani>.anchors.json` holds times somebody listened to and wrote down. The
-aligner never sees them, and they are the only thing here that can catch a
-recitation being aligned to the wrong place altogether -- which is exactly
-what happened when these eight arrived, and what the pause check missed. There
-is one anchor per bani so far, at the first line, so they prove where each
-recitation starts and nothing further.
+**Anchors** (`<bani>.anchors.json`) are times somebody listened to and wrote
+down. The aligner never sees them. They are the only thing that can catch a
+recitation aligned to the wrong place, which is what went wrong twice here.
 
-The pause check asks whether line boundaries land in the reciter's silences.
-It can only speak where the reciter is silent between lines, which the last
-column measures.
+**`verified.json`** records the alignments a person has listened to and
+accepted, keyed by a hash of the exact timings they heard, so re-aligning a
+bani drops it back to unverified on its own.
 
-| bani | anchor error | line starts in a pause | random | gap between lines |
+**The pause check** asks whether line boundaries land in the reciter's
+silences. It can only speak where the reciter is silent between lines, which
+the gap column measures.
+
+| bani | verified | anchors | pauses | gap between lines |
 |---|---|---|---|---|
-| Japji Sahib | -- | 98% | 17% | 360 ms |
-| Jaap Sahib | 0.00s | 44% | 11% | 0 ms |
-| Tav Prasad Savaiye | -- | 88% | 16% | 370 ms |
-| Chaupai Sahib | 0.00s | 99% | 35% | 140 ms |
-| Anand Sahib | 0.00s | 98% | 17% | 400 ms |
-| Rehras Sahib | 0.10s | 72% | 17% | 220 ms |
-| Kirtan Sohila | 0.00s | 94% | 18% | 420 ms |
-| Ardas | 0.14s | 100% | 27% | 490 ms |
-| Sukhmani Sahib | 0.22s | 64% | 11% | 120 ms |
+| Japji Sahib | no | -- | 98% | 360 ms |
+| Jaap Sahib | no | 0.00s | 44% | 0 ms |
+| Tav Prasad Savaiye | **yes** | -- | 88% | 370 ms |
+| Chaupai Sahib | no | 0.10s worst of 2 | 100% | 170 ms |
+| Anand Sahib | **yes** | 0.00s | 98% | 400 ms |
+| Rehras Sahib | no | 0.10s | 72% | 220 ms |
+| Kirtan Sohila | **yes** | 0.00s | 94% | 420 ms |
+| Ardas | **yes** | 0.14s | 100% | 490 ms |
+| Sukhmani Sahib | no | 0.22s | 64% | 120 ms |
 
-Nothing is verified: every timing file says `"verified": false`, and the PRD
-requires a person to listen before release (§8). What to listen for:
-
-* **Rehras** first. Its reciter breaks between lines, so the pause check has
-  something to find, and 72% is short of the 85% the others clear. Its start
-  is right; what is not established is whether it stays right.
-* **Jaap and Sukhmani** score lowest and mean least. Jaap's chhands are
-  recited with no gap at all between lines and Sukhmani's with 120 ms, so most
-  of their boundaries fall mid-flow however well they are placed. Their
-  openings are exact; past that, nothing here has looked.
-* **Tav Prasad Savaiye** has no anchor yet.
+Still to listen to: Rehras, whose reciter does break between lines so its 72%
+is a real shortfall rather than a blind spot; Sukhmani, which broke at 18:49
+and has not been re-checked; and Jaap and Japji, which have never had a full
+listen.
 
 `text_vs_audio.py` is the third check, and the one that found what the other
 two could not. The aligner cannot refuse: given a text and a recording it

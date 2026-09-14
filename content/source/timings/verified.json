@@ -1,0 +1,27 @@
+{
+  "_note": "Alignments a person has listened to and accepted (PRD 8). `linesSha` is a hash of the exact timings they heard: re-align the bani and it stops matching, so the file goes back to unverified on its own.",
+  "anand-sahib": {
+    "linesSha": "8ba3d08a9c3e7c7a",
+    "checkedBy": "owner",
+    "date": "2026-09-14",
+    "note": "listened and confirmed correct"
+  },
+  "kirtan-sohila": {
+    "linesSha": "1bc938e77c3016f2",
+    "checkedBy": "owner",
+    "date": "2026-09-14",
+    "note": "listened and confirmed correct"
+  },
+  "ardas": {
+    "linesSha": "411a349cfaa7b9c9",
+    "checkedBy": "owner",
+    "date": "2026-09-14",
+    "note": "listened and confirmed correct"
+  },
+  "tav-prasad-savaiye": {
+    "linesSha": "4bbc323ef206279c",
+    "checkedBy": "owner",
+    "date": "2026-09-14",
+    "note": "listened and confirmed correct"
+  }
+}
