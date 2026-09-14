@@ -527,6 +527,13 @@ def main() -> int:
     # sources always produce a byte-identical database and CI can verify that
     # the committed file really is what the pipeline builds.
     con.execute("INSERT INTO meta(key,value) VALUES('source_digest',?)", (source_digest(),))
+    # ੴ for the share card's watermark, lifted from the bani rather than typed
+    # into Dart: no Gurbani character is authored in the app (§0.3).
+    ik = con.execute(
+        "SELECT gurmukhi FROM line WHERE gurmukhi LIKE ? LIMIT 1", ("\u0a74%",)
+    ).fetchone()
+    if ik:
+        con.execute("INSERT INTO meta(key,value) VALUES('ik_onkar',?)", (ik[0][0],))
     # drift records its schema version in `user_version`. Stamping it here
     # means the shipped file never has to be written to on first open, which
     # keeps the read-only `query_only` pragma the app sets from failing.

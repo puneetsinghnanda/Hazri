@@ -675,13 +675,6 @@ class LPa extends L {
   String get simranBegin => 'ਸ਼ੁਰੂ ਕਰੋ';
 
   @override
-  String get simranCount => 'ਗਿਣਤੀ';
-
-  @override
-  String get simranCountHint =>
-      'ਹਰ ਵਾਹਿਗੁਰੂ ਗਿਣਨ ਲਈ ਸਕਰੀਨ ਉੱਤੇ ਕਿਤੇ ਵੀ ਟੈਪ ਕਰੋ — ਮਰਜ਼ੀ ਦੀ ਗੱਲ';
-
-  @override
   String simranRecent(int done, int total) {
     return 'ਪਿਛਲੇ $total ਦਿਨਾਂ ਵਿੱਚੋਂ $done ਦਿਨ ਕੀਤਾ';
   }
@@ -1195,6 +1188,13 @@ class LPa extends L {
   String vicharDayOf(int day, int total) {
     return '$total ਵਿੱਚੋਂ ਸਤਰ $day';
   }
+
+  @override
+  String get goalsEmptyTitle => 'ਰੋਜ਼ਾਨਾ ਟੀਚਾ ਰੱਖੋ';
+
+  @override
+  String get goalsEmptyBody =>
+      'ਬਾਣੀ ਚੁਣੋ ਤੇ ਦੱਸੋ ਕਿ ਦਿਨ ਵਿੱਚ ਕਿੰਨੀ ਵਾਰ ਪੜ੍ਹਨੀ ਹੈ। ਤੁਹਾਡੇ ਟੀਚੇ ਇੱਥੇ ਉਸੇ ਵੇਲੇ ਦਿਸਣਗੇ ਜੋ ਤੁਸੀਂ ਰੱਖਿਆ ਹੈ।';
 
   @override
   String get errorGeneric => 'ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।';

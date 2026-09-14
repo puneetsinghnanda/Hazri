@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
-import '../../../core/db/content_db.dart' show BaniSlot, CalendarEventRow;
+import '../../../core/db/content_db.dart' show CalendarEventRow;
 import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
@@ -16,10 +16,11 @@ import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/day_arc.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
-import '../../reminders/data/reminders_controller.dart';
 import '../data/today_controller.dart';
 import '../domain/today_state.dart';
 import 'elder_today.dart';
+import '../../goals/data/goals_controller.dart';
+import '../../goals/domain/goal_progress.dart';
 import '../../vichar/ui/vichar_card.dart';
 
 /// The Today tab (Design 09/10), or its elder-mode variant (Design 11).
@@ -55,7 +56,9 @@ class TodayScreen extends ConsumerWidget {
               ),
               Text(l.greeting, style: HazriText.display26.copyWith(color: c.ink)),
               const SizedBox(height: 12),
-              const _DayArcCard(),
+              const _GoalsCard(),
+              const SizedBox(height: 12),
+              _CtaButton(cta: ref.watch(todayCtaProvider)),
               const SizedBox(height: 12),
               const VicharCard(),
               const SizedBox(height: 12),
@@ -70,8 +73,25 @@ class TodayScreen extends ConsumerWidget {
   }
 }
 
-class _DayArcCard extends ConsumerWidget {
-  const _DayArcCard();
+/// The goals card: the day's paath goals on the arc, by the time they are set
+/// for (PRD 1.15).
+///
+/// The first thing on Today, because a goal someone set for themselves is a
+/// stronger call than a schedule the app chose. With no goals it asks for one
+/// rather than showing an empty curve.
+class _GoalsCard extends ConsumerWidget {
+  const _GoalsCard();
+
+  /// "HH:mm" against [day], or null when the goal has no time set.
+  static DateTime? _at(String? hhmm, DateTime day) {
+    if (hhmm == null) return null;
+    final parts = hhmm.split(':');
+    if (parts.length != 2) return null;
+    final h = int.tryParse(parts[0]);
+    final m = int.tryParse(parts[1]);
+    if (h == null || m == null) return null;
+    return DateTime(day.year, day.month, day.day, h, m);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,101 +100,184 @@ class _DayArcCard extends ConsumerWidget {
     final dates = HazriDates.of(context);
     final now = ref.watch(clockProvider).now();
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
-    final progress = ref.watch(dayProgressProvider).value;
-    final slotTimes = ref.watch(slotTimesProvider).value;
-    final cta = ref.watch(todayCtaProvider);
+    final progress = ref.watch(goalProgressProvider);
 
-    if (progress == null || slotTimes == null || banis.isEmpty) {
+    if (progress.isLoading) {
       return const HazriCard(
         padding: EdgeInsets.symmetric(vertical: 60),
         child: Center(child: CircularProgressIndicator()),
       );
     }
 
-    final (done, total) = TodayLogic.morningCount(banis: banis, progress: progress);
-    final active = TodayLogic.activeSlot(progress: progress, slotTimes: slotTimes, now: now);
+    final live = (progress.value ?? const <GoalProgress>[])
+        .where((p) => p.goal.active && !p.isComplete)
+        .toList();
 
-    final morningAt = slotTimes[BaniSlot.morning]!;
-    final eveningAt = slotTimes[BaniSlot.evening]!;
-    final bedtimeAt = slotTimes[BaniSlot.bedtime]!;
+    if (live.isEmpty) return const _NoGoalsCard();
 
-    ArcNodeState stateFor(BaniSlot slot) => progress.isDone(slot)
-        ? ArcNodeState.done
-        : (slot == active ? ArcNodeState.active : ArcNodeState.todo);
+    String nameOf(String baniId) => banis
+        .where((b) => b.id == baniId)
+        .map((b) => b.name(l.localeName))
+        .firstOrNull ?? '';
 
-    final subline = switch (cta?.kind) {
-      TodayCtaKind.continueBani => l.arcBaniInProgress(cta!.bani!.name(l.localeName)),
-      TodayCtaKind.allDone => l.ctaAllDone,
-      TodayCtaKind.startBani => l.arcBaniAt(
-        cta!.bani!.name(l.localeName),
-        dates.timeCompact(slotTimes[cta.bani!.defaultSlot] ?? eveningAt),
-      ),
-      _ => progress.isDone(BaniSlot.morning) ? l.arcMorningComplete : l.arcNothingYet,
-    };
+    final timed = <(GoalProgress, DateTime)>[];
+    final untimed = <GoalProgress>[];
+    for (final p in live) {
+      final at = _at(p.goal.reminderTime, now);
+      at == null ? untimed.add(p) : timed.add((p, at));
+    }
+    timed.sort((a, b) => a.$2.compareTo(b.$2));
+
+    final done = live.where((p) => p.isDoneToday).length;
+
+    // The next goal still outstanding is the one the arc calls active.
+    DateTime? activeAt;
+    for (final (p, at) in timed) {
+      if (!p.isDoneToday) {
+        activeAt = at;
+        break;
+      }
+    }
 
     return HazriCard(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
       child: Column(
         children: [
-          LayoutBuilder(
-            builder: (context, constraints) => DayArc(
-              width: constraints.maxWidth.clamp(200.0, 300.0),
-              now: now,
-              windowStart: morningAt.subtract(const Duration(minutes: 30)),
-              windowEnd: bedtimeAt.add(const Duration(minutes: 30)),
-              nodes: [
-                DayArcNode(
-                  label: l.slotAmritVela,
-                  at: morningAt,
-                  state: stateFor(BaniSlot.morning),
-                ),
-                DayArcNode(
-                  label: l.diaryStatRehras,
-                  at: eveningAt,
-                  state: stateFor(BaniSlot.evening),
-                ),
-                DayArcNode(
-                  label: l.diaryStatSohila,
-                  at: bedtimeAt,
-                  state: stateFor(BaniSlot.bedtime),
-                ),
-              ],
-              centre: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(l.nOfM(done, total), style: HazriText.display34.copyWith(color: c.ink)),
-                  Text(
-                    subline,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: HazriText.bodySmall.copyWith(color: c.ink2, fontWeight: FontWeight.w500),
-                  ),
+          if (timed.isNotEmpty) ...[
+            LayoutBuilder(
+              builder: (context, constraints) => DayArc(
+                width: constraints.maxWidth.clamp(200.0, 300.0),
+                now: now,
+                windowStart: timed.first.$2.subtract(const Duration(minutes: 30)),
+                windowEnd: timed.last.$2.add(const Duration(minutes: 30)),
+                nodes: [
+                  for (final (p, at) in timed)
+                    DayArcNode(
+                      label: nameOf(p.goal.baniId),
+                      at: at,
+                      state: p.isDoneToday
+                          ? ArcNodeState.done
+                          : (at == activeAt ? ArcNodeState.active : ArcNodeState.todo),
+                    ),
                 ],
+                centre: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      l.nOfM(done, live.length),
+                      style: HazriText.display22.copyWith(color: c.ink),
+                    ),
+                    Text(
+                      l.goalsTitle,
+                      style: HazriText.caption.copyWith(color: c.muted),
+                    ),
+                  ],
+                ),
               ),
             ),
+            const SizedBox(height: 6),
+            // The times, spelled out under the arc where the nodes are too
+            // small to carry them.
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 12,
+              runSpacing: 4,
+              children: [
+                for (final (p, at) in timed)
+                  Text(
+                    '${nameOf(p.goal.baniId)} · ${dates.timeCompact(at)}',
+                    style: HazriText.captionStrong.copyWith(
+                      color: p.isDoneToday
+                          ? c.sage
+                          : (at == activeAt ? c.kesriInk : c.muted),
+                    ),
+                  ),
+              ],
+            ),
+          ] else
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Text(
+                l.goalsSubtitle(done, live.length),
+                style: HazriText.bodyStrong.copyWith(color: c.ink),
+              ),
+            ),
+          // Goals with no time cannot sit on a clock, so they sit under it.
+          if (untimed.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final p in untimed)
+                  HazriChip(
+                    label: '${nameOf(p.goal.baniId)} · '
+                        '${l.nOfM(p.doneToday, p.goal.timesPerDay)}',
+                    background: p.isDoneToday ? c.sageSoft : c.card2,
+                    foreground: p.isDoneToday ? c.sage : c.ink2,
+                  ),
+              ],
+            ),
+          ],
+          const SizedBox(height: 12),
+          PrimaryButton(
+            label: l.settingsPaathGoals,
+            secondary: true,
+            onPressed: () => context.push(Routes.goals),
           ),
-          const SizedBox(height: 6),
+        ],
+      ),
+    );
+  }
+}
+
+/// What Today shows before any goal exists.
+class _NoGoalsCard extends StatelessWidget {
+  const _NoGoalsCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = L.of(context);
+    return HazriCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                l.slotAmritVela,
-                style: HazriText.captionStrong.copyWith(
-                  color: active == BaniSlot.morning ? c.kesriInk : c.muted,
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: c.sageSoft,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Center(
+                  child: AppIcon(HazriIconData.flag, size: 22, color: c.sage),
                 ),
               ),
-              Text(
-                '${l.diaryStatRehras} · ${dates.timeCompact(eveningAt)}',
-                style: HazriText.captionStrong.copyWith(color: c.muted),
-              ),
-              Text(
-                '${l.diaryStatSohila} · ${dates.timeCompact(bedtimeAt)}',
-                style: HazriText.captionStrong.copyWith(color: c.muted),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(l.goalsEmptyTitle,
+                        style: HazriText.bodyStrong.copyWith(color: c.ink)),
+                    const SizedBox(height: 2),
+                    Text(l.goalsEmptyBody,
+                        style: HazriText.bodySmall.copyWith(color: c.ink2)),
+                  ],
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          _CtaButton(cta: cta),
+          const SizedBox(height: 14),
+          PrimaryButton(
+            label: l.goalsAdd,
+            icon: HazriIconData.check,
+            onPressed: () => context.push(Routes.goals),
+          ),
         ],
       ),
     );

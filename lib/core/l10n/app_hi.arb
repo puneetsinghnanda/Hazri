@@ -220,8 +220,6 @@
   "simranLeftOf": "{total} में से बाकी",
   "simranEnd": "समाप्त",
   "simranBegin": "शुरू करें",
-  "simranCount": "गिनती",
-  "simranCountHint": "हर वाहिगुरू गिनने के लिए स्क्रीन पर कहीं भी टैप करें — वैकल्पिक",
   "simranRecent": "पिछले {total} दिनों में से {done} दिन किया",
   "simranLoggedInDiary": "डायरी में दर्ज",
   "simranCompleteToast": "सिमरन पूरा — डायरी में दर्ज हो गया",
@@ -393,6 +391,9 @@
   "vicharNone": "इस बिल्ड में अभी विचार नहीं है",
   "vicharDayOf": "{total} में से पंक्ति {day}",
   "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
+
+  "goalsEmptyTitle": "रोज़ का लक्ष्य रखें",
+  "goalsEmptyBody": "बाणी चुनें और बताएँ कि दिन में कितनी बार पढ़नी है। आपके लक्ष्य यहाँ उसी समय दिखेंगे जो आपने रखा है।",
 
   "errorGeneric": "कुछ गलत हो गया।",
   "errorContentDb": "ऐप के साथ आई सामग्री नहीं खुल सकी। हाज़िरी फिर इंस्टॉल करने से ठीक हो जाएगा।"

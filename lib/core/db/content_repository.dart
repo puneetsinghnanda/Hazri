@@ -238,6 +238,12 @@ final audioTracksProvider = FutureProvider<Map<String, AudioTrackRow>>(
   (ref) => ref.watch(contentRepositoryProvider).audioTracksByBani(),
 );
 
+/// ੴ, for the share card's watermark. Read from the bani rather than written
+/// into the app (§0.3).
+final ikOnkarProvider = FutureProvider<String>(
+  (ref) async => await ref.watch(contentRepositoryProvider).meta('ik_onkar') ?? '',
+);
+
 /// Today's line of Gurbani.
 final todayVicharProvider = FutureProvider<Vichar?>((ref) {
   final today = ref.watch(clockProvider).today();

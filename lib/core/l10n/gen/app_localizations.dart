@@ -1287,18 +1287,6 @@ abstract class L {
   /// **'Begin'**
   String get simranBegin;
 
-  /// No description provided for @simranCount.
-  ///
-  /// In en, this message translates to:
-  /// **'Count'**
-  String get simranCount;
-
-  /// No description provided for @simranCountHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Tap anywhere on the screen to count each Waheguru — optional'**
-  String get simranCountHint;
-
   /// No description provided for @simranRecent.
   ///
   /// In en, this message translates to:
@@ -2210,6 +2198,18 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Line {day} of {total}'**
   String vicharDayOf(int day, int total);
+
+  /// No description provided for @goalsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a daily goal'**
+  String get goalsEmptyTitle;
+
+  /// No description provided for @goalsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a bani and how often to recite it. Your goals appear here on the day, at the time you set.'**
+  String get goalsEmptyBody;
 
   /// No description provided for @errorGeneric.
   ///

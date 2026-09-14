@@ -220,8 +220,6 @@
   "simranLeftOf": "{total} ਵਿੱਚੋਂ ਬਾਕੀ",
   "simranEnd": "ਸਮਾਪਤ",
   "simranBegin": "ਸ਼ੁਰੂ ਕਰੋ",
-  "simranCount": "ਗਿਣਤੀ",
-  "simranCountHint": "ਹਰ ਵਾਹਿਗੁਰੂ ਗਿਣਨ ਲਈ ਸਕਰੀਨ ਉੱਤੇ ਕਿਤੇ ਵੀ ਟੈਪ ਕਰੋ — ਮਰਜ਼ੀ ਦੀ ਗੱਲ",
   "simranRecent": "ਪਿਛਲੇ {total} ਦਿਨਾਂ ਵਿੱਚੋਂ {done} ਦਿਨ ਕੀਤਾ",
   "simranLoggedInDiary": "ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ",
   "simranCompleteToast": "ਸਿਮਰਨ ਪੂਰਾ — ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ ਹੋ ਗਿਆ",
@@ -393,6 +391,9 @@
   "vicharNone": "ਇਸ ਬਿਲਡ ਵਿੱਚ ਹਾਲੇ ਵਿਚਾਰ ਨਹੀਂ ਹੈ",
   "vicharDayOf": "{total} ਵਿੱਚੋਂ ਸਤਰ {day}",
   "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
+
+  "goalsEmptyTitle": "ਰੋਜ਼ਾਨਾ ਟੀਚਾ ਰੱਖੋ",
+  "goalsEmptyBody": "ਬਾਣੀ ਚੁਣੋ ਤੇ ਦੱਸੋ ਕਿ ਦਿਨ ਵਿੱਚ ਕਿੰਨੀ ਵਾਰ ਪੜ੍ਹਨੀ ਹੈ। ਤੁਹਾਡੇ ਟੀਚੇ ਇੱਥੇ ਉਸੇ ਵੇਲੇ ਦਿਸਣਗੇ ਜੋ ਤੁਸੀਂ ਰੱਖਿਆ ਹੈ।",
 
   "errorGeneric": "ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।",
   "errorContentDb": "ਐਪ ਨਾਲ ਆਈ ਸਮੱਗਰੀ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ। ਹਾਜ਼ਰੀ ਮੁੜ ਇੰਸਟਾਲ ਕਰਨ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।"

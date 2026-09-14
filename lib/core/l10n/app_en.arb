@@ -250,8 +250,6 @@
   "@simranLeftOf": { "placeholders": { "total": { "type": "String" } } },
   "simranEnd": "End",
   "simranBegin": "Begin",
-  "simranCount": "Count",
-  "simranCountHint": "Tap anywhere on the screen to count each Waheguru — optional",
   "simranRecent": "Done {done} of the last {total} days",
   "@simranRecent": { "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
   "simranLoggedInDiary": "Logged in Diary",
@@ -439,6 +437,9 @@
   "vicharNone": "No Vichar in this build yet",
   "vicharDayOf": "Line {day} of {total}",
   "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
+
+  "goalsEmptyTitle": "Set a daily goal",
+  "goalsEmptyBody": "Choose a bani and how often to recite it. Your goals appear here on the day, at the time you set.",
 
   "errorGeneric": "Something went wrong.",
   "errorContentDb": "The bundled content could not be opened. Reinstalling Hazri should fix it."

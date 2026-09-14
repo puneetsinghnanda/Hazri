@@ -675,13 +675,6 @@ class LHi extends L {
   String get simranBegin => 'शुरू करें';
 
   @override
-  String get simranCount => 'गिनती';
-
-  @override
-  String get simranCountHint =>
-      'हर वाहिगुरू गिनने के लिए स्क्रीन पर कहीं भी टैप करें — वैकल्पिक';
-
-  @override
   String simranRecent(int done, int total) {
     return 'पिछले $total दिनों में से $done दिन किया';
   }
@@ -1194,6 +1187,13 @@ class LHi extends L {
   String vicharDayOf(int day, int total) {
     return '$total में से पंक्ति $day';
   }
+
+  @override
+  String get goalsEmptyTitle => 'रोज़ का लक्ष्य रखें';
+
+  @override
+  String get goalsEmptyBody =>
+      'बाणी चुनें और बताएँ कि दिन में कितनी बार पढ़नी है। आपके लक्ष्य यहाँ उसी समय दिखेंगे जो आपने रखा है।';
 
   @override
   String get errorGeneric => 'कुछ गलत हो गया।';

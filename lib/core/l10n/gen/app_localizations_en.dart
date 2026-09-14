@@ -677,13 +677,6 @@ class LEn extends L {
   String get simranBegin => 'Begin';
 
   @override
-  String get simranCount => 'Count';
-
-  @override
-  String get simranCountHint =>
-      'Tap anywhere on the screen to count each Waheguru — optional';
-
-  @override
   String simranRecent(int done, int total) {
     return 'Done $done of the last $total days';
   }
@@ -1198,6 +1191,13 @@ class LEn extends L {
   String vicharDayOf(int day, int total) {
     return 'Line $day of $total';
   }
+
+  @override
+  String get goalsEmptyTitle => 'Set a daily goal';
+
+  @override
+  String get goalsEmptyBody =>
+      'Choose a bani and how often to recite it. Your goals appear here on the day, at the time you set.';
 
   @override
   String get errorGeneric => 'Something went wrong.';

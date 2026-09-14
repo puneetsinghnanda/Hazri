@@ -35,7 +35,6 @@ class SimranScreen extends ConsumerStatefulWidget {
 class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBindingObserver {
   DateTime? _startedAt;
   Timer? _ticker;
-  int _count = 0;
   Duration _elapsed = Duration.zero;
   bool _logged = false;
 
@@ -72,7 +71,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     }
     setState(() {
       _startedAt = DateTime.now();
-      _count = 0;
       _elapsed = Duration.zero;
       _logged = false;
     });
@@ -101,7 +99,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
 
     await ref.read(userRepositoryProvider).logSimran(
           duration: capped,
-          count: _count,
+          count: 0,
           completed: completed,
         );
 
@@ -122,12 +120,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     }
   }
 
-  void _countTap() {
-    if (!_running) return;
-    HapticFeedback.selectionClick();
-    setState(() => _count++);
-  }
-
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
@@ -140,10 +132,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
       backgroundColor: c.bg,
       body: SafeArea(
         bottom: false,
-        child: GestureDetector(
-          onTap: _countTap,
-          behavior: HitTestBehavior.opaque,
-          child: PhoneWidth(
+        child: PhoneWidth(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 20),
               children: [
@@ -187,21 +176,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
                 ),
                 const SizedBox(height: 20),
                 if (_running) ...[
-                  Center(
-                    child: Column(
-                      children: [
-                        Text('$_count', style: HazriText.display22.copyWith(color: c.ink)),
-                        Text(l.simranCount, style: HazriText.caption.copyWith(color: c.muted)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    l.simranCountHint,
-                    textAlign: TextAlign.center,
-                    style: HazriText.caption.copyWith(color: c.muted),
-                  ),
-                  const SizedBox(height: 16),
                   PrimaryButton(
                     label: l.simranEnd,
                     secondary: true,
@@ -213,7 +187,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
                     onPressed: _start,
                   ),
                 const SizedBox(height: 20),
-                const SizedBox(height: 16),
                 const _RecentCard(),
                 const SizedBox(height: 16),
                 const _QuoteCard(),
@@ -221,8 +194,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   static String _waheguru(GurbaniScript script) => switch (script) {
