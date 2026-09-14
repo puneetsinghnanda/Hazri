@@ -319,6 +319,15 @@ V2_BANIS = [
 # Line ids have to be unique across every bani, so each one is given a block.
 LINE_ID_BLOCK = 100_000
 
+# A source file may carry more of a bani than the arrangement Hazri ships.
+# The Rehras file opens with a shabad and a salok from a longer arrangement;
+# the SGPC Rehras, and the recitation that ships with it, both begin at So Dar.
+# The line named here is kept and everything before it is dropped, so the
+# reader shows the Rehras that is actually recited.
+STARTS_AT = {
+    "rehras-sahib": "ਸੋ ਦਰੁ ਰਾਗੁ ਆਸਾ ਮਹਲਾ ੧ ॥",
+}
+
 
 def build_bani_v2(con: sqlite3.Connection, slug: str, report: dict) -> None:
     """Loads one schema-2.0 source file into bani, bani_version, line, meaning.
@@ -341,6 +350,16 @@ def build_bani_v2(con: sqlite3.Connection, slug: str, report: dict) -> None:
         "SELECT id, sort FROM bani WHERE slug = ?", (slug,)
     ).fetchone()
     prov = doc["provenance"]
+
+    dropped = 0
+    opening = STARTS_AT.get(slug)
+    if opening:
+        starts = [i for i, ln in enumerate(doc["lines"])
+                  if ln["text"]["gurmukhi_plain"].strip() == opening]
+        if not starts:
+            raise SystemExit(f"{path}: no line reads {opening!r} to start at")
+        dropped = starts[0]
+        doc["lines"] = doc["lines"][dropped:]
 
     for code, a in prov["assets"].items():
         con.execute(
@@ -424,6 +443,7 @@ def build_bani_v2(con: sqlite3.Connection, slug: str, report: dict) -> None:
     report.setdefault("banis", {})[slug] = {
         "source_bani_id": b["id"],
         "lines": len(doc["lines"]),
+        "lines_dropped_before_start": dropped,
         "units": b["total_units"],
         "meanings": meanings,
         "word_misaligned_lines": len(misaligned),

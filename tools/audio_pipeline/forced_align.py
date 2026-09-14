@@ -50,12 +50,12 @@ AUDIO_SRC = os.path.join(ROOT, "audio", "source")
 TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 
 # Some recitations open with something the text does not carry -- an
-# invocation, a spoken dedication, the reciter naming the bani. The warp has to
-# account for every frame of the recording, and it is anchored at the start, so
-# it cannot skip that: it spreads the mismatch across the opening lines and the
-# whole alignment reads early. This file says, per bani, at what second the
-# text's own first word is spoken; everything before it is left unattributed.
-LEAD_IN_FILE = os.path.join(TIMINGS_DIR, "lead-in.json")
+# invocation, a spoken dedication, the reciter naming the bani -- and some skip
+# the text's opening lines altogether. The warp has to account for every frame
+# of the recording and is anchored at the start, so it cannot pass over either:
+# it spreads the mismatch across the opening lines and the whole alignment
+# reads early. This file says where each recitation starts saying the text.
+AUDIO_START_FILE = os.path.join(TIMINGS_DIR, "audio-start.json")
 
 SR = 16000
 
@@ -553,12 +553,14 @@ def spoken_words(text: str) -> list[str]:
     return words
 
 
-def lead_in_for(slug: str) -> float:
-    """This bani's lead-in from the reviewed file, or zero if it has none."""
-    if not os.path.exists(LEAD_IN_FILE):
-        return 0.0
-    with open(LEAD_IN_FILE, encoding="utf-8") as fh:
-        return float(json.load(fh).get(slug, 0.0))
+def audio_start_for(slug: str) -> tuple[float, int]:
+    """Where this recitation starts saying the text: seconds in, and from
+    which line. Zero and one when the file says nothing about it."""
+    if not os.path.exists(AUDIO_START_FILE):
+        return 0.0, 1
+    with open(AUDIO_START_FILE, encoding="utf-8") as fh:
+        entry = json.load(fh).get(slug) or {}
+    return float(entry.get("seconds", 0.0)), int(entry.get("fromLine", 1))
 
 
 def main() -> int:
@@ -571,7 +573,12 @@ def main() -> int:
     ap.add_argument(
         "--lead-in", type=float, default=None,
         help="seconds of the recording before the text's first word. Defaults "
-             "to this bani's entry in timings/lead-in.json, or 0.")
+             "to this bani's entry in timings/audio-start.json, or 0.")
+    ap.add_argument(
+        "--from-line", type=int, default=None,
+        help="the 1-based line the recitation begins at, when it skips the "
+             "text's opening lines. Those lines keep their text and simply "
+             "get no timing.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
@@ -581,7 +588,18 @@ def main() -> int:
 
     version_id, lines = load_lines(args.bani)
     verbose = not args.quiet
-    lead = args.lead_in if args.lead_in is not None else lead_in_for(args.bani)
+    file_lead, file_from = audio_start_for(args.bani)
+    lead = args.lead_in if args.lead_in is not None else file_lead
+    from_line = args.from_line if args.from_line is not None else file_from
+    if from_line > 1:
+        skipped = lines[: from_line - 1]
+        lines = lines[from_line - 1:]
+        if not lines:
+            raise SystemExit(f"--from-line {from_line} leaves no text to align")
+        if verbose:
+            print(f"the recitation starts at line {from_line}; "
+                  f"{len(skipped)} line(s) before it get no timing",
+                  file=sys.stderr)
     if lead and verbose:
         print(f"skipping the first {lead:.2f}s: the text starts there",
               file=sys.stderr)
@@ -686,7 +704,8 @@ def main() -> int:
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(timings, fh, ensure_ascii=False, separators=(",", ":"))
         fh.write("\n")
-    print(f"wrote {out}  ({len(lines)} lines, {len(words)} words, {real_len:.1f}s)")
+    print(f"wrote {out}  ({len(lines)} lines, {len(words)} words, "
+          f"{full_len:.1f}s)")
 
     for note in notes:
         print(note)

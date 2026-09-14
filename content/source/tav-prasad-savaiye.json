@@ -1,19 +1,19 @@
 {
   "schema_version": "2.0",
   "bani": {
-    "id": "TPDK",
+    "id": "TPSS",
     "name": {
-      "gurmukhi": "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸ੍ਵਯੇ (ਦੀਨਨ ਕੀ)",
-      "english": "Tav Prasad Savaiye (Deenan Ki)",
-      "transliteration_english": "tv prasaad svaye deenan kee",
-      "transliteration_hindi": "त्व प्रसादि स्वये (दीनन की)"
+      "gurmukhi": "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵਯੇ (ਸ੍ਰਾਵਗ ਸੁਧ)",
+      "english": "Tav Prasad Savaiye (Sravag Sudh)",
+      "transliteration_english": "tv prasaad savaye sraavag sudha",
+      "transliteration_hindi": "त्व प्रसादि सवये (स्रावग सुध)"
     },
     "total_lines": 43,
     "total_sections": 3,
     "total_units": 10,
     "source_pages": {
       "from": 11,
-      "to": 37
+      "to": 13
     }
   },
   "coverage": {
@@ -109,16 +109,16 @@
       "line_from": 3,
       "line_to": 43,
       "units_closed": [
-        243,
-        244,
-        245,
-        246,
-        247,
-        248,
-        249,
-        250,
-        251,
-        252
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
       ]
     }
   ],
@@ -185,26 +185,26 @@
     },
     {
       "id": 3,
-      "source_id": "7HB4",
+      "source_id": "B1FB",
       "section_index": 2,
       "unit": 1,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ॥ ਸ੍ਵੱਯੇ ॥",
-        "gurmukhi_plain": "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ॥ ਸ੍ਵੱਯੇ ॥",
+        "gurmukhi": "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ॥ ਸਵੱਯੇ ॥",
+        "gurmukhi_plain": "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ॥ ਸਵੱਯੇ ॥",
         "transliteration": {
-          "english": "tv prasaad | svaye |",
-          "hindi": "त्व प्रसादि ॥ स्वये ॥"
+          "english": "tv prasaad | savaye |",
+          "hindi": "त्व प्रसादि ॥ सवये ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "BY THY GRACE. SWAYYAS",
+          "text": "BY THY GRACE SWAYYAS",
           "source": "DSKO"
         },
         "english_alt": null,
@@ -218,31 +218,31 @@
     },
     {
       "id": 4,
-      "source_id": "LC6S",
+      "source_id": "674B",
       "section_index": 2,
       "unit": 1,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦੀਨਨ ਕੀ ਪ੍ਰਤਿਪਾਲ ਕਰੈ ਨਿਤ; ਸੰਤ ਉਬਾਰ, ਗਨੀਮਨ ਗਾਰੈ ॥",
-        "gurmukhi_plain": "ਦੀਨਨ ਕੀ ਪ੍ਰਤਿਪਾਲ ਕਰੈ ਨਿਤ ਸੰਤ ਉਬਾਰ ਗਨੀਮਨ ਗਾਰੈ ॥",
+        "gurmukhi": "ਸ੍ਰਾਵਗ ਸੁੱਧ ਸਮੂਹ ਸਿਧਾਨ ਕੇ; ਦੇਖਿ ਫਿਰਿਓ ਘਰ ਜੋਗ ਜਤੀ ਕੇ ॥",
+        "gurmukhi_plain": "ਸ੍ਰਾਵਗ ਸੁੱਧ ਸਮੂਹ ਸਿਧਾਨ ਕੇ ਦੇਖਿ ਫਿਰਿਓ ਘਰ ਜੋਗ ਜਤੀ ਕੇ ॥",
         "transliteration": {
-          "english": "deenan kee pratipaal karai nit sant ubaar ganeeman gaarai |",
-          "hindi": "दीनन की प्रतिपाल करै नित संत उबार गनीमन गारै ॥"
+          "english": "sraavag sudh samooh sidhaan ke dekh firio ghar jog jatee ke |",
+          "hindi": "स्रावग सुद्ध समूह सिधान के देखि फिरिओ घर जोग जती के ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He always Sustains the Lowly, protects the saints and destroys the enemies.",
+          "text": "I have seen during my tours pure Sravaks (Jaina and Buddhist monks), group of adepts and abodes of ascetics and Yogi.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਉਹ ਪ੍ਰਭੂ) ਦੀਨਾਂ-ਦੁਖੀਆਂ ਦੀ ਸਦਾ ਪ੍ਰਤਿਪਾਲਨਾ ਕਰਦਾ ਹੈ, ਸੰਤਾਂ ਨੂੰ ਉਬਾਰਦਾ ਹੈ ਅਤੇ ਅਤਿਆਚਾਰੀਆਂ ਦਾ ਵਿਨਾਸ਼ ਕਰਦਾ ਹੈ।",
+          "text": "(ਹੇ ਪ੍ਰਭੂ! ਮੈਂ) ਬੁੱਧ ਅਤੇ ਜੈਨ ਮਤ ਨੂੰ ਮੰਨਣ ਵਾਲੇ ਸ਼੍ਰਾਵਕਾਂ, ਕਰਮਕਾਂਡੀਆਂ, ਸਿੱਧਾਂ, ਜੋਗੀਆਂ ਅਤੇ ਜਤੀਆਂ ਦੇ ਸਿੱਧਾਂਤਿਕ ਵਿਚਾਰਾਂ (ਘਰਾਂ) ਨੂੰ ਘੋਖ ਲਿਆ ਹੈ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -251,31 +251,31 @@
     },
     {
       "id": 5,
-      "source_id": "WTJ5",
+      "source_id": "ZTA0",
       "section_index": 2,
       "unit": 1,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਪੱਛ ਪਸੂ ਨਗ ਨਾਗ ਨਰਾਧਪ; ਸਰਬ ਸਮੈ, ਸਭ ਕੋ ਪ੍ਰਤਿਪਾਰੈ ॥",
-        "gurmukhi_plain": "ਪੱਛ ਪਸੂ ਨਗ ਨਾਗ ਨਰਾਧਪ ਸਰਬ ਸਮੈ ਸਭ ਕੋ ਪ੍ਰਤਿਪਾਰੈ ॥",
+        "gurmukhi": "ਸੂਰ ਸੁਰਾਰਦਨ, ਸੁੱਧ ਸੁਧਾਦਿਕ; ਸੰਤ ਸਮੂਹ ਅਨੇਕ ਮਤੀ ਕੇ ॥",
+        "gurmukhi_plain": "ਸੂਰ ਸੁਰਾਰਦਨ ਸੁੱਧ ਸੁਧਾਦਿਕ ਸੰਤ ਸਮੂਹ ਅਨੇਕ ਮਤੀ ਕੇ ॥",
         "transliteration": {
-          "english": "pachh pasoo nag naag naraadhap sarab samai sabh ko pratipaarai |",
-          "hindi": "पच्छ पसू नग नाग नराधप सरब समै सभ को प्रतिपारै ॥"
+          "english": "soor suraaradan sudh sudhaadik sant samooh anek matee ke |",
+          "hindi": "सूर सुरारदन सुद्ध सुधादिक संत समूह अनेक मती के ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "At all times he Sustains all, animals, birds, mountains (or trees), serpents and men (kings of men).",
+          "text": "Valiant heroes, demons killing gods, gods drinking nectar and assemblies of saints of various sects.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਪੰਛੀਆਂ, ਪਸ਼ੂਆਂ, ਪਹਾੜਾਂ, ਸੱਪਾਂ ਅਤੇ ਰਾਜਿਆਂ ਦੀ ਸਭ ਵੇਲੇ ਪ੍ਰਤਿਪਾਲਨਾ ਕਰਦਾ ਹੈ।",
+          "text": "ਸ਼ੂਰਵੀਰਾਂ, (ਦੇਵਤਿਆਂ ਦੇ ਵੈਰੀ) ਦੈਂਤਾਂ ਅਤੇ ਸ਼ੁੱਧ ਅੰਮ੍ਰਿਤ (ਸੁਧਾ) ਪਾਨ ਕਰਨ ਵਾਲੇ ਦੇਵਤਿਆਂ ਅਤੇ ਅਨੇਕ ਪ੍ਰਕਾਰ ਦੇ ਸੰਤਾਂ ਦੀਆਂ ਮੰਡਲੀਆਂ ਨੂੰ (ਤੁਰ ਫਿਰ ਕੇ ਵੇਖ ਲਿਆ ਹੈ);",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -284,31 +284,31 @@
     },
     {
       "id": 6,
-      "source_id": "SUL0",
+      "source_id": "HEUN",
       "section_index": 2,
       "unit": 1,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਪੋਖਤ ਹੈ ਜਲ ਮੈ ਥਲ ਮੈ; ਪਲ ਮੈ, ਕਲ ਕੇ ਨਹੀਂ ਕਰਮ ਬਿਚਾਰੈ ॥",
-        "gurmukhi_plain": "ਪੋਖਤ ਹੈ ਜਲ ਮੈ ਥਲ ਮੈ ਪਲ ਮੈ ਕਲ ਕੇ ਨਹੀਂ ਕਰਮ ਬਿਚਾਰੈ ॥",
+        "gurmukhi": "ਸਾਰੇ ਹੀ ਦੇਸ ਕੋ ਦੇਖਿ ਰਹਿਓ; ਮਤ ਕੋਊ ਨ ਦੇਖੀਅਤ ਪ੍ਰਾਨਪਤੀ ਕੇ ॥",
+        "gurmukhi_plain": "ਸਾਰੇ ਹੀ ਦੇਸ ਕੋ ਦੇਖਿ ਰਹਿਓ ਮਤ ਕੋਊ ਨ ਦੇਖੀਅਤ ਪ੍ਰਾਨਪਤੀ ਕੇ ॥",
         "transliteration": {
-          "english": "pokhat hai jal mai thal mai pal mai kal ke naheen karam bichaarai |",
-          "hindi": "पोखत है जल मै थल मै पल मै कल के नहीं करम बिचारै ॥"
+          "english": "saare hee des ko dekh rahio mat koaoo na dekheeat praanapatee ke |",
+          "hindi": "सारे ही देस को देखि रहिओ मत कोऊ न देखीअत प्रानपती के ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He Sustains in an instant all the beings living in water and on land and doth not ponder over their actions.",
+          "text": "I have seen the disciplines of the religious systems of all the countries, but seen none of the Lord, the Master of my life.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜੋ) ਜਲ-ਥਲ (ਵਿਚਲੇ ਜੀਵਾਂ) ਦਾ ਪਲ ਵਿਚ ਹੀ ਪਾਲਣ ਪੋਸ਼ਣ ਕਰਦਾ ਹੈ ਅਤੇ ਕਲਿ-ਕਾਲ (ਵਿਚ ਹੋਣ ਵਾਲਿਆਂ ਦਾ) ਕਰਮ ਨਹੀਂ ਵਿਚਾਰਦਾ।",
+          "text": "ਸਾਰਿਆਂ ਦੇਸਾਂ ਦੇ ਮਤ-ਮਤਾਂਤਰਾਂ ਨੂੰ ਵੇਖ ਲਿਆ ਹੈ ਪਰ ਕੋਈ ਵੀ ਅਜਿਹਾ ਨਹੀਂ ਵੇਖਿਆ ਜੋ (ਸੱਚੇ ਅਰਥਾਂ ਵਿਚ) ਪਰਮਾਤਮਾ ਦਾ ਬਣਿਆ ਹੋਵੇ (ਅਰਥਾਤ ਅਧਿਆਤਮਿਕ ਕਰਤੱਵ ਪ੍ਰਤਿ ਸੁਚੇਤ ਹੋਵੇ)।",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -317,31 +317,31 @@
     },
     {
       "id": 7,
-      "source_id": "FG63",
+      "source_id": "0AY2",
       "section_index": 2,
       "unit": 1,
-      "ends_unit": 243,
+      "ends_unit": 21,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦੀਨ ਦਇਆਲ ਦਇਆ ਨਿਧਿ; ਦੋਖਨ ਦੇਖਤ ਹੈ, ਪਰ ਦੇਤ ਨ ਹਾਰੈ ॥੧॥੨੪੩॥",
-        "gurmukhi_plain": "ਦੀਨ ਦਇਆਲ ਦਇਆ ਨਿਧਿ ਦੋਖਨ ਦੇਖਤ ਹੈ ਪਰ ਦੇਤ ਨ ਹਾਰੈ ॥੧॥੨੪੩॥",
+        "gurmukhi": "ਸ੍ਰੀ ਭਗਵਾਨ ਕੀ ਭਾਇ ਕ੍ਰਿਪਾ ਹੂ ਤੇ; ਏਕ ਰਤੀ ਬਿਨੁ, ਏਕ ਰਤੀ ਕੇ ॥੧॥੨੧॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਭਗਵਾਨ ਕੀ ਭਾਇ ਕ੍ਰਿਪਾ ਹੂ ਤੇ ਏਕ ਰਤੀ ਬਿਨੁ ਏਕ ਰਤੀ ਕੇ ॥੧॥੨੧॥",
         "transliteration": {
-          "english": "deen deaal deaa nidh dokhan dekhat hai par det na haarai |1|243|",
-          "hindi": "दीन दइआल दइआ निधि दोखन देखत है पर देत न हारै ॥१॥२४३॥"
+          "english": "sree bhagavaan kee bhaae kripaa hoo te ek ratee bin ek ratee ke |1|21|",
+          "hindi": "स्री भगवान की भाइ क्रिपा हू ते एक रती बिनु एक रती के ॥१॥२१॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Merciful Lord of the Lowly and the treasure of Mercy sees their blemishes, but doth not fail in His Bounty. 1.243.",
+          "text": "They are worth nothing without an iota of the Grace of the Lord. 1.21.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਉਹ ਦੀਨ-ਦਿਆਲ, ਦਇਆ ਦਾ ਸਮੁੰਦਰ, ਦੋਖਾਂ ਨੂੰ ਦੇਖ ਕੀ ਵੀ ਦੇਣੋ ਸੰਕੋਚ ਨਹੀਂ ਕਰਦਾ ॥੧॥੨੪੩॥",
+          "text": "(ਸਚ ਤਾਂ ਇਹ ਹੈ ਕਿ) ਪਰਮਾਤਮਾ ਦੀ ਕ੍ਰਿਪਾ ਦੀ ਭਾਵਨਾ ਅਤੇ ਇਕ ਮਾਤਰ ਪ੍ਰੀਤ (ਰਤੀ ਤੋਂ ਬਿਨਾ) (ਇਹ ਸਾਰੇ) ਇਕ ਰਤੀ ਦੇ ਵੀ ਨਹੀਂ ਹਨ (ਅਰਥਾਤ ਤੁੱਛ ਹਨ) ॥੧॥੨੧॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -350,31 +350,31 @@
     },
     {
       "id": 8,
-      "source_id": "1CYF",
+      "source_id": "U1ML",
       "section_index": 2,
       "unit": 2,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦਾਹਤ ਹੈ ਦੁਖ ਦੋਖਨ ਕੌ; ਦਲ ਦੁੱਜਨ ਕੇ ਪਲ ਮੈ ਦਲ ਡਾਰੈ ॥",
-        "gurmukhi_plain": "ਦਾਹਤ ਹੈ ਦੁਖ ਦੋਖਨ ਕੌ ਦਲ ਦੁੱਜਨ ਕੇ ਪਲ ਮੈ ਦਲ ਡਾਰੈ ॥",
+        "gurmukhi": "ਮਾਤੇ ਮਤੰਗ, ਜਰੇ ਜਰ ਸੰਗ; ਅਨੂਪ ਉਤੰਗ ਸੁਰੰਗ ਸਵਾਰੇ ॥",
+        "gurmukhi_plain": "ਮਾਤੇ ਮਤੰਗ ਜਰੇ ਜਰ ਸੰਗ ਅਨੂਪ ਉਤੰਗ ਸੁਰੰਗ ਸਵਾਰੇ ॥",
         "transliteration": {
-          "english": "daahat hai dukh dokhan kau dal dujan ke pal mai dal ddaarai |",
-          "hindi": "दाहत है दुख दोखन कौ दल दुजन के पल मै दल डारै ॥"
+          "english": "maate matang jare jar sang anoop utang surang savaare |",
+          "hindi": "माते मतंग जरे जर संग अनूप उतंग सुरंग सवारे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He burns the sufferings and blemishes and in an instant mashes the forces of the vicious people.",
+          "text": "With intoxicated elephants, studded with gold, incomparable and huge, painted in bright colours.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਦੁਖਾਂ ਅਤੇ ਦੋਖਾਂ ਨੂੰ ਸਾੜਦਾ ਹੈ ਅਤੇ ਦੁਰਜਨਾਂ ਦੇ ਦਲਾਂ ਨੂੰ ਪਲ ਭਰ ਵਿਚ ਦਲਮਲ ਦਿੰਦਾ ਹੈ।",
+          "text": "ਸੋਨੇ ਨਾਲ ਜੜ੍ਹੇ ਹੋਏ, ਉੱਚੇ ਅਕਾਰ ਪ੍ਰਕਾਰ ਵਾਲੇ ਸੰਧੂਰ ਨਾਲ ਸੰਵਾਰੇ ਹੋਏ ਅਨੂਪਮ ਮਸਤ ਹਾਥੀ ਹੋਣ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -383,31 +383,31 @@
     },
     {
       "id": 9,
-      "source_id": "9R1B",
+      "source_id": "211X",
       "section_index": 2,
       "unit": 2,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਖੰਡ ਅਖੰਡ ਪ੍ਰਚੰਡ ਪਹਾਰਨ; ਪੂਰਨ ਪ੍ਰੇਮ ਕੀ ਪ੍ਰੀਤ ਸਭਾਰੈ ॥",
-        "gurmukhi_plain": "ਖੰਡ ਅਖੰਡ ਪ੍ਰਚੰਡ ਪਹਾਰਨ ਪੂਰਨ ਪ੍ਰੇਮ ਕੀ ਪ੍ਰੀਤ ਸਭਾਰੈ ॥",
+        "gurmukhi": "ਕੋਟ ਤੁਰੰਗ, ਕੁਰੰਗ ਸੇ ਕੂਦਤ; ਪਉਨ ਕੇ ਗਉਨ ਕੋ ਜਾਤ ਨਿਵਾਰੇ ॥",
+        "gurmukhi_plain": "ਕੋਟ ਤੁਰੰਗ ਕੁਰੰਗ ਸੇ ਕੂਦਤ ਪਉਨ ਕੇ ਗਉਨ ਕੋ ਜਾਤ ਨਿਵਾਰੇ ॥",
         "transliteration": {
-          "english": "khandd akhandd prachandd pahaaran pooran prem kee preet sabhaarai |",
-          "hindi": "खंड अखंड प्रचंड पहारन पूरन प्रेम की प्रीत सभारै ॥"
+          "english": "kott turang kurang se koodat paun ke gaun ko jaat nivaare |",
+          "hindi": "कोट तुरंग कुरंग से कूदत पउन के गउन को जात निवारे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He even destroys them who are mighty and Glorious and assail the unassailable and responds the devotion of perfect love.",
+          "text": "With millions of horses galloping like deer, moving faster than the wind.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਜੋ ਨਾ ਖੰਡੇ ਜਾ ਸਕਣ ਵਾਲਿਆਂ ਦਾ ਨਾਸ਼ ਕਰਨ ਵਾਲਾ, ਪ੍ਰਚੰਡ ਤੇਜ ਵਾਲਿਆਂ ਉਤੇ ਪ੍ਰਹਾਰ ਕਰਨ ਵਾਲਾ ਅਤੇ ਨਿਸ਼ਕਾਮ ਪ੍ਰੇਮ ਦੀ ਪ੍ਰੀਤ ਨੂੰ ਪਾਲਣ ਵਾਲਾ ਹੈ।",
+          "text": "ਹਿਰਨਾਂ ਵਾਂਗ ਕੁਦਣ ਅਤੇ ਪੌਣ ਦੀ ਤੇਜ਼ੀ ਨੂੰ ਵੀ ਪਿਛੇ ਛੱਡਣ ਵਾਲੇ ਕਰੋੜਾਂ ਘੋੜੇ ਹੋਣ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -416,31 +416,31 @@
     },
     {
       "id": 10,
-      "source_id": "N715",
+      "source_id": "MBND",
       "section_index": 2,
       "unit": 2,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਪਾਰ ਨ ਪਾਇ ਸਕੈ ਪਦਮਾਪਤਿ; ਬੇਦ ਕਤੇਬ ਅਭੇਦ ਉਚਾਰੈ ॥",
-        "gurmukhi_plain": "ਪਾਰ ਨ ਪਾਇ ਸਕੈ ਪਦਮਾਪਤਿ ਬੇਦ ਕਤੇਬ ਅਭੇਦ ਉਚਾਰੈ ॥",
+        "gurmukhi": "ਭਾਰੀ ਭੁਜਾਨ ਕੇ ਭੂਪ, ਭਲੀ ਬਿਧਿ; ਨਿਆਵਤ ਸੀਸ, ਨ ਜਾਤ ਬਿਚਾਰੇ ॥",
+        "gurmukhi_plain": "ਭਾਰੀ ਭੁਜਾਨ ਕੇ ਭੂਪ ਭਲੀ ਬਿਧਿ ਨਿਆਵਤ ਸੀਸ ਨ ਜਾਤ ਬਿਚਾਰੇ ॥",
         "transliteration": {
-          "english": "paar na paae sakai padamaapat bed kateb abhed uchaarai |",
-          "hindi": "पार न पाइ सकै पदमापति बेद कतेब अभेद उचारै ॥"
+          "english": "bhaaree bhujaan ke bhoop bhalee bidh niaavat sees na jaat bichaare |",
+          "hindi": "भारी भुजान के भूप भली बिधि निआवत सीस न जात बिचारे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Even Vishnu cannot know His end and the Vedas and Katebs (Semitic Scriptures) call Him Indiscriminate.",
+          "text": "With many kings indescribable, having long arms (of heavy allied forces), bowing their heads in fine array.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜਿਸ ਦਾ) ਪਾਰ ਵਿਸ਼ਣੂ ਨਹੀਂ ਪਾ ਸਕਦਾ ਅਤੇ ਵੇਦ-ਕਤੇਬ (ਉਸ ਨੂੰ) ਅਭੇਦ (ਜਿਸ ਦਾ ਰਹੱਸ ਨਾ ਸਮਝਿਆ ਜਾ ਸਕੇ) ਕਹਿੰਦੇ ਹਨ।",
+          "text": "(ਦੁਆਰ 'ਤੇ ਖੜੇ) ਵੱਡੀਆਂ ਭੁਜਾਵਾਂ ਵਾਲੇ ਰਾਜੇ ਚੰਗੀ ਤਰ੍ਹਾਂ ਨਾਲ ਸਿਰ ਨਿਵਾਉਂਦੇ ਹੋਣ, ਜਿਨ੍ਹਾਂ ਦੀ ਕਿ ਗਿਣਤੀ ਵੀ ਨਾ ਕੀਤੇ ਜਾ ਸਕਦੀ ਹੋਵੇ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -449,31 +449,31 @@
     },
     {
       "id": 11,
-      "source_id": "FW3C",
+      "source_id": "9TDS",
       "section_index": 2,
       "unit": 2,
-      "ends_unit": 244,
+      "ends_unit": 22,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਰੋਜੀ ਹੀ ਰਾਜ ਬਿਲੋਕਤ ਰਾਜਕ; ਰੋਖ ਰੂਹਾਨ ਕੀ ਰੋਜੀ ਨ ਟਾਰੈ ॥੨॥੨੪੪॥",
-        "gurmukhi_plain": "ਰੋਜੀ ਹੀ ਰਾਜ ਬਿਲੋਕਤ ਰਾਜਕ ਰੋਖ ਰੂਹਾਨ ਕੀ ਰੋਜੀ ਨ ਟਾਰੈ ॥੨॥੨੪੪॥",
+        "gurmukhi": "ਏਤੇ ਭਏ, ਤੁ ਕਹਾ ਭਏ ਭੂਪਤਿ, ਅੰਤ ਕੋ, ਨਾਂਗੇ ਹੀ ਪਾਂਇ ਪਧਾਰੇ ॥੨॥੨੨॥",
+        "gurmukhi_plain": "ਏਤੇ ਭਏ ਤੁ ਕਹਾ ਭਏ ਭੂਪਤਿ ਅੰਤ ਕੋ ਨਾਂਗੇ ਹੀ ਪਾਂਇ ਪਧਾਰੇ ॥੨॥੨੨॥",
         "transliteration": {
-          "english": "rojee hee raaj bilokat raajak rokh roohaan kee rojee na ttaarai |2|244|",
-          "hindi": "रोजी ही राज बिलोकत राजक रोख रूहान की रोजी न टारै ॥२॥२४४॥"
+          "english": "ete bhe tu kahaa bhe bhoopat ant ko naange hee paane padhaare |2|22|",
+          "hindi": "एते भए तु कहा भए भूपति अंत को नांगे ही पांइ पधारे ॥२॥२२॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Provider-Lord always sees our secrets, even then in anger He doth not stop His munificence.2.244.",
+          "text": "What matters if such mighty emperors were there, because they had to leave the world with bare feet.2.22.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਹਰ ਰੋਜ਼ ਪਰਮਾਤਮਾ ਸਾਡੇ ਗੁਪਤ ਭੇਦਾਂ ਨੂੰ ਵੇਖਦਾ ਹੈ, ਪਰ ਗੁੱਸੇ ਵਿਚ ਆ ਕੇ ਜੀਵਾਂ ਦੀ ਰੋਜ਼ੀ ਬੰਦ ਨਹੀਂ ਕਰਦਾ ॥੨॥੨੪੪॥",
+          "text": "ਅਜਿਹੇ (ਪ੍ਰਤਾਪੀ) ਰਾਜਾ ਬਣ ਗਏ, ਤਾਂ ਕੀ ਹੋਇਆ, (ਕਿਉਂਕਿ) ਅੰਤ ਵਿਚ ਤਾਂ ਨੰਗੇ ਪੈਰੀਂ ਹੀ (ਇਸ ਸੰਸਾਰ ਤੋਂ) ਜਾਣਾ ਹੁੰਦਾ ਹੈ ॥੨॥੨੨॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -482,31 +482,31 @@
     },
     {
       "id": 12,
-      "source_id": "C3J7",
+      "source_id": "F7WT",
       "section_index": 2,
       "unit": 3,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 12,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਕੀਟ ਪਤੰਗ ਕੁਰੰਗ ਭੁਜੰਗਮ; ਭੂਤ ਭਵਿੱਖ ਭਵਾਨ ਬਨਾਏ ॥",
-        "gurmukhi_plain": "ਕੀਟ ਪਤੰਗ ਕੁਰੰਗ ਭੁਜੰਗਮ ਭੂਤ ਭਵਿੱਖ ਭਵਾਨ ਬਨਾਏ ॥",
+        "gurmukhi": "ਜੀਤ ਫਿਰੈ ਸਭ ਦੇਸ ਦਿਸਾਨ ਕੋ; ਬਾਜਤ ਢੋਲ, ਮ੍ਰਿਦੰਗ, ਨਗਾਰੇ ॥",
+        "gurmukhi_plain": "ਜੀਤ ਫਿਰੈ ਸਭ ਦੇਸ ਦਿਸਾਨ ਕੋ ਬਾਜਤ ਢੋਲ ਮ੍ਰਿਦੰਗ ਨਗਾਰੇ ॥",
         "transliteration": {
-          "english": "keett patang kurang bhujangam bhoot bhavakh bhavaan banaae |",
-          "hindi": "कीट पतंग कुरंग भुजंगम भूत भविक्ख भवान बनाए ॥"
+          "english": "jeet firai sabh des disaan ko baajat dtol mridang nagaare |",
+          "hindi": "जीत फिरै सभ देस दिसान को बाजत ढोल म्रिदंग नगारे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He Created in the past, creates in the present and shall create in the future the beings including insects, moths, deer and snakes.",
+          "text": "With the beat of drums and trumpets if the emperor conquers all the countries.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜਿਸ ਨੇ) ਕੀੜੇ, ਪਤੰਗੇ, ਹਿਰਨ, ਸੱਪ, ਭੂਤਕਾਲ, ਵਰਤਮਾਨ ਕਾਲ ਅਤੇ ਭਵਿਸ਼ਤ ਕਾਲ ਬਣਾਏ ਹਨ;",
+          "text": "(ਜਿਨ੍ਹਾਂ ਨੇ) ਸਾਰੇ ਦੇਸ-ਦੇਸਾਂਤਰਾਂ ਨੂੰ ਜਿਤ ਲਿਆ ਹੋਵੇ ਅਤੇ ਜਿਨ੍ਹਾਂ ਦੇ (ਰਾਜਮਹੱਲ ਅਗੇ) ਢੋਲ, ਮ੍ਰਿਦੰਗ ਅਤੇ ਨਗਾਰੇ ਵਜਦੇ ਹੋਣ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -515,31 +515,31 @@
     },
     {
       "id": 13,
-      "source_id": "7N2E",
+      "source_id": "RJJZ",
       "section_index": 2,
       "unit": 3,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦੇਵ ਅਦੇਵ ਖਪੇ ਅਹੰਮੇਵ; ਨ ਭੇਵ ਲਖਿਓ, ਭ੍ਰਮ ਸਿਓ ਭਰਮਾਏ ॥",
-        "gurmukhi_plain": "ਦੇਵ ਅਦੇਵ ਖਪੇ ਅਹੰਮੇਵ ਨ ਭੇਵ ਲਖਿਓ ਭ੍ਰਮ ਸਿਓ ਭਰਮਾਏ ॥",
+        "gurmukhi": "ਗੁੰਜਤ ਗੂੜ ਗਜਾਨ ਕੇ ਸੁੰਦਰ ਹਿੰਸਤ ਹੈਂ ਹਯਰਾਜ ਹਜਾਰੇ ॥",
+        "gurmukhi_plain": "ਗੁੰਜਤ ਗੂੜ ਗਜਾਨ ਕੇ ਸੁੰਦਰ ਹਿੰਸਤ ਹੈਂ ਹਯਰਾਜ ਹਜਾਰੇ ॥",
         "transliteration": {
-          "english": "dev adev khape ahamev na bhev lakhio bhram sio bharamaae |",
-          "hindi": "देव अदेव खपे अहंमेव न भेव लखिओ भ्रम सिओ भरमाए ॥"
+          "english": "gunjat goorr gajaan ke sundar hinsat hain hayaraaj hajaare |",
+          "hindi": "गुंजत गूड़ गजान के सुंदर हिंसत हैं हयराज हजारे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The goods and demons have been consumed in ego, but could not know the mystery of the Lord, being engrossed in delusion.",
+          "text": "Along with many beautiful roaring elephants and thousands of neighing houses of best breed.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਦੇਵਤੇ ਅਤੇ ਦੈਂਤ ਹੰਕਾਰ ਕਾਰਨ ਖੱਪ ਗਏ, (ਕਿਸੇ ਨੇ ਉਸਦਾ) ਭੇਦ ਨਾ ਪਾਇਆ, (ਉਹ) ਭਰਮਾਂ ਵਿਚ ਹੀ ਭਰਮਦੇ ਰਹੇ।",
+          "text": "ਸੁੰਦਰ ਹਾਥੀਆਂ ਦੇ ਸਮੂਹ ਚਿੰਘਾੜਦੇ ਹੋਣ ਅਤੇ ਹਜ਼ਾਰਾਂ ਹੀ ਸ੍ਰੇਸ਼ਠ ਘੋੜੇ ਹਿਣਕਦੇ ਹੋਣ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -548,31 +548,31 @@
     },
     {
       "id": 14,
-      "source_id": "HP0G",
+      "source_id": "6TYZ",
       "section_index": 2,
       "unit": 3,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਬੇਦ ਪੁਰਾਨ ਕਤੇਬ ਕੁਰਾਨ; ਹਸੇਬ ਥਕੇ ਕਰ ਹਾਥ ਨ ਆਏ ॥",
-        "gurmukhi_plain": "ਬੇਦ ਪੁਰਾਨ ਕਤੇਬ ਕੁਰਾਨ ਹਸੇਬ ਥਕੇ ਕਰ ਹਾਥ ਨ ਆਏ ॥",
+        "gurmukhi": "ਭੂਤ ਭਵਿੱਖ ਭਵਾਨ ਕੇ ਭੂਪਤ; ਕਉਨੁ ਗਨੈ, ਨਹੀਂ ਜਾਤ ਬਿਚਾਰੇ ॥",
+        "gurmukhi_plain": "ਭੂਤ ਭਵਿੱਖ ਭਵਾਨ ਕੇ ਭੂਪਤ ਕਉਨੁ ਗਨੈ ਨਹੀਂ ਜਾਤ ਬਿਚਾਰੇ ॥",
         "transliteration": {
-          "english": "bed puraan kateb kuraan haseb thake kar haath na aae |",
-          "hindi": "बेद पुरान कतेब कुरान हसेब थके कर हाथ न आए ॥"
+          "english": "bhoot bhavakh bhavaan ke bhoopat kaun ganai naheen jaat bichaare |",
+          "hindi": "भूत भविक्ख भवान के भूपत कउनु गनै नहीं जात बिचारे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Vedas, Puranas, Katebs and the Quran have tired of giving His account, but the Lord could not be comprehended.",
+          "text": "Such like emperors of the past, present and future cannot be counted and ascertained.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਵੇਦ, ਪੁਰਾਣ, ਕਤੇਬ, ਕੁਰਾਨ ਆਦਿ (ਧਰਮ ਪੁਸਤਕਾਂ) ਬਹੁਤ ਗਿਣਤੀ-ਮਿਣਤੀ ਕਰਦੀਆਂ (ਹਿਸਾਬ ਲਗਾਉਂਦੀਆਂ) ਹਾਰ ਗਈਆਂ, ਪਰ (ਉਨ੍ਹਾਂ ਦੇ) ਹੱਥ ਕੁਝ ਨਾ ਆਇਆ।",
+          "text": "(ਅਜਿਹੇ ਮਹੱਤਵ ਵਾਲੇ) ਭੂਤ, ਭਵਿਖ ਅਤੇ ਵਰਤਮਾਨ ਤਿੰਨਾਂ ਕਾਲਾਂ ਵਿਚ ਇਤਨੇ ਰਾਜੇ ਹੋਏ ਹਨ ਕਿ ਜਿਨ੍ਹਾਂ ਨੂੰ ਵਿਚਾਰਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ (ਅਰਥਾਤ ਅਣਗਿਣਤ ਹਨ);",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -581,31 +581,31 @@
     },
     {
       "id": 15,
-      "source_id": "EKWS",
+      "source_id": "RWCX",
       "section_index": 2,
       "unit": 3,
-      "ends_unit": 245,
+      "ends_unit": 23,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਪੂਰਨ ਪ੍ਰੇਮ ਪ੍ਰਭਾਉ ਬਿਨਾ; ਪਤਿ ਸਿਉ, ਕਿਨ ਸ੍ਰੀ ਪਦਮਾਪਤਿ ਪਾਏ ॥੩॥੨੪੫॥",
-        "gurmukhi_plain": "ਪੂਰਨ ਪ੍ਰੇਮ ਪ੍ਰਭਾਉ ਬਿਨਾ ਪਤਿ ਸਿਉ ਕਿਨ ਸ੍ਰੀ ਪਦਮਾਪਤਿ ਪਾਏ ॥੩॥੨੪੫॥",
+        "gurmukhi": "ਸ੍ਰੀ ਪਤਿ ਸ੍ਰੀ ਭਗਵਾਨ ਭਜੇ ਬਿਨੁ; ਅੰਤ ਕਉ, ਅੰਤ ਕੇ ਧਾਮ ਸਿਧਾਰੇ ॥੩॥੨੩॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਪਤਿ ਸ੍ਰੀ ਭਗਵਾਨ ਭਜੇ ਬਿਨੁ ਅੰਤ ਕਉ ਅੰਤ ਕੇ ਧਾਮ ਸਿਧਾਰੇ ॥੩॥੨੩॥",
         "transliteration": {
-          "english": "pooran prem prabhaau binaa pat siau kin sree padamaapat paae |3|245|",
-          "hindi": "पूरन प्रेम प्रभाउ बिना पति सिउ किन स्री पदमापति पाए ॥३॥२४५॥"
+          "english": "sree pat sree bhagavaan bhaje bin ant kau ant ke dhaam sidhaare |3|23|",
+          "hindi": "स्री पति स्री भगवान भजे बिनु अंत कउ अंत के धाम सिधारे ॥३॥२३॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Without the impact of perfect love, who hath realized Lord-God with grace? 3.245.",
+          "text": "But without remembering the Name of the Lord, they ultimately leave for their final abode. 3.23.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਪੂਰਨ ਪ੍ਰੇਮ ਦੇ ਪ੍ਰਭਾਵ ਤੋਂ ਬਿਨਾ (ਦਸੋ) ਕਿਸ ਨੇ ਪਰਮਾਤਮਾ ਨੂੰ ਪ੍ਰਤਿਸ਼ਠਾ ਸਹਿਤ ਪ੍ਰਾਪਤ ਕੀਤਾ ਹੈ ॥੩॥੨੪੫॥",
+          "text": "ਪਰ ਮਾਇਆ ਦੇ ਸੁਆਮੀ ਪ੍ਰਭੂ ਦੇ ਸਿਮਰਨ ਤੋਂ ਬਿਨਾ ਅੰਤ ਨੂੰ ਯਮਰਾਜ ਦੇ ਘਰ ਚਲੇ ਗਏ ਹਨ ॥੩॥੨੩॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -614,31 +614,31 @@
     },
     {
       "id": 16,
-      "source_id": "KAX5",
+      "source_id": "A426",
       "section_index": 2,
       "unit": 4,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਆਦਿ ਅਨੰਤ ਅਗਾਧ ਅਦ੍ਵੈਖ; ਸੁ ਭੂਤ ਭਵਿੱਖ ਭਵਾਨ ਅਭੈ ਹੈ ॥",
-        "gurmukhi_plain": "ਆਦਿ ਅਨੰਤ ਅਗਾਧ ਅਦ੍ਵੈਖ ਸੁ ਭੂਤ ਭਵਿੱਖ ਭਵਾਨ ਅਭੈ ਹੈ ॥",
+        "gurmukhi": "ਤੀਰਥ ਨਾਨ ਦਇਆ ਦਮ ਦਾਨ ਸੁ ਸੰਜਮ ਨੇਮ ਅਨੇਕ ਬਿਸੇਖੈ ॥",
+        "gurmukhi_plain": "ਤੀਰਥ ਨਾਨ ਦਇਆ ਦਮ ਦਾਨ ਸੁ ਸੰਜਮ ਨੇਮ ਅਨੇਕ ਬਿਸੇਖੈ ॥",
         "transliteration": {
-          "english": "aad anant agaadh advaikh su bhoot bhavakh bhavaan abhai hai |",
-          "hindi": "आदि अनंत अगाध अद्वैख सु भूत भविक्ख भवान अभै है ॥"
+          "english": "teerath naan deaa dam daan su sanjam nem anek bisekhai |",
+          "hindi": "तीरथ नान दइआ दम दान सु संजम नेम अनेक बिसेखै ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Primal, Infinite, Unfathomable Lord is without malice and is fearless in the past, present and future.",
+          "text": "Taking bath at holy places, exercising mercy, controlling passions, performing acts of charity, practicing austerity and many special rituals.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਉਹ ਪ੍ਰਭੂ) ਸਭ ਦਾ ਆਦਿ, ਅਨੰਤ, ਅਗਾਧ, ਦ੍ਵੈਸ਼-ਰਹਿਤ ਅਤੇ ਭੂਤ, ਭਵਿਖਤ ਅਤੇ ਵਰਤਮਾਨ ਤਿੰਨਾਂ ਕਾਲਾਂ ਵਿਚ ਭੈ-ਰਹਿਤ ਹੈ।",
+          "text": "(ਜੇ ਕੋਈ) ਤੀਰਥ ਇਸ਼ਨਾਨ, ਦਇਆ, ਦਾਨ, (ਵਿਕਾਰਾਂ ਤੋਂ ਬਚਣ ਦੇ) ਸੰਜਮ, ਨੇਮ ਅਤੇ ਹੋਰ ਅਨੇਕਾਂ ਵਿਸ਼ੇਸ਼ ਕਰਮ ਕਰਨ ਵਾਲੇ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -647,31 +647,31 @@
     },
     {
       "id": 17,
-      "source_id": "H13J",
+      "source_id": "DNSB",
       "section_index": 2,
       "unit": 4,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਅੰਤਿ ਬਿਹੀਨ ਅਨਾਤਮ ਆਪ; ਅਦਾਗ ਅਦੋਖ ਅਛਿੱਦ੍ਰ ਅਛੈ ਹੈ ॥",
-        "gurmukhi_plain": "ਅੰਤਿ ਬਿਹੀਨ ਅਨਾਤਮ ਆਪ ਅਦਾਗ ਅਦੋਖ ਅਛਿੱਦ੍ਰ ਅਛੈ ਹੈ ॥",
+        "gurmukhi": "ਬੇਦ ਪੁਰਾਨ, ਕਤੇਬ ਕੁਰਾਨ; ਜਮੀਨ ਜਮਾਨ ਸਬਾਨ ਕੇ ਪੇਖੈ ॥",
+        "gurmukhi_plain": "ਬੇਦ ਪੁਰਾਨ ਕਤੇਬ ਕੁਰਾਨ ਜਮੀਨ ਜਮਾਨ ਸਬਾਨ ਕੇ ਪੇਖੈ ॥",
         "transliteration": {
-          "english": "ant biheen anaatam aap adaag adokh achhadr achhai hai |",
-          "hindi": "अंति बिहीन अनातम आप अदाग अदोख अछिद्र अछै है ॥"
+          "english": "bed puraan kateb kuraan jameen jamaan sabaan ke pekhai |",
+          "hindi": "बेद पुरान कतेब कुरान जमीन जमान सबान के पेखै ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He is endless, Himself Selfless, stainless, blemishless, flawless and invincible.",
+          "text": "Studying of Vedas, Puranas and holy Quran and scanning all this world and the next world.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਉਹ) ਅੰਤ ਤੋਂ ਰਹਿਤ, ਖ਼ੁਦ ਅਨਾਤਮ, ਦਾਗ਼ ਤੋਂ ਬਿਨਾ, ਦੋਖ ਤੋਂ ਰਹਿਤ, ਛਿਦ੍ਰ ਤੋਂ ਬਿਨਾ ਅਤੇ ਨਾਸ਼ ਤੋਂ ਮੁਕਤ ਹੈ।",
+          "text": "ਵੇਦਾਂ, ਪੁਰਾਣਾਂ, ਕਤੇਬਾਂ ਅਤੇ ਕੁਰਾਨ ਆਦਿ ਧਰਤੀ ਉਤੇ ਉਪਲਬਧ ਸਾਰਿਆਂ ਸਮਿਆਂ ਦੇ (ਧਰਮ ਗ੍ਰੰਥਾਂ ਨੂੰ) ਘੋਖਣ ਵਾਲੇ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -680,31 +680,31 @@
     },
     {
       "id": 18,
-      "source_id": "YQ1H",
+      "source_id": "TLVC",
       "section_index": 2,
       "unit": 4,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਲੋਗਨ ਕੇ ਕਰਤਾ ਹਰਤਾ; ਜਲ ਮੈ, ਥਲ ਮੈ, ਭਰਤਾ ਪ੍ਰਭ ਵੈ ਹੈ ॥",
-        "gurmukhi_plain": "ਲੋਗਨ ਕੇ ਕਰਤਾ ਹਰਤਾ ਜਲ ਮੈ ਥਲ ਮੈ ਭਰਤਾ ਪ੍ਰਭ ਵੈ ਹੈ ॥",
+        "gurmukhi": "ਪਉਨ ਅਹਾਰ, ਜਤੀ ਜਤ ਧਾਰ; ਸਬੈ ਸੁ ਬਿਚਾਰ ਹਜਾਰ ਕ ਦੇਖੈ ॥",
+        "gurmukhi_plain": "ਪਉਨ ਅਹਾਰ ਜਤੀ ਜਤ ਧਾਰ ਸਬੈ ਸੁ ਬਿਚਾਰ ਹਜਾਰ ਕ ਦੇਖੈ ॥",
         "transliteration": {
-          "english": "logan ke karataa harataa jal mai thal mai bharataa prabh vai hai |",
-          "hindi": "लोगन के करता हरता जल मै थल मै भरता प्रभ वै है ॥"
+          "english": "paun ahaar jatee jat dhaar sabai su bichaar hajaar k dekhai |",
+          "hindi": "पउन अहार जती जत धार सबै सु बिचार हजार क देखै ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He is the Creator and Destroyer of all in water and on land and also their Sustainer-Lord.",
+          "text": "Subsisting only on air, practicing continence and meeting thousands of persons of all good thoughts.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਉਹ) ਲੋਕਾਂ ਦਾ ਕਰਤਾ ਵੀ ਹੈ ਅਤੇ ਹਰਤਾ ਵੀ, ਜਲ-ਥਲ ਵਿਚ (ਸਾਰੇ ਜੀਵਾਂ ਦੀ) ਪਾਲਣਾ ਕਰਨ ਵਾਲਾ ਉਹੀ ਪ੍ਰਭੂ ਹੈ।",
+          "text": "ਪੌਣ ਦਾ ਆਹਾਰ ਕਰਨ ਅਤੇ ਜਤ-ਸਤ ਧਾਰ ਕੇ ਜਤੀ ਬਣਨ ਵਾਲੇ ਹਜ਼ਾਰਾਂ ਹੀ ਵਿਚਾਰ ਪੂਰਵਕ ਵੇਖੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -713,31 +713,31 @@
     },
     {
       "id": 19,
-      "source_id": "KDQG",
+      "source_id": "EKAF",
       "section_index": 2,
       "unit": 4,
-      "ends_unit": 246,
+      "ends_unit": 24,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦੀਨ ਦਇਆਲ ਦਇਆ ਕਰ ਸ੍ਰੀ ਪਤਿ; ਸੁੰਦਰ ਸ੍ਰੀ ਪਦਮਾਪਤਿ ਏਹੈ ॥੪॥੨੪੬॥",
-        "gurmukhi_plain": "ਦੀਨ ਦਇਆਲ ਦਇਆ ਕਰ ਸ੍ਰੀ ਪਤਿ ਸੁੰਦਰ ਸ੍ਰੀ ਪਦਮਾਪਤਿ ਏਹੈ ॥੪॥੨੪੬॥",
+        "gurmukhi": "ਸ੍ਰੀ ਭਗਵਾਨ ਭਜੇ ਬਿਨੁ ਭੂਪਤਿ; ਏਕ ਰਤੀ ਬਿਨੁ, ਏਕ ਨ ਲੇਖੈ ॥੪॥੨੪॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਭਗਵਾਨ ਭਜੇ ਬਿਨੁ ਭੂਪਤਿ ਏਕ ਰਤੀ ਬਿਨੁ ਏਕ ਨ ਲੇਖੈ ॥੪॥੨੪॥",
         "transliteration": {
-          "english": "deen deaal deaa kar sree pat sundar sree padamaapat ehai |4|246|",
-          "hindi": "दीन दइआल दइआ कर स्री पति सुंदर स्री पदमापति एहै ॥४॥२४६॥"
+          "english": "sree bhagavaan bhaje bin bhoopat ek ratee bin ek na lekhai |4|24|",
+          "hindi": "स्री भगवान भजे बिनु भूपति एक रती बिनु एक न लेखै ॥४॥२४॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He, the Lord of maya, is Compassionate to the Lowly, source of Mercy and most beautiful.4.246.",
+          "text": "But O King! Without the remembrance of the Name of the Lord, all this is of no account, being without an iota of the Grace of the Lord. 4.24.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਦੀਨ-ਦਿਆਲ, ਦਇਆ ਦੀ ਖਾਣ, ਮਾਇਆ ਦਾ ਸੁਆਮੀ ਸੁੰਦਰ ਪ੍ਰਭੂ ਉਹੀ ਹੈ ॥੪॥੨੪੬॥",
+          "text": "ਪਰ ਮਾਇਆ ਦੇ ਸੁਆਮੀ ਪ੍ਰਭੂ ਦੇ ਭਜਨ ਅਤੇ ਪ੍ਰੇਮ ('ਰਤੀ') ਤੋਂ ਬਿਨਾ ਰਾਜੇ ਵੀ (ਪਰਮਾਤਮਾ ਦੇ ਦੁਆਰ ਤੇ) ਪ੍ਰਵਾਨ ਨਹੀਂ ਹਨ ॥੪॥੨੪॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -746,31 +746,31 @@
     },
     {
       "id": 20,
-      "source_id": "SEES",
+      "source_id": "C20T",
       "section_index": 2,
       "unit": 5,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਕਾਮ ਨ ਕ੍ਰੋਧ ਨ ਲੋਭ ਨ ਮੋਹ ਨ; ਰੋਗ ਨ ਸੋਗ ਨ ਭੋਗ ਨ ਭੈ ਹੈ ॥",
-        "gurmukhi_plain": "ਕਾਮ ਨ ਕ੍ਰੋਧ ਨ ਲੋਭ ਨ ਮੋਹ ਨ ਰੋਗ ਨ ਸੋਗ ਨ ਭੋਗ ਨ ਭੈ ਹੈ ॥",
+        "gurmukhi": "ਸੁੱਧ ਸਿਪਾਹ, ਦੁਰੰਤ ਦੁਬਾਹ; ਸੁ ਸਾਜ ਸਨਾਹ, ਦੁਰਜਾਨ ਦਲੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਸੁੱਧ ਸਿਪਾਹ ਦੁਰੰਤ ਦੁਬਾਹ ਸੁ ਸਾਜ ਸਨਾਹ ਦੁਰਜਾਨ ਦਲੈਂਗੇ ॥",
         "transliteration": {
-          "english": "kaam na krodh na lobh na moh na rog na sog na bhog na bhai hai |",
-          "hindi": "काम न क्रोध न लोभ न मोह न रोग न सोग न भोग न भै है ॥"
+          "english": "sudh sipaah durant dubaah su saaj sanaah durajaan dalainge |",
+          "hindi": "सुद्ध सिपाह दुरंत दुबाह सु साज सनाह दुरजान दलैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He is without lust, anger, greed, attachment, ailment, sorrow, enjoyment and fear.",
+          "text": "The trained soldiers, mightly and invincible, clad in coat of mail, who would be able to crush the enemies.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜਿਸ ਨੂੰ) ਕਾਮ, ਕ੍ਰੋਧ, ਲੋਭ, ਮੋਹ, ਰੋਗ, ਸੋਗ, ਭੋਗ ਅਤੇ ਭੈ ਨਹੀਂ ਹੈ,",
+          "text": "ਚੰਗੀ ਸਿਖੀ ਹੋਈ ਫੌਜ ਜਿਸ ਦੇ ਸਾਰੇ ਸਿਪਾਹੀਆਂ (ਦੀ ਸ਼ਕਤੀ) ਦਾ ਕੋਈ ਅੰਤ ਨਾ ਹੋਵੇ ਅਤੇ ਜੋ ਕਵਚ ਸਜਾ ਕੇ ਵੈਰੀਆਂ ਨੂੰ ਦਲਣ ਵਾਲੇ ਹੋਣ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -779,31 +779,31 @@
     },
     {
       "id": 21,
-      "source_id": "8WWQ",
+      "source_id": "8VPV",
       "section_index": 2,
       "unit": 5,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦੇਹ ਬਿਹੀਨ, ਸਨੇਹ ਸਭੋ ਤਨ; ਨੇਹ ਬਿਰਕਤ ਅਗੇਹ ਅਛੈ ਹੈ ॥",
-        "gurmukhi_plain": "ਦੇਹ ਬਿਹੀਨ ਸਨੇਹ ਸਭੋ ਤਨ ਨੇਹ ਬਿਰਕਤ ਅਗੇਹ ਅਛੈ ਹੈ ॥",
+        "gurmukhi": "ਭਾਰੀ ਗੁਮਾਨ ਭਰੇ ਮਨ ਮੈਂ; ਕਰ ਪਰਬਤ ਪੰਖ, ਹਲੇ ਨ ਹਲੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਭਾਰੀ ਗੁਮਾਨ ਭਰੇ ਮਨ ਮੈਂ ਕਰ ਪਰਬਤ ਪੰਖ ਹਲੇ ਨ ਹਲੈਂਗੇ ॥",
         "transliteration": {
-          "english": "deh biheen saneh sabho tan neh birakat ageh achhai hai |",
-          "hindi": "देह बिहीन सनेह सभो तन नेह बिरकत अगेह अछै है ॥"
+          "english": "bhaaree gumaan bhare man main kar parabat pankh hale na halainge |",
+          "hindi": "भारी गुमान भरे मन मैं कर परबत पंख हले न हलैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He is body-less, loving everybody but without worldly attachment, invincible and cannot be held in grasp.",
+          "text": "With great ego in their mind that they would not be vanquished even if the mountains move with wings.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜੋ) ਦੇਹਰਹਿਤ, ਸਭ ਨਾਲ ਸਨੇਹ ਕਰਨ ਵਾਲਾ, ਮੋਹ ਤੋਂ ਵਿਰਕਤ, ਘਰ ਤੋਂ ਬਿਨਾ ਅਤੇ ਨਾਸ਼ ਤੋਂ ਰਹਿਤ ਹੈ।",
+          "text": "ਉਹ (ਸ਼ੂਰਵੀਰ) ਆਪਣੇ ਮਨ ਵਿਚ ਭਾਰੀ ਗੁਮਾਨ ਭਰਨ ਵਾਲੇ ਹੋਣ ਕਿ ਪਰਬਤ ਭਾਵੇਂ ਖੰਭ ਲਾ ਕੇ (ਆਪਣੇ ਸਥਾਨ ਤੋਂ) ਹਿਲ ਜਾਣ, (ਪਰ ਉਹ ਯੋਧੇ ਰਣ ਵਿਚੋਂ) ਹਿਲਣ ਵਾਲੇ ਨਾ ਹੋਣ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -812,31 +812,31 @@
     },
     {
       "id": 22,
-      "source_id": "HRHU",
+      "source_id": "K1AS",
       "section_index": 2,
       "unit": 5,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਜਾਨ ਕੋ ਦੇਤ, ਅਜਾਨ ਕੋ ਦੇਤ; ਜਮੀਨ ਕੋ ਦੇਤ, ਜਮਾਨ ਕੋ ਦੈ ਹੈ ॥",
-        "gurmukhi_plain": "ਜਾਨ ਕੋ ਦੇਤ ਅਜਾਨ ਕੋ ਦੇਤ ਜਮੀਨ ਕੋ ਦੇਤ ਜਮਾਨ ਕੋ ਦੈ ਹੈ ॥",
+        "gurmukhi": "ਤੋਰਿ ਅਰੀਨ, ਮਰੋਰਿ ਮਵਾਸਨ; ਮਾਤੇ ਮਤੰਗਨਿ ਮਾਨ ਮਲੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਤੋਰਿ ਅਰੀਨ ਮਰੋਰਿ ਮਵਾਸਨ ਮਾਤੇ ਮਤੰਗਨਿ ਮਾਨ ਮਲੈਂਗੇ ॥",
         "transliteration": {
-          "english": "jaan ko det ajaan ko det jameen ko det jamaan ko dai hai |",
-          "hindi": "जान को देत अजान को देत जमीन को देत जमान को दै है ॥"
+          "english": "tor areen maror mavaasan maate matangan maan malainge |",
+          "hindi": "तोरि अरीन मरोरि मवासन माते मतंगनि मान मलैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He provides sustenance to all animate and inanimate beings and all those living on the earth and in the sky.",
+          "text": "They would destroy the enemies, twist the rebels and smash the pride of intoxicated elephants.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜੋ) ਚੇਤਨ ਜੀਵਾਂ ਨੂੰ ਦਿੰਦਾ ਹੈ, ਜੜ ਵਸਤੂਆਂ ਨੂੰ ਦਿੰਦਾ ਹੈ, ਜ਼ਮੀਨ (ਵਿਚ ਰਹਿਣ ਵਾਲਿਆਂ) ਨੂੰ ਦਿੰਦਾ ਹੈ, ਆਕਾਸ਼ (ਵਿਚ ਵਿਚਰਨ ਵਾਲਿਆਂ ਨੂੰ) ਦਿੰਦਾ ਹੈ।",
+          "text": "ਉਹ ਵੈਰੀਆਂ ਨੂੰ ਤੋੜਨ ਵਾਲੇ, ਬਾਗ਼ੀਆਂ ਨੂੰ ਮਰੋੜਨ ਵਾਲੇ ਅਤੇ ਮਸਤ ਹਾਥੀਆਂ ਦੀ ਮਸਤੀ ਨੂੰ ਮਲ ਸੁਟਣ ਵਾਲੇ ਹੋਣ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -845,31 +845,31 @@
     },
     {
       "id": 23,
-      "source_id": "12NF",
+      "source_id": "G091",
       "section_index": 2,
       "unit": 5,
-      "ends_unit": 247,
+      "ends_unit": 25,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਕਾਹੇ ਕੋ ਡੋਲਤ ਹੈ, ਤੁਮਰੀ ਸੁਧ; ਸੁੰਦਰ ਸ੍ਰੀ ਪਦਮਾਪਤਿ ਲੈਹੈ ॥੫॥੨੪੭॥",
-        "gurmukhi_plain": "ਕਾਹੇ ਕੋ ਡੋਲਤ ਹੈ ਤੁਮਰੀ ਸੁਧ ਸੁੰਦਰ ਸ੍ਰੀ ਪਦਮਾਪਤਿ ਲੈਹੈ ॥੫॥੨੪੭॥",
+        "gurmukhi": "ਸ੍ਰੀ ਪਤਿ ਸ੍ਰੀ ਭਗਵਾਨ ਕ੍ਰਿਪਾ ਬਿਨੁ; ਤਿਆਗਿ ਜਹਾਨ, ਨਿਦਾਨ ਚਲੈਂਗੇ ॥੫॥੨੫॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਪਤਿ ਸ੍ਰੀ ਭਗਵਾਨ ਕ੍ਰਿਪਾ ਬਿਨੁ ਤਿਆਗਿ ਜਹਾਨ ਨਿਦਾਨ ਚਲੈਂਗੇ ॥੫॥੨੫॥",
         "transliteration": {
-          "english": "kaahe ko ddolat hai tumaree sudh sundar sree padamaapat laihai |5|247|",
-          "hindi": "काहे को डोलत है तुमरी सुध सुंदर स्री पदमापति लैहै ॥५॥२४७॥"
+          "english": "sree pat sree bhagavaan kripaa bin tiaag jahaan nidaan chalainge |5|25|",
+          "hindi": "स्री पति स्री भगवान क्रिपा बिनु तिआगि जहान निदान चलैंगे ॥५॥२५॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Why dost thou waver, O creature! The beautiful Lord of maya will take care of thee. 5.247.",
+          "text": "But without the Grace of the Lord-God, they would ultimately leave the world. 5.25.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਹੇ ਪ੍ਰਾਣੀ! ਤੂੰ) ਕਿਉਂ ਡੋਲ ਰਿਹਾ ਹੈ, ਤੇਰੀ ਖ਼ਬਰ ਸੁੰਦਰ ਪਰਮਾਤਮਾ ਲੈ ਰਿਹਾ ਹੈ ॥੫॥੨੪੭॥",
+          "text": "ਪਰ ਮਾਇਆ ਦੇ ਸੁਆਮੀ ਪਰਮਾਤਮਾ ਦੀ ਕ੍ਰਿਪਾ ਤੋਂ ਬਿਨਾ (ਅਜਿਹੇ ਬਲਵਾਨ ਸੂਰਮੇ ਵੀ) ਅੰਤ ਵਿਚ ਸੰਸਾਰ ਨੂੰ ਤਿਆਗ ਕੇ ਚਲੇ ਜਾਣਗੇ ॥੫॥੨੫॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -878,31 +878,31 @@
     },
     {
       "id": 24,
-      "source_id": "YGB5",
+      "source_id": "DUTX",
       "section_index": 2,
       "unit": 6,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਰੋਗਨ ਤੇ ਅਰ ਸੋਗਨ ਤੇ; ਜਲ ਜੋਗਨ ਤੇ, ਬਹੁ ਭਾਂਤਿ ਬਚਾਵੈ ॥",
-        "gurmukhi_plain": "ਰੋਗਨ ਤੇ ਅਰ ਸੋਗਨ ਤੇ ਜਲ ਜੋਗਨ ਤੇ ਬਹੁ ਭਾਂਤਿ ਬਚਾਵੈ ॥",
+        "gurmukhi": "ਬੀਰ ਅਪਾਰ, ਬਡੇ ਬਰਿਆਰ; ਅਬਿਚਾਰਹਿ, ਸਾਰ ਕੀ ਧਾਰ ਭਛੱਯਾ ॥",
+        "gurmukhi_plain": "ਬੀਰ ਅਪਾਰ ਬਡੇ ਬਰਿਆਰ ਅਬਿਚਾਰਹਿ ਸਾਰ ਕੀ ਧਾਰ ਭਛੱਯਾ ॥",
         "transliteration": {
-          "english": "rogan te ar sogan te jal jogan te bahu bhaant bachaavai |",
-          "hindi": "रोगन ते अर सोगन ते जल जोगन ते बहु भांति बचावै ॥"
+          "english": "beer apaar badde bariaar abichaareh saar kee dhaar bhachhayaa |",
+          "hindi": "बीर अपार बडे बरिआर अबिचारहि सार की धार भछया ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "He protects in many blows, but none doth inflict thy body.",
+          "text": "Innumerable brave and mighty heroes, fearlessly facing the edge of the sword.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਉਹ) ਰੋਗਾਂ ਤੋਂ, ਸੋਗਾਂ ਤੋਂ, ਜਲ ਦੇ ਜੀਵ-ਜੰਤੂਆਂ ਤੋਂ ਅਨੇਕ ਢੰਗਾਂ ਨਾਲ ਬਚਾਉਂਦਾ ਹੈ।",
+          "text": "ਅਪਾਰ ਸ਼ਕਤੀ ਵਾਲੇ ਸ਼ੂਰਵੀਰ ਅਤੇ ਬਹੁਤ ਬਲਵਾਨ ਜੋ ਬਿਨਾ ਵਿਚਾਰੇ (ਸੰਕੋਚ ਕੀਤੇ) ਸ਼ਸਤ੍ਰਾਂ ਦੀ ਧਾਰ ਨੂੰ ਸਹਾਰਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -911,31 +911,31 @@
     },
     {
       "id": 25,
-      "source_id": "4L6F",
+      "source_id": "JK3G",
       "section_index": 2,
       "unit": 6,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਸਤ੍ਰ ਅਨੇਕ ਚਲਾਵਤ ਘਾਵ; ਤਊ ਤਨ ਏਕ ਨ ਲਾਗਨ ਪਾਵੈ ॥",
-        "gurmukhi_plain": "ਸਤ੍ਰ ਅਨੇਕ ਚਲਾਵਤ ਘਾਵ ਤਊ ਤਨ ਏਕ ਨ ਲਾਗਨ ਪਾਵੈ ॥",
+        "gurmukhi": "ਤੋਰਤ ਦੇਸ, ਮਲਿੰਦ ਮਵਾਸਨ; ਮਾਤੇ ਗਜਾਨ ਕੇ ਮਾਨ, ਮਲੱਯਾ ॥",
+        "gurmukhi_plain": "ਤੋਰਤ ਦੇਸ ਮਲਿੰਦ ਮਵਾਸਨ ਮਾਤੇ ਗਜਾਨ ਕੇ ਮਾਨ ਮਲੱਯਾ ॥",
         "transliteration": {
-          "english": "satr anek chalaavat ghaav taoo tan ek na laagan paavai |",
-          "hindi": "सत्र अनेक चलावत घाव तऊ तन एक न लागन पावै ॥"
+          "english": "torat des malind mavaasan maate gajaan ke maan malayaa |",
+          "hindi": "तोरत देस मलिंद मवासन माते गजान के मान मलया ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The enemy strikes many blows, but none doth inflict thy body.",
+          "text": "Conquering the countries, subjugating the rebels and crushing the pride of the intoxicated elephants.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਵੈਰੀ ਅਨੇਕ ਵਾਰ (ਹਥਿਆਰ) ਚਲਾਵੇ, (ਪਰ) ਤਾਂ ਵੀ ਉਸ ਦੇ ਸ਼ਰੀਰ ਉਤੇ ਇਕ ਨਹੀਂ ਲਗ ਸਕਦਾ।",
+          "text": "ਕਈ ਦੇਸਾਂ ਨੂੰ ਤੋੜਦੇ ਹਨ, ਬਾਗ਼ੀਆਂ ਨੂੰ ਦਲ ਦਿੰਦੇ ਹਨ ਅਤੇ ਮਸਤ ਹਾਥੀਆਂ ਦਾ ਹੰਕਾਰ ਮਲ ਦਿੰਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -944,31 +944,31 @@
     },
     {
       "id": 26,
-      "source_id": "CW9C",
+      "source_id": "H016",
       "section_index": 2,
       "unit": 6,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਰਾਖਤ ਹੈ, ਅਪਨੋ ਕਰ ਦੈ ਕਰ; ਪਾਪ ਸੰਬੂਹ, ਨ ਭੇਟਨ ਪਾਵੈ ॥",
-        "gurmukhi_plain": "ਰਾਖਤ ਹੈ ਅਪਨੋ ਕਰ ਦੈ ਕਰ ਪਾਪ ਸੰਬੂਹ ਨ ਭੇਟਨ ਪਾਵੈ ॥",
+        "gurmukhi": "ਗਾੜ੍ਹੇ ਗੜ੍ਹਾਨ ਕੋ ਤੋੜਨਹਾਰ; ਸੁ ਬਾਤਨ ਹੀਂ, ਚਕ ਚਾਰ ਲਵੱਯਾ ॥",
+        "gurmukhi_plain": "ਗਾੜ੍ਹੇ ਗੜ੍ਹਾਨ ਕੋ ਤੋੜਨਹਾਰ ਸੁ ਬਾਤਨ ਹੀਂ ਚਕ ਚਾਰ ਲਵੱਯਾ ॥",
         "transliteration": {
-          "english": "raakhat hai apano kar dai kar paap sanbooh na bhettan paavai |",
-          "hindi": "राखत है अपनो कर दै कर पाप संबूह न भेटन पावै ॥"
+          "english": "gaarrhe garrhaan ko torranahaar su baatan heen chak chaar lavayaa |",
+          "hindi": "गाढ़े गढ़ान को तोड़नहार सु बातन हीं चक चार लवया ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "When the Lord protects with his own hands, but none of the sins even comes near thee.",
+          "text": "Capturing the strong forts and conquering all sides with mere threats.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਉਹ ਸਭ ਨੂੰ) ਆਪਣਾ ਹੱਥ ਦੇ ਕੇ ਰਖਦਾ ਹੈ ਅਤੇ ਸਾਰੇ ਪਾਪ ਉਸ ਤਕ ਪਹੁੰਚ ਹੀ ਨਹੀਂ ਸਕਦੇ।",
+          "text": "ਜੋ ਦ੍ਰਿੜ੍ਹ ਕਿਲਿਆਂ ਨੂੰ ਤੋੜਨ ਵਾਲੇ ਹਨ ਅਤੇ ਗੱਲਾਂ ਵਿਚ ਹੀ ਜੋ ਚੌਹਾਂ ਚੱਕਾਂ ਨੂੰ ਜਿਤ ਲੈਣ ਦੀ ਸਮਰਥਾ ਰਖਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -977,31 +977,31 @@
     },
     {
       "id": 27,
-      "source_id": "HWA7",
+      "source_id": "6U4L",
       "section_index": 2,
       "unit": 6,
-      "ends_unit": 248,
+      "ends_unit": 26,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਔਰ ਕੀ ਬਾਤ ਕਹਾ ਕਹ ਤੋ ਸੌ, ਸੁ ਪੇਟ ਹੀ ਕੇ ਪਟ ਬੀਚ ਬਚਾਵੈ ॥੬॥੨੪੮॥",
-        "gurmukhi_plain": "ਔਰ ਕੀ ਬਾਤ ਕਹਾ ਕਹ ਤੋ ਸੌ ਸੁ ਪੇਟ ਹੀ ਕੇ ਪਟ ਬੀਚ ਬਚਾਵੈ ॥੬॥੨੪੮॥",
+        "gurmukhi": "ਸਾਹਿਬੁ ਸ੍ਰੀ ਸਭ ਕੋ ਸਿਰ ਨਾਇਕ; ਜਾਚਕ ਅਨੇਕ, ਸੁ ਏਕ ਦਿਵੱਯਾ ॥੬॥੨੬॥",
+        "gurmukhi_plain": "ਸਾਹਿਬੁ ਸ੍ਰੀ ਸਭ ਕੋ ਸਿਰ ਨਾਇਕ ਜਾਚਕ ਅਨੇਕ ਸੁ ਏਕ ਦਿਵੱਯਾ ॥੬॥੨੬॥",
         "transliteration": {
-          "english": "aauar kee baat kahaa keh to sau su pett hee ke patt beech bachaavai |6|248|",
-          "hindi": "और की बात कहा कह तो सौ सु पेट ही के पट बीच बचावै ॥६॥२४८॥"
+          "english": "saahib sree sabh ko sir naaeik jaachak anek su ek divayaa |6|26|",
+          "hindi": "साहिबु स्री सभ को सिर नाइक जाचक अनेक सु एक दिवया ॥६॥२६॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "What else should I say unto you, He protects (the infant) even in the membranes of the womb.6.248.",
+          "text": "The Lord God is the Cammander of all and is the only Donor, the beggars are many. 6.26.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਹੇ ਜਿਗਿਆਸੂ!) ਤੈਨੂੰ ਹੋਰਾਂ ਦੀ ਗੱਲ ਕੀ ਕਹਾਂ, ਉਹ (ਮਾਤਾ ਦੇ) ਪੇਟ ਵਿਚ ਗਰਭ ਦੌਰਾਨ ਵੀ ਬਚਾਉਂਦਾ ਹੈ ॥੬॥੨੪੮॥",
+          "text": "ਪਰ ਮਾਇਆ ਦਾ ਸੁਆਮੀ ਪ੍ਰਭੂ ਉਨ੍ਹਾਂ ਸਭਨਾਂ ਦਾ ਮਾਲਕ ਹੈ, (ਉਸ ਦੇ ਦਰ ਤੇ) ਇਹ ਸਾਰੇ ਜਾਚਕ ਹਨ ਅਤੇ ਉਹ ਇਕ ਹੀ ਦੇਣ ਵਾਲਾ ਹੈ ॥੬॥੨੬॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1010,31 +1010,31 @@
     },
     {
       "id": 28,
-      "source_id": "YR1D",
+      "source_id": "N5KM",
       "section_index": 2,
       "unit": 7,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਜੱਛ ਭੁਜੰਗ ਸੁ ਦਾਨਵ ਦੇਵ; ਅਭੇਵ ਤੁਮੈ ਸਭ ਹੀ ਕਰ ਧਿਆਵੈ ॥",
-        "gurmukhi_plain": "ਜੱਛ ਭੁਜੰਗ ਸੁ ਦਾਨਵ ਦੇਵ ਅਭੇਵ ਤੁਮੈ ਸਭ ਹੀ ਕਰ ਧਿਆਵੈ ॥",
+        "gurmukhi": "ਦਾਨਵ, ਦੇਵ, ਫਨਿੰਦ, ਨਿਸਾਚਰ; ਭੂਤ, ਭਵਿਖ, ਭਵਾਨ ਜਪੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਦਾਨਵ ਦੇਵ ਫਨਿੰਦ ਨਿਸਾਚਰ ਭੂਤ ਭਵਿਖ ਭਵਾਨ ਜਪੈਂਗੇ ॥",
         "transliteration": {
-          "english": "jachh bhujang su daanav dev abhev tumai sabh hee kar dhiaavai |",
-          "hindi": "जच्छ भुजंग सु दानव देव अभेव तुमै सभ ही कर धिआवै ॥"
+          "english": "daanav dev fanind nisaachar bhoot bhavikh bhavaan japainge |",
+          "hindi": "दानव देव फनिंद निसाचर भूत भविख भवान जपैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Yakshas, serpents, demons and gods meditate on Thee considering Thee as Indiscriminant.",
+          "text": "Demons, gods, huge serpents, ghosts, past, present and future would repeat His Name.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਹੇ ਪ੍ਰਭੂ!) ਯਕਸ਼, ਸੱਪ, ਦੈਂਤ ਅਤੇ ਦੇਵਤੇ ਆਦਿ ਸਾਰੇ ਤੁਹਾਨੂੰ ਅਭੇਦ ਕਰ ਕੇ ਧਿਆਉਂਦੇ ਹਨ।",
+          "text": "ਦੈਂਤ, ਦੇਵ ਤੇ ਨਾਗ ਅਤੇ ਰਾਖਸ਼ ਵੀ ਜਿਸ ਨੂੰ ਤਿੰਨਾਂ ਕਾਲਾਂ (ਭੂਤ, ਭਵਿਖ, ਵਰਤਮਾਨ) ਵਿਚ ਜਪਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1043,31 +1043,31 @@
     },
     {
       "id": 29,
-      "source_id": "PH6Q",
+      "source_id": "6K4J",
       "section_index": 2,
       "unit": 7,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਭੂਮਿ ਅਕਾਸ ਪਤਾਲ ਰਸਾਤਲ; ਜੱਛ ਭੁਜੰਗ ਸਭੈ ਸਿਰ ਨਿਆਵੈ ॥",
-        "gurmukhi_plain": "ਭੂਮਿ ਅਕਾਸ ਪਤਾਲ ਰਸਾਤਲ ਜੱਛ ਭੁਜੰਗ ਸਭੈ ਸਿਰ ਨਿਆਵੈ ॥",
+        "gurmukhi": "ਜੀਵ ਜਿਤੇ ਜਲ ਮੈ, ਥਲ ਮੈ; ਪਲ ਹੀ ਪਲ ਮੈ, ਸਭ ਥਾਪ ਥਪੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਜੀਵ ਜਿਤੇ ਜਲ ਮੈ ਥਲ ਮੈ ਪਲ ਹੀ ਪਲ ਮੈ ਸਭ ਥਾਪ ਥਪੈਂਗੇ ॥",
         "transliteration": {
-          "english": "bhoom akaas pataal rasaatal jachh bhujang sabhai sir niaavai |",
-          "hindi": "भूमि अकास पताल रसातल जच्छ भुजंग सभै सिर निआवै ॥"
+          "english": "jeev jite jal mai thal mai pal hee pal mai sabh thaap thapainge |",
+          "hindi": "जीव जिते जल मै थल मै पल ही पल मै सभ थाप थपैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The beings of the earth, Yakshas of the sky and the serpents of the nether-world bow their heads before thee.",
+          "text": "All the creatures in the sea and on land would increase and the heaps of sins would be destroyed.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਭੂਮੀ, ਆਕਾਸ਼, ਪਾਤਾਲ, ਰਸਾਤਲ ਆਦਿ (ਵਿਚ ਵਸਣ ਵਾਲੇ ਸਾਰੇ ਜੀਵ) ਅਤੇ ਯਕਸ਼, ਸੱਪ ਆਦਿ ਸਾਰੇ (ਤੈਨੂੰ) ਸੀਸ ਨਿਵਾਉਂਦੇ ਹਨ।",
+          "text": "ਜੋ ਪਲ ਹੀ ਪਲ ਵਿਚ ਜਲ-ਥਲ ਦੇ ਸਾਰੇ ਜੀਵਾਂ ਦੀ ਸਥਾਪਨਾ ਕਰ ਦਿੰਦਾ ਹੈ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1076,31 +1076,31 @@
     },
     {
       "id": 30,
-      "source_id": "NZ22",
+      "source_id": "4RJ3",
       "section_index": 2,
       "unit": 7,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਪਾਇ ਸਕੈ ਨਹੀ ਪਾਰ ਪ੍ਰਭਾ ਹੂ ਕੋ; ਨੇਤ ਹੀ ਨੇਤਹ ਬੇਦ ਬਤਾਵੈ ॥",
-        "gurmukhi_plain": "ਪਾਇ ਸਕੈ ਨਹੀ ਪਾਰ ਪ੍ਰਭਾ ਹੂ ਕੋ ਨੇਤ ਹੀ ਨੇਤਹ ਬੇਦ ਬਤਾਵੈ ॥",
+        "gurmukhi": "ਪੁੰਨ ਪ੍ਰਤਾਪਨ ਬਾਢ ਜੈਤ ਧੁਨ; ਪਾਪਨ ਕੇ, ਬਹੁ ਪੁੰਜ ਖਪੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਪੁੰਨ ਪ੍ਰਤਾਪਨ ਬਾਢ ਜੈਤ ਧੁਨ ਪਾਪਨ ਕੇ ਬਹੁ ਪੁੰਜ ਖਪੈਂਗੇ ॥",
         "transliteration": {
-          "english": "paae sakai nahee paar prabhaa hoo ko net hee netah bed bataavai |",
-          "hindi": "पाइ सकै नही पार प्रभा हू को नेत ही नेतह बेद बतावै ॥"
+          "english": "pun prataapan baadt jait dhun paapan ke bahu punj khapainge |",
+          "hindi": "पुंन प्रतापन बाढ जैत धुन पापन के बहु पुंज खपैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "None could comprehend the limits of Thy Glory and even the Vedas declare Thee as ‘Neti, Neti’",
+          "text": "The praises of the glories of virtues would increase and the heaps of sins would be destroyed",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਕੋਈ ਵੀ (ਤੇਰੀ) ਪ੍ਰਭੁਤਾ ਦਾ ਪਾਰ ਨਹੀਂ ਪਾ ਸਕਦਾ ਅਤੇ ਵੇਦ ਵੀ (ਤੈਨੂੰ) ਬੇਅੰਤ ਬੇਅੰਤ ਕਹਿੰਦੇ ਹਨ।",
+          "text": "ਜਿਸ ਦੇ ਸਿਮਰਨ ਨਾਲ ਪੁੰਨਾਂ ਦੀ ਪ੍ਰਚੰਡਤਾ ਵਧ ਜਾਂਦੀ ਹੈ ਅਤੇ ਜਿਸ ਦੇ ਜੈਘੋਸ਼ ਨੂੰ ਸੁਣ ਕੇ ਪਾਪਾਂ ਦੇ ਸਮੂਹ ਨਸ਼ਟ ਹੋ ਜਾਂਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1109,31 +1109,31 @@
     },
     {
       "id": 31,
-      "source_id": "6TLU",
+      "source_id": "2CH6",
       "section_index": 2,
       "unit": 7,
-      "ends_unit": 249,
+      "ends_unit": 27,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਖੋਜ ਥਕੇ ਸਭ ਹੀ ਖੁਜੀਆ ਸੁਰ; ਹਾਰ ਪਰੇ, ਹਰਿ ਹਾਥ ਨ ਆਵੈ ॥੭॥੨੪੯॥",
-        "gurmukhi_plain": "ਖੋਜ ਥਕੇ ਸਭ ਹੀ ਖੁਜੀਆ ਸੁਰ ਹਾਰ ਪਰੇ ਹਰਿ ਹਾਥ ਨ ਆਵੈ ॥੭॥੨੪੯॥",
+        "gurmukhi": "ਸਾਧ ਸਮੂਹ ਪ੍ਰਸੰਨ ਫਿਰੈਂ ਜਗ; ਸਤ੍ਰ ਸਭੈ ਅਵਲੋਕ ਚਪੈਂਗੇ ॥੭॥੨੭॥",
+        "gurmukhi_plain": "ਸਾਧ ਸਮੂਹ ਪ੍ਰਸੰਨ ਫਿਰੈਂ ਜਗ ਸਤ੍ਰ ਸਭੈ ਅਵਲੋਕ ਚਪੈਂਗੇ ॥੭॥੨੭॥",
         "transliteration": {
-          "english": "khoj thake sabh hee khujeea sur haar pare har haath na aavai |7|249|",
-          "hindi": "खोज थके सभ ही खुजीआ सुर हार परे हरि हाथ न आवै ॥७॥२४९॥"
+          "english": "saadh samooh prasan firain jag satr sabhai avalok chapainge |7|27|",
+          "hindi": "साध समूह प्रसंन फिरैं जग सत्र सभै अवलोक चपैंगे ॥७॥२७॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "All the searchers have got tired in their search and none of them could realize the Lord. 7.249.",
+          "text": "All the saints would wander in the world with bliss and the enemies would be annoyed on seeing them.7.27.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਸਾਰੇ ਖੋਜੀ ਦੇਵਤੇ ਖੋਜ ਕਰਦੇ ਥਕ ਗਏ, ਹਾਰ ਗਏ, (ਪਰ) ਪ੍ਰਭੂ ਕਿਸੇ ਦੇ ਵੀ (ਹੱਥ) ਨਹੀਂ ਆਇਆ ॥੭॥੨੪੯॥",
+          "text": "(ਉਸ ਦੇ ਪ੍ਰਤਾਪ ਨੂੰ) ਵੇਖ ਕੇ ਸਾਰੇ ਸੰਤ ਜਗਤ ਵਿਚ ਪ੍ਰਸੰਨਤਾ-ਪੂਰਵਕ ਫਿਰਦੇ ਹਨ ਅਤੇ ਉਨ੍ਹਾਂ ਨੂੰ ਵੇਖ ਕੇ ਵੈਰੀ ਲੋਕ ਨਸ਼ਟ ਹੋ ਜਾਂਦੇ ਹਨ ॥੭॥੨੭॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1142,31 +1142,31 @@
     },
     {
       "id": 32,
-      "source_id": "NZX1",
+      "source_id": "8X52",
       "section_index": 2,
       "unit": 8,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਨਾਰਦ ਸੇ, ਚਤੁਰਾਨਨ ਸੇ; ਰੁਮਨਾ ਰਿਖ ਸੇ, ਸਭ ਹੂੰ ਮਿਲਿ ਗਾਇਓ ॥",
-        "gurmukhi_plain": "ਨਾਰਦ ਸੇ ਚਤੁਰਾਨਨ ਸੇ ਰੁਮਨਾ ਰਿਖ ਸੇ ਸਭ ਹੂੰ ਮਿਲਿ ਗਾਇਓ ॥",
+        "gurmukhi": "ਮਾਨਵ, ਇੰਦ੍ਰ, ਗਜਿੰਦ੍ਰ, ਨਰਾਧਪ; ਜੌਨ ਤ੍ਰਿਲੋਕ ਕੋ ਰਾਜ ਕਰੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਮਾਨਵ ਇੰਦ੍ਰ ਗਜਿੰਦ੍ਰ ਨਰਾਧਪ ਜੌਨ ਤ੍ਰਿਲੋਕ ਕੋ ਰਾਜ ਕਰੈਂਗੇ ॥",
         "transliteration": {
-          "english": "naarad se chaturaanan se rumanaa rikh se sabh hoon mil gaaeo |",
-          "hindi": "नारद से चतुरानन से रुमना रिख से सभ हूं मिलि गाइओ ॥"
+          "english": "maanav indr gajindr naraadhap jauan trilok ko raaj karainge |",
+          "hindi": "मानव इंद्र गजिंद्र नराधप जौन त्रिलोक को राज करैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Narada, Brahma and the sage Rumna all have together sung Thy Praises.",
+          "text": "King of men and elephants, emperors who would rule over the three worlds.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਨਾਰਦ ਵਰਗਿਆਂ, ਬ੍ਰਹਮਾ ਜਿਹਿਆਂ, ਰੋਮਹਰਸ਼ਣ ਰਿਸ਼ੀ ਵਰਗਿਆਂ ਸਭਨਾਂ ਨੇ ਮਿਲ ਕੇ ਯਸ਼ ਗਾਇਆ ਹੈ।",
+          "text": "ਜੋ ਮਨੁੱਖ, ਇੰਦਰ, ਗਜਿੰਦਰ, ਕੁਬੇਰ ਵਾਂਗ ਤਿੰਨ ਲੋਕਾਂ ਉਤੇ ਰਾਜ ਕਰਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1175,31 +1175,31 @@
     },
     {
       "id": 33,
-      "source_id": "JD1P",
+      "source_id": "DTH6",
       "section_index": 2,
       "unit": 8,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਬੇਦ ਕਤੇਬ ਨ ਭੇਦ ਲਖਿਓ; ਸਭ ਹਾਰ ਪਰੇ, ਹਰਿ ਹਾਥ ਨ ਆਇਓ ॥",
-        "gurmukhi_plain": "ਬੇਦ ਕਤੇਬ ਨ ਭੇਦ ਲਖਿਓ ਸਭ ਹਾਰ ਪਰੇ ਹਰਿ ਹਾਥ ਨ ਆਇਓ ॥",
+        "gurmukhi": "ਕੋਟਿ ਇਸਨਾਨ ਗਜਾਦਿਕ ਦਾਨ; ਅਨੇਕ ਸੁਅੰਬਰ ਸਾਜਿ, ਬਰੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਕੋਟਿ ਇਸਨਾਨ ਗਜਾਦਿਕ ਦਾਨ ਅਨੇਕ ਸੁਅੰਬਰ ਸਾਜਿ ਬਰੈਂਗੇ ॥",
         "transliteration": {
-          "english": "bed kateb na bhed lakhio sabh haar pare har haath na aaeo |",
-          "hindi": "बेद कतेब न भेद लखिओ सभ हार परे हरि हाथ न आइओ ॥"
+          "english": "kott isanaan gajaadik daan anek suanbar saaj barainge |",
+          "hindi": "कोटि इसनान गजादिक दान अनेक सुअंबर साजि बरैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Vedas and Katebs could not know His sectet  all have got tired, but the Lord could not be realised.",
+          "text": "Who would perform millions of ablutions, give elephants and other animals in charity and arrange many svayyamuaras (self-marriage functions) for weddings.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਵੇਦਾਂ, ਕਤੇਬਾਂ (ਦੇ ਪੜ੍ਹਨ ਵਾਲਿਆਂ ਨੇ) ਉਸ ਨੂੰ ਵੇਖਿਆ ਨਹੀਂ। ਸਭ (ਯਤਨ ਕਰ ਕਰ ਕੇ) ਹਾਰ ਗਏ ਹਨ, ਪਰ ਪਰਮਾਤਮਾ ਕਿਸੇ ਦੇ ਵੀ ਹੱਥ ਨਹੀਂ ਆਇਆ।",
+          "text": "ਜੋ ਕਰੋੜਾਂ ਤੀਰਥਾਂ ਦਾ ਇਸ਼ਨਾਨ ਕਰਕੇ ਹਾਥੀ ਆਦਿ ਦਾਨ ਕਰਦੇ ਹਨ ਅਤੇ ਅਨੇਕ ਸੁਅੰਬਰਾਂ ਦੀ ਵਿਵਸਥਾ ਕਰ ਕੇ (ਇਸਤਰੀਆਂ ਨੂੰ) ਵਰਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1208,31 +1208,31 @@
     },
     {
       "id": 34,
-      "source_id": "YP3W",
+      "source_id": "K51Y",
       "section_index": 2,
       "unit": 8,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਪਾਇ ਸਕੈ ਨਹੀ, ਪਾਰ ਉਮਾਪਤਿ; ਸਿੱਧ ਸਨਾਥ ਸਨੰਤਨ ਧਿਆਇਓ ॥",
-        "gurmukhi_plain": "ਪਾਇ ਸਕੈ ਨਹੀ ਪਾਰ ਉਮਾਪਤਿ ਸਿੱਧ ਸਨਾਥ ਸਨੰਤਨ ਧਿਆਇਓ ॥",
+        "gurmukhi": "ਬ੍ਰਹਮ, ਮਹੇਸਰ, ਬਿਸਨ, ਸਚੀਪਤਿ; ਅੰਤ ਫਸੇ, ਜਮ ਫਾਸ ਪਰੈਂਗੇ ॥",
+        "gurmukhi_plain": "ਬ੍ਰਹਮ ਮਹੇਸਰ ਬਿਸਨ ਸਚੀਪਤਿ ਅੰਤ ਫਸੇ ਜਮ ਫਾਸ ਪਰੈਂਗੇ ॥",
         "transliteration": {
-          "english": "paae sakai nahee paar umaapat sidh sanaath sanantan dhiaaeo |",
-          "hindi": "पाइ सकै नही पार उमापति सिद्ध सनाथ सनंतन धिआइओ ॥"
+          "english": "braham mahesar bisan sacheepat ant fase jam faas parainge |",
+          "hindi": "ब्रहम महेसर बिसन सचीपति अंत फसे जम फास परैंगे ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Shiva also could not know His limits  the adepts (Siddhas) alongwith Naths and Sanak etc. meditated upon Him.",
+          "text": "Brahma, Shiva, Vishnu and Consort of Sachi (Indra) would ultimately fall in the noose of death.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਉਸ ਦਾ) ਅੰਤ ਸ਼ਿਵ ਵੀ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰ ਸਕਿਆ, ਸਿੱਧਾਂ, ਨਾਥਾਂ ਸਹਿਤ ਬ੍ਰਹਮਾ-ਪੁੱਤਰਾਂ ਨੇ ਵੀ ਸਿਮਰਨ ਕੀਤਾ ਹੈ।",
+          "text": "ਪਰ ਜੇ ਉਹ ਬ੍ਰਹਮਾ, ਮਹੇਸ਼ ਅਤੇ ਵਿਸ਼ਣੂ ਅਤੇ ਇੰਦਰ (ਸਚੀ-ਪਤੀ) (ਦਾ ਧਿਆਨ ਧਰਦੇ ਹਨ, ਤਾਂ) ਅੰਤ ਵਿਚ ਜਮਰਾਜ ਦੇ ਫੰਧੇ ਵਿਚ ਫਸਦੇ ਹਨ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1241,31 +1241,31 @@
     },
     {
       "id": 35,
-      "source_id": "L2KM",
+      "source_id": "904M",
       "section_index": 2,
       "unit": 8,
-      "ends_unit": 250,
+      "ends_unit": 28,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਧਿਆਨ ਧਰੋ, ਤਿਹ ਕੋ ਮਨ ਮੈਂ; ਜਿਹ ਕੋ ਅਮਿਤੋਜਿ ਸਭੈ ਜਗੁ ਛਾਇਓ ॥੮॥੨੫੦॥",
-        "gurmukhi_plain": "ਧਿਆਨ ਧਰੋ ਤਿਹ ਕੋ ਮਨ ਮੈਂ ਜਿਹ ਕੋ ਅਮਿਤੋਜਿ ਸਭੈ ਜਗੁ ਛਾਇਓ ॥੮॥੨੫੦॥",
+        "gurmukhi": "ਜੇ ਨਰ, ਸ੍ਰੀ ਪਤਿ ਕੇ ਪ੍ਰਸ ਹੈਂ ਪਗ; ਤੇ ਨਰ, ਫੇਰ ਨ ਦੇਹ ਧਰੈਂਗੇ ॥੮॥੨੮॥",
+        "gurmukhi_plain": "ਜੇ ਨਰ ਸ੍ਰੀ ਪਤਿ ਕੇ ਪ੍ਰਸ ਹੈਂ ਪਗ ਤੇ ਨਰ ਫੇਰ ਨ ਦੇਹ ਧਰੈਂਗੇ ॥੮॥੨੮॥",
         "transliteration": {
-          "english": "dhiaan dharo tih ko man main jih ko amitoj sabhai jag chhaaeo |8|250|",
-          "hindi": "धिआन धरो तिह को मन मैं जिह को अमितोजि सभै जगु छाइओ ॥८॥२५०॥"
+          "english": "je nar sree pat ke pras hain pag te nar fer na deh dharainge |8|28|",
+          "hindi": "जे नर स्री पति के प्रस हैं पग ते नर फेर न देह धरैंगे ॥८॥२८॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Concentrate upon Him in thy mind, whose Unlimited Glory is spread in all the world.8.250.",
+          "text": "But those who fall at the feet of Lord-God, they would not appear again in physical form. 8.28.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਹੇ ਪ੍ਰਾਣੀ!) ਉਸ ਦਾ ਮਨ ਵਿਚ ਧਿਆਨ ਧਰੋ ਕਿਉਂਕਿ ਉਸ ਦਾ ਅਮਿਤ ਤੇਜ ਸਾਰੇ ਜਗਤ ਵਿਚ ਪਸਰਿਆ ਹੋਇਆ ਹੈ ॥੮॥੨੫੦॥",
+          "text": "ਜਿਹੜੇ ਪੁਰਸ਼ ਮਾਇਆ ਦੇ ਸੁਆਮੀ ਪਰਮਾਤਮਾ ਦੇ ਚਰਨਾਂ ਦੀ ਛੋਹ ਪ੍ਰਾਪਤ ਕਰਦੇ ਹਨ, ਉਹ ਮਨੁੱਖ ਫਿਰ ਦੇਹ ਧਾਰਨ ਨਹੀਂ ਕਰਨਗੇ (ਭਾਵ ਆਵਾਗਵਣ ਦੇ ਚੱਕਰ ਤੋਂ ਮੁਕਤ ਹੋ ਜਾਣਗੇ) ॥੮॥੨੮॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1274,31 +1274,31 @@
     },
     {
       "id": 36,
-      "source_id": "D0Y6",
+      "source_id": "3G1K",
       "section_index": 2,
       "unit": 9,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਬੇਦ ਪੁਰਾਨ ਕਤੇਬ ਕੁਰਾਨ; ਅਭੇਦ ਨ੍ਰਿਪਾਨ ਸਭੈ ਪਚ ਹਾਰੇ ॥",
-        "gurmukhi_plain": "ਬੇਦ ਪੁਰਾਨ ਕਤੇਬ ਕੁਰਾਨ ਅਭੇਦ ਨ੍ਰਿਪਾਨ ਸਭੈ ਪਚ ਹਾਰੇ ॥",
+        "gurmukhi": "ਕਹਾ ਭਯੋ ਜੋ ਦੋਊ ਲੋਚਨ ਮੂੰਦ ਕੈ ਬੈਠਿ ਰਹਿਓ ਬਕ ਧਿਆਨ ਲਗਾਇਓ ॥",
+        "gurmukhi_plain": "ਕਹਾ ਭਯੋ ਜੋ ਦੋਊ ਲੋਚਨ ਮੂੰਦ ਕੈ ਬੈਠਿ ਰਹਿਓ ਬਕ ਧਿਆਨ ਲਗਾਇਓ ॥",
         "transliteration": {
-          "english": "bed puraan kateb kuraan abhed nripaan sabhai pach haare |",
-          "hindi": "बेद पुरान कतेब कुरान अभेद न्रिपान सभै पच हारे ॥"
+          "english": "kahaa bhayo jo doaoo lochan moond kai baitth rahio bak dhiaan lagaaeo |",
+          "hindi": "कहा भयो जो दोऊ लोचन मूंद कै बैठि रहिओ बक धिआन लगाइओ ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Vedas, Puranas, Katebs and the Quran and kings…all are tired and greatly afflicted by not knowing the Lord’s mystery.",
+          "text": "Of what use it is if one sits and meditates like a crane with his eyes closed.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਵੇਦ, ਪੁਰਾਣ, ਕਤੇਬ, ਕੁਰਾਨ ਅਤੇ ਰਾਜੇ ਨਾ ਭੇਦੇ ਜਾ ਸਕਣ ਵਾਲੇ ਪਰਮਾਤਮਾ (ਨੂੰ ਪ੍ਰਾਪਤ ਕਰਨ ਦਾ ਯਤਨ ਕਰਦੇ ਰਹੇ ਪਰ) ਥਕ ਗਏ।",
+          "text": "ਕੀ ਹੋਇਆ ਜੇ ਕੋਈ ਦੋਵੇਂ ਅੱਖਾਂ ਬੰਦ ਕਰ ਕੇ ਬੈਠ ਗਿਆ ਅਤੇ ਬਗਲੇ ਵਾਂਗ ਧਿਆਨ ਲਗਾ ਲਿਆ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1307,31 +1307,31 @@
     },
     {
       "id": 37,
-      "source_id": "2EQT",
+      "source_id": "0Q4J",
       "section_index": 2,
       "unit": 9,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਭੇਦ ਨ ਪਾਇ ਸਕਿਓ ਅਨਭੇਦ ਕੋ; ਖੇਦਤ ਹੈ, ਅਨਛੇਦ ਪੁਕਾਰੇ ॥",
-        "gurmukhi_plain": "ਭੇਦ ਨ ਪਾਇ ਸਕਿਓ ਅਨਭੇਦ ਕੋ ਖੇਦਤ ਹੈ ਅਨਛੇਦ ਪੁਕਾਰੇ ॥",
+        "gurmukhi": "ਨ੍ਹਾਤ ਫਿਰਿਓ ਲੀਏ ਸਾਤ ਸਮੁਦ੍ਰਨਿ ਲੋਕ ਗਯੋ ਪਰਲੋਕ ਗਵਾਇਓ ॥",
+        "gurmukhi_plain": "ਨ੍ਹਾਤ ਫਿਰਿਓ ਲੀਏ ਸਾਤ ਸਮੁਦ੍ਰਨਿ ਲੋਕ ਗਯੋ ਪਰਲੋਕ ਗਵਾਇਓ ॥",
         "transliteration": {
-          "english": "bhed na paae sakio anabhed ko khedat hai anachhed pukaare |",
-          "hindi": "भेद न पाइ सकिओ अनभेद को खेदत है अनछेद पुकारे ॥"
+          "english": "nhaat firio lee saat samudran lok gayo paralok gavaaeo |",
+          "hindi": "न्हात फिरिओ लीए सात समुद्रनि लोक गयो परलोक गवाइओ ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "They could not comprehend the mystery of the Indis-criminate Lord, being greatly aggrieved, they recite Name of the Unassailable Lord.",
+          "text": "If he takes bath at holy places upto the seventh sea, he loses this world and also the next world.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਉਸ ਅਭੇਦ ਪਰਮਾਤਮਾ ਦੇ ਭੇਦ ਨੂੰ ਪ੍ਰਾਪਤ ਨਾ ਕਰ ਸਕੇ, ਉਹ ਦੁਖੀ ਹੋ ਕੇ (ਉਸ ਪਰਮ ਸੱਤਾ ਨੂੰ) 'ਅਛੇਦ' (ਨਾਂ ਨਾਲ) ਯਾਦ ਕਰਦੇ ਹਨ।",
+          "text": "ਜੇ ਕੋਈ (ਉਮਰ ਭਰ) ਸੱਤ ਸਮੁੰਦਰਾਂ ਵਿਚ ਇਸ਼ਨਾਨ ਕਰਦਾ ਫਿਰਿਆ (ਤਾਂ ਇਹ ਸਮਝ ਲਿਆ ਜਾਵੇ ਕਿ) ਉਸ ਦਾ ਲੋਕ ਵੀ ਗਿਆ ਅਤੇ ਪਰਲੋਕ ਵੀ (ਉਸ ਨੇ) ਗੰਵਾਂ ਲਿਆ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1340,31 +1340,31 @@
     },
     {
       "id": 38,
-      "source_id": "XTND",
+      "source_id": "74U2",
       "section_index": 2,
       "unit": 9,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਰਾਗ ਨ ਰੂਪ ਨ ਰੇਖ ਨ ਰੰਗ ਨ; ਸਾਕ ਨ ਸੋਗ ਨ ਸੰਗਿ ਤਿਹਾਰੇ ॥",
-        "gurmukhi_plain": "ਰਾਗ ਨ ਰੂਪ ਨ ਰੇਖ ਨ ਰੰਗ ਨ ਸਾਕ ਨ ਸੋਗ ਨ ਸੰਗਿ ਤਿਹਾਰੇ ॥",
+        "gurmukhi": "ਬਾਸ ਕੀਓ ਬਿਖਿਆਨ ਸੋਂ ਬੈਠ ਕੈ; ਐਸੇ ਹੀ ਐਸੇ ਸੁ ਬੈਸ ਬਿਤਾਇਓ ॥",
+        "gurmukhi_plain": "ਬਾਸ ਕੀਓ ਬਿਖਿਆਨ ਸੋਂ ਬੈਠ ਕੈ ਐਸੇ ਹੀ ਐਸੇ ਸੁ ਬੈਸ ਬਿਤਾਇਓ ॥",
         "transliteration": {
-          "english": "raag na roop na rekh na rang na saak na sog na sang tihaare |",
-          "hindi": "राग न रूप न रेख न रंग न साक न सोग न संगि तिहारे ॥"
+          "english": "baas keeo bikhiaan son baitth kai aise hee aise su bais bitaaeo |",
+          "hindi": "बास कीओ बिखिआन सों बैठ कै ऐसे ही ऐसे सु बैस बिताइओ ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "The Lord who is without affection, form, mark, colour, relative, and sorrow, abides with thee.",
+          "text": "He spends his life in such performing evil actions and wastes his life in such pursuits.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜਿਸ ਦਾ) ਨਾ ਰਾਗ ਹੈ, ਨਾ ਰੂਪ-ਰੇਖਾ ਹੈ, ਨਾ ਕੋਈ ਰੰਗ ਹੈ, ਨਾ ਸਾਕ ਹੈ, ਨਾ ਸੋਗ ਹੈ, ਉਹ ਪ੍ਰਭੂ ਸਦਾ ਤੇਰੇ ਸੰਗ ਹੈ।",
+          "text": "ਬਾਨ-ਪ੍ਰਸਤੀ (ਬਿਖਿਆਨ-ਵੈਖਾਨਸ) ਹੋ ਕੇ ਜੰਗਲਾਂ ਵਿਚ ਨਿਵਾਸ ਕੀਤਾ, ਉਨ੍ਹਾਂ ਨੇ ਵੀ ਇਸ ਤਰ੍ਹਾਂ ਆਪਣੀ ਸਾਰੀ ਉਮਰ (ਵਿਅਰਥ ਵਿਚ) ਬਿਤਾ ਦਿੱਤੀ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1373,31 +1373,31 @@
     },
     {
       "id": 39,
-      "source_id": "50U2",
+      "source_id": "LCQL",
       "section_index": 2,
       "unit": 9,
-      "ends_unit": 251,
+      "ends_unit": 29,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਆਦਿ ਅਨਾਦਿ ਅਗਾਧ ਅਭੇਖ; ਅਦ੍ਵੈਖ ਜਪਿਓ, ਤਿਨ ਹੀ ਕੁਲ ਤਾਰੇ ॥੯॥੨੫੧॥",
-        "gurmukhi_plain": "ਆਦਿ ਅਨਾਦਿ ਅਗਾਧ ਅਭੇਖ ਅਦ੍ਵੈਖ ਜਪਿਓ ਤਿਨ ਹੀ ਕੁਲ ਤਾਰੇ ॥੯॥੨੫੧॥",
+        "gurmukhi": "ਸਾਚੁ ਕਹੋਂ, ਸੁਨ ਲੇਹੁ ਸਭੈ; ਜਿਨ ਪ੍ਰੇਮ ਕੀਓ, ਤਿਨ ਹੀ ਪ੍ਰਭੁ ਪਾਇਓ ॥੯॥੨੯॥",
+        "gurmukhi_plain": "ਸਾਚੁ ਕਹੋਂ ਸੁਨ ਲੇਹੁ ਸਭੈ ਜਿਨ ਪ੍ਰੇਮ ਕੀਓ ਤਿਨ ਹੀ ਪ੍ਰਭੁ ਪਾਇਓ ॥੯॥੨੯॥",
         "transliteration": {
-          "english": "aad anaad agaadh abhekh advaikh japio tin hee kul taare |9|251|",
-          "hindi": "आदि अनादि अगाध अभेख अद्वैख जपिओ तिन ही कुल तारे ॥९॥२५१॥"
+          "english": "saach kahon sun lehu sabhai jin prem keeo tin hee prabh paaeo |9|29|",
+          "hindi": "साचु कहों सुन लेहु सभै जिन प्रेम कीओ तिन ही प्रभु पाइओ ॥९॥२९॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Those who have remembered that Primal , beginningless, guiseless and blemishless Lord, they have ferried across their whole clan.9.251",
+          "text": "I speak Truth, all should turn their ears towards it: he, who is absorbed in True Love, he would realize the Lord. 9.29.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਜੋ) ਆਦਿ, ਅਨਾਦਿ, ਅਗਾਧ, ਅਭੇਖ, ਅਦ੍ਵੈਸ਼ (ਪ੍ਰਭੂ) ਨੂੰ ਜਪਦਾ ਹੈ, ਉਹ ਆਪਣੀ ਕੁਲ ਹੀ ਤਾਰ ਲੈਂਦਾ ਹੈ ॥੯॥੨੫੧॥",
+          "text": "(ਮੈਂ) ਸਚ ਕਹਿੰਦਾ ਹਾਂ, ਸਾਰੇ (ਧਿਆਨ ਨਾਲ) ਸੁਣ ਲਵੋ ਕਿ ਜਿੰਨ੍ਹਾਂ ਨੇ ਪਰਮਾਤਮਾ ਨਾਲ ਪ੍ਰੇਮ ਦਾ ਸੰਬੰਧ ਜੋੜਿਆ ਹੈ, ਉਨ੍ਹਾਂ ਨੇ ਹੀ ਉਸ ਨੂੰ ਪ੍ਰਾਪਤ ਕੀਤਾ ਹੈ ॥੯॥੨੯॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1406,31 +1406,31 @@
     },
     {
       "id": 40,
-      "source_id": "CDR8",
+      "source_id": "VJN8",
       "section_index": 2,
       "unit": 10,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਤੀਰਥ ਕੋਟ ਕੀਏ ਇਸਨਾਨ; ਦੀਏ ਬਹੁ ਦਾਨ, ਮਹਾ ਬ੍ਰਤ ਧਾਰੇ ॥",
-        "gurmukhi_plain": "ਤੀਰਥ ਕੋਟ ਕੀਏ ਇਸਨਾਨ ਦੀਏ ਬਹੁ ਦਾਨ ਮਹਾ ਬ੍ਰਤ ਧਾਰੇ ॥",
+        "gurmukhi": "ਕਾਹੂ ਲੈ ਪਾਹਨ ਪੂਜ ਧਰਯੋ ਸਿਰ; ਕਾਹੂ ਲੈ ਲਿੰਗ ਗਰੇ ਲਟਕਾਇਓ ॥",
+        "gurmukhi_plain": "ਕਾਹੂ ਲੈ ਪਾਹਨ ਪੂਜ ਧਰਯੋ ਸਿਰ ਕਾਹੂ ਲੈ ਲਿੰਗ ਗਰੇ ਲਟਕਾਇਓ ॥",
         "transliteration": {
-          "english": "teerath kott kee isanaan dee bahu daan mahaa brat dhaare |",
-          "hindi": "तीरथ कोट कीए इसनान दीए बहु दान महा ब्रत धारे ॥"
+          "english": "kaahoo lai paahan pooj dharayo sir kaahoo lai ling gare lattakaaeo |",
+          "hindi": "काहू लै पाहन पूज धरयो सिर काहू लै लिंग गरे लटकाइओ ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Having taken bath at millions of pilgrim-stations, having given many gifts in charity and giving observed important fasts.",
+          "text": "Someone worshipped stone and placed it on his head. Someone hung the phallus (lingam) from his neck.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਕੋਈ ਜਿਗਿਆਸੂ ਭਾਵੇਂ) ਕਰੋੜਾਂ ਤੀਰਥਾਂ ਦਾ ਇਸ਼ਨਾਨ ਕਰੇ, ਬਹੁਤ ਦਾਨ ਦੇਵੇ ਅਤੇ ਮਹਾਨ ਬ੍ਰਤ ਧਾਰਨ ਕਰੇ;",
+          "text": "ਕਿਸੇ ਨੇ ਸਾਲਗ੍ਰਾਮ ਨੂੰ ਪੂਜ ਕੇ ਸਿਰ ਉਤੇ ਧਾਰਨ ਕਰ ਲਿਆ ਹੈ ਅਤੇ ਕਿਸੇ ਨੇ ਸ਼ਿਵਲਿੰਗ ਲੈ ਕੇ ਗਲੇ ਵਿਚ ਲਟਕਾ ਲਿਆ ਹੈ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1439,31 +1439,31 @@
     },
     {
       "id": 41,
-      "source_id": "R5EW",
+      "source_id": "BUP9",
       "section_index": 2,
       "unit": 10,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦੇਸ ਫਿਰਿਓ, ਕਰ ਭੇਸ ਤਪੋਧਨ; ਕੇਸ ਧਰੇ ਨ ਮਿਲੇ, ਹਰਿ ਪਿਆਰੇ ॥",
-        "gurmukhi_plain": "ਦੇਸ ਫਿਰਿਓ ਕਰ ਭੇਸ ਤਪੋਧਨ ਕੇਸ ਧਰੇ ਨ ਮਿਲੇ ਹਰਿ ਪਿਆਰੇ ॥",
+        "gurmukhi": "ਕਾਹੂ ਲਖਿਓ ਹਰਿ ਅਵਾਚੀ ਦਿਸਾ ਮਹਿ; ਕਾਹੂ, ਪਛਾਹ ਕੋ ਸੀਸੁ ਨਿਵਾਇਓ ॥",
+        "gurmukhi_plain": "ਕਾਹੂ ਲਖਿਓ ਹਰਿ ਅਵਾਚੀ ਦਿਸਾ ਮਹਿ ਕਾਹੂ ਪਛਾਹ ਕੋ ਸੀਸੁ ਨਿਵਾਇਓ ॥",
         "transliteration": {
-          "english": "des firio kar bhes tapodhan kes dhare na mile har piaare |",
-          "hindi": "देस फिरिओ कर भेस तपोधन केस धरे न मिले हरि पिआरे ॥"
+          "english": "kaahoo lakhio har avaachee disaa meh kaahoo pachhaah ko sees nivaaeo |",
+          "hindi": "काहू लखिओ हरि अवाची दिसा महि काहू पछाह को सीसु निवाइओ ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Having wandered in the garb of an ascetic in many countries and having worn matted hair, the beloved Lord could not be realised.",
+          "text": "Someone visualized God in the South and someone bowed his head towards the West.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਤਪਸਵੀਆਂ ਵਾਲਾ ਭੇਖ ਧਾਰ ਕੇ ਦੇਸ-ਦੇਸਾਂਤਰਾਂ ਵਿਚ ਫਿਰਦਾ ਰਹੇ, ਕੇਸ (ਜਟਾਵਾਂ) ਧਾਰਨ ਕਰ ਲਏ, (ਪਰ ਤਾਂ ਵੀ) ਪਿਆਰਾ ਹਰਿ ਨਹੀਂ ਮਿਲਦਾ;",
+          "text": "ਕਿਸੇ ਨੇ ਪਰਮਾਤਮਾ ਨੂੰ ਪੂਰਬ ਦਿਸ਼ਾ ਵਿਚ ਜਾਣਿਆ ਹੈ ਅਤੇ ਕਿਸੇ ਨੇ ਪੱਛਮ ਵਲ ਸਿਰ ਨਿਵਾਇਆ ਹੈ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1472,31 +1472,31 @@
     },
     {
       "id": 42,
-      "source_id": "46CF",
+      "source_id": "ZDA3",
       "section_index": 2,
       "unit": 10,
       "ends_unit": null,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਆਸਨ ਕੋਟ ਕਰੇ ਅਸਟਾਂਗ; ਧਰੇ ਬਹੁ ਨਿਆਸ, ਕਰੇ ਮੁਖ ਕਾਰੇ ॥",
-        "gurmukhi_plain": "ਆਸਨ ਕੋਟ ਕਰੇ ਅਸਟਾਂਗ ਧਰੇ ਬਹੁ ਨਿਆਸ ਕਰੇ ਮੁਖ ਕਾਰੇ ॥",
+        "gurmukhi": "ਕੋਊ, ਬੁਤਾਨ ਕੋ ਪੂਜਤ ਹੈ ਪਸੁ; ਕੋਊ, ਮ੍ਰਿਤਾਨ ਕੋ ਪੂਜਨ ਧਾਇਓ ॥",
+        "gurmukhi_plain": "ਕੋਊ ਬੁਤਾਨ ਕੋ ਪੂਜਤ ਹੈ ਪਸੁ ਕੋਊ ਮ੍ਰਿਤਾਨ ਕੋ ਪੂਜਨ ਧਾਇਓ ॥",
         "transliteration": {
-          "english": "aasan kott kare asattaang dhare bahu niaas kare mukh kaare |",
-          "hindi": "आसन कोट करे असटांग धरे बहु निआस करे मुख कारे ॥"
+          "english": "koaoo butaan ko poojat hai pas koaoo mritaan ko poojan dhaaeo |",
+          "hindi": "कोऊ बुतान को पूजत है पसु कोऊ म्रितान को पूजन धाइओ ॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "Adopting millions of postures and observing the eight steps of Yoga, touching the limbs while reciting the mantras and blackening the face.",
+          "text": "Some fool worships the idols and someone goes to worship the dead.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "ਕਰੋੜਾਂ ਆਸਨ ਕਰੇ, ਜੋਗ ਦੇ ਅੱਠ ਅੰਗ ਧਾਰਨ ਕਰੇ, ਬਹੁਤ ਤਿਆਗ ਕਰੇ ਅਤੇ (ਦੀਵਾਨੇ ਸਾਧੂਆਂ ਵਾਂਗ) ਮੂੰਹ ਕਾਲੇ ਕਰੇ;",
+          "text": "ਕੋਈ ਮੂਰਖ ਬੁਤਾਂ (ਮੂਰਤੀ) ਨੂੰ ਪੂਜ ਰਿਹਾ ਹੈ ਅਤੇ ਕੋਈ ਕਬਰਾਂ ਨੂੰ ਪੂਜਦਾ ਫਿਰਦਾ ਹੈ;",
           "source": "RSJD"
         },
         "punjabi_alt": null,
@@ -1505,31 +1505,31 @@
     },
     {
       "id": 43,
-      "source_id": "B9RZ",
+      "source_id": "DY6J",
       "section_index": 2,
       "unit": 10,
-      "ends_unit": 252,
+      "ends_unit": 30,
       "scripture": {
         "asset": "DGDG",
-        "page": 37,
+        "page": 13,
         "line": null
       },
       "text": {
-        "gurmukhi": "ਦੀਨ ਦਇਆਲ ਅਕਾਲ ਭਜੇ ਬਿਨੁ; ਅੰਤ ਕੋ, ਅੰਤ ਕੇ ਧਾਮ ਸਿਧਾਰੇ ॥੧੦॥੨੫੨॥",
-        "gurmukhi_plain": "ਦੀਨ ਦਇਆਲ ਅਕਾਲ ਭਜੇ ਬਿਨੁ ਅੰਤ ਕੋ ਅੰਤ ਕੇ ਧਾਮ ਸਿਧਾਰੇ ॥੧੦॥੨੫੨॥",
+        "gurmukhi": "ਕੂਰ ਕ੍ਰਿਆ ਉਰਝਿਓ ਸਭ ਹੀ ਜਗ; ਸ੍ਰੀ ਭਗਵਾਨ ਕੋ ਭੇਦੁ ਨ ਪਾਇਓ ॥੧੦॥੩੦॥",
+        "gurmukhi_plain": "ਕੂਰ ਕ੍ਰਿਆ ਉਰਝਿਓ ਸਭ ਹੀ ਜਗ ਸ੍ਰੀ ਭਗਵਾਨ ਕੋ ਭੇਦੁ ਨ ਪਾਇਓ ॥੧੦॥੩੦॥",
         "transliteration": {
-          "english": "deen deaal akaal bhaje bin ant ko ant ke dhaam sidhaare |10|252|",
-          "hindi": "दीन दइआल अकाल भजे बिनु अंत को अंत के धाम सिधारे ॥१०॥२५२॥"
+          "english": "koor kriaa urajhio sabh hee jag sree bhagavaan ko bhed na paaeo |10|30|",
+          "hindi": "कूर क्रिआ उरझिओ सभ ही जग स्री भगवान को भेदु न पाइओ ॥१०॥३०॥"
         }
       },
       "meaning": {
         "english": {
-          "text": "But without the remembrance of the Non-temporal and Merciful Lord of the lowly, one will ultimately go to the abode of Yama. 10.252.",
+          "text": "The whole world is entangled in false rituals and has not known the secret of Lord-God 10.30.",
           "source": "DSKO"
         },
         "english_alt": null,
         "punjabi": {
-          "text": "(ਪਰ) ਦੀਨ-ਦਿਆਲ, ਅਕਾਲ ਸਰੂਪ ਵਾਲੇ ਪਰਮਾਤਮਾ ਨੂੰ ਭਜੇ ਬਿਨਾ (ਉਹ) ਅੰਤ ਨੂੰ ਯਮਰਾਜ ਦੇ ਘਰ ਜਾਂਦੇ ਹਨ ॥੧੦॥੨੫੨॥",
+          "text": "ਸਾਰਾ ਸੰਸਾਰ ਕੂੜੀ ਕ੍ਰਿਆ ਵਿਚ ਉਲਝਿਆ ਹੋਇਆ ਹੈ, ਪਰ ਮਾਇਆ ਦੇ ਸੁਆਮੀ ਦਾ ਕਿਸੇ ਨੇ ਵੀ ਭੇਦ ਨਹੀਂ ਪਾਇਆ ਹੈ ॥੧੦॥੩੦॥",
           "source": "RSJD"
         },
         "punjabi_alt": null,

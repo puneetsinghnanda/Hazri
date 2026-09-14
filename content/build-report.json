@@ -10,6 +10,7 @@
     "jaap-sahib": {
       "source_bani_id": "JAAP",
       "lines": 801,
+      "lines_dropped_before_start": 0,
       "units": 199,
       "meanings": {
         "en": 801,
@@ -21,8 +22,9 @@
       "hindi_meaning_note": "No Hindi-language meaning exists for this bani in the dataset. The Faridkot teeka covers Sri Guru Granth Sahib only; this bani is not from that scripture."
     },
     "tav-prasad-savaiye": {
-      "source_bani_id": "TPDK",
+      "source_bani_id": "TPSS",
       "lines": 43,
+      "lines_dropped_before_start": 0,
       "units": 10,
       "meanings": {
         "en": 43,
@@ -36,6 +38,7 @@
     "chaupai-sahib": {
       "source_bani_id": "CPDT",
       "lines": 129,
+      "lines_dropped_before_start": 0,
       "units": 31,
       "meanings": {
         "en": 113,
@@ -49,6 +52,7 @@
     "anand-sahib": {
       "source_bani_id": "ANND",
       "lines": 210,
+      "lines_dropped_before_start": 0,
       "units": 40,
       "meanings": {
         "en": 420,
@@ -61,12 +65,13 @@
     },
     "rehras-sahib": {
       "source_bani_id": "RHRS",
-      "lines": 339,
+      "lines": 327,
+      "lines_dropped_before_start": 12,
       "units": 71,
       "meanings": {
-        "en": 558,
-        "pa": 554,
-        "hi": 212
+        "en": 534,
+        "pa": 531,
+        "hi": 201
       },
       "word_misaligned_lines": 4,
       "vishraam_unparsed_lines": 0,
@@ -75,6 +80,7 @@
     "kirtan-sohila": {
       "source_bani_id": "SHLA",
       "lines": 54,
+      "lines_dropped_before_start": 0,
       "units": 18,
       "meanings": {
         "en": 108,
@@ -88,6 +94,7 @@
     "ardas": {
       "source_bani_id": "ARDS",
       "lines": 27,
+      "lines_dropped_before_start": 0,
       "units": 1,
       "meanings": {
         "en": 27,
@@ -101,6 +108,7 @@
     "sukhmani-sahib": {
       "source_bani_id": "SKMI",
       "lines": 2026,
+      "lines_dropped_before_start": 0,
       "units": 216,
       "meanings": {
         "en": 4052,
@@ -203,6 +211,6 @@
   },
   "cities": 92,
   "content_version": 7,
-  "source_digest": "261e0ed105fa25d2",
-  "bytes": 4820992
+  "source_digest": "e24423bf31b258ab",
+  "bytes": 4804608
 }
