@@ -95,7 +95,15 @@ SNAP_WINDOW_S = 1.00
 END_SLACK = 2.5
 
 # How much a step off the diagonal costs, in the same units as the frame
-# distance. The recitation and the synthesis have already been matched for
+# distance. Holding and skipping cost the same, which was tested rather than
+# assumed: when eight recitations came back with the text running ahead of the
+# voice partway through, the obvious suspect was this cost -- absorbing five
+# seconds of unexpected audio means holding for 250 fine frames, which at 0.6
+# each is a cost no frame distance can repay. Neither direction helped.
+# Charging more to skip than to hold took Chaupai's physically impossible
+# lines from 7 to 5 and then to 9 as the gap widened; making holding nearly
+# free took it to 10. The text running ahead is not the warp choosing a cheap
+# path. It is the recording saying something the text does not contain. The recitation and the synthesis have already been matched for
 # overall pace, so a path that races through two lines of near-identical text
 # is paying for it; without this, a run of lines that all open the same way
 # ("ਅਸੰਖ ..."), which the ear tells apart only by what follows, gives the search
@@ -261,7 +269,7 @@ INF = np.float32(1e30)
 
 
 def dtw(real: np.ndarray, synth: np.ndarray, band: int,
-        penalty: float = STEP_PENALTY) -> np.ndarray:
+        penalty: float = STEP_PENALTY, skip_penalty: float | None = None) -> np.ndarray:
     """Maps every frame of `real` to a frame of `synth`, monotonically.
 
     `synth` has already been resampled so that the mapping runs along the
@@ -309,7 +317,8 @@ def dtw(real: np.ndarray, synth: np.ndarray, band: int,
             skip[0] = INF
 
             np.putmask(hold, hold < INF, hold + penalty)
-            np.putmask(skip, skip < INF, skip + penalty)
+            np.putmask(skip, skip < INF, skip + (penalty if skip_penalty is None
+                                                 else skip_penalty))
             stacked = np.stack((diag, hold, skip))
             choice = np.argmin(stacked, axis=0).astype(np.int8)
             best = stacked[choice, offsets + band]
@@ -336,7 +345,8 @@ def resample_to(seq: np.ndarray, n: int) -> tuple[np.ndarray, np.ndarray]:
 
 
 def warp(real_wav: str, synth_wav: str, verbose: bool = False,
-         penalty: float = STEP_PENALTY) -> np.ndarray:
+         penalty: float = STEP_PENALTY,
+         skip_penalty: float | None = None) -> np.ndarray:
     """Returns, for each 20 ms frame of the recitation, the synthetic time it matches."""
     _, real = read_wav(real_wav)
     _, synth = read_wav(synth_wav)
@@ -346,7 +356,7 @@ def warp(real_wav: str, synth_wav: str, verbose: bool = False,
     a = mfcc(real, COARSE_HOP, COARSE_WIN)
     b = mfcc(synth, COARSE_HOP, COARSE_WIN)
     bb, index = resample_to(b, len(a))
-    coarse = dtw(a, bb, int(COARSE_BAND_S / COARSE_HOP), penalty)
+    coarse = dtw(a, bb, int(COARSE_BAND_S / COARSE_HOP), penalty, skip_penalty)
     coarse_t = index[coarse] * COARSE_HOP  # synthetic seconds per coarse real frame
 
     if verbose:
@@ -361,7 +371,7 @@ def warp(real_wav: str, synth_wav: str, verbose: bool = False,
         coarse_t,
     ) / FINE_HOP
     index = np.clip(np.round(centres).astype(np.int64), 0, len(b) - 1)
-    fine = dtw(a, b[index], int(FINE_BAND_S / FINE_HOP), penalty)
+    fine = dtw(a, b[index], int(FINE_BAND_S / FINE_HOP), penalty, skip_penalty)
     return index[fine] * FINE_HOP
 
 
@@ -579,6 +589,11 @@ def main() -> int:
         help="the 1-based line the recitation begins at, when it skips the "
              "text's opening lines. Those lines keep their text and simply "
              "get no timing.")
+    ap.add_argument("--hold-penalty", type=float, default=STEP_PENALTY,
+                    help="cost of the text waiting while the recitation goes on")
+    ap.add_argument("--skip-penalty", type=float, default=None,
+                    help="cost of the text running at double pace; defaults to "
+                         "the hold penalty")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
@@ -631,7 +646,8 @@ def main() -> int:
         if verbose:
             print(f"warping {real_len:.0f}s of recitation onto "
                   f"{word_spans[-1][1]:.0f}s of synthesis", file=sys.stderr)
-        synth_t = warp(real_wav, synth_wav, verbose)
+        synth_t = warp(real_wav, synth_wav, verbose, args.hold_penalty,
+                       args.skip_penalty)
         pauses, speech_start, speech_end = find_pauses(real_wav)
 
     # Read every word's span through the warp.
