@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../core/db/content_db.dart';
 import '../../../core/db/content_repository.dart';
@@ -17,14 +13,15 @@ import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../audio/data/audio_controller.dart';
+import '../data/simran_controller.dart';
 import '../../today/data/today_controller.dart';
 import 'anhad_ring.dart';
 
 /// Daily Simran — five quiet minutes (Design 21).
 ///
-/// The timer is anchored to a start instant rather than a tick count, so
-/// locking the phone or leaving the app does not lose time (PRD 1.13).
+/// The session itself lives in [simranSessionProvider], not here: the screen
+/// can be built more than once over one sitting (the mini player opens it, a
+/// tab switch rebuilds it) and the timer has to be the same timer each time.
 class SimranScreen extends ConsumerStatefulWidget {
   const SimranScreen({super.key});
 
@@ -33,15 +30,6 @@ class SimranScreen extends ConsumerStatefulWidget {
 }
 
 class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBindingObserver {
-  DateTime? _startedAt;
-  Timer? _ticker;
-  Duration _elapsed = Duration.zero;
-  bool _logged = false;
-
-  Duration get _total => Duration(minutes: ref.read(settingsProvider).simranMinutes);
-
-  bool get _running => _startedAt != null;
-
   @override
   void initState() {
     super.initState();
@@ -51,72 +39,14 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _ticker?.cancel();
-    if (_running && !_logged) unawaited(_finish(completed: false));
-    WakelockPlus.disable();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // Recompute from the start instant rather than trusting the ticker.
-    if (state == AppLifecycleState.resumed) _tick();
-  }
-
-  void _start() {
-    final track = ref.read(simranTrackProvider).value;
-    if (track != null) {
-      unawaited(ref.read(playbackControllerProvider)
-          .playSimran(track, title: L.of(context).simranTitle));
-    }
-    setState(() {
-      _startedAt = DateTime.now();
-      _elapsed = Duration.zero;
-      _logged = false;
-    });
-    WakelockPlus.enable();
-    _ticker = Timer.periodic(const Duration(milliseconds: 250), (_) => _tick());
-  }
-
-  void _tick() {
-    final started = _startedAt;
-    if (started == null) return;
-    final elapsed = DateTime.now().difference(started);
-    if (elapsed >= _total) {
-      unawaited(_finish(completed: true));
-      return;
-    }
-    if (mounted) setState(() => _elapsed = elapsed);
-  }
-
-  Future<void> _finish({required bool completed}) async {
-    if (_logged) return;
-    _logged = true;
-    _ticker?.cancel();
-    final started = _startedAt;
-    final elapsed = started == null ? Duration.zero : DateTime.now().difference(started);
-    final capped = elapsed > _total ? _total : elapsed;
-
-    await ref.read(userRepositoryProvider).logSimran(
-          duration: capped,
-          count: 0,
-          completed: completed,
-        );
-
-    await ref.read(paathPlayerProvider)?.stop();
-    if (completed) {
-      await HapticFeedback.mediumImpact();
-    }
-    await WakelockPlus.disable();
-    if (!mounted) return;
-    setState(() {
-      _startedAt = null;
-      _elapsed = Duration.zero;
-    });
-    if (completed) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(L.of(context).simranCompleteToast)),
-      );
+    if (state == AppLifecycleState.resumed) {
+      ref.read(simranSessionProvider.notifier).tick();
     }
   }
 
@@ -125,8 +55,21 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     final c = context.colors;
     final l = L.of(context);
     final settings = ref.watch(settingsProvider);
-    final remaining = _total - _elapsed;
+    final session = ref.watch(simranSessionProvider);
+    final controller = ref.read(simranSessionProvider.notifier);
+    final total = controller.total;
+    final remaining = total - session.elapsed;
     final doneToday = ref.watch(simranDoneTodayProvider).value ?? false;
+
+    // A session that ran its full length may well have finished while this
+    // screen was not on top, so the toast follows the state, not the tap.
+    ref.listen(simranSessionProvider, (prev, next) {
+      if (next.justCompleted && !(prev?.justCompleted ?? false)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.simranCompleteToast)),
+        );
+      }
+    });
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -143,13 +86,13 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
                   child: ProgressRing(
                     size: 240,
                     strokeWidth: 10,
-                    progress: _total.inSeconds == 0
+                    progress: total.inSeconds == 0
                         ? 0
-                        : _elapsed.inMilliseconds / _total.inMilliseconds,
+                        : session.elapsed.inMilliseconds / total.inMilliseconds,
                     child: AnhadRing(
-                      elapsed: _elapsed,
-                      total: _total,
-                      running: _running,
+                      elapsed: session.elapsed,
+                      total: total,
+                      running: session.running,
                       track: ref.watch(simranTrackProvider).value,
                       child: Text(
                         _waheguru(settings.script),
@@ -164,27 +107,27 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
                 // the wave inside it.
                 Center(
                   child: Text(
-                    HazriDates.duration(_running ? remaining : _total),
+                    HazriDates.duration(session.running ? remaining : total),
                     style: HazriText.display34.copyWith(color: c.kesriInk),
                   ),
                 ),
                 Center(
                   child: Text(
-                    l.simranLeftOf(HazriDates.duration(_total)),
+                    l.simranLeftOf(HazriDates.duration(total)),
                     style: HazriText.caption.copyWith(color: c.muted),
                   ),
                 ),
                 const SizedBox(height: 20),
-                if (_running) ...[
+                if (session.running)
                   PrimaryButton(
                     label: l.simranEnd,
                     secondary: true,
-                    onPressed: () => _finish(completed: false),
-                  ),
-                ] else
+                    onPressed: () => controller.finish(completed: false),
+                  )
+                else
                   PrimaryButton(
                     label: doneToday ? l.simranTileDone : l.simranBegin,
-                    onPressed: _start,
+                    onPressed: () => controller.start(title: l.simranTitle),
                   ),
                 const SizedBox(height: 20),
                 const _RecentCard(),

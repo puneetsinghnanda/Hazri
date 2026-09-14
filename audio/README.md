@@ -45,8 +45,11 @@ The Naam Simran recitation is not a bani and takes a different path:
 
 ```bash
 # the session is five minutes and the master is sixteen, so only the part
-# that plays is shipped -- 2.6 MB rather than 8
-python3 tools/audio_pipeline/build_audio.py naam-simran --seconds 330
+# that plays is shipped -- 2.4 MB rather than 8. The fade matters: five
+# minutes lands wherever the reciter happens to be, and the last three
+# seconds ending rather than stopping is the difference between a session
+# that closes and one that is cut off.
+python3 tools/audio_pipeline/build_audio.py naam-simran --seconds 300 --fade 3
 
 # measure the shape the Simran ring follows
 python3 tools/audio_pipeline/simran_envelope.py naam-simran

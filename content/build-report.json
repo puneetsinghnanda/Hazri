@@ -17,9 +17,9 @@
   "simran": [
     {
       "track": "naam-simran",
-      "bytes": 2708309,
-      "duration_ms": 330002,
-      "onsets": 396
+      "bytes": 2461955,
+      "duration_ms": 300002,
+      "onsets": 363
     }
   ],
   "vichar": {
@@ -40,6 +40,6 @@
   },
   "cities": 92,
   "content_version": 6,
-  "source_digest": "44b474f03d362bed",
+  "source_digest": "3ecd774b9f4da202",
   "bytes": 942080
 }

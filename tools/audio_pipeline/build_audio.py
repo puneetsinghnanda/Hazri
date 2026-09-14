@@ -50,6 +50,11 @@ def main() -> int:
         help="ship only the first N seconds. The Naam Simran master runs 16 "
              "minutes and the session is 5, so shipping all of it would put "
              "megabytes of unplayed audio in every install.")
+    ap.add_argument(
+        "--fade", type=float, default=0.0,
+        help="fade the last N seconds out. A cut taken on the clock lands "
+             "wherever the reciter happens to be; a fade ends the recitation "
+             "rather than interrupting it. Only meaningful with --seconds.")
     args = ap.parse_args()
 
     src = args.source or os.path.join(SRC, f"{args.bani}.mp3")
@@ -72,11 +77,18 @@ def main() -> int:
     )
 
     trim = ["-t", str(args.seconds)] if args.seconds else []
+    if args.fade and args.seconds:
+        # After loudnorm, so the fade is the last thing the ear hears and the
+        # measured loudness still describes the body of the recitation.
+        fade = f",afade=t=out:st={args.seconds - args.fade}:d={args.fade}"
+    else:
+        fade = ""
     print(f"encoding mono AAC {BITRATE}"
-          + (f", first {args.seconds:.0f}s" if args.seconds else "") + " ...")
+          + (f", first {args.seconds:.0f}s" if args.seconds else "")
+          + (f", {args.fade:.0f}s fade" if fade else "") + " ...")
     subprocess.run(
         ["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", src, *trim,
-         "-af", loudnorm, "-ac", "1", "-ar", "44100",
+         "-af", loudnorm + fade, "-ac", "1", "-ar", "44100",
          "-c:a", "aac", "-b:a", BITRATE, "-movflags", "+faststart",
          "-map_metadata", "-1", "-y", dst],
         check=True,

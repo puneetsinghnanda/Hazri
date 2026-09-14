@@ -52,7 +52,8 @@ class MiniPlayer extends ConsumerWidget {
         color: c.card,
         child: InkWell(
           // Naam Simran has no reader; the track says where it belongs.
-          onTap: () => context.push(
+          onTap: () => _open(
+            context,
             item.extras?['route'] as String? ?? Routes.reader(item.id),
           ),
           child: Column(
@@ -124,6 +125,20 @@ class MiniPlayer extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+/// Opens what is playing.
+///
+/// A tab has to be switched to, not pushed: pushing puts a second copy of the
+/// screen on top of the shell, and for Simran that second copy is a second
+/// screen looking at the same session -- which is how tapping the strip came
+/// to show a timer back at five minutes while the recitation carried on.
+void _open(BuildContext context, String route) {
+  if (Routes.tabs.contains(route)) {
+    context.go(route);
+  } else {
+    context.push(route);
   }
 }
 

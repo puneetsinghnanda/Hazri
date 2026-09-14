@@ -39,6 +39,10 @@ abstract final class Routes {
   static const licences = '/licences';
   static const batteryHelp = '/reminders-help';
 
+  /// The five bottom-nav branches. Going to one of these switches tabs;
+  /// pushing one would stack a second copy on top of the shell.
+  static const tabs = {today, nitnem, simran, diary, settings};
+
   static String setup(int step) => '/setup/$step';
 
   static String reader(String slug, {int? line, bool autoplay = false}) {
