@@ -25,7 +25,7 @@ TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 SIMRAN_DIR = os.path.join(ROOT, "content", "source", "simran")
 VICHAR_DIR = os.path.join(ROOT, "content", "source", "vichar")
 
-CONTENT_VERSION = 6
+CONTENT_VERSION = 7
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -206,8 +206,8 @@ def build_japji(con: sqlite3.Connection, report: dict) -> None:
          prov["transliteration"]["note"]))
     for code, a in prov["assets"].items():
         con.execute(
-            "INSERT INTO source(id,name,author,kind,licence,url,notes,publisher,pub_date) "
-            "VALUES(?,?,?,?,?,?,?,?,?)",
+            "INSERT OR IGNORE INTO source(id,name,author,kind,licence,url,notes,"
+            "publisher,pub_date) VALUES(?,?,?,?,?,?,?,?,?)",
             (code, a.get("name", code), a.get("author"), "meaning", None, None,
              None, a.get("publisher"), a.get("date")))
 
@@ -242,8 +242,11 @@ def build_japji(con: sqlite3.Connection, report: dict) -> None:
 
     misaligned: list[int] = []
     no_vishraam: list[int] = []
+    japji_sort = con.execute("SELECT sort FROM bani WHERE id = 'JAPJ'").fetchone()[0]
+    base = japji_sort * LINE_ID_BLOCK
     for ln in doc["lines"]:
         idx = ln["id"] - 1
+        line_id = base + ln["id"]
         text = ln["text"]
         plain_words = text["gurmukhi_plain"].split()
         roman = text["transliteration"]["english"]
@@ -261,7 +264,7 @@ def build_japji(con: sqlite3.Connection, report: dict) -> None:
             "section_label_hi,kind,gurmukhi,devanagari,roman,visraam_json,word_count,"
             "word_align,source_id,source_ref,pauri,ends_pauri) "
             "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            (ln["id"], version_id, idx, labels[0], labels[1], labels[2],
+            (line_id, version_id, idx, labels[0], labels[1], labels[2],
              LINE_KIND[ln["section"]], text["gurmukhi_plain"], dev, roman,
              json.dumps(marks, ensure_ascii=False) if marks else None,
              len(plain_words), 1 if aligned else 0, "SHABADOS",
@@ -287,7 +290,7 @@ def build_japji(con: sqlite3.Connection, report: dict) -> None:
             con.execute(
                 "INSERT INTO meaning(line_id,lang,text,source_id,is_alt,kind,note) "
                 "VALUES(?,?,?,?,?,?,?)",
-                (ln["id"], lang, payload["text"], payload.get("source"), is_alt, kind, note))
+                (line_id, lang, payload["text"], payload.get("source"), is_alt, kind, note))
 
     report["japji"] = {
         "lines": len(doc["lines"]),
@@ -302,6 +305,131 @@ def build_japji(con: sqlite3.Connection, report: dict) -> None:
         ("simran_1", "ਸਿਮਰਉ ਸਿਮਰਿ ਸਿਮਰਿ ਸੁਖੁ ਪਾਵਉ ॥", "सिमरउ सिमरि सिमरि सुखु पावउ ॥",
          "simrau simar simar sukh paavau ||", "Sukhmani Sahib", "ਸੁਖਮਨੀ ਸਾਹਿਬ",
          "सुखमनी साहिब", "SHABADOS"))
+
+
+# The eight banis whose source files use schema 2.0. The slug is the filename
+# under content/source/ and the key into the bani table; the source file's own
+# `bani.id` is a Shabad OS id and does not always match ours (its Chaupai is
+# CPDT, ours is CHAU), so the slug is what joins them, never that id.
+V2_BANIS = [
+    "jaap-sahib", "tav-prasad-savaiye", "chaupai-sahib", "anand-sahib",
+    "rehras-sahib", "kirtan-sohila", "ardas", "sukhmani-sahib",
+]
+
+# Line ids have to be unique across every bani, so each one is given a block.
+LINE_ID_BLOCK = 100_000
+
+
+def build_bani_v2(con: sqlite3.Connection, slug: str, report: dict) -> None:
+    """Loads one schema-2.0 source file into bani, bani_version, line, meaning.
+
+    Schema 2.0 differs from the Japji file in more than field names: it has no
+    author, its sections carry no type, and its `unit` numbers are derived
+    mechanically from the Gurmukhi numerals in the closing dandas. The source
+    file says so itself and warns they are not editorial labels, so they are
+    stored as unit numbers and nothing here invents a word for them. A bani
+    whose structure has no name shows none, the same way a bani with no
+    recording gets no audio row.
+    """
+    path = os.path.join(SRC, f"{slug}.json")
+    with open(path, encoding="utf-8") as fh:
+        doc = json.load(fh)
+    if doc.get("schema_version") != "2.0":
+        raise SystemExit(f"{path}: expected schema_version 2.0")
+
+    bani_id, sort = con.execute(
+        "SELECT id, sort FROM bani WHERE slug = ?", (slug,)
+    ).fetchone()
+    prov = doc["provenance"]
+
+    for code, a in prov["assets"].items():
+        con.execute(
+            "INSERT OR IGNORE INTO source(id,name,author,kind,licence,url,notes,"
+            "publisher,pub_date) VALUES(?,?,?,?,?,?,?,?,?)",
+            (code, a.get("name", code), ", ".join(a.get("authors") or []) or None,
+             "meaning", None, a.get("url"), None, a.get("publisher"), a.get("date")))
+
+    b = doc["bani"]
+    # The English name stays as the PRD and the designs spell it: it is a
+    # display label, not scripture. The Gurmukhi and Devanagari names come from
+    # the source file.
+    con.execute(
+        "UPDATE bani SET name_pa=?, name_hi=?, has_text=1 WHERE id=?",
+        (b["name"]["gurmukhi"], b["name"]["transliteration_hindi"], bani_id))
+
+    version_id = f"{bani_id}_SGPC"
+    con.execute(
+        "INSERT INTO bani_version(id,bani_id,code,label_en,label_pa,label_hi,is_default,"
+        "line_count) VALUES(?,?,?,?,?,?,1,?)",
+        (version_id, bani_id, "sgpc", "SGPC", "ਐਸ.ਜੀ.ਪੀ.ਸੀ.", "एस.जी.पी.सी.",
+         len(doc["lines"])))
+
+    base = sort * LINE_ID_BLOCK
+    misaligned: list[int] = []
+    no_vishraam: list[int] = []
+    meanings = {"en": 0, "pa": 0, "hi": 0}
+
+    for idx, ln in enumerate(doc["lines"]):
+        line_id = base + ln["id"]
+        text = ln["text"]
+        plain_words = text["gurmukhi_plain"].split()
+        roman = text["transliteration"]["english"]
+        dev = text["transliteration"]["hindi"]
+        # Word highlighting needs the three scripts to agree word for word.
+        # Where they do not, the line still reads; only its words stop being
+        # separately highlightable, which is what word_align records.
+        aligned = (len(roman.split()) == len(plain_words)
+                   and len(dev.split()) == len(plain_words))
+        if not aligned:
+            misaligned.append(ln["id"])
+        marks = parse_vishraam(text["gurmukhi"], plain_words)
+        if not marks and any(c in text["gurmukhi"] for c in VISHRAAM):
+            no_vishraam.append(ln["id"])
+
+        scripture = ln.get("scripture") or {}
+        ref = None
+        if scripture.get("asset"):
+            page = scripture.get("page")
+            ref = scripture["asset"] + (f" {page}" if page else "")
+
+        con.execute(
+            "INSERT INTO line(id,bani_version_id,idx,section_label_en,section_label_pa,"
+            "section_label_hi,kind,gurmukhi,devanagari,roman,visraam_json,word_count,"
+            "word_align,source_id,source_ref,pauri,ends_pauri) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (line_id, version_id, idx, None, None, None, "verse",
+             text["gurmukhi_plain"], dev, roman,
+             json.dumps(marks, ensure_ascii=False) if marks else None,
+             len(plain_words), 1 if aligned else 0, "SHABADOS", ref,
+             ln.get("unit"), 1 if ln.get("ends_unit") else 0))
+
+        m = ln["meaning"]
+        rows = [
+            ("en", m.get("english"), 0),
+            ("en", m.get("english_alt"), 1),
+            ("pa", m.get("punjabi"), 0),
+            ("pa", m.get("punjabi_alt"), 1),
+            ("hi", m.get("hindi"), 0),
+        ]
+        for lang, payload, is_alt in rows:
+            if not payload:
+                continue
+            con.execute(
+                "INSERT INTO meaning(line_id,lang,text,source_id,is_alt,kind,note) "
+                "VALUES(?,?,?,?,?,?,?)",
+                (line_id, lang, payload["text"], payload.get("source"), is_alt,
+                 "translation", None))
+            meanings[lang] += 1
+
+    report.setdefault("banis", {})[slug] = {
+        "source_bani_id": b["id"],
+        "lines": len(doc["lines"]),
+        "units": b["total_units"],
+        "meanings": meanings,
+        "word_misaligned_lines": len(misaligned),
+        "vishraam_unparsed_lines": len(no_vishraam),
+        "hindi_meaning_note": (prov.get("hindi_meaning") or {}).get("note"),
+    }
 
 
 def build_audio(con: sqlite3.Connection, report: dict) -> None:
@@ -341,6 +469,14 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
         if timing_json:
             con.execute("INSERT INTO timing(audio_track_id,json) VALUES(?,?)",
                         (track_id, timing_json))
+        if duration_ms:
+            # est_minutes was a hand-set guess while there was nothing to
+            # measure. Now that the recitation ships, the number Nitnem and
+            # Today show is how long the recording actually runs, rounded up:
+            # a bani is never billed as shorter than it is.
+            con.execute(
+                "UPDATE bani SET est_minutes = ? WHERE id = ?",
+                (max(1, -(-duration_ms // 60000)), bani_id))
         built.append({
             "bani": slug,
             "bytes": os.path.getsize(audio),
@@ -487,6 +623,7 @@ def source_digest() -> str:
     h = hashlib.sha256()
     inputs = [
         os.path.join(SRC, "japji_sahib.json"),
+        *(os.path.join(SRC, f"{slug}.json") for slug in V2_BANIS),
         os.path.join(SRC, "gurpurab-558.json"),
         os.path.join(os.path.dirname(__file__), "cities.json"),
         os.path.abspath(__file__),
@@ -516,6 +653,8 @@ def main() -> int:
             "est_minutes,author_en,has_text) VALUES(?,?,?,?,?,?,?,?,?,?,0)", row)
 
     build_japji(con, report)
+    for slug in V2_BANIS:
+        build_bani_v2(con, slug, report)
     build_audio(con, report)
     build_simran(con, report)
     build_vichar(con, report)

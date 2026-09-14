@@ -1,0 +1,2731 @@
+{
+  "schema_version": "2.0",
+  "bani": {
+    "id": "SHLA",
+    "name": {
+      "gurmukhi": "ਸੋਹਿਲਾ ਸਾਹਿਬ",
+      "english": "Sohila Sahib",
+      "transliteration_english": "sohilaa saahib",
+      "transliteration_hindi": "सोहिला साहिब"
+    },
+    "total_lines": 54,
+    "total_sections": 1,
+    "total_units": 18,
+    "source_pages": {
+      "from": 12,
+      "to": 13
+    }
+  },
+  "coverage": {
+    "total_lines": 54,
+    "gurmukhi": 54,
+    "transliteration_english": 54,
+    "transliteration_hindi": 54,
+    "meaning_english": 54,
+    "meaning_punjabi": 54,
+    "meaning_hindi": 49,
+    "sources_used": {
+      "english": [
+        "SBMS"
+      ],
+      "english_alt": [
+        "DSSK"
+      ],
+      "punjabi": [
+        "PSST",
+        "SBMS"
+      ],
+      "punjabi_alt": [
+        "SBMS"
+      ],
+      "hindi": [
+        "NKFT"
+      ]
+    }
+  },
+  "provenance": {
+    "dataset": "Shabad OS Database",
+    "repository": "https://github.com/shabados/database",
+    "commit": "918c1d42d02e385e7ed48ef44994c75a2cb50293",
+    "license": "See repository LICENSE.md",
+    "transliteration": {
+      "library": "gurmukhi-utils",
+      "version": "3.2.2",
+      "functions": [
+        "toEnglish",
+        "toHindi",
+        "stripVishraams"
+      ],
+      "note": "Programmatic script conversion, not human-reviewed."
+    },
+    "hindi_meaning": {
+      "source": "NKFT",
+      "note": "Faridkot Wala Teeka is Braj/Sadhukkari Hindi recorded in Gurmukhi script; converted Gurmukhi->Devanagari. Exegetical commentary, not a fresh modern-Hindi translation."
+    },
+    "unit_numbering": "unit/ends_unit are derived mechanically from Gurmukhi numerals in closing dandas (e.g. ॥੪॥). They are not editorial labels.",
+    "assets": {
+      "SBMS": {
+        "code": "SBMS",
+        "name": "Sri Guru Granth Sahib (English & Punjabi Translation)",
+        "title": "Sri Guru Granth Sahib",
+        "authors": [
+          "Manmohan Singh"
+        ],
+        "publisher": "SGPC",
+        "date": "2006-2009",
+        "url": "www.archive.org/details/SriGuruGranthSahibEnglishAndPunjabiTranslation-Vol.1"
+      },
+      "DSSK": {
+        "code": "DSSK",
+        "name": "Siri Guru Granth Sahib Ji",
+        "title": "Siri Guru Granth Sahib Ji",
+        "authors": [
+          "Dr. Sant S Khalsa"
+        ],
+        "publisher": null,
+        "date": "2013-03",
+        "url": null
+      },
+      "PSST": {
+        "code": "PSST",
+        "name": "Prof Sahib Singh",
+        "title": "Sri Guru Granth Darpan",
+        "authors": [
+          "Prof Sahib Singh"
+        ],
+        "publisher": "Raaj Publishers",
+        "date": "1972",
+        "url": "www.archive.org/details/SriGuruGranthSahibDarpan-Volume1"
+      },
+      "NKFT": {
+        "code": "NKFT",
+        "name": "Faridkot Wala Teeka",
+        "title": "Fridkot Wala Teeka",
+        "authors": [
+          "Badan Singh"
+        ],
+        "publisher": "Bh. Baljinder Singh Rara Sahib",
+        "date": null,
+        "url": "www.ik13.com/PDFS/Fridkot_Wala_Teeka.pdf"
+      },
+      "SSA2": {
+        "code": "SSA2",
+        "name": "Shabadaarth",
+        "title": "Shabadaarth",
+        "authors": [
+          "SGPC Committee"
+        ],
+        "publisher": "SGPC",
+        "date": "2009-2012",
+        "url": "www.archive.org/details/ShabdaarthSriGuruGranthSahibJi-Part1"
+      },
+      "JSTS": {
+        "code": "JSTS",
+        "name": "Nitnem Saral Steek",
+        "title": "Nitnem Saral Steek",
+        "authors": [
+          "Joginder S Talwara"
+        ],
+        "publisher": "Singh Brothers",
+        "date": "2011-01",
+        "url": null
+      }
+    },
+    "unresolved_line_refs": []
+  },
+  "structure": [
+    {
+      "section_index": 0,
+      "line_from": 1,
+      "line_to": 54,
+      "units_closed": [
+        1,
+        2,
+        3,
+        1,
+        1,
+        2,
+        1,
+        2,
+        3,
+        3,
+        1,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        5
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "id": 1,
+      "source_id": "EJU3",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 10
+      },
+      "text": {
+        "gurmukhi": "ਸੋਹਿਲਾ ਰਾਗੁ ਗਉੜੀ ਦੀਪਕੀ ਮਹਲਾ ੧ ॥",
+        "gurmukhi_plain": "ਸੋਹਿਲਾ ਰਾਗੁ ਗਉੜੀ ਦੀਪਕੀ ਮਹਲਾ ੧ ॥",
+        "transliteration": {
+          "english": "sohilaa raag gaurree deepakee mahalaa 1 |",
+          "hindi": "सोहिला रागु गउड़ी दीपकी महला १ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Song of praise. Gouri Deepeki Measure, First Guru.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Sohilaa ~ The Song Of Praise. Raag Gauree Deepakee, First Mehl:",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਰਾਗ ਗਉੜੀ-ਦੀਪਕੀ ਵਿੱਚ ਗੁਰੂ ਨਾਨਕ ਜੀ ਦੀ ਬਾਣੀ 'ਸੋਹਿਲਾ'।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਉਸਤਤੀ ਦਾ ਗੀਤ ਰਾਗ ਗਊੜੀ ਦੀਪਕੀ, ਪਹਿਲੀ ਪਾਤਸ਼ਾਹੀ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "सोहिला नामु परमेस्वर के जस का है। जैसे तीन काल की तीन संध्या हैं, प्रात औरु मध्यांन औरु सायंकाल, तैसे गुरू जी के मत में प्रातहकाल 'जपु' जी का पाठु, और सायंकाल में 'रहिरास' का पाठ, और सैंन समें 'सोहिले' का पाठ, एहु तीन संध्या हैं। इस सोहिले का महांतमु ऐसे विदत है कि स्री करतार पुर नगर में दुपहर को किसी समें स्री गुरू करन कारन गुरू नानक देव जी सैंन करते थे। स्री गुरू अंगद जी चरन सेवा करते थे। अकस मात्र चरनों में रुधर निकसा देख कर पूछते भए, तब स्री मुख सें बचन हूआ: जो अमुका बक्रीयों के चराउने हारा सोहिले का पाठु झाड़ीओं मे करता फिरता था, मै भी पीछे पीछे सुनता था, इसी ते कांटे लगे हैं। किउंकि जहां कोई आरती सोहिला पड़ता है, मैं तहां स्रवण करता हूं। सो उस को उपदेसु करो, जो सैंन समे पाठु करे औरु समे न करा करे। इह म्रयादा सोहिले की आदि गुरू जी सें चली। तीन सबदों का पाठु होता रहा। एक समें पंचम गुरू जी के आगे एक वणजारे सिख ने बेनती करी, कि हे सचे पातिसाह! हम लोकों को बिदेस मै चोर वा भूतादिकों कर के भ्यंकर असथानो में रहना होता है। सो जिस ते हमारी सरब प्रकार रख्या होवे, क्रिपा कर के ऐसा मंत्र कहो। ",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "source_id": "3S3R",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 10
+      },
+      "text": {
+        "gurmukhi": "ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+        "gurmukhi_plain": "ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+        "transliteration": {
+          "english": "ik oankaar satigur prasaad |",
+          "hindi": "ੴ सतिगुर प्रसादि ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "There is but one God. By the true Guru's grace He is obtained.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "One Universal Creator God. By The Grace Of The True Guru:",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਅਕਾਲ ਪੁਰਖ ਇੱਕ ਹੈ ਅਤੇ ਸਤਿਗੁਰੂ ਦੀ ਕਿਰਪਾ ਨਾਲ ਮਿਲਦਾ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਵਾਹਿਗੁਰੂ ਕੇਵਲ ਇਕ ਹੈ। ਸੱਚੇ ਗੁਰਾਂ ਦੀ ਦਇਆ ਦੁਆਰਾ ਉਹ ਪਰਾਪਤ ਹੁੰਦਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": null
+      }
+    },
+    {
+      "id": 3,
+      "source_id": "ZGW1",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 11
+      },
+      "text": {
+        "gurmukhi": "ਜੈ ਘਰਿ ਕੀਰਤਿ ਆਖੀਐ; ਕਰਤੇ ਕਾ ਹੋਇ ਬੀਚਾਰੋ ॥",
+        "gurmukhi_plain": "ਜੈ ਘਰਿ ਕੀਰਤਿ ਆਖੀਐ ਕਰਤੇ ਕਾ ਹੋਇ ਬੀਚਾਰੋ ॥",
+        "transliteration": {
+          "english": "jai ghar keerat aakheeai karate kaa hoe beechaaro |",
+          "hindi": "जै घरि कीरति आखीऐ करते का होइ बीचारो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The house in which the creator is meditated upon and his praises are repeated,",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "In that house where the Praises of the Creator are chanted and contemplated",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਜਿਸ (ਸਤਸੰਗ-) ਘਰ ਵਿਚ (ਪਰਮਾਤਮਾ ਦੀ) ਸਿਫ਼ਤ-ਸਾਲਾਹ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਅਤੇ ਕਰਤਾਰ ਦੇ ਗੁਣਾਂ ਦੀ ਵਿਚਾਰ ਹੁੰਦੀ ਹੈ,",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਜਿਸ ਗ੍ਰਿਹ ਅੰਦਰ ਸਿਰਜਣਹਾਰ ਦਾ ਸਿਮਰਨ ਹੁੰਦਾ ਹੈ ਅਤੇ ਉਸ ਦਾ ਜੱਸ ਉਚਾਰਣ ਕੀਤਾ ਜਾਂਦਾ ਹੈ,",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भाई! जिस सतसंग रूप घर मैं अकाल पुरख की कीरती कहीती है, औरु जहां करता पुरखु के गुणों का वीचारु होता है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਜੈ ਘਰਿ = ਜਿਸ ਘਰ ਵਿਚ, ਜਿਸ ਸਤਸੰਗ-ਘਰ ਵਿਚ। ਕੀਰਤਿ = ਸਿਫ਼ਤ-ਸਾਲਾਹ। ਆਖੀਐ = ਆਖੀ ਜਾਂਦੀ ਹੈ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "source_id": "C4LK",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": 1,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 11
+      },
+      "text": {
+        "gurmukhi": "ਤਿਤੁ ਘਰਿ. ਗਾਵਹੁ ਸੋਹਿਲਾ; ਸਿਵਰਿਹੁ ਸਿਰਜਣਹਾਰੋ ॥੧॥",
+        "gurmukhi_plain": "ਤਿਤੁ ਘਰਿ ਗਾਵਹੁ ਸੋਹਿਲਾ ਸਿਵਰਿਹੁ ਸਿਰਜਣਹਾਰੋ ॥੧॥",
+        "transliteration": {
+          "english": "tit ghar gaavahu sohilaa sivarihu sirajanahaaro |1|",
+          "hindi": "तितु घरि गावहु सोहिला सिवरिहु सिरजणहारो ॥१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "in that house sing the songs of praise and remember the Maker.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "-in that house, sing Songs of Praise; meditate and remember the Creator Lord. ||1||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਹੇ ਜਿੰਦ-ਕੁੜੀਏ!) ਉਸ (ਸਤਸੰਗ-) ਘਰ ਵਿਚ (ਜਾ ਕੇ ਤੂੰ ਭੀ) ਪ੍ਰਭੂ ਦੀ ਸਿਫ਼ਤ-ਸਾਲਾਹ ਦੇ ਗੀਤ (ਸੁਹਾਗ-ਮਿਲਾਪ ਦੀ ਤਾਂਘ ਦੇ ਸ਼ਬਦ) ਗਾਇਆ ਕਰ ਅਤੇ ਆਪਣੇ ਪੈਦਾ ਕਰਨ ਵਾਲੇ ਪ੍ਰਭੂ ਨੂੰ ਯਾਦ ਕਰਿਆ ਕਰ ॥੧॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਉਸ ਗ੍ਰਿਹ ਅੰਦਰ ਜੱਸ ਦੇ ਗੀਤ ਗਾਇਨ ਕਰ ਤੇ ਰਚਨਹਾਰ ਨੂੰ ਅਰਾਧ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "(तितु) तिस सतसंग घर में तुम भी जाइ कर करते का जसु गाइन करो, औरु तिस सिरजणहार का चित कर के सिमरन करो॥१॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਤਿਤੁ ਘਰਿ = ਉਸ ਸਤਸੰਗ-ਘਰ ਵਿਚ। ਸੋਹਿਲਾ = ਸੁਹਾਗ ਦਾ ਗੀਤ {❀ ਨੋਟ: ਕੁੜੀ ਦੇ ਵਿਆਹ ਸਮੇ ਜੋ ਗੀਤ ਰਾਤ ਨੂੰ ਜ਼ਨਾਨੀਆਂ ਰਲ ਕੇ ਗਾਂਦੀਆਂ ਹਨ ਉਹਨਾਂ ਨੂੰ 'ਸੋਹਿਲੜੇ' ਕਹੀਦਾ ਹੈ। ਇਹਨਾਂ ਗੀਤਾਂ ਵਿਚ ਕੁਝ ਤਾਂ ਵਿਛੋੜੇ ਦਾ ਜਜ਼ਬਾ ਹੁੰਦਾ ਹੈ ਜੋ ਕੁੜੀ ਦੇ ਵਿਆਹੇ ਜਾਣ ਤੇ ਮਾਪਿਆਂ ਅਤੇ ਸਹੇਲੀਆਂ ਨਾਲੋਂ ਪੈਣਾ ਹੁੰਦਾ ਹੈ, ਤੇ, ਕੁਝ ਅਸੀਸਾਂ ਆਦਿਕ ਹੁੰਦੀਆਂ ਹਨ ਕਿ ਪਤੀ ਦੇ ਘਰ ਜਾ ਕੇ ਸੁਖੀ ਵੱਸੇ}, ਜਸ, ਸਿਫ਼ਤ-ਸਾਲਾਹ, ਪ੍ਰਭੂ-ਪਤੀ ਨਾਲ ਮਿਲਣ ਦੀ ਤਾਂਘ ਦੇ ਸ਼ਬਦ॥੧॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "source_id": "Q8LX",
+      "section_index": 0,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 12
+      },
+      "text": {
+        "gurmukhi": "ਤੁਮ ਗਾਵਹੁ; ਮੇਰੇ ਨਿਰਭਉ ਕਾ ਸੋਹਿਲਾ ॥",
+        "gurmukhi_plain": "ਤੁਮ ਗਾਵਹੁ ਮੇਰੇ ਨਿਰਭਉ ਕਾ ਸੋਹਿਲਾ ॥",
+        "transliteration": {
+          "english": "tum gaavahu mere nirbhau kaa sohilaa |",
+          "hindi": "तुम गावहु मेरे निरभउ का सोहिला ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Do thou sing the songs of praise of my Fearless Lord?",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Sing the Songs of Praise of my Fearless Lord.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਹੇ ਜਿੰਦੇ!) ਤੂੰ (ਸਤਸੰਗੀਆਂ ਨਾਲ ਮਿਲ ਕੇ) ਪਿਆਰੇ ਨਿਰਭਉ (ਖਸਮ) ਦੀ ਸਿਫ਼ਤਿ ਦੇ ਗੀਤ ਗਾ (ਅਤੇ ਆਖ)",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਤੂੰ ਮੇਰੇ ਨਿਡਰ ਸੁਆਮੀ ਦੇ ਜੱਸ ਦੇ ਗੀਤ ਗਾਇਨ ਕਰ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भाई जनों! तुम मेरे स्वामी निरभउ स्वरूप का (सोहिला) जसु गाओ॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "source_id": "CAY7",
+      "section_index": 0,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 12
+      },
+      "text": {
+        "gurmukhi": "ਹਉ ਵਾਰੀ; ਜਿਤੁ ਸੋਹਿਲੈ ਸਦਾ ਸੁਖੁ ਹੋਇ ॥੧॥ ਰਹਾਉ ॥",
+        "gurmukhi_plain": "ਹਉ ਵਾਰੀ ਜਿਤੁ ਸੋਹਿਲੈ ਸਦਾ ਸੁਖੁ ਹੋਇ ॥੧॥ ਰਹਾਉ ॥",
+        "transliteration": {
+          "english": "hau vaaree jit sohilai sadaa sukh hoe |1| rahaau |",
+          "hindi": "हउ वारी जितु सोहिलै सदा सुखु होइ ॥१॥ रहाउ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I am a sacrifice unto the song of joy by which eternal solace is procured. Pause.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "I am a sacrifice to that Song of Praise which brings eternal peace. ||1||Pause||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਮੈਂ ਸਦਕੇ ਹਾਂ ਉਸ ਸਿਫ਼ਤਿ-ਦੇ-ਗੀਤ ਤੋਂ ਜਿਸ ਦੀ ਬਰਕਤਿ ਨਾਲ ਸਦਾ ਦਾ ਸੁਖ ਮਿਲਦਾ ਹੈ ॥੧॥ ਰਹਾਉ ॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਮੈਂ ਉਸ ਖੁਸ਼ੀ ਦੇ ਗਾਉਣੇ ਉਤੇ ਕੁਰਬਾਨ ਜਾਂਦਾ ਹਾਂ, ਜਿਸ ਦੁਆਰਾ ਸਦੀਵੀ ਠੰਢ-ਚੈਨ ਪਰਾਪਤ ਹੁੰਦੀ ਹੈ। ਠਹਿਰਾਉ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "मैं बलिहार जाता हूं तिस सोहिले पर, जिस के गाइन करने सें (सदासुखु) नित भाव आतम सुखु प्रापति होता है॥१॥ रहाउ ॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਹਉ = ਮੈਂ। ਵਾਰੀ = ਸਦਕੇ। ਜਿਤੁ ਸੋਹਿਲੈ = ਜਿਸ ਸੋਹਿਲੇ ਦੀ ਬਰਕਤਿ ਨਾਲ॥੧॥ਰਹਾਉ॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "source_id": "QUH2",
+      "section_index": 0,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 13
+      },
+      "text": {
+        "gurmukhi": "ਨਿਤ ਨਿਤ ਜੀਅੜੇ ਸਮਾਲੀਅਨਿ; ਦੇਖੈਗਾ ਦੇਵਣਹਾਰੁ ॥",
+        "gurmukhi_plain": "ਨਿਤ ਨਿਤ ਜੀਅੜੇ ਸਮਾਲੀਅਨਿ ਦੇਖੈਗਾ ਦੇਵਣਹਾਰੁ ॥",
+        "transliteration": {
+          "english": "nit nit jeearre samaaleean dekhaigaa devanahaar |",
+          "hindi": "नित नित जीअड़े समालीअनि देखैगा देवणहारु ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Ever and ever, the Lord watches over His beings and the Giver is beholding one and all.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Day after day, He cares for His beings; the Great Giver watches over all.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਹੇ ਜਿੰਦੇ! ਜਿਸ ਖਸਮ ਦੀ ਹਜ਼ੂਰੀ ਵਿਚ) ਸਦਾ ਹੀ ਜੀਵਾਂ ਦੀ ਸੰਭਾਲ ਹੋ ਰਹੀ ਹੈ, ਜੋ ਦਾਤਾਂ ਦੇਣ ਵਾਲਾ ਮਾਲਕ (ਹਰੇਕ ਜੀਵ ਦੀ) ਸੰਭਾਲ ਕਰਦਾ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਸਦੀਵ ਸਦੀਵ ਹੀ ਪ੍ਰਭੂ ਆਪਣੇ ਜੀਵਾਂ ਦੀ ਸੰਭਾਲ ਕਰਦਾ ਹੈ ਅਤੇ ਦੇਣ ਵਾਲਾ ਸਾਰਿਆਂ ਨੂੰ ਵੇਖ ਰਿਹਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "जब तूं (नित नित) नित्यंप्रती (जीअड़े) चित मे (समालीअनि) सिमरन करेगा, तब देवणहार अकाल पुरख को देख लेवेंगा। वा जो नित नित जीआं दी समाल करता है, सो देवणहार तेरी तरफ भी देखेगा, भाव तेरे पर क्रिपा करेगा॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਨਿਤ ਨਿਤ = ਸਦਾ ਹੀ। ਸਮਾਲੀਅਨਿ = ਸਮਾਲੀਦੇ ਹਨ {ਕਰਮ ਵਾਚ, ਵਰਤਮਾਨ ਕਾਲ, ਅੱਨ ਪੁਰਖ, ਬਹੁ-ਵਚਨ}। ਦੇਖੈਗਾ = ਸੰਭਾਲ ਕਰੇਗਾ, ਸੰਭਾਲ ਕਰਦਾ ਹੈ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "source_id": "1051",
+      "section_index": 0,
+      "unit": 2,
+      "ends_unit": 2,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 13
+      },
+      "text": {
+        "gurmukhi": "ਤੇਰੇ ਦਾਨੈ. ਕੀਮਤਿ ਨਾ ਪਵੈ; ਤਿਸੁ ਦਾਤੇ ਕਵਣੁ ਸੁਮਾਰੁ ॥੨॥",
+        "gurmukhi_plain": "ਤੇਰੇ ਦਾਨੈ ਕੀਮਤਿ ਨਾ ਪਵੈ ਤਿਸੁ ਦਾਤੇ ਕਵਣੁ ਸੁਮਾਰੁ ॥੨॥",
+        "transliteration": {
+          "english": "tere daanai keemat naa pavai tis daate kavan sumaar |2|",
+          "hindi": "तेरे दानै कीमति ना पवै तिसु दाते कवणु सुमारु ॥२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "No price can put on thine gifts. How can, then, that Giver's (Thy) estimation be had?",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Your Gifts cannot be appraised; how can anyone compare to the Giver? ||2||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਜਿਸ ਦਾਤਾਰ ਦੀਆਂ) ਦਾਤਾਂ ਦਾ ਮੁੱਲ (ਹੇ ਜਿੰਦੇ!) ਤੇਰੇ ਪਾਸੋਂ ਨਹੀਂ ਪੈ ਸਕਦਾ, ਉਸ ਦਾਤਾਰ ਦਾ ਭੀ ਕੀਹ ਅੰਦਾਜ਼ਾ (ਤੂੰ ਲਾ ਸਕਦੀ ਹੈਂ)? (ਉਹ ਦਾਤਾਰ-ਪ੍ਰਭੂ ਬਹੁਤ ਬੇਅੰਤ ਹੈ) ॥੨॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਤੈਡੀਆਂ ਦਾਤਾਂ ਦਾ ਮੁੱਲ ਨਹੀਂ ਪਾਇਆ ਜਾ ਸਕਦਾ ਤਾਂ ਤੇਰਾ ਜਾਂ (ਉਸ ਦਾਤੇ ਦਾ)। ਅੰਦਾਜ਼ਾ ਕਿਸ ਤਰ੍ਹਾਂ ਪਾਇਆ ਜਾ ਸਕਦਾ ਹੈ?",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "तेरे से तो तिस के दान की कीमति नहीं पाई जाती, फिर तिस दाते दा सुमारु, भाव अंत तूं कैसे पावेंगा। वा हे प्रमेस्वर! तेरे दान दी वा खजाने दी कीमति नही पाई जाती। तिस खजाने वाले दा अरथात, हे परमेस्वर! तेरा किआ सुमारु है, भाव तूं बिअंतु हैं॥२॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਤੇਰੇ = ਤੇਰੇ ਪਾਸੋਂ (ਹੇ ਜਿੰਦੇ!)। ਦਾਨੈ ਕੀਮਤਿ = ਦਾਨ ਦਾ ਮੁੱਲ, ਬਖਸ਼ਸ਼ਾਂ ਦਾ ਮੁੱਲ। ਸੁਮਾਰੁ = ਅੰਦਾਜ਼ਾ, ਅੰਤ॥੨॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "source_id": "SW9M",
+      "section_index": 0,
+      "unit": 3,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 14
+      },
+      "text": {
+        "gurmukhi": "ਸੰਬਤਿ ਸਾਹਾ ਲਿਖਿਆ; ਮਿਲਿ ਕਰਿ ਪਾਵਹੁ ਤੇਲੁ ॥",
+        "gurmukhi_plain": "ਸੰਬਤਿ ਸਾਹਾ ਲਿਖਿਆ ਮਿਲਿ ਕਰਿ ਪਾਵਹੁ ਤੇਲੁ ॥",
+        "transliteration": {
+          "english": "sanbat saahaa likhiaa mil kar paavahu tel |",
+          "hindi": "संबति साहा लिखिआ मिलि करि पावहु तेलु ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The year and the day of wedding (recorded) is fixed. Meet together my mates and pour oil at the door.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The day of my wedding is pre-ordained. Come, gather together and pour the oil over the threshold.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਸਤਸੰਗ ਵਿਚ ਜਾ ਕੇ, ਹੇ ਜਿੰਦੇ! ਅਰਜ਼ੋਈਆਂ ਕਰਿਆ ਕਰ।) ਉਹ ਸੰਮਤ ਉਹ ਦਿਹਾੜਾ (ਪਹਿਲਾਂ ਹੀ) ਮਿਥਿਆ ਹੋਇਆ ਹੈ (ਜਦੋਂ ਪਤੀ ਦੇ ਦੇਸ ਜਾਣ ਲਈ ਮੇਰੇ ਵਾਸਤੇ ਸਾਹੇ-ਚਿੱਠੀ ਆਉਣੀ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਵਿਆਹ ਦਾ ਸਾਲ ਤੇ ਦਿਹਾੜਾ (ਮੁਕੱਰਰ) ਜਾ (ਲਿਖਿਆ ਹੋਇਆ) ਹੈ। ਮੇਰੀਓ ਸਖੀਓ ਇਕੱਠੀਆਂ ਹੋ ਕੇ ਬੂਹੇ ਉਤੇ ਤੇਲ ਚੋਵੋ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "(संबति) वरसो के अनुसार म्रितू रूप साहा लिखा हूआ है। सो संतों के साथ मिल कर के वैराग्य रूपी तेल पाओ, क्या वैराग्य धारन करो। वा (संबति) गिआन कर के परमेस्वर के साथ मेलु होता है। सो येही-वेदों मे (साहा) समे लिखा है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਸੰਬਤਿ = ਸਾਲ, ਵਰ੍ਹਾ। ਸਾਹਾ = ਵਿਆਹੇ ਜਾਣ ਦਾ ਦਿਨ। ਲਿਖਿਆ = ਮਿਥਿਆ ਹੋਇਆ। ਮਿਲਿ ਕਰਿ = ਰਲ ਕੇ। ਪਾਵਹੁ ਤੇਲੁ = {❀ ਨੋਟ: ਵਿਆਹ ਤੋਂ ਕੁਝ ਦਿਨ ਪਹਿਲਾਂ ਵਿਆਹ ਵਾਲੀ ਕੁੜੀ ਨੂੰ ਮਾਂਈਏਂ ਪਾਈਦਾ ਹੈ। ਚਾਚੀਆਂ ਤਾਈਆਂ ਸਹੇਲੀਆਂ ਰਲ ਕੇ ਉਸ ਦੇ ਸਿਰ ਵਿਚ ਤੇਲ ਪਾਂਦੀਆਂ ਹਨ, ਤੇ ਅਸੀਸਾਂ ਦੇ ਗੀਤ ਗਾਂਦੀਆਂ ਹਨ ਕਿ ਪਤੀ ਦੇ ਘਰ ਜਾ ਕੇ ਸੁਖੀ ਵੱਸੇ}।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "source_id": "N9S9",
+      "section_index": 0,
+      "unit": 3,
+      "ends_unit": 3,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 14
+      },
+      "text": {
+        "gurmukhi": "ਦੇਹੁ ਸਜਣ ਅਸੀਸੜੀਆ; ਜਿਉ ਹੋਵੈ ਸਾਹਿਬ ਸਿਉ ਮੇਲੁ ॥੩॥",
+        "gurmukhi_plain": "ਦੇਹੁ ਸਜਣ ਅਸੀਸੜੀਆ ਜਿਉ ਹੋਵੈ ਸਾਹਿਬ ਸਿਉ ਮੇਲੁ ॥੩॥",
+        "transliteration": {
+          "english": "dehu sajan aseesarreea jiau hovai saahib siau mel |3|",
+          "hindi": "देहु सजण असीसड़ीआ जिउ होवै साहिब सिउ मेलु ॥३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Giver me your blessings, O Friends! that I may attain union with my Master.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "My friends, give me your blessings, that I may merge with my Lord and Master. ||3||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਸਤਸੰਗੀ ਸਹੇਲੀਓ!) ਰਲ ਕੇ ਮੈਨੂੰ ਮਾਂਈਏਂ ਪਾਓ, ਤੇ, ਹੇ ਸੱਜਣ (ਸਹੇਲੀਓ!) ਮੈਨੂੰ ਸੋਹਣੀਆਂ ਅਸੀਸਾਂ ਭੀ ਦਿਓ (ਭਾਵ, ਮੇਰੇ ਲਈ ਅਰਦਾਸ ਭੀ ਕਰੋ) ਜਿਵੇਂ ਪ੍ਰਭੂ-ਪਤੀ ਨਾਲ ਮੇਰਾ ਮਿਲਾਪ ਹੋ ਜਾਏ ॥੩॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਮੈਨੂੰ ਆਪਣੀਆਂ ਅਸ਼ੀਰਵਾਦਾਂ ਦਿਓ, ਹੈ ਮਿੱਤਰੋ! ਤਾਂ ਜੋ ਮੇਰਾ ਆਪਣੇ ਮਾਲਕ ਨਾਲ ਮਿਲਾਪ ਹੋ ਜਾਵੇ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे सजणों! एह असीसां देवो, जो मेरा सचे साहिब से मिलाप होवे॥३॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਅਸੀਸੜੀਆ = ਸੋਹਣੀਆਂ ਅਸੀਸਾਂ॥੩॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "source_id": "CE8B",
+      "section_index": 0,
+      "unit": 4,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 15
+      },
+      "text": {
+        "gurmukhi": "ਘਰਿ ਘਰਿ ਏਹੋ ਪਾਹੁਚਾ; ਸਦੜੇ ਨਿਤ ਪਵੰਨਿ ॥",
+        "gurmukhi_plain": "ਘਰਿ ਘਰਿ ਏਹੋ ਪਾਹੁਚਾ ਸਦੜੇ ਨਿਤ ਪਵੰਨਿ ॥",
+        "transliteration": {
+          "english": "ghar ghar eho paahuchaa sadarre nit pavan |",
+          "hindi": "घरि घरि एहो पाहुचा सदड़े नित पवंनि ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "This summon is sent to every house and such calls do come daily.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Unto each and every home, into each and every heart, this summons is sent out; the call comes each and every day.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਪਰਲੋਕ ਵਿਚ ਜਾਣ ਲਈ ਮੌਤ ਦੀ) ਇਹ ਸਾਹੇ-ਚਿੱਠੀ ਹਰੇਕ ਘਰ ਵਿਚ ਆ ਰਹੀ ਹੈ, ਇਹ ਸੱਦੇ ਨਿਤ ਪੈ ਰਹੇ ਹਨ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਇਹ ਸਮਨ ਹਰ ਘਰ ਵਿੱਚ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ ਤੇ ਐਸੀਆਂ ਹਾਕਾਂ ਹਰ ਰੋਜ਼ ਹੀ ਪੈਦੀਆਂ ਰਹਿੰਦੀਆਂ ਹਨ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "सभ घर घर मैं एही (पाहुचा) विवाह गंढवा संदेसा फिरि रहा है, अर सदे नित पड़ रहे हैं। अरथात अपने समे पर सभ जीव संसार को त्यागी चले जाते हैं। वा (घरि घरि) सभ सासत्रों में इही जीव को सदे पड़ रहे हैं, क्या बुलावा आइ रहा है, कि हे जीव! अपने सरूप में प्रापति होहु॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਘਰਿ = ਘਰ ਵਿਚ। ਘਰਿ ਘਰਿ = ਹਰੇਕ ਘਰ ਵਿਚ। ਪਾਹੁਚਾ = ਪਹੋਚਾ, ਸੱਦਾ, ਸਾਹੇ-ਚਿੱਠੀ {❀ ਨੋਟ: ਵਿਆਹ ਦਾ ਸਾਹਾ ਤੇ ਲਗਨ ਮੁਕਰਰ ਹੋਣ ਤੇ ਮੁੰਡੇ ਵਾਲਿਆਂ ਦਾ ਨਾਈ ਜੰਞ ਦੀ ਗਿਣਤੀ ਆਦਿਕ ਤੇ ਹੋਰ ਜ਼ਰੂਰੀ ਸੁਨੇਹੇ ਲੈ ਕੇ ਕੁੜੀ ਵਾਲਿਆਂ ਦੇ ਘਰ ਜਾਂਦਾ ਹੈ। ਉਸ ਨੂੰ ਪਹੋਚੇ ਵਾਲਾ ਨਾਈ ਆਖਦੇ ਹਨ}। ਪਵੰਨਿ = ਪੈਂਦੇ ਹਨ। ਸਦੜੇ = ਸੱਦੇ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 12,
+      "source_id": "37AH",
+      "section_index": 0,
+      "unit": 4,
+      "ends_unit": 1,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 16
+      },
+      "text": {
+        "gurmukhi": "ਸਦਣਹਾਰਾ ਸਿਮਰੀਐ; ਨਾਨਕ. ਸੇ ਦਿਹ ਆਵੰਨਿ ॥੪॥੧॥",
+        "gurmukhi_plain": "ਸਦਣਹਾਰਾ ਸਿਮਰੀਐ ਨਾਨਕ ਸੇ ਦਿਹ ਆਵੰਨਿ ॥੪॥੧॥",
+        "transliteration": {
+          "english": "sadanahaaraa simareeai naanak se dih aavan |4|1|",
+          "hindi": "सदणहारा सिमरीऐ नानक से दिह आवंनि ॥४॥१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Meditate on the Summoner, O Nanak! That day is approaching near.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Remember in meditation the One who summons us; O Nanak, that day is drawing near! ||4||1||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਹੇ ਸਤਸੰਗੀਓ!) ਉਸ ਸੱਦਾ ਭੇਜਣ ਵਾਲੇ ਪ੍ਰਭੂ-ਪਤੀ ਨੂੰ ਯਾਦ ਰੱਖਣਾ ਚਾਹੀਦਾ ਹੈ (ਕਿਉਂਕਿ) ਹੇ ਨਾਨਕ! (ਸਾਡੇ ਭੀ) ਉਹ ਦਿਨ (ਨੇੜੇ) ਆ ਰਹੇ ਹਨ ॥੪॥੧॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਬੁਲਾਉਣ ਵਾਲੇ ਦਾ ਆਰਾਧਨ ਕਰ, ਹੈ ਨਾਨਕ! ਉਹ ਦਿਹਾੜਾ ਨੇੜੇ ਢੁਕ ਰਿਹਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "स्री गुरू जी कहते हैं: सदणहारा भाव काल को सिमरन करीए। हे भाई! जो औरु लोकों पर आवते देखता हैं, सो म्रितू के दिन अंत को तेरे पर भी आवेंगे। वा शासत्रों द्वारे अपणी तरफ सदण हारा जो परमेसरु है, तिस को सिमरीए। तिस कर तेरे पर भी (से) वहु, भाव गिआन वानों वाले दिन आवेंगे॥४॥१॥☬प्रशन: आप ने कहा: कि सभ सासत्रों का सदा पड़ रहा है, सो सासत्रों के मत तो अनेक हैं, भिंन भिंन रीती के उपदेस हैं, केवल वेदांत सासत्र का सदा जथारथ है?☬उतरु: यद्यपि करम उपासनां के भेद से मत भिंन भिंन हैं, परंतू सिधांतु सभ का एक परमेस्वर की प्रापती मे ही है। किसी का अंतसकरण की शुद्धी द्वारा परंपरा करके, किसी का साख्यात करके, सोई सपशट करते हैं॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਸੇ ਦਿਹ = ਉਹ ਦਿਹਾੜੇ। ਆਵੰਨਿ = ਆਉਂਦੇ ਹਨ॥੪॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 13,
+      "source_id": "51N3",
+      "section_index": 0,
+      "unit": 5,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 16
+      },
+      "text": {
+        "gurmukhi": "ਰਾਗੁ ਆਸਾ ਮਹਲਾ ੧ ॥",
+        "gurmukhi_plain": "ਰਾਗੁ ਆਸਾ ਮਹਲਾ ੧ ॥",
+        "transliteration": {
+          "english": "raag aasaa mahalaa 1 |",
+          "hindi": "रागु आसा महला १ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Asa Measure, First Guru.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Raag Aasaa, First Mehl:",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਰਾਗ ਆਸਾ ਵਿੱਚ ਗੁਰੂ ਨਾਨਕ ਜੀ ਦੀ ਬਾਣੀ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਰਾਗ ਆਸਾ, ਪਹਿਲੀ ਪਾਤਸ਼ਾਹੀ।",
+          "source": "SBMS"
+        },
+        "hindi": null
+      }
+    },
+    {
+      "id": 14,
+      "source_id": "H9XK",
+      "section_index": 0,
+      "unit": 5,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 16
+      },
+      "text": {
+        "gurmukhi": "ਛਿਅ ਘਰ, ਛਿਅ ਗੁਰ; ਛਿਅ ਉਪਦੇਸ ॥",
+        "gurmukhi_plain": "ਛਿਅ ਘਰ ਛਿਅ ਗੁਰ ਛਿਅ ਉਪਦੇਸ ॥",
+        "transliteration": {
+          "english": "chhia ghar chhia gur chhia upades |",
+          "hindi": "छिअ घर छिअ गुर छिअ उपदेस ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "There are six systems, six their teachers and six their doctrines.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "There are six schools of philosophy, six teachers, and six sets of teachings.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਹੇ ਭਾਈ!) ਛੇ ਸ਼ਾਸਤਰ ਹਨ, ਛੇ ਹੀ (ਇਹਨਾਂ ਸ਼ਾਸਤਰਾਂ ਦੇ) ਚਲਾਣ ਵਾਲੇ ਹਨ, ਛੇ ਹੀ ਇਹਨਾਂ ਦੇ ਸਿੱਧਾਂਤ ਹਨ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਛੇ ਸ਼ਾਸਤਰ ਹਨ, ਛੇ ਉਨ੍ਹਾਂ ਦੇ ਪੜ੍ਹਾਉਣ ਵਾਲੇ ਅਤੇ ਛੇ ਉਨ੍ਹਾਂ ਦੇ ਮੱਤ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "सांख १, न्याइ २, विससेक ३, मीमांसा ४, पातंजल ५, वेदांत ६ यह छे तो घर हैं, और इन के करता कपल १, कणभुक २, गौतम ३, जैमन ४, सेस ५, ब्यास ६ इह छे इन घरों के गुर हैं। छिए ही इन के उपदेस हैं॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਛਿਅ = ਛੇ। ਘਰ = ਸ਼ਾਸਤਰ {ਸਾਂਖ, ਨਿਆਇ, ਵੈਸ਼ੇਸ਼ਿਕ, ਯੋਗ, ਮੀਮਾਂਸਾ, ਵੇਦਾਂਤ}। ਗੁਰ = (ਇਹਨਾਂ ਸ਼ਾਸਤਰਾਂ ਦੇ) ਕਰਤਾ, {ਕਪਲ, ਗੋਤਮ, ਕਣਾਦ, ਪਤੰਜਲੀ, ਜੈਮਨੀ, ਵਿਆਸ}। ਉਪਦੇਸ = ਸਿੱਖਿਆ, ਸਿੱਧਾਂਤ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 15,
+      "source_id": "ATCX",
+      "section_index": 0,
+      "unit": 5,
+      "ends_unit": 1,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 17
+      },
+      "text": {
+        "gurmukhi": "ਗੁਰੁ ਗੁਰੁ ਏਕੋ; ਵੇਸ ਅਨੇਕ ॥੧॥",
+        "gurmukhi_plain": "ਗੁਰੁ ਗੁਰੁ ਏਕੋ ਵੇਸ ਅਨੇਕ ॥੧॥",
+        "transliteration": {
+          "english": "gur gur eko ves anek |1|",
+          "hindi": "गुरु गुरु एको वेस अनेक ॥१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "But the Teacher of teachers is but one Lord, though he has various vestures.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "But the Teacher of teachers is the One, who appears in so many forms. ||1||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਪਰ ਇਹਨਾਂ ਸਾਰਿਆਂ ਦਾ ਮੂਲ-ਗੁਰੂ (ਪਰਮਾਤਮਾ) ਇੱਕ ਹੈ। (ਇਹ ਸਾਰੇ ਸਿਧਾਂਤ) ਉਸ ਇੱਕ ਪ੍ਰਭੂ ਦੇ ਹੀ ਅਨੇਕਾਂ ਵੇਸ ਹਨ (ਪ੍ਰਭੂ ਦੀ ਹਸਤੀ ਦੇ ਪਰਕਾਸ਼ ਦੇ ਰੂਪ ਹਨ) ॥੧॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਪਰ ਸਾਰਿਆਂ ਉਸਤਾਦਾਂ ਦਾ ਉਸਤਾਦ ਕੇਵਲ ਇਕ ਸਾਹਿਬ ਹੈ। ਭਾਵੇਂ ਉਸ ਦੇ ਅਨੇਕਾਂ ਪਹਿਰਾਵੇ ਹਨ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "सभ गुरों का गुरू एक करता पुरखु ही है, क्योंकि सभ तिसी मे प्रापति करने के रसते हैं। (वेस) सरूप अनेक प्रकार के अनेक अचारजों ने कथन कीए हैं, वा सरीरों रूपी वेस सभ उसी के हैं⁽¹⁾॥१॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਗੁਰੁ ਗੁਰੁ = ਇਸਟ ਪ੍ਰਭੂ। ਏਕੋ = ਇੱਕ ਹੀ। ਵੇਸ = ਰੂਪ॥੧॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 16,
+      "source_id": "JHL9",
+      "section_index": 0,
+      "unit": 6,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 17
+      },
+      "text": {
+        "gurmukhi": "ਬਾਬਾ, ਜੈ ਘਰਿ; ਕਰਤੇ ਕੀਰਤਿ ਹੋਇ ॥",
+        "gurmukhi_plain": "ਬਾਬਾ ਜੈ ਘਰਿ ਕਰਤੇ ਕੀਰਤਿ ਹੋਇ ॥",
+        "transliteration": {
+          "english": "baabaa jai ghar karate keerat hoe |",
+          "hindi": "बाबा जै घरि करते कीरति होइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Father! follow the house (system) where-in the praises of the Creator are uttered.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "O Baba: that system in which the Praises of the Creator are sung",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਭਾਈ! ਜਿਸ (ਸਤਸੰਗ-) ਘਰ ਵਿਚ ਕਰਤਾਰ ਦੀ ਸਿਫ਼ਤ-ਸਾਲਾਹ ਹੁੰਦੀ ਹੈ,",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਹੇ ਪਿਤਾ! ਜਿਸ ਗ੍ਰਹਿ (ਮੱਤ) ਅੰਦਰ ਸਿਰਜਣਹਾਰ ਦੀ ਸਿਫ਼ਤ-ਸ਼ਲਾਘਾ ਹੁੰਦੀ ਹੈ, ਉਸ ਮੱਤ ਦੀ ਪੈਰਵੀ ਕਰ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "(बाबा) हे भाई! जिस सतसंग घर मैं करते का जसु हो रहा है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਬਾਬਾ = ਹੇ ਭਾਈ! ਜੈ ਘਰਿ = ਜਿਸ (ਸਤਸੰਗ-) ਘਰ ਵਿਚ। ਕਰਤੇ ਕੀਰਤਿ = ਕਰਤਾਰ ਦੀ ਸਿਫ਼ਤ-ਸਾਲਾਹ। ਹੋਇ = ਹੁੰਦੀ ਹੈ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 17,
+      "source_id": "BG3B",
+      "section_index": 0,
+      "unit": 6,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 17
+      },
+      "text": {
+        "gurmukhi": "ਸੋ ਘਰੁ ਰਾਖੁ; ਵਡਾਈ ਤੋਇ ॥੧॥ ਰਹਾਉ ॥",
+        "gurmukhi_plain": "ਸੋ ਘਰੁ ਰਾਖੁ ਵਡਾਈ ਤੋਇ ॥੧॥ ਰਹਾਉ ॥",
+        "transliteration": {
+          "english": "so ghar raakh vaddaaee toe |1| rahaau |",
+          "hindi": "सो घरु राखु वडाई तोइ ॥१॥ रहाउ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "In it rests thy greatness. Pause.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "-follow that system; in it rests true greatness. ||1||Pause||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਉਸ ਘਰ ਨੂੰ ਸਾਂਭ ਰੱਖ (ਉਸ ਸਤਸੰਗ ਦਾ ਆਸਰਾ ਲਈ ਰੱਖ) ਇਸੇ ਵਿਚ ਤੇਰੀ ਭਲਾਈ ਹੈ ॥੧॥ ਰਹਾਉ ॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਇਸ ਮੱਤ ਵਿੱਚ ਤੇਰੀ ਵਡਿਆਈ ਹੈ। ਠਹਿਰਾਉ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "तिस घर मे तूं  आपणे आपको रक्खु, इस मैं तेरी वडिआई होवेगी⁽¹⁾॥१॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਰਾਖੁ = ਸੰਭਾਲ। ਤੋਇ = ਤੇਰੀ। ਵਡਾਈ = ਭਲਾਈ॥੧॥ਰਹਾਉ॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 18,
+      "source_id": "7JT8",
+      "section_index": 0,
+      "unit": 6,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 18
+      },
+      "text": {
+        "gurmukhi": "ਵਿਸੁਏ ਚਸਿਆ, ਘੜੀਆ ਪਹਰਾ; ਥਿਤੀ ਵਾਰੀ ਮਾਹੁ ਹੋਆ ॥",
+        "gurmukhi_plain": "ਵਿਸੁਏ ਚਸਿਆ ਘੜੀਆ ਪਹਰਾ ਥਿਤੀ ਵਾਰੀ ਮਾਹੁ ਹੋਆ ॥",
+        "transliteration": {
+          "english": "visue chasiaa gharreea paharaa thitee vaaree maahu hoaa |",
+          "hindi": "विसुए चसिआ घड़ीआ पहरा थिती वारी माहु होआ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Second, minutes, hours, quarters of a day, lunar-days, weekdays, months,",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The seconds, minutes and hours, days, weeks and months,",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਜਿਵੇਂ ਵਿਸੁਏ, ਚਸੇ, ਘੜੀਆਂ, ਪਹਰ, ਥਿੱਤਾਂ, ਵਾਰ, ਮਹੀਨਾ (ਆਦਿਕ),",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਸਕਿੰਟ, ਮਿੰਟ ਘੰਟੇ, ਦਿਨ ਦੇ ਚੁਥਾਈਏ, ਚੰਦ ਦੇ ਦਿਹਾੜੇ ਸੂਰਜ ਦੇ ਦਿਹਾੜੇ, ਮਹੀਨੇ,",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "एह एक से अनेक मति क्यों हूए? तिस पर द्रिसटांतु: जैसे १५ वार नेत्रो नमीलनके काल का नामु विसा है। तिस १५ विसों का नाम चसा है। ३० चसों का नामु पलु है। ६० पल की घड़ी है। ८ घड़ी का पहरु है। ८ पहर का दिन रात है। १५ तिथ हैं। १२ महीने हैं। ६ रुति हैं॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਅੱਖ ਦੇ ੧੫ ਫੋਰ = ੧ ਵਿਸਾ।੧੫ ਵਿਸੁਏ = ੧ ਚਸਾ। ੩੦ ਚਸੇ = ੧ ਪਲ।੬੦ ਪਲ = ੧ ਘੜੀ। ਸਾਢੋ ੭ ਘੜੀਆਂ = ੧ ਪਹਰ।੮ ਪਹਰ = ੧ ਦਿਨ ਰਾਤ। ੧੫ ਥਿਤਾਂ; ੭ ਵਾਰ; ੧੨ ਮਹੀਨੇ, ਛੇ ਰੁੱਤਾਂ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 19,
+      "source_id": "8GAV",
+      "section_index": 0,
+      "unit": 6,
+      "ends_unit": 2,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 12,
+        "line": 18
+      },
+      "text": {
+        "gurmukhi": "ਸੂਰਜੁ; ਏਕੋ ਰੁਤਿ ਅਨੇਕ ॥ ਨਾਨਕ ਕਰਤੇ ਕੇ ਕੇਤੇ ਵੇਸ ॥੨॥੨॥",
+        "gurmukhi_plain": "ਸੂਰਜੁ ਏਕੋ ਰੁਤਿ ਅਨੇਕ ॥ ਨਾਨਕ ਕਰਤੇ ਕੇ ਕੇਤੇ ਵੇਸ ॥੨॥੨॥",
+        "transliteration": {
+          "english": "sooraj eko rut anek | naanak karate ke kete ves |2|2|",
+          "hindi": "सूरजु एको रुति अनेक ॥ नानक करते के केते वेस ॥२॥२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "And several seasons spring from the lone sun. So many forms originate from the Creator, O Nanak!",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "And the various seasons originate from the one sun; O Nanak, in just the same way, the many forms originate from the Creator. ||2||2||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਅਤੇ ਹੋਰ ਅਨੇਕਾਂ ਰੁੱਤਾਂ ਹਨ, ਪਰ ਸੂਰਜ ਇਕੋ ਹੀ ਹੈ (ਜਿਸ ਦੇ ਇਹ ਸਾਰੇ ਵਖ ਵਖ ਰੂਪ ਹਨ), ਤਿਵੇਂ, ਹੇ ਨਾਨਕ! ਕਰਤਾਰ ਦੇ (ਇਹ ਸਾਰੇ ਸਿਧਾਂਤ ਆਦਿਕ) ਅਨੇਕਾਂ ਸਰੂਪ ਹਨ ॥੨॥੨॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਅਤੇ ਕਈ ਮੌਸਮ ਇਕ ਸੂਰਜ ਤੋਂ ਉਤਪੰਨ ਹੁੰਦੇ ਹਨ। ਏਸੇ ਤਰ੍ਹਾਂ, ਹੇ ਨਾਨਕ! ਸਿਰਜਣਹਾਰ ਤੋਂ ਬਹੁਤੇ ਸਰੂਪ ਉਤਪੰਨ ਹੁੰਦੇ ਹਨ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "परंतू सूरज एक के येह अनेक भेद है॥ स्री गुरू जी कहते हैं: तिसी प्रकार करता पुरखु एक है। (वेस) भेख, भाउ, सरीर वा मत नाना हैं॥२॥☬स्री गुरू नानक देव जी जगंनाथ जी गए। तहां आरती का समां हूआ, तब पंडतों ने कहा: हे साधू! आपने भगवान की आरती ना करी अरु बैठा क्यों रहा? तब स्री गुरू जी ने कहा: कि हम तो प्रमेस्वर के आगे ऐसी आरती करते हैं, जो सदीव काल हो रही है। अब आरती का रूपु कहते हैं:",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      }
+    },
+    {
+      "id": 20,
+      "source_id": "46PB",
+      "section_index": 0,
+      "unit": 7,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 1
+      },
+      "text": {
+        "gurmukhi": "ਰਾਗੁ ਧਨਾਸਰੀ ਮਹਲਾ ੧ ॥",
+        "gurmukhi_plain": "ਰਾਗੁ ਧਨਾਸਰੀ ਮਹਲਾ ੧ ॥",
+        "transliteration": {
+          "english": "raag dhanaasaree mahalaa 1 |",
+          "hindi": "रागु धनासरी महला १ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Dhanasri Measure, First Guru.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Raag Dhanaasaree, First Mehl:",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਰਾਗ ਧਨਾਸਰੀ ਵਿੱਚ ਗੁਰੂ ਨਾਨਕ ਜੀ ਦੀ ਬਾਣੀ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਧਨਾਸਰੀ ਰਾਗ, ਪਹਿਲੀ ਪਾਤਸ਼ਾਹੀ।",
+          "source": "SBMS"
+        },
+        "hindi": null
+      }
+    },
+    {
+      "id": 21,
+      "source_id": "DMKL",
+      "section_index": 0,
+      "unit": 7,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 1
+      },
+      "text": {
+        "gurmukhi": "ਗਗਨ ਮੈ ਥਾਲੁ. ਰਵਿ ਚੰਦੁ ਦੀਪਕ ਬਨੇ; ਤਾਰਿਕਾ ਮੰਡਲ, ਜਨਕ ਮੋਤੀ ॥",
+        "gurmukhi_plain": "ਗਗਨ ਮੈ ਥਾਲੁ ਰਵਿ ਚੰਦੁ ਦੀਪਕ ਬਨੇ ਤਾਰਿਕਾ ਮੰਡਲ ਜਨਕ ਮੋਤੀ ॥",
+        "transliteration": {
+          "english": "gagan mai thaal rav chand deepak bane taarikaa manddal janak motee |",
+          "hindi": "गगन मै थालु रवि चंदु दीपक बने तारिका मंडल जनक मोती ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "In the sky's salver the sun and the moon are lamps and the stars with their orbs are the studded pearls.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Upon that cosmic plate of the sky, the sun and the moon are the lamps. The stars and their orbs are the studded pearls.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਸਾਰਾ ਆਕਾਸ਼ (ਮਾਨੋ) ਥਾਲ ਹੈ ਤੇ ਸੂਰਜ ਤੇ ਚੰਦ (ਉਸ ਥਾਲ ਵਿਚ) ਦੀਵੇ ਬਣੇ ਹੋਏ ਹਨ। ਤਾਰਿਆਂ ਦੇ ਸਮੂਹ, ਮਾਨੋ, (ਥਾਲ ਵਿਚ) ਮੋਤੀ ਰੱਖੇ ਹੋਏ ਹਨ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਅਸਮਾਨ ਦੀ ਵੱਡੀ ਥਾਲੀ ਅੰਦਰ ਸੂਰਜ ਤੇ ਚੰਨ ਦੀਵੇ ਹਨ ਅਤੇ ਤਾਰੇ ਆਪਣੇ ਚੱਕਰਾਂ ਸਮੇਤ ਜੜੇ ਹੋਏ ਮੌਤੀ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भवखंडन जी! अकास रूपु आप की आरती का थालु है, चंद्रमां सूरजु दो दीपक उस में धरे हैं। औरु यावत तारा मंडल है, सो (जनक) जानो मोती धरे हैं, वा हे जगत के पिता मोती (जनक) जड़े हूएं हैं॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਗਗਨ = ਆਕਾਸ਼। ਗਗਨ ਮੈ = ਗਗਨ ਮਯ, ਆਕਾਸ਼ ਰੂਪ, ਸਾਰਾ ਆਕਾਸ਼। ਰਵਿ = ਸੂਰਜ। ਦੀਪਕ = ਦੀਵੇ। ਜਨਕ = ਜਾਣੋ, ਮਾਨੋ, ਜਿਵੇਂ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 22,
+      "source_id": "CWTS",
+      "section_index": 0,
+      "unit": 7,
+      "ends_unit": 1,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 2
+      },
+      "text": {
+        "gurmukhi": "ਧੂਪੁ ਮਲਆਨਲੋ, ਪਵਣੁ ਚਵਰੋ ਕਰੇ; ਸਗਲ ਬਨਰਾਇ, ਫੂਲੰਤ ਜੋਤੀ ॥੧॥",
+        "gurmukhi_plain": "ਧੂਪੁ ਮਲਆਨਲੋ ਪਵਣੁ ਚਵਰੋ ਕਰੇ ਸਗਲ ਬਨਰਾਇ ਫੂਲੰਤ ਜੋਤੀ ॥੧॥",
+        "transliteration": {
+          "english": "dhoop malaanalo pavan chavaro kare sagal banaraae foolant jotee |1|",
+          "hindi": "धूपु मलआनलो पवणु चवरो करे सगल बनराइ फूलंत जोती ॥१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The fragrance of sandal wood makes Thy incense, wind Thy fan and all the vegetation Thine flowers, O Luminous Lord!",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The fragrance of sandalwood in the air is the temple incense, and the wind is the fan. All the plants of the world are the altar flowers in offering to You, O Luminous Lord. ||1||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਮਲਯ ਪਰਬਤ ਵਲੋਂ ਆਉਣ ਵਾਲੀ ਹਵਾ, ਮਾਨੋ, ਧੂਪ (ਧੁਖ ਰਿਹਾ) ਹੈ, ਤੇ ਹਵਾ ਚੌਰ ਕਰ ਰਹੀ ਹੈ। ਸਾਰੀ ਬਨਸਪਤੀ ਜੋਤਿ-ਰੂਪ (ਪ੍ਰਭੂ ਦੀ ਆਰਤੀ) ਵਾਸਤੇ ਫੁੱਲ ਦੇ ਰਹੀ ਹੈ ॥੧॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਚੰਨਣ ਦੀ ਸੁਗੰਧਤ ਤੇਰੀ ਹੋਮ-ਸਾਮੱਗਰੀ ਬਣਾਉਂਦੀ ਹੈ, ਹਵਾ ਤੇਰੀ ਚੋਰੀ ਅਤੇ ਸਾਰੀ ਬਨਸਪਤੀ ਤੇਰੇ ਫੁੱਲ ਹਨ, ਹੈ ਪ੍ਰਕਾਸ਼ਵਾਨ ਪ੍ਰਭੂ!",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "मल्यागर चंदन औरु तिनमे जो अगनि देही धूप है। पवन देवता चौरु करता है। हे जोती प्रकास रूप जितनी बनासपती फूल रही है, सो सभ फूल हैं॥१॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਮਲਆਨਲੋ = {ਮਲਯ-ਅਨਲੋ} ਮਲਯ ਪਹਾੜ ਵਲੋਂ ਆਉਣ ਵਾਲੀ ਹਵਾ (ਅਨਲ = ਹਵਾ)। ਮਲਯ ਪਰਬਤ ਉਤੇ ਚੰਦਨ ਦੇ ਬੂਟੇ ਹੋਣ ਕਰਕੇ ਉਧਰੋਂ ਆਉਣ ਵਾਲੀ ਹਵਾ ਸੁਗੰਧੀ ਵਾਲੀ ਹੁੰਦੀ ਹੈ। ਮਲਯ ਪਹਾੜ ਭਾਰਤ ਦੇ ਦੱਖਣ ਵਿਚ ਹੈ। ਸਗਲ = ਸਾਰੀ। ਬਨਰਇ = ਬਨਸਪਤੀ। ਫੂਲੰਤ = ਫੁੱਲ ਦੇ ਰਹੀ ਹੈ। ਜੋਤੀ = ਜੋਤਿ-ਰੂਪ ਪ੍ਰਭੂ॥੧॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 23,
+      "source_id": "5L8J",
+      "section_index": 0,
+      "unit": 8,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 3
+      },
+      "text": {
+        "gurmukhi": "ਕੈਸੀ; ਆਰਤੀ ਹੋਇ ॥ ਭਵ ਖੰਡਨਾ; ਤੇਰੀ ਆਰਤੀ ॥",
+        "gurmukhi_plain": "ਕੈਸੀ ਆਰਤੀ ਹੋਇ ॥ ਭਵ ਖੰਡਨਾ ਤੇਰੀ ਆਰਤੀ ॥",
+        "transliteration": {
+          "english": "kaisee aaratee hoe | bhav khanddanaa teree aaratee |",
+          "hindi": "कैसी आरती होइ ॥ भव खंडना तेरी आरती ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "What a beautiful \"worship with lamps\" is being performed? This is Thine \"Present adoration\" O the Destroyer of dread!",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "What a beautiful Aartee, lamp-lit worship service this is! O Destroyer of Fear, this is Your Ceremony of Light.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਕੁਦਰਤਿ ਵਿਚ) ਤੇਰੀ ਕੈਸੀ ਸੁੰਦਰ ਆਰਤੀ ਹੋ ਰਹੀ ਹੈ! ਹੇ ਜੀਵਾਂ ਦੇ ਜਨਮ ਮਰਨ ਨਾਸ ਕਰਨ ਵਾਲੇ! ਇਹ ਹੈ ਤੇਰੀ ਅਦਭੁਤ ਆਰਤੀ!",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਕੈਸੀ ਸੁੰਦਰ ਉਪਾਸ਼ਨਾ ਦੀਵਿਆਂ ਨਾਲ ਹੋ ਰਹੀ ਹੈ? ਇਹ ਤੇਰੀ ਸਨਮੁਖ ਪੂਜਾ ਹੈ, ਹੈ ਡਰ ਦੇ ਨਾਸ਼ ਕਰਣਹਾਰ!",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "तेरी आरती कैसी होवै, कैसे हो रही है॥ हे (भव) जनम मरन के नास करनेहार औरु तेरी आरती कैसी होवै, कैसे हो रही है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਭਵ ਖੰਡਨ = ਹੇ ਜਨਮ ਮਰਨ ਕੱਟਣ ਵਾਲੇ!",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 24,
+      "source_id": "83N9",
+      "section_index": 0,
+      "unit": 8,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 3
+      },
+      "text": {
+        "gurmukhi": "ਅਨਹਤਾ ਸਬਦ; ਵਾਜੰਤ ਭੇਰੀ ॥੧॥ ਰਹਾਉ ॥",
+        "gurmukhi_plain": "ਅਨਹਤਾ ਸਬਦ ਵਾਜੰਤ ਭੇਰੀ ॥੧॥ ਰਹਾਉ ॥",
+        "transliteration": {
+          "english": "anahataa sabad vaajant bheree |1| rahaau |",
+          "hindi": "अनहता सबद वाजंत भेरी ॥१॥ रहाउ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The celestial strain is the sounding of temple drums. Pause.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The Unstruck Sound-current of the Shabad is the vibration of the temple drums. ||1||Pause||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਸਭ ਜੀਵਾਂ ਵਿਚ ਰੁਮਕ ਰਹੀ) ਇੱਕੋ ਜੀਵਨ-ਰੌ, ਮਾਨੋ, ਤੇਰੀ ਆਰਤੀ ਵਾਸਤੇ ਨਾਗਾਰੇ ਵੱਜ ਰਹੇ ਹਨ ॥੧॥ ਰਹਾਉ ॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਰੱਬੀ ਕੀਰਤਨ ਮੰਦਰ ਦੇ ਨਗਾਰਿਆਂ ਦਾ ਵੱਜਣਾ ਹੈ। ਠਹਿਰਾਉ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "सो कहते हैं भेरी आदि सबद कुछ काल तक वजते हैं। जिस तेरी आरती का जीवों की बाणी रूप (अनहता) एकु रस सबदु भेरी आदिक वाजे वज रहे हैं॥१॥ औरु इस प्रकार हम तेरी उसतती करते हैं।",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਅਨਹਤਾ = {ਅਨ-ਹਤ} ਜੋ ਬਿਨਾ ਵਜਾਏ ਵੱਜੇ, ਇੱਕ-ਰਸ। ਸ਼ਬਦ = ਆਵਾਜ਼, ਜੀਵਨ-ਰੌ। ਭੇਰੀ = ਡੱਫ, ਨਗਾਰਾ॥੧॥ਰਹਾਉ॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 25,
+      "source_id": "77XK",
+      "section_index": 0,
+      "unit": 8,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 3
+      },
+      "text": {
+        "gurmukhi": "ਸਹਸ ਤਵ ਨੈਨ, ਨਨ ਨੈਨ ਹਹਿ ਤੋਹਿ ਕਉ; ਸਹਸ ਮੂਰਤਿ, ਨਨਾ ਏਕ ਤੋੁਹੀ ॥",
+        "gurmukhi_plain": "ਸਹਸ ਤਵ ਨੈਨ ਨਨ ਨੈਨ ਹਹਿ ਤੋਹਿ ਕਉ ਸਹਸ ਮੂਰਤਿ ਨਨਾ ਏਕ ਤੋੁਹੀ ॥",
+        "transliteration": {
+          "english": "sehas tav nain nan nain heh tohi kau sehas moorat nanaa ek touhee |",
+          "hindi": "सहस तव नैन नन नैन हहि तोहि कउ सहस मूरति नना एक तोुही ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Thousands are Thine eyes, yet Thou hast no eye. Thousands are Thine forms, yet Thou hast not even one.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "You have thousands of eyes, and yet You have no eyes. You have thousands of forms, and yet You do not have even one.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਸਭ ਜੀਵਾਂ ਵਿਚ ਵਿਆਪਕ ਹੋਣ ਕਰਕੇ) ਹਜ਼ਾਰਾਂ ਤੇਰੀਆਂ ਅੱਖਾਂ ਹਨ (ਪਰ, ਨਿਰਾਕਾਰ ਹੋਣ ਕਰਕੇ, ਹੇ ਪ੍ਰਭੂ!) ਤੇਰੀਆਂ ਕੋਈ ਅੱਖਾਂ ਨਹੀਂ। ਹਜ਼ਾਰਾਂ ਤੇਰੀਆਂ ਸ਼ਕਲਾਂ ਹਨ, ਪਰ ਤੇਰੀ ਕੋਈ ਭੀ ਸ਼ਕਲ ਨਹੀਂ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਹਜ਼ਾਰਾਂ ਹਨ ਤੇਰੀਆਂ ਅੱਖਾਂ ਤੇ ਤਦਯਪ ਤੇਰੀ ਕੋਈ ਅੱਖ ਨਹੀਂ! ਹਜਾਰਾ ਹਨ ਤੇਰੇ ਸਰੂਪ ਤੇ ਤਦਯਪ ਤੇਰਾ ਇਕ ਸਰੂਪ ਭੀ ਨਹੀਂ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "विराट रूपु कर के संहस्र तेरे नेत्र हैं, निरगुण रूपु में एक भी (नन) नहीं है। विराट रूपु कर के सहंस्र तेरी मूरति हैं, निरगुण कर के एक मूरति भी तेरी नहीं है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਸਹਸ = ਹਜ਼ਾਰਾਂ। ਤਵ = ਤੇਰੇ। ਨੈਨ = ਅੱਖਾਂ। ਨਨ = ਕੋਈ ਨਹੀਂ। ਹਹਿ = {'ਹੈ' ਤੋਂ ਬਹੁ-ਵਚਨ}। ਤੋਹਿ ਕਉ = ਤੇਰੇ, ਤੈਨੂੰ, ਤੇਰੇ ਵਾਸਤੇ। ਮੂਰਤਿ = ਸ਼ਕਲ। ਨਾ = ਕੋਈ ਨਹੀਂ। ਤਹੀ = ਤੇਰੀ {ਅੱਖਰ 'ਤ' ਦੇ ਨਾਲ ਦੋ ਲਗਾਂ ਹਨ: (ੋ) ਅਤੇ (ੁ) ਅਸਲ ਲਫ਼ਜ਼ 'ਤੁਹੀ' ਹੈ, ਇਥੇ 'ਤੋਹੀ' ਪੜ੍ਹਨਾ ਹੈ}।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 26,
+      "source_id": "472J",
+      "section_index": 0,
+      "unit": 8,
+      "ends_unit": 2,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 4
+      },
+      "text": {
+        "gurmukhi": "ਸਹਸ ਪਦ ਬਿਮਲ, ਨਨ ਏਕ ਪਦ; ਗੰਧ ਬਿਨੁ, ਸਹਸ ਤਵ ਗੰਧ; ਇਵ ਚਲਤ ਮੋਹੀ ॥੨॥",
+        "gurmukhi_plain": "ਸਹਸ ਪਦ ਬਿਮਲ ਨਨ ਏਕ ਪਦ ਗੰਧ ਬਿਨੁ ਸਹਸ ਤਵ ਗੰਧ ਇਵ ਚਲਤ ਮੋਹੀ ॥੨॥",
+        "transliteration": {
+          "english": "sehas pad bimal nan ek pad gandh bin sehas tav gandh iv chalat mohee |2|",
+          "hindi": "सहस पद बिमल नन एक पद गंध बिनु सहस तव गंध इव चलत मोही ॥२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Thousands are Thine pure feet, even then Thou hast not one foot. Thousands are Thine noses and yet Thou art without a nose. I am bewitched by these plays or Thine.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "You have thousands of Lotus Feet, and yet You do not have even one foot. You have no nose, but you have thousands of noses. This Play of Yours entrances me. ||2||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹਜ਼ਾਰਾਂ ਤੇਰੇ ਸੋਹਣੇ ਪੈਰ ਹਨ, (ਪਰ ਨਿਰਾਕਾਰ ਹੋਣ ਕਰਕੇ) ਤੇਰਾ ਇੱਕ ਭੀ ਪੈਰ ਨਹੀਂ। ਹਜ਼ਾਰਾਂ ਤੇਰੇ ਨੱਕ ਹਨ, ਪਰ ਤੂੰ ਨੱਕ ਤੋਂ ਬਿਨਾ ਹੀ ਹੈਂ। ਤੇਰੇ ਅਜੇਹੇ ਕੌਤਕਾਂ ਨੇ ਮੈਨੂੰ ਹੈਰਾਨ ਕੀਤਾ ਹੋਇਆ ਹੈ ॥੨॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਹਜ਼ਾਰਾਂ ਹਨ ਤੇਰੇ ਪਵਿੱਤਰ ਪੈਰ, ਤਾਂ ਭੀ ਤੇਰਾ ਇਕ ਪੈਰ ਨਹੀਂ। ਹਜ਼ਾਰਾਂ ਹਨ ਤੇਰੇ ਨੱਕ ਤਦਯਪ ਤੂੰ ਨੱਕ ਦੇ ਬਗੈਰ ਹੈਂ। ਤੇਰਿਆਂ ਇਨ੍ਹਾਂ ਕੋਤਕਾ ਨੇ ਮੈਨੂੰ ਫਰੋਫ਼ਤਾ ਕਰ ਲਿਆ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "विराट रूपु कर के हे निरमल सुध स्वरूप तेरे हजारों चरन हैं, निरगुण सरूप में एक भी नहीं। विराट रूप कर के संहस्र तेरी नासका गंधको ग्रहण करती है, औरु निरगुण रूपु कर के गंध बिना है। तेरे चरित्र असचरज देख कर के बुधी मोहत हो रही है॥२॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਪਦ = ਪੈਰ। ਬਿਮਲ = ਸਾਫ਼। ਗੰਧ = ਨੱਕ। ਤਿਵ = ਇਸ ਤਰ੍ਹਾਂ। ਚਲਤ = ਕੌਤਕ, ਅਚਰਜ ਖੇਡ॥੨॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 27,
+      "source_id": "215J",
+      "section_index": 0,
+      "unit": 9,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 5
+      },
+      "text": {
+        "gurmukhi": "ਸਭ ਮਹਿ ਜੋਤਿ; ਜੋਤਿ ਹੈ ਸੋਇ ॥",
+        "gurmukhi_plain": "ਸਭ ਮਹਿ ਜੋਤਿ ਜੋਤਿ ਹੈ ਸੋਇ ॥",
+        "transliteration": {
+          "english": "sabh meh jot jot hai soe |",
+          "hindi": "सभ महि जोति जोति है सोइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Amongst all there is light and that light (art Thou).",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Amongst all is the Light-You are that Light.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਸਾਰੇ ਜੀਵਾਂ ਵਿਚ ਇਕੋ ਉਹੀ ਪਰਮਾਤਮਾ ਦੀ ਜੋਤੀ ਵਰਤ ਰਹੀ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਸਾਰਿਆਂ ਅੰਦਰ ਜਿਹੜੀ ਰੋਸ਼ਨੀ ਹੈ, ਉਹ ਰੋਸ਼ਨੀ ਤੂੰ ਹੈਂ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे जोती! सभ मे तेरी जोत है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਜੋਤਿ = ਚਾਨਣ, ਪ੍ਰਕਾਸ਼। ਸੋਇ = ਉਹ ਪ੍ਰਭੂ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 28,
+      "source_id": "K7Z2",
+      "section_index": 0,
+      "unit": 9,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 5
+      },
+      "text": {
+        "gurmukhi": "ਤਿਸ ਦੈ ਚਾਨਣਿ; ਸਭ ਮਹਿ ਚਾਨਣੁ ਹੋਇ ॥",
+        "gurmukhi_plain": "ਤਿਸ ਦੈ ਚਾਨਣਿ ਸਭ ਮਹਿ ਚਾਨਣੁ ਹੋਇ ॥",
+        "transliteration": {
+          "english": "tis dai chaanan sabh meh chaanan hoe |",
+          "hindi": "तिस दै चानणि सभ महि चानणु होइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "By His light, the light shines within all the souls.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "By this Illumination, that Light is radiant within all.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਉਸ ਜੋਤਿ ਦੇ ਪਰਕਾਸ਼ ਨਾਲ ਸਾਰੇ ਜੀਵਾਂ ਵਿਚ ਚਾਨਣ (ਸੂਝ-ਬੂਝ) ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਉਸ ਦੇ ਨੂਰ ਦੁਆਰਾ ਸਾਰੀਆਂ ਆਤਮਾਵਾਂ ਅੰਦਰ ਨੂਰ ਪ੍ਰਕਾਸ਼ ਹੋ ਜਾਂਦਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "तेरे (चानणु) प्रकास सें चंद्रमा, सूरज, तारागनादि सभ मैं प्रकासु हो रहा है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਤਿਸ ਦੈ ਚਾਨਣਿ = ਉਸ ਪ੍ਰਭੂ ਦੇ ਚਾਨਣ ਨਾਲ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 29,
+      "source_id": "Y7QW",
+      "section_index": 0,
+      "unit": 9,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 6
+      },
+      "text": {
+        "gurmukhi": "ਗੁਰ ਸਾਖੀ; ਜੋਤਿ ਪਰਗਟੁ ਹੋਇ ॥",
+        "gurmukhi_plain": "ਗੁਰ ਸਾਖੀ ਜੋਤਿ ਪਰਗਟੁ ਹੋਇ ॥",
+        "transliteration": {
+          "english": "gur saakhee jot paragatt hoe |",
+          "hindi": "गुर साखी जोति परगटु होइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "By the Guru's teaching the Divine light becomes manifest.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Through the Guru's Teachings, the Light shines forth.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਪਰ ਇਸ ਜੋਤਿ ਦਾ ਗਿਆਨ ਗੁਰੂ ਦੀ ਸਿੱਖਿਆ ਨਾਲ ਹੀ ਹੁੰਦਾ ਹੈ। (ਗੁਰੂ ਰਾਹੀਂ ਇਹ ਸਮਝ ਪੈਂਦੀ ਹੈ ਕਿ ਹਰੇਕ ਦੇ ਅੰਦਰ ਪਰਮਾਤਮਾ ਦੀ ਜੋਤਿ ਹੈ)।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਗੁਰਾਂ ਦੇ ਉਪਦੇਸ਼ ਦੁਆਰਾ ਈਸ਼ਵਰੀ ਨੂਰ ਜ਼ਾਹਿਰ ਹੋ ਜਾਂਦਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "गुर (साखी) सिक्ख्या लेने सें, अंतसकरण में जोति प्रगट होती है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਸਾਖੀ = ਸਿੱਖਿਆ ਨਾਲ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 30,
+      "source_id": "P7TK",
+      "section_index": 0,
+      "unit": 9,
+      "ends_unit": 3,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 6
+      },
+      "text": {
+        "gurmukhi": "ਜੋ ਤਿਸੁ ਭਾਵੈ; ਸੁ ਆਰਤੀ ਹੋਇ ॥੩॥",
+        "gurmukhi_plain": "ਜੋ ਤਿਸੁ ਭਾਵੈ ਸੁ ਆਰਤੀ ਹੋਇ ॥੩॥",
+        "transliteration": {
+          "english": "jo tis bhaavai su aaratee hoe |3|",
+          "hindi": "जो तिसु भावै सु आरती होइ ॥३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Whatever pleases Him, that is (His) real worship.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "That which is pleasing to Him is the lamp-lit worship service. ||3||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਇਸ ਸਰਬ-ਵਿਆਪਕ ਜੋਤਿ ਦੀ) ਆਰਤੀ ਇਹ ਹੈ ਕਿ ਜੋ ਕੁਝ ਉਸ ਦੀ ਰਜ਼ਾ ਵਿਚ ਹੋ ਰਿਹਾ ਹੈ, ਉਹ ਜੀਵ ਨੂੰ ਚੰਗਾ ਲੱਗੇ (ਪ੍ਰਭੂ ਦੀ ਰਜ਼ਾ ਵਿਚ ਤੁਰਨਾ ਪ੍ਰਭੂ ਦੀ ਆਰਤੀ ਕਰਨੀ ਹੈ) ॥੩॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਜੋ ਕੁਝ ਉਸ ਨੂੰ ਭਾਉਂਦਾ ਹੈ, ਉਹੀ (ਉਸ ਦੀ) ਅਸਲੀ ਪੂਜਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "जो (तिसु) आप को भावती है, सोई आरती स्रेस्ट होती है॥३॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      }
+    },
+    {
+      "id": 31,
+      "source_id": "7CLJ",
+      "section_index": 0,
+      "unit": 10,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 6
+      },
+      "text": {
+        "gurmukhi": "ਹਰਿ ਚਰਣ ਕਵਲ ਮਕਰੰਦ, ਲੋਭਿਤ ਮਨੋ; ਅਨਦਿਨੋੁ, ਮੋਹਿ ਆਹੀ ਪਿਆਸਾ ॥",
+        "gurmukhi_plain": "ਹਰਿ ਚਰਣ ਕਵਲ ਮਕਰੰਦ ਲੋਭਿਤ ਮਨੋ ਅਨਦਿਨੋੁ ਮੋਹਿ ਆਹੀ ਪਿਆਸਾ ॥",
+        "transliteration": {
+          "english": "har charan kaval makarand lobhit mano anadino mohi aahee piaasaa |",
+          "hindi": "हरि चरण कवल मकरंद लोभित मनो अनदिनोु मोहि आही पिआसा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "My soul is bewitched of the honey of the lotus feet of God, and night and day I am athirst for them.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "My mind is enticed by the honey-sweet Lotus Feet of the Lord. Day and night, I thirst for them.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਹਰੀ! ਤੇਰੇ ਚਰਨ-ਰੂਪ ਕੌਲ-ਫੁੱਲਾਂ ਦੇ ਰਸ ਲਈ ਮੇਰਾ ਮਨ ਲਲਚਾਂਦਾ ਹੈ, ਹਰ ਰੋਜ਼ ਮੈਨੂੰ ਇਸੇ ਰਸ ਦੀ ਪਿਆਸ ਲੱਗੀ ਹੋਈ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਵਾਹਿਗੁਰੂ ਦੇ ਕਮਲ ਰੂਪੀ ਪੈਰਾਂ ਦੇ ਸ਼ਹਿਦ ਉਤੇ ਮੇਰੀ ਆਤਮਾ ਮਾਇਲ ਹੋਈ ਹੋਈ ਹੈ ਅਤੇ ਰੈਣ ਦਿਨਸ ਮੈਂ ਉਨ੍ਹਾਂ ਲਈ ਤਿਹਾਇਆ ਹਾਂ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे हरि! तेरे चरण कमलों की (मकरंद) धूर रूपु जो रसु है तिस मे मेरा मनु भ्रमर लोभाइमान हो रहा है। औरु मेरे मन (सारिंग) चात्रक कों तेरे क्रिपा जल की रात दिन की पि्यास (आही) है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਮਕਰੰਦ = ਫੁੱਲਾਂ ਦੀ ਵਿਚਲੀ ਧੂੜ {Pollen-dust}, ਫੁੱਲਾਂ ਦਾ ਰਸ। ਮਨੋ = ਮਨ। ਅਨਦਿਨ = {ਅੱਖਰ 'ਨ' ਦੇ ਨਾਲ ਦੋ ਲਗਾਂ ਹਨ: (ੋ) ਅਤੇ (ੁ) ਅਸਲ ਲਫ਼ਜ਼ 'ਅਨਦਿਨੁ' ਹੈ, ਇਥੇ 'ਅਨਦਿਨੋ' ਪੜ੍ਹਨਾ ਹੈ} ਹਰ ਰੋਜ਼। ਮੋਹਿ = ਮੈਨੂੰ। ਆਹੀ = ਹੈ, ਰਹਿੰਦੀ ਹੈ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 32,
+      "source_id": "GA86",
+      "section_index": 0,
+      "unit": 10,
+      "ends_unit": 3,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 7
+      },
+      "text": {
+        "gurmukhi": "ਕ੍ਰਿਪਾ ਜਲੁ ਦੇਹਿ, ਨਾਨਕ ਸਾਰਿੰਗ ਕਉ; ਹੋਇ ਜਾ ਤੇ. ਤੇਰੈ ਨਾਇ ਵਾਸਾ ॥੪॥੩॥",
+        "gurmukhi_plain": "ਕ੍ਰਿਪਾ ਜਲੁ ਦੇਹਿ ਨਾਨਕ ਸਾਰਿੰਗ ਕਉ ਹੋਇ ਜਾ ਤੇ ਤੇਰੈ ਨਾਇ ਵਾਸਾ ॥੪॥੩॥",
+        "transliteration": {
+          "english": "kripaa jal dehi naanak saaring kau hoe jaa te terai naae vaasaa |4|3|",
+          "hindi": "क्रिपा जलु देहि नानक सारिंग कउ होइ जा ते तेरै नाइ वासा ॥४॥३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Give piedcuckoo Nanak, the water of Thine mercy, (O God!) so that he may have an abode in Thy Name.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Bestow the Water of Your Mercy upon Nanak, the thirsty song-bird, so that he may come to dwell in Your Name. ||4||3||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਮੈਨੂੰ ਨਾਨਕ ਪਪੀਹੇ ਨੂੰ ਆਪਣੀ ਮਿਹਰ ਦਾ ਜਲ ਦੇਹ, ਜਿਸ (ਦੀ ਬਰਕਤਿ) ਨਾਲ ਮੈਂ ਤੇਰੇ ਨਾਮ ਵਿਚ ਟਿਕਿਆ ਰਹਾਂ ॥੪॥੩॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਪਪੀਹੇ ਨਾਨਕ ਨੂੰ ਆਪਣੀ ਰਹਿਮਤ ਦਾ ਪਾਣੀ ਪਰਦਾਨ ਕਰ, (ਹੈ ਵਾਹਿਗੁਰੂ!) ਤਾਂ ਜੋ ਉਸ ਦਾ ਨਿਵਾਸ ਤੇਰੇ ਨਾਮ ਵਿੱਚ ਹੋ ਜਾਵੇ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "स्री गुरू जी कहते हैं: कि इस रात दिन की पि्यासकों क्रिपा जल को दे कर सांति करो। जिस सें तेरे नाम में ही मेरे मन का (वासा) असथानु होइ, भाव एहि कि और ओर न जाइ॥ ईहां तक सोहिला ३ सबद गुरू नानक देव जी से ले कर गुरू राम दास जी तक पड़ते थे। पंजवीं पातिशाही जी ने दो सबद और मिलाए। अब पांच सबद पड़ने की रीती है॥४॥३॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਸਾਰਿੰਗ = ਪਪੀਹਾ। ਕਉ = ਨੂੰ। ਜਾ ਤੇ = ਜਿਸ ਤੋਂ, ਜਿਸ ਨਾਲ। ਤੇਰੈ ਨਾਇ = ਤੇਰੇ ਨਾਮ ਵਿਚ॥੪॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 33,
+      "source_id": "1W54",
+      "section_index": 0,
+      "unit": 11,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 8
+      },
+      "text": {
+        "gurmukhi": "ਰਾਗੁ ਗਉੜੀ ਪੂਰਬੀ ਮਹਲਾ ੪ ॥",
+        "gurmukhi_plain": "ਰਾਗੁ ਗਉੜੀ ਪੂਰਬੀ ਮਹਲਾ ੪ ॥",
+        "transliteration": {
+          "english": "raag gaurree poorabee mahalaa 4 |",
+          "hindi": "रागु गउड़ी पूरबी महला ४ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Gauri Purbi Measure, Fourth Guru.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Raag Gauree Poorbee, Fourth Mehl:",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਗਊੜੀ ਪੂਰਬੀ ਰਾਗ, ਚਉਥੀ ਪਾਤਸ਼ਾਹੀ।",
+          "source": "SBMS"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 34,
+      "source_id": "WWAF",
+      "section_index": 0,
+      "unit": 11,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 8
+      },
+      "text": {
+        "gurmukhi": "ਕਾਮਿ ਕਰੋਧਿ ਨਗਰੁ ਬਹੁ ਭਰਿਆ; ਮਿਲਿ ਸਾਧੂ ਖੰਡਲ ਖੰਡਾ ਹੇ ॥",
+        "gurmukhi_plain": "ਕਾਮਿ ਕਰੋਧਿ ਨਗਰੁ ਬਹੁ ਭਰਿਆ ਮਿਲਿ ਸਾਧੂ ਖੰਡਲ ਖੰਡਾ ਹੇ ॥",
+        "transliteration": {
+          "english": "kaam karodh nagar bahu bhariaa mil saadhoo khanddal khanddaa he |",
+          "hindi": "कामि करोधि नगरु बहु भरिआ मिलि साधू खंडल खंडा हे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "With lust and wrath, (the body) village is full to the brim. By meeting the saint Guru, I have broken (both) into pieces.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The body-village is filled to overflowing with anger and sexual desire; these were broken into bits when I met with the Holy Saint.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਮਨੁੱਖ ਦਾ ਇਹ ਸਰੀਰ-) ਸ਼ਹਰ ਕਾਮ ਅਤੇ ਕ੍ਰੋਧ ਨਾਲ ਭਰਿਆ ਰਹਿੰਦਾ ਹੈ। ਗੁਰੂ ਨੂੰ ਮਿਲ ਕੇ ਹੀ (ਕਾਮ ਕ੍ਰੋਧ ਆਦਿਕ ਦੇ ਇਸ ਜੋੜ ਨੂੰ) ਤੋੜਿਆ ਜਾ ਸਕਦਾ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਭੋਗ ਰਸ ਅਤੇ ਰੋਹ ਨਾਲ, (ਦੇਹਿ) ਪਿੰਡ ਕੰਢਿਆ ਤਾਈ ਡੱਕਿਆ ਹੋਇਆ ਹੈ। ਸੰਤ ਗੁਰਦੇਵ ਜੀ ਨੂੰ ਮਿਲ ਕੇ ਮੈਂ (ਦੋਹਾਂ ਨੂੰ) ਭੰਨ ਤੋੜ ਕੇ ਪਾਸ਼ ਪਾਸ਼ ਕਰ ਦਿੱਤਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भाई! कांम, करोधि आदि बिकारों से सरीर रूपी नगरु अती भरा हूआ था। (साधू) शांतिरूपु गुरों के साथ मिल के (खंडल) संमूह विकारों को (खंडा) खंडन कीआ है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਕਾਮਿ = ਕਾਮ-ਵਾਸਨਾ ਨਾਲ। ਕਰੋਧਿ = ਕ੍ਰੋਧ ਨਾਲ। ਨਗਰੁ = ਸਰੀਰ-ਨਗਰ। ਮਿਲਿ = ਮਿਲ ਕੇ। ਸਾਧੂ = ਗੁਰੂ। ਖੰਡਲ ਖੰਡਾ = ਤੋੜਿਆ ਹੈ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 35,
+      "source_id": "5T2R",
+      "section_index": 0,
+      "unit": 11,
+      "ends_unit": 1,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 9
+      },
+      "text": {
+        "gurmukhi": "ਪੂਰਬਿ ਲਿਖਤ ਲਿਖੇ, ਗੁਰੁ ਪਾਇਆ; ਮਨਿ ਹਰਿ ਲਿਵ, ਮੰਡਲ ਮੰਡਾ ਹੇ ॥੧॥",
+        "gurmukhi_plain": "ਪੂਰਬਿ ਲਿਖਤ ਲਿਖੇ ਗੁਰੁ ਪਾਇਆ ਮਨਿ ਹਰਿ ਲਿਵ ਮੰਡਲ ਮੰਡਾ ਹੇ ॥੧॥",
+        "transliteration": {
+          "english": "poorab likhat likhe gur paaeaa man har liv manddal manddaa he |1|",
+          "hindi": "पूरबि लिखत लिखे गुरु पाइआ मनि हरि लिव मंडल मंडा हे ॥१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "By virtue of the pre-ordained writ, I have obtained the Guru and entered the realm of Lord's love.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "By pre-ordained destiny, I have met with the Guru. I have entered into the realm of the Lord's Love. ||1||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਜਿਸ ਮਨੁੱਖ ਨੂੰ ਪੂਰਬਲੇ ਕੀਤੇ ਕਰਮਾਂ ਦੇ ਸੰਜੋਗਾਂ ਨਾਲ ਗੁਰੂ ਮਿਲ ਪੈਂਦਾ ਹੈ, ਉਸ ਦੇ ਮਨ ਵਿਚ ਪਰਮਾਤਮਾ ਨਾਲ ਲਿਵ ਲੱਗ ਜਾਂਦੀ ਹੈ (ਅਤੇ ਉਸ ਦੇ ਅੰਦਰੋਂ ਕਾਮਾਦਿਕਾਂ ਦਾ ਜੋੜ ਟੁੱਟ ਜਾਂਦਾ ਹੈ) ॥੧॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਧੁਰ ਦੀ ਲਿਖੀ ਹੋਈ ਲਿਖਤਾਕਾਰ ਦੀ ਬਦੌਲਤ ਮੈਂ ਗੁਰਾਂ ਨੂੰ ਪਾ ਲਿਆ ਹੈ ਅਤੇ ਪ੍ਰਭੂ ਦੀ ਪ੍ਰੀਤ ਦੇ ਦੇਸ ਅੰਦਰ ਦਾਖਲ ਹੋ ਗਿਆ ਹਾਂ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भाई! पूरब लिखत लेखानुसार जिनो ने गुरों को पाइआ है, तिनका मनु हरि की (लिव) प्रीति के (मंडल) मंडान में क्या सथान में (मंडा) भूसत भया है॥१॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਪੂਰਬਿ = ਪੂਰਬ ਵਿਚ, ਪਹਿਲੇ ਬੀਤੇ ਸਮੇ ਵਿਚ। ਪੂਰਬਿ ਲਿਖੇ ਲਿਖਤ = ਪਿਛਲੇ (ਕੀਤੇ ਕਰਮਾਂ ਦੇ) ਲਿਖੇ ਹੋਏ ਸੰਸਕਾਰਾਂ ਅਨੁਸਾਰ। ਮਨਿ = ਮਨ ਵਿਚ। ਮੰਡਲ ਮੰਡਾ = ਜੜਿਆ ਹੈ ॥੧॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 36,
+      "source_id": "LEKU",
+      "section_index": 0,
+      "unit": 12,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 9
+      },
+      "text": {
+        "gurmukhi": "ਕਰਿ ਸਾਧੂ ਅੰਜੁਲੀ; ਪੁਨੁ ਵਡਾ ਹੇ ॥",
+        "gurmukhi_plain": "ਕਰਿ ਸਾਧੂ ਅੰਜੁਲੀ ਪੁਨੁ ਵਡਾ ਹੇ ॥",
+        "transliteration": {
+          "english": "kar saadhoo anjulee pun vaddaa he |",
+          "hindi": "करि साधू अंजुली पुनु वडा हे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Make obeisance with clasped hands unto the Saint (Guru). It is a greatly meritorious act.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Greet the Holy Saint with your palms pressed together; this is an act of great merit.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਹੇ ਭਾਈ!) ਗੁਰੂ ਅੱਗੇ ਹੱਥ ਜੋੜ, ਇਹ ਬਹੁਤ ਭਲਾ ਕੰਮ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਸੰਤ (ਗੁਰਾਂ) ਨੂੰ ਹੱਥ ਜੋੜ ਕੇ ਨਮਸ਼ਕਾਰ ਕਰ ਇਹ ਇਕ ਭਾਰਾ ਨੇਕ ਕੰਮ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "साधूओं को (औजुली) हाथ जोड़ कर नमसकार करीए, तब वडा पुनु होता है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਅੰਜੁਲੀ = ਦੋਵੇਂ ਹੱਥ ਜੋੜੇ ਹੋਏ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 37,
+      "source_id": "3WRN",
+      "section_index": 0,
+      "unit": 12,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 10
+      },
+      "text": {
+        "gurmukhi": "ਕਰਿ ਡੰਡਉਤ; ਪੁਨੁ ਵਡਾ ਹੇ ॥੧॥ ਰਹਾਉ ॥",
+        "gurmukhi_plain": "ਕਰਿ ਡੰਡਉਤ ਪੁਨੁ ਵਡਾ ਹੇ ॥੧॥ ਰਹਾਉ ॥",
+        "transliteration": {
+          "english": "kar ddanddaut pun vaddaa he |1| rahaau |",
+          "hindi": "करि डंडउत पुनु वडा हे ॥१॥ रहाउ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Make a prostrate salutation, this is a great virtue indeed. Pause.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Bow down before Him; this is a virtuous action indeed. ||1||Pause||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਗੁਰੂ ਅੱਗੇ ਢਹਿ ਪਉ, ਇਹ ਬੜਾ ਨੇਕ ਕੰਮ ਹੈ ॥੧॥ ਰਹਾਉ ॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਲੰਮਾ ਪੈ ਕੇ ਪ੍ਰਣਾਮ ਕਰ, ਨਿਰਸੰਦੇਹ ਇਹ ਇਕ ਵਿਸ਼ਾਲ ਨੇਕੀ ਹੈ। ਠਹਿਰਾਉ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "औरु डंडौत करने सें अती वडा पुनु होता है। जिस को संहसक्रिती मे दंडवत बंदन कहते हैं, अरथात आठ अंग २ पैर, २ हाथ, १ छाती, १ मसतक, १ मन, १ बाणी कर के संतों के आगे दंडवत पड़ीए सो डंडउत है॥१॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਪੁਨੁ = ਭਲਾ ਕੰਮ। ਡੰਡਉਤ = ਲੰਮੇ ਪੈ ਕੇ ਨਮਸ-ਕਾਰ॥੧॥ਰਹਾਉ॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 38,
+      "source_id": "TCHB",
+      "section_index": 0,
+      "unit": 12,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 10
+      },
+      "text": {
+        "gurmukhi": "ਸਾਕਤ. ਹਰਿ ਰਸ ਸਾਦੁ. ਨ ਜਾਣਿਆ; ਤਿਨ ਅੰਤਰਿ. ਹਉਮੈ ਕੰਡਾ ਹੇ ॥",
+        "gurmukhi_plain": "ਸਾਕਤ ਹਰਿ ਰਸ ਸਾਦੁ ਨ ਜਾਣਿਆ ਤਿਨ ਅੰਤਰਿ ਹਉਮੈ ਕੰਡਾ ਹੇ ॥",
+        "transliteration": {
+          "english": "saakat har ras saad na jaaniaa tin antar haumai kanddaa he |",
+          "hindi": "साकत हरि रस सादु न जाणिआ तिन अंतरि हउमै कंडा हे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The mammon-worshippers know the relish of God's elixir, within them is the thorn of pride.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The wicked shaaktas, the faithless cynics, do not know the Taste of the Lord's Sublime Essence. The thorn of egotism is embedded deep within them.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਜੇਹੜੇ ਮਨੁੱਖ ਪਰਮਾਤਮਾ ਨਾਲੋਂ ਟੁੱਟੇ ਹੋਏ ਹਨ, ਉਹ ਉਸ ਦੇ ਨਾਮ ਦੇ ਰਸ ਦੇ ਸੁਆਦ ਨੂੰ ਸਮਝ ਨਹੀਂ ਸਕਦੇ। ਉਹਨਾਂ ਦੇ ਮਨ ਵਿਚ ਅਹੰਕਾਰ ਦਾ (ਮਾਨੋ) ਕੰਡਾ ਚੁੱਭਾ ਹੋਇਆ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਮਾਇਆ ਦੇ ਉਪਾਸ਼ਕ ਵਾਹਿਗੁਰੂ ਦੇ ਅੰਮ੍ਰਿਤ ਦੇ ਸੁਆਦ ਨੂੰ ਨਹੀਂ ਜਾਣਦੇ, ਉਨ੍ਹਾਂ ਦੇ ਅੰਦਰ ਹੰਕਾਰ ਦੀ ਸੂਲ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "(साकत) मनमुखों ने हरि रस का स्वादु नही जाना है, क्योंकि तिन के अंतसकरन में (हउमै) हंता, ममता रूपु कंडा है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਸਾਕਤ = ਰੱਬ ਨਾਲੋਂ ਟੁੱਟੇ ਹੋਏ ਮਨੁੱਖ। ਸਾਦੁ = ਸੁਆਦ। ਤਿਨ ਅੰਤਰਿ = ਉਹਨਾਂ ਦੇ ਅੰਦਰ, ਉਹਨਾਂ ਦੇ ਮਨ ਵਿਚ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 39,
+      "source_id": "170S",
+      "section_index": 0,
+      "unit": 12,
+      "ends_unit": 2,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 11
+      },
+      "text": {
+        "gurmukhi": "ਜਿਉ ਜਿਉ ਚਲਹਿ, ਚੁਭੈ ਦੁਖੁ ਪਾਵਹਿ; ਜਮਕਾਲੁ ਸਹਹਿ ਸਿਰਿ ਡੰਡਾ ਹੇ ॥੨॥",
+        "gurmukhi_plain": "ਜਿਉ ਜਿਉ ਚਲਹਿ ਚੁਭੈ ਦੁਖੁ ਪਾਵਹਿ ਜਮਕਾਲੁ ਸਹਹਿ ਸਿਰਿ ਡੰਡਾ ਹੇ ॥੨॥",
+        "transliteration": {
+          "english": "jiau jiau chaleh chubhai dukh paaveh jamakaal saheh sir ddanddaa he |2|",
+          "hindi": "जिउ जिउ चलहि चुभै दुखु पावहि जमकालु सहहि सिरि डंडा हे ॥२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The more they walk away (from God) the more it pricks and more the pain they suffer and they bear on their heads the mace of death's myrmidon.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The more they walk away, the deeper it pierces them, and the more they suffer in pain, until finally, the Messenger of Death smashes his club against their heads. ||2||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਜਿਉਂ ਜਿਉਂ ਉਹ ਤੁਰਦੇ ਹਨ (ਜਿਉਂ ਜਿਉਂ ਉਹ ਹਉਮੈ ਦੇ ਸੁਭਾਵ ਵਾਲੀ ਵਰਤੋਂ ਵਰਤਦੇ ਹਨ, ਹਉਮੈ ਦਾ ਉਹ ਕੰਡਾ ਉਹਨਾਂ ਨੂੰ) ਚੁੱਭਦਾ ਹੈ, ਉਹ ਦੁੱਖ ਪਾਂਦੇ ਹਨ, ਅਤੇ ਆਪਣੇ ਸਿਰ ਉੱਤੇ ਆਤਮਕ ਮੌਤ-ਰੂਪ ਡੰਡਾ ਸਹਾਰਦੇ ਹਨ (ਆਤਮਕ ਮੌਤ ਉਹਨਾਂ ਦੇ ਸਿਰ ਉਤੇ ਸਵਾਰ ਰਹਿੰਦੀ ਹੈ) ॥੨॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਜਿੰਨੀ ਦੂਰ ਉਹ (ਰੱਬ ਤੋਂ) ਜਾਂਦੇ ਹਨ, ਉਨ੍ਹਾਂ ਹੀ ਜਿਆਦਾ ਉਹ ਚੁਭਦਾ ਹੈ ਅਤੇ ਉਨ੍ਹਾਂ ਹੀ ਬਹੁਤਾ ਉਹ ਕਸ਼ਟ ਉਠਾਉਂਦੇ ਹਨ ਅਤੇਉਹ ਮੌਤ ਦੇ ਫ਼ਰਿਸ਼ਤੇ ਦਾ ਸੋਟਾ ਆਪਣੇ ਮੂੰਡਾ ਉਤੇ ਸਹਾਰਦੇ ਹਨ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "ज्यों ज्यों हंता, ममता से करमों में चलते हैं, वा संतों की निंद्या मै प्रविरती होते हैं, वा ज्यों ज्यों संत सुतंत्र निज आनंद मै विचरते हैं। तिन को देख कर हंकारी दुखी होते हैं, अरथात तिन के जस को सहार नहीं सकते हैं। त्यों त्यों हउमै कंडा चुभता है, अरथात दुखु पावते हैं। अंत के समे सिर पर जमकाल का डंडा सहारते हैं॥२॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਚਲਹਿ = ਤੁਰਦੇ ਹਨ। ਚੁਭੈ = (ਕੰਡਾ) ਚੁੱਭਦਾ ਹੈ। ਜਮ ਕਾਲੁ = (ਆਤਮਕ) ਮੌਤ। ਸਿਰਿ = ਸਿਰ ਉੱਤੇ॥੨॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 40,
+      "source_id": "SN7R",
+      "section_index": 0,
+      "unit": 13,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 11
+      },
+      "text": {
+        "gurmukhi": "ਹਰਿ ਜਨ, ਹਰਿ ਹਰਿ ਨਾਮਿ ਸਮਾਣੇ; ਦੁਖੁ ਜਨਮ ਮਰਣ ਭਵ ਖੰਡਾ ਹੇ ॥",
+        "gurmukhi_plain": "ਹਰਿ ਜਨ ਹਰਿ ਹਰਿ ਨਾਮਿ ਸਮਾਣੇ ਦੁਖੁ ਜਨਮ ਮਰਣ ਭਵ ਖੰਡਾ ਹੇ ॥",
+        "transliteration": {
+          "english": "har jan har har naam samaane dukh janam maran bhav khanddaa he |",
+          "hindi": "हरि जन हरि हरि नामि समाणे दुखु जनम मरण भव खंडा हे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "God's men are absorbed in Lord God's Name and they have broken away the pangs and fear of birth and death.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "The humble servants of the Lord are absorbed in the Name of the Lord, Har, Har. The pain of birth and the fear of death are eradicated.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਦੂਜੇ ਪਾਸੇ) ਪਰਮਾਤਮਾ ਦੇ ਪਿਆਰੇ ਬੰਦੇ ਪਰਮਾਤਮਾ ਦੇ ਨਾਮ ਵਿਚ ਜੁੜੇ ਰਹਿੰਦੇ ਹਨ। ਉਹਨਾਂ ਦਾ ਸੰਸਾਰ ਦਾ ਜੰਮਣ ਮਰਨ ਦਾ ਦੁੱਖ ਕੱਟਿਆ ਜਾਂਦਾ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਵਾਹਿਗੁਰੂ ਦੇ ਬੰਦੇ, ਵਾਹਿਗੁਰੂ ਸੁਆਮੀ ਦੇ ਨਾਮ ਅੰਦਰ ਲੀਨ ਹੋਏ ਹੋਏ ਹਨ ਅਤੇ ਉਨ੍ਹਾਂ ਨੇ ਪੈਦਾ ਤੇ ਫ਼ੋਤ ਹੋਣ ਦੇ ਕਸ਼ਟ ਅਤੇ ਡਰ ਨੂੰ ਤੋੜ ਮਰੋੜ ਛੱਡਿਆ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "जो हरि के दास हैं, सो हरि हरि नाम में अभेद रहते हैं। तिनों ने जनम मरन का जो दुखु है, (भव) संसार में सो खंडन कीआ, अभाव कीआ है, वा जनम मरन का दुख जो (भव) उतपत हूआ हूआ था, तिस को अभाउ कीआ है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਨਾਮਿ = ਨਾਮ ਵਿਚ। ਸਮਾਣੇ = ਲੀਨ, ਮਸਤ। ਭਵ = ਸੰਸਾਰ। ਖੰਡਾ ਹੇ = ਨਾਸ ਕਰ ਲਿਆ ਹੈ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 41,
+      "source_id": "DYDF",
+      "section_index": 0,
+      "unit": 13,
+      "ends_unit": 3,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 12
+      },
+      "text": {
+        "gurmukhi": "ਅਬਿਨਾਸੀ ਪੁਰਖੁ ਪਾਇਆ ਪਰਮੇਸਰੁ; ਬਹੁ ਸੋਭ ਖੰਡ ਬ੍ਰਹਮੰਡਾ ਹੇ ॥੩॥",
+        "gurmukhi_plain": "ਅਬਿਨਾਸੀ ਪੁਰਖੁ ਪਾਇਆ ਪਰਮੇਸਰੁ ਬਹੁ ਸੋਭ ਖੰਡ ਬ੍ਰਹਮੰਡਾ ਹੇ ॥੩॥",
+        "transliteration": {
+          "english": "abinaasee purakh paaeaa paramesar bahu sobh khandd brahamanddaa he |3|",
+          "hindi": "अबिनासी पुरखु पाइआ परमेसरु बहु सोभ खंड ब्रहमंडा हे ॥३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "They have obtained the imperishable supreme Lord God and great honour is theirs in the various regions and universes.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "They have found the Imperishable Supreme Being, the Transcendent Lord God, and they receive great honor throughout all the worlds and realms. ||3||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਉਹਨਾਂ ਨੂੰ ਕਦੇ ਨਾਸ਼ ਨਾਹ ਹੋਣ ਵਾਲਾ ਸਰਬ-ਵਿਆਪਕ ਪਰਮੇਸਰ ਮਿਲ ਪੈਂਦਾ ਹੈ। ਉਹਨਾਂ ਦੀ ਸੋਭਾ ਸਾਰੇ ਖੰਡਾਂ ਬ੍ਰਹਮੰਡਾਂ ਵਿਚ ਹੋ ਜਾਂਦੀ ਹੈ ॥੩॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਉਨ੍ਹਾਂ ਨੇ ਨਾਸ-ਰਹਿਤ ਸ਼ਰੋਮਣੀ ਸਾਹਿਬ ਵਾਹਿਗੁਰੂ ਨੂੰ ਪਾ ਲਿਆ ਹੈ, ਅਤੇ ਉਹ ਅਨੇਕਾਂ ਦੀਪਾਂ ਤੇ ਆਲਮਾਂ ਅੰਦਰ ਬਹੁਤ ਵਡਿਆਈ ਪਾਉਂਦੇ ਹਨ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भाई! नास से रहत परमेस्वर पुरख को जिन गुरमुखों ने पाइआ है, तिन की बहुत सी सोभा खंडों ब्रहमंडों में हो रही है॥३॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਸੋਭ = ਸੋਭਾ। ਖੰਡ ਬ੍ਰਹਮੰਡਾ = ਸਾਰੇ ਜਗਤ ਵਿਚ॥੩॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 42,
+      "source_id": "6SJW",
+      "section_index": 0,
+      "unit": 14,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 13
+      },
+      "text": {
+        "gurmukhi": "ਹਮ ਗਰੀਬ ਮਸਕੀਨ ਪ੍ਰਭ ਤੇਰੇ; ਹਰਿ ਰਾਖੁ ਰਾਖੁ ਵਡ ਵਡਾ ਹੇ ॥",
+        "gurmukhi_plain": "ਹਮ ਗਰੀਬ ਮਸਕੀਨ ਪ੍ਰਭ ਤੇਰੇ ਹਰਿ ਰਾਖੁ ਰਾਖੁ ਵਡ ਵਡਾ ਹੇ ॥",
+        "transliteration": {
+          "english": "ham gareeb masakeen prabh tere har raakh raakh vadd vaddaa he |",
+          "hindi": "हम गरीब मसकीन प्रभ तेरे हरि राखु राखु वड वडा हे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I am poor and humble but I am Thine, O Lord God! Save me, save me, O Thou greatest, of the great.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "I am poor and meek, God, but I belong to You! Save me-please save me, O Greatest of the Great!",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਪ੍ਰਭੂ! ਅਸੀਂ ਜੀਵ ਤੇਰੇ ਦਰ ਦੇ ਗਰੀਬ ਮੰਗਦੇ ਹਾਂ। ਤੂੰ ਸਭ ਤੋਂ ਵੱਡਾ ਸਹਾਈ ਹੈਂ। ਸਾਨੂੰ (ਇਹਨਾਂ ਕਾਮਾਦਿਕਾਂ ਤੋਂ) ਬਚਾ ਲੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਮੈਂ ਗ੍ਰੀਬੜਾ ਤੇ ਆਜਿਜ਼ ਹਾਂ, ਪਰ ਤੇਰਾ ਹਾਂ, ਹੇ ਵਾਹਿਗੁਰੂ ਸਾਈਂ! ਮੇਰੀ ਰੱਖਿਆ ਕਰ, ਮੇਰੀ ਰੱਖਿਆ ਕਰ, ਤੂੰ ਹੇ ਵਿਸ਼ਾਲਾ ਦੇ ਵਿਸ਼ਾਲ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भाई! तां ते इस प्रकार बेनती करु, हे हरि वडों से वडे हम तेरे गरीब (मसकीन) अती दीनदास हैं। हे हरि! हमारी भाव सागरु से रक्ख्या करु, औरु अपनी सरन में रखु॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਮਸਕੀਨ = ਆਜਿਜ਼। ਪ੍ਰਭ = ਹੇ ਪ੍ਰਭੂ। ਰਾਖੁ = ਰੱਖਿਆ ਕਰ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 43,
+      "source_id": "BV7S",
+      "section_index": 0,
+      "unit": 14,
+      "ends_unit": 4,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 13
+      },
+      "text": {
+        "gurmukhi": "ਜਨ ਨਾਨਕ. ਨਾਮੁ ਅਧਾਰੁ ਟੇਕ ਹੈ; ਹਰਿ ਨਾਮੇ ਹੀ ਸੁਖੁ ਮੰਡਾ ਹੇ ॥੪॥੪॥",
+        "gurmukhi_plain": "ਜਨ ਨਾਨਕ ਨਾਮੁ ਅਧਾਰੁ ਟੇਕ ਹੈ ਹਰਿ ਨਾਮੇ ਹੀ ਸੁਖੁ ਮੰਡਾ ਹੇ ॥੪॥੪॥",
+        "transliteration": {
+          "english": "jan naanak naam adhaar ttek hai har naame hee sukh manddaa he |4|4|",
+          "hindi": "जन नानक नामु अधारु टेक है हरि नामे ही सुखु मंडा हे ॥४॥४॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Name is slave Nanak's sustenance and support and by God's Name he enjoys peace.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Servant Nanak takes the Sustenance and Support of the Naam. In the Name of the Lord, he enjoys celestial peace. ||4||4||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਪ੍ਰਭੂ! ਤੇਰੇ ਦਾਸ ਨਾਨਕ ਨੂੰ ਤੇਰਾ ਨਾਮ ਹੀ ਆਸਰਾ ਹੈ, ਤੇਰਾ ਨਾਮ ਹੀ ਸਹਾਰਾ ਹੈ। ਤੇਰੇ ਨਾਮ ਵਿਚ ਜੁੜਿਆਂ ਹੀ ਸੁਖ ਮਿਲਦਾ ਹੈ ॥੪॥੪॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਨਾਮ ਹੀ ਗੋਲੇ ਨਾਨਕ ਦਾ ਅਹਾਰ ਤੇ ਆਸਰਾ ਹੈ ਅਤੇ ਰੱਬ ਦੇ ਨਾਮ ਦੁਆਰਾ ਹੀ ਉਹ ਆਰਾਮ ਮਾਣਦਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "स्री गुरू जी कहते हैं: हे स्वामी! हम दासों को आप के नाम का ही, बाणी का ही अधारु है, औरु आप के नाम का ही तन को (टेक) आसरा है। और हे हरि! आपके नाम से ही हमारे मन ने सुखु (मंडा) धारन कीआ है॥४॥४॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਅਧਾਰੁ = ਆਸਰਾ। ਨਾਮੇ = ਨਾਮਿ ਹੀ, ਨਾਮ ਵਿਚ ਹੀ। ਮੰਡਾ = ਮਿਲਿਆ॥੪॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 44,
+      "source_id": "BRV1",
+      "section_index": 0,
+      "unit": 15,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 14
+      },
+      "text": {
+        "gurmukhi": "ਰਾਗੁ ਗਉੜੀ ਪੂਰਬੀ ਮਹਲਾ ੫ ॥",
+        "gurmukhi_plain": "ਰਾਗੁ ਗਉੜੀ ਪੂਰਬੀ ਮਹਲਾ ੫ ॥",
+        "transliteration": {
+          "english": "raag gaurree poorabee mahalaa 5 |",
+          "hindi": "रागु गउड़ी पूरबी महला ५ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Gauri Purbi Measure, Fifth Guru.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Raag Gauree Poorbee, Fifth Mehl:",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਗਉੜੀ ਪੂਰਬੀ ਰਾਗ, ਪੰਜਵੀਂ ਪਾਤਸ਼ਾਹੀ।",
+          "source": "SBMS"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 45,
+      "source_id": "2KKC",
+      "section_index": 0,
+      "unit": 15,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 14
+      },
+      "text": {
+        "gurmukhi": "ਕਰਉ ਬੇਨੰਤੀ, ਸੁਣਹੁ ਮੇਰੇ ਮੀਤਾ; ਸੰਤ ਟਹਲ ਕੀ ਬੇਲਾ ॥",
+        "gurmukhi_plain": "ਕਰਉ ਬੇਨੰਤੀ ਸੁਣਹੁ ਮੇਰੇ ਮੀਤਾ ਸੰਤ ਟਹਲ ਕੀ ਬੇਲਾ ॥",
+        "transliteration": {
+          "english": "krau benantee sunahu mere meetaa sant ttehal kee belaa |",
+          "hindi": "करउ बेनंती सुणहु मेरे मीता संत टहल की बेला ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I make supplication, listen to me, O my Friend! This is the high time to serve the saints.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Listen, my friends, I beg of you: now is the time to serve the Saints!",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਮੇਰੇ ਮਿੱਤਰੋ! ਸੁਣੋ! ਮੈਂ ਬੇਨਤੀ ਕਰਦਾ ਹਾਂ-(ਹੁਣ) ਗੁਰਮੁਖਾਂ ਦੀ ਸੇਵਾ ਕਰਨ ਦਾ ਵੇਲਾ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਮੈਂ ਪ੍ਰਾਰਥਨਾ ਕਰਦਾ ਹਾਂ, ਸਰਵਣ ਕਰ, ਹੇ ਮੇਰੇ ਮਿੱਤ੍ਰ! ਸਾਧੂਆਂ ਦੀ ਸੇਵਾ ਕਮਾਉਣ ਦਾ ਇਹ ਸੁਹਾਉਣਾ ਸਮਾਂ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे मेरे मित्रो! सुणों मैं बेनती कर के कहिता हूं।इही मनुख देह संतों की सेवा करने की (वेला) समे हैं। वाहे मित्रो बाणी कर के बेनती, कंनां कर के हरि जसु सुणो, औरु सरीर कर संतां की टहल का समे हैं। क्योंकि औरु पसु पंखी जूनि में सेवा नही होती है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਕਰਉ = ਕਰਉਂ, ਮੈਂ ਕਰਦਾ ਹਾਂ {ਵਰਤਮਾਨ ਕਾਲ, ਉੱਤਮ ਪੁਰਖ, ਇਕ-ਵਚਨ}। ਸੁਣਹੁ = ਤੁਸੀ ਸੁਣੋ {ਹੁਕਮੀ ਭਵਿੱਖਤ, ਮੱਧਮ ਪੁਰਖ, ਬਹੁ-ਵਚਨ}। ਬੇਲਾ = ਵੇਲਾ, ਮੌਕਾ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 46,
+      "source_id": "4DQT",
+      "section_index": 0,
+      "unit": 15,
+      "ends_unit": 1,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 15
+      },
+      "text": {
+        "gurmukhi": "ਈਹਾ ਖਾਟਿ ਚਲਹੁ, ਹਰਿ ਲਾਹਾ; ਆਗੈ ਬਸਨੁ ਸੁਹੇਲਾ ॥੧॥",
+        "gurmukhi_plain": "ਈਹਾ ਖਾਟਿ ਚਲਹੁ ਹਰਿ ਲਾਹਾ ਆਗੈ ਬਸਨੁ ਸੁਹੇਲਾ ॥੧॥",
+        "transliteration": {
+          "english": "eehaa khaatt chalahu har laahaa aagai basan suhelaa |1|",
+          "hindi": "ईहा खाटि चलहु हरि लाहा आगै बसनु सुहेला ॥१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Over here, earn the profit of God's Name and depart, here-after, thou shalt have adorned, abode.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "In this world, earn the profit of the Lord's Name, and hereafter, you shall dwell in peace. ||1||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਜੇ ਸੇਵਾ ਕਰੋਗੇ, ਤਾਂ) ਇਸ ਜਨਮ ਵਿਚ ਪ੍ਰਭੂ ਦੇ ਨਾਮ ਦੀ ਖੱਟੀ ਖੱਟ ਕੇ ਜਾਵੋਗੇ, ਅਤੇ ਪਰਲੋਕ ਵਿਚ ਰਹਿਣਾ ਸੌਖਾ ਹੋ ਜਾਇਗਾ ॥੧॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਏਥੇ ਰੱਬ ਦੇ ਨਾਮ ਦੀ ਖਟੀ ਖੱਟ ਕੇ ਚਾਲੇ ਪਾ, ਪ੍ਰਲੋਕ ਵਿੱਚ ਤੈਨੂੰ ਸੁਸ਼ੋਭਤ ਨਿਵਾਸ ਅਸਥਾਨ ਮਿਲੇਗਾ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "(ईहां) इस मानुख देह में जो हरि नाम जप का लाहा खाट चालोगे, तब आगे प्रलोक में तुम को वसना (सुहेला) सुख के देने हारा होगा॥१॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਈਹਾ = ਇਥੇ, ਇਸ ਜਨਮ ਵਿਚ। ਖਾਟਿ = ਖੱਟ ਕੇ। ਲਾਹਾ = ਲਾਭ, ਖੱਟੀ। ਆਗੈ = ਪਰਲੋਕ ਵਿਚ। ਬਸਨੁ = ਵੱਸਣਾ, ਵਸੋਂ। ਸੁਹੇਲਾ = ਸੌਖਾ॥੧॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 47,
+      "source_id": "XH0Q",
+      "section_index": 0,
+      "unit": 16,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 15
+      },
+      "text": {
+        "gurmukhi": "ਅਉਧ ਘਟੈ; ਦਿਨਸੁ ਰੈਣਾਰੇ ॥",
+        "gurmukhi_plain": "ਅਉਧ ਘਟੈ ਦਿਨਸੁ ਰੈਣਾਰੇ ॥",
+        "transliteration": {
+          "english": "aaudh ghattai dinas rainaare |",
+          "hindi": "अउध घटै दिनसु रैणारे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "By day and night, the life goes on decreasing.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "This life is diminishing, day and night.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਮਨ! ਦਿਨ ਰਾਤ (ਬੀਤ ਬੀਤ ਕੇ) ਉਮਰ ਘਟਦੀ ਜਾ ਰਹੀ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਦਿਨ ਰਾਤਿ ਉਮਰ ਘਟ ਹੁੰਦੀ ਜਾ ਰਹੀ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे मन! अवसथा रात्रि दिन कर के घटी चली जाती है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਅਉਧ = ਉਮਰ। ਰੈਣਾ = ਰਾਤ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 48,
+      "source_id": "CN6N",
+      "section_index": 0,
+      "unit": 16,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 16
+      },
+      "text": {
+        "gurmukhi": "ਮਨ ਗੁਰ ਮਿਲਿ; ਕਾਜ ਸਵਾਰੇ ॥੧॥ ਰਹਾਉ ॥",
+        "gurmukhi_plain": "ਮਨ ਗੁਰ ਮਿਲਿ ਕਾਜ ਸਵਾਰੇ ॥੧॥ ਰਹਾਉ ॥",
+        "transliteration": {
+          "english": "man gur mil kaaj savaare |1| rahaau |",
+          "hindi": "मन गुर मिलि काज सवारे ॥१॥ रहाउ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "By meeting the Guru, O Man! set aright thine affairs. Pause.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Meeting with the Guru, your affairs shall be resolved. ||1||Pause||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ (ਮੇਰੇ) ਮਨ! ਗੁਰੂ ਨੂੰ ਮਿਲ ਕੇ (ਮਨੁੱਖਾ ਜੀਵਨ ਦਾ) ਕੰਮ ਸਿਰੇ ਚਾੜ੍ਹ ॥੧॥ ਰਹਾਉ ॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਗੁਰਾਂ ਨੂੰ ਭੇਟਣ ਦੁਆਰਾ, ਹੇ ਬੰਦੇ! ਤੂੰ ਆਪਣੇ ਕਾਰਜ ਰਾਸ ਕਰ ਲੈ। ਠਹਿਰਾਉ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "तां ते तुम गुरों से मिल के अपने कारज को सवार लेवो॥१॥ रहाउ ॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਮਨ = ਹੇ ਮਨ! ਮਿਲਿ = ਮਿਲ ਕੇ। ਸਵਾਰੇ = ਸਵਾਰਿ, ਸਵਾਰ ਲੈ॥੧॥ਰਹਾਉ॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 49,
+      "source_id": "NNL6",
+      "section_index": 0,
+      "unit": 16,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 16
+      },
+      "text": {
+        "gurmukhi": "ਇਹੁ ਸੰਸਾਰੁ ਬਿਕਾਰੁ ਸੰਸੇ ਮਹਿ; ਤਰਿਓ ਬ੍ਰਹਮ ਗਿਆਨੀ ॥",
+        "gurmukhi_plain": "ਇਹੁ ਸੰਸਾਰੁ ਬਿਕਾਰੁ ਸੰਸੇ ਮਹਿ ਤਰਿਓ ਬ੍ਰਹਮ ਗਿਆਨੀ ॥",
+        "transliteration": {
+          "english": "eihu sansaar bikaar sanse meh tario braham giaanee |",
+          "hindi": "इहु संसारु बिकारु संसे महि तरिओ ब्रहम गिआनी ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "This world is engrossed in wickedness and scepticism. God's divine alone, is saved.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "This world is engrossed in corruption and cynicism. Only those who know God are saved.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਇਹ ਜਗਤ ਵਿਕਾਰਾਂ ਨਾਲ ਭਰਪੂਰ ਹੈ। (ਜਗਤ ਦੇ ਜੀਵ) ਤੌਖ਼ਲਿਆਂ ਵਿਚ (ਡੁੱਬ ਰਹੇ ਹਨ। ਇਹਨਾਂ ਵਿਚੋਂ) ਉਹੀ ਮਨੁੱਖ ਨਿਕਲਦਾ ਹੈ ਜਿਸ ਨੇ ਪਰਮਾਤਮਾ ਨਾਲ ਜਾਣ-ਪਛਾਣ ਪਾ ਲਈ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਇਹ ਜਹਾਨ ਬਦਫੈਲ੍ਹੀ ਅਤੇ ਸੰਦੇਹ ਅੰਦਰ ਗ਼ਲਤਾਨ ਹੈ। ਕੇਵਲ ਰੱਬ ਨੂੰ ਜਾਨਣ ਵਾਲੇ ਦਾ ਹੀ ਬਚਾਅ ਹੁੰਦਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे भाई! विसे विकार और संस्यों से भरा हूआ जो एहि संसार समुद्र है, इस से कोई ब्रहम गिआनी तरा है॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਬਿਕਾਰ = ਵਿਕਾਰ-ਰੂਪ, ਵਿਕਾਰਾਂ ਨਾਲ ਭਰਿਆ ਹੋਇਆ। ਸੰਸੇ ਮਹਿ = ਸਹਿੰਸਿਆਂ ਵਿਚ, ਤੌਖ਼ਲਿਆਂ ਵਿਚ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 50,
+      "source_id": "UHQW",
+      "section_index": 0,
+      "unit": 16,
+      "ends_unit": 2,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 17
+      },
+      "text": {
+        "gurmukhi": "ਜਿਸਹਿ ਜਗਾਇ, ਪੀਆਵੈ ਇਹੁ ਰਸੁ; ਅਕਥ ਕਥਾ ਤਿਨਿ ਜਾਨੀ ॥੨॥",
+        "gurmukhi_plain": "ਜਿਸਹਿ ਜਗਾਇ ਪੀਆਵੈ ਇਹੁ ਰਸੁ ਅਕਥ ਕਥਾ ਤਿਨਿ ਜਾਨੀ ॥੨॥",
+        "transliteration": {
+          "english": "jiseh jagaae peeaavai ihu ras akath kathaa tin jaanee |2|",
+          "hindi": "जिसहि जगाइ पीआवै इहु रसु अकथ कथा तिनि जानी ॥२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He, whom God awakens to drink this essence of His Name, comes to know the discourse of the ineffable Lord.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Only those who are awakened by the Lord to drink in this Sublime Essence, come to know the Unspoken Speech of the Lord. ||2||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਵਿਕਾਰਾਂ ਵਿਚ ਸੁੱਤੇ ਹੋਏ) ਜਿਸ ਮਨੁੱਖ ਨੂੰ ਪ੍ਰਭੂ ਆਪ ਜਗਾ ਕੇ ਇਹ ਨਾਮ-ਅੰਮ੍ਰਿਤ ਪਿਲਾਂਦਾ ਹੈ, ਉਸ ਮਨੁੱਖ ਨੇ ਅਕੱਥ ਪ੍ਰਭੂ ਦੀਆਂ ਗੱਲਾਂ (ਬੇਅੰਤ ਗੁਣਾਂ ਵਾਲੇ ਪ੍ਰਭੂ ਦੀ ਸਿਫ਼ਤ-ਸਾਲਾਹ) ਕਰਨ ਦੀ ਜਾਚ ਸਿੱਖ ਲਈ ਹੈ ॥੨॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਜਿਸ ਨੂੰ ਵਾਹਿਗੁਰੂ ਜਗਾ ਕੇ ਆਪਣੇ ਨਾਮ ਦਾ ਇਹ ਜੌਹਰ ਛਕਾਉਂਦਾ ਹੈ, ਉਹ ਬਿਆਨ ਨਾਂ ਹੋ ਸਕਣ ਵਾਲੇ ਪ੍ਰਭੂ ਦੀ ਗਿਆਨ-ਚਰਚਾ ਨੂੰ ਸਮਝ ਲੈਂਦਾ ਹੈ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "सो ब्रहम गिआनी सतिगुरू जिस सोए हूए जीव को मोह निंद्रा से जगाइ करके, नाम रस पान कराइ देते हैं, (अकथु) अकाल पुरख की कथा तिसने जानी है, भाव तिसी को अनुभव हूआ है॥२॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਜਿਸਹਿ = ਜਿਸ ਮਨੁੱਖ ਨੂੰ। ਜਗਾਇ = ਜਗਾ ਕੇ। ਪੀਆਵੈ = ਪਿਲਾਂਦਾ ਹੈ। ਤਿਨਿ = ਉਸ ਨੇ॥੨॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 51,
+      "source_id": "V3JU",
+      "section_index": 0,
+      "unit": 17,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 17
+      },
+      "text": {
+        "gurmukhi": "ਜਾ ਕਉ ਆਏ. ਸੋਈ ਬਿਹਾਝਹੁ; ਹਰਿ ਗੁਰ ਤੇ. ਮਨਹਿ ਬਸੇਰਾ ॥",
+        "gurmukhi_plain": "ਜਾ ਕਉ ਆਏ ਸੋਈ ਬਿਹਾਝਹੁ ਹਰਿ ਗੁਰ ਤੇ ਮਨਹਿ ਬਸੇਰਾ ॥",
+        "transliteration": {
+          "english": "jaa kau aae soee bihaajhahu har gur te maneh baseraa |",
+          "hindi": "जा कउ आए सोई बिहाझहु हरि गुर ते मनहि बसेरा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Purchase only that commodity for which thou hast come. Through Guru's grace God shall dwell within thy heart.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Purchase only that for which you have come into the world, and through the Guru, the Lord shall dwell within your mind.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਹੇ ਭਾਈ!) ਜਿਸ ਕੰਮ ਵਾਸਤੇ (ਇੱਥੇ) ਆਏ ਹੋ, ਉਸ ਦਾ ਵਣਜ ਕਰੋ। ਉਹ ਹਰਿ-ਨਾਮ ਗੁਰੂ ਦੀ ਰਾਹੀਂ (ਹੀ) ਮਨ ਵਿਚ ਵੱਸ ਸਕਦਾ ਹੈ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਕੇਵਲ ਉਹੀ ਸੌਦਾ ਖ਼ਰੀਦ, ਜਿਸ ਲਈ ਤੂੰ ਆਇਆ ਹੈ। ਗੁਰਾਂ ਦੀ ਦਇਆ ਦੁਆਰਾ ਵਾਹਿਗੁਰੂ ਤੇਰੇ ਦਿਲ ਅੰਦਰ ਨਿਵਾਸ ਕਰ ਲਵੇਗਾ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "तां ते हे सिखो! जिस वासते संसार मे आए हो, सोई हरि नाम धनु गुरों से (बिहाझहु) खरीदो, किआ गुरां द्वारे हरि नाम का मन मे वसावनां करो॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਜਾ ਕਉ = ਜਿਸ (ਮਨੋਰਥ) ਵਾਸਤੇ। ਬਿਹਾਝਹੁ = ਖ਼ਰੀਦੋ, ਵਣਜ ਕਰੋ। ਤੇ = ਤੋਂ, ਦੀ ਰਾਹੀਂ। ਮਨਹਿ = ਮਨ ਵਿਚ ਹੀ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 52,
+      "source_id": "7NQ6",
+      "section_index": 0,
+      "unit": 17,
+      "ends_unit": 3,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 18
+      },
+      "text": {
+        "gurmukhi": "ਨਿਜ ਘਰਿ ਮਹਲੁ, ਪਾਵਹੁ ਸੁਖ ਸਹਜੇ; ਬਹੁਰਿ. ਨ ਹੋਇਗੋ ਫੇਰਾ ॥੩॥",
+        "gurmukhi_plain": "ਨਿਜ ਘਰਿ ਮਹਲੁ ਪਾਵਹੁ ਸੁਖ ਸਹਜੇ ਬਹੁਰਿ ਨ ਹੋਇਗੋ ਫੇਰਾ ॥੩॥",
+        "transliteration": {
+          "english": "nij ghar mehal paavahu sukh sahaje bahur na hoeigo feraa |3|",
+          "hindi": "निज घरि महलु पावहु सुख सहजे बहुरि न होइगो फेरा ॥३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "In the own home thou shalt obtain the Lord's presence in comfort and ease and thou shalt not undergo the round again.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Within the home of your own inner being, you shall obtain the Mansion of the Lord's Presence with intuitive ease. You shall not be consigned again to the wheel of reincarnation. ||3||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "(ਜੇ ਗੁਰੂ ਦੀ ਸਰਨ ਪਵੋਗੇ, ਤਾਂ) ਆਤਮਕ ਆਨੰਦ ਅਤੇ ਅਡੋਲਤਾ ਵਿਚ ਟਿਕ ਕੇ ਆਪਣੇ ਅੰਦਰ ਹੀ ਪਰਮਾਤਮਾ ਦਾ ਟਿਕਾਣਾ ਲੱਭ ਲਵੋਗੇ। ਫਿਰ ਮੁੜ ਜਨਮ ਮਰਨ ਦਾ ਗੇੜ ਨਹੀਂ ਹੋਵੇਗਾ ॥੩॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਆਪਣੇ ਨਿੱਜ ਦੇ ਗ੍ਰਹਿ ਅੰਦਰ ਹੀ ਆਰਾਮ ਚੈਨ ਨਾਲ ਤੂੰ ਸੁਆਮੀ ਦੀ ਹਜ਼ੂਰੀ ਨੂੰ ਪਰਾਪਤ ਹੋ ਜਾਵੇਗਾ ਅਤੇ ਤੈਨੂੰ ਮੁੜਕੇ ਗੇੜਾ ਨਹੀਂ ਪਵੇਗਾ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "तब निज घरि जो निजानंद सरूप है, तिस को सहजे ही पावोगे। फिर तुम को जनम मरण का फेरा नहीं होइगा। तां ते इस प्रकार बेनती करो॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਨਿਜ ਘਰਿ = ਆਪਣੇ ਘਰ ਵਿਚ, ਆਪਣੇ ਹਿਰਦੇ ਵਿਚ। ਮਹਲੁ = (ਪਰਮਾਤਮਾ ਦਾ) ਟਿਕਾਣਾ। ਸਹਜੇ = ਸਹਜਿ, ਆਤਮਕ ਅਡੋਲਤਾ ਵਿਚ। ਬਹੁਰਿ = ਫਿਰ॥੩॥",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 53,
+      "source_id": "D1VS",
+      "section_index": 0,
+      "unit": 18,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 18
+      },
+      "text": {
+        "gurmukhi": "ਅੰਤਰਜਾਮੀ ਪੁਰਖ ਬਿਧਾਤੇ; ਸਰਧਾ ਮਨ ਕੀ ਪੂਰੇ ॥",
+        "gurmukhi_plain": "ਅੰਤਰਜਾਮੀ ਪੁਰਖ ਬਿਧਾਤੇ ਸਰਧਾ ਮਨ ਕੀ ਪੂਰੇ ॥",
+        "transliteration": {
+          "english": "antarajaamee purakh bidhaate saradhaa man kee poore |",
+          "hindi": "अंतरजामी पुरख बिधाते सरधा मन की पूरे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Lord! the searcher of hearts and the designer of chances, fulfill my heart's yearning.",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "O Inner-knower, Searcher of Hearts, O Primal Being, Architect of Destiny: please fulfill this yearning of my mind.",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਹੇ ਹਰੇਕ ਦੇ ਦਿਲ ਦੀ ਜਾਣਨ ਵਾਲੇ ਸਰਬ-ਵਿਆਪਕ ਸਿਰਜਨਹਾਰ! ਮੇਰੇ ਮਨ ਦੀ ਇੱਛਾ ਪੂਰੀ ਕਰ।",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਹੇ, ਦਿਲਾਂ ਦੀਆਂ ਜਾਨਣਹਾਰ ਤੇ ਢੋ ਮੇਲ ਮੇਲਣਹਾਰ, ਪ੍ਰਭੂ! ਮੇਰੇ ਦਿਲ ਦੀ ਸੱਧਰ ਪੂਰੀ ਕਰ।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "हे अंतरजामी हे बिधाता पुरख !☬मेरे मन की सरधा को पूरन करो॥",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਅੰਤਰਜਾਮੀ = ਹੇ ਦਿਲਾਂ ਦੀ ਜਾਣਨ ਵਾਲੇ! ਪੁਰਖ = ਹੇ ਸਭ ਵਿਚ ਵਿਆਪਕ! ਬਿਧਾਤੇ = ਹੇ ਸਿਰਜਣਹਾਰ! ਪੂਰੇ = ਪੂਰਿ, ਪੂਰੀ ਕਰ।",
+          "source": "PSST"
+        }
+      }
+    },
+    {
+      "id": 54,
+      "source_id": "VTX4",
+      "section_index": 0,
+      "unit": 18,
+      "ends_unit": 5,
+      "scripture": {
+        "asset": "SSA2",
+        "page": 13,
+        "line": 19
+      },
+      "text": {
+        "gurmukhi": "ਨਾਨਕ ਦਾਸੁ. ਇਹੈ ਸੁਖੁ ਮਾਗੈ; ਮੋ ਕਉ ਕਰਿ ਸੰਤਨ ਕੀ ਧੂਰੇ ॥੪॥੫॥",
+        "gurmukhi_plain": "ਨਾਨਕ ਦਾਸੁ ਇਹੈ ਸੁਖੁ ਮਾਗੈ ਮੋ ਕਉ ਕਰਿ ਸੰਤਨ ਕੀ ਧੂਰੇ ॥੪॥੫॥",
+        "transliteration": {
+          "english": "naanak daas ihai sukh maagai mo kau kar santan kee dhoore |4|5|",
+          "hindi": "नानक दासु इहै सुखु मागै मो कउ करि संतन की धूरे ॥४॥५॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Servant Nanak asks for this happiness ; Make me the dust of the feet of Thine Saints, (O Lord!)4",
+          "source": "SBMS"
+        },
+        "english_alt": {
+          "text": "Nanak, Your slave, begs for this happiness: let me be the dust of the feet of the Saints. ||4||5||",
+          "source": "DSSK"
+        },
+        "punjabi": {
+          "text": "ਦਾਸ ਨਾਨਕ ਤੈਥੋਂ ਇਹੀ ਸੁਖ ਮੰਗਦਾ ਹੈ ਕਿ ਮੈਨੂੰ ਸੰਤਾਂ ਦੇ ਚਰਨਾਂ ਦੀ ਧੂੜ ਬਣਾ ਦੇਹ ॥੪॥੫॥",
+          "source": "PSST"
+        },
+        "punjabi_alt": {
+          "text": "ਨੋਕਰ ਨਾਨਕ ਇਸ ਖੁਸ਼ੀ ਦੀ ਯਾਚਨਾ ਕਰਦਾ ਹੈ, ਮੈਨੂੰ ਆਪਣੇ ਸਾਧੂਆਂ ਦੇ ਪੈਰਾਂ ਦੀ ਧੂੜ ਬਣਾ ਦੇ, (ਹੇ ਸੁਆਮੀ!)।",
+          "source": "SBMS"
+        },
+        "hindi": {
+          "text": "स्री गुरू जी कहते हैं! मैं दासु एही सुख मांगता हूं, जो मेरे को तिन संतों के चरनों की धूरी प्रापति करि दीजीए, भाव एहि कि साध संगति मेरे से न छुटे॥४॥५॥☬एक समें स्री गुरू नानक देव जी जगननाथ में समुंद्र के किनारे पर बैठे हुए थे। तब महां भयानक अंधेरी उठी, तिस को देख कर मरदाना भैवान हूआ और नेत्र मूंद मुख पर बसत्र ले कर पड़ ग्या। इतने में महां भयानक सरूप धार कर कलजुग आइ गया। स्री गुरू जी अडोल ही बैठे रहे। तब अधिक प्रतापी जान कर चरनों पर आइ पड़ा और उसतती करने लगा, और कहा कि हे भगवन! में इस समें का राजा हूं। मोती आदिक जवाहर और सुंदर मंदर और रिद्धि सिद्धि तथा राजादिक सभ मेरे अधीन हैं। सो आप क्रिपा कर के मेरी भी कुछ भेटा अंगीकार करीए। तब तिस को उतर देने नमित स्री अकाल पुरख जी के सनमुख बेनती में शबद उचारन कीआ। कलयुग का मतलब एहु था कि जब मैं गुरू जी को बिभूतीओं से भ्रमाइ कर लोकां को इन के उपदेश से फैदा न होणे देवांगा, तब मेरा हुकम सभ पर बना रहेगा। ऐसे जब बेईं में इशनान के नमित बिशनूं पास गए हैं, तब सनमुख हो कर बेनती करी है:",
+          "source": "NKFT",
+          "derivation": "script_conversion"
+        }
+      },
+      "notes": {
+        "punjabi_word_meanings": {
+          "text": "ਮਾਗੈ = ਮੰਗਦਾ ਹੈ। ਮੋ ਕਉ = ਮੈਨੂੰ। ਧੂਰੇ = ਚਰਨ-ਧੂੜ॥੪॥",
+          "source": "PSST"
+        }
+      }
+    }
+  ]
+}

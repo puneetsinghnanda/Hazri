@@ -63,10 +63,20 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
 ## Known gaps in this build
 
-- **Only Japji Sahib has text and audio.** The other eight banis are real rows
-  with a "not in this build" reader state, waiting on reviewed text and
-  recordings. Daily Simran has its own recitation, which is not a bani and
-  lives in `simran_track` rather than `audio_track`.
+- **All nine banis now have text and a recitation.** Japji came from a
+  schema-1.0 source file; the other eight are schema 2.0 and are loaded by
+  `build_bani_v2()`. Daily Simran has its own recitation, which is not a bani
+  and lives in `simran_track` rather than `audio_track`.
+- **Meanings are not evenly covered.** Every bani has English and (bar Ardas)
+  Punjabi; Hindi exists only for the four that are in Sri Guru Granth Sahib,
+  because the Faridkot teeka covers that scripture alone. The reader shows
+  what exists and nothing is machine-translated to fill a gap. Ardas has
+  Punjabi for 9 of its 27 lines.
+- **Schema-2.0 banis carry no section labels.** Their source files derive
+  `unit` mechanically from the Gurmukhi numerals in the closing dandas and say
+  outright that those are not editorial labels, so the unit number is stored
+  and no word is invented for it. Japji keeps its labels because its source
+  file names its sections.
 - **Line timings are unverified** (`"verified": false`). They are derived, not
   hand-checked; the PRD requires human verification before release (§8).
 - **The daily Hukamnama is gone**, replaced by ਅੱਜ ਦਾ ਵਿਚਾਰ (PRD 1.11): 200

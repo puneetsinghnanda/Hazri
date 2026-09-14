@@ -27,6 +27,10 @@ table.
 
 ## Rebuilding
 
+Every bani takes the same three steps; `japji-sahib` below is any slug from
+the `bani` table (`jaap-sahib`, `tav-prasad-savaiye`, `chaupai-sahib`,
+`anand-sahib`, `rehras-sahib`, `kirtan-sohila`, `ardas`, `sukhmani-sahib`).
+
 ```bash
 # master -> shipping AAC at -16 LUFS
 python3 tools/audio_pipeline/build_audio.py japji-sahib

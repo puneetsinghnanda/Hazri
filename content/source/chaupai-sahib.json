@@ -1,0 +1,4368 @@
+{
+  "schema_version": "2.0",
+  "bani": {
+    "id": "CPDT",
+    "name": {
+      "gurmukhi": "ਚੌਪਈ ਸਾਹਿਬ (ਟ:)",
+      "english": "Chaupai Sahib (T.)",
+      "transliteration_english": "chauapee saahib tt",
+      "transliteration_hindi": "चौपई साहिब (ट:)"
+    },
+    "total_lines": 129,
+    "total_sections": 5,
+    "total_units": 31,
+    "source_pages": {
+      "from": 290,
+      "to": 1388
+    }
+  },
+  "coverage": {
+    "total_lines": 129,
+    "gurmukhi": 129,
+    "transliteration_english": 129,
+    "transliteration_hindi": 129,
+    "meaning_english": 113,
+    "meaning_punjabi": 128,
+    "meaning_hindi": 0,
+    "sources_used": {
+      "english": [
+        "DSKO"
+      ],
+      "english_alt": [],
+      "punjabi": [
+        "RSJD"
+      ],
+      "punjabi_alt": [],
+      "hindi": []
+    }
+  },
+  "provenance": {
+    "dataset": "Shabad OS Database",
+    "repository": "https://github.com/shabados/database",
+    "commit": "918c1d42d02e385e7ed48ef44994c75a2cb50293",
+    "license": "See repository LICENSE.md",
+    "transliteration": {
+      "library": "gurmukhi-utils",
+      "version": "3.2.2",
+      "functions": [
+        "toEnglish",
+        "toHindi",
+        "stripVishraams"
+      ],
+      "note": "Programmatic script conversion, not human-reviewed."
+    },
+    "hindi_meaning": {
+      "source": null,
+      "note": "No Hindi-language meaning exists for this bani in the dataset. The Faridkot teeka covers Sri Guru Granth Sahib only; this bani is not from that scripture."
+    },
+    "unit_numbering": "unit/ends_unit are derived mechanically from Gurmukhi numerals in closing dandas (e.g. ॥੪॥). They are not editorial labels.",
+    "assets": {
+      "DSKO": {
+        "code": "DSKO",
+        "name": "Sri Dasam Granth Sahib Translation",
+        "title": "Sri Dasam Granth Sahib Translation",
+        "authors": [
+          "Dr. Surinder S Kohli"
+        ],
+        "publisher": "Sikh National Heritage Trust",
+        "date": "2003-01-01",
+        "url": null
+      },
+      "RSJD": {
+        "code": "RSJD",
+        "name": "Sri Dasam Granth",
+        "title": "Sri Dasam Granth",
+        "authors": [
+          "Ratan S Jaggi"
+        ],
+        "publisher": "Gobind Sadan",
+        "date": "2007-09-15",
+        "url": "www.gobindsadan.org/download/148/siri-dasam-granth/1363/dasam-granth-complete.pdf"
+      },
+      "DGDG": {
+        "code": "DGDG",
+        "name": "Das Granthi",
+        "title": "Das Granthi",
+        "authors": [],
+        "publisher": "SGPC",
+        "date": "2014-07",
+        "url": null
+      }
+    },
+    "unresolved_line_refs": []
+  },
+  "structure": [
+    {
+      "section_index": 0,
+      "line_from": 1,
+      "line_to": 1,
+      "units_closed": []
+    },
+    {
+      "section_index": 1,
+      "line_from": 2,
+      "line_to": 2,
+      "units_closed": []
+    },
+    {
+      "section_index": 2,
+      "line_from": 3,
+      "line_to": 121,
+      "units_closed": [
+        377,
+        378,
+        379,
+        380,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        389,
+        390,
+        391,
+        392,
+        393,
+        394,
+        395,
+        396,
+        397,
+        398,
+        399,
+        400,
+        401,
+        402,
+        403,
+        404,
+        405
+      ]
+    },
+    {
+      "section_index": 3,
+      "line_from": 122,
+      "line_to": 126,
+      "units_closed": [
+        863
+      ]
+    },
+    {
+      "section_index": 4,
+      "line_from": 127,
+      "line_to": 129,
+      "units_closed": [
+        864
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "id": 1,
+      "source_id": "WJ68",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 809,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ੴ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਹ ॥",
+        "gurmukhi_plain": "ੴ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਹ ॥",
+        "transliteration": {
+          "english": "ik oankaar vaahiguroo jee kee fatah |",
+          "hindi": "ੴ वाहिगुरू जी की फतह ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Lord is One and the Victory is of the True Guru.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 2,
+      "source_id": "CHL7",
+      "section_index": 1,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 809,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪਾਤਿਸਾਹੀ ੧੦ ॥",
+        "gurmukhi_plain": "ਪਾਤਿਸਾਹੀ ੧੦ ॥",
+        "transliteration": {
+          "english": "paatisaahee 10 |",
+          "hindi": "पातिसाही १० ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "(By) Tenth Master, (in) Deviant Metre,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਪਾਤਿਸ਼ਾਹੀ ੧੦:",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 3,
+      "source_id": "6KNN",
+      "section_index": 2,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ ॥ ਚੌਪਈ ॥",
+        "gurmukhi_plain": "ਕਬਿਯੋ ਬਾਚ ਬੇਨਤੀ ॥ ਚੌਪਈ ॥",
+        "transliteration": {
+          "english": "kabiyo baach benatee | chauapee |",
+          "hindi": "कबियो बाच बेनती ॥ चौपई ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Speech of the poet. Chaupai",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਕਵੀ ਨੇ ਬੇਨਤੀ ਕੀਤੀ: ਚੌਪਈ:",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 4,
+      "source_id": "R6ML",
+      "section_index": 2,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਹਮਰੀ ਕਰੋ ਹਾਥ ਦੈ ਰੱਛਾ ॥",
+        "gurmukhi_plain": "ਹਮਰੀ ਕਰੋ ਹਾਥ ਦੈ ਰੱਛਾ ॥",
+        "transliteration": {
+          "english": "hamaree karo haath dai rachhaa |",
+          "hindi": "हमरी करो हाथ दै रच्छा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Protect me O Lord! with Thine own Hands",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਹੇ ਪਰਮ ਸੱਤਾ!) ਆਪਣਾ ਹੱਥ ਦੇ ਕੇ ਮੇਰੀ ਰਖਿਆ ਕਰੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 5,
+      "source_id": "P1M6",
+      "section_index": 2,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪੂਰਨ ਹੋਇ ਚਿਤ ਕੀ ਇੱਛਾ ॥",
+        "gurmukhi_plain": "ਪੂਰਨ ਹੋਇ ਚਿਤ ਕੀ ਇੱਛਾ ॥",
+        "transliteration": {
+          "english": "pooran hoe chit kee ichhaa |",
+          "hindi": "पूरन होइ चित की इच्छा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "all the desires of my heart be fulfilled.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤਾਂ ਜੋ) ਮੇਰੇ ਚਿਤ ਦੀ ਇੱਛਾ ਪੂਰੀ ਹੋ ਜਾਏ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 6,
+      "source_id": "CP5D",
+      "section_index": 2,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤਵ ਚਰਨਨ ਮਨ ਰਹੈ ਹਮਾਰਾ ॥",
+        "gurmukhi_plain": "ਤਵ ਚਰਨਨ ਮਨ ਰਹੈ ਹਮਾਰਾ ॥",
+        "transliteration": {
+          "english": "tav charanan man rahai hamaaraa |",
+          "hindi": "तव चरनन मन रहै हमारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Let my mind rest under Thy Feet",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੇਰਾ ਮਨ (ਸਦਾ) ਤੁਹਾਡੇ ਚਰਨਾਂ ਨਾਲ ਜੁੜਿਆ ਰਹੇ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 7,
+      "source_id": "U8NW",
+      "section_index": 2,
+      "unit": 1,
+      "ends_unit": 377,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਅਪਨਾ ਜਾਨ ਕਰੋ ਪ੍ਰਤਿਪਾਰਾ ॥੩੭੭॥",
+        "gurmukhi_plain": "ਅਪਨਾ ਜਾਨ ਕਰੋ ਪ੍ਰਤਿਪਾਰਾ ॥੩੭੭॥",
+        "transliteration": {
+          "english": "apanaa jaan karo pratipaaraa |377|",
+          "hindi": "अपना जान करो प्रतिपारा ॥३७७॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Sustain me, considering me Thine own.377.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਆਪਣਾ ਜਾਣ ਕੇ ਮੇਰੀ ਪ੍ਰਤਿਪਾਲਨਾ ਕਰੋ ॥੩੭੭॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 8,
+      "source_id": "QXDA",
+      "section_index": 2,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਹਮਰੇ ਦੁਸਟ ਸਭੈ ਤੁਮ ਘਾਵਹੁ ॥",
+        "gurmukhi_plain": "ਹਮਰੇ ਦੁਸਟ ਸਭੈ ਤੁਮ ਘਾਵਹੁ ॥",
+        "transliteration": {
+          "english": "hamare dusatt sabhai tum ghaavahu |",
+          "hindi": "हमरे दुसट सभै तुम घावहु ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Destroy, O Lord! all my enemies and",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੇਰੇ ਸਾਰੇ ਦੁਸ਼ਟਾਂ (ਦੁਸ਼ਮਣਾਂ) ਨੂੰ ਤੁਸੀਂ ਖ਼ਤਮ ਕਰੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 9,
+      "source_id": "SQJB",
+      "section_index": 2,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਪੁ ਹਾਥ ਦੈ ਮੋਹਿ ਬਚਾਵਹੁ ॥",
+        "gurmukhi_plain": "ਆਪੁ ਹਾਥ ਦੈ ਮੋਹਿ ਬਚਾਵਹੁ ॥",
+        "transliteration": {
+          "english": "aap haath dai mohi bachaavahu |",
+          "hindi": "आपु हाथ दै मोहि बचावहु ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "protect me with Thine won Hnads.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੈਨੂੰ ਆਪਣਾ ਹੱਥ ਦੇ ਕੇ ਬਚਾਓ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 10,
+      "source_id": "AE2T",
+      "section_index": 2,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੁਖੀ ਬਸੈ ਮੋਰੋ ਪਰਿਵਾਰਾ ॥",
+        "gurmukhi_plain": "ਸੁਖੀ ਬਸੈ ਮੋਰੋ ਪਰਿਵਾਰਾ ॥",
+        "transliteration": {
+          "english": "sukhee basai moro parivaaraa |",
+          "hindi": "सुखी बसै मोरो परिवारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "May my family live in comfort",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੇ ਕਰਤਾਰ! ਮੇਰਾ ਪਰਿਵਾਰ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 11,
+      "source_id": "XFP4",
+      "section_index": 2,
+      "unit": 2,
+      "ends_unit": 378,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੇਵਕ ਸਿੱਖ ਸਭੈ ਕਰਤਾਰਾ ॥੩੭੮॥",
+        "gurmukhi_plain": "ਸੇਵਕ ਸਿੱਖ ਸਭੈ ਕਰਤਾਰਾ ॥੩੭੮॥",
+        "transliteration": {
+          "english": "sevak sikh sabhai karataaraa |378|",
+          "hindi": "सेवक सिक्ख सभै करतारा ॥३७८॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "and ease alongwith all my servants and disciples.378.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸੇਵਕ, ਸਿੱਖ ਸਭ ਸੁਖੀ ਵਸਦੇ ਰਹਿਣ ॥੩੭੮॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 12,
+      "source_id": "R1TY",
+      "section_index": 2,
+      "unit": 3,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਮੋ ਰੱਛਾ ਨਿਜ ਕਰ ਦੈ ਕਰਿਯੈ ॥",
+        "gurmukhi_plain": "ਮੋ ਰੱਛਾ ਨਿਜ ਕਰ ਦੈ ਕਰਿਯੈ ॥",
+        "transliteration": {
+          "english": "mo rachhaa nij kar dai kariyai |",
+          "hindi": "मो रच्छा निज कर दै करियै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Protect me O Lord! with Thine own Hands",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਆਪਣਾ ਹੱਥ ਦੇ ਕੇ ਮੇਰੀ ਰਖਿਆ ਕਰੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 13,
+      "source_id": "D8U7",
+      "section_index": 2,
+      "unit": 3,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਭ ਬੈਰਨ ਕੋ ਆਜ ਸੰਘਰਿਯੈ ॥",
+        "gurmukhi_plain": "ਸਭ ਬੈਰਨ ਕੋ ਆਜ ਸੰਘਰਿਯੈ ॥",
+        "transliteration": {
+          "english": "sabh bairan ko aaj sanghariyai |",
+          "hindi": "सभ बैरन को आज संघरियै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "and destroy this day all my enemies",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਾਰਿਆਂ ਵੈਰੀਆਂ ਨੂੰ ਅਜ ਹੀ ਮਾਰ ਦਿਓ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 14,
+      "source_id": "BG7D",
+      "section_index": 2,
+      "unit": 3,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪੂਰਨ ਹੋਇ ਹਮਾਰੀ ਆਸਾ ॥",
+        "gurmukhi_plain": "ਪੂਰਨ ਹੋਇ ਹਮਾਰੀ ਆਸਾ ॥",
+        "transliteration": {
+          "english": "pooran hoe hamaaree aasaa |",
+          "hindi": "पूरन होइ हमारी आसा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "May all the aspirations be fulfilled",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੇਰੀ ਆਸ ਪੂਰੀ ਹੋ ਜਾਏ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 15,
+      "source_id": "V73H",
+      "section_index": 2,
+      "unit": 3,
+      "ends_unit": 379,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੋਰ ਭਜਨ ਕੀ ਰਹੈ ਪਿਆਸਾ ॥੩੭੯॥",
+        "gurmukhi_plain": "ਤੋਰ ਭਜਨ ਕੀ ਰਹੈ ਪਿਆਸਾ ॥੩੭੯॥",
+        "transliteration": {
+          "english": "tor bhajan kee rahai piaasaa |379|",
+          "hindi": "तोर भजन की रहै पिआसा ॥३७९॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Let my thirst for Thy Name remain afresh.379.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਸਦਾ) ਤੇਰੇ ਭਜਨ ਲਈ (ਅਥਵਾ ਭਗਤੀ ਲਈ) ਪਿਆਸ (ਤੀਬਰ ਇੱਛਾ) ਬਣੀ ਰਹੇ ॥੩੭੯॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 16,
+      "source_id": "B4AY",
+      "section_index": 2,
+      "unit": 4,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੁਮਹਿ ਛਾਡਿ, ਕੋਈ ਅਵਰ ਨ ਧਿਯਾਊਂ ॥",
+        "gurmukhi_plain": "ਤੁਮਹਿ ਛਾਡਿ ਕੋਈ ਅਵਰ ਨ ਧਿਯਾਊਂ ॥",
+        "transliteration": {
+          "english": "tumeh chhaadd koee avar na dhiyaaoon |",
+          "hindi": "तुमहि छाडि कोई अवर न धियाऊं ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I may remember none else except Thee",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਤੁਹਾਨੂੰ ਛਡ ਕੇ ਕਿਸੇ ਹੋਰ ਦੀ ਅਰਾਧਨਾ ਨਾ ਕਰਾਂ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 17,
+      "source_id": "KSTH",
+      "section_index": 2,
+      "unit": 4,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜੋ ਬਰ ਚਹੋਂ, ਸੁ ਤੁਮ ਤੇ ਪਾਊਂ ॥",
+        "gurmukhi_plain": "ਜੋ ਬਰ ਚਹੋਂ ਸੁ ਤੁਮ ਤੇ ਪਾਊਂ ॥",
+        "transliteration": {
+          "english": "jo bar chahon su tum te paaoon |",
+          "hindi": "जो बर चहों सु तुम ते पाऊं ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "And obtain all the required boons from Thee",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜੋ ਵਰ ਚਾਹਵਾਂ, ਤੁਹਾਡੇ ਤੋਂ ਹੀ ਪ੍ਰਾਪਤ ਕਰਾਂ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 18,
+      "source_id": "FHPG",
+      "section_index": 2,
+      "unit": 4,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੇਵਕ ਸਿੱਖ ਹਮਾਰੇ ਤਾਰੀਅਹਿ ॥",
+        "gurmukhi_plain": "ਸੇਵਕ ਸਿੱਖ ਹਮਾਰੇ ਤਾਰੀਅਹਿ ॥",
+        "transliteration": {
+          "english": "sevak sikh hamaare taareeeh |",
+          "hindi": "सेवक सिक्ख हमारे तारीअहि ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Let my servants and disciples cross the world-ocean",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੇਰੇ ਸੇਵਕਾਂ ਅਤੇ ਸਿੱਖਾਂ ਨੂੰ (ਭਵਸਾਗਰ ਵਿਚੋਂ) ਤਾਰ ਦਿਓ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 19,
+      "source_id": "2JMJ",
+      "section_index": 2,
+      "unit": 4,
+      "ends_unit": 380,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਚੁਨਿ ਚੁਨਿ ਸਤ੍ਰ ਹਮਾਰੇ ਮਾਰੀਅਹਿ ॥੩੮੦॥",
+        "gurmukhi_plain": "ਚੁਨਿ ਚੁਨਿ ਸਤ੍ਰ ਹਮਾਰੇ ਮਾਰੀਅਹਿ ॥੩੮੦॥",
+        "transliteration": {
+          "english": "chun chun satr hamaare maareeeh |380|",
+          "hindi": "चुनि चुनि सत्र हमारे मारीअहि ॥३८०॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "All my enemies be singled out and killed.380.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੇਰੇ ਵੈਰੀਆਂ ਨੂੰ ਚੁਣ ਚੁਣ ਕੇ ਮਾਰ ਦਿਓ ॥੩੮੦॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 20,
+      "source_id": "6EUL",
+      "section_index": 2,
+      "unit": 5,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਪ ਹਾਥ ਦੈ ਮੁਝੈ ਉਬਰਿਯੈ ॥",
+        "gurmukhi_plain": "ਆਪ ਹਾਥ ਦੈ ਮੁਝੈ ਉਬਰਿਯੈ ॥",
+        "transliteration": {
+          "english": "aap haath dai mujhai ubariyai |",
+          "hindi": "आप हाथ दै मुझै उबरियै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Protect me O Lord! with Thine own Hands and",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਆਪਣਾ ਹੱਥ ਦੇ ਕੇ ਮੇਰਾ ਉੱਧਾਰ ਕਰੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 21,
+      "source_id": "4MS3",
+      "section_index": 2,
+      "unit": 5,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਮਰਨ ਕਾਲ ਕਾ ਤ੍ਰਾਸ ਨਿਵਰਿਯੈ ॥",
+        "gurmukhi_plain": "ਮਰਨ ਕਾਲ ਕਾ ਤ੍ਰਾਸ ਨਿਵਰਿਯੈ ॥",
+        "transliteration": {
+          "english": "maran kaal kaa traas nivariyai |",
+          "hindi": "मरन काल का त्रास निवरियै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "relieve me form the fear of death",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੌਤ ਦੇ ਸਮੇਂ ਦਾ ਡਰ ਦੂਰ ਕਰ ਦਿਓ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 22,
+      "source_id": "SLHB",
+      "section_index": 2,
+      "unit": 5,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਹੂਜੋ ਸਦਾ ਹਮਾਰੇ ਪੱਛਾ ॥",
+        "gurmukhi_plain": "ਹੂਜੋ ਸਦਾ ਹਮਾਰੇ ਪੱਛਾ ॥",
+        "transliteration": {
+          "english": "hoojo sadaa hamaare pachhaa |",
+          "hindi": "हूजो सदा हमारे पच्छा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "May Thou ever Bestow Thy favours on my side",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਦਾ ਮੇਰੇ ਪੱਖ ਵਿਚ ਰਹੋ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 23,
+      "source_id": "5R1H",
+      "section_index": 2,
+      "unit": 5,
+      "ends_unit": 381,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸ੍ਰੀ ਅਸਿਧੁਜ ਜੂ, ਕਰਿਯਹੁ ਰੱਛਾ ॥੩੮੧॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਅਸਿਧੁਜ ਜੂ ਕਰਿਯਹੁ ਰੱਛਾ ॥੩੮੧॥",
+        "transliteration": {
+          "english": "sree asidhuj joo kariyahu rachhaa |381|",
+          "hindi": "स्री असिधुज जू करियहु रच्छा ॥३८१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Protect me O Lord! Thou, the Supreme Destroyer.381.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੇ ਅਸਿਧੁਜ ਜੀ! ਅਤੇ ਮੇਰੀ ਰਖਿਆ ਕਰੋ ॥੩੮੧॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 24,
+      "source_id": "3DD4",
+      "section_index": 2,
+      "unit": 6,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਰਾਖਿ ਲੇਹੁ ਮੁਹਿ ਰਾਖਨਹਾਰੇ ॥",
+        "gurmukhi_plain": "ਰਾਖਿ ਲੇਹੁ ਮੁਹਿ ਰਾਖਨਹਾਰੇ ॥",
+        "transliteration": {
+          "english": "raakh lehu muhi raakhanahaare |",
+          "hindi": "राखि लेहु मुहि राखनहारे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Protect me, O Protector Lord!",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੇ ਰਖਿਆ ਕਰਨ ਵਾਲੇ! ਮੇਰੀ ਰਖਿਆ ਕਰੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 25,
+      "source_id": "VD48",
+      "section_index": 2,
+      "unit": 6,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਾਹਿਬ ਸੰਤ ਸਹਾਇ ਪਿਯਾਰੇ ॥",
+        "gurmukhi_plain": "ਸਾਹਿਬ ਸੰਤ ਸਹਾਇ ਪਿਯਾਰੇ ॥",
+        "transliteration": {
+          "english": "saahib sant sahaae piyaare |",
+          "hindi": "साहिब संत सहाइ पियारे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Most dear, the Protector of the Saints:",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਸੰਤਾਂ ਦੇ ਸਾਹਿਬ (ਸੁਆਮੀ) ਅਤੇ ਪਿਆਰੇ ਸਹਾਇਕ ਹੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 26,
+      "source_id": "XGA3",
+      "section_index": 2,
+      "unit": 6,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੀਨ ਬੰਧੁ ਦੁਸਟਨ ਕੇ ਹੰਤਾ ॥",
+        "gurmukhi_plain": "ਦੀਨ ਬੰਧੁ ਦੁਸਟਨ ਕੇ ਹੰਤਾ ॥",
+        "transliteration": {
+          "english": "deen bandh dusattan ke hantaa |",
+          "hindi": "दीन बंधु दुसटन के हंता ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Friend of poor and the Destroyer of the enemies",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਦੀਨਾਂ ਦੇ ਬੰਧੂ ਅਤੇ ਦੁਸ਼ਟਾਂ ਦੇ ਸੰਘਾਰਕ ਹੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 27,
+      "source_id": "P2PS",
+      "section_index": 2,
+      "unit": 6,
+      "ends_unit": 382,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੁਮ ਹੋ, ਪੁਰੀ ਚਤੁਰਦਸ ਕੰਤਾ ॥੩੮੨॥",
+        "gurmukhi_plain": "ਤੁਮ ਹੋ ਪੁਰੀ ਚਤੁਰਦਸ ਕੰਤਾ ॥੩੮੨॥",
+        "transliteration": {
+          "english": "tum ho puree chaturadas kantaa |382|",
+          "hindi": "तुम हो पुरी चतुरदस कंता ॥३८२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Thou art the Master of the fourteen worlds.382.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਤੁਸੀਂ ਹੀ ਚੌਦਾਂ ਪੁਰੀਆਂ (ਲੋਕਾਂ) ਦੇ ਸੁਆਮੀ ਹੋ ॥੩੮੨॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 28,
+      "source_id": "K6XR",
+      "section_index": 2,
+      "unit": 7,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਾਲ ਪਾਇ, ਬ੍ਰਹਮਾ ਬਪੁ ਧਰਾ ॥",
+        "gurmukhi_plain": "ਕਾਲ ਪਾਇ ਬ੍ਰਹਮਾ ਬਪੁ ਧਰਾ ॥",
+        "transliteration": {
+          "english": "kaal paae brahamaa bap dharaa |",
+          "hindi": "काल पाइ ब्रहमा बपु धरा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "In due time Brahma appeared in physical form",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਮਾਂ ਆਣ ਤੇ ਹੀ ਬ੍ਰਹਮਾ ਨੇ ਸ਼ਰੀਰ ਧਾਰਨ ਕੀਤਾ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 29,
+      "source_id": "URR4",
+      "section_index": 2,
+      "unit": 7,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਾਲ ਪਾਇ, ਸਿਵ ਜੂ ਅਵਤਰਾ ॥",
+        "gurmukhi_plain": "ਕਾਲ ਪਾਇ ਸਿਵ ਜੂ ਅਵਤਰਾ ॥",
+        "transliteration": {
+          "english": "kaal paae siv joo avataraa |",
+          "hindi": "काल पाइ सिव जू अवतरा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "In due time Shiva incarnated",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਮਾਂ ਪਾ ਕੇ ਹੀ ਸ਼ਿਵ ਜੀ ਨੇ ਅਵਤਾਰ ਧਾਰਿਆ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 30,
+      "source_id": "NQX3",
+      "section_index": 2,
+      "unit": 7,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਾਲ ਪਾਇ ਕਰ, ਬਿਸਨੁ ਪ੍ਰਕਾਸਾ ॥",
+        "gurmukhi_plain": "ਕਾਲ ਪਾਇ ਕਰ ਬਿਸਨੁ ਪ੍ਰਕਾਸਾ ॥",
+        "transliteration": {
+          "english": "kaal paae kar bisan prakaasaa |",
+          "hindi": "काल पाइ कर बिसनु प्रकासा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "In due time Vishnu manifested himself",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਕਾਲ ਦੀ ਪ੍ਰਾਪਤੀ ਤੇ ਹੀ ਵਿਸ਼ਣੂ ਦਾ ਪ੍ਰਕਾਸ਼ ਹੋਇਆ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 31,
+      "source_id": "7VQC",
+      "section_index": 2,
+      "unit": 7,
+      "ends_unit": 383,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਕਲ ਕਾਲ ਕਾ ਕੀਆ ਤਮਾਸਾ ॥੩੮੩॥",
+        "gurmukhi_plain": "ਸਕਲ ਕਾਲ ਕਾ ਕੀਆ ਤਮਾਸਾ ॥੩੮੩॥",
+        "transliteration": {
+          "english": "sakal kaal kaa keea tamaasaa |383|",
+          "hindi": "सकल काल का कीआ तमासा ॥३८३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "All this is the play of the Temporal Lord.383.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਹੇ ਮਹਾਕਾਲ! ਤੁਸੀਂ ਹੀ) ਸਾਰਿਆਂ ਕਾਲਾਂ ਦਾ ਕੌਤਕ ਰਚਾਇਆ ਹੋਇਆ ਹੈ ॥੩੮੩॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 32,
+      "source_id": "A9HF",
+      "section_index": 2,
+      "unit": 8,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਵਨ ਕਾਲ, ਜੋਗੀ ਸਿਵ ਕੀਓ ॥",
+        "gurmukhi_plain": "ਜਵਨ ਕਾਲ ਜੋਗੀ ਸਿਵ ਕੀਓ ॥",
+        "transliteration": {
+          "english": "javan kaal jogee siv keeo |",
+          "hindi": "जवन काल जोगी सिव कीओ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Temporal Lord, who created Shiva, the Yogi",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਿਸ ਕਾਲ ਨੇ ਸ਼ਿਵ ਨੂੰ ਜੋਗੀ ਬਣਾਇਆ ਹੈ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 33,
+      "source_id": "48SM",
+      "section_index": 2,
+      "unit": 8,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਬੇਦ ਰਾਜ, ਬ੍ਰਹਮਾ ਜੂ ਥੀਓ ॥",
+        "gurmukhi_plain": "ਬੇਦ ਰਾਜ ਬ੍ਰਹਮਾ ਜੂ ਥੀਓ ॥",
+        "transliteration": {
+          "english": "bed raaj brahamaa joo theeo |",
+          "hindi": "बेद राज ब्रहमा जू थीओ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Who created Brahma, the Master of the Vedas",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਬ੍ਰਹਮਾ ਜੀ ਨੂੰ ਵੇਦਾਂ ਦਾ ਰਾਜਾ ਬਣਾਇਆ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 34,
+      "source_id": "Z5CD",
+      "section_index": 2,
+      "unit": 8,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਵਨ ਕਾਲ, ਸਭ ਲੋਕ ਸਵਾਰਾ ॥",
+        "gurmukhi_plain": "ਜਵਨ ਕਾਲ ਸਭ ਲੋਕ ਸਵਾਰਾ ॥",
+        "transliteration": {
+          "english": "javan kaal sabh lok savaaraa |",
+          "hindi": "जवन काल सभ लोक सवारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Temporal Lord who fashioned the entire world",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਿਸ ਕਾਲ ਨੇ ਸਾਰਿਆਂ ਲੋਕਾਂ (ਭੁਵਨਾਂ) ਨੂੰ ਸੰਵਾਰਿਆ ਹੈ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 35,
+      "source_id": "7SLL",
+      "section_index": 2,
+      "unit": 8,
+      "ends_unit": 384,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਨਮਸਕਾਰ ਹੈ, ਤਾਹਿ ਹਮਾਰਾ ॥੩੮੪॥",
+        "gurmukhi_plain": "ਨਮਸਕਾਰ ਹੈ ਤਾਹਿ ਹਮਾਰਾ ॥੩੮੪॥",
+        "transliteration": {
+          "english": "namasakaar hai taeh hamaaraa |384|",
+          "hindi": "नमसकार है ताहि हमारा ॥३८४॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I salute the same Lord.384.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਸ ਨੂੰ ਮੇਰਾ ਪ੍ਰਨਾਮ ਹੈ ॥੩੮੪॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 36,
+      "source_id": "2EJU",
+      "section_index": 2,
+      "unit": 9,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਵਨ ਕਾਲ, ਸਭ ਜਗਤ ਬਨਾਯੋ ॥",
+        "gurmukhi_plain": "ਜਵਨ ਕਾਲ ਸਭ ਜਗਤ ਬਨਾਯੋ ॥",
+        "transliteration": {
+          "english": "javan kaal sabh jagat banaayo |",
+          "hindi": "जवन काल सभ जगत बनायो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Temporal Lord, who created the whole world",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਿਸ ਕਾਲ ਨੇ ਸਾਰਾ ਜਗਤ ਬਣਾਇਆ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 37,
+      "source_id": "5LAZ",
+      "section_index": 2,
+      "unit": 9,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੇਵ ਦੈਤ ਜੱਛਨ ਉਪਜਾਯੋ ॥",
+        "gurmukhi_plain": "ਦੇਵ ਦੈਤ ਜੱਛਨ ਉਪਜਾਯੋ ॥",
+        "transliteration": {
+          "english": "dev dait jachhan upajaayo |",
+          "hindi": "देव दैत जच्छन उपजायो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Who created gods, demons and yakshas",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਦੇਵਤੇ, ਦੈਂਤ ਤੇ ਯਕਸ਼ ਪੈਦਾ ਕੀਤੇ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 38,
+      "source_id": "WWUW",
+      "section_index": 2,
+      "unit": 9,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਦਿ ਅੰਤਿ, ਏਕੈ ਅਵਤਾਰਾ ॥",
+        "gurmukhi_plain": "ਆਦਿ ਅੰਤਿ ਏਕੈ ਅਵਤਾਰਾ ॥",
+        "transliteration": {
+          "english": "aad ant ekai avataaraa |",
+          "hindi": "आदि अंति एकै अवतारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He is the only one form the beginning to the end",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਜੋ) ਆਦਿ ਤੋਂ ਅੰਤ ਤਕ ਅਵਤਰਿਤ ਹੈ (ਭਾਵ ਪ੍ਰਕਾਸ਼ਮਾਨ ਹੈ)",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 39,
+      "source_id": "MKY4",
+      "section_index": 2,
+      "unit": 9,
+      "ends_unit": 385,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੋਈ, ਗੁਰੂ ਸਮਝਿਯਹੁ ਹਮਾਰਾ ॥੩੮੫॥",
+        "gurmukhi_plain": "ਸੋਈ ਗੁਰੂ ਸਮਝਿਯਹੁ ਹਮਾਰਾ ॥੩੮੫॥",
+        "transliteration": {
+          "english": "soee guroo samajhiyahu hamaaraa |385|",
+          "hindi": "सोई गुरू समझियहु हमारा ॥३८५॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I consider Him only my Guru.385.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਸੇ ਨੂੰ ਮੇਰਾ ਗੁਰੂ ਸਮਝੋ ॥੩੮੫॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 40,
+      "source_id": "TK9G",
+      "section_index": 2,
+      "unit": 10,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਨਮਸਕਾਰ, ਤਿਸ ਹੀ ਕੋ ਹਮਾਰੀ ॥",
+        "gurmukhi_plain": "ਨਮਸਕਾਰ ਤਿਸ ਹੀ ਕੋ ਹਮਾਰੀ ॥",
+        "transliteration": {
+          "english": "namasakaar tis hee ko hamaaree |",
+          "hindi": "नमसकार तिस ही को हमारी ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I salute Him, non else, but Him",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਸ ਨੂੰ ਮੇਰਾ ਨਮਸਕਾਰ ਹੈ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 41,
+      "source_id": "6C2M",
+      "section_index": 2,
+      "unit": 10,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਕਲ ਪ੍ਰਜਾ ਜਿਨ ਆਪ ਸਵਾਰੀ ॥",
+        "gurmukhi_plain": "ਸਕਲ ਪ੍ਰਜਾ ਜਿਨ ਆਪ ਸਵਾਰੀ ॥",
+        "transliteration": {
+          "english": "sakal prajaa jin aap savaaree |",
+          "hindi": "सकल प्रजा जिन आप सवारी ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Who has created Himself and His subject",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਿਸ ਨੇ ਸਾਰੀ ਪ੍ਰਜਾ ਨੂੰ ਬਣਾਇਆ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 42,
+      "source_id": "HYGL",
+      "section_index": 2,
+      "unit": 10,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਿਵਕਨ ਕੋ, ਸਿਵਗੁਨ ਸੁਖ ਦੀਓ ॥",
+        "gurmukhi_plain": "ਸਿਵਕਨ ਕੋ ਸਿਵਗੁਨ ਸੁਖ ਦੀਓ ॥",
+        "transliteration": {
+          "english": "sivakan ko sivagun sukh deeo |",
+          "hindi": "सिवकन को सिवगुन सुख दीओ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He bestows Divine virtues and happiness on His servants",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਹੇ ਪਰਮ ਸੱਤਾ! ਤੁਸੀਂ) ਸੇਵਕਾਂ ਨੂੰ ਸ਼ੁਭ ਗੁਣ ਅਤੇ ਸੁਖ ਦਿੱਤਾ ਹੈ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 43,
+      "source_id": "5JSD",
+      "section_index": 2,
+      "unit": 10,
+      "ends_unit": 386,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1386,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੱਤ੍ਰੁਨ ਕੋ, ਪਲ ਮੋ ਬਧ ਕੀਓ ॥੩੮੬॥",
+        "gurmukhi_plain": "ਸੱਤ੍ਰੁਨ ਕੋ ਪਲ ਮੋ ਬਧ ਕੀਓ ॥੩੮੬॥",
+        "transliteration": {
+          "english": "satrun ko pal mo badh keeo |386|",
+          "hindi": "सत्रुन को पल मो बध कीओ ॥३८६॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He destroys the enemies instantly.386.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਵੈਰੀਆਂ ਦਾ ਛਿਣ ਵਿਚ ਵੱਧ ਕੀਤਾ ਹੈ ॥੩੮੬॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 44,
+      "source_id": "KTBW",
+      "section_index": 2,
+      "unit": 11,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਘਟ ਘਟ ਕੇ ਅੰਤਰ ਕੀ ਜਾਨਤ ॥",
+        "gurmukhi_plain": "ਘਟ ਘਟ ਕੇ ਅੰਤਰ ਕੀ ਜਾਨਤ ॥",
+        "transliteration": {
+          "english": "ghatt ghatt ke antar kee jaanat |",
+          "hindi": "घट घट के अंतर की जानत ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He knows the inner feelings of every heart",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਹਰ ਇਕ ਦੇ ਅੰਦਰ ਦੀ ਗੱਲ ਜਾਣਦੇ ਹੋ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 45,
+      "source_id": "C4JM",
+      "section_index": 2,
+      "unit": 11,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਭਲੇ ਬੁਰੇ ਕੀ ਪੀਰ ਪਛਾਨਤ ॥",
+        "gurmukhi_plain": "ਭਲੇ ਬੁਰੇ ਕੀ ਪੀਰ ਪਛਾਨਤ ॥",
+        "transliteration": {
+          "english": "bhale bure kee peer pachhaanat |",
+          "hindi": "भले बुरे की पीर पछानत ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He knows the anguish of both good and bad",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਚੰਗੇ ਮਾੜੇ ਦੀ ਪੀੜ (ਦੁਖ) ਨੂੰ ਪਛਾਣਦੇ ਹੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 46,
+      "source_id": "ZTEV",
+      "section_index": 2,
+      "unit": 11,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਚੀਟੀ ਤੇ ਕੁੰਚਰ ਅਸਥੂਲਾ ॥",
+        "gurmukhi_plain": "ਚੀਟੀ ਤੇ ਕੁੰਚਰ ਅਸਥੂਲਾ ॥",
+        "transliteration": {
+          "english": "cheettee te kunchar asathoolaa |",
+          "hindi": "चीटी ते कुंचर असथूला ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "From the ant to the solid elephant",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਕੀੜੀ ਤੋਂ ਲੈ ਕੇ ਵਡਾਕਾਰੇ ਹਾਥੀ ਤਕ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 47,
+      "source_id": "KEE1",
+      "section_index": 2,
+      "unit": 11,
+      "ends_unit": 387,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਭ ਪਰ, ਕ੍ਰਿਪਾ ਦ੍ਰਿਸਟਿ ਕਰਿ ਫੂਲਾ ॥੩੮੭॥",
+        "gurmukhi_plain": "ਸਭ ਪਰ ਕ੍ਰਿਪਾ ਦ੍ਰਿਸਟਿ ਕਰਿ ਫੂਲਾ ॥੩੮੭॥",
+        "transliteration": {
+          "english": "sabh par kripaa drisatt kar foolaa |387|",
+          "hindi": "सभ पर क्रिपा द्रिसटि करि फूला ॥३८७॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He casts His Graceful glance on all and feels pleased.387.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਭ ਉਤੇ ਕ੍ਰਿਪਾ ਦ੍ਰਿਸ਼ਟੀ ਰਖ ਕੇ ਪ੍ਰਸੰਨ ਹੁੰਦੇ ਹੋ ॥੩੮੭॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 48,
+      "source_id": "65FT",
+      "section_index": 2,
+      "unit": 12,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੰਤਨ ਦੁਖ ਪਾਏ ਤੇ ਦੁਖੀ ॥",
+        "gurmukhi_plain": "ਸੰਤਨ ਦੁਖ ਪਾਏ ਤੇ ਦੁਖੀ ॥",
+        "transliteration": {
+          "english": "santan dukh paae te dukhee |",
+          "hindi": "संतन दुख पाए ते दुखी ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He is painful, when He sees His saints in grief",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸੰਤਾਂ ਦੇ ਦੁਖੀ ਹੋਣ ਤੇ (ਤੁਸੀਂ) ਦੁਖੀ ਹੁੰਦੇ ਹੋ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 49,
+      "source_id": "P8Z5",
+      "section_index": 2,
+      "unit": 12,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੁਖ ਪਾਏ ਸਾਧੁਨ ਕੇ ਸੁਖੀ ॥",
+        "gurmukhi_plain": "ਸੁਖ ਪਾਏ ਸਾਧੁਨ ਕੇ ਸੁਖੀ ॥",
+        "transliteration": {
+          "english": "sukh paae saadhun ke sukhee |",
+          "hindi": "सुख पाए साधुन के सुखी ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He is happy, when His saints are happy.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਸਾਧਾਂ ਦੇ ਸੁਖ ਪ੍ਰਾਪਤ ਕਰਨ ਤੇ ਸੁਖੀ ਹੁੰਦੇ ਹੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 50,
+      "source_id": "L78Q",
+      "section_index": 2,
+      "unit": 12,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਏਕ ਏਕ ਕੀ ਪੀਰ ਪਛਾਨੈਂ ॥",
+        "gurmukhi_plain": "ਏਕ ਏਕ ਕੀ ਪੀਰ ਪਛਾਨੈਂ ॥",
+        "transliteration": {
+          "english": "ek ek kee peer pachhaanain |",
+          "hindi": "एक एक की पीर पछानैं ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He knows the agony of everyone",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਇਕ ਇਕ ਦੇ ਦੁਖ ਨੂੰ ਪਛਾਣਦੇ ਹੋ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 51,
+      "source_id": "DR9Y",
+      "section_index": 2,
+      "unit": 12,
+      "ends_unit": 388,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਘਟ ਘਟ ਕੇ, ਪਟ ਪਟ ਕੀ ਜਾਨੈਂ ॥੩੮੮॥",
+        "gurmukhi_plain": "ਘਟ ਘਟ ਕੇ ਪਟ ਪਟ ਕੀ ਜਾਨੈਂ ॥੩੮੮॥",
+        "transliteration": {
+          "english": "ghatt ghatt ke patt patt kee jaanain |388|",
+          "hindi": "घट घट के पट पट की जानैं ॥३८८॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He knows the innermost secrets of every heart.388.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਹਰ ਇਕ ਦੇ ਅੰਦਰ ਪਰਦਿਆਂ (ਵਿਚ ਲੁਕੇ ਭੇਦਾਂ ਨੂੰ) ਜਾਣਦੇ ਹੋ ॥੩੮੮॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 52,
+      "source_id": "U9PE",
+      "section_index": 2,
+      "unit": 13,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਬ, ਉਦਕਰਖ ਕਰਾ ਕਰਤਾਰਾ ॥",
+        "gurmukhi_plain": "ਜਬ ਉਦਕਰਖ ਕਰਾ ਕਰਤਾਰਾ ॥",
+        "transliteration": {
+          "english": "jab udakarakh karaa karataaraa |",
+          "hindi": "जब उदकरख करा करतारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "When the Creator projected Himself,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੇ ਕਰਤਾਰ! ਜਦੋਂ (ਤੁਸੀਂ ਆਪਣਾ) ਵਿਸਤਾਰ ਕਰਦੇ ਹੋ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 53,
+      "source_id": "KZHP",
+      "section_index": 2,
+      "unit": 13,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪ੍ਰਜਾ ਧਰਤ, ਤਬ ਦੇਹ ਅਪਾਰਾ ॥",
+        "gurmukhi_plain": "ਪ੍ਰਜਾ ਧਰਤ ਤਬ ਦੇਹ ਅਪਾਰਾ ॥",
+        "transliteration": {
+          "english": "prajaa dharat tab deh apaaraa |",
+          "hindi": "प्रजा धरत तब देह अपारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "His creation manifested itself in innumerable forms",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਤਦ ਸਾਰੀ ਪ੍ਰਜਾ (ਆਪਣੀ) ਅਪਾਰ ਹੋਂਦ ਧਾਰਨ ਕਰਦੀ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 54,
+      "source_id": "42J2",
+      "section_index": 2,
+      "unit": 13,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਬ, ਆਕਰਖ ਕਰਤ ਹੋ ਕਬਹੂੰ ॥",
+        "gurmukhi_plain": "ਜਬ ਆਕਰਖ ਕਰਤ ਹੋ ਕਬਹੂੰ ॥",
+        "transliteration": {
+          "english": "jab aakarakh karat ho kabahoon |",
+          "hindi": "जब आकरख करत हो कबहूं ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "When at any time He withdraws His creation,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਦ ਕਦੇ (ਸ੍ਰਿਸ਼ਟੀ ਨੂੰ ਆਪਣੇ ਵਲ) ਖਿਚਦੇ ਹੋ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 55,
+      "source_id": "L0YQ",
+      "section_index": 2,
+      "unit": 13,
+      "ends_unit": 389,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੁਮ ਮੈ ਮਿਲਤ, ਦੇਹ ਧਰ ਸਭਹੂੰ ॥੩੮੯॥",
+        "gurmukhi_plain": "ਤੁਮ ਮੈ ਮਿਲਤ ਦੇਹ ਧਰ ਸਭਹੂੰ ॥੩੮੯॥",
+        "transliteration": {
+          "english": "tum mai milat deh dhar sabhahoon |389|",
+          "hindi": "तुम मै मिलत देह धर सभहूं ॥३८९॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "all the physical forms are merged in Him.389.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤਦ) ਤੁਹਾਡੇ ਵਿਚ ਸਾਰੇ ਆਕਾਰ (ਦੇਹ-ਧਾਰੀ) ਸਮਾ ਜਾਂਦੇ ਹਨ ॥੩੮੯॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 56,
+      "source_id": "BXD5",
+      "section_index": 2,
+      "unit": 14,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜੇਤੇ ਬਦਨ ਸ੍ਰਿਸਟਿ ਸਭ ਧਾਰੈ ॥",
+        "gurmukhi_plain": "ਜੇਤੇ ਬਦਨ ਸ੍ਰਿਸਟਿ ਸਭ ਧਾਰੈ ॥",
+        "transliteration": {
+          "english": "jete badan srisatt sabh dhaarai |",
+          "hindi": "जेते बदन स्रिसटि सभ धारै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "All the bodies of living beings created in the world",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸ੍ਰਿਸ਼ਟੀ ਵਿਚ ਜਿਤਨੇ ਵੀ ਸਭ ਮੂੰਹ ('ਬਦਨ') ਬਣੇ ਹੋਏ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 57,
+      "source_id": "VWNC",
+      "section_index": 2,
+      "unit": 14,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਪੁ ਆਪਨੀ ਬੂਝ ਉਚਾਰੈ ॥",
+        "gurmukhi_plain": "ਆਪੁ ਆਪਨੀ ਬੂਝ ਉਚਾਰੈ ॥",
+        "transliteration": {
+          "english": "aap aapanee boojh uchaarai |",
+          "hindi": "आपु आपनी बूझ उचारै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "speak about Him according to their understanding",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਉਨ੍ਹਾਂ ਸਭ ਨੇ) ਆਪਣੀ ਆਪਣੀ ਸੂਝ ਅਨੁਸਾਰ (ਤੇਰੇ ਗੁਣਾਂ ਦਾ) ਗਾਇਨ ਕੀਤਾ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 58,
+      "source_id": "R0LK",
+      "section_index": 2,
+      "unit": 14,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੁਮ ਸਭ ਹੀ ਤੇ ਰਹਤ ਨਿਰਾਲਮ ॥",
+        "gurmukhi_plain": "ਤੁਮ ਸਭ ਹੀ ਤੇ ਰਹਤ ਨਿਰਾਲਮ ॥",
+        "transliteration": {
+          "english": "tum sabh hee te rehat niraalam |",
+          "hindi": "तुम सभ ही ते रहत निरालम ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "But Thou, O Lord! live quite apart from everything",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਤੁਸੀਂ ਸਾਰਿਆਂ ਤੋਂ ਬੇਲਾਗ ਰਹਿੰਦੇ ਹੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 59,
+      "source_id": "9AAW",
+      "section_index": 2,
+      "unit": 14,
+      "ends_unit": 390,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਾਨਤ ਬੇਦ ਭੇਦ ਅਰ ਆਲਮ ॥੩੯੦॥",
+        "gurmukhi_plain": "ਜਾਨਤ ਬੇਦ ਭੇਦ ਅਰ ਆਲਮ ॥੩੯੦॥",
+        "transliteration": {
+          "english": "jaanat bed bhed ar aalam |390|",
+          "hindi": "जानत बेद भेद अर आलम ॥३९०॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "this fact is know to the Vedas and the learned.390.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਇਸ) ਭੇਦ ਨੂੰ ਸਾਰੇ ਵੇਦ ਅਤੇ (ਸੰਸਾਰ ਦੇ) ਵਿਦਵਾਨ ਜਾਣਦੇ ਹਨ ॥੩੯੦॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 60,
+      "source_id": "1MMU",
+      "section_index": 2,
+      "unit": 15,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਨਿਰੰਕਾਰ ਨ੍ਰਿਬਿਕਾਰ ਨਿਰਲੰਭ ॥",
+        "gurmukhi_plain": "ਨਿਰੰਕਾਰ ਨ੍ਰਿਬਿਕਾਰ ਨਿਰਲੰਭ ॥",
+        "transliteration": {
+          "english": "nirankaar nribikaar niralanbh |",
+          "hindi": "निरंकार न्रिबिकार निरलंभ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Lord is Formless, Sinless and shelterless:",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਹੇ ਪਰਮ ਸੱਤਾ! ਤੁਸੀਂ) ਨਿਰਾਕਾਰ, ਨਿਰਵਿਕਾਰ, ਨਿਰਾਧਾਰ ('ਨ੍ਰਿਲੰਭ')",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 61,
+      "source_id": "T1T4",
+      "section_index": 2,
+      "unit": 15,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਦਿ ਅਨੀਲ ਅਨਾਦਿ ਅਸੰਭ ॥",
+        "gurmukhi_plain": "ਆਦਿ ਅਨੀਲ ਅਨਾਦਿ ਅਸੰਭ ॥",
+        "transliteration": {
+          "english": "aad aneel anaad asanbh |",
+          "hindi": "आदि अनील अनादि असंभ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He is the Primal Power, without Blemish, without Beginning and Unborn",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਆਦਿ (ਸਰੂਪ) ਅਨੀਲ (ਉਜਲੇ) ਅਨਾਦਿ, ਅਸੰਭ (ਜਨਮ ਰਹਿਤ) ਹੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 62,
+      "source_id": "YN4A",
+      "section_index": 2,
+      "unit": 15,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤਾ ਕਾ ਮੂੜ੍ਹ ਉਚਾਰਤ ਭੇਦਾ ॥",
+        "gurmukhi_plain": "ਤਾ ਕਾ ਮੂੜ੍ਹ ਉਚਾਰਤ ਭੇਦਾ ॥",
+        "transliteration": {
+          "english": "taa kaa moorrh uchaarat bhedaa |",
+          "hindi": "ता का मूढ़ उचारत भेदा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The fool claims boastfully about the knowledge of His secrets,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੂਰਖ ਲੋਗ ਉਸ ਦੇ ਭੇਦ ਦਾ ਵਰਣਨ ਕਰਦੇ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 63,
+      "source_id": "AVLG",
+      "section_index": 2,
+      "unit": 15,
+      "ends_unit": 391,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਾ ਕੋ ਭੇਵ ਨ ਪਾਵਤ ਬੇਦਾ ॥੩੯੧॥",
+        "gurmukhi_plain": "ਜਾ ਕੋ ਭੇਵ ਨ ਪਾਵਤ ਬੇਦਾ ॥੩੯੧॥",
+        "transliteration": {
+          "english": "jaa ko bhev na paavat bedaa |391|",
+          "hindi": "जा को भेव न पावत बेदा ॥३९१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "which even the Vedas do not know.391.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਿਸ ਦਾ ਭੇਦ ਵੇਦ ਵੀ ਨਹੀਂ ਪਾ ਸਕੇ ਹਨ ॥੩੯੧॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 64,
+      "source_id": "6VZ6",
+      "section_index": 2,
+      "unit": 16,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤਾ ਕੋ ਕਰਿ ਪਾਹਨ ਅਨੁਮਾਨਤ ॥",
+        "gurmukhi_plain": "ਤਾ ਕੋ ਕਰਿ ਪਾਹਨ ਅਨੁਮਾਨਤ ॥",
+        "transliteration": {
+          "english": "taa ko kar paahan anumaanat |",
+          "hindi": "ता को करि पाहन अनुमानत ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The fool considers Him a stone,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਜੋ) ਉਸ ਦਾ ਅਨੁਮਾਨ ਪੱਥਰ ਵਿਚ ਕਰਦੇ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 65,
+      "source_id": "U5RH",
+      "section_index": 2,
+      "unit": 16,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਮਹਾ ਮੂੜ੍ਹ ਕਛੁ ਭੇਦ ਨ ਜਾਨਤ ॥",
+        "gurmukhi_plain": "ਮਹਾ ਮੂੜ੍ਹ ਕਛੁ ਭੇਦ ਨ ਜਾਨਤ ॥",
+        "transliteration": {
+          "english": "mahaa moorrh kachh bhed na jaanat |",
+          "hindi": "महा मूढ़ कछु भेद न जानत ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "but the great fool does not know any secret",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਉਹ) ਮਹਾ ਮੂਰਖ (ਉਸ ਦਾ) ਕੁਝ ਵੀ ਭੇਦ ਨਹੀਂ ਜਾਣਦੇ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 66,
+      "source_id": "LQH8",
+      "section_index": 2,
+      "unit": 16,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਮਹਾਦੇਵ ਕੋ ਕਹਤ ਸਦਾ ਸਿਵ ॥",
+        "gurmukhi_plain": "ਮਹਾਦੇਵ ਕੋ ਕਹਤ ਸਦਾ ਸਿਵ ॥",
+        "transliteration": {
+          "english": "mahaadev ko kehat sadaa siv |",
+          "hindi": "महादेव को कहत सदा सिव ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He calls Shiva “The Eternal Lord,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਹ ਮਹਾਦੇਵ ਨੂੰ ਸਦਾ ਸ਼ਿਵ (ਸਦਾ ਕਲਿਆਣਕਾਰੀ ਈਸ਼ਵਰ) ਕਹਿੰਦੇ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 67,
+      "source_id": "EANN",
+      "section_index": 2,
+      "unit": 16,
+      "ends_unit": 392,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਨਿਰੰਕਾਰ ਕਾ ਚੀਨਤ ਨਹਿ ਭਿਵ ॥੩੯੨॥",
+        "gurmukhi_plain": "ਨਿਰੰਕਾਰ ਕਾ ਚੀਨਤ ਨਹਿ ਭਿਵ ॥੩੯੨॥",
+        "transliteration": {
+          "english": "nirankaar kaa cheenat neh bhiv |392|",
+          "hindi": "निरंकार का चीनत नहि भिव ॥३९२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "“but he does not know the secret of the Formless Lord.392.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਪਰ ਨਿਰੰਕਾਰ ਦਾ ਭੇਦ ਨਹੀਂ ਸਮਝਦੇ ॥੩੯੨॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 68,
+      "source_id": "9MQD",
+      "section_index": 2,
+      "unit": 17,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਪੁ ਆਪਨੀ ਬੁਧਿ ਹੈ ਜੇਤੀ ॥",
+        "gurmukhi_plain": "ਆਪੁ ਆਪਨੀ ਬੁਧਿ ਹੈ ਜੇਤੀ ॥",
+        "transliteration": {
+          "english": "aap aapanee budh hai jetee |",
+          "hindi": "आपु आपनी बुधि है जेती ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "According to ones won intellect,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਹਰ ਇਕ ਦੀ) ਆਪੋ ਆਪਣੀ ਜਿਤਨੀ ਬੁੱਧੀ ਹੈ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 69,
+      "source_id": "D9E9",
+      "section_index": 2,
+      "unit": 17,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਬਰਨਤ ਭਿੰਨ ਭਿੰਨ ਤੁਹਿ ਤੇਤੀ ॥",
+        "gurmukhi_plain": "ਬਰਨਤ ਭਿੰਨ ਭਿੰਨ ਤੁਹਿ ਤੇਤੀ ॥",
+        "transliteration": {
+          "english": "baranat bhin bhin tuhi tetee |",
+          "hindi": "बरनत भिंन भिंन तुहि तेती ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "one describes Thee differently",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਉਹ) ਤੁਹਾਡਾ ਭਿੰਨ ਭਿੰਨ ਵਰਣਨ ਕਰਦੇ ਹਨ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 70,
+      "source_id": "NG2W",
+      "section_index": 2,
+      "unit": 17,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੁਮਰਾ ਲਖਾ ਨ ਜਾਇ ਪਸਾਰਾ ॥",
+        "gurmukhi_plain": "ਤੁਮਰਾ ਲਖਾ ਨ ਜਾਇ ਪਸਾਰਾ ॥",
+        "transliteration": {
+          "english": "tumaraa lakhaa na jaae pasaaraa |",
+          "hindi": "तुमरा लखा न जाइ पसारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The limits of Thy creation cannot be known",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਹੇ ਪ੍ਰਭੂ!) ਤੁਹਾਡੇ ਪਸਾਰੇ ਨੂੰ ਸਮਝਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 71,
+      "source_id": "6FWW",
+      "section_index": 2,
+      "unit": 17,
+      "ends_unit": 393,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਿਹ ਬਿਧਿ ਸਜਾ ਪ੍ਰਥਮ ਸੰਸਾਰਾ ॥੩੯੩॥",
+        "gurmukhi_plain": "ਕਿਹ ਬਿਧਿ ਸਜਾ ਪ੍ਰਥਮ ਸੰਸਾਰਾ ॥੩੯੩॥",
+        "transliteration": {
+          "english": "kih bidh sajaa pratham sansaaraa |393|",
+          "hindi": "किह बिधि सजा प्रथम संसारा ॥३९३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "and how the world was fashioned in the beginning?393.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਕਿ ਕਿਸ ਤਰ੍ਹਾਂ ਪਹਿਲਾਂ ਸੰਸਾਰ ਸਾਜਿਆ ਗਿਆ ॥੩੯੩॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 72,
+      "source_id": "HFDS",
+      "section_index": 2,
+      "unit": 18,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਏਕੈ ਰੂਪ ਅਨੂਪ ਸਰੂਪਾ ॥",
+        "gurmukhi_plain": "ਏਕੈ ਰੂਪ ਅਨੂਪ ਸਰੂਪਾ ॥",
+        "transliteration": {
+          "english": "ekai roop anoop saroopaa |",
+          "hindi": "एकै रूप अनूप सरूपा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He hath only one unparalleled Form",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੇਰਾ) ਇਕੋ ਰੂਪ ਅਨੇਕ ਸਰੂਪਾਂ ਵਾਲਾ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 73,
+      "source_id": "F3TU",
+      "section_index": 2,
+      "unit": 18,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਰੰਕ ਭਯੋ ਰਾਵ ਕਹੀ ਭੂਪਾ ॥",
+        "gurmukhi_plain": "ਰੰਕ ਭਯੋ ਰਾਵ ਕਹੀ ਭੂਪਾ ॥",
+        "transliteration": {
+          "english": "rank bhayo raav kahee bhoopaa |",
+          "hindi": "रंक भयो राव कही भूपा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He manifests Himself as a poor man or a king at different places",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ ਹੀ) ਕਿਤੇ ਰੰਕ ਹੋ, ਕਿਤੇ ਰਾਓ ਅਤੇ ਕਿਤੇ ਰਾਜੇ ਕਹੀਦੇ ਹੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 74,
+      "source_id": "Q6WX",
+      "section_index": 2,
+      "unit": 18,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਅੰਡਜ ਜੇਰਜ ਸੇਤਜ ਕੀਨੀ ॥",
+        "gurmukhi_plain": "ਅੰਡਜ ਜੇਰਜ ਸੇਤਜ ਕੀਨੀ ॥",
+        "transliteration": {
+          "english": "anddaj jeraj setaj keenee |",
+          "hindi": "अंडज जेरज सेतज कीनी ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He created creatures from eggs, wombs and perspiration",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ ਪਹਿਲਾਂ) ਅੰਡਜ, ਜੇਰਜ ਅਤੇ ਸੇਤਜ (ਖਾਣੀਆਂ ਦੀ ਰਚਨਾ) ਕੀਤੀ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 75,
+      "source_id": "1RMW",
+      "section_index": 2,
+      "unit": 18,
+      "ends_unit": 394,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਉਤਭੁਜ ਖਾਨਿ, ਬਹੁਰ ਰਚਿ ਦੀਨੀ ॥੩੯੪॥",
+        "gurmukhi_plain": "ਉਤਭੁਜ ਖਾਨਿ ਬਹੁਰ ਰਚਿ ਦੀਨੀ ॥੩੯੪॥",
+        "transliteration": {
+          "english": "autabhuj khaan bahur rach deenee |394|",
+          "hindi": "उतभुज खानि बहुर रचि दीनी ॥३९४॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Then He created the vegetable kingdom.394.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਫਿਰ ਉਤਭੁਜ ਖਾਣੀ ਦੀ ਰਚਨਾ ਕਰ ਦਿੱਤੀ ॥੩੯੪॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 76,
+      "source_id": "7NL5",
+      "section_index": 2,
+      "unit": 19,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਹੂੰ, ਫੂਲਿ ਰਾਜਾ ਹ੍ਵੈ ਬੈਠਾ ॥",
+        "gurmukhi_plain": "ਕਹੂੰ ਫੂਲਿ ਰਾਜਾ ਹ੍ਵੈ ਬੈਠਾ ॥",
+        "transliteration": {
+          "english": "kahoon fool raajaa hvai baitthaa |",
+          "hindi": "कहूं फूलि राजा ह्वै बैठा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Somewhere He sits joyfully as a king",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਕਿਤੇ (ਤੁਸੀਂ) ਪ੍ਰਸੰਨਤਾ ਪੂਰਵਕ ਰਾਜੇ ਬਣੇ ਬੈਠੇ ਹੋ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 77,
+      "source_id": "FZV8",
+      "section_index": 2,
+      "unit": 19,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਹੂੰ, ਸਿਮਟਿ ਭਿ︀ਯੋ ਸੰਕਰ ਇਕੈਠਾ ॥",
+        "gurmukhi_plain": "ਕਹੂੰ ਸਿਮਟਿ ਭਿ︀ਯੋ ਸੰਕਰ ਇਕੈਠਾ ॥",
+        "transliteration": {
+          "english": "kahoon simatt bhiyo sankar ikaitthaa |",
+          "hindi": "कहूं सिमटि भि︀यो संकर इकैठा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Somewhere He contracts Himself as Shiva, the Yogi",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਕਿਤੇ ਸਿਮਟ ਕੇ ਸ਼ੰਕਰ ਦੀ (ਮੂਰਤੀ ਵਿਚ) ਇਕੱਠੇ ਹੋ ਗਏ ਹੋ (ਅਰਥਾਂਤਰ- ਕਿਤੇ ਸੰਯੁਕਤ ਹੋ ਕੇ ਇਕੱਠੇ ਸਿਮਟੇ ਹੋਏ ਹੋ)।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 78,
+      "source_id": "BM8P",
+      "section_index": 2,
+      "unit": 19,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਗਰੀ ਸ੍ਰਿਸਟਿ ਦਿਖਾਇ ਅਚੰਭਵ ॥",
+        "gurmukhi_plain": "ਸਗਰੀ ਸ੍ਰਿਸਟਿ ਦਿਖਾਇ ਅਚੰਭਵ ॥",
+        "transliteration": {
+          "english": "sagaree srisatt dikhaae achanbhav |",
+          "hindi": "सगरी स्रिसटि दिखाइ अचंभव ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "All His creation unfolds wonderful things",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਸਾਰੀ ਸ੍ਰਿਸ਼ਟੀ ਦਾ ਅਚੰਭਾ ਵਿਖਾਇਆ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 79,
+      "source_id": "JF4B",
+      "section_index": 2,
+      "unit": 19,
+      "ends_unit": 395,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਦਿ ਜੁਗਾਦਿ ਸਰੂਪ ਸੁਯੰਭਵ ॥੩੯੫॥",
+        "gurmukhi_plain": "ਆਦਿ ਜੁਗਾਦਿ ਸਰੂਪ ਸੁਯੰਭਵ ॥੩੯੫॥",
+        "transliteration": {
+          "english": "aad jugaad saroop suyanbhav |395|",
+          "hindi": "आदि जुगादि सरूप सुयंभव ॥३९५॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He, the Primal Power, is from the beginning and Self-Existent.395.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਮੁਢ ਵਿਚ, ਜੁਗਾਂ ਦੇ ਆਰੰਭ ਵਿਚ ਆਪਣੇ ਆਪ ਹੋਂਦ ਵਿਚ ਆਣ ਵਾਲੇ ਸਰੂਪ ਹੋ ॥੩੯੫॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 80,
+      "source_id": "71QS",
+      "section_index": 2,
+      "unit": 20,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਅਬ, ਰੱਛਾ ਮੇਰੀ ਤੁਮ ਕਰੋ ॥",
+        "gurmukhi_plain": "ਅਬ ਰੱਛਾ ਮੇਰੀ ਤੁਮ ਕਰੋ ॥",
+        "transliteration": {
+          "english": "ab rachhaa meree tum karo |",
+          "hindi": "अब रच्छा मेरी तुम करो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Lord! keep me now under Thy protection",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਹੁਣ ਮੇਰੀ ਰਖਿਆ ਕਰੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 81,
+      "source_id": "805N",
+      "section_index": 2,
+      "unit": 20,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਿੱਖ ਉਬਾਰਿ ਅਸਿੱਖ ਸੰਘਰੋ ॥",
+        "gurmukhi_plain": "ਸਿੱਖ ਉਬਾਰਿ ਅਸਿੱਖ ਸੰਘਰੋ ॥",
+        "transliteration": {
+          "english": "sikh ubaar asakh sangharo |",
+          "hindi": "सिक्ख उबारि असिक्ख संघरो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Protect my disciples and destroy my enemies",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਸਿੱਖਾਂ ਨੂੰ ਬਚਾਓ ਅਤੇ ਅਸਿੱਖਾਂ ਨੂੰ ਨਸ਼ਟ ਕਰੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 82,
+      "source_id": "SY2L",
+      "section_index": 2,
+      "unit": 20,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੁਸ਼ਟ ਜਿਤੇ ਉਠਵਤ ਉਤਪਾਤਾ ॥",
+        "gurmukhi_plain": "ਦੁਸ਼ਟ ਜਿਤੇ ਉਠਵਤ ਉਤਪਾਤਾ ॥",
+        "transliteration": {
+          "english": "dushatt jite utthavat utapaataa |",
+          "hindi": "दुशट जिते उठवत उतपाता ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਿਤਨੇ ਦੁਸ਼ਟ ਉਤਪਾਤ (ਉਪਦ੍ਰ) ਮਚਾਉਂਦੇ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 83,
+      "source_id": "QUZX",
+      "section_index": 2,
+      "unit": 20,
+      "ends_unit": 396,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਕਲ ਮਲੇਛ, ਕਰੋ ਰਣ ਘਾਤਾ ॥੩੯੬॥",
+        "gurmukhi_plain": "ਸਕਲ ਮਲੇਛ ਕਰੋ ਰਣ ਘਾਤਾ ॥੩੯੬॥",
+        "transliteration": {
+          "english": "sakal malechh karo ran ghaataa |396|",
+          "hindi": "सकल मलेछ करो रण घाता ॥३९६॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "All the villains creations outrage and all the infidels be destroyed in the battlefield.396.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਉਨ੍ਹਾਂ) ਸਾਰਿਆਂ ਮਲੇਛਾਂ ਦਾ ਰਣ ਵਿਚ ਨਾਸ਼ ਕਰੋ ॥੩੯੬॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 84,
+      "source_id": "YHUZ",
+      "section_index": 2,
+      "unit": 21,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜੇ ਅਸਿਧੁਜ, ਤਵ ਸਰਨੀ ਪਰੇ ॥",
+        "gurmukhi_plain": "ਜੇ ਅਸਿਧੁਜ ਤਵ ਸਰਨੀ ਪਰੇ ॥",
+        "transliteration": {
+          "english": "je asidhuj tav saranee pare |",
+          "hindi": "जे असिधुज तव सरनी परे ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੇ ਅਸਿਧੁਜ! ਜੋ ਤੁਹਾਡੀ ਸ਼ਰਨ ਵਿਚ ਪੈਂਦੇ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 85,
+      "source_id": "MZKC",
+      "section_index": 2,
+      "unit": 21,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤਿਨ ਕੇ ਦੁਸਟ, ਦੁਖਿਤ ਹ੍ਵੈ ਮਰੇ ॥",
+        "gurmukhi_plain": "ਤਿਨ ਕੇ ਦੁਸਟ ਦੁਖਿਤ ਹ੍ਵੈ ਮਰੇ ॥",
+        "transliteration": {
+          "english": "tin ke dusatt dukhit hvai mare |",
+          "hindi": "तिन के दुसट दुखित ह्वै मरे ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Supreme Destroyer! those who sought Thy refuge, their enemies met painful death",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਨ੍ਹਾਂ ਦੇ ਦੁਸ਼ਟ (ਦੁਸ਼ਮਨ) ਦੁਖੀ ਹੋ ਕੇ ਮਰਦੇ ਹਨ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 86,
+      "source_id": "HQT7",
+      "section_index": 2,
+      "unit": 21,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪੁਰਖ ਜਵਨ, ਪਗ ਪਰੇ ਤਿਹਾਰੇ ॥",
+        "gurmukhi_plain": "ਪੁਰਖ ਜਵਨ ਪਗ ਪਰੇ ਤਿਹਾਰੇ ॥",
+        "transliteration": {
+          "english": "purakh javan pag pare tihaare |",
+          "hindi": "पुरख जवन पग परे तिहारे ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਜੋ) ਪੁਰਸ਼ ਤੁਹਾਡੀ ਸ਼ਰਨ ਵਿਚ ਪੈਂਦੇ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 87,
+      "source_id": "DG71",
+      "section_index": 2,
+      "unit": 21,
+      "ends_unit": 397,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤਿਨ ਕੇ, ਤੁਮ ਸੰਕਟ ਸਭ ਟਾਰੇ ॥੩੯੭॥",
+        "gurmukhi_plain": "ਤਿਨ ਕੇ ਤੁਮ ਸੰਕਟ ਸਭ ਟਾਰੇ ॥੩੯੭॥",
+        "transliteration": {
+          "english": "tin ke tum sankatt sabh ttaare |397|",
+          "hindi": "तिन के तुम संकट सभ टारे ॥३९७॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The persons who fell at Thy Feet, Thou didst remove all their troubles.397.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਨ੍ਹਾਂ ਦੇ ਸਾਰੇ ਸੰਕਟ ਤੁਸੀਂ ਦੂਰ ਕਰ ਦਿੰਦੇ ਹੋ ॥੩੯੭॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 88,
+      "source_id": "60B3",
+      "section_index": 2,
+      "unit": 22,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜੋ ਕਲਿ ਕੋ, ਇਕ ਬਾਰ ਧਿਐਹੈ ॥",
+        "gurmukhi_plain": "ਜੋ ਕਲਿ ਕੋ ਇਕ ਬਾਰ ਧਿਐਹੈ ॥",
+        "transliteration": {
+          "english": "jo kal ko ik baar dhiaihai |",
+          "hindi": "जो कलि को इक बार धिऐहै ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜੋ 'ਕਲਿ' ਨੂੰ ਇਕ ਵਾਰ ਧਿਆਉਂਦੇ ਹਨ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 89,
+      "source_id": "WYU8",
+      "section_index": 2,
+      "unit": 22,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤਾ ਕੇ, ਕਾਲ ਨਿਕਟਿ ਨਹਿ ਐਹੈ ॥",
+        "gurmukhi_plain": "ਤਾ ਕੇ ਕਾਲ ਨਿਕਟਿ ਨਹਿ ਐਹੈ ॥",
+        "transliteration": {
+          "english": "taa ke kaal nikatt neh aihai |",
+          "hindi": "ता के काल निकटि नहि ऐहै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Those who meditate even on the Supreme Destroyer, the death cannot approach them",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਫਿਰ) ਕਾਲ ਉਨ੍ਹਾਂ ਦੇ ਨੇੜੇ ਨਹੀਂ ਆਉਂਦਾ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 90,
+      "source_id": "A77Y",
+      "section_index": 2,
+      "unit": 22,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਰੱਛਾ ਹੋਇ ਤਾਹਿ, ਸਭ ਕਾਲਾ ॥",
+        "gurmukhi_plain": "ਰੱਛਾ ਹੋਇ ਤਾਹਿ ਸਭ ਕਾਲਾ ॥",
+        "transliteration": {
+          "english": "rachhaa hoe taeh sabh kaalaa |",
+          "hindi": "रच्छा होइ ताहि सभ काला ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "They remain protected at all times",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਨ੍ਹਾਂ ਦੀ ਸਾਰੇ ਕਾਲਾਂ ਵਿਚ ਰਖਿਆ ਹੁੰਦੀ ਹੈ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 91,
+      "source_id": "XM2F",
+      "section_index": 2,
+      "unit": 22,
+      "ends_unit": 398,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1387,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੁਸਟ ਅਰਿਸਟ ਟਰੇਂ ਤਤਕਾਲਾ ॥੩੯੮॥",
+        "gurmukhi_plain": "ਦੁਸਟ ਅਰਿਸਟ ਟਰੇਂ ਤਤਕਾਲਾ ॥੩੯੮॥",
+        "transliteration": {
+          "english": "dusatt arisatt ttaren tatakaalaa |398|",
+          "hindi": "दुसट अरिसट टरें ततकाला ॥३९८॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Their enemies and troubles come to and end instantly.398.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਅਤੇ ਉਨ੍ਹਾਂ ਦੇ) ਦੁਸ਼ਟ ਅਤੇ ਵਿਘਨ ਉਸੇ ਵੇਲੇ ਦੂਰ ਹੋ ਜਾਂਦੇ ਹਨ ॥੩੯੮॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 92,
+      "source_id": "BDK7",
+      "section_index": 2,
+      "unit": 23,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕ੍ਰਿਪਾ ਦ੍ਰਿਸਟਿ, ਤਨ ਜਾਹਿ ਨਿਹਰਿਹੋ ॥",
+        "gurmukhi_plain": "ਕ੍ਰਿਪਾ ਦ੍ਰਿਸਟਿ ਤਨ ਜਾਹਿ ਨਿਹਰਿਹੋ ॥",
+        "transliteration": {
+          "english": "kripaa drisatt tan jaeh nihariho |",
+          "hindi": "क्रिपा द्रिसटि तन जाहि निहरिहो ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਤੁਸੀਂ) ਜਿਸ ਨੂੰ ਕ੍ਰਿਪਾ ਦ੍ਰਿਸ਼ਟੀ ਨਾਲ ਵੇਖਦੇ ਹੋ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 93,
+      "source_id": "GUWQ",
+      "section_index": 2,
+      "unit": 23,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤਾ ਕੇ ਤਾਪ, ਤਨਕ ਮੋ ਹਰਿਹੋ ॥",
+        "gurmukhi_plain": "ਤਾ ਕੇ ਤਾਪ ਤਨਕ ਮੋ ਹਰਿਹੋ ॥",
+        "transliteration": {
+          "english": "taa ke taap tanak mo hariho |",
+          "hindi": "ता के ताप तनक मो हरिहो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Upon whomsoever Thou dost cast Thy favourable glance, they are absolved of sins instantly",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਨ੍ਹਾਂ ਦੇ (ਸਾਰੇ) ਦੁਖ ਛਿਣ ਵਿਚ ਹਰੇ ਜਾਂਦੇ ਹਨ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 94,
+      "source_id": "0910",
+      "section_index": 2,
+      "unit": 23,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਰਿੱਧਿ ਸਿੱਧਿ, ਘਰ ਮੋ ਸਭ ਹੋਈ ॥",
+        "gurmukhi_plain": "ਰਿੱਧਿ ਸਿੱਧਿ ਘਰ ਮੋ ਸਭ ਹੋਈ ॥",
+        "transliteration": {
+          "english": "ridh sidh ghar mo sabh hoee |",
+          "hindi": "रिद्धि सिद्धि घर मो सभ होई ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "They have all the worldly and spiritual pleasures in their homes",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਉਨ੍ਹਾਂ ਦੇ) ਘਰ ਵਿਚ ਸਭ ਰਿਧੀਆਂ ਅਤੇ ਸਿਧੀਆਂ ਹੋ ਜਾਂਦੀਆਂ ਹਨ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 95,
+      "source_id": "QY45",
+      "section_index": 2,
+      "unit": 23,
+      "ends_unit": 399,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੁਸ਼ਟ ਛਾਹ, ਛ੍ਵੈ ਸਕੈ ਨ ਕੋਈ ॥੩੯੯॥",
+        "gurmukhi_plain": "ਦੁਸ਼ਟ ਛਾਹ ਛ੍ਵੈ ਸਕੈ ਨ ਕੋਈ ॥੩੯੯॥",
+        "transliteration": {
+          "english": "dushatt chhaah chhvai sakai na koee |399|",
+          "hindi": "दुशट छाह छ्वै सकै न कोई ॥३९९॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "None of th enemies can even touch their shadow.399.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਕੋਈ ਦੁਸ਼ਟ (ਦੁਸ਼ਮਨ) (ਉਨ੍ਹਾਂ ਦੀ) ਪਰਛਾਈ ਨੂੰ ਵੀ ਛੋਹ ਨਹੀਂ ਸਕਦਾ ॥੩੯੯॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 96,
+      "source_id": "BR5R",
+      "section_index": 2,
+      "unit": 24,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਏਕ ਬਾਰ, ਜਿਨ ਤੁਮੈ ਸੰਭਾਰਾ ॥",
+        "gurmukhi_plain": "ਏਕ ਬਾਰ ਜਿਨ ਤੁਮੈ ਸੰਭਾਰਾ ॥",
+        "transliteration": {
+          "english": "ek baar jin tumai sanbhaaraa |",
+          "hindi": "एक बार जिन तुमै संभारा ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਹੇ ਪਰਮ ਸੱਤਾ!) ਜਿਸ ਨੇ ਇਕ ਵਾਰ ਤੁਹਾਨੂੰ ਯਾਦ ਕਰ ਲਿਆ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 97,
+      "source_id": "6SU7",
+      "section_index": 2,
+      "unit": 24,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਾਲ ਫਾਸ ਤੇ, ਤਾਹਿ ਉਬਾਰਾ ॥",
+        "gurmukhi_plain": "ਕਾਲ ਫਾਸ ਤੇ ਤਾਹਿ ਉਬਾਰਾ ॥",
+        "transliteration": {
+          "english": "kaal faas te taeh ubaaraa |",
+          "hindi": "काल फास ते ताहि उबारा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He, who remembered Thee even once, Thou didst protect him from the noose of death",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਸ ਨੂੰ (ਤੁਸੀਂ) ਕਾਲ ਦੀ ਫਾਹੀ ਤੋਂ ਬਚਾ ਲਿਆ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 98,
+      "source_id": "U5NC",
+      "section_index": 2,
+      "unit": 24,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਿਨ ਨਰ, ਨਾਮ ਤਿਹਾਰੋ ਕਹਾ ॥",
+        "gurmukhi_plain": "ਜਿਨ ਨਰ ਨਾਮ ਤਿਹਾਰੋ ਕਹਾ ॥",
+        "transliteration": {
+          "english": "jin nar naam tihaaro kahaa |",
+          "hindi": "जिन नर नाम तिहारो कहा ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਿਸ ਵਿਅਕਤੀ ਨੇ ਤੁਹਾਡਾ ਨਾਮ ਉਚਾਰ ਦਿੱਤਾ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 99,
+      "source_id": "XWRL",
+      "section_index": 2,
+      "unit": 24,
+      "ends_unit": 400,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦਾਰਿਦ ਦੁਸਟ ਦੋਖ ਤੇ ਰਹਾ ॥੪੦੦॥",
+        "gurmukhi_plain": "ਦਾਰਿਦ ਦੁਸਟ ਦੋਖ ਤੇ ਰਹਾ ॥੪੦੦॥",
+        "transliteration": {
+          "english": "daarid dusatt dokh te rahaa |400|",
+          "hindi": "दारिद दुसट दोख ते रहा ॥४००॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Those persons, who repeated Thy Name, they were saved from poverty and attacks of enemies.400.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਉਹ) ਦਰਿਦ੍ਰ (ਗ਼ਰੀਬੀ) ਦੁਸ਼ਟ (ਦੁਸ਼ਮਨ) ਅਤੇ ਦੁਖਾਂ ਤੋਂ ਬਚ ਗਿਆ ॥੪੦੦॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 100,
+      "source_id": "M5M5",
+      "section_index": 2,
+      "unit": 25,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਖੜਗ ਕੇਤ, ਮੈ ਸਰਣਿ ਤਿਹਾਰੀ ॥",
+        "gurmukhi_plain": "ਖੜਗ ਕੇਤ ਮੈ ਸਰਣਿ ਤਿਹਾਰੀ ॥",
+        "transliteration": {
+          "english": "kharrag ket mai saran tihaaree |",
+          "hindi": "खड़ग केत मै सरणि तिहारी ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੇ ਖੜਗਕੇਤੁ! ਮੈਂ ਤੁਹਾਡੀ ਸ਼ਰਨ ਵਿਚ ਹਾਂ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 101,
+      "source_id": "QP2A",
+      "section_index": 2,
+      "unit": 25,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਪ, ਹਾਥ ਦੈ ਲੇਹੁ ਉਬਾਰੀ ॥",
+        "gurmukhi_plain": "ਆਪ ਹਾਥ ਦੈ ਲੇਹੁ ਉਬਾਰੀ ॥",
+        "transliteration": {
+          "english": "aap haath dai lehu ubaaree |",
+          "hindi": "आप हाथ दै लेहु उबारी ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Bestow thy help own me at all places protect me from the design of my enemies. 401.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਆਪਣਾ ਹੱਥ ਦੇ ਕੇ (ਮੈਨੂੰ) ਬਚਾ ਲਵੋ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 102,
+      "source_id": "LYXN",
+      "section_index": 2,
+      "unit": 25,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਰਬ ਠੌਰ, ਮੋ ਹੋਹੁ ਸਹਾਈ ॥",
+        "gurmukhi_plain": "ਸਰਬ ਠੌਰ ਮੋ ਹੋਹੁ ਸਹਾਈ ॥",
+        "transliteration": {
+          "english": "sarab tthauar mo hohu sahaaee |",
+          "hindi": "सरब ठौर मो होहु सहाई ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਭ ਥਾਂਵਾਂ ਤੇ ਮੇਰੇ ਸਹਾਇਕ ਹੋ ਜਾਓ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 103,
+      "source_id": "DM0Z",
+      "section_index": 2,
+      "unit": 25,
+      "ends_unit": 401,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੁਸਟ ਦੋਖ ਤੇ, ਲੇਹੁ ਬਚਾਈ ॥੪੦੧॥",
+        "gurmukhi_plain": "ਦੁਸਟ ਦੋਖ ਤੇ ਲੇਹੁ ਬਚਾਈ ॥੪੦੧॥",
+        "transliteration": {
+          "english": "dusatt dokh te lehu bachaaee |401|",
+          "hindi": "दुसट दोख ते लेहु बचाई ॥४०१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Bestow Thy help on me at all places and protect me from the designs of my enemies.401.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਦੁਸ਼ਟ (ਦੁਸ਼ਮਨ) ਅਤੇ ਦੁਖ ਤੋਂ ਬਚਾ ਲਵੋ ॥੪੦੧॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 104,
+      "source_id": "14Q0",
+      "section_index": 2,
+      "unit": 26,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕ੍ਰਿਪਾ ਕਰੀ, ਹਮ ਪਰ ਜਗਮਾਤਾ ॥",
+        "gurmukhi_plain": "ਕ੍ਰਿਪਾ ਕਰੀ ਹਮ ਪਰ ਜਗਮਾਤਾ ॥",
+        "transliteration": {
+          "english": "kripaa karee ham par jagamaataa |",
+          "hindi": "क्रिपा करी हम पर जगमाता ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਮੇਰੇ ਉਤੇ ਜਗਮਾਤਾ ਨੇ ਕ੍ਰਿਪਾ ਕੀਤੀ ਹੈ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 105,
+      "source_id": "QQGX",
+      "section_index": 2,
+      "unit": 26,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਗ੍ਰੰਥ ਕਰਾ ਪੂਰਨ ਸੁਭਰਾਤਾ ॥",
+        "gurmukhi_plain": "ਗ੍ਰੰਥ ਕਰਾ ਪੂਰਨ ਸੁਭਰਾਤਾ ॥",
+        "transliteration": {
+          "english": "granth karaa pooran subharaataa |",
+          "hindi": "ग्रंथ करा पूरन सुभराता ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Mother of the world has been kind towards me and I have completed the book this auspicious night",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਅਤੇ ਮੈਂ) ਸ਼ੁਭ ਗੁਣਾਂ ਨਾਲ ਭਰਪੂਰ ('ਸੁਭਰਾਤਾ') ਗ੍ਰੰਥ ਪੂਰਾ ਕੀਤਾ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 106,
+      "source_id": "3MDM",
+      "section_index": 2,
+      "unit": 26,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਕਿਲਬਿਖ ਸਕਲ ਦੇਖ ਕੋ ਹਰਤਾ ॥",
+        "gurmukhi_plain": "ਕਿਲਬਿਖ ਸਕਲ ਦੇਖ ਕੋ ਹਰਤਾ ॥",
+        "transliteration": {
+          "english": "kilabikh sakal dekh ko harataa |",
+          "hindi": "किलबिख सकल देख को हरता ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਉਹੀ) ਮੇਰੇ ਸ਼ਰੀਰ ਦੇ ਸਾਰੇ ਪਾਪਾਂ ਨੂੰ ਨਸ਼ਟ ਕਰਨ ਵਾਲੀ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 107,
+      "source_id": "FSU3",
+      "section_index": 2,
+      "unit": 26,
+      "ends_unit": 402,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੁਸਟ ਦੋਖਿਯਨ ਕੋ ਛੈ ਕਰਤਾ ॥੪੦੨॥",
+        "gurmukhi_plain": "ਦੁਸਟ ਦੋਖਿਯਨ ਕੋ ਛੈ ਕਰਤਾ ॥੪੦੨॥",
+        "transliteration": {
+          "english": "dusatt dokhiyan ko chhai karataa |402|",
+          "hindi": "दुसट दोखियन को छै करता ॥४०२॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Lord is the destroyer of all the sins of the body and all the malicious and wicked persons.402.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ ਦੁਸ਼ਟਾਂ (ਵੈਰੀਆਂ) ਅਤੇ ਦੋਖੀਆਂ ਨੂੰ ਨਸ਼ਟ ਕਰਨ ਵਾਲੀ ਹੈ ॥੪੦੨॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 108,
+      "source_id": "20KS",
+      "section_index": 2,
+      "unit": 27,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸ੍ਰੀ ਅਸਿਧੁਜ ਜਬ ਭਏ ਦਯਾਲਾ ॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਅਸਿਧੁਜ ਜਬ ਭਏ ਦਯਾਲਾ ॥",
+        "transliteration": {
+          "english": "sree asidhuj jab bhe dayaalaa |",
+          "hindi": "स्री असिधुज जब भए दयाला ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਦ ਸ੍ਰੀ ਅਸਿਧੁਜ (ਮਹਾ ਕਾਲ) ਦਿਆਲ ਹੋਏ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 109,
+      "source_id": "FJPX",
+      "section_index": 2,
+      "unit": 27,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪੂਰਨ ਕਰਾ ਗ੍ਰੰਥ ਤਤਕਾਲਾ ॥",
+        "gurmukhi_plain": "ਪੂਰਨ ਕਰਾ ਗ੍ਰੰਥ ਤਤਕਾਲਾ ॥",
+        "transliteration": {
+          "english": "pooran karaa granth tatakaalaa |",
+          "hindi": "पूरन करा ग्रंथ ततकाला ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "When Mahakal became kind, He immediately caused me to complete this book",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਤਾਂ ਉਸੇ ਵੇਲੇ (ਮੈਂ ਇਹ) ਗ੍ਰੰਥ ਮੁਕੰਮਲ ਕਰ ਲਿਆ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 110,
+      "source_id": "E1GN",
+      "section_index": 2,
+      "unit": 27,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਮਨ ਬਾਛਤ ਫਲ ਪਾਵੈ ਸੋਈ ॥",
+        "gurmukhi_plain": "ਮਨ ਬਾਛਤ ਫਲ ਪਾਵੈ ਸੋਈ ॥",
+        "transliteration": {
+          "english": "man baachhat fal paavai soee |",
+          "hindi": "मन बाछत फल पावै सोई ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਜੋ ਇਸ ਦਾ ਪਠਨ ਪਾਠਨ ਕਰੇਗਾ) ਉਹ ਮਨ-ਇੱਛਤ ਫਲ ਪ੍ਰਾਪਤ ਕਰੇਗਾ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 111,
+      "source_id": "ACH9",
+      "section_index": 2,
+      "unit": 27,
+      "ends_unit": 403,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੂਖ ਨ ਤਿਸੈ ਬਿਆਪਤ ਕੋਈ ॥੪੦੩॥",
+        "gurmukhi_plain": "ਦੂਖ ਨ ਤਿਸੈ ਬਿਆਪਤ ਕੋਈ ॥੪੦੩॥",
+        "transliteration": {
+          "english": "dookh na tisai biaapat koee |403|",
+          "hindi": "दूख न तिसै बिआपत कोई ॥४०३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "He will obtain the fruit desired by the mind (who will read or listen to this book) and no suffering will occur to him.403.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਸ ਨੂੰ ਕੋਈ ਵੀ ਦੁਖ ਵਿਆਪਤ ਨਹੀਂ ਹੋਵੇਗਾ ॥੪੦੩॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 112,
+      "source_id": "BE8H",
+      "section_index": 2,
+      "unit": 28,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਅੜਿਲ ॥",
+        "gurmukhi_plain": "ਅੜਿਲ ॥",
+        "transliteration": {
+          "english": "arril |",
+          "hindi": "अड़िल ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "ARRIL",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅੜਿਲ:",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 113,
+      "source_id": "VFFW",
+      "section_index": 2,
+      "unit": 28,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੁਨੈ ਗੁੰਗ ਜੋ ਯਾਹਿ; ਸੁ ਰਸਨਾ ਪਾਵਈ ॥",
+        "gurmukhi_plain": "ਸੁਨੈ ਗੁੰਗ ਜੋ ਯਾਹਿ ਸੁ ਰਸਨਾ ਪਾਵਈ ॥",
+        "transliteration": {
+          "english": "sunai gung jo yaeh su rasanaa paavee |",
+          "hindi": "सुनै गुंग जो याहि सु रसना पावई ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The dumb, who will listen to it, will be blessed with the tongue to speak",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਇਸ ਗ੍ਰੰਥ ਨੂੰ ਜੇ ਗੁੰਗਾ ਸੁਣੇਗਾ, (ਤਾਂ) ਉਹ ਜੀਭ ਪ੍ਰਾਪਤ ਕਰ ਲਵੇਗਾ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 114,
+      "source_id": "HUK1",
+      "section_index": 2,
+      "unit": 28,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੁਨੈ ਮੂੜ ਚਿਤ ਲਾਇ; ਚਤੁਰਤਾ ਆਵਈ ॥",
+        "gurmukhi_plain": "ਸੁਨੈ ਮੂੜ ਚਿਤ ਲਾਇ ਚਤੁਰਤਾ ਆਵਈ ॥",
+        "transliteration": {
+          "english": "sunai moorr chit laae chaturataa aavee |",
+          "hindi": "सुनै मूड़ चित लाइ चतुरता आवई ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The fool, who will listen to it attentively, will get wisdom",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜੇ ਮੂਰਖ ਚਿਤ ਲਗਾ ਕੇ ਸੁਣੇਗਾ, (ਤਾਂ ਉਸ ਦੇ ਅੰਦਰ) ਸਿਆਣਪ ਆ ਜਾਏਗੀ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 115,
+      "source_id": "4KYU",
+      "section_index": 2,
+      "unit": 28,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੂਖ ਦਰਦ ਭੌ ਨਿਕਟ; ਨ ਤਿਨ ਨਰ ਕੇ ਰਹੈ ॥",
+        "gurmukhi_plain": "ਦੂਖ ਦਰਦ ਭੌ ਨਿਕਟ ਨ ਤਿਨ ਨਰ ਕੇ ਰਹੈ ॥",
+        "transliteration": {
+          "english": "dookh darad bhau nikatt na tin nar ke rahai |",
+          "hindi": "दूख दरद भौ निकट न तिन नर के रहै ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "That person will be absolved of suffering, pain or fear,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਉਸ ਵਿਅਕਤੀ ਦੇ ਨੇੜੇ ਦੁਖ, ਦਰਦ ਅਤੇ ਭੈ ਨਹੀਂ ਰਹੇਗਾ,",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 116,
+      "source_id": "VCC6",
+      "section_index": 2,
+      "unit": 28,
+      "ends_unit": 404,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਹੋ ਜੋ ਯਾ ਕੀ ਏਕ ਬਾਰ; ਚੌਪਈ ਕੋ ਕਹੈ ॥੪੦੪॥",
+        "gurmukhi_plain": "ਹੋ ਜੋ ਯਾ ਕੀ ਏਕ ਬਾਰ ਚੌਪਈ ਕੋ ਕਹੈ ॥੪੦੪॥",
+        "transliteration": {
+          "english": "ho jo yaa kee ek baar chauapee ko kahai |404|",
+          "hindi": "हो जो या की एक बार चौपई को कहै ॥४०४॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Who will even once recite this Chaupai-prayer.404.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜੋ ਇਕ ਵਾਰ ਇਸ ਚੌਪਈ ਦਾ ਪਾਠ ਕਰੇਗਾ ॥੪੦੪॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 117,
+      "source_id": "AN8V",
+      "section_index": 2,
+      "unit": 29,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਚੌਪਈ ॥",
+        "gurmukhi_plain": "ਚੌਪਈ ॥",
+        "transliteration": {
+          "english": "chauapee |",
+          "hindi": "चौपई ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "CHAUPAI",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਚੌਪਈ:",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 118,
+      "source_id": "J7FZ",
+      "section_index": 2,
+      "unit": 29,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੰਬਤ ਸਤ੍ਰਹ ਸਹਸ ਭਣਿਜੈ ॥",
+        "gurmukhi_plain": "ਸੰਬਤ ਸਤ੍ਰਹ ਸਹਸ ਭਣਿਜੈ ॥",
+        "transliteration": {
+          "english": "sanbat satrah sehas bhanijai |",
+          "hindi": "संबत सत्रह सहस भणिजै ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਪਹਿਲਾਂ) ਸਤਾਰਾਂ ਸੌ ਸੰਮਤ ਕਹੋ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 119,
+      "source_id": "ANCH",
+      "section_index": 2,
+      "unit": 29,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਅਰਧ ਸਹਸ, ਫੁਨਿ ਤੀਨਿ ਕਹਿਜੈ ॥",
+        "gurmukhi_plain": "ਅਰਧ ਸਹਸ ਫੁਨਿ ਤੀਨਿ ਕਹਿਜੈ ॥",
+        "transliteration": {
+          "english": "aradh sehas fun teen kahijai |",
+          "hindi": "अरध सहस फुनि तीनि कहिजै ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਅਤੇ (ਫਿਰ ਉਸ ਨਾਲ) ਅੱਧਾ ਸੌ (੫੦) ਅਤੇ ਤਿੰਨ ਕਹੋ (ਅਰਥਾਤ ੧੭੫੩ ਬਿ.)।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 120,
+      "source_id": "NX3S",
+      "section_index": 2,
+      "unit": 29,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਭਾਦ੍ਰਵ ਸੁਦੀ ਅਸਟਮੀ, ਰਵਿ ਵਾਰਾ ॥",
+        "gurmukhi_plain": "ਭਾਦ੍ਰਵ ਸੁਦੀ ਅਸਟਮੀ ਰਵਿ ਵਾਰਾ ॥",
+        "transliteration": {
+          "english": "bhaadrav sudee asattamee rav vaaraa |",
+          "hindi": "भाद्रव सुदी असटमी रवि वारा ॥"
+        }
+      },
+      "meaning": {
+        "english": null,
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਭਾਦੋਂ ਮਹੀਨੇ ਦੀ ਸੁਦੀ ਅੱਠਵੀਂ ਐਤਵਾਰ ਨੂੰ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 121,
+      "source_id": "GAFF",
+      "section_index": 2,
+      "unit": 29,
+      "ends_unit": 405,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 1388,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੀਰ ਸਤੁਦ੍ਰਵ, ਗ੍ਰੰਥ ਸੁਧਾਰਾ ॥੪੦੫॥",
+        "gurmukhi_plain": "ਤੀਰ ਸਤੁਦ੍ਰਵ ਗ੍ਰੰਥ ਸੁਧਾਰਾ ॥੪੦੫॥",
+        "transliteration": {
+          "english": "teer satudrav granth sudhaaraa |405|",
+          "hindi": "तीर सतुद्रव ग्रंथ सुधारा ॥४०५॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "It was Bikrami Samvat 1753",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਤਲੁਜ ਨਦੀ ਦੇ ਕੰਢੇ (ਬੈਠ ਕੇ ਇਹ) ਗ੍ਰੰਥ ਸੰਪੂਰਨ ਕੀਤਾ ॥੪੦੫॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 122,
+      "source_id": "7Q9Z",
+      "section_index": 3,
+      "unit": 30,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸ੍ਵੈਯਾ ॥",
+        "gurmukhi_plain": "ਸ੍ਵੈਯਾ ॥",
+        "transliteration": {
+          "english": "svaiyaa |",
+          "hindi": "स्वैया ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "SWAYYA",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸ੍ਵੈਯਾ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 123,
+      "source_id": "YTA6",
+      "section_index": 3,
+      "unit": 30,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪਾਂਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ ਆਂਖ ਤਰੇ ਨਹੀਂ ਆਨ︀ਯੋ ॥",
+        "gurmukhi_plain": "ਪਾਂਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ ਆਂਖ ਤਰੇ ਨਹੀਂ ਆਨ︀ਯੋ ॥",
+        "transliteration": {
+          "english": "paane gahe jab te tumare tab te koaoo aankh tare naheen aanayo |",
+          "hindi": "पांइ गहे जब ते तुमरे तब ते कोऊ आंख तरे नहीं आन︀यो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O God! the day when I caught hold of your feet, I do not bring anyone else under my sight",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਜਦ ਤੋਂ ਤੁਹਾਡੇ ਚਰਨ ਫੜੇ ਹਨ ਤਦ ਤੋਂ ਮੈਂ (ਹੋਰ) ਕਿਸੇ ਨੂੰ ਅੱਖਾਂ ਹੇਠਾਂ ਨਹੀਂ ਲਿਆਉਂਦਾ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 124,
+      "source_id": "V2AU",
+      "section_index": 3,
+      "unit": 30,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ; ਅਨੇਕ ਕਹੈਂ, ਮਤ ਏਕ ਨ ਮਾਨ︀ਯੋ ॥",
+        "gurmukhi_plain": "ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ ਮਤ ਏਕ ਨ ਮਾਨ︀ਯੋ ॥",
+        "transliteration": {
+          "english": "raam raheem puraan kuraan anek kahain mat ek na maanayo |",
+          "hindi": "राम रहीम पुरान कुरान अनेक कहैं मत एक न मान︀यो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "None other is liked by me now   the Puranas and the Quran try to know Thee by the names of Ram and Rahim and talk about you through several stories,",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਰਾਮ, ਰਹੀਮ, ਪੁਰਾਨ ਅਤੇ ਕੁਰਾਨ ਨੇ ਅਨੇਕਾਂ ਮੱਤ ਕਹੇ ਗਏ ਹਨ। (ਪਰ ਮੈਂ ਕਿਸੇ) ਇਕ ਨੂੰ ਵੀ ਨਹੀਂ ਮੰਨਦਾ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 125,
+      "source_id": "4DNZ",
+      "section_index": 3,
+      "unit": 30,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਿੰਮ੍ਰਿਤ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ; ਬਹੁ ਭੇਦ ਕਹੈਂ, ਹਮ ਏਕ ਨ ਜਾਨ︀ਯੋ ॥",
+        "gurmukhi_plain": "ਸਿੰਮ੍ਰਿਤ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭੇਦ ਕਹੈਂ ਹਮ ਏਕ ਨ ਜਾਨ︀ਯੋ ॥",
+        "transliteration": {
+          "english": "sinmrit saasatr bed sabhai bahu bhed kahain ham ek na jaanayo |",
+          "hindi": "सिंम्रित सासत्र बेद सभै बहु भेद कहैं हम एक न जान︀यो ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Simritis, Shastras and Vedas describe several mysteries of yours, but I do not agree with any of them.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਮ੍ਰਿਤੀਆਂ, ਸ਼ਾਸਤ੍ਰ ਅਤੇ ਵੇਦ ਬਹੁਤ ਸਾਰੇ ਭੇਦ ਦੱਸਦੇ ਹਨ, ਪਰ ਮੈਂ ਇਕ ਵੀ ਨਹੀਂ ਜਾਣਿਆ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 126,
+      "source_id": "F5YC",
+      "section_index": 3,
+      "unit": 30,
+      "ends_unit": 863,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸ੍ਰੀ ਅਸਿਪਾਨ, ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ; ਮੈ ਨ ਕਹ︀ਯੋ, ਸਭ ਤੋਹਿ ਬਖਾਨ︀ਯੋ ॥੮੬੩॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮੈ ਨ ਕਹ︀ਯੋ ਸਭ ਤੋਹਿ ਬਖਾਨ︀ਯੋ ॥੮੬੩॥",
+        "transliteration": {
+          "english": "sree asipaan kripaa tumaree kar mai na kehayo sabh tohi bakhaanayo |863|",
+          "hindi": "स्री असिपान क्रिपा तुमरी करि मै न कह︀यो सभ तोहि बखान︀यो ॥८६३॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O sword-wielder God! This all has been described by Thy Grace, what power can I have to write all this?.863.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੇ ਕਾਲ ਪੁਰਖ! ਤੇਰੀ ਕ੍ਰਿਪਾ ਕਰਕੇ (ਗ੍ਰੰਥ ਸਿਰਜਿਆ ਜਾ ਸਕਿਆ ਹੈ)। (ਇਹ) ਮੈਂ ਨਹੀਂ ਕਿਹਾ, ਸਾਰਾ ਤੁਸੀਂ ਹੀ ਕਥਨ ਕੀਤਾ ਹੈ ॥੮੬੩॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 127,
+      "source_id": "UF01",
+      "section_index": 4,
+      "unit": 31,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦੋਹਰਾ ॥",
+        "gurmukhi_plain": "ਦੋਹਰਾ ॥",
+        "transliteration": {
+          "english": "doharaa |",
+          "hindi": "दोहरा ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "DOHRA",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਦੋਹਰਾ",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 128,
+      "source_id": "5DKC",
+      "section_index": 4,
+      "unit": 31,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ; ਗਹਿਓ ਤੁਹਾਰੋ ਦੁਆਰ ॥",
+        "gurmukhi_plain": "ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਿਓ ਤੁਹਾਰੋ ਦੁਆਰ ॥",
+        "transliteration": {
+          "english": "sagal duaar kau chhaadd kai gahio tuhaaro duaar |",
+          "hindi": "सगल दुआर कउ छाडि कै गहिओ तुहारो दुआर ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Lord! I have forsaken all other doors and have caught hold of only Thy door. O Lord! Thou has caught hold of my arm",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸਾਰੇ ਦਰਾਂ ਨੂੰ ਛੱਡ ਕੇ, ਤੁਹਾਡਾ ਦਰ ਫੜਿਆ ਹੈ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 129,
+      "source_id": "2SUA",
+      "section_index": 4,
+      "unit": 31,
+      "ends_unit": 864,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 290,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਬਾਂਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸ; ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰ ॥੮੬੪॥",
+        "gurmukhi_plain": "ਬਾਂਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰ ॥੮੬੪॥",
+        "transliteration": {
+          "english": "baanhi gahe kee laaj as gobind daas tuhaar |864|",
+          "hindi": "बांहि गहे की लाज अस गोबिंद दास तुहार ॥८६४॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "I, Govind, am Thy serf, kindly take (care of me and) protect my honour.864.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਤੁਹਾਨੂੰ ਬਾਂਹ ਫੜੇ ਦੀ ਲਾਜ ਹੈ, ਗੋਬਿੰਦ ਤੁਹਾਡਾ ਦਾਸ ਹਾਂ ॥੮੬੪॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    }
+  ]
+}

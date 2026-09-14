@@ -1,0 +1,970 @@
+{
+  "schema_version": "2.0",
+  "bani": {
+    "id": "ARDS",
+    "name": {
+      "gurmukhi": "ਅਰਦਾਸ",
+      "english": "Ardaas",
+      "transliteration_english": "aradaas",
+      "transliteration_hindi": "अरदास"
+    },
+    "total_lines": 27,
+    "total_sections": 2,
+    "total_units": 1,
+    "source_pages": {
+      "from": 119,
+      "to": 119
+    }
+  },
+  "coverage": {
+    "total_lines": 27,
+    "gurmukhi": 27,
+    "transliteration_english": 27,
+    "transliteration_hindi": 27,
+    "meaning_english": 27,
+    "meaning_punjabi": 9,
+    "meaning_hindi": 0,
+    "sources_used": {
+      "english": [
+        "DSKO",
+        "SRME"
+      ],
+      "english_alt": [],
+      "punjabi": [
+        "RSJD"
+      ],
+      "punjabi_alt": [],
+      "hindi": []
+    }
+  },
+  "provenance": {
+    "dataset": "Shabad OS Database",
+    "repository": "https://github.com/shabados/database",
+    "commit": "918c1d42d02e385e7ed48ef44994c75a2cb50293",
+    "license": "See repository LICENSE.md",
+    "transliteration": {
+      "library": "gurmukhi-utils",
+      "version": "3.2.2",
+      "functions": [
+        "toEnglish",
+        "toHindi",
+        "stripVishraams"
+      ],
+      "note": "Programmatic script conversion, not human-reviewed."
+    },
+    "hindi_meaning": {
+      "source": null,
+      "note": "No Hindi-language meaning exists for this bani in the dataset. The Faridkot teeka covers Sri Guru Granth Sahib only; this bani is not from that scripture."
+    },
+    "unit_numbering": "unit/ends_unit are derived mechanically from Gurmukhi numerals in closing dandas (e.g. ॥੪॥). They are not editorial labels.",
+    "assets": {
+      "DSKO": {
+        "code": "DSKO",
+        "name": "Sri Dasam Granth Sahib Translation",
+        "title": "Sri Dasam Granth Sahib Translation",
+        "authors": [
+          "Dr. Surinder S Kohli"
+        ],
+        "publisher": "Sikh National Heritage Trust",
+        "date": "2003-01-01",
+        "url": null
+      },
+      "RSJD": {
+        "code": "RSJD",
+        "name": "Sri Dasam Granth",
+        "title": "Sri Dasam Granth",
+        "authors": [
+          "Ratan S Jaggi"
+        ],
+        "publisher": "Gobind Sadan",
+        "date": "2007-09-15",
+        "url": "www.gobindsadan.org/download/148/siri-dasam-granth/1363/dasam-granth-complete.pdf"
+      },
+      "SRME": {
+        "code": "SRME",
+        "name": "Sikh Rehat Maryada (English)",
+        "title": "Sikh Rehat Maryada",
+        "authors": [
+          "SGPC Committee"
+        ],
+        "publisher": "SGPC",
+        "date": "2013-05-30",
+        "url": "https://old.sgpc.net/CDN/Sikh_Rehat_Maryada_English.pdf"
+      },
+      "DGDG": {
+        "code": "DGDG",
+        "name": "Das Granthi",
+        "title": "Das Granthi",
+        "authors": [],
+        "publisher": "SGPC",
+        "date": "2014-07",
+        "url": null
+      },
+      "NTHB": {
+        "code": "NTHB",
+        "name": "Nitnem Te Hor Baniaa(n)",
+        "title": "Nitnem Te Hor Baniaa(n)",
+        "authors": [],
+        "publisher": "SGPC",
+        "date": "2017-05",
+        "url": "www.drive.google.com/open?id=1AyQLCQgrNznDxI9Vby3knE4Piyrdsnxs"
+      }
+    },
+    "unresolved_line_refs": []
+  },
+  "structure": [
+    {
+      "section_index": 0,
+      "line_from": 1,
+      "line_to": 10,
+      "units_closed": [
+        1
+      ]
+    },
+    {
+      "section_index": 1,
+      "line_from": 11,
+      "line_to": 27,
+      "units_closed": []
+    }
+  ],
+  "lines": [
+    {
+      "id": 1,
+      "source_id": "S2AC",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ੴ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਹ ॥",
+        "gurmukhi_plain": "ੴ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਹ ॥",
+        "transliteration": {
+          "english": "ik oankaar vaahiguroo jee kee fatah |",
+          "hindi": "ੴ वाहिगुरू जी की फ़तह ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Lord is One and the Victory is of the True Guru.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 2,
+      "source_id": "F5WM",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸ੍ਰੀ ਭਗਉਤੀ ਜੀ ਸਹਾਇ ॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਭਗਉਤੀ ਜੀ ਸਹਾਇ ॥",
+        "transliteration": {
+          "english": "sree bhgautee jee sahaae |",
+          "hindi": "स्री भगउती जी सहाइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "May SRI BHAGAUTI JI (The Sword) be Helpful.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਸ੍ਰੀ ਭਗਉਤੀ ਜੀ ਸਹਾਇ:",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 3,
+      "source_id": "D82Q",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਵਾਰ ਸ੍ਰੀ ਭਗਉਤੀ ਜੀ ਕੀ ॥",
+        "gurmukhi_plain": "ਵਾਰ ਸ੍ਰੀ ਭਗਉਤੀ ਜੀ ਕੀ ॥",
+        "transliteration": {
+          "english": "vaar sree bhgautee jee kee |",
+          "hindi": "वार स्री भगउती जी की ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The Heroic Poem of Sri Bhagauti Ji",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਹੁਣ ਵਾਰ ਸ੍ਰੀ ਭਗਉਤੀ ਜੀ ਕੀ ਲਿਖਦੇ ਹਾ:",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 4,
+      "source_id": "N0NV",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪਾਤਿਸਾਹੀ ੧੦ ॥",
+        "gurmukhi_plain": "ਪਾਤਿਸਾਹੀ ੧੦ ॥",
+        "transliteration": {
+          "english": "paatisaahee 10 |",
+          "hindi": "पातिसाही १० ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "(By) TheTenth King (Guru).",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "ਪਾਤਸ਼ਾਹੀ ੧੦:",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 5,
+      "source_id": "PSRF",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪ੍ਰਿਥਮ ਭਗੌਤੀ ਸਿਮਰਿ ਕੈ ਗੁਰ ਨਾਨਕ ਲਈਂ ਧਿਆਇ ॥",
+        "gurmukhi_plain": "ਪ੍ਰਿਥਮ ਭਗੌਤੀ ਸਿਮਰਿ ਕੈ ਗੁਰ ਨਾਨਕ ਲਈਂ ਧਿਆਇ ॥",
+        "transliteration": {
+          "english": "pritham bhagauatee simar kai gur naanak leen dhiaae |",
+          "hindi": "प्रिथम भगौती सिमरि कै गुर नानक लईं धिआइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "In the beginning I remember Bhagauti, the Lord (Whose symbol is the sword and then I remember Guru Nanak.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਸਭ ਤੋਂ) ਪਹਿਲਾਂ ਭਗੌਤੀ ਨੂੰ ਸਿਮਰਦਾ ਹਾਂ ਅਤੇ ਫਿਰ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਨੂੰ ਯਾਦ ਕਰਦਾ ਹਾਂ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 6,
+      "source_id": "KL7X",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਫਿਰ ਅੰਗਦ ਗੁਰ ਤੇ ਅਮਰਦਾਸੁ ਰਾਮਦਾਸੈ ਹੋਈਂ ਸਹਾਇ ॥",
+        "gurmukhi_plain": "ਫਿਰ ਅੰਗਦ ਗੁਰ ਤੇ ਅਮਰਦਾਸੁ ਰਾਮਦਾਸੈ ਹੋਈਂ ਸਹਾਇ ॥",
+        "transliteration": {
+          "english": "fir angad gur te amaradaas raamadaasai hoeen sahaae |",
+          "hindi": "फिर अंगद गुर ते अमरदासु रामदासै होईं सहाइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Then I remember Guru Arjan, Guru Amar Das and Guru Ram Das, may they be helpful to me.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਫਿਰ) ਗੁਰੂ ਅੰਗਦ, (ਗੁਰੂ) ਅਮਰਦਾਸ ਅਤੇ (ਗੁਰੂ) ਰਾਮਦਾਸ (ਨੂੰ ਸਿਮਰਦਾ ਹਾਂ ਕਿ ਮੇਰੇ) ਸਹਾਈ ਹੋਣ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 7,
+      "source_id": "KGYS",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਅਰਜਨ ਹਰਿਗੋਬਿੰਦ ਨੋ ਸਿਮਰੌ ਸ੍ਰੀ ਹਰਿਰਾਇ ॥",
+        "gurmukhi_plain": "ਅਰਜਨ ਹਰਿਗੋਬਿੰਦ ਨੋ ਸਿਮਰੌ ਸ੍ਰੀ ਹਰਿਰਾਇ ॥",
+        "transliteration": {
+          "english": "arajan harigobind no simarau sree hariraae |",
+          "hindi": "अरजन हरिगोबिंद नो सिमरौ स्री हरिराइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Then I remember Guru Arjan, Guru Hargobind and Guru Har Rai.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਗੁਰੂ) ਅਰਜਨ ਦੇਵ, (ਗੁਰੂ) ਹਰਿਗੋਬਿੰਦ ਅਤੇ (ਗੁਰੂ) ਸ੍ਰੀ ਹਰਿ ਰਾਇ ਨੂੰ ਸਿਮਰਦਾ ਹਾਂ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 8,
+      "source_id": "B36J",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸ੍ਰੀ ਹਰਿਕ੍ਰਿਸ਼ਨ ਧਿਆਈਐ ਜਿਸ ਡਿਠੇ ਸਭਿ ਦੁਖਿ ਜਾਇ ॥",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਹਰਿਕ੍ਰਿਸ਼ਨ ਧਿਆਈਐ ਜਿਸ ਡਿਠੇ ਸਭਿ ਦੁਖਿ ਜਾਇ ॥",
+        "transliteration": {
+          "english": "sree harikrishan dhiaaeeai jis dditthe sabh dukh jaae |",
+          "hindi": "स्री हरिक्रिशन धिआईऐ जिस डिठे सभि दुखि जाइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "(After them) I remember Guru Har Kishan, by whose sight all the sufferings vanish.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਫਿਰ ਗੁਰੂ) ਸ੍ਰੀ ਹਰਿਕ੍ਰਿਸ਼ਨ ਨੂੰ ਆਰਾਧਦਾ ਹਾਂ ਜਿਨ੍ਹਾਂ ਦੇ ਦਰਸ਼ਨ ਕਰਨ ਨਾਲ ਸਾਰੇ ਦੁਖ ਦੂਰ ਹੋ ਜਾਂਦੇ ਹਨ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 9,
+      "source_id": "BT4L",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਤੇਗ ਬਹਾਦਰ ਸਿਮਰਿਐ ਘਰ ਨਉ ਨਿਧਿ ਆਵੈ ਧਾਇ ॥",
+        "gurmukhi_plain": "ਤੇਗ ਬਹਾਦਰ ਸਿਮਰਿਐ ਘਰ ਨਉ ਨਿਧਿ ਆਵੈ ਧਾਇ ॥",
+        "transliteration": {
+          "english": "teg bahaadar simariai ghar nau nidh aavai dhaae |",
+          "hindi": "तेग बहादर सिमरिऐ घर नउ निधि आवै धाइ ॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Then I do remember Guru Tegh Bahadur, though whose Grace the nine treasures come running to my house.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਗੁਰੂ) ਤੇਗ ਬਹਾਦਰ ਦੇ ਸਿਮਰਨ ਨਾਲ ਨੌ ਨਿੱਧਾਂ (ਖ਼ਜ਼ਾਨੇ) (ਘਰ ਵਿਚ) ਭਜਦੀਆਂ ਚਲੀਆਂ ਆਉਂਦੀਆਂ ਹਨ।",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 10,
+      "source_id": "5RGE",
+      "section_index": 0,
+      "unit": 1,
+      "ends_unit": 1,
+      "scripture": {
+        "asset": "DGDG",
+        "page": 119,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਭ ਥਾਈਂ ਹੋਇ ਸਹਾਇ ॥੧॥",
+        "gurmukhi_plain": "ਸਭ ਥਾਈਂ ਹੋਇ ਸਹਾਇ ॥੧॥",
+        "transliteration": {
+          "english": "sabh thaaeen hoe sahaae |1|",
+          "hindi": "सभ थाईं होइ सहाइ ॥१॥"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "May they be helpful to me everywhere.1.",
+          "source": "DSKO"
+        },
+        "english_alt": null,
+        "punjabi": {
+          "text": "(ਸਾਰੇ ਗੁਰੂ ਮੈਨੂੰ) ਸਭ ਥਾਈਂ ਸਹਾਇਕ ਹੋਣ ॥੧॥",
+          "source": "RSJD"
+        },
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 11,
+      "source_id": "2HY4",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦਸਵਾਂ ਪਾਤਿਸ਼ਾਹ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਸਾਹਿਬ ਜੀ; ਸਭ ਥਾਈਂ ਹੋਇ ਸਹਾਇ ।",
+        "gurmukhi_plain": "ਦਸਵਾਂ ਪਾਤਿਸ਼ਾਹ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਸਾਹਿਬ ਜੀ ਸਭ ਥਾਈਂ ਹੋਇ ਸਹਾਇ ।",
+        "transliteration": {
+          "english": "dasavaan paatishaah sree guroo gobind singh saahib jee sabh thaaeen hoe sahaae |",
+          "hindi": "दसवां पातिशाह स्री गुरू गोबिंद सिंघ साहिब जी सभ थाईं होइ सहाइ ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Then think of the tenth lord, revered Guru Gobind Singh, who comes to rescue everywhere.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 12,
+      "source_id": "V26Z",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਦਸਾਂ ਪਾਤਿਸ਼ਾਹੀਆਂ ਦੀ ਜੋਤ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੇ ਪਾਠ ਦੀਦਾਰ ਦਾ ਧਿਆਨ ਧਰ ਕੇ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਦਸਾਂ ਪਾਤਿਸ਼ਾਹੀਆਂ ਦੀ ਜੋਤ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੇ ਪਾਠ ਦੀਦਾਰ ਦਾ ਧਿਆਨ ਧਰ ਕੇ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "dasaan paatishaaheean dee jot sree guroo granth saahib jee de paatth deedaar daa dhiaan dhar ke bolo jee vaahiguroo |",
+          "hindi": "दसां पातिशाहीआं दी जोत स्री गुरू ग्रंथ साहिब जी दे पाठ दीदार दा धिआन धर के बोलो जी वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "The embodiment of the light of all ten sovereign lordships, the Guru Granth Sahib - think of the view and reading of it and say, \"Waheguru\".",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 13,
+      "source_id": "NVNP",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪੰਜਾਂ ਪਿਆਰਿਆਂ, ਚੌਹਾਂ ਸਾਹਿਬਜ਼ਾਦਿਆਂ, ਚਾਲ੍ਹੀਆਂ ਮੁਕਤਿਆਂ, ਹਠੀਆਂ, ਜਪੀਆਂ, ਤਪੀਆਂ, ਜਿਹਨਾਂ ਨਾਮ ਜਪਿਆ, ਵੰਡ ਛਕਿਆ, ਦੇਗ ਚਲਾਈ, ਤੇਗ ਵਾਹੀ, ਦੇਖ ਕੇ ਅਣਡਿੱਤ ਕੀਤਾ, ਤਿਨ੍ਹਾਂ ਪਿਆਰਿਆਂ, ਸਚਿਆਰਿਆਂ ਦੀ ਕਮਾਈ ਦਾ ਧਿਆਨ ਧਰ ਕੇ, ਖ਼ਾਲਸਾ ਜੀ; ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਪੰਜਾਂ ਪਿਆਰਿਆਂ ਚੌਹਾਂ ਸਾਹਿਬਜ਼ਾਦਿਆਂ ਚਾਲ੍ਹੀਆਂ ਮੁਕਤਿਆਂ ਹਠੀਆਂ ਜਪੀਆਂ ਤਪੀਆਂ ਜਿਹਨਾਂ ਨਾਮ ਜਪਿਆ ਵੰਡ ਛਕਿਆ ਦੇਗ ਚਲਾਈ ਤੇਗ ਵਾਹੀ ਦੇਖ ਕੇ ਅਣਡਿੱਤ ਕੀਤਾ ਤਿਨ੍ਹਾਂ ਪਿਆਰਿਆਂ ਸਚਿਆਰਿਆਂ ਦੀ ਕਮਾਈ ਦਾ ਧਿਆਨ ਧਰ ਕੇ ਖ਼ਾਲਸਾ ਜੀ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "panjaan piaariaan chauahaan saahibazaadiaan chaalheean mukatiaan hattheean japeean tapeean jihanaan naam japiaa vandd chhakiaa deg chalaaee teg vaahee dekh ke anaddat keetaa tinhaan piaariaan sachiaariaan dee kamaaee daa dhiaan dhar ke khaalasaa jee bolo jee vaahiguroo |",
+          "hindi": "पंजां पिआरिआं चौहां साहिबज़ादिआं चाल्हीआं मुकतिआं हठीआं जपीआं तपीआं जिहनां नाम जपिआ वंड छकिआ देग चलाई तेग वाही देख के अणडित कीता तिन्हां पिआरिआं सचिआरिआं दी कमाई दा धिआन धर के क़ालसा जी बोलो जी वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Meditating on the achievement of the dear and truthful ones, including the five beloved ones, the four sons of the tenth Guru, forty liberated ones, steadfast ones, constant repeaters of the Divine Name, those given to assiduous devotion, those who repeated the Naam, shared their fare with others, ran free kitchen, wielded the sword and ever looked faults and shortcomings, say \"Waheguru\", O Khalsa.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 14,
+      "source_id": "8EEH",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਿਨ੍ਹਾਂ ਸਿੰਘਾਂ ਸਿੰਘਣੀਆਂ ਨੇ ਧਰਮ ਹੇਤ ਸੀਸ ਦਿੱਤੇ, ਬੰਦ ਬੰਦ ਕਟਾਏ, ਖੋਪਰੀਆਂ ਲੁਹਾਈਆਂ, ਚਰਖੜੀਆਂ ਤੇ ਚੜੇ, ਆਰਿਆਂ ਨਾਲ ਚਿਰਾਏ ਗਏ, ਗੁਰਦਵਾਰਿਆਂ ਦੀ ਸੇਵਾ ਲਈ ਕੁਰਬਾਨੀਆਂ ਕੀਤੀਆਂ, ਧਰਮ ਨਹੀਂ ਹਾਰਿਆ, ਸਿੱਖੀ ਕੇਸਾਂ ਸੁਆਸਾਂ ਨਾਲ ਨਿਬਾਹੀ, ਤਿਨ੍ਹਾਂ ਦੀ ਕਮਾਈ ਦਾ ਧਿਆਨ ਧਰ ਕੇ ਖ਼ਾਲਸਾ ਜੀ; ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਜਿਨ੍ਹਾਂ ਸਿੰਘਾਂ ਸਿੰਘਣੀਆਂ ਨੇ ਧਰਮ ਹੇਤ ਸੀਸ ਦਿੱਤੇ ਬੰਦ ਬੰਦ ਕਟਾਏ ਖੋਪਰੀਆਂ ਲੁਹਾਈਆਂ ਚਰਖੜੀਆਂ ਤੇ ਚੜੇ ਆਰਿਆਂ ਨਾਲ ਚਿਰਾਏ ਗਏ ਗੁਰਦਵਾਰਿਆਂ ਦੀ ਸੇਵਾ ਲਈ ਕੁਰਬਾਨੀਆਂ ਕੀਤੀਆਂ ਧਰਮ ਨਹੀਂ ਹਾਰਿਆ ਸਿੱਖੀ ਕੇਸਾਂ ਸੁਆਸਾਂ ਨਾਲ ਨਿਬਾਹੀ ਤਿਨ੍ਹਾਂ ਦੀ ਕਮਾਈ ਦਾ ਧਿਆਨ ਧਰ ਕੇ ਖ਼ਾਲਸਾ ਜੀ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "jinhaan singhaan singhaneean ne dharam het sees dite band band kattaae khopareean luhaaeean charakharreean te charre aariaan naal chiraae ge guradavaariaan dee sevaa lee kurabaaneean keeteean dharam naheen haariaa sikhee kesaan suaasaan naal nibaahee tinhaan dee kamaaee daa dhiaan dhar ke khaalasaa jee bolo jee vaahiguroo |",
+          "hindi": "जिन्हां सिंघां सिंघणीआं ने धरम हेत सीस दिते बंद बंद कटाए खोपरीआं लुहाईआं चरखड़ीआं ते चड़े आरिआं नाल चिराए गए गुरदवारिआं दी सेवा लई कुरबानीआं कीतीआं धरम नहीं हारिआ सिक्खी केसां सुआसां नाल निबाही तिन्हां दी कमाई दा धिआन धर के क़ालसा जी बोलो जी वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Meditating on the achievement of the male and female members of the Khalsa who laid down their lives in the cause of dharma (religion and righteousness), got their bodies dismembered bit by bit, got their skulls sawn off, got mounted on spiked wheels, got their bodies sawn, made sacrifices in the service of the shrines (gurdwaras), did not betray their faith, sustained their adherence to the Sikh faith with sacred unshorn hair up till their last breath, say, \"Waheguru\", O Khalsa.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 15,
+      "source_id": "RZCQ",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪੰਜਾਂ ਤਖ਼ਤਾਂ, ਸਰਬੱਤ ਗੁਰਦੁਆਰਿਆਂ ਦਾ ਧਿਆਨ ਧਰ ਕੇ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਪੰਜਾਂ ਤਖ਼ਤਾਂ ਸਰਬੱਤ ਗੁਰਦੁਆਰਿਆਂ ਦਾ ਧਿਆਨ ਧਰ ਕੇ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "panjaan takhataan sarabat guraduaariaan daa dhiaan dhar ke bolo jee vaahiguroo |",
+          "hindi": "पंजां तक़तां सरबत गुरदुआरिआं दा धिआन धर के बोलो जी वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Thinking of the five thrones (seats of religious authority) and all gurdwaras, say, \"Waheguru\", O Khalsa.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 16,
+      "source_id": "817H",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਪ੍ਰਿਥਮੇ ਸਰਬੱਤ ਖ਼ਾਲਸਾ ਜੀ ਕੀ ਅਰਦਾਸ ਹੈ ਜੀ, ਸਰਬੱਤ ਖ਼ਾਲਸਾ ਜੀ ਕੋ ਵਾਹਿਗੁਰੂ, ਵਾਹਿਗੁਰੂ, ਵਾਹਿਗੁਰੂ ਚਿੱਤ ਆਵੇ, ਚਿੱਤ ਆਵਨ ਕਾ ਸਦਕਾ ਸਰਬ ਸੁਖ ਹੋਵੇ ।",
+        "gurmukhi_plain": "ਪ੍ਰਿਥਮੇ ਸਰਬੱਤ ਖ਼ਾਲਸਾ ਜੀ ਕੀ ਅਰਦਾਸ ਹੈ ਜੀ ਸਰਬੱਤ ਖ਼ਾਲਸਾ ਜੀ ਕੋ ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਚਿੱਤ ਆਵੇ ਚਿੱਤ ਆਵਨ ਕਾ ਸਦਕਾ ਸਰਬ ਸੁਖ ਹੋਵੇ ।",
+        "transliteration": {
+          "english": "prithame sarabat khaalasaa jee kee aradaas hai jee sarabat khaalasaa jee ko vaahiguroo vaahiguroo vaahiguroo chit aave chit aavan kaa sadakaa sarab sukh hove |",
+          "hindi": "प्रिथमे सरबत क़ालसा जी की अरदास है जी सरबत क़ालसा जी को वाहिगुरू वाहिगुरू वाहिगुरू चित आवे चित आवन का सदका सरब सुख होवे ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Now it is the prayer of the whole Khalsa. May the conscience of the whole Khalsa be informed by Waheguru, Waheguru, Waheguru and, in consequence of such remembrance, may total well-being obtain.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 17,
+      "source_id": "LP62",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਜਹਾਂ ਜਹਾਂ ਖ਼ਾਲਸਾ ਜੀ ਸਾਹਿਬ, ਤਹਾਂ ਤਹਾਂ ਰਛਿਆਂ ਰਿਆਇਤ, ਦੇਗ ਤੇਗ ਫ਼ਤਹ, ਬਿਰਦ ਕੀ ਪੈਜ, ਪੰਥ ਕੀ ਜੀਤ, ਸ੍ਰੀ ਸਾਹਿਬ ਜੀ ਸਹਾਇ, ਖ਼ਾਲਸੇ ਜੀ ਕੇ ਬੋਲ ਬਾਲੇ, ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਜਹਾਂ ਜਹਾਂ ਖ਼ਾਲਸਾ ਜੀ ਸਾਹਿਬ ਤਹਾਂ ਤਹਾਂ ਰਛਿਆਂ ਰਿਆਇਤ ਦੇਗ ਤੇਗ ਫ਼ਤਹ ਬਿਰਦ ਕੀ ਪੈਜ ਪੰਥ ਕੀ ਜੀਤ ਸ੍ਰੀ ਸਾਹਿਬ ਜੀ ਸਹਾਇ ਖ਼ਾਲਸੇ ਜੀ ਕੇ ਬੋਲ ਬਾਲੇ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "jahaan jahaan khaalasaa jee saahib tahaan tahaan rachhiaan riaaeit deg teg fateh birad kee paij panth kee jeet sree saahib jee sahaae khaalase jee ke bol baale bolo jee vaahiguroo |",
+          "hindi": "जहां जहां क़ालसा जी साहिब तहां तहां रछिआं रिआइत देग तेग फ़तह बिरद की पैज पंथ की जीत स्री साहिब जी सहाइ क़ालसे जी के बोल बाले बोलो जी वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Wherever there are communities of the Khalsa, may there be Divine protection and grace, and ascendance of the supply of needs and of the holy sword, protection of the tradition of grace, victory to the Panth, the succor of the holy sword, and ascendance of the Khalsa. Say, O Khalsa, \"Waheguru\".",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 18,
+      "source_id": "F1YX",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਿੱਖਾਂ ਨੂੰ ਸਿੱਖੀ ਦਾਨ, ਕੇਸ ਦਾਨ, ਰਹਿਤ ਦਾਨ, ਬਿਬੇਕ ਦਾਨ, ਵਿਸਾਹ ਦਾਨ, ਭਰੋਸਾ ਦਾਨ, ਦਾਨਾਂ ਸਿਰ ਦਾਨ ਨਾਮ ਦਾਨ, ਸ੍ਰੀ ਅੰਮ੍ਰਿਤਸਰ ਜੀ ਦੇ ਇਸ਼ਨਾਨ, ਚੌਂਕੀਆ, ਝੰਡੇ, ਬੁੰਗੇ ਜੁਗੋ ਜੁਗ ਅਟੱਲ, ਧਰਮ ਕਾ ਜੈਕਾਰ, ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਸਿੱਖਾਂ ਨੂੰ ਸਿੱਖੀ ਦਾਨ ਕੇਸ ਦਾਨ ਰਹਿਤ ਦਾਨ ਬਿਬੇਕ ਦਾਨ ਵਿਸਾਹ ਦਾਨ ਭਰੋਸਾ ਦਾਨ ਦਾਨਾਂ ਸਿਰ ਦਾਨ ਨਾਮ ਦਾਨ ਸ੍ਰੀ ਅੰਮ੍ਰਿਤਸਰ ਜੀ ਦੇ ਇਸ਼ਨਾਨ ਚੌਂਕੀਆ ਝੰਡੇ ਬੁੰਗੇ ਜੁਗੋ ਜੁਗ ਅਟੱਲ ਧਰਮ ਕਾ ਜੈਕਾਰ ਬੋਲੋ ਜੀ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "sikhaan noo sikhee daan kes daan rahit daan bibek daan visaah daan bharosaa daan daanaan sir daan naam daan sree amritasar jee de ishanaan chauankeea jhandde bunge jugo jug attal dharam kaa jaikaar bolo jee vaahiguroo |",
+          "hindi": "सिक्खां नूं सिक्खी दान केस दान रहित दान बिबेक दान विसाह दान भरोसा दान दानां सिर दान नाम दान स्री अंम्रितसर जी दे इशनान चौंकीआ झंडे बुंगे जुगो जुग अटल धरम का जैकार बोलो जी वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Unto the Sikhs the gift of the Sikh faith, the gift of the untrimmed hair, the gift of the disciple of their faith, the gift of sense of discrimination, the gift of truest, the gift of confidence, above all, the gift of meditation on the Divine and bath in the Amritsar (holy tank at Amritsar). May hymns-singing missionary parties, the flags, the hostels, abide from age to age. May righteousness reign supreme. Say, \"Waheguru\".",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 19,
+      "source_id": "ARN7",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਿੱਖਾਂ ਦਾ ਮਨ ਨੀਵਾਂ, ਮਤ ਉੱਚੀ, ਮਤ ਦਾ ਰਾਖਾ ਆਪਿ ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਸਿੱਖਾਂ ਦਾ ਮਨ ਨੀਵਾਂ ਮਤ ਉੱਚੀ ਮਤ ਦਾ ਰਾਖਾ ਆਪਿ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "sikhaan daa man neevaan mat uchee mat daa raakhaa aap vaahiguroo |",
+          "hindi": "सिक्खां दा मन नीवां मत उची मत दा राखा आपि वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "May the Khalsa be imbued with humility and high wisdom! May Waheguru guard its understanding!",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 20,
+      "source_id": "P8FV",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਹੇ ਅਕਾਲ ਪੁਰਖ ਆਪਣੇ ਪੰਥ ਦੇ ਸਦਾ ਸਹਾਈ ਦਾਤਾਰ ਜੀਓ ।",
+        "gurmukhi_plain": "ਹੇ ਅਕਾਲ ਪੁਰਖ ਆਪਣੇ ਪੰਥ ਦੇ ਸਦਾ ਸਹਾਈ ਦਾਤਾਰ ਜੀਓ ।",
+        "transliteration": {
+          "english": "he akaal purakh aapane panth de sadaa sahaaee daataar jeeo |",
+          "hindi": "हे अकाल पुरख आपणे पंथ दे सदा सहाई दातार जीओ ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Immortal Being, eternal helper of Thy Panth, benevolent Lord,",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 21,
+      "source_id": "EUMU",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ ਤੇ ਹੋਰ ਗੁਰਦੁਆਰਿਆਂ ਗੁਰਧਾਮਾਂ ਦੇ, ਜਿਨ੍ਹਾਂ ਤੋਂ ਪੰਥ ਨੂੰ ਵਿਛੋੜਿਆ ਗਿਆ ਹੈ, ਖੁਲ੍ਹੇ ਦਰਸ਼ਨ ਦੀਦਾਰ ਤੇ ਸੇਵਾ ਸੰਭਾਲ ਦਾ ਦਾਨ ਖ਼ਾਲਸਾ ਜੀ ਨੂੰ ਬਖਸ਼ੋ ।",
+        "gurmukhi_plain": "ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ ਤੇ ਹੋਰ ਗੁਰਦੁਆਰਿਆਂ ਗੁਰਧਾਮਾਂ ਦੇ ਜਿਨ੍ਹਾਂ ਤੋਂ ਪੰਥ ਨੂੰ ਵਿਛੋੜਿਆ ਗਿਆ ਹੈ ਖੁਲ੍ਹੇ ਦਰਸ਼ਨ ਦੀਦਾਰ ਤੇ ਸੇਵਾ ਸੰਭਾਲ ਦਾ ਦਾਨ ਖ਼ਾਲਸਾ ਜੀ ਨੂੰ ਬਖਸ਼ੋ ।",
+        "transliteration": {
+          "english": "sree nanakaanaa saahib te hor guraduaariaan guradhaamaan de jinhaan ton panth noo vichhorriaa giaa hai khulhe darashan deedaar te sevaa sanbhaal daa daan khaalasaa jee noo bakhasho |",
+          "hindi": "स्री ननकाणा साहिब ते होर गुरदुआरिआं गुरधामां दे जिन्हां तों पंथ नूं विछोड़िआ गिआ है खुल्हे दरशन दीदार ते सेवा संभाल दा दान क़ालसा जी नूं बखशो ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Bestow on the Khalsa the beneficence of unobstructed visit to the free management of Nankana Sahib and other shrines and places of the Guru from which the Panth have been separated.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 22,
+      "source_id": "VVYJ",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਹੇ ਨਿਮਾਣਿਆਂ ਦੇ ਮਾਣ, ਨਿਤਾਣਿਆਂ ਦੇ ਤਾਣ, ਨਿਓਟਿਆਂ ਦੀ ਓਟ, ਸੱਚੇ ਪਿਤਾ, ਵਾਹਿਗੁਰੂ ।",
+        "gurmukhi_plain": "ਹੇ ਨਿਮਾਣਿਆਂ ਦੇ ਮਾਣ ਨਿਤਾਣਿਆਂ ਦੇ ਤਾਣ ਨਿਓਟਿਆਂ ਦੀ ਓਟ ਸੱਚੇ ਪਿਤਾ ਵਾਹਿਗੁਰੂ ।",
+        "transliteration": {
+          "english": "he nimaaniaan de maan nitaaniaan de taan niottiaan dee ott sache pitaa vaahiguroo |",
+          "hindi": "हे निमाणिआं दे माण निताणिआं दे ताण निओटिआं दी ओट सचे पिता वाहिगुरू ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Thou, the honor of the humble, the strength of the weak, aid unto those who have none to rely on, True Father, Waheguru,",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 23,
+      "source_id": "TQAC",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਆਪ ਦੇ ਹਜ਼ੂਰ ... ਦੀ ਅਰਦਾਸ ਹੈ ਜੀ ।",
+        "gurmukhi_plain": "ਆਪ ਦੇ ਹਜ਼ੂਰ  ਦੀ ਅਰਦਾਸ ਹੈ ਜੀ ।",
+        "transliteration": {
+          "english": "aap de hazoor  dee aradaas hai jee |",
+          "hindi": "आप दे हज़ूर  दी अरदास है जी ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "We humbly render to you ...",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 24,
+      "source_id": "5WUU",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਅੱਖਰ ਵਾਧਾ ਘਾਟਾ ਭੁੱਲ ਚੁੱਕ ਮਾਫ ਕਰਨੀ ।",
+        "gurmukhi_plain": "ਅੱਖਰ ਵਾਧਾ ਘਾਟਾ ਭੁੱਲ ਚੁੱਕ ਮਾਫ ਕਰਨੀ ।",
+        "transliteration": {
+          "english": "akhar vaadhaa ghaattaa bhul chuk maaf karanee |",
+          "hindi": "अक्खर वाधा घाटा भुल चुक माफ करनी ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Pardon any impermissible accretions, omissions, errors, mistakes.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 25,
+      "source_id": "5G3X",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸਰਬੱਤ ਦੇ ਕਾਰਜ ਰਾਸ ਕਰਨੇ ।",
+        "gurmukhi_plain": "ਸਰਬੱਤ ਦੇ ਕਾਰਜ ਰਾਸ ਕਰਨੇ ।",
+        "transliteration": {
+          "english": "sarabat de kaaraj raas karane |",
+          "hindi": "सरबत दे कारज रास करने ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Fulfill the purposes of all.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 26,
+      "source_id": "23VT",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਸੇਈ ਪਿਆਰੇ ਮੇਲ, ਜਿਨ੍ਹਾਂ ਮਿਲਿਆਂ ਤੇਰਾ ਨਾਮ ਚਿਤ ਆਵੇ ।",
+        "gurmukhi_plain": "ਸੇਈ ਪਿਆਰੇ ਮੇਲ ਜਿਨ੍ਹਾਂ ਮਿਲਿਆਂ ਤੇਰਾ ਨਾਮ ਚਿਤ ਆਵੇ ।",
+        "transliteration": {
+          "english": "seee piaare mel jinhaan miliaan teraa naam chit aave |",
+          "hindi": "सेई पिआरे मेल जिन्हां मिलिआं तेरा नाम चित आवे ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "Grant us the association of those dear ones, on meeting whom one is reminded of Your Name.",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    },
+    {
+      "id": 27,
+      "source_id": "Z4ZP",
+      "section_index": 1,
+      "unit": 2,
+      "ends_unit": null,
+      "scripture": {
+        "asset": "NTHB",
+        "page": null,
+        "line": null
+      },
+      "text": {
+        "gurmukhi": "ਨਾਨਕ ਨਾਮ ਚੜ੍ਹਦੀ ਕਲਾ, ਤੇਰੇ ਭਾਣੇ ਸਰਬੱਤ ਦਾ ਭਲਾ ।",
+        "gurmukhi_plain": "ਨਾਨਕ ਨਾਮ ਚੜ੍ਹਦੀ ਕਲਾ ਤੇਰੇ ਭਾਣੇ ਸਰਬੱਤ ਦਾ ਭਲਾ ।",
+        "transliteration": {
+          "english": "naanak naam charrhadee kalaa tere bhaane sarabat daa bhalaa |",
+          "hindi": "नानक नाम चढ़दी कला तेरे भाणे सरबत दा भला ।"
+        }
+      },
+      "meaning": {
+        "english": {
+          "text": "O Nanak, may the Naam (Holy) be ever in ascendance! In Thy will may the good of all prevail!",
+          "source": "SRME"
+        },
+        "english_alt": null,
+        "punjabi": null,
+        "punjabi_alt": null,
+        "hindi": null
+      }
+    }
+  ]
+}

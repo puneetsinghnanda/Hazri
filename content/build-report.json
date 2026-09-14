@@ -6,6 +6,112 @@
     ],
     "vishraam_unparsed_lines": []
   },
+  "banis": {
+    "jaap-sahib": {
+      "source_bani_id": "JAAP",
+      "lines": 801,
+      "units": 199,
+      "meanings": {
+        "en": 801,
+        "pa": 800,
+        "hi": 0
+      },
+      "word_misaligned_lines": 1,
+      "vishraam_unparsed_lines": 0,
+      "hindi_meaning_note": "No Hindi-language meaning exists for this bani in the dataset. The Faridkot teeka covers Sri Guru Granth Sahib only; this bani is not from that scripture."
+    },
+    "tav-prasad-savaiye": {
+      "source_bani_id": "TPDK",
+      "lines": 43,
+      "units": 10,
+      "meanings": {
+        "en": 43,
+        "pa": 41,
+        "hi": 0
+      },
+      "word_misaligned_lines": 1,
+      "vishraam_unparsed_lines": 0,
+      "hindi_meaning_note": "No Hindi-language meaning exists for this bani in the dataset. The Faridkot teeka covers Sri Guru Granth Sahib only; this bani is not from that scripture."
+    },
+    "chaupai-sahib": {
+      "source_bani_id": "CPDT",
+      "lines": 129,
+      "units": 31,
+      "meanings": {
+        "en": 113,
+        "pa": 128,
+        "hi": 0
+      },
+      "word_misaligned_lines": 1,
+      "vishraam_unparsed_lines": 0,
+      "hindi_meaning_note": "No Hindi-language meaning exists for this bani in the dataset. The Faridkot teeka covers Sri Guru Granth Sahib only; this bani is not from that scripture."
+    },
+    "anand-sahib": {
+      "source_bani_id": "ANND",
+      "lines": 210,
+      "units": 40,
+      "meanings": {
+        "en": 420,
+        "pa": 420,
+        "hi": 208
+      },
+      "word_misaligned_lines": 1,
+      "vishraam_unparsed_lines": 0,
+      "hindi_meaning_note": "Faridkot Wala Teeka is Braj/Sadhukkari Hindi recorded in Gurmukhi script; converted Gurmukhi->Devanagari. Exegetical commentary, not a fresh modern-Hindi translation."
+    },
+    "rehras-sahib": {
+      "source_bani_id": "RHRS",
+      "lines": 339,
+      "units": 71,
+      "meanings": {
+        "en": 558,
+        "pa": 554,
+        "hi": 212
+      },
+      "word_misaligned_lines": 4,
+      "vishraam_unparsed_lines": 0,
+      "hindi_meaning_note": "Faridkot Wala Teeka is Braj/Sadhukkari Hindi recorded in Gurmukhi script; converted Gurmukhi->Devanagari. Exegetical commentary, not a fresh modern-Hindi translation."
+    },
+    "kirtan-sohila": {
+      "source_bani_id": "SHLA",
+      "lines": 54,
+      "units": 18,
+      "meanings": {
+        "en": 108,
+        "pa": 106,
+        "hi": 49
+      },
+      "word_misaligned_lines": 1,
+      "vishraam_unparsed_lines": 0,
+      "hindi_meaning_note": "Faridkot Wala Teeka is Braj/Sadhukkari Hindi recorded in Gurmukhi script; converted Gurmukhi->Devanagari. Exegetical commentary, not a fresh modern-Hindi translation."
+    },
+    "ardas": {
+      "source_bani_id": "ARDS",
+      "lines": 27,
+      "units": 1,
+      "meanings": {
+        "en": 27,
+        "pa": 9,
+        "hi": 0
+      },
+      "word_misaligned_lines": 1,
+      "vishraam_unparsed_lines": 1,
+      "hindi_meaning_note": "No Hindi-language meaning exists for this bani in the dataset. The Faridkot teeka covers Sri Guru Granth Sahib only; this bani is not from that scripture."
+    },
+    "sukhmani-sahib": {
+      "source_bani_id": "SKMI",
+      "lines": 2026,
+      "units": 216,
+      "meanings": {
+        "en": 4052,
+        "pa": 4005,
+        "hi": 1977
+      },
+      "word_misaligned_lines": 1,
+      "vishraam_unparsed_lines": 0,
+      "hindi_meaning_note": "Faridkot Wala Teeka is Braj/Sadhukkari Hindi recorded in Gurmukhi script; converted Gurmukhi->Devanagari. Exegetical commentary, not a fresh modern-Hindi translation."
+    }
+  },
   "audio": [
     {
       "bani": "japji-sahib",
@@ -39,7 +145,7 @@
     "covered_to": "2026-12-15"
   },
   "cities": 92,
-  "content_version": 6,
-  "source_digest": "3ecd774b9f4da202",
-  "bytes": 942080
+  "content_version": 7,
+  "source_digest": "e97fdc4dd0973292",
+  "bytes": 4349952
 }

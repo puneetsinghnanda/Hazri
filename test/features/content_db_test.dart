@@ -43,18 +43,36 @@ void main() {
     expect(banis.where((b) => b.defaultSlot == BaniSlot.bedtime).single.slug, 'kirtan-sohila');
   });
 
-  test('Japji is the only bani with text in this build', () async {
+  test('every bani has its text', () async {
     final banis = await repo.banis();
-    final withText = banis.where((b) => b.hasText).map((b) => b.slug).toList();
-    expect(withText, ['japji-sahib']);
+    final without = banis.where((b) => !b.hasText).map((b) => b.slug).toList();
+    expect(without, isEmpty);
   });
 
-  test('the morning banis add up to the 63 minutes Today promises', () async {
-    final banis = await repo.banis();
-    final minutes = banis
-        .where((b) => b.defaultSlot == BaniSlot.morning)
-        .fold<int>(0, (sum, b) => sum + b.estMinutes);
-    expect(minutes, 63);
+  test('every bani has a version with as many lines as the table holds',
+      () async {
+    for (final bani in await repo.banis()) {
+      expect(bani.versionId, isNotNull, reason: bani.slug);
+      final lines = await repo.lines(bani.versionId!);
+      expect(lines, isNotEmpty, reason: bani.slug);
+      expect(lines.length, bani.lineCount, reason: bani.slug);
+      for (var i = 0; i < lines.length; i++) {
+        expect(lines[i].idx, i, reason: bani.slug);
+      }
+    }
+  });
+
+  test('the minutes a bani claims are the minutes it plays for', () async {
+    // est_minutes used to be a hand-set guess. Now that every recitation
+    // ships it is measured from the recording, so the number on the Nitnem
+    // row is the number of minutes the player will actually run.
+    for (final bani in await repo.banis()) {
+      expect(bani.estMinutes, greaterThan(0), reason: bani.slug);
+      final track = await repo.audioTrack(bani.versionId!);
+      final ms = track?.durationMs;
+      if (ms == null) continue;
+      expect(bani.estMinutes, (ms / 60000).ceil(), reason: bani.slug);
+    }
   });
 
   group('Japji Sahib', () {
