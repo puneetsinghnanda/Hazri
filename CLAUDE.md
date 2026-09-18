@@ -108,8 +108,14 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   catches text the recitation never says, by comparing the reciter's phrasing
   rate against the lines assigned. Run all three; `audio/README.md` has the
   current numbers and what is still outstanding -- Rehras and Jaap each have
-  a stretch near the end that is still unexplained, and Sukhmani has five pins
-  and one anchor left, so almost nothing independent still checks it.
+  a stretch near the end that is still unexplained, and Sukhmani has twelve
+  pins and one anchor left, so nothing independent still checks it: its
+  timings are the owner's ear written down, not a measurement.
+
+- **`build_preview.py` is the fast way to check an alignment.** It bakes every
+  bani's lines and timings into one HTML file that takes a recitation from
+  your own disk through a file picker -- no APK, no CI, no upload -- and shows
+  which line the timings put under the voice, with its exact start time.
 
 - **The daily Hukamnama is gone**, replaced by ਅੱਜ ਦਾ ਵਿਚਾਰ (PRD 1.11): 200
   bundled lines from Sri Guru Granth Sahib Ji, one a day by date, shareable as

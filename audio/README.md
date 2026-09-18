@@ -111,8 +111,8 @@ and between them these four keys have covered every mismatch found so far:
 | `lines` | the 1-based line ranges the recitation actually covers | Jaap, Chaupai |
 | `repeat` | `[first, last, times]` for a passage the reciter says more than once | Anand, Rehras, Jaap |
 | `skipAudio` | stretches filled with something the text does not carry | Chaupai |
-| `pin` | `{line, s}` holding a line to a time somebody heard | Jaap, Sukhmani |
-| `hold` | lines to leave exactly where the warp put them, bracketing a pin | Jaap |
+| `pin` | `{line, s}` holding a line to a time somebody heard | Jaap, Savaiye, Sukhmani |
+| `hold` | lines to leave exactly where the warp put them, bracketing a pin | Jaap, Savaiye |
 
 A `pin` is the one key that is an input rather than a description. The warp
 snaps each boundary onto the pause it lands in, and where a reciter barely
