@@ -11,6 +11,7 @@
       "source_bani_id": "JAAP",
       "lines": 801,
       "lines_dropped_before_start": 0,
+      "lines_dropped_after_end": 0,
       "units": 199,
       "meanings": {
         "en": 801,
@@ -25,6 +26,7 @@
       "source_bani_id": "TPSS",
       "lines": 43,
       "lines_dropped_before_start": 0,
+      "lines_dropped_after_end": 0,
       "units": 10,
       "meanings": {
         "en": 43,
@@ -37,12 +39,13 @@
     },
     "chaupai-sahib": {
       "source_bani_id": "CPDT",
-      "lines": 129,
+      "lines": 103,
       "lines_dropped_before_start": 0,
+      "lines_dropped_after_end": 26,
       "units": 31,
       "meanings": {
-        "en": 113,
-        "pa": 128,
+        "en": 94,
+        "pa": 102,
         "hi": 0
       },
       "word_misaligned_lines": 1,
@@ -53,6 +56,7 @@
       "source_bani_id": "ANND",
       "lines": 210,
       "lines_dropped_before_start": 0,
+      "lines_dropped_after_end": 0,
       "units": 40,
       "meanings": {
         "en": 420,
@@ -67,6 +71,7 @@
       "source_bani_id": "RHRS",
       "lines": 327,
       "lines_dropped_before_start": 12,
+      "lines_dropped_after_end": 0,
       "units": 71,
       "meanings": {
         "en": 534,
@@ -81,6 +86,7 @@
       "source_bani_id": "SHLA",
       "lines": 54,
       "lines_dropped_before_start": 0,
+      "lines_dropped_after_end": 0,
       "units": 18,
       "meanings": {
         "en": 108,
@@ -95,6 +101,7 @@
       "source_bani_id": "ARDS",
       "lines": 27,
       "lines_dropped_before_start": 0,
+      "lines_dropped_after_end": 0,
       "units": 1,
       "meanings": {
         "en": 27,
@@ -109,6 +116,7 @@
       "source_bani_id": "SKMI",
       "lines": 2026,
       "lines_dropped_before_start": 0,
+      "lines_dropped_after_end": 0,
       "units": 216,
       "meanings": {
         "en": 4052,
@@ -126,7 +134,7 @@
       "bytes": 9405288,
       "duration_ms": 1139314,
       "has_timings": true,
-      "timings_verified": false
+      "timings_verified": true
     },
     {
       "bani": "jaap-sahib",
@@ -140,7 +148,7 @@
       "bytes": 1495726,
       "duration_ms": 181145,
       "has_timings": true,
-      "timings_verified": true
+      "timings_verified": false
     },
     {
       "bani": "chaupai-sahib",
@@ -154,7 +162,7 @@
       "bytes": 10797991,
       "duration_ms": 1304174,
       "has_timings": true,
-      "timings_verified": true
+      "timings_verified": false
     },
     {
       "bani": "rehras-sahib",
@@ -179,8 +187,8 @@
     },
     {
       "bani": "sukhmani-sahib",
-      "bytes": 31985656,
-      "duration_ms": 3867278,
+      "bytes": 38684343,
+      "duration_ms": 4674927,
       "has_timings": true,
       "timings_verified": false
     }
@@ -211,6 +219,6 @@
   },
   "cities": 92,
   "content_version": 7,
-  "source_digest": "8d1dec9ce4f89885",
-  "bytes": 4800512
+  "source_digest": "7a22b41fcb34834b",
+  "bytes": 4788224
 }

@@ -15,6 +15,38 @@ void main() {
     ],
   });
 
+  group('a line the reciter says twice', () {
+    // Anand Sahib, Rehras and Jaap all close on a passage the paathi repeats,
+    // so the timing file carries those lines twice, in the order they are
+    // recited. The highlight has to follow the reciter round again rather
+    // than sit on the first pass or jump back.
+    final t = build([
+      (206, 0, 1000),
+      (207, 1000, 2000),
+      (206, 2000, 3000),
+      (207, 3000, 4000),
+      (208, 4000, 5000),
+    ]);
+
+    test('each pass highlights its own line', () {
+      expect(t.lineAt(const Duration(milliseconds: 500))!.line, 206);
+      expect(t.lineAt(const Duration(milliseconds: 1500))!.line, 207);
+      expect(t.lineAt(const Duration(milliseconds: 2500))!.line, 206);
+      expect(t.lineAt(const Duration(milliseconds: 3500))!.line, 207);
+      expect(t.lineAt(const Duration(milliseconds: 4500))!.line, 208);
+    });
+
+    test('the two passes are separate rows, not one merged span', () {
+      expect(t.indexAt(const Duration(milliseconds: 500)), 0);
+      expect(t.indexAt(const Duration(milliseconds: 2500)), 2);
+    });
+
+    test('tapping the line seeks to where it is first recited', () {
+      expect(t.startOfLine(206), Duration.zero);
+      expect(t.startOfLine(207), const Duration(seconds: 1));
+    });
+  });
+
   group('indexAt', () {
     final t = build([(0, 0, 1000), (1, 1200, 2000), (2, 2500, 4000)]);
 

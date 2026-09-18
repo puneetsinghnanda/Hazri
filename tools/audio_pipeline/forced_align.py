@@ -642,6 +642,27 @@ class Timebase:
         return t + off
 
 
+def repeats_for(slug: str) -> list[list[int]]:
+    """Line ranges the reciter says more than once, as [first, last, times].
+
+    A reciter commonly closes a bani by saying its last couplet twice. The
+    text has those lines once, so the second pass is audio the warp cannot
+    account for: it stretches the final lines to cover it and the highlight
+    sits there while the voice carries on. Repeating the lines here gives the
+    warp text for both passes, and the timing file carries the line twice, so
+    the highlight follows the reciter round again.
+    """
+    if not os.path.exists(AUDIO_START_FILE):
+        return []
+    with open(AUDIO_START_FILE, encoding="utf-8") as fh:
+        entry = json.load(fh).get(slug) or {}
+    out = []
+    for r in entry.get("repeat", []):
+        first, last = int(r[0]), int(r[1])
+        out.append([first, last, int(r[2]) if len(r) > 2 else 2])
+    return out
+
+
 def recited_ranges_for(slug: str) -> list[list[int]] | None:
     """Which 1-based line ranges of the text this recitation actually says.
 
@@ -710,6 +731,36 @@ def main() -> int:
                   f"({ranges}); the rest get no timing", file=sys.stderr)
         lines = keep
         from_line = 1
+    repeats = repeats_for(args.bani)
+    if repeats:
+        # The block comes round again as a block: a reciter closing on a
+        # couplet says both lines, then both again -- 208, 209, 208, 209, not
+        # 208, 208, 209, 209. Expanded in recitation order, so a repeat in the
+        # middle of a bani works the same way as one at the end. The numbers
+        # in the file are always the source text's own line numbers.
+        spans = sorted((int(a) - 1, int(b) - 1, int(t)) for a, b, t in repeats)
+        expanded, i, used = [], 0, 0
+        while i < len(lines):
+            here = next((s for s in spans if s[0] == lines[i]["idx"]), None)
+            if here is None:
+                expanded.append(lines[i])
+                i += 1
+                continue
+            first, last, times = here
+            block = []
+            while i < len(lines) and lines[i]["idx"] <= last:
+                block.append(lines[i])
+                i += 1
+            for _ in range(times):
+                expanded.extend(dict(ln) for ln in block)
+            used += 1
+        if used != len(spans):
+            raise SystemExit(f"repeat {repeats} names a line that is not aligned")
+        if verbose:
+            shown = ", ".join(f"{a + 1}-{b + 1} x{t}" for a, b, t in spans)
+            print(f"repeated as a block ({shown}): {len(lines)} lines become "
+                  f"{len(expanded)} timing rows", file=sys.stderr)
+        lines = expanded
     if from_line > 1:
         skipped = lines[: from_line - 1]
         lines = lines[from_line - 1:]

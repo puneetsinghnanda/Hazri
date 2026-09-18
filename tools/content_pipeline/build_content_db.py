@@ -23,6 +23,7 @@ REPORT = os.path.join(ROOT, "content", "build-report.json")
 AUDIO_DIR = os.path.join(ROOT, "assets", "audio")
 TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 SIMRAN_DIR = os.path.join(ROOT, "content", "source", "simran")
+VERIFIED_FILE = os.path.join(TIMINGS_DIR, "verified.json")
 VICHAR_DIR = os.path.join(ROOT, "content", "source", "vichar")
 
 CONTENT_VERSION = 7
@@ -328,6 +329,14 @@ STARTS_AT = {
     "rehras-sahib": "ਸੋ ਦਰੁ ਰਾਗੁ ਆਸਾ ਮਹਲਾ ੧ ॥",
 }
 
+# The same in the other direction. The Chaupai Sahib of Nitnem closes on
+# ॥੪੦੧॥; this source file carries on into the colophon verses, the ਅੜਿਲ and
+# the ਸ੍ਵੈਯਾ, which the recitation does not say. The line named here is kept
+# and everything after it is dropped.
+ENDS_AT = {
+    "chaupai-sahib": "ਦੁਸਟ ਦੋਖ ਤੇ ਲੇਹੁ ਬਚਾਈ ॥੪੦੧॥",
+}
+
 
 def build_bani_v2(con: sqlite3.Connection, slug: str, report: dict) -> None:
     """Loads one schema-2.0 source file into bani, bani_version, line, meaning.
@@ -360,6 +369,17 @@ def build_bani_v2(con: sqlite3.Connection, slug: str, report: dict) -> None:
             raise SystemExit(f"{path}: no line reads {opening!r} to start at")
         dropped = starts[0]
         doc["lines"] = doc["lines"][dropped:]
+
+    dropped_after = 0
+    closing = ENDS_AT.get(slug)
+    if closing:
+        ends = [i for i, ln in enumerate(doc["lines"])
+                if ln["text"]["gurmukhi_plain"].strip() == closing]
+        if not ends:
+            raise SystemExit(f"{path}: no line reads {closing!r} to end at")
+        keep = ends[-1] + 1
+        dropped_after = len(doc["lines"]) - keep
+        doc["lines"] = doc["lines"][:keep]
 
     for code, a in prov["assets"].items():
         con.execute(
@@ -444,12 +464,32 @@ def build_bani_v2(con: sqlite3.Connection, slug: str, report: dict) -> None:
         "source_bani_id": b["id"],
         "lines": len(doc["lines"]),
         "lines_dropped_before_start": dropped,
+        "lines_dropped_after_end": dropped_after,
         "units": b["total_units"],
         "meanings": meanings,
         "word_misaligned_lines": len(misaligned),
         "vishraam_unparsed_lines": len(no_vishraam),
         "hindi_meaning_note": (prov.get("hindi_meaning") or {}).get("note"),
     }
+
+
+def listened_to(slug: str, lines: list) -> bool:
+    """Has a person listened to exactly these timings and accepted them?
+
+    Decided here rather than trusted from the timing file, because the file's
+    own flag is written when the aligner runs: marking a bani verified
+    afterwards would not have reached it, and re-aligning one that was
+    verified would have carried somebody's word onto timings they never heard.
+    The hash is over the lines themselves, so either way it answers.
+    """
+    if not os.path.exists(VERIFIED_FILE):
+        return False
+    with open(VERIFIED_FILE, encoding="utf-8") as fh:
+        recorded = (json.load(fh).get(slug) or {}).get("linesSha")
+    if not recorded:
+        return False
+    payload = json.dumps(lines, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16] == recorded
 
 
 def build_audio(con: sqlite3.Connection, report: dict) -> None:
@@ -477,6 +517,7 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
             with open(timings, encoding="utf-8") as fh:
                 doc = json.load(fh)
             duration_ms = doc.get("durationMs")
+            doc["verified"] = listened_to(slug, doc.get("lines", []))
             timing_json = json.dumps(doc, ensure_ascii=False, separators=(",", ":"))
 
         track_id = f"{slug}_sgpc"
@@ -497,10 +538,7 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
             con.execute(
                 "UPDATE bani SET est_minutes = ? WHERE id = ?",
                 (max(1, -(-duration_ms // 60000)), bani_id))
-        verified = None
-        if os.path.exists(timings):
-            with open(timings, encoding="utf-8") as fh:
-                verified = json.load(fh).get("verified")
+        verified = doc["verified"] if timing_json else None
         built.append({
             "bani": slug,
             "bytes": os.path.getsize(audio),

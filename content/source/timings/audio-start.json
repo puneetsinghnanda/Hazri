@@ -1,5 +1,5 @@
 {
-  "_note": "Where each shipped recitation starts saying the text, and which lines it says, taken by ear. `seconds` is how far into the recording the first word of the text is spoken -- several of these open with an invocation the text does not carry, and the warp is anchored at the start, so without this the whole alignment reads early. `lines` are the 1-based line ranges the recitation actually covers, for a recording that leaves out a stretch: lines outside them keep their text and get no timing, so they read and are never highlighted. Nothing is cut from any recording.",
+  "_note": "Where each shipped recitation starts saying the text, which lines it says, and which it says more than once -- all taken by ear. `seconds`: how far in the first word of the text is spoken. `lines`: the 1-based line ranges the recitation covers, for a recording that leaves a stretch out; lines outside them keep their text and get no timing. `repeat`: [first, last, times] for lines the reciter says twice, common at the close of a bani. `skipAudio`: stretches of the recording filled with something the text does not carry. Nothing is ever cut from a recording.",
   "japji-sahib": {
     "seconds": 0
   },
@@ -9,6 +9,18 @@
       [
         2,
         801
+      ]
+    ],
+    "repeat": [
+      [
+        796,
+        796,
+        2
+      ],
+      [
+        798,
+        798,
+        2
       ]
     ]
   },
@@ -20,19 +32,35 @@
     "lines": [
       [
         3,
-        102
-      ],
+        103
+      ]
+    ],
+    "skipAudio": [
       [
-        126,
-        128
+        207,
+        212.4
       ]
     ]
   },
   "anand-sahib": {
-    "seconds": 6
+    "seconds": 6,
+    "repeat": [
+      [
+        209,
+        210,
+        2
+      ]
+    ]
   },
   "rehras-sahib": {
-    "seconds": 7.5
+    "seconds": 7.5,
+    "repeat": [
+      [
+        326,
+        327,
+        2
+      ]
+    ]
   },
   "kirtan-sohila": {
     "seconds": 6.5
@@ -41,6 +69,6 @@
     "seconds": 6
   },
   "sukhmani-sahib": {
-    "seconds": 7
+    "seconds": 0
   }
 }

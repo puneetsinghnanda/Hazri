@@ -98,6 +98,23 @@ is a real shortfall rather than a blind spot; Sukhmani, which broke at 18:49
 and has not been re-checked; and Jaap and Japji, which have never had a full
 listen.
 
+`timings/audio-start.json` is where a recording's own shape is written down,
+and between them these four keys have covered every mismatch found so far:
+
+| key | what it says | found in |
+|---|---|---|
+| `seconds` | how far in the first word of the text is spoken | seven of the nine |
+| `lines` | the 1-based line ranges the recitation actually covers | Jaap, Chaupai |
+| `repeat` | `[first, last, times]` for a passage the reciter says more than once | Anand, Rehras, Jaap |
+| `skipAudio` | stretches filled with something the text does not carry | Chaupai |
+
+A `repeat` block comes round again as a block. A reciter closing on a couplet
+says both lines and then both again -- 208, 209, 208, 209, not 208, 208, 209,
+209 -- and the timing file carries the lines twice in that order, so the
+highlight follows the reciter round. It is expanded in recitation order, so a
+line repeated in the middle of a bani works the same way; Jaap's reciter says
+two of its closing lines twice each, in place.
+
 `text_vs_audio.py` is the third check, and the one that found what the other
 two could not. The aligner cannot refuse: given a text and a recording it
 always produces a mapping, so text the reciter never says gets absorbed rather

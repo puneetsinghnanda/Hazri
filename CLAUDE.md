@@ -86,8 +86,9 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
 - **A recitation does not always say what the text carries**, and this is the
   failure mode to expect. `timings/audio-start.json` records, per bani, where
   a recording starts saying the text (`seconds`), which line ranges it
-  actually covers (`lines`), and any stretch it fills with something the text
-  does not have (`skipAudio`). Chaupai, for instance, says the chaupais
+  actually covers (`lines`), any passage the reciter says more than once
+  (`repeat`), and any stretch filled with something the text does not have
+  (`skipAudio`). Chaupai, for instance, says the chaupais
   through ॥੪੦੧॥ and then the ਦੋਹਰਾ, and nothing between. Nothing is ever cut
   from a recording; the audio still plays, those seconds simply belong to no
   line.
