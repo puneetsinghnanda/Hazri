@@ -77,18 +77,22 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   outright that those are not editorial labels, so the unit number is stored
   and no word is invented for it. Japji keeps its labels because its source
   file names its sections.
-- **Four of the nine alignments have been checked by ear**, and the timing
+- **Five of the nine alignments have been checked by ear**, and the timing
   files say which: `timings/verified.json` records who listened, keyed by a
   hash of the exact timings they heard, so re-aligning a bani drops it back to
   unverified rather than carrying somebody's word onto a file they never
-  checked. Tav Prasad Savaiye, Anand, Kirtan Sohila and Ardas are verified.
-  Japji, Jaap, Chaupai, Rehras and Sukhmani are not.
+  checked. Japji, Chaupai, Anand, Kirtan Sohila and Ardas are verified. Jaap,
+  Tav Prasad Savaiye, Rehras and Sukhmani are not.
 - **A recitation does not always say what the text carries**, and this is the
   failure mode to expect. `timings/audio-start.json` records, per bani, where
   a recording starts saying the text (`seconds`), which line ranges it
   actually covers (`lines`), any passage the reciter says more than once
   (`repeat`), any stretch filled with something the text does not have
-  (`skipAudio`), and any line held to a time somebody heard (`pin`).
+  (`skipAudio`), any line held to a time somebody heard (`pin`), and the lines
+  either side of it to leave alone (`hold`). A pin without holds either side
+  spreads its correction over the whole recording -- that is what threw Tav
+  Prasad Savaiye's opening out -- so bracket one unless the whole timeline is
+  adrift.
   `repeat` must come from a person who listened: duplicating a line that is
   said once lets the warp split one utterance into two plausible-looking
   halves, which is how Jaap and Rehras both got a repeat they did not need.
@@ -104,8 +108,8 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   catches text the recitation never says, by comparing the reciter's phrasing
   rate against the lines assigned. Run all three; `audio/README.md` has the
   current numbers and what is still outstanding -- Rehras and Jaap each have
-  a stretch near the end that is still unexplained, and Sukhmani reads 75s
-  late against its second anchor.
+  a stretch near the end that is still unexplained, and Sukhmani has five pins
+  and one anchor left, so almost nothing independent still checks it.
 
 - **The daily Hukamnama is gone**, replaced by ਅੱਜ ਦਾ ਵਿਚਾਰ (PRD 1.11): 200
   bundled lines from Sri Guru Granth Sahib Ji, one a day by date, shareable as

@@ -654,6 +654,14 @@ def pins_for(slug: str) -> list[tuple[int, float]]:
 
     A pinned line is no longer evidence: it is an input. Keep the anchors file
     for lines that are not pinned, which is what still checks the result.
+
+    A lone pin is a blunt instrument, because the stretch that brings it onto
+    its time has to go somewhere and the only other knots are the two ends of
+    the recording. One pin 1.4s early on Jaap dragged the preceding sixteen
+    minutes with it -- half a second out in the middle, enough to take the
+    pause hit rate from 44% to 14% -- and the same drag is what threw Tav
+    Prasad Savaiye's opening out when its closing line was pinned. Bracket a
+    pin with `hold` (below) unless the whole timeline really is adrift.
     """
     if not os.path.exists(AUDIO_START_FILE):
         return []
@@ -662,19 +670,44 @@ def pins_for(slug: str) -> list[tuple[int, float]]:
     return sorted((int(p["line"]), float(p["s"])) for p in entry.get("pin", []))
 
 
+def holds_for(slug: str) -> list[int]:
+    """Lines to leave exactly where the warp put them.
+
+    A hold is a knot that maps a line's time to itself, so a neighbouring
+    pin's stretch stops there instead of running to the end of the recording.
+    Bracketing a pin with a hold either side confines the change to those few
+    lines and leaves every other line in the bani bit-identical, which is what
+    you want when one boundary snapped to the wrong pause and the rest of the
+    alignment is accepted.
+
+    A hold is not a claim about the recitation and costs no evidence: it says
+    only "this was already right, do not move it".
+    """
+    if not os.path.exists(AUDIO_START_FILE):
+        return []
+    with open(AUDIO_START_FILE, encoding="utf-8") as fh:
+        entry = json.load(fh).get(slug) or {}
+    return sorted(int(n) for n in entry.get("hold", []))
+
+
 def apply_pins(out_lines: list[dict], pins: list[tuple[int, float]],
-               total_s: float) -> int:
+               total_s: float, holds: list[int] = ()) -> int:
     """Stretches the timeline so each pinned line starts where it was heard."""
-    knots = [(0.0, 0.0)]
-    for line, want in pins:
+    def start_of(line: int, what: str) -> float:
         row = next((r for r in out_lines if r["line"] == line), None)
         if row is None:
-            raise SystemExit(f"pin: line {line} has no timing to pin")
-        knots.append((row["s"] / 1000.0, want))
-    knots.append((total_s, total_s))
+            raise SystemExit(f"{what}: line {line} has no timing")
+        return row["s"] / 1000.0
+
+    knots = [(0.0, 0.0), (total_s, total_s)]
+    knots += [(start_of(line, "pin"), want) for line, want in pins]
+    # A held line is its own target: the map is the identity through it.
+    knots += [((t := start_of(line, "hold")), t) for line in holds]
     knots = sorted(set(knots))
     # A pin that would run the timeline backwards is a bad number, not a warp
-    # to force: refuse it rather than produce times that go the wrong way.
+    # to force: refuse it rather than produce times that go the wrong way. A
+    # hold that lands the wrong side of a pin trips this too, which is the
+    # point -- it means the pin moves the line past something said to be fixed.
     for (a, b), (c, d) in zip(knots, knots[1:]):
         if c <= a or d <= b:
             raise SystemExit(f"pin: {knots} is not in order; check the times")
@@ -775,12 +808,15 @@ def main() -> int:
         pins = pins_for(args.bani)
         if not pins:
             raise SystemExit(f"no pins for {args.bani} in {AUDIO_START_FILE}")
-        apply_pins(doc["lines"], pins, doc["durationMs"] / 1000.0)
+        holds = holds_for(args.bani)
+        apply_pins(doc["lines"], pins, doc["durationMs"] / 1000.0, holds)
         doc["pinnedLines"] = [p[0] for p in pins]
+        doc["heldLines"] = holds
         with open(out_path, "w", encoding="utf-8") as fh:
             json.dump(doc, fh, ensure_ascii=False, separators=(",", ":"))
             fh.write("\n")
-        print(f"re-pinned {out_path} to {len(pins)} time(s) taken by ear")
+        print(f"re-pinned {out_path} to {len(pins)} time(s) taken by ear"
+              + (f", held at {len(holds)} line(s)" if holds else ""))
         return 0
 
     audio = args.audio or os.path.join(AUDIO_SRC, f"{args.bani}.mp3")
@@ -942,10 +978,12 @@ def main() -> int:
         stats.append((i, s, e, float(spoken[i])))
 
     pins = pins_for(args.bani)
+    holds = holds_for(args.bani)
     if pins:
-        apply_pins(out_lines, pins, full_len)
+        apply_pins(out_lines, pins, full_len, holds)
         if verbose:
-            print(f"pinned {len(pins)} line(s) to times taken by ear",
+            print(f"pinned {len(pins)} line(s) to times taken by ear"
+                  + (f", held at {len(holds)} line(s)" if holds else ""),
                   file=sys.stderr)
 
     timings = {
@@ -955,6 +993,7 @@ def main() -> int:
         "leadInMs": int(round(lead * 1000)),
         "unattributedMs": int(round(sum(b - a for a, b in skips) * 1000)),
         "pinnedLines": [p[0] for p in pins],
+        "heldLines": holds,
         "version": 6,
         "method": "espeak-ng synthesis + two-pass MFCC dynamic time warping, snapped to pauses",
         # True only when somebody has listened to exactly these timings.

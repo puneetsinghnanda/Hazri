@@ -83,20 +83,24 @@ the gap column measures.
 
 | bani | verified | anchors | pauses | gap between lines |
 |---|---|---|---|---|
-| Japji Sahib | no | -- | 98% | 360 ms |
+| Japji Sahib | **yes** | -- | 98% | 360 ms |
 | Jaap Sahib | no | 0.00s | 44% | 0 ms |
-| Tav Prasad Savaiye | **yes** | -- | 88% | 370 ms |
-| Chaupai Sahib | no | 0.10s worst of 2 | 100% | 170 ms |
+| Tav Prasad Savaiye | no | -- | 88% | 420 ms |
+| Chaupai Sahib | **yes** | 0.10s worst of 2 | 100% | 260 ms |
 | Anand Sahib | **yes** | 0.00s | 98% | 400 ms |
 | Rehras Sahib | no | 0.10s | 72% | 220 ms |
 | Kirtan Sohila | **yes** | 0.00s | 94% | 420 ms |
-| Ardas | **yes** | 0.14s | 100% | 490 ms |
-| Sukhmani Sahib | no | 0.22s | 64% | 120 ms |
+| Ardas | **yes** | 0.14s | 100% | 500 ms |
+| Sukhmani Sahib | no | 0.35s | 67% | 380 ms |
 
 Still to listen to: Rehras, whose reciter does break between lines so its 72%
-is a real shortfall rather than a blind spot; Sukhmani, which broke at 18:49
-and has not been re-checked; and Jaap and Japji, which have never had a full
-listen.
+is a real shortfall rather than a blind spot; Jaap, whose 44% is the reciter
+running lines together rather than a misalignment, and whose closing minute
+is still not fully explained; Tav Prasad Savaiye, which has no anchors file at
+all since the last one was spent on a pin that has now been taken out again;
+and Sukhmani, which carries five pins and has one anchor left, and that anchor
+is the line next to a pin -- so there is very little left in the file that
+checks it rather than being told by it.
 
 `timings/audio-start.json` is where a recording's own shape is written down,
 and between them these four keys have covered every mismatch found so far:
@@ -107,7 +111,8 @@ and between them these four keys have covered every mismatch found so far:
 | `lines` | the 1-based line ranges the recitation actually covers | Jaap, Chaupai |
 | `repeat` | `[first, last, times]` for a passage the reciter says more than once | Anand, Rehras, Jaap |
 | `skipAudio` | stretches filled with something the text does not carry | Chaupai |
-| `pin` | `{line, s}` holding a line to a time somebody heard | Tav Prasad Savaiye, Sukhmani |
+| `pin` | `{line, s}` holding a line to a time somebody heard | Jaap, Sukhmani |
+| `hold` | lines to leave exactly where the warp put them, bracketing a pin | Jaap |
 
 A `pin` is the one key that is an input rather than a description. The warp
 snaps each boundary onto the pause it lands in, and where a reciter barely
@@ -121,6 +126,27 @@ leaves everything outside it untouched.
 Pinning a line spends it: it is no longer evidence, because the aligner was
 told the answer. Keep `<bani>.anchors.json` for lines that are **not** pinned
 -- that is what still checks the result.
+
+**A pin on its own moves everything.** The stretch that brings the pinned line
+onto its time has to go somewhere, and if the only other knots are the two
+ends of the recording then it is spread over the whole thing. One pin 1.36s
+early on Jaap's ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ pulled the preceding sixteen minutes forward
+with it -- 0.92s at line 500 -- and took the pause hit rate from 44% to 14%.
+It is the same drag that threw Tav Prasad Savaiye's opening out when its
+closing line was pinned to 2:37: nothing was wrong with the opening, it had
+simply been dragged 1.3s by a correction two minutes later.
+
+So bracket a pin with `hold`, which is a knot that maps a line to itself:
+
+```json
+"jaap-sahib": { "pin": [{ "line": 797, "s": 1004.0 }], "hold": [794, 798] }
+```
+
+Now the map is the identity outside 794..798 and only the lines between them
+move. That run changed 4 of Jaap's 800 lines and left the other 796
+bit-identical, with the pause rate and the anchor error unchanged. Use a lone
+pin only when the whole timeline really is adrift; a boundary that snapped to
+the wrong pause is local, and the fix should be too.
 
 `repeat` must come from a person who has listened, and never from the timings.
 Duplicating a line the reciter says only once lets the warp split that single

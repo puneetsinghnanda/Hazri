@@ -1,5 +1,5 @@
 {
-  "_note": "Where each shipped recitation starts saying the text, which lines it says, and which it says more than once -- all taken by ear. `seconds`: how far in the first word of the text is spoken. `lines`: the 1-based line ranges the recitation covers, for a recording that leaves a stretch out; lines outside them keep their text and get no timing. `repeat`: [first, last, times] for lines the reciter says twice, common at the close of a bani. `skipAudio`: stretches of the recording filled with something the text does not carry. Nothing is ever cut from a recording.",
+  "_note": "Where each shipped recitation starts saying the text, which lines it says, and which it says more than once -- all taken by ear. `seconds`: how far in the first word of the text is spoken. `lines`: the 1-based line ranges the recitation covers, for a recording that leaves a stretch out; lines outside them keep their text and get no timing. `repeat`: [first, last, times] for lines the reciter says twice, common at the close of a bani. `skipAudio`: stretches of the recording filled with something the text does not carry. `pin`: a line held to the second somebody heard it start. `hold`: lines to leave exactly where the warp put them, which stops a pin's stretch spreading across the whole recitation. Nothing is ever cut from a recording.",
   "japji-sahib": {
     "seconds": 0
   },
@@ -10,16 +10,20 @@
         2,
         801
       ]
+    ],
+    "pin": [
+      {
+        "line": 797,
+        "s": 1004.0
+      }
+    ],
+    "hold": [
+      794,
+      798
     ]
   },
   "tav-prasad-savaiye": {
-    "seconds": 0,
-    "pin": [
-      {
-        "line": 39,
-        "s": 157.0
-      }
-    ]
+    "seconds": 0
   },
   "chaupai-sahib": {
     "seconds": 10,
@@ -70,12 +74,16 @@
         "s": 3250.44
       },
       {
+        "line": 1457,
+        "s": 3294.0
+      },
+      {
         "line": 1676,
         "s": 3773.0
       },
       {
-        "line": 1776,
-        "s": 4029.56
+        "line": 1774,
+        "s": 4023.0
       },
       {
         "line": 2010,
