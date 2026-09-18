@@ -495,11 +495,858 @@ def group_detail() -> str:
 """
 
 
+
+# ------------------------------------------------------- shared furniture
+
+def field(label: str, value: str, hint: str | None = None,
+          optional: bool = False) -> str:
+    """A labelled input, filled or placeholder."""
+    filled = not value.startswith("~")
+    text = value.lstrip("~")
+    return (
+        f'<div class="col" style="gap:5px">'
+        f'<div class="row" style="gap:6px">'
+        f'<div style="font-size:12.5px;font-weight:700;color:var(--ink2)">{label}</div>'
+        + (f'<div style="font-size:11.5px;color:var(--muted)">optional</div>'
+           if optional else "")
+        + f'</div>'
+        f'<div style="background:var(--card);border:1px solid var(--rule);'
+        f'border-radius:14px;padding:13px 14px;font-size:15px;'
+        f'color:{"var(--ink)" if filled else "var(--muted)"}">{text}</div>'
+        + (f'<div style="font-size:11.5px;color:var(--muted);line-height:1.45">'
+           f'{hint}</div>' if hint else "")
+        + f'</div>')
+
+
+def sheet(inner: str, height: int = 520) -> str:
+    """A bottom sheet over a dimmed screen."""
+    return (
+        f'<div style="position:absolute;inset:0;background:var(--scrim)"></div>'
+        f'<div style="position:absolute;left:0;right:0;bottom:0;height:{height}px;'
+        f'background:var(--bg);border-radius:28px 28px 0 0;padding:10px 20px 24px;'
+        f'display:flex;flex-direction:column;gap:14px">'
+        f'<div style="width:40px;height:4px;border-radius:2px;background:var(--rule);'
+        f'align-self:center"></div>{inner}</div>')
+
+
+def listrow(icon_name: str, title: str, sub: str | None = None,
+            right: str | None = None, tint: bool = False) -> str:
+    return (
+        f'<div class="row" style="gap:12px;padding:12px 0">'
+        f'<div style="width:38px;height:38px;border-radius:12px;flex:none;'
+        f'display:flex;align-items:center;justify-content:center;'
+        f'background:{"var(--kesriSoft)" if tint else "var(--card2)"};'
+        f'color:{"var(--kesriInk)" if tint else "var(--ink2)"}">'
+        f'{icon(icon_name, 19)}</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14.5px;font-weight:600">{title}</div>'
+        + (f'<div style="font-size:12.5px;color:var(--muted)">{sub}</div>'
+           if sub else "")
+        + f'</div>'
+        + (f'<div style="font-size:13px;color:var(--muted);font-weight:600">{right}'
+           f'</div>' if right else
+           f'<div style="color:var(--muted);transform:rotate(180deg)">'
+           f'{icon("back", 18)}</div>')
+        + f'</div>')
+
+
+def toggle(on: bool) -> str:
+    return (f'<div style="width:44px;height:26px;border-radius:13px;flex:none;'
+            f'background:{"var(--sage)" if on else "var(--rule)"};position:relative">'
+            f'<div style="position:absolute;top:3px;{"right" if on else "left"}:3px;'
+            f'width:20px;height:20px;border-radius:10px;background:#fff"></div></div>')
+
+
+def primary(label: str, ic: str | None = None) -> str:
+    return (f'<div class="btn" style="background:var(--primary);color:var(--onPrimary)">'
+            + (icon(ic, 20) if ic else "") + f'<div>{label}</div></div>')
+
+
+def ghost(label: str) -> str:
+    return (f'<div class="btn" style="background:var(--card2);color:var(--ink2);'
+            f'min-height:48px;font-size:15px"><div>{label}</div></div>')
+
+
+# ------------------------------------------------------------ the screens
+
+def profile() -> str:
+    return f"""
+<div class="pad col" style="gap:16px">
+  {header("Join the sangat", "So your paath is counted with others")}
+  <div class="col" style="gap:14px">
+    {field("Your name", "Harjit Singh")}
+    {field("Email", "harjit@example.com",
+           "Only used to bring your sangat back if you change phone. "
+           "Nobody else in the app sees it.")}
+    {field("Phone", "~Add a number", optional=True)}
+    {field("City", "Amritsar, Punjab",
+           "Shown as a dot on the Global Simran globe.")}
+  </div>
+  <div class="card row" style="padding:12px 14px;gap:10px;background:var(--card2);
+    box-shadow:none">
+    <div style="color:var(--sage);flex:none">{icon("check", 18)}</div>
+    <div style="font-size:12.5px;color:var(--ink2);line-height:1.5">
+      No password to make or remember. Your diary and your paath stay on this
+      phone unless you turn on sync.</div>
+  </div>
+  {primary("Continue")}
+  <div style="text-align:center;font-size:12px;color:var(--muted)">
+    What we store &amp; why</div>
+</div>
+"""
+
+
+def account() -> str:
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Your account", left="menu")}
+  <div class="card row" style="padding:16px;gap:14px">
+    {avatar("HS", "var(--kesriSoft)", "var(--kesriInk)", 56)}
+    <div class="col" style="flex:1">
+      <div class="disp" style="font-size:20px;font-weight:700">Harjit Singh</div>
+      <div style="font-size:13px;color:var(--muted)">Amritsar, Punjab</div>
+    </div>
+  </div>
+  <div class="card col" style="padding:4px 16px">
+    {listrow("bell", "Email", "harjit@example.com")}
+    <div style="height:1px;background:var(--rule)"></div>
+    {listrow("bell", "Phone", "Not added")}
+    <div style="height:1px;background:var(--rule)"></div>
+    {listrow("globe", "City", "Amritsar, Punjab")}
+  </div>
+  <div class="card col" style="padding:14px;gap:11px;background:var(--kesriSoft)">
+    <div class="row" style="gap:10px">
+      <div style="color:var(--kesriInk);flex:none">{icon("share", 20)}</div>
+      <div class="col" style="flex:1">
+        <div style="font-size:14px;font-weight:700;color:var(--kesriInk)">
+          Secure your sangat</div>
+        <div style="font-size:12.5px;color:var(--kesriInk);opacity:.85;
+          line-height:1.45">Right now this account lives on this phone only.
+          Add your email and it comes back if you change phone.</div>
+      </div>
+    </div>
+    <div class="btn" style="background:var(--kesri);color:#fff;min-height:44px;
+      font-size:14.5px"><div>Send me the link</div></div>
+  </div>
+  <div class="card col" style="padding:4px 16px">
+    {listrow("check", "Diary sync", "On · synced 2 minutes ago", right="On")}
+    <div style="height:1px;background:var(--rule)"></div>
+    {listrow("globe", "Privacy &amp; my data", "What is stored, and deleting it")}
+  </div>
+  {ghost("Sign out of this phone")}
+  <div style="height:86px"></div>
+</div>
+{nav("today")}
+"""
+
+
+def secure_account() -> str:
+    return f"""
+<div class="pad col" style="gap:18px">
+  {header("Keep your sangat")}
+  <div class="col" style="align-items:center;gap:14px;padding-top:10px">
+    <div style="width:92px;height:92px;border-radius:46px;background:var(--kesriSoft);
+      color:var(--kesriInk);display:flex;align-items:center;justify-content:center">
+      {icon("share", 44)}</div>
+    <div class="disp" style="font-size:22px;font-weight:700;text-align:center;
+      line-height:1.25">There is no password<br>to forget</div>
+    <div style="font-size:14px;color:var(--ink2);text-align:center;line-height:1.6;
+      padding:0 6px">Your account lives on this phone. Add your email and we
+      will send one link — tap it and your groups, goals and diary come back on
+      any phone you sign in from.</div>
+  </div>
+  {field("Email", "harjit@example.com")}
+  {primary("Send the link")}
+  <div class="card row" style="padding:12px 14px;gap:10px;background:var(--card2);
+    box-shadow:none">
+    <div style="color:var(--muted);flex:none">{icon("check", 18)}</div>
+    <div style="font-size:12.5px;color:var(--ink2);line-height:1.5">
+      We never show your email to anyone else, and we never send anything but
+      this link.</div>
+  </div>
+  <div style="text-align:center;font-size:13px;color:var(--muted);font-weight:600">
+    Not now</div>
+</div>
+"""
+
+
+def privacy_data() -> str:
+    on_phone = ["Your diary and streaks", "Reading position and goals",
+                "Every bani, its audio and the calendar"]
+    on_server = ["Your name, email, city", "Which groups you are in",
+                 "How much you have completed towards a shared goal"]
+    def bullets(items, colour):
+        return "".join(
+            f'<div class="row" style="gap:9px;padding:4px 0">'
+            f'<div style="width:6px;height:6px;border-radius:3px;background:{colour};'
+            f'flex:none"></div>'
+            f'<div style="font-size:13.5px;color:var(--ink2)">{t}</div></div>'
+            for t in items)
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Privacy &amp; my data")}
+  <div class="card col" style="padding:15px;gap:6px">
+    <div class="row" style="gap:8px">
+      <div style="color:var(--sage)">{icon("check", 18)}</div>
+      <div style="font-size:14px;font-weight:700">On this phone only</div>
+    </div>
+    {bullets(on_phone, "var(--sage)")}
+  </div>
+  <div class="card col" style="padding:15px;gap:6px">
+    <div class="row" style="gap:8px">
+      <div style="color:var(--teal)">{icon("globe", 18)}</div>
+      <div style="font-size:14px;font-weight:700">Shared with the sangat</div>
+    </div>
+    {bullets(on_server, "var(--teal)")}
+  </div>
+  <div class="card col" style="padding:6px 16px">
+    <div class="row" style="gap:12px;padding:13px 0">
+      <div class="col" style="flex:1">
+        <div style="font-size:14px;font-weight:600">Show me on the globe</div>
+        <div style="font-size:12px;color:var(--muted)">A dot at your city</div>
+      </div>{toggle(True)}
+    </div>
+    <div style="height:1px;background:var(--rule)"></div>
+    <div class="row" style="gap:12px;padding:13px 0">
+      <div class="col" style="flex:1">
+        <div style="font-size:14px;font-weight:600">Show my name in groups</div>
+        <div style="font-size:12px;color:var(--muted)">
+          Off shows you as "a member"</div>
+      </div>{toggle(True)}
+    </div>
+  </div>
+  {ghost("Download everything we hold")}
+  <div class="btn" style="background:transparent;color:#C0392B;min-height:48px;
+    font-size:15px;border:1px solid #C0392B"><div>Delete my account and data</div></div>
+</div>
+"""
+
+
+def unlock_sheet() -> str:
+    perks = [("sangat", "See who is reciting", "Your family, your sangat, the world"),
+             ("globe", "Join a shared goal", "101 Sukhmani Sahib by Gurpurab"),
+             ("check", "Keep your diary safe", "It comes back if you change phone")]
+    rows = "".join(
+        f'<div class="row" style="gap:12px">'
+        f'<div style="width:40px;height:40px;border-radius:13px;flex:none;'
+        f'background:var(--kesriSoft);color:var(--kesriInk);display:flex;'
+        f'align-items:center;justify-content:center">{icon(i, 20)}</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14.5px;font-weight:700">{t}</div>'
+        f'<div style="font-size:12.5px;color:var(--muted)">{s}</div></div></div>'
+        for i, t, s in perks)
+    inner = f"""
+  <div class="col" style="gap:4px;padding-top:4px">
+    <div class="disp" style="font-size:24px;font-weight:700">Join the sangat</div>
+    <div style="font-size:13.5px;color:var(--muted)">
+      Hazri works fully without this. This adds the people.</div>
+  </div>
+  <div class="col" style="gap:14px;padding-top:4px">{rows}</div>
+  <div style="flex:1"></div>
+  {primary("Set up — takes a minute")}
+  {ghost("Not now")}
+  <div style="text-align:center;font-size:11.5px;color:var(--muted)">
+    No password · no ads · your paath stays on your phone</div>
+"""
+    # A modal sheet covers the bottom bar rather than sliding under it.
+    return today().replace(nav("today"), "") + nav("today") + sheet(inner, 486)
+
+
+def settings_menu() -> str:
+    inner = f"""
+  <div class="card row" style="padding:14px;gap:12px">
+    {avatar("HS", "var(--kesriSoft)", "var(--kesriInk)", 46)}
+    <div class="col" style="flex:1">
+      <div style="font-size:15.5px;font-weight:700">Harjit Singh</div>
+      <div style="font-size:12.5px;color:var(--muted)">Amritsar · synced</div>
+    </div>
+    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>
+  <div class="card col" style="padding:2px 16px">
+    {listrow("bell", "Reminders")}
+    <div style="height:1px;background:var(--rule)"></div>
+    {listrow("simran", "Audio &amp; voice")}
+    <div style="height:1px;background:var(--rule)"></div>
+    {listrow("nitnem", "Text size &amp; script")}
+    <div style="height:1px;background:var(--rule)"></div>
+    {listrow("globe", "Language")}
+  </div>
+  <div class="card col" style="padding:2px 16px">
+    {listrow("check", "Privacy &amp; my data")}
+    <div style="height:1px;background:var(--rule)"></div>
+    {listrow("share", "About &amp; credits")}
+  </div>
+  <div style="flex:1;min-height:6px"></div>
+  <div style="text-align:center;font-size:11.5px;color:var(--muted)">
+    Hazri 2.0 · No ads on Gurbani, ever</div>
+"""
+    return today().replace(nav("today"), "") + nav("today") + sheet(inner, 600)
+
+
+def sangat_home() -> str:
+    groups = [("Nanda Family", "family group · 6 members", 0.67, "68 of 101 Sukhmani"),
+              ("Gurdwara Sangat", "sangat · 214 members", 0.41,
+               "8,900 of 21,000 paath"),
+              ("Amrit Vela Circle", "simran circle · 12 members", 0.85,
+               "255 of 300 minutes")]
+    cards = "".join(
+        f'<div class="card row" style="padding:14px;gap:13px">'
+        f'<div style="position:relative;width:52px;height:52px;flex:none">'
+        f'{ring(p, 52, 6)}'
+        f'<div style="position:absolute;inset:0;display:flex;align-items:center;'
+        f'justify-content:center;font-size:12px;font-weight:700">'
+        f'{int(p*100)}%</div></div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:15px;font-weight:700">{n}</div>'
+        f'<div style="font-size:12px;color:var(--muted)">{s}</div>'
+        f'<div style="font-size:12.5px;color:var(--ink2);font-weight:600;'
+        f'padding-top:2px">{g}</div></div>'
+        f'<div style="color:var(--muted);transform:rotate(180deg)">'
+        f'{icon("back", 18)}</div></div>' for n, s, p, g in groups)
+    return f"""
+<div class="pad col" style="gap:13px">
+  {header("Sangat", "Together, wherever you are", left="menu", right="plus")}
+  <div class="card row" style="padding:14px;gap:12px;background:#0E1533;color:#EDECF6">
+    <div style="width:50px;height:50px;border-radius:25px;background:#1B2450;
+      color:#5B8DEF;display:flex;align-items:center;justify-content:center;flex:none">
+      {icon("globe", 26)}</div>
+    <div class="col" style="flex:1">
+      <div style="font-size:15px;font-weight:700">Global Naam Simran</div>
+      <div style="font-size:12.5px;opacity:.7">
+        4,812 sat today · 1,240 sitting now</div>
+    </div>
+    <div style="opacity:.6;transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>
+  <div class="eyebrow" style="padding-top:2px">Your groups</div>
+  {cards}
+  <div class="row" style="gap:10px;padding-top:2px">
+    <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary);
+      min-height:48px;font-size:14.5px">{icon("plus", 18)}<div>Create</div></div>
+    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
+      min-height:48px;font-size:14.5px"><div>Join with a link</div></div>
+  </div>
+</div>
+{nav("sangat")}
+"""
+
+
+def create_group() -> str:
+    kinds = [("Family", "People you live with or call", True),
+             ("Sangat", "A gurdwara or a wider group", False),
+             ("Simran circle", "Counted in minutes, not paath", False)]
+    cards = "".join(
+        f'<div class="card row" style="padding:13px 14px;gap:12px;'
+        f'border:1.5px solid {"var(--kesri)" if on else "transparent"}">'
+        f'<div style="width:20px;height:20px;border-radius:10px;flex:none;'
+        f'border:2px solid {"var(--kesri)" if on else "var(--rule)"};'
+        f'background:{"var(--kesri)" if on else "transparent"};display:flex;'
+        f'align-items:center;justify-content:center;color:#fff">'
+        + (icon("check", 12) if on else "") + f'</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14.5px;font-weight:700">{t}</div>'
+        f'<div style="font-size:12.5px;color:var(--muted)">{s}</div></div></div>'
+        for t, s, on in kinds)
+    return f"""
+<div class="pad col" style="gap:15px">
+  {header("Create a group")}
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">What kind</div>
+    {cards}
+  </div>
+  {field("Group name", "Nanda Family")}
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">Who can join</div>
+    <div class="card col" style="padding:6px 16px">
+      <div class="row" style="gap:12px;padding:13px 0">
+        <div class="col" style="flex:1">
+          <div style="font-size:14px;font-weight:600">Anyone with the link</div>
+          <div style="font-size:12px;color:var(--muted)">
+            Off means you add people yourself</div>
+        </div>{toggle(True)}
+      </div>
+    </div>
+  </div>
+  <div style="flex:1"></div>
+  {primary("Create group")}
+</div>
+"""
+
+
+def set_goal() -> str:
+    chips = "".join(
+        f'<div class="chip" style="background:{"var(--kesriSoft)" if on else "var(--card2)"};'
+        f'color:{"var(--kesriInk)" if on else "var(--ink2)"};min-height:36px">{t}</div>'
+        for t, on in [("Japji Sahib", False), ("Sukhmani Sahib", True),
+                      ("Chaupai Sahib", False), ("Rehras Sahib", False),
+                      ("Simran minutes", False), ("More…", False)])
+    return f"""
+<div class="pad col" style="gap:15px">
+  {header("Shared goal", "Nanda Family")}
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">What the group recites</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">{chips}</div>
+  </div>
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">How many, together</div>
+    <div class="card row" style="padding:12px 14px;gap:14px">
+      <div style="width:44px;height:44px;border-radius:22px;background:var(--card2);
+        color:var(--ink2);display:flex;align-items:center;justify-content:center;
+        flex:none;font-size:22px;font-weight:600">−</div>
+      <div class="col" style="flex:1;align-items:center">
+        <div class="disp" style="font-size:30px;font-weight:700;line-height:1">101</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:600">paath</div>
+      </div>
+      <div style="width:44px;height:44px;border-radius:22px;background:var(--kesriSoft);
+        color:var(--kesriInk);display:flex;align-items:center;justify-content:center;
+        flex:none;font-size:22px;font-weight:600">+</div>
+    </div>
+  </div>
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">By when</div>
+    <div class="card col" style="padding:6px 16px">
+      {listrow("diary", "Prakash Purab, Guru Nanak Dev Ji", "Tue 24 Nov · 4 days",
+               tint=True)}
+      <div style="height:1px;background:var(--rule)"></div>
+      {listrow("plus", "Pick another date", "Or no end date")}
+    </div>
+  </div>
+  <div class="card col" style="padding:13px 15px;gap:4px;background:var(--card2);
+    box-shadow:none">
+    <div style="font-size:12px;color:var(--muted);font-weight:700">THE GROUP WILL SEE</div>
+    <div style="font-size:14px;color:var(--ink);line-height:1.5">
+      “101 Sukhmani Sahib by Prakash Purab” — with everyone's count, and yours.</div>
+  </div>
+  <div style="flex:1"></div>
+  {primary("Set the goal")}
+</div>
+"""
+
+
+def invite() -> str:
+    members = [("HS", "Harjit Singh", "You started this group"),
+               ("GK", "Gurpreet Kaur", "Joined 3 days ago"),
+               ("MK", "Manpreet Kaur", "Joined 3 days ago"),
+               ("AS", "Amrit Singh", "Joined yesterday")]
+    rows = "".join(
+        f'<div class="row" style="gap:11px;padding:9px 0">{avatar(i)}'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14px;font-weight:600">{n}</div>'
+        f'<div style="font-size:12px;color:var(--muted)">{s}</div></div>'
+        f'<div style="font-size:12.5px;color:var(--muted);font-weight:600">'
+        f'{"Admin" if idx == 0 else "Remove"}</div></div>'
+        for idx, (i, n, s) in enumerate(members))
+    return f"""
+<div class="pad col" style="gap:15px">
+  {header("Invite", "Nanda Family")}
+  <div class="card col" style="padding:16px;gap:12px">
+    <div class="eyebrow">Share this link</div>
+    <div class="row" style="gap:10px;background:var(--card2);border-radius:14px;
+      padding:13px 14px">
+      <div style="font-size:13.5px;color:var(--ink2);flex:1;overflow:hidden;
+        white-space:nowrap;text-overflow:ellipsis">hazri.app/j/nanda-7k2m</div>
+      <div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk)">
+        Copy</div>
+    </div>
+    <div class="btn" style="background:var(--primary);color:var(--onPrimary);
+      min-height:46px;font-size:14.5px">{icon("share", 18)}<div>Share the link</div></div>
+    <div style="font-size:11.5px;color:var(--muted);line-height:1.5">
+      Anyone with this link can join and see the group's progress and members'
+      names. You can turn the link off at any time.</div>
+  </div>
+  <div class="col" style="gap:2px">
+    <div class="eyebrow" style="padding-bottom:4px">4 members</div>
+    {rows}
+  </div>
+</div>
+"""
+
+
+def log_paath() -> str:
+    inner = f"""
+  <div class="col" style="gap:3px;padding-top:2px">
+    <div class="disp" style="font-size:22px;font-weight:700">Log a paath</div>
+    <div style="font-size:13px;color:var(--muted)">Nanda Family · 101 Sukhmani Sahib</div>
+  </div>
+  <div class="card row" style="padding:14px;gap:14px">
+    <div style="width:44px;height:44px;border-radius:22px;background:var(--card2);
+      color:var(--ink2);display:flex;align-items:center;justify-content:center;
+      flex:none;font-size:22px;font-weight:600">−</div>
+    <div class="col" style="flex:1;align-items:center">
+      <div class="disp" style="font-size:34px;font-weight:700;line-height:1">2</div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600">
+        Sukhmani Sahib today</div>
+    </div>
+    <div style="width:44px;height:44px;border-radius:22px;background:var(--kesriSoft);
+      color:var(--kesriInk);display:flex;align-items:center;justify-content:center;
+      flex:none;font-size:22px;font-weight:600">+</div>
+  </div>
+  <div class="card row" style="padding:12px 14px;gap:10px;background:var(--card2);
+    box-shadow:none">
+    <div style="color:var(--sage);flex:none">{icon("check", 18)}</div>
+    <div style="font-size:12.5px;color:var(--ink2);line-height:1.5">
+      Paath you read in Hazri is counted on its own. This is for paath you did
+      elsewhere.</div>
+  </div>
+  <div style="flex:1"></div>
+  {primary("Add to the group")}
+  {ghost("Cancel")}
+"""
+    return group_detail().replace(nav("sangat"), "") + nav("sangat") + sheet(inner, 446)
+
+
+
+def vichar_ask() -> str:
+    suggested = ["What does ਹੁਕਮ mean in Japji Sahib?",
+                 "Why is Sukhmani Sahib called the pearl of peace?",
+                 "What is said about ਸੰਗਤ?",
+                 "The meaning of ਨਾਮ ਜਪਣਾ"]
+    chips = "".join(
+        f'<div class="card" style="padding:13px 15px;font-size:14px;'
+        f'line-height:1.45;border-radius:16px">{q}</div>' for q in suggested)
+    return f"""
+<div class="pad col" style="gap:15px">
+  {header("ਵਿਚਾਰ", "Ask about Gurbani", left="menu")}
+  <div class="card row" style="padding:14px 16px;gap:10px">
+    <div style="color:var(--muted);flex:none">{icon("globe", 20)}</div>
+    <div style="font-size:15px;color:var(--muted);flex:1">
+      Ask about a line, a word, a bani…</div>
+  </div>
+  <div class="card col" style="padding:13px 15px;gap:8px;background:var(--card2);
+    box-shadow:none">
+    <div class="row" style="gap:8px">
+      <div style="color:var(--teal);flex:none">{icon("check", 18)}</div>
+      <div style="font-size:13px;font-weight:700">Where answers come from</div>
+    </div>
+    <div style="font-size:12.5px;color:var(--ink2);line-height:1.55">
+      Every answer is a passage from Sri Guru Granth Sahib Ji and a reviewed
+      teeka, shown as written, with its Ang. Nothing here is composed by a
+      machine. If it is not in the sources, Hazri says so.</div>
+  </div>
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">Try asking</div>
+    {chips}
+  </div>
+</div>
+"""
+
+
+def vichar_answer() -> str:
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("ਵਿਚਾਰ")}
+  <div class="card col" style="padding:14px 16px;gap:3px;background:var(--card2);
+    box-shadow:none">
+    <div style="font-size:11.5px;color:var(--muted);font-weight:700">YOU ASKED</div>
+    <div style="font-size:14.5px;font-weight:600">
+      What does ਹੁਕਮ mean in Japji Sahib?</div>
+  </div>
+  <div class="card col" style="padding:16px;gap:12px">
+    <div class="eyebrow">The line</div>
+    <div class="gur" style="font-size:19px;line-height:1.75;color:var(--ink)">
+      ਹੁਕਮੀ ਹੋਵਨਿ ਆਕਾਰ ਹੁਕਮੁ ਨ ਕਹਿਆ ਜਾਈ ॥</div>
+    <div style="height:1px;background:var(--rule)"></div>
+    <div class="eyebrow">The teeka, as written</div>
+    <div style="font-size:14.5px;line-height:1.65;color:var(--ink2)">
+      By His Command, bodies are created; His Command cannot be described.</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;padding-top:2px">
+      <div class="chip" style="background:var(--card2);color:var(--ink2)">
+        Japji Sahib · Pauri 2</div>
+      <div class="chip" style="background:var(--card2);color:var(--ink2)">
+        Ang 1</div>
+    </div>
+  </div>
+  <div class="card row" style="padding:13px 15px;gap:11px">
+    <div style="width:38px;height:38px;border-radius:12px;background:var(--sageSoft);
+      color:var(--sage);display:flex;align-items:center;justify-content:center;
+      flex:none">{icon("check", 19)}</div>
+    <div class="col" style="flex:1">
+      <div style="font-size:13.5px;font-weight:700">Faridkot Teeka</div>
+      <div style="font-size:12px;color:var(--muted)">
+        Reviewed source · see what it covers</div>
+    </div>
+    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>
+  <div class="row" style="gap:10px">
+    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
+      min-height:46px;font-size:14px">{icon("nitnem", 18)}<div>Open in reader</div></div>
+    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
+      min-height:46px;font-size:14px">{icon("share", 18)}<div>Share</div></div>
+  </div>
+  <div style="font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5">
+    Shown exactly as the teeka has it. Hazri does not paraphrase Gurbani or
+    its meanings.</div>
+</div>
+"""
+
+
+def vichar_source() -> str:
+    rows = [("Covers", "Sri Guru Granth Sahib Ji, Ang 1–1430"),
+            ("Languages", "Punjabi and English · Hindi for SGGS only"),
+            ("Reviewed by", "The source file shipped with the app"),
+            ("Added", "Content build 8 · November 2026")]
+    body = "".join(
+        f'<div class="row" style="gap:12px;padding:11px 0;align-items:flex-start">'
+        f'<div style="font-size:12.5px;color:var(--muted);font-weight:700;'
+        f'width:96px;flex:none">{k}</div>'
+        f'<div style="font-size:13.5px;color:var(--ink2);flex:1;line-height:1.5">'
+        f'{v}</div></div>' for k, v in rows)
+    return f"""
+<div class="pad col" style="gap:15px">
+  {header("Faridkot Teeka", "The source behind this answer")}
+  <div class="card col" style="padding:6px 16px">{body}</div>
+  <div class="card col" style="padding:15px;gap:9px;background:var(--card2);
+    box-shadow:none">
+    <div style="font-size:13.5px;font-weight:700">Why only reviewed sources</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6">
+      Gurbani and its meanings are never written, translated or summarised by
+      this app. Hazri can only show you what is in a source somebody has
+      reviewed and shipped. Where a source has no entry, there is no answer —
+      and that is the honest result, not a failure.</div>
+  </div>
+  {ghost("See every source in this build")}
+</div>
+"""
+
+
+def vichar_no_answer() -> str:
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("ਵਿਚਾਰ")}
+  <div class="card col" style="padding:14px 16px;gap:3px;background:var(--card2);
+    box-shadow:none">
+    <div style="font-size:11.5px;color:var(--muted);font-weight:700">YOU ASKED</div>
+    <div style="font-size:14.5px;font-weight:600">
+      When was Gurdwara Bangla Sahib built?</div>
+  </div>
+  <div class="col" style="align-items:center;gap:14px;padding:24px 10px 6px">
+    <div style="width:84px;height:84px;border-radius:42px;background:var(--card2);
+      color:var(--muted);display:flex;align-items:center;justify-content:center">
+      {icon("globe", 40)}</div>
+    <div class="disp" style="font-size:21px;font-weight:700;text-align:center;
+      line-height:1.3">This is not in<br>the sources Hazri has</div>
+    <div style="font-size:14px;color:var(--ink2);text-align:center;line-height:1.6">
+      Hazri only answers from Sri Guru Granth Sahib Ji and the reviewed teekas
+      shipped with it. It will not guess, and it will not write an answer of
+      its own.</div>
+  </div>
+  <div class="card col" style="padding:15px;gap:10px">
+    <div style="font-size:13.5px;font-weight:700">What it can answer</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">
+      <div class="chip" style="background:var(--card2);color:var(--ink2)">
+        A line's meaning</div>
+      <div class="chip" style="background:var(--card2);color:var(--ink2)">
+        A word in a bani</div>
+      <div class="chip" style="background:var(--card2);color:var(--ink2)">
+        Where a shabad sits</div>
+    </div>
+  </div>
+  {ghost("Ask something else")}
+</div>
+"""
+
+
+def add_goal() -> str:
+    chips = "".join(
+        f'<div class="chip" style="background:{"var(--kesriSoft)" if on else "var(--card2)"};'
+        f'color:{"var(--kesriInk)" if on else "var(--ink2)"};min-height:36px">{t}</div>'
+        for t, on in [("Japji Sahib", False), ("Chaupai Sahib", False),
+                      ("Rehras Sahib", False), ("Sukhmani Sahib", False),
+                      ("Naam Simran", True), ("More…", False)])
+    inner = f"""
+  <div class="col" style="gap:3px;padding-top:2px">
+    <div class="disp" style="font-size:22px;font-weight:700">Add a goal</div>
+    <div style="font-size:13px;color:var(--muted)">
+      Simran counts in minutes; a bani counts in paath</div>
+  </div>
+  <div class="col" style="gap:8px">
+    <div class="eyebrow">What</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">{chips}</div>
+  </div>
+  <div class="col" style="gap:8px">
+    <div class="eyebrow">How long each time</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">
+      <div class="chip" style="background:var(--card2);color:var(--ink2);
+        min-height:38px">5 min</div>
+      <div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk);
+        min-height:38px">11 min</div>
+      <div class="chip" style="background:var(--card2);color:var(--ink2);
+        min-height:38px">21 min</div>
+      <div class="chip" style="background:var(--card2);color:var(--ink2);
+        min-height:38px">31 min</div>
+      <div class="chip" style="background:var(--card2);color:var(--ink2);
+        min-height:38px">Custom</div>
+    </div>
+    <div style="font-size:11.5px;color:var(--muted);line-height:1.5">
+      The recitation is five minutes long and loops with a soft crossfade for
+      anything longer.</div>
+  </div>
+  <div class="col" style="gap:8px">
+    <div class="eyebrow">When</div>
+    <div class="card row" style="padding:12px 14px;gap:12px">
+      <div style="color:var(--kesriInk);flex:none">{icon("bell", 19)}</div>
+      <div class="col" style="flex:1">
+        <div style="font-size:14px;font-weight:600">Remind me at 5:15 AM</div>
+        <div style="font-size:12px;color:var(--muted)">Every day</div>
+      </div>{toggle(True)}
+    </div>
+  </div>
+  <div style="flex:1"></div>
+  {primary("Save goal")}
+"""
+    return today().replace(nav("today"), "") + nav("today") + sheet(inner, 596)
+
+
+def reader_complete() -> str:
+    lines = [("ਸਲੋਕੁ ॥", False), ("ਤੇਰਾ ਕੀਤਾ ਜਾਤੋ ਨਾਹੀ ਮੈਨੋ ਜੋਗੁ ਕੀਤੋਈ ॥", False),
+             ("ਮੈ ਨਿਰਗੁਣਿਆਰੇ ਕੋ ਗੁਣੁ ਨਾਹੀ ਆਪੇ ਤਰਸੁ ਪਇਓਈ ॥", False),
+             ("ਤਰਸੁ ਪਇਆ ਮਿਹਰਾਮਤਿ ਹੋਈ ਸਤਿਗੁਰੁ ਸਜਣੁ ਮਿਲਿਆ ॥", True),
+             ("ਨਾਨਕ ਨਾਮੁ ਮਿਲੈ ਤਾਂ ਜੀਵਾਂ ਤਨੁ ਮਨੁ ਥੀਵੈ ਹਰਿਆ ॥੧॥", False)]
+    body = "".join(
+        f'<div class="gur" style="font-size:19px;line-height:2;padding:7px 12px;'
+        f'border-radius:12px;color:var(--ink);'
+        f'{"background:var(--hl)" if hl else ""}">{t}</div>' for t, hl in lines)
+    return f"""
+<div class="pad col" style="gap:12px">
+  {header("Japji Sahib", "38 of 38 pauris")}
+  <div class="col" style="gap:2px;opacity:.55">{body}</div>
+  <div class="card col" style="padding:18px 16px;gap:13px;border:1.5px solid var(--sage)">
+    <div class="row" style="gap:12px">
+      <div style="width:44px;height:44px;border-radius:22px;background:var(--sageSoft);
+        color:var(--sage);display:flex;align-items:center;justify-content:center;
+        flex:none">{icon("check", 24)}</div>
+      <div class="col" style="flex:1">
+        <div style="font-size:16px;font-weight:700">Japji Sahib complete</div>
+        <div style="font-size:12.5px;color:var(--muted)">
+          Logged in your diary · 5:52 AM</div>
+      </div>
+    </div>
+    <div class="row" style="gap:10px">
+      <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary);
+        min-height:48px;font-size:14.5px">{icon("back", 18)}<div>Start again</div></div>
+      <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
+        min-height:48px;font-size:14.5px"><div>Next bani</div></div>
+    </div>
+    <div style="font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5">
+      Start again takes you to the first line and clears where you left off.</div>
+  </div>
+</div>
+"""
+
+
+def sync_states() -> str:
+    states = [
+        ("check", "Synced", "Everything is up to date · 2 minutes ago",
+         "var(--sageSoft)", "var(--sage)"),
+        ("globe", "No connection", "Carry on — your paath is saved on this phone "
+         "and goes up when you are back", "var(--card2)", "var(--muted)"),
+        ("share", "Sending 3 changes", "2 paath and a Simran session",
+         "var(--kesriSoft)", "var(--kesriInk)"),
+    ]
+    cards = "".join(
+        f'<div class="card row" style="padding:14px;gap:12px">'
+        f'<div style="width:40px;height:40px;border-radius:13px;background:{bg};'
+        f'color:{fg};display:flex;align-items:center;justify-content:center;'
+        f'flex:none">{icon(i, 20)}</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14.5px;font-weight:700">{t}</div>'
+        f'<div style="font-size:12.5px;color:var(--muted);line-height:1.45">{s}</div>'
+        f'</div></div>' for i, t, s, bg, fg in states)
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Sync", "What happens, and when")}
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">The three states</div>
+    {cards}
+  </div>
+  <div class="card col" style="padding:15px;gap:9px;background:var(--card2);
+    box-shadow:none">
+    <div style="font-size:13.5px;font-weight:700">Hazri works with no signal</div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6">
+      Every bani, its recitation, the calendar and your diary are on this phone.
+      Nothing you do needs a connection. Sync only carries your group counts and
+      your diary up, and it waits quietly until there is signal.</div>
+  </div>
+  <div class="card col" style="padding:6px 16px">
+    <div class="row" style="gap:12px;padding:13px 0">
+      <div class="col" style="flex:1">
+        <div style="font-size:14px;font-weight:600">Sync my diary</div>
+        <div style="font-size:12px;color:var(--muted)">
+          Off keeps everything on this phone only</div>
+      </div>{toggle(True)}
+    </div>
+    <div style="height:1px;background:var(--rule)"></div>
+    <div class="row" style="gap:12px;padding:13px 0">
+      <div class="col" style="flex:1">
+        <div style="font-size:14px;font-weight:600">Only on Wi‑Fi</div>
+        <div style="font-size:12px;color:var(--muted)">Saves mobile data</div>
+      </div>{toggle(False)}
+    </div>
+  </div>
+</div>
+"""
+
+
+def notifications() -> str:
+    groups = [
+        ("Your own practice", [
+            ("Nitnem reminders", "At your goal times", True),
+            ("Simran reminder", "5:15 AM", True),
+            ("Gurpurab", "The evening before and the morning of", True)]),
+        ("Your groups", [
+            ("A goal is close", "When the group passes 90%", True),
+            ("Someone joined", "New members in your groups", False),
+            ("Daily group summary", "One message, at 9 PM", False)]),
+        ("Global Simran", [
+            ("Large gatherings", "When thousands are sitting together", False)]),
+    ]
+    out = ""
+    for title, items in groups:
+        rows = ""
+        for idx, (t, s, on) in enumerate(items):
+            rows += (f'<div class="row" style="gap:12px;padding:13px 0">'
+                     f'<div class="col" style="flex:1">'
+                     f'<div style="font-size:14px;font-weight:600">{t}</div>'
+                     f'<div style="font-size:12px;color:var(--muted)">{s}</div></div>'
+                     f'{toggle(on)}</div>')
+            if idx < len(items) - 1:
+                rows += '<div style="height:1px;background:var(--rule)"></div>'
+        out += (f'<div class="col" style="gap:8px">'
+                f'<div class="eyebrow">{title}</div>'
+                f'<div class="card col" style="padding:4px 16px">{rows}</div></div>')
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Notifications")}
+  {out}
+  <div style="font-size:11.5px;color:var(--muted);line-height:1.5;text-align:center">
+    Hazri never sends anything you did not ask for, and never an advertisement.</div>
+</div>
+"""
+
+
 SCREENS = [
     ("28-GlobalSimran", "Global Simran", global_simran),
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
     ("31-GroupDetail", "Group — shared goal", group_detail),
+    ("32-Profile", "Join the sangat", profile),
+    ("33-Account", "Your account", account),
+    ("34-SecureAccount", "Keep your sangat", secure_account),
+    ("35-PrivacyData", "Privacy & my data", privacy_data),
+    ("36-UnlockSheet", "Join the sangat — sheet", unlock_sheet),
+    ("37-SettingsMenu", "Menu", settings_menu),
+    ("38-SangatHome", "Sangat", sangat_home),
+    ("39-CreateGroup", "Create a group", create_group),
+    ("40-SetGoal", "Shared goal", set_goal),
+    ("41-Invite", "Invite", invite),
+    ("42-LogPaath", "Log a paath", log_paath),
+    ("43-VicharAsk", "Vichar — ask", vichar_ask),
+    ("44-VicharAnswer", "Vichar — answer", vichar_answer),
+    ("45-VicharSource", "Vichar — source", vichar_source),
+    ("46-VicharNoAnswer", "Vichar — not in the sources", vichar_no_answer),
+    ("47-AddGoal", "Add a goal", add_goal),
+    ("48-ReaderComplete", "Reader — complete", reader_complete),
+    ("49-Sync", "Sync", sync_states),
+    ("50-Notifications", "Notifications", notifications),
 ]
 
 

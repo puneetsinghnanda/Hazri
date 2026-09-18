@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Shared goal — dark</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&amp;family=Mukta:wght@400;500;600;700&amp;family=Noto+Serif+Gurmukhi:wght@400;500;600;700&amp;family=Noto+Serif+Devanagari:wght@400;500;600&amp;display=swap">
+  <style>
+body{margin:0;background:#888}
+.app{--bg:#F4F3F8;--card:#FFFFFF;--card2:#ECEBF3;--ink:#1B1D3A;--ink2:#4D5070;--muted:#85879F;--rule:#E1E1EA;--primary:#262C63;--onPrimary:#FFFFFF;--kesri:#D9730D;--kesriSoft:#FBE8D2;--kesriInk:#9A4F00;--sage:#2E7A57;--sageSoft:#DCEFE5;--teal:#1F7A8C;--hl:#FBE5CB;--word:#A04F00;--simranField:#080B1C;--simranThread:#E8F4F8;--scrim:rgba(20,22,45,.45);--shadow:0 1px 2px rgba(27,29,58,.06),0 10px 28px rgba(27,29,58,.07);
+  width:390px;height:844px;background:var(--bg);color:var(--ink);font-family:Mukta,'Noto Sans Devanagari',system-ui,sans-serif;position:relative;overflow:hidden;box-sizing:border-box;font-size:15px;line-height:1.45}
+.app.dark{--bg:#0C0F24;--card:#161A37;--card2:#1F2447;--ink:#EDECF6;--ink2:#B9BAD3;--muted:#8084A6;--rule:#2A2F55;--primary:#F2A24E;--onPrimary:#1C1206;--kesri:#F2A24E;--kesriSoft:#3A2A1A;--kesriInk:#FFC27E;--sage:#6CCB9C;--sageSoft:#173327;--teal:#6FC3D3;--hl:rgba(242,162,78,.17);--word:#FFC27E;--simranField:#080B1C;--simranThread:#E8F4F8;--shadow:0 0 0 1px rgba(255,255,255,.04);}
+.app *{box-sizing:border-box}
+.gur{font-family:'Noto Serif Gurmukhi','Noto Sans Gurmukhi',serif}
+.dev{font-family:'Noto Serif Devanagari','Noto Sans Devanagari',serif}
+.disp{font-family:'Baloo Paaji 2',Mukta,system-ui,sans-serif}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+svg.i{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:16px;min-height:52px;font-weight:600;font-size:16px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.row{display:flex;align-items:center}
+.col{display:flex;flex-direction:column}
+.pad{padding:22px 20px 0}
+</style></head><body>
+<div class="app dark">
+
+<div class="pad col" style="gap:15px">
+  <div class="row" style="justify-content:space-between;gap:10px"><div class="row" style="gap:10px"><div style="width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:var(--card);box-shadow:var(--shadow)"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></div><div class="col"><div class="disp" style="font-size:24px;font-weight:700;line-height:1.15">Shared goal</div><div style="font-size:12.5px;color:var(--muted);font-weight:500">Nanda Family</div></div></div><div style="width:44px"></div></div>
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">What the group recites</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap"><div class="chip" style="background:var(--card2);color:var(--ink2);min-height:36px">Japji Sahib</div><div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk);min-height:36px">Sukhmani Sahib</div><div class="chip" style="background:var(--card2);color:var(--ink2);min-height:36px">Chaupai Sahib</div><div class="chip" style="background:var(--card2);color:var(--ink2);min-height:36px">Rehras Sahib</div><div class="chip" style="background:var(--card2);color:var(--ink2);min-height:36px">Simran minutes</div><div class="chip" style="background:var(--card2);color:var(--ink2);min-height:36px">More…</div></div>
+  </div>
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">How many, together</div>
+    <div class="card row" style="padding:12px 14px;gap:14px">
+      <div style="width:44px;height:44px;border-radius:22px;background:var(--card2);
+        color:var(--ink2);display:flex;align-items:center;justify-content:center;
+        flex:none;font-size:22px;font-weight:600">−</div>
+      <div class="col" style="flex:1;align-items:center">
+        <div class="disp" style="font-size:30px;font-weight:700;line-height:1">101</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:600">paath</div>
+      </div>
+      <div style="width:44px;height:44px;border-radius:22px;background:var(--kesriSoft);
+        color:var(--kesriInk);display:flex;align-items:center;justify-content:center;
+        flex:none;font-size:22px;font-weight:600">+</div>
+    </div>
+  </div>
+  <div class="col" style="gap:9px">
+    <div class="eyebrow">By when</div>
+    <div class="card col" style="padding:6px 16px">
+      <div class="row" style="gap:12px;padding:12px 0"><div style="width:38px;height:38px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--kesriSoft);color:var(--kesriInk)"><svg class="i" width="19" height="19" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></div><div class="col" style="flex:1"><div style="font-size:14.5px;font-weight:600">Prakash Purab, Guru Nanak Dev Ji</div><div style="font-size:12.5px;color:var(--muted)">Tue 24 Nov · 4 days</div></div><div style="color:var(--muted);transform:rotate(180deg)"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></div></div>
+      <div style="height:1px;background:var(--rule)"></div>
+      <div class="row" style="gap:12px;padding:12px 0"><div style="width:38px;height:38px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--card2);color:var(--ink2)"><svg class="i" width="19" height="19" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><div class="col" style="flex:1"><div style="font-size:14.5px;font-weight:600">Pick another date</div><div style="font-size:12.5px;color:var(--muted)">Or no end date</div></div><div style="color:var(--muted);transform:rotate(180deg)"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></div></div>
+    </div>
+  </div>
+  <div class="card col" style="padding:13px 15px;gap:4px;background:var(--card2);
+    box-shadow:none">
+    <div style="font-size:12px;color:var(--muted);font-weight:700">THE GROUP WILL SEE</div>
+    <div style="font-size:14px;color:var(--ink);line-height:1.5">
+      “101 Sukhmani Sahib by Prakash Purab” — with everyone's count, and yours.</div>
+  </div>
+  <div style="flex:1"></div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)"><div>Set the goal</div></div>
+</div>
+</div>
+</body></html>
