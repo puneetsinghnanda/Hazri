@@ -41,5 +41,11 @@
     "checkedBy": "owner",
     "date": "2026-09-18",
     "note": "locked on the 90dfdeb build; no further changes"
+  },
+  "sukhmani-sahib": {
+    "linesSha": "036ca73a3a5c779e",
+    "checkedBy": "owner",
+    "date": "2026-09-18",
+    "note": "listened through on the 4e563a0 build; 37 pins, no further changes"
   }
 }

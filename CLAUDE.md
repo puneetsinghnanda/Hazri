@@ -77,13 +77,15 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   outright that those are not editorial labels, so the unit number is stored
   and no word is invented for it. Japji keeps its labels because its source
   file names its sections.
-- **Seven of the nine alignments have been checked by ear**, and the timing
+- **Eight of the nine alignments have been checked by ear**, and the timing
   files say which: `timings/verified.json` records who listened, keyed by a
   hash of the exact timings they heard, so re-aligning a bani drops it back to
   unverified rather than carrying somebody's word onto a file they never
-  checked. Japji, Jaap, Tav Prasad Savaiye, Chaupai, Anand, Kirtan Sohila and
-  Ardas are verified and are not to be touched again. Rehras and Sukhmani are
-  not.
+  checked. All but Rehras are verified and are not to be touched again --
+  Japji, Jaap, Tav Prasad Savaiye, Chaupai, Anand, Sukhmani, Kirtan Sohila and
+  Ardas. Rehras has never been listened to end to end, and its 72% pause rate
+  is a real shortfall rather than a blind spot, because its reciter does break
+  between lines.
 - **A recitation does not always say what the text carries**, and this is the
   failure mode to expect. `timings/audio-start.json` records, per bani, where
   a recording starts saying the text (`seconds`), which line ranges it
