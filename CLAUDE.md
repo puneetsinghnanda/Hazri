@@ -110,7 +110,7 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   rate against the lines assigned. Run all three; `audio/README.md` has the
   current numbers and what is still outstanding -- Rehras and Jaap each have
   a stretch near the end that is still unexplained, and Sukhmani has
-  thirty-three pins and one anchor left, so nothing independent still checks
+  thirty-seven pins and one anchor left, so nothing independent still checks
   it: its timings are the owner's ear written down, not a measurement.
   `verify_timings.py` also lists lines the warp gave under 100 ms a word,
   which is a line squeezed to nothing rather than aligned. It does not vote on
@@ -125,6 +125,13 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   ਸਲੋਕੁ shows for the 0.78s until the next line begins even though its own
   span is 30ms. The end time is still wrong and there is no honest way to
   invent a better one.
+
+- **A full align writes `<slug>.raw.json` beside the timings**, which is the
+  warp's own answer before any pin, and `--repin` starts from that. A pin is
+  only a remap of a finished alignment, so a round of corrections costs 0.3
+  seconds rather than the thirty-five minutes Sukhmani takes to warp; it is
+  checked byte-for-byte against a full run. Keep the raw file in git or
+  `--repin` has nothing to work from on a fresh clone.
 
 - **`build_preview.py` is the fast way to check an alignment.** It bakes every
   bani's lines and timings into one HTML file that takes a recitation from

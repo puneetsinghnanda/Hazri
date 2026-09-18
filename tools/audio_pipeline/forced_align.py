@@ -690,6 +690,19 @@ def holds_for(slug: str) -> list[int]:
     return sorted(int(n) for n in entry.get("hold", []))
 
 
+def raw_path(slug: str) -> str:
+    return os.path.join(TIMINGS_DIR, f"{slug}.raw.json")
+
+
+def write_raw(slug: str, out_lines: list[dict], full_len: float) -> None:
+    """The alignment as the warp produced it, before any pin."""
+    with open(raw_path(slug), "w", encoding="utf-8") as fh:
+        json.dump({"durationMs": int(round(full_len * 1000)),
+                   "lines": out_lines}, fh, ensure_ascii=False,
+                  separators=(",", ":"))
+        fh.write("\n")
+
+
 def apply_pins(out_lines: list[dict], pins: list[tuple[int, float]],
                total_s: float, holds: list[int] = ()) -> int:
     """Stretches the timeline so each pinned line starts where it was heard."""
@@ -801,15 +814,24 @@ def main() -> int:
         with open(out_path, encoding="utf-8") as fh:
             doc = json.load(fh)
         already = doc.get("pinnedLines") or []
-        if already:
+        raw = raw_path(args.bani)
+        if already and not os.path.exists(raw):
             raise SystemExit(
-                f"{out_path} was written with pins {already} already applied; "
+                f"{out_path} was written with pins {already} already applied "
+                f"and there is no {os.path.basename(raw)} to start from; "
                 "re-align it rather than pinning a pinned timeline")
         pins = pins_for(args.bani)
         if not pins:
             raise SystemExit(f"no pins for {args.bani} in {AUDIO_START_FILE}")
         holds = holds_for(args.bani)
+        # Always start from the warp's own answer where there is one. Pinning
+        # a pinned timeline compounds; pinning the raw one is the same
+        # arithmetic the full run does, and gives the same file.
+        if os.path.exists(raw):
+            with open(raw, encoding="utf-8") as fh:
+                doc["lines"] = json.load(fh)["lines"]
         apply_pins(doc["lines"], pins, doc["durationMs"] / 1000.0, holds)
+        doc["verified"] = lines_sha(doc["lines"]) == verified_sha_for(args.bani)
         doc["pinnedLines"] = [p[0] for p in pins]
         doc["heldLines"] = holds
         with open(out_path, "w", encoding="utf-8") as fh:
@@ -980,6 +1002,12 @@ def main() -> int:
     pins = pins_for(args.bani)
     holds = holds_for(args.bani)
     if pins:
+        # Kept before the pins go on, so a later round can re-pin from the
+        # warp's own answer instead of re-warping. Sukhmani takes thirty-five
+        # minutes to align and a pin is only a remap of the result; four
+        # rounds of corrections in one sitting is two hours of doing the same
+        # arithmetic again.
+        write_raw(args.bani, out_lines, full_len)
         apply_pins(out_lines, pins, full_len, holds)
         if verbose:
             print(f"pinned {len(pins)} line(s) to times taken by ear"

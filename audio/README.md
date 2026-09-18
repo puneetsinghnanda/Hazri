@@ -123,6 +123,12 @@ to the end. A pin says where a line actually starts, and the timeline is
 stretched piecewise between pins, so pinning the two ends of a bad stretch
 leaves everything outside it untouched.
 
+Report a pin as **the time a line begins**, not as "at T it should be on L".
+The second reading is ambiguous -- the line started at or before T -- and
+taking it as a start is the latest reading available, which biases every pin
+late by up to one line. A highlight that sits one line behind through a
+stretch that is otherwise close is what that bias looks like.
+
 Pinning a line spends it: it is no longer evidence, because the aligner was
 told the answer. Keep `<bani>.anchors.json` for lines that are **not** pinned
 -- that is what still checks the result.
