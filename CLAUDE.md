@@ -110,15 +110,21 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   rate against the lines assigned. Run all three; `audio/README.md` has the
   current numbers and what is still outstanding -- Rehras and Jaap each have
   a stretch near the end that is still unexplained, and Sukhmani has
-  twenty-eight pins and one anchor left, so nothing independent still checks
+  thirty-three pins and one anchor left, so nothing independent still checks
   it: its timings are the owner's ear written down, not a measurement.
   `verify_timings.py` also lists lines the warp gave under 100 ms a word,
   which is a line squeezed to nothing rather than aligned. It does not vote on
   the verdict -- Jaap has twenty and is accepted, because its reciter barely
-  stops between lines -- but Sukhmani's ਸਲੋਕੁ at 1:10:26 comes out at 30 ms,
-  and the lines around it run 2x to 5x off the pace either way. That chapter
-  break is where the highlight starts running a line behind, and what the
-  reciter actually says there is not yet known.
+  stops between lines -- but it found both of Sukhmani's chapter breaks
+  before anybody listened to them, and both turned out to be four and five
+  seconds out. `build_preview.py` marks the same lines with a diamond so they
+  can be listened to directly.
+
+  A squeezed line is not as bad as it reads: `indexAt` holds the last line
+  that started through a gap rather than dropping the highlight, so Sukhmani's
+  ਸਲੋਕੁ shows for the 0.78s until the next line begins even though its own
+  span is 30ms. The end time is still wrong and there is no honest way to
+  invent a better one.
 
 - **`build_preview.py` is the fast way to check an alignment.** It bakes every
   bani's lines and timings into one HTML file that takes a recitation from
