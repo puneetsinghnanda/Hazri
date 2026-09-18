@@ -53,6 +53,12 @@ NFFT = 512
 N_MELS = 26
 
 
+# A reciter does not say a word in under a tenth of a second. The median
+# across the nine banis is about 390 ms, so this is a quarter of the pace
+# of the slowest of them -- low enough that only a collapsed line trips it.
+FLOOR_MS = 100.0
+
+
 def mel_filterbank() -> np.ndarray:
     def hz_to_mel(f):
         return 2595 * np.log10(1 + f / 700)
@@ -166,6 +172,37 @@ def check_pauses(spans: dict[int, tuple[float, float]], wav: str, seed: int) -> 
     return bool(hit.mean() > 0.85)
 
 
+def check_collapsed(timings: dict, text: dict[int, str]) -> None:
+    """Lines the warp gave almost no time at all.
+
+    The warp has to account for every frame it is given, so when it runs short
+    it does not report a problem -- it squeezes a line down instead, and the
+    highlight flashes past it faster than an eye can follow. Sukhmani's
+    \u0a38\u0a32\u0a4b\u0a15\u0a41 at 1:10:26 came out at 30 ms for its one word, which is the
+    shape of the fault somebody reported as the highlight running a line
+    behind: the lines before it were being stretched and that one paid for it.
+
+    It does not vote on the verdict, and that is not timidity: Jaap has
+    twenty of these and Kirtan Sohila one, and both have been listened to and
+    accepted. Jaap's reciter barely stops between lines -- a 0 ms median gap
+    against Ardas's 500 -- so a line of his can genuinely be squeezed without
+    anything sounding wrong. This is a list of places to listen, and it is
+    cheap, which is the point: it needs no audio at all.
+    """
+    bad = []
+    for row in timings["lines"]:
+        words = max(1, len(row["w"]))
+        ms = (row["e"] - row["s"]) / words
+        if ms < FLOOR_MS:
+            bad.append((ms, row))
+    print(f"\nlines given less than {FLOOR_MS:.0f} ms a word "
+          f"(worth a listen, not a failure): {len(bad)}")
+    for ms, row in sorted(bad)[:8]:
+        s = row["s"] / 1000
+        print(f"  line {row['line']:>5}  {int(s // 60)}:{s % 60:05.2f}  "
+              f"{ms:5.0f} ms/word  {text.get(row['line'], '')[:40]}")
+
+
 def check_anchors(bani: str, spans: dict[int, tuple[float, float]]) -> bool | None:
     """Compares against times a person listened to, if any have been written down."""
     path = os.path.join(TIMINGS_DIR, f"{bani}.anchors.json")
@@ -228,6 +265,7 @@ def main() -> int:
         feats = log_mel(wav)
         anchors_ok = check_anchors(args.bani, spans)
         pauses_ok = check_pauses(spans, wav, args.seed)
+    check_collapsed(timings, dict(rows))
 
     def segment(idx: int) -> np.ndarray | None:
         s, e = spans[idx]

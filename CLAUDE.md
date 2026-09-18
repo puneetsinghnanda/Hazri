@@ -77,12 +77,13 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   outright that those are not editorial labels, so the unit number is stored
   and no word is invented for it. Japji keeps its labels because its source
   file names its sections.
-- **Five of the nine alignments have been checked by ear**, and the timing
+- **Seven of the nine alignments have been checked by ear**, and the timing
   files say which: `timings/verified.json` records who listened, keyed by a
   hash of the exact timings they heard, so re-aligning a bani drops it back to
   unverified rather than carrying somebody's word onto a file they never
-  checked. Japji, Chaupai, Anand, Kirtan Sohila and Ardas are verified. Jaap,
-  Tav Prasad Savaiye, Rehras and Sukhmani are not.
+  checked. Japji, Jaap, Tav Prasad Savaiye, Chaupai, Anand, Kirtan Sohila and
+  Ardas are verified and are not to be touched again. Rehras and Sukhmani are
+  not.
 - **A recitation does not always say what the text carries**, and this is the
   failure mode to expect. `timings/audio-start.json` records, per bani, where
   a recording starts saying the text (`seconds`), which line ranges it
@@ -108,9 +109,16 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   catches text the recitation never says, by comparing the reciter's phrasing
   rate against the lines assigned. Run all three; `audio/README.md` has the
   current numbers and what is still outstanding -- Rehras and Jaap each have
-  a stretch near the end that is still unexplained, and Sukhmani has twelve
-  pins and one anchor left, so nothing independent still checks it: its
-  timings are the owner's ear written down, not a measurement.
+  a stretch near the end that is still unexplained, and Sukhmani has
+  twenty-eight pins and one anchor left, so nothing independent still checks
+  it: its timings are the owner's ear written down, not a measurement.
+  `verify_timings.py` also lists lines the warp gave under 100 ms a word,
+  which is a line squeezed to nothing rather than aligned. It does not vote on
+  the verdict -- Jaap has twenty and is accepted, because its reciter barely
+  stops between lines -- but Sukhmani's ਸਲੋਕੁ at 1:10:26 comes out at 30 ms,
+  and the lines around it run 2x to 5x off the pace either way. That chapter
+  break is where the highlight starts running a line behind, and what the
+  reciter actually says there is not yet known.
 
 - **`build_preview.py` is the fast way to check an alignment.** It bakes every
   bani's lines and timings into one HTML file that takes a recitation from

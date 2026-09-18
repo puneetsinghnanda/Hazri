@@ -29,5 +29,17 @@
     "checkedBy": "owner",
     "date": "2026-09-18",
     "note": "confirmed correct on the d203db5 build"
+  },
+  "jaap-sahib": {
+    "linesSha": "65594c5df2a12ad4",
+    "checkedBy": "owner",
+    "date": "2026-09-18",
+    "note": "locked on the 90dfdeb build; no further changes"
+  },
+  "tav-prasad-savaiye": {
+    "linesSha": "558d23cf97c494a2",
+    "checkedBy": "owner",
+    "date": "2026-09-18",
+    "note": "locked on the 90dfdeb build; no further changes"
   }
 }
