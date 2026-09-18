@@ -1205,4 +1205,43 @@ class LEn extends L {
   @override
   String get errorContentDb =>
       'The bundled content could not be opened. Reinstalling Hazri should fix it.';
+
+  @override
+  String get calendarKindPrakash => 'Prakash';
+
+  @override
+  String get calendarKindGurgaddi => 'Gurgaddi';
+
+  @override
+  String get calendarKindJotiJot => 'Joti Jot';
+
+  @override
+  String get calendarKindShaheedi => 'Shaheedi';
+
+  @override
+  String get calendarKindJorMela => 'Jorh Mela';
+
+  @override
+  String get calendarKindBirth => 'Birth anniversary';
+
+  @override
+  String get calendarKindHistorical => 'Historical';
+
+  @override
+  String get calendarKindFestival => 'Festival';
+
+  @override
+  String get calendarKindSpecial => 'Observance';
+
+  @override
+  String get calendarKindSangrand => 'Sangrand';
+
+  @override
+  String get calendarKindPuranmashi => 'Puranmashi';
+
+  @override
+  String get calendarKindMasya => 'Masya';
+
+  @override
+  String get gurpurabSupplementary => 'Cross-check, not in the SGPC list';
 }

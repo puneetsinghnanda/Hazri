@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show CalendarEventRow;
+import '../../gurpurab/domain/calendar_display.dart';
 import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
@@ -385,13 +386,7 @@ class _GurpurabCard extends ConsumerWidget {
             1 => l.gurpurabTileTomorrow,
             _ => l.gurpurabTileUpcoming,
           };
-    final name = next == null
-        ? null
-        : switch (lang) {
-            'pa' => next.namePa,
-            'hi' => next.nameHi,
-            _ => next.nameEn,
-          };
+    final name = next?.nameFor(lang);
 
     return HazriCard(
       onTap: () => context.push(Routes.gurpurab),

@@ -1,10 +1,8 @@
 {
   "@@locale": "pa",
-
   "appName": "ਹਾਜ਼ਰੀ",
   "appNameNative": "ਹਾਜ਼ਰੀ",
   "tagline": "ਤੁਹਾਡਾ ਰੋਜ਼ਾਨਾ ਨਿਤਨੇਮ — ਹਮੇਸ਼ਾ ਅੰਗ ਸੰਗ",
-
   "actionContinue": "ਅੱਗੇ ਚੱਲੋ",
   "actionNext": "ਅੱਗੇ",
   "actionBack": "ਪਿੱਛੇ",
@@ -30,33 +28,27 @@
   "actionOpenReader": "ਪਾਠ ਖੋਲ੍ਹੋ",
   "actionGotIt": "ਸਮਝ ਗਿਆ",
   "actionRetry": "ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
-
   "on": "ਚਾਲੂ",
   "off": "ਬੰਦ",
   "today": "ਅੱਜ",
   "tomorrow": "ਕੱਲ੍ਹ",
   "yesterday": "ਬੀਤਿਆ ਕੱਲ੍ਹ",
-
   "minutes": "{count} ਮਿੰਟ",
   "minutesLeft": "{count} ਮਿੰਟ ਬਾਕੀ",
   "nOfM": "{m} ਵਿੱਚੋਂ {n}",
-
   "navToday": "ਅੱਜ",
   "navNitnem": "ਨਿਤਨੇਮ",
   "navSimran": "ਸਿਮਰਨ",
   "navDiary": "ਡਾਇਰੀ",
   "navSettings": "ਸੈਟਿੰਗ",
-
   "slotAmritVela": "ਅੰਮ੍ਰਿਤ ਵੇਲਾ",
   "slotEvening": "ਸ਼ਾਮ",
   "slotBedtime": "ਸੌਣ ਵੇਲੇ",
   "slotMorning": "ਸਵੇਰ",
   "slotMoreBanis": "ਹੋਰ ਬਾਣੀਆਂ",
-
   "chipWorksOffline": "ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀ ਹੈ",
   "chipNoLogin": "ਕੋਈ ਲੌਗਇਨ ਨਹੀਂ",
   "chipNoAdsOnGurbani": "ਗੁਰਬਾਣੀ ਉੱਤੇ ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ",
-
   "introTitle1": "ਤੁਹਾਡਾ ਨਿਤਨੇਮ, ਹਮੇਸ਼ਾ ਅੰਗ ਸੰਗ",
   "introBody1": "ਸੱਤੇ ਨਿਤਨੇਮ ਦੀਆਂ ਬਾਣੀਆਂ, ਰੋਜ਼ਾਨਾ 5 ਮਿੰਟ ਦਾ ਸਿਮਰਨ, ਅਤੇ ਗੁਰਪੁਰਬ ਦੇ ਚੇਤੇ। ਨਿਤਨੇਮ ਦੇ ਚੇਤੇ ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਦੇ ਸੂਰਜ ਚੜ੍ਹਨ-ਛਿਪਣ ਮੁਤਾਬਕ ਆਉਂਦੇ ਹਨ।",
   "introTitle2": "ਪਾਠ ਦੇ ਨਾਲ-ਨਾਲ ਪੜ੍ਹੋ",
@@ -70,7 +62,6 @@
   "introBanisCount": "{count} ਬਾਣੀਆਂ",
   "introAtSunset": "ਸੂਰਜ ਛਿਪਣ ਵੇਲੇ",
   "introBeforeSleep": "ਸੌਣ ਤੋਂ ਪਹਿਲਾਂ",
-
   "setupLanguageTitle": "ਆਪਣੀ ਬੋਲੀ ਚੁਣੋ",
   "setupLanguagePunjabi": "ਪੰਜਾਬੀ",
   "setupLanguagePunjabiSub": "Punjabi",
@@ -78,7 +69,6 @@
   "setupLanguageHindiSub": "Hindi",
   "setupLanguageEnglish": "English",
   "setupLanguageEnglishSub": "English",
-
   "setupReadingTitle": "ਤੁਸੀਂ ਗੁਰਬਾਣੀ ਕਿਵੇਂ ਪੜ੍ਹਨੀ ਪਸੰਦ ਕਰਦੇ ਹੋ?",
   "scriptGurmukhi": "ਗੁਰਮੁਖੀ",
   "scriptDevanagari": "ਦੇਵਨਾਗਰੀ",
@@ -88,7 +78,6 @@
   "elderMode": "ਵੱਡੇ ਅੱਖਰ",
   "elderModeSub": "ਬਹੁਤ ਵੱਡੇ ਅੱਖਰ ਅਤੇ ਵੱਡੇ ਬਟਨ",
   "versionsNote": "ਬਾਣੀਆਂ ਦੇ ਰੂਪ ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਦੀ ਰਹਿਤ ਮਰਯਾਦਾ ਅਨੁਸਾਰ ਹਨ",
-
   "setupRemindersTitle": "ਅਸੀਂ ਤੁਹਾਨੂੰ ਕਦੋਂ ਚੇਤਾ ਕਰਾਈਏ?",
   "setupRemindersBody": "ਆਪਣੇ-ਆਪ ਵਾਲਾ ਢੰਗ ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਦੇ ਸੂਰਜ ਚੜ੍ਹਨ-ਛਿਪਣ ਮੁਤਾਬਕ ਚੱਲਦਾ ਹੈ। ਆਪਣਾ ਵੇਲਾ ਚੁਣਨ ਜਾਂ ਚੇਤਾ ਬੰਦ ਕਰਨ ਲਈ ਕਿਸੇ ਵੀ ਵੇਲੇ ਉੱਤੇ ਟੈਪ ਕਰੋ।",
   "reminderAuto": "ਆਪਣੇ-ਆਪ",
@@ -109,7 +98,6 @@
   "beginMyNitnem": "ਮੇਰਾ ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ",
   "audioNotInBuild": "ਇਸ ਬਾਣੀ ਦੀ ਆਵਾਜ਼ ਹਾਲੇ ਇਸ ਬਿਲਡ ਵਿੱਚ ਨਹੀਂ ਹੈ",
   "audioNotInBuildSub": "ਜਪੁ ਜੀ ਸਾਹਿਬ ਦਾ ਪਾਠ ਮੌਜੂਦ ਹੈ। ਬਾਕੀ ਬਾਣੀਆਂ ਦੀਆਂ ਰਿਕਾਰਡਿੰਗਾਂ ਤਿਆਰ ਹੋਣ ਉੱਤੇ ਆਉਣਗੀਆਂ।",
-
   "reminderSheetTitle": "{bani} ਦਾ ਚੇਤਾ",
   "reminderSheetSameTime": "ਹਰ ਰੋਜ਼ ਉਹੀ ਵੇਲਾ",
   "reminderSheetAtSunsetToday": "ਸੂਰਜ ਛਿਪਣ ਵੇਲੇ · ਅੱਜ {time}",
@@ -117,7 +105,6 @@
   "reminderSheetRepeat": "ਦੁਹਰਾਓ",
   "reminderSheetShowInMyDay": "ਮੇਰੇ ਦਿਨ ਵਿੱਚ ਵਿਖਾਓ",
   "reminderSheetTurnOff": "ਇਹ ਚੇਤਾ ਬੰਦ ਕਰੋ",
-
   "dayMon": "ਸੋ",
   "dayTue": "ਮੰ",
   "dayWed": "ਬੁ",
@@ -125,7 +112,6 @@
   "dayFri": "ਸ਼ੁ",
   "daySat": "ਸ਼",
   "daySun": "ਐ",
-
   "greeting": "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ",
   "ctaStartNitnem": "ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ",
   "ctaContinueBani": "{bani} ਜਾਰੀ ਰੱਖੋ",
@@ -145,8 +131,6 @@
   "helpTip2": "ਪਾਠ ਵਿੱਚ ਅ / अ / A ਨਾਲ ਲਿਪੀ ਬਦਲੋ ਅਤੇ Aa ਨਾਲ ਅੱਖਰਾਂ ਦਾ ਆਕਾਰ, ਅਰਥ ਤੇ ਵਿਸਰਾਮ ਖੋਲ੍ਹੋ।",
   "helpTip3": "ਚੇਤੇ ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਦੇ ਸੂਰਜ ਚੜ੍ਹਨ-ਛਿਪਣ ਮੁਤਾਬਕ, ਜਾਂ ਤੁਹਾਡੇ ਚੁਣੇ ਵੇਲੇ ਉੱਤੇ ਆਉਂਦੇ ਹਨ।",
   "helpAboutLink": "ਬਾਰੇ ਤੇ ਸ਼ੁਕਰਾਨਾ",
-
-
   "nitnemTitle": "ਨਿਤਨੇਮ",
   "nitnemVersionLine": "ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਵਾਲਾ ਰੂਪ",
   "nitnemAudioSavedOffline": "ਆਵਾਜ਼ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲੀ ਹੈ",
@@ -160,10 +144,8 @@
   "goalsSummaryCard": "ਮੇਰੇ ਪਾਠ ਦੇ ਸੰਕਲਪ",
   "goalsSummaryLine": "{total} ਵਿੱਚੋਂ {done} ਅੱਜ ਪੂਰੇ",
   "goalsSetOne": "ਪਾਠ ਦਾ ਸੰਕਲਪ ਰੱਖੋ",
-
   "baniNotInBuild": "ਇਹ ਬਾਣੀ ਹਾਲੇ ਇਸ ਬਿਲਡ ਵਿੱਚ ਨਹੀਂ ਹੈ",
   "baniNotInBuildBody": "ਹਾਜ਼ਰੀ ਵਿੱਚ ਪੂਰਾ ਜਪੁ ਜੀ ਸਾਹਿਬ ਮੌਜੂਦ ਹੈ। ਬਾਕੀ ਬਾਣੀਆਂ ਪਾਠ ਦੀ ਪੜਚੋਲ ਮਗਰੋਂ ਆਉਣਗੀਆਂ।",
-
   "readerTextSettings": "ਅੱਖਰ ਸੈਟਿੰਗ",
   "readerShowMeanings": "ਅਰਥ ਵਿਖਾਓ",
   "readerMeaningLanguage": "ਅਰਥਾਂ ਦੀ ਬੋਲੀ",
@@ -187,17 +169,14 @@
   "readerAutoScrollPaused": "ਆਪਣੇ-ਆਪ ਸਰਕਣਾ ਰੁਕਿਆ",
   "readerFollowingAudio": "ਆਵਾਜ਼ ਨਾਲ ਚੱਲ ਰਿਹਾ",
   "readerSourceCredit": "ਪਾਠ: {text} · ਅਰਥ: {meanings}",
-
   "langPunjabi": "ਪੰਜਾਬੀ",
   "langHindi": "ਹਿੰਦੀ",
   "langEnglish": "ਅੰਗਰੇਜ਼ੀ",
-
   "playerNowPlaying": "ਹੁਣ ਚੱਲ ਰਿਹਾ",
   "playerMorningNitnem": "ਸਵੇਰ ਦਾ ਨਿਤਨੇਮ",
   "playerUpNext": "ਅੱਗੇ",
   "playerSpeed": "ਰਫ਼ਤਾਰ",
   "playerSleepTimer": "ਸੌਣ ਦਾ ਵੇਲਾ",
-
   "diaryTitle": "ਨਿਤਨੇਮ ਡਾਇਰੀ",
   "diaryStreakDays": "ਲਗਾਤਾਰ {count} ਦਿਨ",
   "diaryStreakOne": "ਲਗਾਤਾਰ 1 ਦਿਨ",
@@ -213,7 +192,6 @@
   "diaryStatRehras": "ਰਹਰਾਸਿ",
   "diaryStatSohila": "ਸੋਹਿਲਾ",
   "diaryStatSimran": "ਸਿਮਰਨ",
-
   "simranTitle": "ਰੋਜ਼ਾਨਾ ਸਿਮਰਨ",
   "simranSubtitle": "5 ਸ਼ਾਂਤ ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ",
   "simranWaheguru": "ਵਾਹਿਗੁਰੂ",
@@ -223,7 +201,6 @@
   "simranRecent": "ਪਿਛਲੇ {total} ਦਿਨਾਂ ਵਿੱਚੋਂ {done} ਦਿਨ ਕੀਤਾ",
   "simranLoggedInDiary": "ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ",
   "simranCompleteToast": "ਸਿਮਰਨ ਪੂਰਾ — ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ ਹੋ ਗਿਆ",
-
   "gurpurabTitle": "ਗੁਰਪੁਰਬ ਕੈਲੰਡਰ",
   "gurpurabTodayNanakshahi": "ਅੱਜ · ਨਾਨਕਸ਼ਾਹੀ",
   "gurpurabRemindersLine": "ਹਰ ਦਿਨ ਤੋਂ ਇੱਕ ਸ਼ਾਮ ਪਹਿਲਾਂ ਅਤੇ ਉਸ ਸਵੇਰ ਚੇਤਾ",
@@ -235,7 +212,6 @@
   "gurpurabFilterAll": "ਸਾਰੇ ਦਿਨ",
   "gurpurabFilterGurpurabsOnly": "ਸਿਰਫ਼ ਗੁਰਪੁਰਬ",
   "gurpurabNoneUpcoming": "ਅਗਲੇ 90 ਦਿਨਾਂ ਵਿੱਚ ਕੋਈ ਦਿਹਾੜਾ ਨਹੀਂ",
-
   "goalsTitle": "ਮੇਰੇ ਪਾਠ ਦੇ ਸੰਕਲਪ",
   "goalsSubtitle": "{total} ਵਿੱਚੋਂ {done} ਅੱਜ ਪੂਰੇ",
   "goalsAdd": "ਪਾਠ ਦਾ ਸੰਕਲਪ ਜੋੜੋ",
@@ -262,7 +238,6 @@
   "goalMoreBanis": "ਹੋਰ…",
   "goalPause": "ਸੰਕਲਪ ਰੋਕੋ",
   "goalDeleteConfirm": "ਇਹ ਸੰਕਲਪ ਮਿਟਾਈਏ? ਇਸ ਦੀ ਗਿਣਤੀ ਡਾਇਰੀ ਵਿੱਚ ਰਹੇਗੀ।",
-
   "settingsTitle": "ਸੈਟਿੰਗ",
   "settingsSectionLanguage": "ਬੋਲੀ",
   "settingsAppLanguage": "ਐਪ ਦੀ ਬੋਲੀ",
@@ -300,13 +275,11 @@
   "settingsAnalyticsSub": "ਇਸ ਬਿਲਡ ਵਿੱਚ ਕੁਝ ਇਕੱਠਾ ਨਹੀਂ ਹੁੰਦਾ",
   "settingsLicences": "ਓਪਨ-ਸੋਰਸ ਲਾਇਸੰਸ",
   "settingsVersion": "ਹਾਜ਼ਰੀ {version}",
-
   "cityPickerTitle": "ਆਪਣਾ ਸ਼ਹਿਰ ਚੁਣੋ",
   "cityPickerSearch": "ਸ਼ਹਿਰ ਲੱਭੋ",
   "cityPickerUseLocation": "ਮੇਰੀ ਥਾਂ ਵਰਤੋ",
   "cityPickerNoResults": "ਕੋਈ ਸ਼ਹਿਰ ਨਹੀਂ ਮਿਲਿਆ। ਨੇੜੇ ਦਾ ਕੋਈ ਵੱਡਾ ਸ਼ਹਿਰ ਵੇਖੋ।",
   "cityPickerNote": "ਸਿਰਫ਼ ਇਸੇ ਫ਼ੋਨ ਉੱਤੇ, ਸੂਰਜ ਚੜ੍ਹਨ-ਛਿਪਣ ਦਾ ਹਿਸਾਬ ਲਾਉਣ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।",
-
   "batteryHelpTitle": "ਚੇਤੇ ਨਹੀਂ ਆ ਰਹੇ?",
   "batteryHelpBody": "ਕੁਝ ਫ਼ੋਨ ਬੈਟਰੀ ਬਚਾਉਣ ਲਈ ਐਪਾਂ ਨੂੰ ਪਿੱਛੇ ਚੱਲਣ ਤੋਂ ਰੋਕ ਦਿੰਦੇ ਹਨ। ਜੇ ਚੇਤਾ ਲੇਟ ਜਾਂ ਗ਼ਾਇਬ ਹੋਵੇ, ਤਾਂ ਹਾਜ਼ਰੀ ਨੂੰ ਪਿੱਛੇ ਚੱਲਣ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।",
   "batteryHelpSamsung": "ਸੈਮਸੰਗ: ਸੈਟਿੰਗ → ਬੈਟਰੀ → Background usage limits → Sleeping apps ਵਿੱਚੋਂ ਹਾਜ਼ਰੀ ਹਟਾਓ।",
@@ -315,7 +288,6 @@
   "batteryHelpOppo": "ਓਪੋ/ਰੀਅਲਮੀ: ਸੈਟਿੰਗ → ਬੈਟਰੀ → App battery usage → ਹਾਜ਼ਰੀ → Allow background activity।",
   "batteryHelpOnePlus": "ਵਨਪਲੱਸ: ਸੈਟਿੰਗ → ਬੈਟਰੀ → Battery optimisation → ਹਾਜ਼ਰੀ → Don't optimise।",
   "batteryHelpButton": "ਬੈਟਰੀ ਸੈਟਿੰਗ ਖੋਲ੍ਹੋ",
-
   "aboutTitle": "ਬਾਰੇ ਤੇ ਸ਼ੁਕਰਾਨਾ",
   "aboutPurpose": "ਹਾਜ਼ਰੀ ਪੰਜਾਬੀ, ਹਿੰਦੀ ਤੇ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਇੱਕ ਮੁਫ਼ਤ, ਬਿਨਾਂ-ਇੰਟਰਨੈੱਟ ਚੱਲਣ ਵਾਲੀ ਨਿਤਨੇਮ ਐਪ ਹੈ। ਗੁਰਬਾਣੀ ਉੱਤੇ ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ। ਕੋਈ ਲੌਗਇਨ ਨਹੀਂ।",
   "aboutTextSources": "ਗੁਰਬਾਣੀ ਪਾਠ ਤੇ ਲਿਪੀਅੰਤਰ",
@@ -326,11 +298,9 @@
   "aboutFontsBody": "ਮੁਕਤਾ, ਬਲੂ ਪਾਜੀ 2, ਨੋਟੋ ਸੇਰਿਫ਼ ਗੁਰਮੁਖੀ ਤੇ ਨੋਟੋ ਸੇਰਿਫ਼ ਦੇਵਨਾਗਰੀ — SIL Open Font License।",
   "aboutContact": "ਸੰਪਰਕ",
   "aboutNoAudioYet": "ਐਪ ਨਾਲ ਆਈ ਪਾਠ ਦੀ ਰਿਕਾਰਡਿੰਗ ਫ਼ੋਨ ਤੋਂ ਹੀ ਚੱਲਦੀ ਹੈ, ਕਦੇ ਸਟ੍ਰੀਮ ਨਹੀਂ ਹੁੰਦੀ।",
-
   "privacyTitle": "ਨਿੱਜਤਾ",
   "privacyBody": "ਹਾਜ਼ਰੀ ਵਿੱਚ ਕੋਈ ਖਾਤਾ ਨਹੀਂ ਅਤੇ ਕੋਈ ਨਿੱਜੀ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਨਹੀਂ ਹੁੰਦੀ। ਤੁਹਾਡੀ ਡਾਇਰੀ, ਸੰਕਲਪ ਤੇ ਸੈਟਿੰਗ ਇਸੇ ਫ਼ੋਨ ਅਤੇ ਤੁਹਾਡੇ ਆਪਣੇ ਗੂਗਲ ਬੈਕਅੱਪ ਵਿੱਚ ਰਹਿੰਦੇ ਹਨ। ਜੇ ਤੁਸੀਂ ਸ਼ਹਿਰ ਚੁਣਦੇ ਹੋ ਜਾਂ ਆਪਣੀ ਥਾਂ ਵਰਤਦੇ ਹੋ, ਉਹ ਫ਼ੋਨ ਵਿੱਚ ਹੀ ਰਹਿੰਦੀ ਹੈ ਤੇ ਸਿਰਫ਼ ਸੂਰਜ ਚੜ੍ਹਨ-ਛਿਪਣ ਲਈ ਵਰਤੀ ਜਾਂਦੀ ਹੈ।",
   "privacyNoAnalytics": "ਇਹ ਬਿਲਡ ਕਿਤੇ ਕੁਝ ਨਹੀਂ ਭੇਜਦੀ: ਕੋਈ ਐਨਾਲਿਟਿਕਸ ਨਹੀਂ, ਕੋਈ ਕਰੈਸ਼ ਰਿਪੋਰਟ ਨਹੀਂ, ਕੋਈ ਨੈੱਟਵਰਕ ਬੇਨਤੀ ਨਹੀਂ।",
-
   "notifChannelNitnem": "ਨਿਤਨੇਮ ਦੇ ਚੇਤੇ",
   "notifChannelSimran": "ਰੋਜ਼ਾਨਾ ਸਿਮਰਨ",
   "notifChannelGurpurab": "ਗੁਰਪੁਰਬ",
@@ -350,34 +320,24 @@
   "notifActionBegin": "ਸ਼ੁਰੂ",
   "notifActionSkipToday": "ਅੱਜ ਛੱਡੋ",
   "notifActionOpenCalendar": "ਕੈਲੰਡਰ ਖੋਲ੍ਹੋ",
-
   "shareCardTitle": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
   "shareCardFooter": "ਹਾਜ਼ਰੀ ਉੱਤੇ ਰੋਜ਼ਾਨਾ ਪੜ੍ਹੋ",
   "shareCardTruncated": "…ਹਾਜ਼ਰੀ ਵਿੱਚ ਪੜ੍ਹੋ",
   "shareCardPreview": "ਸਾਂਝੇ ਕਰਨ ਵਾਲੇ ਕਾਰਡ ਦੀ ਝਲਕ",
   "shareCardShare": "ਸਾਂਝਾ ਕਰੋ",
-
   "comingSoonShort": "ਜਲਦੀ",
-
   "audioIncluded": "ਪਾਠ ਦੀ ਆਵਾਜ਼ ਸ਼ਾਮਲ ਹੈ",
-
   "audioIncludedSub": "ਜਪੁ ਜੀ ਸਾਹਿਬ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦਾ ਹੈ, ਅਤੇ ਲਿਖਤ ਨਾਲ-ਨਾਲ ਚੱਲਦੀ ਹੈ।",
-
   "settingsAudioOnPhone": "ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲੀ ਹੈ",
-
   "aboutAudioHeading": "ਪਾਠ ਦੀ ਰਿਕਾਰਡਿੰਗ",
-
   "readerTapLineToSeek": "ਪਾਠ ਉੱਥੋਂ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਸੇ ਵੀ ਪੰਕਤੀ ਉੱਤੇ ਟੈਪ ਕਰੋ",
-
   "readerLockControlsOff": "ਲਾਕ-ਸਕਰੀਨ ਕੰਟਰੋਲ ਬੰਦ ਹਨ",
   "readerLockControlsOffSub": "ਨੋਟੀਫਿਕੇਸ਼ਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ, ਫੇਰ ਪਾਠ ਲਾਕ ਸਕਰੀਨ ਤੋਂ ਰੋਕਿਆ ਜਾ ਸਕੇਗਾ।",
   "settingsLockScreenControls": "ਲਾਕ-ਸਕਰੀਨ ਕੰਟਰੋਲ",
   "settingsLockScreenAllowed": "ਇਜਾਜ਼ਤ ਹੈ — ਫ਼ੋਨ ਲਾਕ ਹੋਣ ਉੱਤੇ ਚਲਾਓ ਤੇ ਰੋਕੋ ਦਿਸਦੇ ਹਨ",
   "settingsLockScreenBlocked": "ਇਜਾਜ਼ਤ ਨਹੀਂ — ਹਾਜ਼ਰੀ ਲਈ ਨੋਟੀਫਿਕੇਸ਼ਨ ਬੰਦ ਹਨ",
-
   "actionStop": "ਬੰਦ ਕਰੋ",
   "playerStillPlaying": "ਹਾਲੇ ਚੱਲ ਰਿਹਾ ਹੈ",
-
   "vicharTitle": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
   "vicharNative": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
   "vicharSource": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ",
@@ -390,11 +350,31 @@
   "vicharMeaningEn": "ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ",
   "vicharNone": "ਇਸ ਬਿਲਡ ਵਿੱਚ ਹਾਲੇ ਵਿਚਾਰ ਨਹੀਂ ਹੈ",
   "vicharDayOf": "{total} ਵਿੱਚੋਂ ਸਤਰ {day}",
-  "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
-
+  "@vicharDayOf": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "goalsEmptyTitle": "ਰੋਜ਼ਾਨਾ ਟੀਚਾ ਰੱਖੋ",
   "goalsEmptyBody": "ਬਾਣੀ ਚੁਣੋ ਤੇ ਦੱਸੋ ਕਿ ਦਿਨ ਵਿੱਚ ਕਿੰਨੀ ਵਾਰ ਪੜ੍ਹਨੀ ਹੈ। ਤੁਹਾਡੇ ਟੀਚੇ ਇੱਥੇ ਉਸੇ ਵੇਲੇ ਦਿਸਣਗੇ ਜੋ ਤੁਸੀਂ ਰੱਖਿਆ ਹੈ।",
-
   "errorGeneric": "ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ।",
-  "errorContentDb": "ਐਪ ਨਾਲ ਆਈ ਸਮੱਗਰੀ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ। ਹਾਜ਼ਰੀ ਮੁੜ ਇੰਸਟਾਲ ਕਰਨ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।"
+  "errorContentDb": "ਐਪ ਨਾਲ ਆਈ ਸਮੱਗਰੀ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ। ਹਾਜ਼ਰੀ ਮੁੜ ਇੰਸਟਾਲ ਕਰਨ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।",
+  "calendarKindPrakash": "ਪ੍ਰਕਾਸ਼",
+  "calendarKindGurgaddi": "ਗੁਰਗੱਦੀ",
+  "calendarKindJotiJot": "ਜੋਤੀ ਜੋਤ",
+  "calendarKindShaheedi": "ਸ਼ਹੀਦੀ",
+  "calendarKindJorMela": "ਜੋੜ ਮੇਲਾ",
+  "calendarKindBirth": "ਜਨਮ ਦਿਹਾੜਾ",
+  "calendarKindHistorical": "ਇਤਿਹਾਸਕ",
+  "calendarKindFestival": "ਤਿਉਹਾਰ",
+  "calendarKindSpecial": "ਦਿਹਾੜਾ",
+  "calendarKindSangrand": "ਸੰਗਰਾਂਦ",
+  "calendarKindPuranmashi": "ਪੂਰਨਮਾਸ਼ੀ",
+  "calendarKindMasya": "ਮੱਸਿਆ",
+  "gurpurabSupplementary": "ਪੜਤਾਲ ਲਈ, SGPC ਸੂਚੀ ਵਿੱਚ ਨਹੀਂ"
 }

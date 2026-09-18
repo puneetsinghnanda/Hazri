@@ -2222,6 +2222,84 @@ abstract class L {
   /// In en, this message translates to:
   /// **'The bundled content could not be opened. Reinstalling Hazri should fix it.'**
   String get errorContentDb;
+
+  /// No description provided for @calendarKindPrakash.
+  ///
+  /// In en, this message translates to:
+  /// **'Prakash'**
+  String get calendarKindPrakash;
+
+  /// No description provided for @calendarKindGurgaddi.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurgaddi'**
+  String get calendarKindGurgaddi;
+
+  /// No description provided for @calendarKindJotiJot.
+  ///
+  /// In en, this message translates to:
+  /// **'Joti Jot'**
+  String get calendarKindJotiJot;
+
+  /// No description provided for @calendarKindShaheedi.
+  ///
+  /// In en, this message translates to:
+  /// **'Shaheedi'**
+  String get calendarKindShaheedi;
+
+  /// No description provided for @calendarKindJorMela.
+  ///
+  /// In en, this message translates to:
+  /// **'Jorh Mela'**
+  String get calendarKindJorMela;
+
+  /// No description provided for @calendarKindBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth anniversary'**
+  String get calendarKindBirth;
+
+  /// No description provided for @calendarKindHistorical.
+  ///
+  /// In en, this message translates to:
+  /// **'Historical'**
+  String get calendarKindHistorical;
+
+  /// No description provided for @calendarKindFestival.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival'**
+  String get calendarKindFestival;
+
+  /// No description provided for @calendarKindSpecial.
+  ///
+  /// In en, this message translates to:
+  /// **'Observance'**
+  String get calendarKindSpecial;
+
+  /// No description provided for @calendarKindSangrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangrand'**
+  String get calendarKindSangrand;
+
+  /// No description provided for @calendarKindPuranmashi.
+  ///
+  /// In en, this message translates to:
+  /// **'Puranmashi'**
+  String get calendarKindPuranmashi;
+
+  /// No description provided for @calendarKindMasya.
+  ///
+  /// In en, this message translates to:
+  /// **'Masya'**
+  String get calendarKindMasya;
+
+  /// No description provided for @gurpurabSupplementary.
+  ///
+  /// In en, this message translates to:
+  /// **'Cross-check, not in the SGPC list'**
+  String get gurpurabSupplementary;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

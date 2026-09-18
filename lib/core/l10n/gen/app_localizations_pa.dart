@@ -1202,4 +1202,43 @@ class LPa extends L {
   @override
   String get errorContentDb =>
       'ਐਪ ਨਾਲ ਆਈ ਸਮੱਗਰੀ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕੀ। ਹਾਜ਼ਰੀ ਮੁੜ ਇੰਸਟਾਲ ਕਰਨ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।';
+
+  @override
+  String get calendarKindPrakash => 'ਪ੍ਰਕਾਸ਼';
+
+  @override
+  String get calendarKindGurgaddi => 'ਗੁਰਗੱਦੀ';
+
+  @override
+  String get calendarKindJotiJot => 'ਜੋਤੀ ਜੋਤ';
+
+  @override
+  String get calendarKindShaheedi => 'ਸ਼ਹੀਦੀ';
+
+  @override
+  String get calendarKindJorMela => 'ਜੋੜ ਮੇਲਾ';
+
+  @override
+  String get calendarKindBirth => 'ਜਨਮ ਦਿਹਾੜਾ';
+
+  @override
+  String get calendarKindHistorical => 'ਇਤਿਹਾਸਕ';
+
+  @override
+  String get calendarKindFestival => 'ਤਿਉਹਾਰ';
+
+  @override
+  String get calendarKindSpecial => 'ਦਿਹਾੜਾ';
+
+  @override
+  String get calendarKindSangrand => 'ਸੰਗਰਾਂਦ';
+
+  @override
+  String get calendarKindPuranmashi => 'ਪੂਰਨਮਾਸ਼ੀ';
+
+  @override
+  String get calendarKindMasya => 'ਮੱਸਿਆ';
+
+  @override
+  String get gurpurabSupplementary => 'ਪੜਤਾਲ ਲਈ, SGPC ਸੂਚੀ ਵਿੱਚ ਨਹੀਂ';
 }

@@ -225,10 +225,20 @@ class CalendarEvents extends Table {
   TextColumn get date => text()();
   TextColumn get kind => text()();
   TextColumn get nameEn => text().named('name_en')();
-  TextColumn get namePa => text().named('name_pa')();
-  TextColumn get nameHi => text().named('name_hi')();
+
+  /// Null where the bundled calendar has no reviewed name in that language.
+  ///
+  /// The supplied calendar is English, and ten events carry Punjabi from the
+  /// earlier partial jantri. Nothing is machine-translated to fill the rest,
+  /// so the reader falls back to English -- the rule the meanings follow.
+  TextColumn get namePa => text().named('name_pa').nullable()();
+  TextColumn get nameHi => text().named('name_hi').nullable()();
   TextColumn get nsLabel => text().named('ns_label').nullable()();
   BoolColumn get defaultRemind => boolean().named('default_remind')();
+
+  /// The source marks this entry as its own cross-check rather than something
+  /// the SGPC jantri confirms, so the app says so instead of implying it.
+  BoolColumn get supplementary => boolean().named('supplementary')();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -324,7 +334,7 @@ class ContentDb extends _$ContentDb {
   );
 
   /// The content version baked in by the pipeline.
-  static const int expectedVersion = 7;
+  static const int expectedVersion = 8;
 
   /// Copies `assets/content/content.db` into app storage if it is missing or
   /// out of date, and returns the opened database.

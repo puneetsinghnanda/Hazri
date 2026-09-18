@@ -1,10 +1,8 @@
 {
   "@@locale": "hi",
-
   "appName": "हाज़िरी",
   "appNameNative": "ਹਾਜ਼ਰੀ",
   "tagline": "आपका रोज़ाना नितनेम — हमेशा अंग संग",
-
   "actionContinue": "आगे बढ़ें",
   "actionNext": "आगे",
   "actionBack": "पीछे",
@@ -30,33 +28,27 @@
   "actionOpenReader": "पाठ खोलें",
   "actionGotIt": "समझ गया",
   "actionRetry": "फिर कोशिश करें",
-
   "on": "चालू",
   "off": "बंद",
   "today": "आज",
   "tomorrow": "कल",
   "yesterday": "बीता कल",
-
   "minutes": "{count} मिनट",
   "minutesLeft": "{count} मिनट बाकी",
   "nOfM": "{m} में से {n}",
-
   "navToday": "आज",
   "navNitnem": "नितनेम",
   "navSimran": "सिमरन",
   "navDiary": "डायरी",
   "navSettings": "सेटिंग्स",
-
   "slotAmritVela": "अमृत वेला",
   "slotEvening": "शाम",
   "slotBedtime": "सोने से पहले",
   "slotMorning": "सुबह",
   "slotMoreBanis": "और बाणियाँ",
-
   "chipWorksOffline": "बिना इंटरनेट चलती है",
   "chipNoLogin": "कोई लॉगिन नहीं",
   "chipNoAdsOnGurbani": "गुरबाणी पर कोई विज्ञापन नहीं",
-
   "introTitle1": "आपका नितनेम, हमेशा अंग संग",
   "introBody1": "सातों नितनेम की बाणियाँ, रोज़ाना 5 मिनट का सिमरन, और गुरपुरब की याद। नितनेम की याद आपके शहर के सूर्योदय-सूर्यास्त के अनुसार आती है।",
   "introTitle2": "पाठ के साथ-साथ पढ़ें",
@@ -70,7 +62,6 @@
   "introBanisCount": "{count} बाणियाँ",
   "introAtSunset": "सूर्यास्त पर",
   "introBeforeSleep": "सोने से पहले",
-
   "setupLanguageTitle": "अपनी भाषा चुनें",
   "setupLanguagePunjabi": "ਪੰਜਾਬੀ",
   "setupLanguagePunjabiSub": "Punjabi",
@@ -78,7 +69,6 @@
   "setupLanguageHindiSub": "Hindi",
   "setupLanguageEnglish": "English",
   "setupLanguageEnglishSub": "English",
-
   "setupReadingTitle": "आप गुरबाणी कैसे पढ़ना पसंद करते हैं?",
   "scriptGurmukhi": "गुरमुखी",
   "scriptDevanagari": "देवनागरी",
@@ -88,7 +78,6 @@
   "elderMode": "बड़े अक्षर",
   "elderModeSub": "बहुत बड़े अक्षर और बड़े बटन",
   "versionsNote": "बाणियों के रूप एसजीपीसी रहित मर्यादा के अनुसार हैं",
-
   "setupRemindersTitle": "हम आपको कब याद दिलाएँ?",
   "setupRemindersBody": "अपने-आप वाला ढंग आपके शहर के सूर्योदय-सूर्यास्त के अनुसार चलता है। अपना समय चुनने या याद बंद करने के लिए किसी भी समय पर टैप करें।",
   "reminderAuto": "अपने-आप",
@@ -109,7 +98,6 @@
   "beginMyNitnem": "मेरा नितनेम शुरू करें",
   "audioNotInBuild": "इस बाणी की आवाज़ अभी इस बिल्ड में नहीं है",
   "audioNotInBuildSub": "जपु जी साहिब का पाठ मौजूद है। बाकी बाणियों की रिकॉर्डिंग तैयार होने पर आएँगी।",
-
   "reminderSheetTitle": "{bani} की याद",
   "reminderSheetSameTime": "हर रोज़ वही समय",
   "reminderSheetAtSunsetToday": "सूर्यास्त पर · आज {time}",
@@ -117,7 +105,6 @@
   "reminderSheetRepeat": "दोहराएँ",
   "reminderSheetShowInMyDay": "मेरे दिन में दिखाएँ",
   "reminderSheetTurnOff": "यह याद बंद करें",
-
   "dayMon": "सो",
   "dayTue": "मं",
   "dayWed": "बु",
@@ -125,7 +112,6 @@
   "dayFri": "शु",
   "daySat": "श",
   "daySun": "र",
-
   "greeting": "सत श्री अकाल जी",
   "ctaStartNitnem": "नितनेम शुरू करें",
   "ctaContinueBani": "{bani} जारी रखें",
@@ -145,8 +131,6 @@
   "helpTip2": "पाठ में ਅ / अ / A से लिपि बदलें और Aa से अक्षरों का आकार, अर्थ और विश्राम खोलें।",
   "helpTip3": "याद आपके शहर के सूर्योदय-सूर्यास्त के अनुसार, या आपके चुने समय पर आती है।",
   "helpAboutLink": "बारे में और आभार",
-
-
   "nitnemTitle": "नितनेम",
   "nitnemVersionLine": "एसजीपीसी वाला रूप",
   "nitnemAudioSavedOffline": "आवाज़ फ़ोन में सहेजी है",
@@ -160,10 +144,8 @@
   "goalsSummaryCard": "मेरे पाठ के संकल्प",
   "goalsSummaryLine": "{total} में से {done} आज पूरे",
   "goalsSetOne": "पाठ का संकल्प रखें",
-
   "baniNotInBuild": "यह बाणी अभी इस बिल्ड में नहीं है",
   "baniNotInBuildBody": "हाज़िरी में पूरा जपु जी साहिब मौजूद है। बाकी बाणियाँ पाठ की जाँच के बाद आएँगी।",
-
   "readerTextSettings": "अक्षर सेटिंग",
   "readerShowMeanings": "अर्थ दिखाएँ",
   "readerMeaningLanguage": "अर्थों की भाषा",
@@ -187,17 +169,14 @@
   "readerAutoScrollPaused": "अपने-आप चलना रुका",
   "readerFollowingAudio": "आवाज़ के साथ चल रहा",
   "readerSourceCredit": "पाठ: {text} · अर्थ: {meanings}",
-
   "langPunjabi": "पंजाबी",
   "langHindi": "हिन्दी",
   "langEnglish": "अंग्रेज़ी",
-
   "playerNowPlaying": "अभी चल रहा",
   "playerMorningNitnem": "सुबह का नितनेम",
   "playerUpNext": "आगे",
   "playerSpeed": "रफ़्तार",
   "playerSleepTimer": "सोने का समय",
-
   "diaryTitle": "नितनेम डायरी",
   "diaryStreakDays": "लगातार {count} दिन",
   "diaryStreakOne": "लगातार 1 दिन",
@@ -213,7 +192,6 @@
   "diaryStatRehras": "रहरासि",
   "diaryStatSohila": "सोहिला",
   "diaryStatSimran": "सिमरन",
-
   "simranTitle": "रोज़ाना सिमरन",
   "simranSubtitle": "5 शांत मिनट नाम सिमरन",
   "simranWaheguru": "वाहिगुरू",
@@ -223,7 +201,6 @@
   "simranRecent": "पिछले {total} दिनों में से {done} दिन किया",
   "simranLoggedInDiary": "डायरी में दर्ज",
   "simranCompleteToast": "सिमरन पूरा — डायरी में दर्ज हो गया",
-
   "gurpurabTitle": "गुरपुरब कैलेंडर",
   "gurpurabTodayNanakshahi": "आज · नानकशाही",
   "gurpurabRemindersLine": "हर दिन से एक शाम पहले और उस सुबह याद",
@@ -235,7 +212,6 @@
   "gurpurabFilterAll": "सभी दिन",
   "gurpurabFilterGurpurabsOnly": "केवल गुरपुरब",
   "gurpurabNoneUpcoming": "अगले 90 दिनों में कोई दिवस नहीं",
-
   "goalsTitle": "मेरे पाठ के संकल्प",
   "goalsSubtitle": "{total} में से {done} आज पूरे",
   "goalsAdd": "पाठ का संकल्प जोड़ें",
@@ -262,7 +238,6 @@
   "goalMoreBanis": "और…",
   "goalPause": "संकल्प रोकें",
   "goalDeleteConfirm": "यह संकल्प मिटाएँ? इसकी गिनती डायरी में रहेगी।",
-
   "settingsTitle": "सेटिंग्स",
   "settingsSectionLanguage": "भाषा",
   "settingsAppLanguage": "ऐप की भाषा",
@@ -300,13 +275,11 @@
   "settingsAnalyticsSub": "इस बिल्ड में कुछ इकट्ठा नहीं होता",
   "settingsLicences": "ओपन-सोर्स लाइसेंस",
   "settingsVersion": "हाज़िरी {version}",
-
   "cityPickerTitle": "अपना शहर चुनें",
   "cityPickerSearch": "शहर खोजें",
   "cityPickerUseLocation": "मेरी जगह का उपयोग करें",
   "cityPickerNoResults": "कोई शहर नहीं मिला। पास का कोई बड़ा शहर देखें।",
   "cityPickerNote": "केवल इसी फ़ोन पर, सूर्योदय-सूर्यास्त का हिसाब लगाने के लिए उपयोग होता है।",
-
   "batteryHelpTitle": "याद नहीं आ रही?",
   "batteryHelpBody": "कुछ फ़ोन बैटरी बचाने के लिए ऐप्स को पीछे चलने से रोक देते हैं। अगर याद देर से या गायब हो, तो हाज़िरी को पीछे चलने की अनुमति दें।",
   "batteryHelpSamsung": "सैमसंग: सेटिंग्स → बैटरी → Background usage limits → Sleeping apps में से हाज़िरी हटाएँ।",
@@ -315,7 +288,6 @@
   "batteryHelpOppo": "ओप्पो/रियलमी: सेटिंग्स → बैटरी → App battery usage → हाज़िरी → Allow background activity।",
   "batteryHelpOnePlus": "वनप्लस: सेटिंग्स → बैटरी → Battery optimisation → हाज़िरी → Don't optimise।",
   "batteryHelpButton": "बैटरी सेटिंग्स खोलें",
-
   "aboutTitle": "बारे में और आभार",
   "aboutPurpose": "हाज़िरी पंजाबी, हिन्दी और अंग्रेज़ी में एक मुफ़्त, बिना-इंटरनेट चलने वाली नितनेम ऐप है। गुरबाणी पर कोई विज्ञापन नहीं। कोई लॉगिन नहीं।",
   "aboutTextSources": "गुरबाणी पाठ और लिप्यंतरण",
@@ -326,11 +298,9 @@
   "aboutFontsBody": "मुक्ता, बलू पाजी 2, नोटो सेरिफ़ गुरमुखी और नोटो सेरिफ़ देवनागरी — SIL Open Font License।",
   "aboutContact": "संपर्क",
   "aboutNoAudioYet": "ऐप के साथ आई पाठ की रिकॉर्डिंग फ़ोन से ही चलती है, कभी स्ट्रीम नहीं होती।",
-
   "privacyTitle": "निजता",
   "privacyBody": "हाज़िरी में कोई खाता नहीं और कोई निजी जानकारी इकट्ठा नहीं होती। आपकी डायरी, संकल्प और सेटिंग्स इसी फ़ोन और आपके अपने गूगल बैकअप में रहते हैं। अगर आप शहर चुनते हैं या अपनी जगह का उपयोग करते हैं, वह फ़ोन में ही रहती है और केवल सूर्योदय-सूर्यास्त के लिए उपयोग होती है।",
   "privacyNoAnalytics": "यह बिल्ड कहीं कुछ नहीं भेजती: कोई एनालिटिक्स नहीं, कोई क्रैश रिपोर्ट नहीं, कोई नेटवर्क अनुरोध नहीं।",
-
   "notifChannelNitnem": "नितनेम की याद",
   "notifChannelSimran": "रोज़ाना सिमरन",
   "notifChannelGurpurab": "गुरपुरब",
@@ -350,34 +320,24 @@
   "notifActionBegin": "शुरू",
   "notifActionSkipToday": "आज छोड़ें",
   "notifActionOpenCalendar": "कैलेंडर खोलें",
-
   "shareCardTitle": "आज का विचार",
   "shareCardFooter": "हाज़िरी पर रोज़ाना पढ़ें",
   "shareCardTruncated": "…हाज़िरी में पढ़ें",
   "shareCardPreview": "शेयर कार्ड की झलक",
   "shareCardShare": "शेयर करें",
-
   "comingSoonShort": "जल्द",
-
   "audioIncluded": "पाठ की आवाज़ शामिल है",
-
   "audioIncludedSub": "जपु जी साहिब बिना इंटरनेट चलता है, और लिखाई साथ-साथ चलती है।",
-
   "settingsAudioOnPhone": "इसी फ़ोन में सहेजी है",
-
   "aboutAudioHeading": "पाठ की रिकॉर्डिंग",
-
   "readerTapLineToSeek": "पाठ वहीं से शुरू करने के लिए किसी भी पंक्ति पर टैप करें",
-
   "readerLockControlsOff": "लॉक-स्क्रीन नियंत्रण बंद हैं",
   "readerLockControlsOffSub": "सूचनाओं की अनुमति दें, फिर पाठ लॉक स्क्रीन से रोका जा सकेगा।",
   "settingsLockScreenControls": "लॉक-स्क्रीन नियंत्रण",
   "settingsLockScreenAllowed": "अनुमति है — फ़ोन लॉक होने पर चलाएँ और रोकें दिखते हैं",
   "settingsLockScreenBlocked": "अनुमति नहीं — हाज़री के लिए सूचनाएँ बंद हैं",
-
   "actionStop": "बंद करें",
   "playerStillPlaying": "अभी चल रहा है",
-
   "vicharTitle": "आज का विचार",
   "vicharNative": "ਅੱਜ ਦਾ ਵਿਚਾਰ",
   "vicharSource": "श्री गुरु ग्रंथ साहिब जी",
@@ -390,11 +350,31 @@
   "vicharMeaningEn": "अंग्रेज़ी में",
   "vicharNone": "इस बिल्ड में अभी विचार नहीं है",
   "vicharDayOf": "{total} में से पंक्ति {day}",
-  "@vicharDayOf": { "placeholders": { "day": { "type": "int" }, "total": { "type": "int" } } },
-
+  "@vicharDayOf": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "goalsEmptyTitle": "रोज़ का लक्ष्य रखें",
   "goalsEmptyBody": "बाणी चुनें और बताएँ कि दिन में कितनी बार पढ़नी है। आपके लक्ष्य यहाँ उसी समय दिखेंगे जो आपने रखा है।",
-
   "errorGeneric": "कुछ गलत हो गया।",
-  "errorContentDb": "ऐप के साथ आई सामग्री नहीं खुल सकी। हाज़िरी फिर इंस्टॉल करने से ठीक हो जाएगा।"
+  "errorContentDb": "ऐप के साथ आई सामग्री नहीं खुल सकी। हाज़िरी फिर इंस्टॉल करने से ठीक हो जाएगा।",
+  "calendarKindPrakash": "प्रकाश",
+  "calendarKindGurgaddi": "गुरगद्दी",
+  "calendarKindJotiJot": "ज्योति जोत",
+  "calendarKindShaheedi": "शहीदी",
+  "calendarKindJorMela": "जोड़ मेला",
+  "calendarKindBirth": "जन्म दिवस",
+  "calendarKindHistorical": "ऐतिहासिक",
+  "calendarKindFestival": "त्योहार",
+  "calendarKindSpecial": "दिवस",
+  "calendarKindSangrand": "संगरांद",
+  "calendarKindPuranmashi": "पूरनमाशी",
+  "calendarKindMasya": "मस्या",
+  "gurpurabSupplementary": "क्रॉस-चेक, SGPC सूची में नहीं"
 }

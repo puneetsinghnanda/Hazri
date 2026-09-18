@@ -1,0 +1,55 @@
+{
+ "_note": "Punjabi names for calendar events, kept apart from calendar-558.json because that file is regenerated from the supplied .docx and the document is English only. These ten came with the earlier partial calendar and are carried across verbatim -- the event is the same one, and the Gurmukhi is the text that was reviewed then. Nothing here is translated: an event with no entry ships with no Punjabi and the reader falls back to English, which is the same rule the meanings follow. Add to this file only from a reviewed source. `en` is matched alongside `date` so a changed event name fails the build instead of silently attaching the wrong Gurmukhi.",
+ "names": [
+  {
+   "date": "2026-09-12",
+   "en": "First Prakash Purab – Sri Guru Granth Sahib Ji (1604)",
+   "pa": "ਪਹਿਲਾ ਪ੍ਰਕਾਸ਼ ਪੁਰਬ, ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ"
+  },
+  {
+   "date": "2026-09-13",
+   "en": "Gurgaddi Purab – Sri Guru Arjan Dev Ji",
+   "pa": "ਗੁਰਗੱਦੀ ਦਿਵਸ, ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ"
+  },
+  {
+   "date": "2026-09-14",
+   "en": "Joti Jot Purab – Sri Guru Ram Das Sahib Ji",
+   "pa": "ਜੋਤੀ ਜੋਤ ਦਿਵਸ, ਗੁਰੂ ਰਾਮਦਾਸ ਜੀ"
+  },
+  {
+   "date": "2026-09-24",
+   "en": "Gurgaddi Purab – Sri Guru Ram Das Sahib Ji",
+   "pa": "ਗੁਰਗੱਦੀ ਦਿਵਸ, ਗੁਰੂ ਰਾਮਦਾਸ ਜੀ"
+  },
+  {
+   "date": "2026-09-26",
+   "en": "Joti Jot Purab – Sri Guru Amar Das Ji / Goindwal Sahib Jorh Mela",
+   "pa": "ਜੋਤੀ ਜੋਤ ਦਿਵਸ, ਗੁਰੂ ਅਮਰਦਾਸ ਜੀ"
+  },
+  {
+   "date": "2026-10-01",
+   "en": "Gurgaddi Purab – Sri Guru Angad Dev Ji",
+   "pa": "ਗੁਰਗੱਦੀ ਦਿਵਸ, ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ"
+  },
+  {
+   "date": "2026-10-05",
+   "en": "Joti Jot Purab – Sri Guru Nanak Dev Ji",
+   "pa": "ਜੋਤੀ ਜੋਤ ਦਿਵਸ, ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ"
+  },
+  {
+   "date": "2026-10-27",
+   "en": "Prakash Purab – Sri Guru Ram Das Sahib Ji",
+   "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ, ਗੁਰੂ ਰਾਮਦਾਸ ਜੀ"
+  },
+  {
+   "date": "2026-11-08",
+   "en": "Bandi Chhor Divas / Diwali",
+   "pa": "ਬੰਦੀ ਛੋੜ ਦਿਵਸ"
+  },
+  {
+   "date": "2026-11-24",
+   "en": "Prakash Purab – Sri Guru Nanak Dev Ji",
+   "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ, ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ"
+  }
+ ]
+}

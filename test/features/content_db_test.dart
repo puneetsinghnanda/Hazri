@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/content_db.dart';
 import 'package:hazri/core/db/content_repository.dart';
 import 'package:hazri/core/settings/app_settings.dart';
+import 'package:hazri/features/gurpurab/domain/calendar_display.dart';
 import 'package:hazri/features/nitnem/domain/bani.dart';
 
 /// Checks the database `tools/content_pipeline` produced, so a bad build of the
@@ -232,6 +233,84 @@ void main() {
         final ns = calendar.dateFor(DateTime.parse(e.date));
         expect(ns, isNotNull, reason: e.date);
         expect('${ns!.label('en')} ${ns.year}', e.nsLabel, reason: e.date);
+      }
+    });
+  });
+
+  group('the Sikh calendar', () {
+    test('covers the whole financial year it was supplied for', () async {
+      final calendar = await repo.nanakshahiCalendar();
+      // 1 Apr 2026 - 31 Mar 2027, the span the source document carries.
+      expect(calendar.dateFor(DateTime(2026, 4, 1)), isNotNull);
+      expect(calendar.dateFor(DateTime(2027, 3, 31)), isNotNull);
+      // Samvat 558 runs out and 559 takes over inside that span.
+      expect(calendar.dateFor(DateTime(2027, 3, 13))!.year, 558);
+      expect(calendar.dateFor(DateTime(2027, 3, 14))!.year, 559);
+      expect(calendar.dateFor(DateTime(2027, 3, 14))!.label('en'), '1 Chet');
+    });
+
+    test('every event carries one of the types the document defines', () async {
+      const known = {
+        'prakash', 'gurgaddi', 'joti-jot', 'shaheedi', 'jor-mela', 'birth',
+        'historical', 'festival', 'special', 'sangrand', 'puranmashi', 'masya',
+      };
+      final events = await repo.calendarEvents();
+      expect(events.length, greaterThan(100));
+      for (final e in events) {
+        expect(known, contains(e.kind), reason: '${e.date} ${e.nameEn}');
+      }
+    });
+
+    test('the month markers are all there, one Sangrand a month', () async {
+      final events = await repo.calendarEvents();
+      final sangrands = events.where((e) => e.kind == 'sangrand').toList();
+      expect(sangrands.length, 12);
+      final months = await repo.nanakshahiCalendar();
+      // Every Sangrand is the first day of a Nanakshahi month.
+      for (final s in sangrands) {
+        expect(months.dateFor(DateTime.parse(s.date))!.day, 1, reason: s.date);
+      }
+    });
+
+    test('an event with no reviewed Punjabi falls back to English', () async {
+      final events = await repo.calendarEvents();
+      final withPa = events.where((e) => e.namePa != null).toList();
+      final withoutPa = events.where((e) => e.namePa == null).toList();
+      // Both cases exist: ten names came with the earlier partial jantri and
+      // the supplied document is English.
+      expect(withPa, isNotEmpty);
+      expect(withoutPa, isNotEmpty);
+
+      expect(withPa.first.nameFor('pa'), withPa.first.namePa);
+      expect(withoutPa.first.nameFor('pa'), withoutPa.first.nameEn);
+      expect(withoutPa.first.nameFor('hi'), withoutPa.first.nameEn);
+      // And nothing was machine-translated to fill the gap: no event claims
+      // Hindi, because the document has none.
+      expect(events.where((e) => e.nameHi != null), isEmpty);
+    });
+
+    test('the Gurpurab filter keeps the Gurus\' days and drops the rest',
+        () async {
+      final events = await repo.calendarEvents();
+      final gurpurabs = events.where((e) => e.isGurpurab).toList();
+      expect(gurpurabs, isNotEmpty);
+      expect(gurpurabs.length, lessThan(events.length));
+      for (final e in gurpurabs) {
+        expect(const {'prakash', 'gurgaddi', 'joti-jot'}, contains(e.kind));
+      }
+      // Prakash Purab of Guru Nanak Dev Ji is a Gurpurab; a Sangrand is not.
+      expect(gurpurabs.any((e) => e.date == '2026-11-24'), isTrue);
+      expect(gurpurabs.any((e) => e.kind == 'sangrand'), isFalse);
+    });
+
+    test('entries the document only cross-checked are marked as such', () async {
+      final events = await repo.calendarEvents();
+      final extra = events.where((e) => e.supplementary).toList();
+      expect(extra, isNotEmpty);
+      // All of them are in the FY tail or the supplementary melas, never in
+      // the SGPC Samvat 558 list proper.
+      for (final e in extra) {
+        expect(e.defaultRemind, isFalse, reason: e.nameEn);
       }
     });
   });

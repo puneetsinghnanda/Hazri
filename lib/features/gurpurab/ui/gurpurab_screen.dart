@@ -13,12 +13,21 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
+import '../domain/calendar_display.dart';
 
 final _overridesProvider = FutureProvider<Map<String, bool>>(
   (ref) => ref.watch(userRepositoryProvider).eventOverrides(),
 );
 
-/// Gurpurabs and the Nanakshahi date (Design 22).
+/// Whether the list is showing the whole calendar or only the Gurpurabs.
+///
+/// The bundled year carries 147 entries -- shaheedi divas, jorh melas,
+/// historical days and every Sangrand, Puranmashi and Masya alongside the
+/// Gurpurabs. All of it is worth having and none of it should bury the days
+/// most people open this screen for, so the list starts on Gurpurabs.
+final _gurpurabsOnlyProvider = StateProvider<bool>((ref) => true);
+
+/// The Sikh calendar and today's Nanakshahi date (Design 22).
 ///
 /// Dates come only from the bundled SGPC jantri; a date the shipped data does
 /// not cover says so rather than showing a computed guess (PRD 1.14).
@@ -36,8 +45,10 @@ class GurpurabScreen extends ConsumerWidget {
     final events = ref.watch(calendarEventsProvider).value ?? const <CalendarEventRow>[];
     final overrides = ref.watch(_overridesProvider).value ?? const <String, bool>{};
 
+    final gurpurabsOnly = ref.watch(_gurpurabsOnlyProvider);
     final upcoming = events
         .where((e) => !DateTime.parse(e.date).isBefore(today))
+        .where((e) => !gurpurabsOnly || e.isGurpurab)
         .toList();
     final thisWeek = upcoming
         .where((e) => DateTime.parse(e.date).difference(today).inDays <= 7)
@@ -104,6 +115,11 @@ class GurpurabScreen extends ConsumerWidget {
             ),
           ],
         ),
+        const SizedBox(height: 14),
+        _FilterChips(
+          gurpurabsOnly: gurpurabsOnly,
+          onChanged: (v) => ref.read(_gurpurabsOnlyProvider.notifier).state = v,
+        ),
         const SizedBox(height: 16),
         if (thisWeek.isNotEmpty) ...[
           Eyebrow(l.gurpurabThisWeek),
@@ -154,11 +170,8 @@ class _EventRow extends ConsumerWidget {
     final days = date.difference(today).inDays;
     final reminding = overrides[event.id] ?? event.defaultRemind;
 
-    final name = switch (lang) {
-      'pa' => event.namePa,
-      'hi' => event.nameHi,
-      _ => event.nameEn,
-    };
+    final name = event.nameFor(lang);
+    final gurmukhi = event.gurmukhiUnder(lang);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -220,16 +233,30 @@ class _EventRow extends ConsumerWidget {
                       ],
                     ],
                   ),
-                  if (lang != 'pa')
+                  if (gurmukhi != null)
                     Text(
-                      event.namePa,
+                      gurmukhi,
                       style: HazriText.gurmukhi(13).copyWith(color: c.muted, height: 1.5),
                     ),
-                  if (event.nsLabel != null)
-                    Text(
-                      event.nsLabel!,
-                      style: HazriText.caption.copyWith(color: c.muted),
-                    ),
+                  const SizedBox(height: 3),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 4,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      _Tag(calendarKindLabel(l, event.kind)),
+                      if (event.nsLabel != null)
+                        Text(
+                          event.nsLabel!,
+                          style: HazriText.caption.copyWith(color: c.muted),
+                        ),
+                      if (event.supplementary)
+                        Text(
+                          l.gurpurabSupplementary,
+                          style: HazriText.caption.copyWith(color: c.muted),
+                        ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -249,6 +276,90 @@ class _EventRow extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// All days, or only the Gurpurabs.
+class _FilterChips extends StatelessWidget {
+  const _FilterChips({required this.gurpurabsOnly, required this.onChanged});
+
+  final bool gurpurabsOnly;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = L.of(context);
+    return Row(
+      children: [
+        _Chip(
+          label: l.gurpurabFilterGurpurabsOnly,
+          selected: gurpurabsOnly,
+          onTap: () => onChanged(true),
+        ),
+        const SizedBox(width: 8),
+        _Chip(
+          label: l.gurpurabFilterAll,
+          selected: !gurpurabsOnly,
+          onTap: () => onChanged(false),
+        ),
+      ],
+    );
+  }
+}
+
+class _Chip extends StatelessWidget {
+  const _Chip({required this.label, required this.selected, required this.onTap});
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(HazriRadius.chip),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        decoration: BoxDecoration(
+          color: selected ? c.kesriSoft : c.card2,
+          borderRadius: BorderRadius.circular(HazriRadius.chip),
+          border: Border.all(color: selected ? c.kesriInk : c.card2),
+        ),
+        child: Text(
+          label,
+          style: HazriText.caption.copyWith(
+            color: selected ? c.kesriInk : c.muted,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The document's Type column, shown so the stored type is visible rather
+/// than only filterable.
+class _Tag extends StatelessWidget {
+  const _Tag(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+      decoration: BoxDecoration(
+        color: c.card2,
+        borderRadius: BorderRadius.circular(HazriRadius.chip),
+      ),
+      child: Text(
+        label,
+        style: HazriText.caption.copyWith(fontSize: 10.5, color: c.ink2),
       ),
     );
   }

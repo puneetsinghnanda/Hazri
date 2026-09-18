@@ -5347,18 +5347,18 @@ class $CalendarEventsTable extends CalendarEvents
   late final GeneratedColumn<String> namePa = GeneratedColumn<String>(
     'name_pa',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _nameHiMeta = const VerificationMeta('nameHi');
   @override
   late final GeneratedColumn<String> nameHi = GeneratedColumn<String>(
     'name_hi',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _nsLabelMeta = const VerificationMeta(
     'nsLabel',
@@ -5385,6 +5385,20 @@ class $CalendarEventsTable extends CalendarEvents
       'CHECK ("default_remind" IN (0, 1))',
     ),
   );
+  static const VerificationMeta _supplementaryMeta = const VerificationMeta(
+    'supplementary',
+  );
+  @override
+  late final GeneratedColumn<bool> supplementary = GeneratedColumn<bool>(
+    'supplementary',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("supplementary" IN (0, 1))',
+    ),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -5396,6 +5410,7 @@ class $CalendarEventsTable extends CalendarEvents
     nameHi,
     nsLabel,
     defaultRemind,
+    supplementary,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5451,16 +5466,12 @@ class $CalendarEventsTable extends CalendarEvents
         _namePaMeta,
         namePa.isAcceptableOrUnknown(data['name_pa']!, _namePaMeta),
       );
-    } else if (isInserting) {
-      context.missing(_namePaMeta);
     }
     if (data.containsKey('name_hi')) {
       context.handle(
         _nameHiMeta,
         nameHi.isAcceptableOrUnknown(data['name_hi']!, _nameHiMeta),
       );
-    } else if (isInserting) {
-      context.missing(_nameHiMeta);
     }
     if (data.containsKey('ns_label')) {
       context.handle(
@@ -5478,6 +5489,17 @@ class $CalendarEventsTable extends CalendarEvents
       );
     } else if (isInserting) {
       context.missing(_defaultRemindMeta);
+    }
+    if (data.containsKey('supplementary')) {
+      context.handle(
+        _supplementaryMeta,
+        supplementary.isAcceptableOrUnknown(
+          data['supplementary']!,
+          _supplementaryMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_supplementaryMeta);
     }
     return context;
   }
@@ -5511,11 +5533,11 @@ class $CalendarEventsTable extends CalendarEvents
       namePa: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name_pa'],
-      )!,
+      ),
       nameHi: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name_hi'],
-      )!,
+      ),
       nsLabel: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}ns_label'],
@@ -5523,6 +5545,10 @@ class $CalendarEventsTable extends CalendarEvents
       defaultRemind: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}default_remind'],
+      )!,
+      supplementary: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}supplementary'],
       )!,
     );
   }
@@ -5540,20 +5566,31 @@ class CalendarEventRow extends DataClass
   final String date;
   final String kind;
   final String nameEn;
-  final String namePa;
-  final String nameHi;
+
+  /// Null where the bundled calendar has no reviewed name in that language.
+  ///
+  /// The supplied calendar is English, and ten events carry Punjabi from the
+  /// earlier partial jantri. Nothing is machine-translated to fill the rest,
+  /// so the reader falls back to English -- the rule the meanings follow.
+  final String? namePa;
+  final String? nameHi;
   final String? nsLabel;
   final bool defaultRemind;
+
+  /// The source marks this entry as its own cross-check rather than something
+  /// the SGPC jantri confirms, so the app says so instead of implying it.
+  final bool supplementary;
   const CalendarEventRow({
     required this.id,
     required this.nsYear,
     required this.date,
     required this.kind,
     required this.nameEn,
-    required this.namePa,
-    required this.nameHi,
+    this.namePa,
+    this.nameHi,
     this.nsLabel,
     required this.defaultRemind,
+    required this.supplementary,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -5563,12 +5600,17 @@ class CalendarEventRow extends DataClass
     map['date'] = Variable<String>(date);
     map['kind'] = Variable<String>(kind);
     map['name_en'] = Variable<String>(nameEn);
-    map['name_pa'] = Variable<String>(namePa);
-    map['name_hi'] = Variable<String>(nameHi);
+    if (!nullToAbsent || namePa != null) {
+      map['name_pa'] = Variable<String>(namePa);
+    }
+    if (!nullToAbsent || nameHi != null) {
+      map['name_hi'] = Variable<String>(nameHi);
+    }
     if (!nullToAbsent || nsLabel != null) {
       map['ns_label'] = Variable<String>(nsLabel);
     }
     map['default_remind'] = Variable<bool>(defaultRemind);
+    map['supplementary'] = Variable<bool>(supplementary);
     return map;
   }
 
@@ -5579,12 +5621,17 @@ class CalendarEventRow extends DataClass
       date: Value(date),
       kind: Value(kind),
       nameEn: Value(nameEn),
-      namePa: Value(namePa),
-      nameHi: Value(nameHi),
+      namePa: namePa == null && nullToAbsent
+          ? const Value.absent()
+          : Value(namePa),
+      nameHi: nameHi == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nameHi),
       nsLabel: nsLabel == null && nullToAbsent
           ? const Value.absent()
           : Value(nsLabel),
       defaultRemind: Value(defaultRemind),
+      supplementary: Value(supplementary),
     );
   }
 
@@ -5599,10 +5646,11 @@ class CalendarEventRow extends DataClass
       date: serializer.fromJson<String>(json['date']),
       kind: serializer.fromJson<String>(json['kind']),
       nameEn: serializer.fromJson<String>(json['nameEn']),
-      namePa: serializer.fromJson<String>(json['namePa']),
-      nameHi: serializer.fromJson<String>(json['nameHi']),
+      namePa: serializer.fromJson<String?>(json['namePa']),
+      nameHi: serializer.fromJson<String?>(json['nameHi']),
       nsLabel: serializer.fromJson<String?>(json['nsLabel']),
       defaultRemind: serializer.fromJson<bool>(json['defaultRemind']),
+      supplementary: serializer.fromJson<bool>(json['supplementary']),
     );
   }
   @override
@@ -5614,10 +5662,11 @@ class CalendarEventRow extends DataClass
       'date': serializer.toJson<String>(date),
       'kind': serializer.toJson<String>(kind),
       'nameEn': serializer.toJson<String>(nameEn),
-      'namePa': serializer.toJson<String>(namePa),
-      'nameHi': serializer.toJson<String>(nameHi),
+      'namePa': serializer.toJson<String?>(namePa),
+      'nameHi': serializer.toJson<String?>(nameHi),
       'nsLabel': serializer.toJson<String?>(nsLabel),
       'defaultRemind': serializer.toJson<bool>(defaultRemind),
+      'supplementary': serializer.toJson<bool>(supplementary),
     };
   }
 
@@ -5627,20 +5676,22 @@ class CalendarEventRow extends DataClass
     String? date,
     String? kind,
     String? nameEn,
-    String? namePa,
-    String? nameHi,
+    Value<String?> namePa = const Value.absent(),
+    Value<String?> nameHi = const Value.absent(),
     Value<String?> nsLabel = const Value.absent(),
     bool? defaultRemind,
+    bool? supplementary,
   }) => CalendarEventRow(
     id: id ?? this.id,
     nsYear: nsYear ?? this.nsYear,
     date: date ?? this.date,
     kind: kind ?? this.kind,
     nameEn: nameEn ?? this.nameEn,
-    namePa: namePa ?? this.namePa,
-    nameHi: nameHi ?? this.nameHi,
+    namePa: namePa.present ? namePa.value : this.namePa,
+    nameHi: nameHi.present ? nameHi.value : this.nameHi,
     nsLabel: nsLabel.present ? nsLabel.value : this.nsLabel,
     defaultRemind: defaultRemind ?? this.defaultRemind,
+    supplementary: supplementary ?? this.supplementary,
   );
   CalendarEventRow copyWithCompanion(CalendarEventsCompanion data) {
     return CalendarEventRow(
@@ -5655,6 +5706,9 @@ class CalendarEventRow extends DataClass
       defaultRemind: data.defaultRemind.present
           ? data.defaultRemind.value
           : this.defaultRemind,
+      supplementary: data.supplementary.present
+          ? data.supplementary.value
+          : this.supplementary,
     );
   }
 
@@ -5669,7 +5723,8 @@ class CalendarEventRow extends DataClass
           ..write('namePa: $namePa, ')
           ..write('nameHi: $nameHi, ')
           ..write('nsLabel: $nsLabel, ')
-          ..write('defaultRemind: $defaultRemind')
+          ..write('defaultRemind: $defaultRemind, ')
+          ..write('supplementary: $supplementary')
           ..write(')'))
         .toString();
   }
@@ -5685,6 +5740,7 @@ class CalendarEventRow extends DataClass
     nameHi,
     nsLabel,
     defaultRemind,
+    supplementary,
   );
   @override
   bool operator ==(Object other) =>
@@ -5698,7 +5754,8 @@ class CalendarEventRow extends DataClass
           other.namePa == this.namePa &&
           other.nameHi == this.nameHi &&
           other.nsLabel == this.nsLabel &&
-          other.defaultRemind == this.defaultRemind);
+          other.defaultRemind == this.defaultRemind &&
+          other.supplementary == this.supplementary);
 }
 
 class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
@@ -5707,10 +5764,11 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
   final Value<String> date;
   final Value<String> kind;
   final Value<String> nameEn;
-  final Value<String> namePa;
-  final Value<String> nameHi;
+  final Value<String?> namePa;
+  final Value<String?> nameHi;
   final Value<String?> nsLabel;
   final Value<bool> defaultRemind;
+  final Value<bool> supplementary;
   final Value<int> rowid;
   const CalendarEventsCompanion({
     this.id = const Value.absent(),
@@ -5722,6 +5780,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     this.nameHi = const Value.absent(),
     this.nsLabel = const Value.absent(),
     this.defaultRemind = const Value.absent(),
+    this.supplementary = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CalendarEventsCompanion.insert({
@@ -5730,19 +5789,19 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     required String date,
     required String kind,
     required String nameEn,
-    required String namePa,
-    required String nameHi,
+    this.namePa = const Value.absent(),
+    this.nameHi = const Value.absent(),
     this.nsLabel = const Value.absent(),
     required bool defaultRemind,
+    required bool supplementary,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        nsYear = Value(nsYear),
        date = Value(date),
        kind = Value(kind),
        nameEn = Value(nameEn),
-       namePa = Value(namePa),
-       nameHi = Value(nameHi),
-       defaultRemind = Value(defaultRemind);
+       defaultRemind = Value(defaultRemind),
+       supplementary = Value(supplementary);
   static Insertable<CalendarEventRow> custom({
     Expression<String>? id,
     Expression<int>? nsYear,
@@ -5753,6 +5812,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     Expression<String>? nameHi,
     Expression<String>? nsLabel,
     Expression<bool>? defaultRemind,
+    Expression<bool>? supplementary,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -5765,6 +5825,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
       if (nameHi != null) 'name_hi': nameHi,
       if (nsLabel != null) 'ns_label': nsLabel,
       if (defaultRemind != null) 'default_remind': defaultRemind,
+      if (supplementary != null) 'supplementary': supplementary,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -5775,10 +5836,11 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     Value<String>? date,
     Value<String>? kind,
     Value<String>? nameEn,
-    Value<String>? namePa,
-    Value<String>? nameHi,
+    Value<String?>? namePa,
+    Value<String?>? nameHi,
     Value<String?>? nsLabel,
     Value<bool>? defaultRemind,
+    Value<bool>? supplementary,
     Value<int>? rowid,
   }) {
     return CalendarEventsCompanion(
@@ -5791,6 +5853,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
       nameHi: nameHi ?? this.nameHi,
       nsLabel: nsLabel ?? this.nsLabel,
       defaultRemind: defaultRemind ?? this.defaultRemind,
+      supplementary: supplementary ?? this.supplementary,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -5825,6 +5888,9 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     if (defaultRemind.present) {
       map['default_remind'] = Variable<bool>(defaultRemind.value);
     }
+    if (supplementary.present) {
+      map['supplementary'] = Variable<bool>(supplementary.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -5843,6 +5909,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
           ..write('nameHi: $nameHi, ')
           ..write('nsLabel: $nsLabel, ')
           ..write('defaultRemind: $defaultRemind, ')
+          ..write('supplementary: $supplementary, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -9918,10 +9985,11 @@ typedef $$CalendarEventsTableCreateCompanionBuilder =
       required String date,
       required String kind,
       required String nameEn,
-      required String namePa,
-      required String nameHi,
+      Value<String?> namePa,
+      Value<String?> nameHi,
       Value<String?> nsLabel,
       required bool defaultRemind,
+      required bool supplementary,
       Value<int> rowid,
     });
 typedef $$CalendarEventsTableUpdateCompanionBuilder =
@@ -9931,10 +9999,11 @@ typedef $$CalendarEventsTableUpdateCompanionBuilder =
       Value<String> date,
       Value<String> kind,
       Value<String> nameEn,
-      Value<String> namePa,
-      Value<String> nameHi,
+      Value<String?> namePa,
+      Value<String?> nameHi,
       Value<String?> nsLabel,
       Value<bool> defaultRemind,
+      Value<bool> supplementary,
       Value<int> rowid,
     });
 
@@ -9989,6 +10058,11 @@ class $$CalendarEventsTableFilterComposer
 
   ColumnFilters<bool> get defaultRemind => $composableBuilder(
     column: $table.defaultRemind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get supplementary => $composableBuilder(
+    column: $table.supplementary,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -10046,6 +10120,11 @@ class $$CalendarEventsTableOrderingComposer
     column: $table.defaultRemind,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get supplementary => $composableBuilder(
+    column: $table.supplementary,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CalendarEventsTableAnnotationComposer
@@ -10083,6 +10162,11 @@ class $$CalendarEventsTableAnnotationComposer
 
   GeneratedColumn<bool> get defaultRemind => $composableBuilder(
     column: $table.defaultRemind,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get supplementary => $composableBuilder(
+    column: $table.supplementary,
     builder: (column) => column,
   );
 }
@@ -10123,10 +10207,11 @@ class $$CalendarEventsTableTableManager
                 Value<String> date = const Value.absent(),
                 Value<String> kind = const Value.absent(),
                 Value<String> nameEn = const Value.absent(),
-                Value<String> namePa = const Value.absent(),
-                Value<String> nameHi = const Value.absent(),
+                Value<String?> namePa = const Value.absent(),
+                Value<String?> nameHi = const Value.absent(),
                 Value<String?> nsLabel = const Value.absent(),
                 Value<bool> defaultRemind = const Value.absent(),
+                Value<bool> supplementary = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion(
                 id: id,
@@ -10138,6 +10223,7 @@ class $$CalendarEventsTableTableManager
                 nameHi: nameHi,
                 nsLabel: nsLabel,
                 defaultRemind: defaultRemind,
+                supplementary: supplementary,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -10147,10 +10233,11 @@ class $$CalendarEventsTableTableManager
                 required String date,
                 required String kind,
                 required String nameEn,
-                required String namePa,
-                required String nameHi,
+                Value<String?> namePa = const Value.absent(),
+                Value<String?> nameHi = const Value.absent(),
                 Value<String?> nsLabel = const Value.absent(),
                 required bool defaultRemind,
+                required bool supplementary,
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion.insert(
                 id: id,
@@ -10162,6 +10249,7 @@ class $$CalendarEventsTableTableManager
                 nameHi: nameHi,
                 nsLabel: nsLabel,
                 defaultRemind: defaultRemind,
+                supplementary: supplementary,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

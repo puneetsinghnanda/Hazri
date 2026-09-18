@@ -26,7 +26,7 @@ SIMRAN_DIR = os.path.join(ROOT, "content", "source", "simran")
 VERIFIED_FILE = os.path.join(TIMINGS_DIR, "verified.json")
 VICHAR_DIR = os.path.join(ROOT, "content", "source", "vichar")
 
-CONTENT_VERSION = 7
+CONTENT_VERSION = 8
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -101,8 +101,9 @@ CREATE TABLE nanakshahi_month(
 
 CREATE TABLE calendar_event(
   id TEXT PRIMARY KEY, ns_year INTEGER NOT NULL, date TEXT NOT NULL, kind TEXT NOT NULL,
-  name_en TEXT NOT NULL, name_pa TEXT NOT NULL, name_hi TEXT NOT NULL,
-  ns_label TEXT, default_remind INTEGER NOT NULL DEFAULT 1);
+  name_en TEXT NOT NULL, name_pa TEXT, name_hi TEXT,
+  ns_label TEXT, default_remind INTEGER NOT NULL DEFAULT 1,
+  supplementary INTEGER NOT NULL DEFAULT 0);
 CREATE INDEX calendar_event_date ON calendar_event(date);
 
 CREATE TABLE city(
@@ -615,61 +616,80 @@ def build_simran(con: sqlite3.Connection, report: dict) -> None:
 
 
 def build_calendar(con: sqlite3.Connection, report: dict) -> None:
-    with open(os.path.join(SRC, "gurpurab-558.json"), encoding="utf-8") as fh:
+    """The Sikh calendar: Nanakshahi months, and every dated event in them.
+
+    `calendar-558.json` is written from the supplied document by
+    `import_calendar_docx.py` and carries the four columns that document gives
+    -- Gregorian date, Nanakshahi date, type and event -- plus which entries
+    the document marks as supplementary rather than SGPC-confirmed.
+
+    Punjabi lives in `calendar-names.json` and covers ten of the events. The
+    rest ship with English only: the document is English, and a name nobody
+    has reviewed in Gurmukhi is worse than a name in the language it was
+    written in. `name_pa` and `name_hi` are null there and the reader falls
+    back, which is the same rule the meanings follow.
+    """
+    with open(os.path.join(SRC, "calendar-558.json"), encoding="utf-8") as fh:
         doc = json.load(fh)
-    ns_year = int(doc["year"].split()[0])
+    with open(os.path.join(SRC, "calendar-names.json"), encoding="utf-8") as fh:
+        names = json.load(fh)
 
     con.execute(
         "INSERT INTO source(id,name,author,kind,licence,url,notes) VALUES(?,?,?,?,?,?,?)",
         ("SGPCCAL", "SGPC Nanakshahi calendar (jantri)", "SGPC", "calendar", None, None,
          doc.get("_note")))
 
-    # Derive each Sangrand from the event list: an event dated D and labelled
-    # "<n> <Month> <year>" puts that month's day 1 at D - (n-1). Only months the
-    # supplied data actually covers are stored; the rest stay absent so the app
-    # can say so rather than show an invented date.
-    name_to_idx = {m[0]: i for i, m in enumerate(NS_MONTHS)}
-    starts: dict[int, set[date]] = {}
-    for ev in doc["events"]:
-        day_s, month_name, _ = ev["nanakshahi"].split()
-        idx = name_to_idx[month_name]
-        d = datetime.strptime(ev["date"], "%Y-%m-%d").date()
-        starts.setdefault(idx, set()).add(d - timedelta(days=int(day_s) - 1))
-
-    months = []
-    for idx, candidates in sorted(starts.items()):
-        if len(candidates) != 1:
-            raise SystemExit(
-                f"Inconsistent Sangrand for {NS_MONTHS[idx][0]}: {sorted(candidates)}")
-        months.append((idx, candidates.pop()))
-
-    for pos, (idx, start) in enumerate(months):
-        # Month length is only known when the next month's Sangrand is also
-        # covered; otherwise fall back to the traditional length.
-        if pos + 1 < len(months) and months[pos + 1][0] == idx + 1:
-            days = (months[pos + 1][1] - start).days
-        else:
-            days = 31 if idx < 5 else 30
-        name_en, name_pa, name_hi = NS_MONTHS[idx]
+    for m in doc["months"]:
+        start = datetime.strptime(m["start"], "%Y-%m-%d").date()
+        name_en, name_pa, name_hi = NS_MONTHS[m["idx"]]
         con.execute(
             "INSERT INTO nanakshahi_month(ns_year,idx,name_en,name_pa,name_hi,start_date,days)"
             " VALUES(?,?,?,?,?,?,?)",
-            (ns_year, idx, name_en, name_pa, name_hi, start.isoformat(), days))
+            (m["ns_year"], m["idx"], name_en, name_pa, name_hi, start.isoformat(),
+             m["days"]))
+
+    # Punjabi is attached on date *and* English text, so a reworded event
+    # fails the build rather than quietly taking the wrong Gurmukhi.
+    pa_for = {(n["date"], n["en"]): n["pa"] for n in names["names"]}
+    seen = set()
 
     for i, ev in enumerate(doc["events"]):
+        key = (ev["date"], ev["en"])
+        pa = pa_for.get(key)
+        if pa is not None:
+            seen.add(key)
+        day_s, month_name, ns_year = ev["nanakshahi"].split()
         con.execute(
             "INSERT INTO calendar_event(id,ns_year,date,kind,name_en,name_pa,name_hi,"
-            "ns_label,default_remind) VALUES(?,?,?,?,?,?,?,?,?)",
-            (f"ev{i:03d}", ns_year, ev["date"], ev.get("kind", "gurpurab"),
-             ev["en"], ev["pa"], ev.get("hi", ev["en"]), ev["nanakshahi"],
-             1 if ev.get("remind", True) else 0))
+            "ns_label,default_remind,supplementary) VALUES(?,?,?,?,?,?,?,?,?,?)",
+            (f"ev{i:03d}", int(ns_year), ev["date"], ev["type"], ev["en"], pa, None,
+             ev["nanakshahi"], 1 if ev.get("remind") else 0,
+             1 if ev.get("supplementary") else 0))
 
+    unused = sorted(set(pa_for) - seen)
+    if unused:
+        raise SystemExit(
+            "calendar-names.json has Punjabi for events that are not in "
+            "calendar-558.json, so one of the two has moved:\n  "
+            + "\n  ".join(f"{d}  {t}" for d, t in unused))
+
+    kinds: dict[str, int] = {}
+    for ev in doc["events"]:
+        kinds[ev["type"]] = kinds.get(ev["type"], 0) + 1
+    first = datetime.strptime(doc["months"][0]["start"], "%Y-%m-%d").date()
+    last = doc["months"][-1]
     report["calendar"] = {
         "events": len(doc["events"]),
-        "months_covered": [NS_MONTHS[i][0] for i, _ in months],
-        "covered_from": months[0][1].isoformat() if months else None,
-        "covered_to": (months[-1][1] + timedelta(
-            days=(31 if months[-1][0] < 5 else 30) - 1)).isoformat() if months else None,
+        "by_kind": dict(sorted(kinds.items())),
+        "with_punjabi": len(seen),
+        "supplementary": sum(1 for e in doc["events"] if e.get("supplementary")),
+        "reminding_by_default": sum(1 for e in doc["events"] if e.get("remind")),
+        "corrections": doc.get("corrections", []),
+        "months_covered": [f"{NS_MONTHS[m['idx']][0]} {m['ns_year']}"
+                           for m in doc["months"]],
+        "covered_from": first.isoformat(),
+        "covered_to": (datetime.strptime(last["start"], "%Y-%m-%d").date()
+                       + timedelta(days=last["days"] - 1)).isoformat(),
     }
 
 

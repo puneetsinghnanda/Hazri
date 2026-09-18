@@ -1,0 +1,1288 @@
+{
+ "_note": "Sikh calendar for financial year 2026-27, Nanakshahi Samvat 558 with the tail entering 559, read from the supplied .docx by tools/content_pipeline/import_calendar_docx.py. The document names the SGPC 2026-27 Nanakshahi calendar as its primary authority and marks its own supplementary entries; those are carried here as \"supplementary\": true. Event text is English only, exactly as the document writes it. Punjabi and Hindi are absent rather than machine-translated, and the reader falls back to English where they are missing. `remind` is true for the dates the document itself lists under \"Major dates at a glance\".",
+ "year": "558 NS",
+ "months": [
+  {
+   "ns_year": 558,
+   "idx": 0,
+   "start": "2026-03-14",
+   "days": 31
+  },
+  {
+   "ns_year": 558,
+   "idx": 1,
+   "start": "2026-04-14",
+   "days": 31
+  },
+  {
+   "ns_year": 558,
+   "idx": 2,
+   "start": "2026-05-15",
+   "days": 31
+  },
+  {
+   "ns_year": 558,
+   "idx": 3,
+   "start": "2026-06-15",
+   "days": 31
+  },
+  {
+   "ns_year": 558,
+   "idx": 4,
+   "start": "2026-07-16",
+   "days": 32
+  },
+  {
+   "ns_year": 558,
+   "idx": 5,
+   "start": "2026-08-17",
+   "days": 31
+  },
+  {
+   "ns_year": 558,
+   "idx": 6,
+   "start": "2026-09-17",
+   "days": 30
+  },
+  {
+   "ns_year": 558,
+   "idx": 7,
+   "start": "2026-10-17",
+   "days": 30
+  },
+  {
+   "ns_year": 558,
+   "idx": 8,
+   "start": "2026-11-16",
+   "days": 30
+  },
+  {
+   "ns_year": 558,
+   "idx": 9,
+   "start": "2026-12-16",
+   "days": 29
+  },
+  {
+   "ns_year": 558,
+   "idx": 10,
+   "start": "2027-01-14",
+   "days": 30
+  },
+  {
+   "ns_year": 558,
+   "idx": 11,
+   "start": "2027-02-13",
+   "days": 29
+  },
+  {
+   "ns_year": 559,
+   "idx": 0,
+   "start": "2027-03-14",
+   "days": 31
+  }
+ ],
+ "corrections": [
+  {
+   "date": "2026-10-06",
+   "event": "Jorh Mela – Baba Budha Ji, Thatha (Day 1)",
+   "document": "21 Assu 558",
+   "stored": "20 Assu 558"
+  },
+  {
+   "date": "2026-10-07",
+   "event": "Jorh Mela – Baba Budha Ji, Thatha (Day 2)",
+   "document": "22 Assu 558",
+   "stored": "21 Assu 558"
+  },
+  {
+   "date": "2026-11-01",
+   "event": "Shaheedi – Bhai Beant Singh Ji",
+   "document": "15 Katak 558",
+   "stored": "16 Katak 558"
+  },
+  {
+   "date": "2026-11-02",
+   "event": "Punjabi Suba Day",
+   "document": "16 Katak 558",
+   "stored": "17 Katak 558"
+  }
+ ],
+ "events": [
+  {
+   "date": "2026-04-01",
+   "nanakshahi": "19 Chet 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Tegh Bahadur Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-04-01",
+   "nanakshahi": "19 Chet 558",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Harkrishan Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-04-02",
+   "nanakshahi": "20 Chet 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-04-07",
+   "nanakshahi": "25 Chet 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Tegh Bahadur Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-04-09",
+   "nanakshahi": "27 Chet 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sahibzada Baba Jujhar Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-04-09",
+   "nanakshahi": "27 Chet 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Arjan Dev Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-04-13",
+   "nanakshahi": "31 Chet 558",
+   "type": "special",
+   "en": "Sikh Dastaar Divas / World Sikh Turban Day",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-04-14",
+   "nanakshahi": "1 Vaisakh 558",
+   "type": "festival",
+   "en": "Khalsa Saajna Divas / Vaisakhi – Creation of Khalsa Panth",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-04-14",
+   "nanakshahi": "1 Vaisakh 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-04-17",
+   "nanakshahi": "4 Vaisakh 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-04-18",
+   "nanakshahi": "5 Vaisakh 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Angad Dev Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-04-21",
+   "nanakshahi": "8 Vaisakh 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhagat Dhanna Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-04-30",
+   "nanakshahi": "17 Vaisakh 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Amar Das Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-05-01",
+   "nanakshahi": "18 Vaisakh 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-04",
+   "nanakshahi": "21 Vaisakh 558",
+   "type": "jor-mela",
+   "en": "Sri Muktsar Sahib Jorh Mela / Shaheedi Divas",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-05",
+   "nanakshahi": "22 Vaisakh 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sardar Jassa Singh Ramgarhia",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-12",
+   "nanakshahi": "29 Vaisakh 558",
+   "type": "historical",
+   "en": "Victory at Sirhind – Banda Singh Bahadur & Baba Deep Singh",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-15",
+   "nanakshahi": "1 Jeth 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-16",
+   "nanakshahi": "2 Jeth 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-17",
+   "nanakshahi": "3 Jeth 558",
+   "type": "historical",
+   "en": "Chhota Ghallughara – Kahnuwan (Gurdaspur)",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-19",
+   "nanakshahi": "5 Jeth 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sardar Jassa Singh Ahluwalia",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-05-22",
+   "nanakshahi": "8 Jeth 558",
+   "type": "shaheedi",
+   "en": "Shaheedi Saka Paonta Sahib",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-06-02",
+   "nanakshahi": "19 Jeth 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sant Jarnail Singh Ji Khalsa Bhindranwale",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-06-04",
+   "nanakshahi": "21 Jeth 558",
+   "type": "shaheedi",
+   "en": "Akal Takht Sahib Ghallughara / martyrdoms of 1984",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-06-05",
+   "nanakshahi": "22 Jeth 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhai Mohkam Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-06-06",
+   "nanakshahi": "23 Jeth 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sant Jarnail Singh Ji Khalsa Bhindranwale & Bhai Amrik Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-06-08",
+   "nanakshahi": "25 Jeth 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Hargobind Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-06-15",
+   "nanakshahi": "1 Harh 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-06-15",
+   "nanakshahi": "1 Harh 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-06-18",
+   "nanakshahi": "4 Harh 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhai Sahib Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-06-18",
+   "nanakshahi": "4 Harh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi Purab – Sri Guru Arjan Dev Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-06-25",
+   "nanakshahi": "11 Harh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Baba Banda Singh Bahadur Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-06-29",
+   "nanakshahi": "15 Harh 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhagat Kabir Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-06-29",
+   "nanakshahi": "15 Harh 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-06-30",
+   "nanakshahi": "16 Harh 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Hargobind Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-07-05",
+   "nanakshahi": "21 Harh 558",
+   "type": "historical",
+   "en": "Foundation Stone / Sirjana Divas – Sri Akal Takht Sahib",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-07-05",
+   "nanakshahi": "21 Harh 558",
+   "type": "historical",
+   "en": "Foundation Stone of Sachkhand Sri Harmandir Sahib, Amritsar",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-07-09",
+   "nanakshahi": "25 Harh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi Purab – Bhai Mani Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-07-14",
+   "nanakshahi": "30 Harh 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-07-16",
+   "nanakshahi": "1 Sawan 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-07-16",
+   "nanakshahi": "1 Sawan 558",
+   "type": "shaheedi",
+   "en": "Shaheedi Purab – Bhai Taru Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-07-24",
+   "nanakshahi": "9 Sawan 558",
+   "type": "special",
+   "en": "Miri-Piri Divas – Sixth Patshahi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-07-29",
+   "nanakshahi": "14 Sawan 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-07-31",
+   "nanakshahi": "16 Sawan 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sardar Udham Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-08-07",
+   "nanakshahi": "23 Sawan 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Harkrishan Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-08-08",
+   "nanakshahi": "24 Sawan 558",
+   "type": "historical",
+   "en": "Morcha Guru Ka Bagh, Amritsar",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-12",
+   "nanakshahi": "28 Sawan 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-15",
+   "nanakshahi": "31 Sawan 558",
+   "type": "special",
+   "en": "India Independence Day",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-16",
+   "nanakshahi": "32 Sawan 558",
+   "type": "special",
+   "en": "Ardas Day for Punjabis killed during the 1947 Partition",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-17",
+   "nanakshahi": "1 Bhadon 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-21",
+   "nanakshahi": "5 Bhadon 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sant Harchand Singh Ji Longowal",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-08-28",
+   "nanakshahi": "12 Bhadon 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhai Daya Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-28",
+   "nanakshahi": "12 Bhadon 558",
+   "type": "jor-mela",
+   "en": "Jorh Mela – Baba Bakala Sahib / Guru Ladho Re",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-28",
+   "nanakshahi": "12 Bhadon 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-08-30",
+   "nanakshahi": "14 Bhadon 558",
+   "type": "historical",
+   "en": "Sampuranta Divas – Sri Guru Granth Sahib Ji at Sri Harmandir Sahib",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-09-09",
+   "nanakshahi": "24 Bhadon 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-09-12",
+   "nanakshahi": "27 Bhadon 558",
+   "type": "prakash",
+   "en": "First Prakash Purab – Sri Guru Granth Sahib Ji (1604)",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-09-13",
+   "nanakshahi": "28 Bhadon 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Arjan Dev Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-09-14",
+   "nanakshahi": "29 Bhadon 558",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Ram Das Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-09-17",
+   "nanakshahi": "1 Assu 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-09-18",
+   "nanakshahi": "2 Assu 558",
+   "type": "jor-mela",
+   "en": "Jorh Mela Gurdwara Kandh Sahib / Marriage of Guru Nanak Dev Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-09-24",
+   "nanakshahi": "8 Assu 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Ram Das Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-09-26",
+   "nanakshahi": "10 Assu 558",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Amar Das Ji / Goindwal Sahib Jorh Mela",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-09-26",
+   "nanakshahi": "10 Assu 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-01",
+   "nanakshahi": "15 Assu 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Angad Dev Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-10-05",
+   "nanakshahi": "19 Assu 558",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Nanak Dev Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-10-06",
+   "nanakshahi": "20 Assu 558",
+   "type": "jor-mela",
+   "en": "Jorh Mela – Baba Budha Ji, Thatha (Day 1)",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-07",
+   "nanakshahi": "21 Assu 558",
+   "type": "jor-mela",
+   "en": "Jorh Mela – Baba Budha Ji, Thatha (Day 2)",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-10",
+   "nanakshahi": "24 Assu 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhai Taru Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-10",
+   "nanakshahi": "24 Assu 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-17",
+   "nanakshahi": "1 Katak 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-20",
+   "nanakshahi": "4 Katak 558",
+   "type": "historical",
+   "en": "Darbar Khalsa (Dussehra)",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-21",
+   "nanakshahi": "5 Katak 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sant Giani Kartar Singh Ji Bhindranwale",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-23",
+   "nanakshahi": "7 Katak 558",
+   "type": "birth",
+   "en": "Birth anniversary – Baba Budha Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-23",
+   "nanakshahi": "7 Katak 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhai Dharam Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-23",
+   "nanakshahi": "7 Katak 558",
+   "type": "historical",
+   "en": "Passing of Sardar Jassa Singh Ahluwalia",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-26",
+   "nanakshahi": "10 Katak 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-10-27",
+   "nanakshahi": "11 Katak 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Ram Das Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-01",
+   "nanakshahi": "16 Katak 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Bhai Beant Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-02",
+   "nanakshahi": "17 Katak 558",
+   "type": "special",
+   "en": "Punjabi Suba Day",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-11-03",
+   "nanakshahi": "18 Katak 558",
+   "type": "birth",
+   "en": "Birth anniversary – Mata Sahib Kaur Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-11-03",
+   "nanakshahi": "18 Katak 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Harkrishan Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-03",
+   "nanakshahi": "18 Katak 558",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Har Rai Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-08",
+   "nanakshahi": "23 Katak 558",
+   "type": "festival",
+   "en": "Bandi Chhor Divas / Diwali",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-09",
+   "nanakshahi": "24 Katak 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-11-11",
+   "nanakshahi": "26 Katak 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Granth Sahib Ji (Nanded, 1708)",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-14",
+   "nanakshahi": "29 Katak 558",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Gobind Singh Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-15",
+   "nanakshahi": "30 Katak 558",
+   "type": "shaheedi",
+   "en": "Shaheedi Purab – Baba Deep Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-15",
+   "nanakshahi": "30 Katak 558",
+   "type": "special",
+   "en": "Foundation Day – SGPC",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-11-16",
+   "nanakshahi": "1 Maghar 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-11-16",
+   "nanakshahi": "1 Maghar 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sardar Kartar Singh Sarabha Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-20",
+   "nanakshahi": "5 Maghar 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhagat Namdev Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-11-24",
+   "nanakshahi": "9 Maghar 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Nanak Dev Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-24",
+   "nanakshahi": "9 Maghar 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-11-28",
+   "nanakshahi": "13 Maghar 558",
+   "type": "joti-jot",
+   "en": "Akāl Chāṇā / Merging of Bhai Mardana Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-11-30",
+   "nanakshahi": "15 Maghar 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sahibzada Baba Zorawar Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-04",
+   "nanakshahi": "19 Maghar 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Baba Gurbakhsh Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-08",
+   "nanakshahi": "23 Maghar 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-12",
+   "nanakshahi": "27 Maghar 558",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Gobind Singh Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-13",
+   "nanakshahi": "28 Maghar 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Bhai Dyala Ji, Bhai Mati Das Ji & Bhai Sati Das Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-14",
+   "nanakshahi": "29 Maghar 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sahibzada Baba Fateh Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-14",
+   "nanakshahi": "29 Maghar 558",
+   "type": "gurgaddi",
+   "en": "Guruship conferred to Panj Pyare / Guru Khalsa at Chamkaur Sahib",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-14",
+   "nanakshahi": "29 Maghar 558",
+   "type": "shaheedi",
+   "en": "Shaheedi Purab – Sri Guru Tegh Bahadur Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-14",
+   "nanakshahi": "29 Maghar 558",
+   "type": "special",
+   "en": "Foundation Day – Shiromani Akali Dal",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-16",
+   "nanakshahi": "1 Poh 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-21",
+   "nanakshahi": "6 Poh 558",
+   "type": "historical",
+   "en": "Leaving of Sri Anandpur Sahib Fort",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-22",
+   "nanakshahi": "7 Poh 558",
+   "type": "historical",
+   "en": "Family separation at Sirsa River",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-22",
+   "nanakshahi": "7 Poh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Bhai Jivan Singh (Bhai Jaita Ji)",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-23",
+   "nanakshahi": "8 Poh 558",
+   "type": "historical",
+   "en": "Saka Chamkaur Sahib",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-23",
+   "nanakshahi": "8 Poh 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2026-12-23",
+   "nanakshahi": "8 Poh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sahibzada Baba Ajit Singh Ji (Saka Chamkaur)",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-23",
+   "nanakshahi": "8 Poh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sahibzada Baba Jujhar Singh Ji (Saka Chamkaur)",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-24",
+   "nanakshahi": "9 Poh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Bhai Sangat Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-28",
+   "nanakshahi": "13 Poh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Mata Gujri Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-28",
+   "nanakshahi": "13 Poh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sahibzada Baba Fateh Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2026-12-28",
+   "nanakshahi": "13 Poh 558",
+   "type": "shaheedi",
+   "en": "Shaheedi – Sahibzada Baba Zorawar Singh Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2027-01-07",
+   "nanakshahi": "23 Poh 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-01-14",
+   "nanakshahi": "1 Magh 558",
+   "type": "jor-mela",
+   "en": "Sri Muktsar Sahib Jorh Mela (Maaghi)",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-01-14",
+   "nanakshahi": "1 Magh 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-01-14",
+   "nanakshahi": "1 Magh 558",
+   "type": "special",
+   "en": "Foundation Stone of Sachkhand Sri Harmandir Sahib, Amritsar",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-01-15",
+   "nanakshahi": "2 Magh 558",
+   "type": "prakash",
+   "en": "Prakash Purab – Sri Guru Gobind Singh Sahib Ji",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2027-01-18",
+   "nanakshahi": "5 Magh 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhai Himmat Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-01-20",
+   "nanakshahi": "7 Magh 558",
+   "type": "historical",
+   "en": "Chabiyan Da Morcha, Amritsar",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-01-22",
+   "nanakshahi": "9 Magh 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-01-27",
+   "nanakshahi": "14 Magh 558",
+   "type": "birth",
+   "en": "Birth anniversary – Baba Deep Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-06",
+   "nanakshahi": "24 Magh 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-09",
+   "nanakshahi": "27 Magh 558",
+   "type": "shaheedi",
+   "en": "Wadda Ghallughara – Kup Rohira, Sangrur",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2027-02-11",
+   "nanakshahi": "29 Magh 558",
+   "type": "historical",
+   "en": "Basant Panchmi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-11",
+   "nanakshahi": "29 Magh 558",
+   "type": "historical",
+   "en": "Marriage Purab – Sri Guru Gobind Singh Ji & Mata Jito Ji (Guru Ka Lahore)",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-12",
+   "nanakshahi": "30 Magh 558",
+   "type": "birth",
+   "en": "Birth anniversary – Sahibzada Baba Ajit Singh Ji",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-13",
+   "nanakshahi": "1 Phagun 558",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-20",
+   "nanakshahi": "8 Phagun 558",
+   "type": "birth",
+   "en": "Birth anniversary – Bhagat Ravidas Ji (650th anniversary)",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-20",
+   "nanakshahi": "8 Phagun 558",
+   "type": "puranmashi",
+   "en": "Puranmashi",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-21",
+   "nanakshahi": "9 Phagun 558",
+   "type": "historical",
+   "en": "Jaito Da Morcha / Mela, Faridkot",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-02-21",
+   "nanakshahi": "9 Phagun 558",
+   "type": "shaheedi",
+   "en": "Saka Nankana Sahib",
+   "supplementary": false,
+   "remind": true
+  },
+  {
+   "date": "2027-02-22",
+   "nanakshahi": "10 Phagun 558",
+   "type": "jor-mela",
+   "en": "Annual Jorh Mela remembering Wadda Ghallughara – Gahil, Barnala (supplementary cross-check)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-04",
+   "nanakshahi": "20 Phagun 558",
+   "type": "jor-mela",
+   "en": "Annual Chola Sahib Jorh Mela – Dera Baba Nanak (supplementary cross-check)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-08",
+   "nanakshahi": "24 Phagun 558",
+   "type": "masya",
+   "en": "Masya",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-03-14",
+   "nanakshahi": "1 Chet 559",
+   "type": "festival",
+   "en": "Nanakshahi Samvat 559 / Sikh New Year (Chet Sangrand)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-14",
+   "nanakshahi": "1 Chet 559",
+   "type": "sangrand",
+   "en": "Sangrand",
+   "supplementary": false,
+   "remind": false
+  },
+  {
+   "date": "2027-03-15",
+   "nanakshahi": "2 Chet 559",
+   "type": "historical",
+   "en": "Sardar Baghel Singh – conquest of Delhi (fixed solar anniversary)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-17",
+   "nanakshahi": "4 Chet 559",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Har Rai Sahib Ji (fixed solar anniversary)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-19",
+   "nanakshahi": "6 Chet 559",
+   "type": "gurgaddi",
+   "en": "Gurgaddi Purab – Sri Guru Amar Das Sahib Ji (fixed solar anniversary)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-22",
+   "nanakshahi": "9 Chet 559",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Angad Dev Ji (fixed solar anniversary)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-23",
+   "nanakshahi": "10 Chet 559",
+   "type": "joti-jot",
+   "en": "Joti Jot Purab – Sri Guru Hargobind Sahib Ji (fixed solar anniversary)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-23",
+   "nanakshahi": "10 Chet 559",
+   "type": "shaheedi",
+   "en": "Shaheedi – Bhagat Singh (fixed solar anniversary)",
+   "supplementary": true,
+   "remind": false
+  },
+  {
+   "date": "2027-03-25",
+   "nanakshahi": "12 Chet 559",
+   "type": "shaheedi",
+   "en": "Shaheedi – Bhai Subeg Singh & Bhai Shahbaz Singh (fixed solar anniversary)",
+   "supplementary": true,
+   "remind": false
+  }
+ ]
+}

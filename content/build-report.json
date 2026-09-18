@@ -207,18 +207,70 @@
     "with_english": 200
   },
   "calendar": {
-    "events": 10,
-    "months_covered": [
-      "Bhadon",
-      "Assu",
-      "Katak",
-      "Maghar"
+    "events": 147,
+    "by_kind": {
+      "birth": 21,
+      "festival": 3,
+      "gurgaddi": 11,
+      "historical": 16,
+      "jor-mela": 8,
+      "joti-jot": 9,
+      "masya": 12,
+      "prakash": 10,
+      "puranmashi": 11,
+      "sangrand": 12,
+      "shaheedi": 26,
+      "special": 8
+    },
+    "with_punjabi": 10,
+    "supplementary": 10,
+    "reminding_by_default": 52,
+    "corrections": [
+      {
+        "date": "2026-10-06",
+        "event": "Jorh Mela – Baba Budha Ji, Thatha (Day 1)",
+        "document": "21 Assu 558",
+        "stored": "20 Assu 558"
+      },
+      {
+        "date": "2026-10-07",
+        "event": "Jorh Mela – Baba Budha Ji, Thatha (Day 2)",
+        "document": "22 Assu 558",
+        "stored": "21 Assu 558"
+      },
+      {
+        "date": "2026-11-01",
+        "event": "Shaheedi – Bhai Beant Singh Ji",
+        "document": "15 Katak 558",
+        "stored": "16 Katak 558"
+      },
+      {
+        "date": "2026-11-02",
+        "event": "Punjabi Suba Day",
+        "document": "16 Katak 558",
+        "stored": "17 Katak 558"
+      }
     ],
-    "covered_from": "2026-08-17",
-    "covered_to": "2026-12-15"
+    "months_covered": [
+      "Chet 558",
+      "Vaisakh 558",
+      "Jeth 558",
+      "Harh 558",
+      "Sawan 558",
+      "Bhadon 558",
+      "Assu 558",
+      "Katak 558",
+      "Maghar 558",
+      "Poh 558",
+      "Magh 558",
+      "Phagun 558",
+      "Chet 559"
+    ],
+    "covered_from": "2026-03-14",
+    "covered_to": "2027-04-13"
   },
   "cities": 92,
-  "content_version": 7,
-  "source_digest": "7f59a02ca0d16483",
-  "bytes": 4788224
+  "content_version": 8,
+  "source_digest": "59512f7d66d999b3",
+  "bytes": 4804608
 }

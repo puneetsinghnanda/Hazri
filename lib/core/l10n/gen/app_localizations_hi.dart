@@ -1201,4 +1201,43 @@ class LHi extends L {
   @override
   String get errorContentDb =>
       'ऐप के साथ आई सामग्री नहीं खुल सकी। हाज़िरी फिर इंस्टॉल करने से ठीक हो जाएगा।';
+
+  @override
+  String get calendarKindPrakash => 'प्रकाश';
+
+  @override
+  String get calendarKindGurgaddi => 'गुरगद्दी';
+
+  @override
+  String get calendarKindJotiJot => 'ज्योति जोत';
+
+  @override
+  String get calendarKindShaheedi => 'शहीदी';
+
+  @override
+  String get calendarKindJorMela => 'जोड़ मेला';
+
+  @override
+  String get calendarKindBirth => 'जन्म दिवस';
+
+  @override
+  String get calendarKindHistorical => 'ऐतिहासिक';
+
+  @override
+  String get calendarKindFestival => 'त्योहार';
+
+  @override
+  String get calendarKindSpecial => 'दिवस';
+
+  @override
+  String get calendarKindSangrand => 'संगरांद';
+
+  @override
+  String get calendarKindPuranmashi => 'पूरनमाशी';
+
+  @override
+  String get calendarKindMasya => 'मस्या';
+
+  @override
+  String get gurpurabSupplementary => 'क्रॉस-चेक, SGPC सूची में नहीं';
 }
