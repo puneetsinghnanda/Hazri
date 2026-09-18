@@ -642,6 +642,54 @@ class Timebase:
         return t + off
 
 
+def pins_for(slug: str) -> list[tuple[int, float]]:
+    """Times somebody listened to, used to hold the alignment in place.
+
+    The warp snaps each boundary onto the pause it lands in, and where a
+    reciter barely stops between lines the pauses are shallow and it can take
+    the wrong one -- Tav Prasad Savaiye's closing lines sit 2.6s late for
+    exactly that reason, with no missing audio to blame. A pin says where a
+    line actually starts; the timeline is stretched piecewise between pins so
+    every pinned line lands on its time and everything between follows.
+
+    A pinned line is no longer evidence: it is an input. Keep the anchors file
+    for lines that are not pinned, which is what still checks the result.
+    """
+    if not os.path.exists(AUDIO_START_FILE):
+        return []
+    with open(AUDIO_START_FILE, encoding="utf-8") as fh:
+        entry = json.load(fh).get(slug) or {}
+    return sorted((int(p["line"]), float(p["s"])) for p in entry.get("pin", []))
+
+
+def apply_pins(out_lines: list[dict], pins: list[tuple[int, float]],
+               total_s: float) -> int:
+    """Stretches the timeline so each pinned line starts where it was heard."""
+    knots = [(0.0, 0.0)]
+    for line, want in pins:
+        row = next((r for r in out_lines if r["line"] == line), None)
+        if row is None:
+            raise SystemExit(f"pin: line {line} has no timing to pin")
+        knots.append((row["s"] / 1000.0, want))
+    knots.append((total_s, total_s))
+    knots = sorted(set(knots))
+    # A pin that would run the timeline backwards is a bad number, not a warp
+    # to force: refuse it rather than produce times that go the wrong way.
+    for (a, b), (c, d) in zip(knots, knots[1:]):
+        if c <= a or d <= b:
+            raise SystemExit(f"pin: {knots} is not in order; check the times")
+    src = [k[0] for k in knots]
+    dst = [k[1] for k in knots]
+
+    def remap(ms: int) -> int:
+        return int(round(float(np.interp(ms / 1000.0, src, dst)) * 1000))
+
+    for row in out_lines:
+        row["s"], row["e"] = remap(row["s"]), remap(row["e"])
+        row["w"] = [[remap(a), remap(b)] for a, b in row["w"]]
+    return len(pins)
+
+
 def repeats_for(slug: str) -> list[list[int]]:
     """Line ranges the reciter says more than once, as [first, last, times].
 
@@ -706,8 +754,34 @@ def main() -> int:
     ap.add_argument("--skip-penalty", type=float, default=None,
                     help="cost of the text running at double pace; defaults to "
                          "the hold penalty")
+    ap.add_argument(
+        "--repin", action="store_true",
+        help="re-apply this bani's pins to the timing file it already has, "
+             "without warping again. Pins are a remap of the finished "
+             "timeline, so the result is the same as a full run, and a long "
+             "recitation does not have to be re-aligned to move one.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
+
+    out_path = args.out or os.path.join(TIMINGS_DIR, f"{args.bani}.json")
+    if args.repin:
+        with open(out_path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+        already = doc.get("pinnedLines") or []
+        if already:
+            raise SystemExit(
+                f"{out_path} was written with pins {already} already applied; "
+                "re-align it rather than pinning a pinned timeline")
+        pins = pins_for(args.bani)
+        if not pins:
+            raise SystemExit(f"no pins for {args.bani} in {AUDIO_START_FILE}")
+        apply_pins(doc["lines"], pins, doc["durationMs"] / 1000.0)
+        doc["pinnedLines"] = [p[0] for p in pins]
+        with open(out_path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, ensure_ascii=False, separators=(",", ":"))
+            fh.write("\n")
+        print(f"re-pinned {out_path} to {len(pins)} time(s) taken by ear")
+        return 0
 
     audio = args.audio or os.path.join(AUDIO_SRC, f"{args.bani}.mp3")
     if not os.path.exists(audio):
@@ -867,12 +941,20 @@ def main() -> int:
         })
         stats.append((i, s, e, float(spoken[i])))
 
+    pins = pins_for(args.bani)
+    if pins:
+        apply_pins(out_lines, pins, full_len)
+        if verbose:
+            print(f"pinned {len(pins)} line(s) to times taken by ear",
+                  file=sys.stderr)
+
     timings = {
         "track": f"{args.bani}_sgpc_voice1",
         "baniVersionId": version_id,
         "durationMs": int(round(full_len * 1000)),
         "leadInMs": int(round(lead * 1000)),
         "unattributedMs": int(round(sum(b - a for a, b in skips) * 1000)),
+        "pinnedLines": [p[0] for p in pins],
         "version": 6,
         "method": "espeak-ng synthesis + two-pass MFCC dynamic time warping, snapped to pauses",
         # True only when somebody has listened to exactly these timings.
@@ -880,7 +962,7 @@ def main() -> int:
         "lines": out_lines,
     }
 
-    out = args.out or os.path.join(TIMINGS_DIR, f"{args.bani}.json")
+    out = out_path
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(timings, fh, ensure_ascii=False, separators=(",", ":"))

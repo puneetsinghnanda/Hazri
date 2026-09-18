@@ -10,22 +10,16 @@
         2,
         801
       ]
-    ],
-    "repeat": [
-      [
-        796,
-        796,
-        2
-      ],
-      [
-        798,
-        798,
-        2
-      ]
     ]
   },
   "tav-prasad-savaiye": {
-    "seconds": 0
+    "seconds": 0,
+    "pin": [
+      {
+        "line": 39,
+        "s": 157.0
+      }
+    ]
   },
   "chaupai-sahib": {
     "seconds": 10,
@@ -53,14 +47,7 @@
     ]
   },
   "rehras-sahib": {
-    "seconds": 7.5,
-    "repeat": [
-      [
-        326,
-        327,
-        2
-      ]
-    ]
+    "seconds": 7.5
   },
   "kirtan-sohila": {
     "seconds": 6.5
@@ -69,6 +56,27 @@
     "seconds": 6
   },
   "sukhmani-sahib": {
-    "seconds": 0
+    "seconds": 1,
+    "repeat": [
+      [
+        2023,
+        2026,
+        2
+      ]
+    ],
+    "pin": [
+      {
+        "line": 1437,
+        "s": 3250.44
+      },
+      {
+        "line": 1676,
+        "s": 3773.0
+      },
+      {
+        "line": 1776,
+        "s": 4029.56
+      }
+    ]
   }
 }

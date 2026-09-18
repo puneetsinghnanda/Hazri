@@ -155,14 +155,14 @@
       "bytes": 1755741,
       "duration_ms": 212287,
       "has_timings": true,
-      "timings_verified": false
+      "timings_verified": true
     },
     {
       "bani": "anand-sahib",
       "bytes": 10797991,
       "duration_ms": 1304174,
       "has_timings": true,
-      "timings_verified": false
+      "timings_verified": true
     },
     {
       "bani": "rehras-sahib",
@@ -219,6 +219,6 @@
   },
   "cities": 92,
   "content_version": 7,
-  "source_digest": "7a22b41fcb34834b",
+  "source_digest": "c5f6323576bfa7ea",
   "bytes": 4788224
 }

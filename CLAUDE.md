@@ -87,8 +87,13 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   failure mode to expect. `timings/audio-start.json` records, per bani, where
   a recording starts saying the text (`seconds`), which line ranges it
   actually covers (`lines`), any passage the reciter says more than once
-  (`repeat`), and any stretch filled with something the text does not have
-  (`skipAudio`). Chaupai, for instance, says the chaupais
+  (`repeat`), any stretch filled with something the text does not have
+  (`skipAudio`), and any line held to a time somebody heard (`pin`).
+  `repeat` must come from a person who listened: duplicating a line that is
+  said once lets the warp split one utterance into two plausible-looking
+  halves, which is how Jaap and Rehras both got a repeat they did not need.
+  A pinned line stops being evidence, so keep the anchors file for lines that
+  are not pinned. Chaupai, for instance, says the chaupais
   through ॥੪੦੧॥ and then the ਦੋਹਰਾ, and nothing between. Nothing is ever cut
   from a recording; the audio still plays, those seconds simply belong to no
   line.

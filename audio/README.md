@@ -107,6 +107,27 @@ and between them these four keys have covered every mismatch found so far:
 | `lines` | the 1-based line ranges the recitation actually covers | Jaap, Chaupai |
 | `repeat` | `[first, last, times]` for a passage the reciter says more than once | Anand, Rehras, Jaap |
 | `skipAudio` | stretches filled with something the text does not carry | Chaupai |
+| `pin` | `{line, s}` holding a line to a time somebody heard | Tav Prasad Savaiye, Sukhmani |
+
+A `pin` is the one key that is an input rather than a description. The warp
+snaps each boundary onto the pause it lands in, and where a reciter barely
+stops between lines the pauses are shallow enough that it can take the wrong
+one: Tav Prasad Savaiye's closing lines sat 2.6 s late for exactly that
+reason, with no missing audio to blame and a recitation that runs continuously
+to the end. A pin says where a line actually starts, and the timeline is
+stretched piecewise between pins, so pinning the two ends of a bad stretch
+leaves everything outside it untouched.
+
+Pinning a line spends it: it is no longer evidence, because the aligner was
+told the answer. Keep `<bani>.anchors.json` for lines that are **not** pinned
+-- that is what still checks the result.
+
+`repeat` must come from a person who has listened, and never from the timings.
+Duplicating a line the reciter says only once lets the warp split that single
+utterance into two halves, and two halves of one line look exactly like two
+balanced copies. Jaap Sahib and Rehras Sahib were both given repeats on that
+reasoning and both were wrong; the statistics could not tell the difference
+and an ear could, immediately.
 
 A `repeat` block comes round again as a block. A reciter closing on a couplet
 says both lines and then both again -- 208, 209, 208, 209, not 208, 208, 209,
