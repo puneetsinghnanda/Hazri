@@ -84,23 +84,27 @@ the gap column measures.
 | bani | verified | anchors | pauses | gap between lines |
 |---|---|---|---|---|
 | Japji Sahib | **yes** | -- | 98% | 360 ms |
-| Jaap Sahib | no | 0.00s | 44% | 0 ms |
-| Tav Prasad Savaiye | no | -- | 88% | 420 ms |
+| Jaap Sahib | **yes** | 0.00s | 44% | 0 ms |
+| Tav Prasad Savaiye | **yes** | -- | 83% | 420 ms |
 | Chaupai Sahib | **yes** | 0.10s worst of 2 | 100% | 260 ms |
 | Anand Sahib | **yes** | 0.00s | 98% | 400 ms |
-| Rehras Sahib | no | 0.10s | 72% | 220 ms |
+| Rehras Sahib | **yes** | 0.10s | 72% | 220 ms |
 | Kirtan Sohila | **yes** | 0.00s | 94% | 420 ms |
 | Ardas | **yes** | 0.14s | 100% | 500 ms |
-| Sukhmani Sahib | no | 0.35s | 67% | 380 ms |
+| Sukhmani Sahib | **yes** | 0.36s | 69% | 380 ms |
 
-Still to listen to: Rehras, whose reciter does break between lines so its 72%
-is a real shortfall rather than a blind spot; Jaap, whose 44% is the reciter
-running lines together rather than a misalignment, and whose closing minute
-is still not fully explained; Tav Prasad Savaiye, which has no anchors file at
-all since the last one was spent on a pin that has now been taken out again;
-and Sukhmani, which carries five pins and has one anchor left, and that anchor
-is the line next to a pin -- so there is very little left in the file that
-checks it rather than being told by it.
+All nine have been listened to and accepted, so **do not re-align any of
+them.** A re-align changes the timings, which changes their hash, which drops
+the bani back to unverified -- and the acceptance above cannot be given again
+by anyone but the person who gave it.
+
+The pause column is not a score to improve. Jaap's 44% is its reciter running
+lines together, on a recitation its owner has accepted; Ardas's 100% is a
+reciter who stops cleanly. Read it as a property of the voice, not of the
+alignment. What is still unexplained, and is recorded rather than hidden:
+Jaap's closing minute, Sukhmani's nine seconds on ਨਾਨਕ ਤਿਸੁ ਜਨ ਕਉ ਸਦਾ
+ਨਮਸਕਾਰੁ at 1:13:38, and Sukhmani's thirty-seven pins against one anchor,
+which is a file that reports what it was told rather than what it measured.
 
 `timings/audio-start.json` is where a recording's own shape is written down,
 and between them these four keys have covered every mismatch found so far:
