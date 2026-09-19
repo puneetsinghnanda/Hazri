@@ -1946,4 +1946,61 @@ class LHi extends L {
 
   @override
   String get libraryOpen => 'खोलें';
+
+  @override
+  String get syncTitle => 'सिंक';
+
+  @override
+  String get syncSubtitle => 'क्या होता है, और कब';
+
+  @override
+  String get syncStateSynced => 'सिंक हो गया';
+
+  @override
+  String get syncStateSyncedSub => 'सब कुछ अप टू डेट है';
+
+  @override
+  String get syncStateWaiting => 'कोई कनेक्शन नहीं';
+
+  @override
+  String get syncStateWaitingSub =>
+      'चलते रहें — आपका पाठ इसी फ़ोन में सहेजा है और कनेक्शन आने पर चला जाएगा';
+
+  @override
+  String get syncStateWifi => 'वाई-फ़ाई का इंतज़ार';
+
+  @override
+  String get syncStateWifiSub =>
+      'आपका पाठ इसी फ़ोन में सहेजा है। अभी भेजना है तो “सिर्फ़ वाई-फ़ाई पर” बंद करें।';
+
+  @override
+  String syncStateSending(int count) {
+    return '$count दिन भेजे जा रहे हैं';
+  }
+
+  @override
+  String get syncStateOff => 'सिंक बंद है';
+
+  @override
+  String get syncStateOffSub => 'आपकी डायरी सिर्फ़ इसी फ़ोन में है';
+
+  @override
+  String get syncWorksWithout =>
+      'हाज़िरी बिना सिग्नल चलती है। सिंक सिर्फ़ यह तय करता है कि नए फ़ोन पर आपकी डायरी वापस आ सके या नहीं।';
+
+  @override
+  String get syncMyDiary => 'मेरी डायरी सिंक करें';
+
+  @override
+  String get syncWifiOnly => 'सिर्फ़ वाई-फ़ाई पर';
+
+  @override
+  String get syncWifiOnlySub => 'मोबाइल डेटा बचाता है';
+
+  @override
+  String get syncNow => 'अभी सिंक करें';
+
+  @override
+  String get syncNeedsAccount =>
+      'पहले संगत से जुड़ें — खाते के बिना सिंक करने के लिए कोई जगह नहीं।';
 }

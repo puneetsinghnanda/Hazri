@@ -8,7 +8,12 @@ import 'package:path_provider/path_provider.dart';
 part 'user_db.g.dart';
 
 /// How a completion came to be recorded.
-enum CompletionSource { read, listen, manual }
+/// How a completion came to be recorded.
+///
+/// `restored` is a diary day that came back from the account on a new phone.
+/// Kept apart from `manual` because it was not somebody ticking a box, and a
+/// diary that cannot tell the two apart cannot explain itself later.
+enum CompletionSource { read, listen, manual, restored }
 
 /// Whether a reminder follows the sun, a fixed time, or is off.
 enum ReminderMode { auto, fixed, off }

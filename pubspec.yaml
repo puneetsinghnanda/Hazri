@@ -48,6 +48,11 @@ dependencies:
   cloud_firestore: ^6.10.0
   firebase_analytics: ^12.6.0
 
+  # Sync needs to know whether the phone is on Wi-Fi, because "only on Wi-Fi"
+  # is a promise about somebody's mobile data and not a preference we can
+  # guess at (design 49).
+  connectivity_plus: ^6.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

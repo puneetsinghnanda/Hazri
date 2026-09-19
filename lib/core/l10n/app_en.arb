@@ -1033,5 +1033,29 @@
               "type": "String"
           }
       }
+  },
+  "syncTitle": "Sync",
+  "syncSubtitle": "What happens, and when",
+  "syncStateSynced": "Synced",
+  "syncStateSyncedSub": "Everything is up to date",
+  "syncStateWaiting": "No connection",
+  "syncStateWaitingSub": "Carry on — your paath is saved on this phone and goes up when you are back",
+  "syncStateWifi": "Waiting for Wi‑Fi",
+  "syncStateWifiSub": "Your paath is saved on this phone. Turn off “only on Wi‑Fi” to send it now.",
+  "syncStateSending": "Sending {count} days",
+  "syncStateOff": "Sync is off",
+  "syncStateOffSub": "Your diary lives on this phone and nowhere else",
+  "syncWorksWithout": "Hazri works with no signal. Sync only decides whether your diary can come back on a new phone.",
+  "syncMyDiary": "Sync my diary",
+  "syncWifiOnly": "Only on Wi‑Fi",
+  "syncWifiOnlySub": "Saves mobile data",
+  "syncNow": "Sync now",
+  "syncNeedsAccount": "Join the sangat first — there is nowhere to sync to without an account.",
+  "@syncStateSending": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
   }
 }

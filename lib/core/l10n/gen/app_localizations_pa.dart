@@ -1947,4 +1947,61 @@ class LPa extends L {
 
   @override
   String get libraryOpen => 'ਖੋਲ੍ਹੋ';
+
+  @override
+  String get syncTitle => 'ਸਿੰਕ';
+
+  @override
+  String get syncSubtitle => 'ਕੀ ਹੁੰਦਾ ਹੈ, ਤੇ ਕਦੋਂ';
+
+  @override
+  String get syncStateSynced => 'ਸਿੰਕ ਹੋ ਗਿਆ';
+
+  @override
+  String get syncStateSyncedSub => 'ਸਭ ਕੁਝ ਅੱਪ ਟੂ ਡੇਟ ਹੈ';
+
+  @override
+  String get syncStateWaiting => 'ਕੋਈ ਕੁਨੈਕਸ਼ਨ ਨਹੀਂ';
+
+  @override
+  String get syncStateWaitingSub =>
+      'ਚਲਦੇ ਰਹੋ — ਤੁਹਾਡਾ ਪਾਠ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲਿਆ ਹੈ ਤੇ ਕੁਨੈਕਸ਼ਨ ਆਉਣ ਉੱਤੇ ਚਲਾ ਜਾਵੇਗਾ';
+
+  @override
+  String get syncStateWifi => 'ਵਾਈ-ਫਾਈ ਦੀ ਉਡੀਕ';
+
+  @override
+  String get syncStateWifiSub =>
+      'ਤੁਹਾਡਾ ਪਾਠ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲਿਆ ਹੈ। ਹੁਣੇ ਭੇਜਣਾ ਹੈ ਤਾਂ “ਸਿਰਫ਼ ਵਾਈ-ਫਾਈ ਉੱਤੇ” ਬੰਦ ਕਰੋ।';
+
+  @override
+  String syncStateSending(int count) {
+    return '$count ਦਿਨ ਭੇਜੇ ਜਾ ਰਹੇ ਹਨ';
+  }
+
+  @override
+  String get syncStateOff => 'ਸਿੰਕ ਬੰਦ ਹੈ';
+
+  @override
+  String get syncStateOffSub => 'ਤੁਹਾਡੀ ਡਾਇਰੀ ਸਿਰਫ਼ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਹੈ';
+
+  @override
+  String get syncWorksWithout =>
+      'ਹਾਜ਼ਰੀ ਬਿਨਾਂ ਸਿਗਨਲ ਚੱਲਦੀ ਹੈ। ਸਿੰਕ ਸਿਰਫ਼ ਇਹ ਤੈਅ ਕਰਦਾ ਹੈ ਕਿ ਨਵੇਂ ਫ਼ੋਨ ਉੱਤੇ ਤੁਹਾਡੀ ਡਾਇਰੀ ਵਾਪਸ ਆ ਸਕੇ ਜਾਂ ਨਾ।';
+
+  @override
+  String get syncMyDiary => 'ਮੇਰੀ ਡਾਇਰੀ ਸਿੰਕ ਕਰੋ';
+
+  @override
+  String get syncWifiOnly => 'ਸਿਰਫ਼ ਵਾਈ-ਫਾਈ ਉੱਤੇ';
+
+  @override
+  String get syncWifiOnlySub => 'ਮੋਬਾਈਲ ਡਾਟਾ ਬਚਾਉਂਦਾ ਹੈ';
+
+  @override
+  String get syncNow => 'ਹੁਣੇ ਸਿੰਕ ਕਰੋ';
+
+  @override
+  String get syncNeedsAccount =>
+      'ਪਹਿਲਾਂ ਸੰਗਤ ਨਾਲ ਜੁੜੋ — ਖਾਤੇ ਤੋਂ ਬਿਨਾਂ ਸਿੰਕ ਕਰਨ ਲਈ ਕੋਈ ਥਾਂ ਨਹੀਂ।';
 }

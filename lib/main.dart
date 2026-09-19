@@ -18,6 +18,8 @@ import 'features/sangat/data/account_repository.dart';
 import 'features/library/data/firebase_library_repository.dart';
 import 'features/library/data/library_repository.dart';
 import 'features/sangat/data/firebase_account_repository.dart';
+import 'features/sync/data/diary_sync.dart';
+import 'features/sync/data/firebase_diary_sync.dart';
 import 'features/sangat/data/firebase_group_repository.dart';
 import 'features/sangat/data/firebase_presence_repository.dart';
 import 'features/sangat/data/group_repository.dart';
@@ -75,6 +77,16 @@ Future<void> main() async {
         if (backend.isUp)
           libraryRepositoryProvider
               .overrideWithValue(FirebaseLibraryRepository()),
+        if (backend.isUp)
+          diarySyncProvider.overrideWith(
+            (ref) => FirebaseDiarySync(
+              repo: ref.watch(userRepositoryProvider),
+              // Read through the provider on every call, so turning sync off
+              // stops it now rather than after the next restart.
+              enabled: () => ref.read(settingsProvider).diarySync,
+              wifiOnly: () => ref.read(settingsProvider).syncWifiOnly,
+            ),
+          ),
       ],
       child: const HazriApp(),
     ),

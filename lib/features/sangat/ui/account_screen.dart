@@ -30,9 +30,7 @@ class AccountScreen extends ConsumerWidget {
 
     return HazriScreen(
       title: l.accountTitle,
-      children: account == null
-          ? _notJoined(context, l)
-          : _joined(context, ref, l, account),
+      children: account == null ? _notJoined(context, l) : _joined(context, ref, l, account),
     );
   }
 
@@ -58,19 +56,11 @@ class AccountScreen extends ConsumerWidget {
         style: HazriText.body.copyWith(color: c.ink2),
       ),
       const SizedBox(height: 20),
-      PrimaryButton(
-        label: l.sangatBannerCta,
-        onPressed: () => context.push(Routes.sangatJoin),
-      ),
+      PrimaryButton(label: l.sangatBannerCta, onPressed: () => context.push(Routes.sangatJoin)),
     ];
   }
 
-  List<Widget> _joined(
-    BuildContext context,
-    WidgetRef ref,
-    L l,
-    SangatAccount a,
-  ) {
+  List<Widget> _joined(BuildContext context, WidgetRef ref, L l, SangatAccount a) {
     final c = context.colors;
     final verified = a.emailVerified;
     return [
@@ -118,8 +108,9 @@ class AccountScreen extends ConsumerWidget {
                   ? null
                   : Text(
                       verified ? l.accountVerified : l.accountNotVerified,
-                      style: HazriText.captionStrong
-                          .copyWith(color: verified ? c.sage : c.kesriInk),
+                      style: HazriText.captionStrong.copyWith(
+                        color: verified ? c.sage : c.kesriInk,
+                      ),
                     ),
             ),
             Divider(height: 1, color: c.rule),
@@ -154,12 +145,18 @@ class AccountScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(l.accountVerifyTitle,
-                            style: HazriText.captionStrong
-                                .copyWith(color: c.kesriInk, fontSize: 14)),
+                        Text(
+                          l.accountVerifyTitle,
+                          style: HazriText.captionStrong.copyWith(
+                            color: c.kesriInk,
+                            fontSize: 14,
+                          ),
+                        ),
                         const SizedBox(height: 2),
-                        Text(l.accountVerifyBody,
-                            style: HazriText.caption.copyWith(color: c.kesriInk)),
+                        Text(
+                          l.accountVerifyBody,
+                          style: HazriText.caption.copyWith(color: c.kesriInk),
+                        ),
                       ],
                     ),
                   ),
@@ -187,12 +184,12 @@ class AccountScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(l.accountSafeTitle,
-                        style: HazriText.captionStrong
-                            .copyWith(color: c.sage, fontSize: 14)),
+                    Text(
+                      l.accountSafeTitle,
+                      style: HazriText.captionStrong.copyWith(color: c.sage, fontSize: 14),
+                    ),
                     const SizedBox(height: 2),
-                    Text(l.accountSafeBody,
-                        style: HazriText.caption.copyWith(color: c.ink2)),
+                    Text(l.accountSafeBody, style: HazriText.caption.copyWith(color: c.ink2)),
                   ],
                 ),
               ),
@@ -200,16 +197,26 @@ class AccountScreen extends ConsumerWidget {
           ),
         ),
       const SizedBox(height: 13),
-      // Diary sync has its own row in design 33 and is not built yet, so it
-      // is not shown: a switch that syncs nothing is worse than no switch.
       HazriCard(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: _AccountRow(
-          icon: HazriIconData.lock,
-          title: l.privacyDataTitle,
-          value: l.privacyDownloadSub,
-          chevron: true,
-          onTap: () => context.push(Routes.privacy),
+        child: Column(
+          children: [
+            _AccountRow(
+              icon: HazriIconData.check,
+              title: l.syncTitle,
+              value: l.syncSubtitle,
+              chevron: true,
+              onTap: () => context.push(Routes.sync),
+            ),
+            Divider(height: 1, color: c.rule),
+            _AccountRow(
+              icon: HazriIconData.lock,
+              title: l.privacyDataTitle,
+              value: l.privacyDownloadSub,
+              chevron: true,
+              onTap: () => context.push(Routes.privacy),
+            ),
+          ],
         ),
       ),
       const SizedBox(height: 18),
@@ -221,12 +228,7 @@ class AccountScreen extends ConsumerWidget {
     ];
   }
 
-  Future<void> _confirmSignOut(
-    BuildContext context,
-    WidgetRef ref,
-    L l,
-    bool verified,
-  ) async {
+  Future<void> _confirmSignOut(BuildContext context, WidgetRef ref, L l, bool verified) async {
     final ok = await showDialog<bool>(
       context: context,
       builder: (dialog) => AlertDialog(

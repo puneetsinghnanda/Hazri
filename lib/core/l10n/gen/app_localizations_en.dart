@@ -1950,4 +1950,62 @@ class LEn extends L {
 
   @override
   String get libraryOpen => 'Open';
+
+  @override
+  String get syncTitle => 'Sync';
+
+  @override
+  String get syncSubtitle => 'What happens, and when';
+
+  @override
+  String get syncStateSynced => 'Synced';
+
+  @override
+  String get syncStateSyncedSub => 'Everything is up to date';
+
+  @override
+  String get syncStateWaiting => 'No connection';
+
+  @override
+  String get syncStateWaitingSub =>
+      'Carry on — your paath is saved on this phone and goes up when you are back';
+
+  @override
+  String get syncStateWifi => 'Waiting for Wi‑Fi';
+
+  @override
+  String get syncStateWifiSub =>
+      'Your paath is saved on this phone. Turn off “only on Wi‑Fi” to send it now.';
+
+  @override
+  String syncStateSending(int count) {
+    return 'Sending $count days';
+  }
+
+  @override
+  String get syncStateOff => 'Sync is off';
+
+  @override
+  String get syncStateOffSub =>
+      'Your diary lives on this phone and nowhere else';
+
+  @override
+  String get syncWorksWithout =>
+      'Hazri works with no signal. Sync only decides whether your diary can come back on a new phone.';
+
+  @override
+  String get syncMyDiary => 'Sync my diary';
+
+  @override
+  String get syncWifiOnly => 'Only on Wi‑Fi';
+
+  @override
+  String get syncWifiOnlySub => 'Saves mobile data';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncNeedsAccount =>
+      'Join the sangat first — there is nowhere to sync to without an account.';
 }

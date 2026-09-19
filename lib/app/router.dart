@@ -30,6 +30,7 @@ import '../features/reader/ui/reader_screen.dart';
 import '../features/reminders/data/reminder_service.dart';
 import '../features/reminders/ui/battery_help_screen.dart';
 import '../features/settings/ui/settings_screen.dart';
+import '../features/sync/ui/sync_screen.dart';
 import '../features/simran/ui/simran_screen.dart';
 import '../features/today/ui/today_screen.dart';
 import 'shell.dart';
@@ -54,6 +55,9 @@ abstract final class Routes {
   static const goals = '/goals';
   static const about = '/about';
   static const privacy = '/privacy';
+
+  /// Diary sync (design 49).
+  static const sync = '/sync';
 
   /// Joining the sangat (design 32). Pushed from the sheet, never a tab: the
   /// sangat is opt-in and nothing routes here on its own.
@@ -151,6 +155,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.goals, builder: (_, _) => const GoalsScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
       GoRoute(path: Routes.privacy, builder: (_, _) => const PrivacyScreen()),
+      GoRoute(path: Routes.sync, builder: (_, _) => const SyncScreen()),
       GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),
       GoRoute(path: Routes.sangatJoin, builder: (_, _) => const JoinSangatScreen()),
       GoRoute(path: Routes.createGroup, builder: (_, _) => const CreateGroupScreen()),

@@ -3614,6 +3614,108 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Open'**
   String get libraryOpen;
+
+  /// No description provided for @syncTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncTitle;
+
+  /// No description provided for @syncSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What happens, and when'**
+  String get syncSubtitle;
+
+  /// No description provided for @syncStateSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get syncStateSynced;
+
+  /// No description provided for @syncStateSyncedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is up to date'**
+  String get syncStateSyncedSub;
+
+  /// No description provided for @syncStateWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection'**
+  String get syncStateWaiting;
+
+  /// No description provided for @syncStateWaitingSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry on — your paath is saved on this phone and goes up when you are back'**
+  String get syncStateWaitingSub;
+
+  /// No description provided for @syncStateWifi.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for Wi‑Fi'**
+  String get syncStateWifi;
+
+  /// No description provided for @syncStateWifiSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Your paath is saved on this phone. Turn off “only on Wi‑Fi” to send it now.'**
+  String get syncStateWifiSub;
+
+  /// No description provided for @syncStateSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending {count} days'**
+  String syncStateSending(int count);
+
+  /// No description provided for @syncStateOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync is off'**
+  String get syncStateOff;
+
+  /// No description provided for @syncStateOffSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diary lives on this phone and nowhere else'**
+  String get syncStateOffSub;
+
+  /// No description provided for @syncWorksWithout.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri works with no signal. Sync only decides whether your diary can come back on a new phone.'**
+  String get syncWorksWithout;
+
+  /// No description provided for @syncMyDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync my diary'**
+  String get syncMyDiary;
+
+  /// No description provided for @syncWifiOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on Wi‑Fi'**
+  String get syncWifiOnly;
+
+  /// No description provided for @syncWifiOnlySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Saves mobile data'**
+  String get syncWifiOnlySub;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @syncNeedsAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the sangat first — there is nowhere to sync to without an account.'**
+  String get syncNeedsAccount;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

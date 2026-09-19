@@ -602,5 +602,22 @@
   "libraryClear": "हटाएँ",
   "libraryResults": "“{query}” के लिए {count} नतीजे",
   "libraryCorrections": "वेबसाइट से लिया गया। अगर यहाँ कुछ ग़लत है, वहाँ एक बार ठीक होता है और हर फ़ोन को ठीक दिखता है।",
-  "libraryOpen": "खोलें"
+  "libraryOpen": "खोलें",
+  "syncTitle": "सिंक",
+  "syncSubtitle": "क्या होता है, और कब",
+  "syncStateSynced": "सिंक हो गया",
+  "syncStateSyncedSub": "सब कुछ अप टू डेट है",
+  "syncStateWaiting": "कोई कनेक्शन नहीं",
+  "syncStateWaitingSub": "चलते रहें — आपका पाठ इसी फ़ोन में सहेजा है और कनेक्शन आने पर चला जाएगा",
+  "syncStateWifi": "वाई-फ़ाई का इंतज़ार",
+  "syncStateWifiSub": "आपका पाठ इसी फ़ोन में सहेजा है। अभी भेजना है तो “सिर्फ़ वाई-फ़ाई पर” बंद करें।",
+  "syncStateSending": "{count} दिन भेजे जा रहे हैं",
+  "syncStateOff": "सिंक बंद है",
+  "syncStateOffSub": "आपकी डायरी सिर्फ़ इसी फ़ोन में है",
+  "syncWorksWithout": "हाज़िरी बिना सिग्नल चलती है। सिंक सिर्फ़ यह तय करता है कि नए फ़ोन पर आपकी डायरी वापस आ सके या नहीं।",
+  "syncMyDiary": "मेरी डायरी सिंक करें",
+  "syncWifiOnly": "सिर्फ़ वाई-फ़ाई पर",
+  "syncWifiOnlySub": "मोबाइल डेटा बचाता है",
+  "syncNow": "अभी सिंक करें",
+  "syncNeedsAccount": "पहले संगत से जुड़ें — खाते के बिना सिंक करने के लिए कोई जगह नहीं।"
 }

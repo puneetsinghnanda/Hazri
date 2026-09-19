@@ -12,6 +12,7 @@ import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/account_repository.dart';
 import '../domain/sangat_account.dart';
+import '../../sync/data/diary_sync.dart';
 import 'link_problem.dart';
 import 'sangat_field.dart';
 
@@ -94,6 +95,12 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
 
     switch (outcome) {
       case JoinedSangat():
+        // This is the whole of "your diary came back". It is a merge, so a
+        // day marked on this phone and on the server stays marked once, and
+        // it does nothing at all when sync was never on -- which the next
+        // screen says out loud rather than leaving somebody to wonder.
+        await ref.read(diarySyncProvider).pull();
+        if (!mounted) return;
         setState(() {
           _busy = false;
           _done = true;
