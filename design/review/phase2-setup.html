@@ -94,8 +94,15 @@ section{padding-block:34px 0}
 table{width:100%; border-collapse:collapse; margin-top:12px; font-size:14px}
 th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--rule); vertical-align:top}
 th{font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
-td:first-child{font-weight:600; color:var(--ink); white-space:nowrap}
+td:first-child{font-weight:600; color:var(--ink)}
 tr:last-child td{border-bottom:0}
+/* Tables are the only thing here that can outgrow a phone, so each scrolls in
+   its own box rather than pushing the page sideways. */
+.scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+@media (max-width:520px){
+  table{min-width:460px}
+  th,td{padding:8px 8px; font-size:13.5px}
+}
 .pick{color:var(--ok); font-weight:700}
 
 .later{background:var(--surface); border-radius:16px; box-shadow:var(--shadow); padding:18px}
@@ -118,8 +125,8 @@ footer{padding-block:34px 44px; color:var(--muted); font-size:13px; text-align:c
       <div class="n">nothing in Phase 2 works without it</div></div>
     <div class="fact"><div class="k">To spend</div><div class="v">$0</div>
       <div class="n">free tiers, and no domain to buy</div></div>
-    <div class="fact"><div class="k">Your time</div><div class="v">~1 hour</div>
-      <div class="n">one sitting, today</div></div>
+    <div class="fact"><div class="k">Bill at 100k daily</div><div class="v">≈ ₹4,100/mo</div>
+      <div class="n">free below ~30k · see the model</div></div>
   </div>
 </header>
 
@@ -235,7 +242,7 @@ storeFile=/absolute/path/to/hazri-upload.jks</code></pre>
   <div class="card">
     <p>The awkward part is that you have no domain, and most senders want one before they will
       send as you. These are the ones that will not make you wait:</p>
-    <table>
+    <div class="scroll"><table>
       <tr><th>Option</th><th>Works with no domain?</th><th>Worth knowing</th></tr>
       <tr><td>Brevo <span class="pick">· pick this</span></td><td>Yes — verify a single sender address</td>
         <td>Generous daily free tier and it stays usable after launch, so nothing to replace later.</td></tr>
@@ -247,11 +254,99 @@ storeFile=/absolute/path/to/hazri-upload.jks</code></pre>
         <td>No new vendor at all. Low daily cap and it will be flagged as bulk mail eventually, so it is a testing answer, not a launch one.</td></tr>
       <tr><td>Amazon SES</td><td>Sandbox, verified recipients only</td>
         <td>Cheapest at scale by far, most setup, and needs an AWS account.</td></tr>
-    </table>
+    </table></div>
     <div class="warn"><b>I cannot check today's free tiers</b> — every one of these providers has
       changed theirs in the last two years. Confirm the numbers when you sign up, and tell me
       which you picked. The API key goes into Cloud Functions secrets, never to me and never
       into the repository.</div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><h2>What it costs, and how to stop it running away</h2>
+    <span class="tag">The Blaze question</span></div>
+  <p class="secline">Two separate worries: will it ever bill me, and can it bill me
+    <i>catastrophically</i>. The answers are yes, eventually — and yes, but only if you build
+    the stop yourself, because the thing everyone assumes is a cap is not one.</p>
+
+  <div class="card">
+    <h3>The bill, by daily active users</h3>
+    <p>Firestore's free allowance continues on Blaze, so a project only pays for what it uses
+      above it. Modelled on what Phase 2 actually touches — the banis, recitations, calendar,
+      diary and goals are all local, so the network only carries a profile, group membership,
+      group totals and the globe:</p>
+    <div class="scroll"><table>
+      <tr><th>Daily active</th><th>Reads / month</th><th>Writes / month</th><th>Per month</th></tr>
+      <tr><td>1,000</td><td>300 K</td><td>120 K</td><td><span class="pick">free</span></td></tr>
+      <tr><td>10,000</td><td>3 M</td><td>1.2 M</td><td>≈ ₹220</td></tr>
+      <tr><td>50,000</td><td>15 M</td><td>6 M</td><td>≈ ₹1,960</td></tr>
+      <tr><td>100,000</td><td>30 M</td><td>12 M</td><td>≈ ₹4,100</td></tr>
+      <tr><td>150,000</td><td>45 M</td><td>18 M</td><td>≈ ₹6,300</td></tr>
+      <tr><td>1,000,000</td><td>300 M</td><td>120 M</td><td>≈ ₹43,000</td></tr>
+    </table></div>
+    <div class="note"><b>So ₹2,000–5,000 a month buys roughly 50,000 to 120,000 daily active
+      users.</b> If "1 million users" means a million <i>installs</i>, of whom ten or fifteen
+      percent open the app on a given day, that lands inside your number. If it means a million
+      people opening it <i>every day</i>, it is about ₹43,000 — and an app with a million daily
+      readers has options that a hobby project does not.</div>
+    <div class="warn"><b>I cannot verify today's prices.</b> Google has changed Firestore's
+      rates and free tier before. Treat the shape of this table as reliable and the rupees as
+      an estimate to re-check on the pricing page when you upgrade.</div>
+  </div>
+
+  <div class="card">
+    <h3>The number above is a design decision, not a user count</h3>
+    <p>The same app at 100,000 daily users costs ₹4,100 a month or ₹1.6 crore a month, depending
+      on one choice: whether the Simran globe reads <b>one aggregate document</b> or <b>one
+      document per person</b>.</p>
+    <div class="scroll"><table>
+      <tr><th>At 100,000 daily users</th><th>Reads / month</th><th>Per month</th></tr>
+      <tr><td>Globe as one aggregate</td><td>30 M</td><td>≈ ₹4,100</td></tr>
+      <tr><td>Globe as a document each</td><td>300 billion</td><td>≈ ₹1.6 crore</td></tr>
+    </table></div>
+    <p>That is the whole lesson. Group totals get the same treatment — a counter a function
+      maintains, never a client adding up every member — and Vichar ships in the app rather than
+      being fetched. I will build it that way; it is worth knowing why, because the naive
+      version of each of these is the one a tutorial shows you.</p>
+  </div>
+
+  <div class="card">
+    <h3>A budget alert is not a cap</h3>
+    <p>This is the part that catches people. In Firebase and Google Cloud, a <b>budget alert
+      sends you an email</b>. It does not stop anything, and it can lag by hours. Every runaway
+      bill you have read about had a budget set.</p>
+    <p>The real stop has to be built, and Google documents it: point the budget at a
+      <b>Pub/Sub topic</b>, subscribe a small <b>Cloud Function</b> to it, and have that function
+      call the Billing API to <b>detach the billing account from the project</b> when spend
+      crosses your line. Paid usage stops within about a minute.</p>
+    <p><b>Hazri survives that unusually well.</b> Every bani, every recitation, the calendar and
+      your whole diary are on the phone. If billing is cut, the app keeps working — people carry
+      on reading and marking their hazri, and only the sangat goes quiet until you turn it back
+      on. For most apps this switch is a catastrophe; here it is a bad afternoon.</p>
+    <div class="warn"><b>Read Google's own warning before you rely on it.</b> Detaching billing
+      is blunt — it stops every paid service on the project at once, and Google notes that for
+      some products this can lose data. Set it up, then test it once deliberately, so the first
+      time it fires is not the first time you find out what it does.</div>
+  </div>
+
+  <div class="card">
+    <h3>The four things that actually keep the number small</h3>
+    <p>Ordered by how much they matter. The budget kill switch is the last line, not the first.</p>
+    <ol class="steps">
+      <li><b>Firestore security rules, deny by default.</b>
+        <span class="sub">The API key in google-services.json is not a secret — it ships in every
+        copy of the app. Rules are what stop somebody reading the whole user table with it, and
+        a scrape is both a privacy breach and a bill.</span></li>
+      <li><b>App Check, enforced, once Play Console exists.</b>
+        <span class="sub">Proves a request came from the real app rather than a script. This is
+        the one that is off in Phase 2 and must be on before launch.</span></li>
+      <li><b>Aggregates instead of fan-out reads</b>, as above.
+        <span class="sub">The single biggest lever, and it is free — it just has to be decided
+        before the data model is written, not after.</span></li>
+      <li><b>maxInstances on every Cloud Function.</b>
+        <span class="sub">A function with no ceiling will scale to thousands of parallel copies
+        under load or attack, and bill for all of them. Ten is plenty at your scale.</span></li>
+    </ol>
   </div>
 </section>
 
