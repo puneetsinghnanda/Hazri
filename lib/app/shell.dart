@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/l10n/gen/app_localizations.dart';
+import 'router.dart';
 import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_colors.dart';
 import '../core/theme/hazri_text.dart';
@@ -14,7 +15,12 @@ import '../features/today/ui/help_sheet.dart';
 import '../features/audio/ui/mini_player.dart';
 
 /// The five tabs, in branch order.
-enum HomeTab { today, nitnem, simran, diary, settings }
+///
+/// Sangat took Settings' place in Phase 2 (design 38). Settings did not
+/// shrink in importance — it moved behind the brand bar, where design 37 puts
+/// it, because a tab bar has five slots and the sangat is something people
+/// open daily while settings is something they open twice.
+enum HomeTab { today, nitnem, simran, sangat, diary }
 
 /// The bottom-navigation shell.
 ///
@@ -26,7 +32,10 @@ class HomeShell extends ConsumerWidget {
 
   final StatefulNavigationShell shell;
 
-  static const _elderTabs = [HomeTab.today, HomeTab.nitnem, HomeTab.settings];
+  /// Elder mode shows three (PRD 1.12). Settings is not among them any more
+  /// because it is not a branch at all; it is one tap away in the brand bar,
+  /// which is larger and closer than a fifth of a nav row.
+  static const _elderTabs = [HomeTab.today, HomeTab.nitnem, HomeTab.diary];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +61,10 @@ class HomeShell extends ConsumerWidget {
           bottom: false,
           child: Column(
             children: [
-              BrandBar(onHelp: () => showHelpSheet(context)),
+              BrandBar(
+                onHelp: () => showHelpSheet(context),
+                onSettings: () => context.push(Routes.settings),
+              ),
               Expanded(child: PhoneWidth(child: shell)),
             ],
           ),
@@ -96,16 +108,16 @@ class _BottomNav extends StatelessWidget {
     HomeTab.today => HazriIconData.sunArc,
     HomeTab.nitnem => HazriIconData.book,
     HomeTab.simran => HazriIconData.simranDots,
+    HomeTab.sangat => HazriIconData.sangat,
     HomeTab.diary => HazriIconData.calendar,
-    HomeTab.settings => HazriIconData.sliders,
   };
 
   static String _label(L l, HomeTab tab) => switch (tab) {
     HomeTab.today => l.navToday,
     HomeTab.nitnem => l.navNitnem,
     HomeTab.simran => l.navSimran,
+    HomeTab.sangat => l.navSangat,
     HomeTab.diary => l.navDiary,
-    HomeTab.settings => l.navSettings,
   };
 
   @override

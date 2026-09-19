@@ -16,6 +16,8 @@ import 'features/audio/data/audio_handler.dart';
 import 'features/reminders/data/reminder_service.dart';
 import 'features/sangat/data/account_repository.dart';
 import 'features/sangat/data/firebase_account_repository.dart';
+import 'features/sangat/data/firebase_group_repository.dart';
+import 'features/sangat/data/group_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +63,8 @@ Future<void> main() async {
           accountRepositoryProvider.overrideWithValue(
             FirebaseAccountRepository(verificationUrl: kVerificationUrl),
           ),
+        if (backend.isUp)
+          groupRepositoryProvider.overrideWithValue(FirebaseGroupRepository()),
       ],
       child: const HazriApp(),
     ),

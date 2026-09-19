@@ -7,6 +7,12 @@ import '../features/about/ui/about_screen.dart';
 import '../features/about/ui/licences_screen.dart';
 import '../features/about/ui/privacy_screen.dart';
 import '../features/sangat/ui/account_screen.dart';
+import '../features/sangat/ui/create_group_screen.dart';
+import '../features/sangat/ui/group_goal_screen.dart';
+import '../features/sangat/ui/group_invite_screen.dart';
+import '../features/sangat/ui/group_screen.dart';
+import '../features/sangat/ui/join_by_link_screen.dart';
+import '../features/sangat/ui/sangat_screen.dart';
 import '../features/sangat/ui/join_sangat_screen.dart';
 import '../features/sangat/ui/verify_email_screen.dart';
 import '../features/diary/ui/diary_screen.dart';
@@ -49,12 +55,22 @@ abstract final class Routes {
   /// confirm an address belongs here and only here.
   static const account = '/account';
   static const verifyEmail = '/account/verify';
+
+  /// The Sangat tab, and everything under it. A group id is opaque and comes
+  /// from Firestore, so it is never composed by hand.
+  static const sangat = '/sangat';
+  static const createGroup = '/sangat/create';
+  static const joinByLink = '/sangat/link';
+
+  static String group(String id) => '/sangat/g/$id';
+  static String groupGoal(String id) => '/sangat/g/$id/goal';
+  static String groupInvite(String id) => '/sangat/g/$id/invite';
   static const licences = '/licences';
   static const batteryHelp = '/reminders-help';
 
   /// The five bottom-nav branches. Going to one of these switches tabs;
   /// pushing one would stack a second copy on top of the shell.
-  static const tabs = {today, nitnem, simran, diary, settings};
+  static const tabs = {today, nitnem, simran, sangat, diary};
 
   static String setup(int step) => '/setup/$step';
 
@@ -94,10 +110,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [GoRoute(path: Routes.simran, builder: (_, _) => const SimranScreen())],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: Routes.diary, builder: (_, _) => const DiaryScreen())],
+            routes: [GoRoute(path: Routes.sangat, builder: (_, _) => const SangatScreen())],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen())],
+            routes: [GoRoute(path: Routes.diary, builder: (_, _) => const DiaryScreen())],
           ),
         ],
       ),
@@ -115,7 +131,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.goals, builder: (_, _) => const GoalsScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
       GoRoute(path: Routes.privacy, builder: (_, _) => const PrivacyScreen()),
+      GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),
       GoRoute(path: Routes.sangatJoin, builder: (_, _) => const JoinSangatScreen()),
+      GoRoute(path: Routes.createGroup, builder: (_, _) => const CreateGroupScreen()),
+      GoRoute(path: Routes.joinByLink, builder: (_, _) => const JoinByLinkScreen()),
+      GoRoute(
+        path: '/sangat/g/:id',
+        builder: (_, state) => GroupScreen(groupId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/sangat/g/:id/goal',
+        builder: (_, state) => GroupGoalScreen(groupId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/sangat/g/:id/invite',
+        builder: (_, state) => GroupInviteScreen(groupId: state.pathParameters['id']!),
+      ),
       GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
       GoRoute(path: Routes.verifyEmail, builder: (_, _) => const VerifyEmailScreen()),
       GoRoute(path: Routes.licences, builder: (_, _) => const LicencesScreen()),

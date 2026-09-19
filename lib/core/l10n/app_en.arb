@@ -817,5 +817,99 @@
         "type": "String"
       }
     }
-  }
+  },
+  "sangatTitle": "Sangat",
+  "sangatCreateOrJoin": "Create or join",
+  "sangatWorldwide": "The sangat worldwide",
+  "sangatYourGroups": "Your groups",
+  "sangatCanJoin": "Groups you can join",
+  "sangatSeeAll": "See all",
+  "sangatJoinGroup": "Join",
+  "sangatHaveLink": "Have a link? Join a group",
+  "sangatNoGroupsYet": "You are in the sangat and not in a group yet. Make one for your family, or join one below.",
+  "sangatNotJoinedTitle": "The sangat is where paath is counted together",
+  "groupKindFamily": "family group",
+  "groupKindSangat": "sangat",
+  "groupKindCircle": "simran circle",
+  "groupMembers": "{count} members",
+  "groupNoGoalYet": "No shared goal yet",
+  "groupProgress": "{done} of {target} {unit}",
+  "unitPaath": "paath",
+  "unitMinutes": "minutes",
+  "@groupMembers": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "@groupProgress": {
+      "placeholders": {
+          "done": {
+              "type": "String"
+          },
+          "target": {
+              "type": "String"
+          },
+          "unit": {
+              "type": "String"
+          }
+      }
+  },
+  "groupGone": "That group is no longer there",
+  "groupCreateTitle": "Create a group",
+  "groupWhatKind": "What kind",
+  "groupKindFamilySub": "People you live with or call",
+  "groupKindSangatSub": "A gurdwara or a wider group",
+  "groupKindCircleSub": "Counted in minutes, not paath",
+  "groupNameLabel": "Group name",
+  "groupNameHint": "Seen by the people in the group. Change it whenever you like.",
+  "groupNeedName": "Please give the group a name",
+  "groupWhoCanFind": "Who can find it",
+  "groupPrivate": "Private — people you send the link to",
+  "groupPrivateSub": "Live straight away",
+  "groupListed": "Listed in Sangat — anyone can find it",
+  "groupListedSub": "Checked before it appears",
+  "groupListedNote": "The name of a listed group is seen by people who never met you, so we read it before it appears — usually the same day. Private groups go live at once.",
+  "groupCreateCta": "Create group",
+  "groupCreated": "Your group is ready",
+  "groupSharedGoal": "Shared goal",
+  "groupYou": "YOU",
+  "groupTheGroup": "THE GROUP",
+  "groupStartPaath": "Start the paath",
+  "groupLogPaath": "Log a paath",
+  "groupMembersTitle": "Members",
+  "groupInvite": "Invite",
+  "groupReport": "Report this group",
+  "groupAnonMember": "a member",
+  "groupYouSuffix": "you",
+  "groupAdmin": "Admin",
+  "groupLogTitle": "Log a paath",
+  "groupLogAdd": "Add to the group",
+  "groupLogged": "Added to the group",
+  "groupLeave": "Leave this group",
+  "groupLeft": "You have left the group",
+  "groupSetGoalTitle": "Shared goal",
+  "groupGoalWhat": "What the group recites",
+  "groupGoalHowMany": "How many, together",
+  "groupGoalByWhen": "By when",
+  "groupGoalNoEnd": "Or no end date",
+  "groupGoalPickDate": "Pick another date",
+  "groupGoalWillSee": "THE GROUP WILL SEE",
+  "groupGoalSet": "Set the goal",
+  "groupGoalSaved": "The group has its goal",
+  "groupGoalNeedTarget": "Please choose how many",
+  "groupInviteTitle": "Invite",
+  "groupInviteShareLink": "Share this link",
+  "groupInviteShare": "Share the link",
+  "groupInviteCopied": "Link copied",
+  "groupInviteRemove": "Remove",
+  "groupInviteStarted": "You started this group",
+  "groupJoinByLinkTitle": "Join a group",
+  "groupJoinByLinkBody": "Paste the link somebody sent you, or the code at the end of it.",
+  "groupJoinByLinkLabel": "Link or code",
+  "groupJoinByLinkCta": "Join",
+  "groupJoinedOne": "You are in the group",
+  "groupSimranSlug": "Simran minutes",
+  "navSangat": "Sangat"
 }

@@ -12,9 +12,13 @@ import 'surfaces.dart';
 /// It sits in the shell rather than in each screen, so the brand is in one
 /// place and Today does not repeat it as a heading of its own.
 class BrandBar extends StatelessWidget {
-  const BrandBar({super.key, this.onHelp});
+  const BrandBar({super.key, this.onHelp, this.onSettings});
 
   final VoidCallback? onHelp;
+
+  /// Settings, which left the bottom nav when Sangat took its place
+  /// (design 37). One tap from every tab, and larger than a nav item.
+  final VoidCallback? onSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,14 @@ class BrandBar extends StatelessWidget {
               tooltip: l.helpSheetTitle,
               onPressed: onHelp!,
             ),
+          if (onSettings != null) ...[
+            const SizedBox(width: 8),
+            CardIconButton(
+              icon: HazriIconData.sliders,
+              tooltip: l.settingsTitle,
+              onPressed: onSettings!,
+            ),
+          ],
         ],
       ),
     );

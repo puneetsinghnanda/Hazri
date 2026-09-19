@@ -1448,4 +1448,235 @@ class LHi extends L {
 
   @override
   String get verifyLater => 'यह बाद में करें';
+
+  @override
+  String get sangatTitle => 'संगत';
+
+  @override
+  String get sangatCreateOrJoin => 'बनाएँ या जुड़ें';
+
+  @override
+  String get sangatWorldwide => 'दुनिया भर की संगत';
+
+  @override
+  String get sangatYourGroups => 'आपके ग्रुप';
+
+  @override
+  String get sangatCanJoin => 'जिनसे आप जुड़ सकते हैं';
+
+  @override
+  String get sangatSeeAll => 'सभी देखें';
+
+  @override
+  String get sangatJoinGroup => 'जुड़ें';
+
+  @override
+  String get sangatHaveLink => 'लिंक है? ग्रुप से जुड़ें';
+
+  @override
+  String get sangatNoGroupsYet =>
+      'आप संगत से जुड़े हैं, पर अभी किसी ग्रुप में नहीं। अपने परिवार का ग्रुप बनाएँ, या नीचे किसी से जुड़ें।';
+
+  @override
+  String get sangatNotJoinedTitle =>
+      'संगत वह जगह है जहाँ पाठ मिलकर गिना जाता है';
+
+  @override
+  String get groupKindFamily => 'पारिवारिक ग्रुप';
+
+  @override
+  String get groupKindSangat => 'संगत';
+
+  @override
+  String get groupKindCircle => 'सिमरन मंडली';
+
+  @override
+  String groupMembers(int count) {
+    return '$count लोग';
+  }
+
+  @override
+  String get groupNoGoalYet => 'अभी कोई साझा संकल्प नहीं';
+
+  @override
+  String groupProgress(String done, String target, String unit) {
+    return '$target में से $done $unit';
+  }
+
+  @override
+  String get unitPaath => 'पाठ';
+
+  @override
+  String get unitMinutes => 'मिनट';
+
+  @override
+  String get groupGone => 'वह ग्रुप अब मौजूद नहीं है';
+
+  @override
+  String get groupCreateTitle => 'ग्रुप बनाएँ';
+
+  @override
+  String get groupWhatKind => 'किस तरह का';
+
+  @override
+  String get groupKindFamilySub => 'जिनके साथ आप रहते या बात करते हैं';
+
+  @override
+  String get groupKindSangatSub => 'गुरुद्वारा या कोई बड़ी संगत';
+
+  @override
+  String get groupKindCircleSub => 'पाठ नहीं, मिनट गिने जाते हैं';
+
+  @override
+  String get groupNameLabel => 'ग्रुप का नाम';
+
+  @override
+  String get groupNameHint =>
+      'ग्रुप के लोग यह देखते हैं। जब चाहें बदल सकते हैं।';
+
+  @override
+  String get groupNeedName => 'ग्रुप का नाम लिखें';
+
+  @override
+  String get groupWhoCanFind => 'कौन ढूँढ सकता है';
+
+  @override
+  String get groupPrivate => 'निजी — सिर्फ़ जिन्हें आप लिंक भेजें';
+
+  @override
+  String get groupPrivateSub => 'तुरंत चालू';
+
+  @override
+  String get groupListed => 'संगत में दिखाया — कोई भी ढूँढ सकता है';
+
+  @override
+  String get groupListedSub => 'दिखाने से पहले जाँचा जाता है';
+
+  @override
+  String get groupListedNote =>
+      'दिखाए गए ग्रुप का नाम वे लोग भी देखते हैं जो आपको नहीं जानते, इसलिए दिखाने से पहले हम उसे पढ़ते हैं — आमतौर पर उसी दिन। निजी ग्रुप तुरंत चालू हो जाते हैं।';
+
+  @override
+  String get groupCreateCta => 'ग्रुप बनाएँ';
+
+  @override
+  String get groupCreated => 'आपका ग्रुप तैयार है';
+
+  @override
+  String get groupSharedGoal => 'साझा संकल्प';
+
+  @override
+  String get groupYou => 'आप';
+
+  @override
+  String get groupTheGroup => 'ग्रुप';
+
+  @override
+  String get groupStartPaath => 'पाठ शुरू करें';
+
+  @override
+  String get groupLogPaath => 'पाठ दर्ज करें';
+
+  @override
+  String get groupMembersTitle => 'सदस्य';
+
+  @override
+  String get groupInvite => 'बुलाएँ';
+
+  @override
+  String get groupReport => 'इस ग्रुप की शिकायत करें';
+
+  @override
+  String get groupAnonMember => 'एक सदस्य';
+
+  @override
+  String get groupYouSuffix => 'आप';
+
+  @override
+  String get groupAdmin => 'प्रबंधक';
+
+  @override
+  String get groupLogTitle => 'पाठ दर्ज करें';
+
+  @override
+  String get groupLogAdd => 'ग्रुप में जोड़ें';
+
+  @override
+  String get groupLogged => 'ग्रुप में जुड़ गया';
+
+  @override
+  String get groupLeave => 'यह ग्रुप छोड़ें';
+
+  @override
+  String get groupLeft => 'आपने ग्रुप छोड़ दिया';
+
+  @override
+  String get groupSetGoalTitle => 'साझा संकल्प';
+
+  @override
+  String get groupGoalWhat => 'ग्रुप क्या करेगा';
+
+  @override
+  String get groupGoalHowMany => 'मिलकर कितने';
+
+  @override
+  String get groupGoalByWhen => 'कब तक';
+
+  @override
+  String get groupGoalNoEnd => 'या कोई आख़िरी तारीख़ नहीं';
+
+  @override
+  String get groupGoalPickDate => 'दूसरी तारीख़ चुनें';
+
+  @override
+  String get groupGoalWillSee => 'ग्रुप यह देखेगा';
+
+  @override
+  String get groupGoalSet => 'संकल्प तय करें';
+
+  @override
+  String get groupGoalSaved => 'ग्रुप का संकल्प तय हो गया';
+
+  @override
+  String get groupGoalNeedTarget => 'कितने, यह चुनें';
+
+  @override
+  String get groupInviteTitle => 'बुलाएँ';
+
+  @override
+  String get groupInviteShareLink => 'यह लिंक साझा करें';
+
+  @override
+  String get groupInviteShare => 'लिंक साझा करें';
+
+  @override
+  String get groupInviteCopied => 'लिंक कॉपी हो गया';
+
+  @override
+  String get groupInviteRemove => 'हटाएँ';
+
+  @override
+  String get groupInviteStarted => 'यह ग्रुप आपने शुरू किया';
+
+  @override
+  String get groupJoinByLinkTitle => 'ग्रुप से जुड़ें';
+
+  @override
+  String get groupJoinByLinkBody =>
+      'जो लिंक किसी ने भेजा है वह डालें, या उसके अंत वाला कोड।';
+
+  @override
+  String get groupJoinByLinkLabel => 'लिंक या कोड';
+
+  @override
+  String get groupJoinByLinkCta => 'जुड़ें';
+
+  @override
+  String get groupJoinedOne => 'आप ग्रुप में हैं';
+
+  @override
+  String get groupSimranSlug => 'सिमरन के मिनट';
+
+  @override
+  String get navSangat => 'संगत';
 }

@@ -86,22 +86,37 @@ service cloud.firestore {
 
     match /groups/{groupId} {
       // A listed group is findable by anybody signed in; a private one only
-      // by the people already in it. `listed` is set when the group is made
-      // and only an admin can change it.
+      // by the people already in it.
       allow read: if isMember(groupId)
                   || (signedIn() && resource.data.listed == true);
       allow create: if signedIn()
                     && request.resource.data.createdBy == request.auth.uid
                     && request.resource.data.listed == false;
-      allow update: if isAdmin(groupId);
+
+      // `listed` is the one field an admin may NOT set. The name of a listed
+      // group is read by people who never met the person who chose it, so it
+      // is reviewed before it appears; if an admin could flip this, the
+      // review would be a suggestion. It is changed by us, out of band.
+      allow update: if isAdmin(groupId)
+                    && request.resource.data.listed == resource.data.listed
+                    && request.resource.data.createdBy == resource.data.createdBy;
       allow delete: if isAdmin(groupId);
 
       // Who is in it, and how much each has done. You write your own row and
       // nobody else's, which is what stops a member inflating a neighbour.
       match /members/{uid} {
         allow read: if isMember(groupId);
+
+        // The person who made the group is its admin; everybody else joins as
+        // a member. Reading `createdBy` off the group is what makes that safe
+        // to say from the phone: a second person cannot claim it.
         allow create: if isSelf(uid)
-                      && request.resource.data.role == 'member';
+                      && (request.resource.data.role == 'member'
+                          || (request.resource.data.role == 'admin'
+                              && get(/databases/$(database)/documents/groups/$(groupId))
+                                   .data.createdBy == request.auth.uid));
+        // Your own row, and your own role stays as it is. `count` is what a
+        // member adds to; nobody can edit anybody else's.
         allow update: if isSelf(uid)
                       && request.resource.data.role == resource.data.role;
         // Leave a group yourself, or be removed by an admin.

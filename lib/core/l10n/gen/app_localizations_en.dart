@@ -1450,4 +1450,235 @@ class LEn extends L {
 
   @override
   String get verifyLater => 'Do this later';
+
+  @override
+  String get sangatTitle => 'Sangat';
+
+  @override
+  String get sangatCreateOrJoin => 'Create or join';
+
+  @override
+  String get sangatWorldwide => 'The sangat worldwide';
+
+  @override
+  String get sangatYourGroups => 'Your groups';
+
+  @override
+  String get sangatCanJoin => 'Groups you can join';
+
+  @override
+  String get sangatSeeAll => 'See all';
+
+  @override
+  String get sangatJoinGroup => 'Join';
+
+  @override
+  String get sangatHaveLink => 'Have a link? Join a group';
+
+  @override
+  String get sangatNoGroupsYet =>
+      'You are in the sangat and not in a group yet. Make one for your family, or join one below.';
+
+  @override
+  String get sangatNotJoinedTitle =>
+      'The sangat is where paath is counted together';
+
+  @override
+  String get groupKindFamily => 'family group';
+
+  @override
+  String get groupKindSangat => 'sangat';
+
+  @override
+  String get groupKindCircle => 'simran circle';
+
+  @override
+  String groupMembers(int count) {
+    return '$count members';
+  }
+
+  @override
+  String get groupNoGoalYet => 'No shared goal yet';
+
+  @override
+  String groupProgress(String done, String target, String unit) {
+    return '$done of $target $unit';
+  }
+
+  @override
+  String get unitPaath => 'paath';
+
+  @override
+  String get unitMinutes => 'minutes';
+
+  @override
+  String get groupGone => 'That group is no longer there';
+
+  @override
+  String get groupCreateTitle => 'Create a group';
+
+  @override
+  String get groupWhatKind => 'What kind';
+
+  @override
+  String get groupKindFamilySub => 'People you live with or call';
+
+  @override
+  String get groupKindSangatSub => 'A gurdwara or a wider group';
+
+  @override
+  String get groupKindCircleSub => 'Counted in minutes, not paath';
+
+  @override
+  String get groupNameLabel => 'Group name';
+
+  @override
+  String get groupNameHint =>
+      'Seen by the people in the group. Change it whenever you like.';
+
+  @override
+  String get groupNeedName => 'Please give the group a name';
+
+  @override
+  String get groupWhoCanFind => 'Who can find it';
+
+  @override
+  String get groupPrivate => 'Private — people you send the link to';
+
+  @override
+  String get groupPrivateSub => 'Live straight away';
+
+  @override
+  String get groupListed => 'Listed in Sangat — anyone can find it';
+
+  @override
+  String get groupListedSub => 'Checked before it appears';
+
+  @override
+  String get groupListedNote =>
+      'The name of a listed group is seen by people who never met you, so we read it before it appears — usually the same day. Private groups go live at once.';
+
+  @override
+  String get groupCreateCta => 'Create group';
+
+  @override
+  String get groupCreated => 'Your group is ready';
+
+  @override
+  String get groupSharedGoal => 'Shared goal';
+
+  @override
+  String get groupYou => 'YOU';
+
+  @override
+  String get groupTheGroup => 'THE GROUP';
+
+  @override
+  String get groupStartPaath => 'Start the paath';
+
+  @override
+  String get groupLogPaath => 'Log a paath';
+
+  @override
+  String get groupMembersTitle => 'Members';
+
+  @override
+  String get groupInvite => 'Invite';
+
+  @override
+  String get groupReport => 'Report this group';
+
+  @override
+  String get groupAnonMember => 'a member';
+
+  @override
+  String get groupYouSuffix => 'you';
+
+  @override
+  String get groupAdmin => 'Admin';
+
+  @override
+  String get groupLogTitle => 'Log a paath';
+
+  @override
+  String get groupLogAdd => 'Add to the group';
+
+  @override
+  String get groupLogged => 'Added to the group';
+
+  @override
+  String get groupLeave => 'Leave this group';
+
+  @override
+  String get groupLeft => 'You have left the group';
+
+  @override
+  String get groupSetGoalTitle => 'Shared goal';
+
+  @override
+  String get groupGoalWhat => 'What the group recites';
+
+  @override
+  String get groupGoalHowMany => 'How many, together';
+
+  @override
+  String get groupGoalByWhen => 'By when';
+
+  @override
+  String get groupGoalNoEnd => 'Or no end date';
+
+  @override
+  String get groupGoalPickDate => 'Pick another date';
+
+  @override
+  String get groupGoalWillSee => 'THE GROUP WILL SEE';
+
+  @override
+  String get groupGoalSet => 'Set the goal';
+
+  @override
+  String get groupGoalSaved => 'The group has its goal';
+
+  @override
+  String get groupGoalNeedTarget => 'Please choose how many';
+
+  @override
+  String get groupInviteTitle => 'Invite';
+
+  @override
+  String get groupInviteShareLink => 'Share this link';
+
+  @override
+  String get groupInviteShare => 'Share the link';
+
+  @override
+  String get groupInviteCopied => 'Link copied';
+
+  @override
+  String get groupInviteRemove => 'Remove';
+
+  @override
+  String get groupInviteStarted => 'You started this group';
+
+  @override
+  String get groupJoinByLinkTitle => 'Join a group';
+
+  @override
+  String get groupJoinByLinkBody =>
+      'Paste the link somebody sent you, or the code at the end of it.';
+
+  @override
+  String get groupJoinByLinkLabel => 'Link or code';
+
+  @override
+  String get groupJoinByLinkCta => 'Join';
+
+  @override
+  String get groupJoinedOne => 'You are in the group';
+
+  @override
+  String get groupSimranSlug => 'Simran minutes';
+
+  @override
+  String get navSangat => 'Sangat';
 }

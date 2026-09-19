@@ -1448,4 +1448,235 @@ class LPa extends L {
 
   @override
   String get verifyLater => 'ਇਹ ਬਾਅਦ ਵਿੱਚ ਕਰੋ';
+
+  @override
+  String get sangatTitle => 'ਸੰਗਤ';
+
+  @override
+  String get sangatCreateOrJoin => 'ਬਣਾਓ ਜਾਂ ਜੁੜੋ';
+
+  @override
+  String get sangatWorldwide => 'ਦੁਨੀਆ ਭਰ ਦੀ ਸੰਗਤ';
+
+  @override
+  String get sangatYourGroups => 'ਤੁਹਾਡੇ ਗਰੁੱਪ';
+
+  @override
+  String get sangatCanJoin => 'ਜਿਨ੍ਹਾਂ ਨਾਲ ਤੁਸੀਂ ਜੁੜ ਸਕਦੇ ਹੋ';
+
+  @override
+  String get sangatSeeAll => 'ਸਾਰੇ ਵੇਖੋ';
+
+  @override
+  String get sangatJoinGroup => 'ਜੁੜੋ';
+
+  @override
+  String get sangatHaveLink => 'ਲਿੰਕ ਹੈ? ਗਰੁੱਪ ਨਾਲ ਜੁੜੋ';
+
+  @override
+  String get sangatNoGroupsYet =>
+      'ਤੁਸੀਂ ਸੰਗਤ ਨਾਲ ਜੁੜੇ ਹੋ, ਪਰ ਅਜੇ ਕਿਸੇ ਗਰੁੱਪ ਵਿੱਚ ਨਹੀਂ। ਆਪਣੇ ਪਰਿਵਾਰ ਦਾ ਗਰੁੱਪ ਬਣਾਓ, ਜਾਂ ਹੇਠਾਂ ਕਿਸੇ ਨਾਲ ਜੁੜੋ।';
+
+  @override
+  String get sangatNotJoinedTitle =>
+      'ਸੰਗਤ ਉਹ ਥਾਂ ਹੈ ਜਿੱਥੇ ਪਾਠ ਰਲ਼ ਕੇ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ';
+
+  @override
+  String get groupKindFamily => 'ਪਰਿਵਾਰਕ ਗਰੁੱਪ';
+
+  @override
+  String get groupKindSangat => 'ਸੰਗਤ';
+
+  @override
+  String get groupKindCircle => 'ਸਿਮਰਨ ਮੰਡਲੀ';
+
+  @override
+  String groupMembers(int count) {
+    return '$count ਜਣੇ';
+  }
+
+  @override
+  String get groupNoGoalYet => 'ਅਜੇ ਕੋਈ ਸਾਂਝਾ ਸੰਕਲਪ ਨਹੀਂ';
+
+  @override
+  String groupProgress(String done, String target, String unit) {
+    return '$target ਵਿੱਚੋਂ $done $unit';
+  }
+
+  @override
+  String get unitPaath => 'ਪਾਠ';
+
+  @override
+  String get unitMinutes => 'ਮਿੰਟ';
+
+  @override
+  String get groupGone => 'ਉਹ ਗਰੁੱਪ ਹੁਣ ਮੌਜੂਦ ਨਹੀਂ';
+
+  @override
+  String get groupCreateTitle => 'ਗਰੁੱਪ ਬਣਾਓ';
+
+  @override
+  String get groupWhatKind => 'ਕਿਸ ਤਰ੍ਹਾਂ ਦਾ';
+
+  @override
+  String get groupKindFamilySub => 'ਜਿਨ੍ਹਾਂ ਨਾਲ ਤੁਸੀਂ ਰਹਿੰਦੇ ਜਾਂ ਗੱਲ ਕਰਦੇ ਹੋ';
+
+  @override
+  String get groupKindSangatSub => 'ਗੁਰਦੁਆਰਾ ਜਾਂ ਕੋਈ ਵੱਡੀ ਸੰਗਤ';
+
+  @override
+  String get groupKindCircleSub => 'ਪਾਠ ਨਹੀਂ, ਮਿੰਟ ਗਿਣੇ ਜਾਂਦੇ ਹਨ';
+
+  @override
+  String get groupNameLabel => 'ਗਰੁੱਪ ਦਾ ਨਾਂ';
+
+  @override
+  String get groupNameHint =>
+      'ਗਰੁੱਪ ਦੇ ਜਣੇ ਇਹ ਵੇਖਦੇ ਹਨ। ਜਦੋਂ ਮਰਜ਼ੀ ਬਦਲ ਸਕਦੇ ਹੋ।';
+
+  @override
+  String get groupNeedName => 'ਗਰੁੱਪ ਦਾ ਨਾਂ ਲਿਖੋ ਜੀ';
+
+  @override
+  String get groupWhoCanFind => 'ਕੌਣ ਲੱਭ ਸਕਦਾ ਹੈ';
+
+  @override
+  String get groupPrivate => 'ਨਿੱਜੀ — ਸਿਰਫ਼ ਜਿਨ੍ਹਾਂ ਨੂੰ ਤੁਸੀਂ ਲਿੰਕ ਭੇਜੋ';
+
+  @override
+  String get groupPrivateSub => 'ਉਸੇ ਵੇਲੇ ਚਾਲੂ';
+
+  @override
+  String get groupListed => 'ਸੰਗਤ ਵਿੱਚ ਵਿਖਾਇਆ — ਕੋਈ ਵੀ ਲੱਭ ਸਕਦਾ ਹੈ';
+
+  @override
+  String get groupListedSub => 'ਵਿਖਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਵੇਖਿਆ ਜਾਂਦਾ ਹੈ';
+
+  @override
+  String get groupListedNote =>
+      'ਵਿਖਾਏ ਗਏ ਗਰੁੱਪ ਦਾ ਨਾਂ ਉਹ ਲੋਕ ਵੀ ਵੇਖਦੇ ਹਨ ਜੋ ਤੁਹਾਨੂੰ ਨਹੀਂ ਜਾਣਦੇ, ਇਸ ਲਈ ਵਿਖਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਅਸੀਂ ਪੜ੍ਹਦੇ ਹਾਂ — ਆਮ ਤੌਰ ਉੱਤੇ ਉਸੇ ਦਿਨ। ਨਿੱਜੀ ਗਰੁੱਪ ਉਸੇ ਵੇਲੇ ਚਾਲੂ ਹੋ ਜਾਂਦੇ ਹਨ।';
+
+  @override
+  String get groupCreateCta => 'ਗਰੁੱਪ ਬਣਾਓ';
+
+  @override
+  String get groupCreated => 'ਤੁਹਾਡਾ ਗਰੁੱਪ ਤਿਆਰ ਹੈ';
+
+  @override
+  String get groupSharedGoal => 'ਸਾਂਝਾ ਸੰਕਲਪ';
+
+  @override
+  String get groupYou => 'ਤੁਸੀਂ';
+
+  @override
+  String get groupTheGroup => 'ਗਰੁੱਪ';
+
+  @override
+  String get groupStartPaath => 'ਪਾਠ ਸ਼ੁਰੂ ਕਰੋ';
+
+  @override
+  String get groupLogPaath => 'ਪਾਠ ਦਰਜ ਕਰੋ';
+
+  @override
+  String get groupMembersTitle => 'ਜਣੇ';
+
+  @override
+  String get groupInvite => 'ਸੱਦੋ';
+
+  @override
+  String get groupReport => 'ਇਸ ਗਰੁੱਪ ਦੀ ਸ਼ਿਕਾਇਤ ਕਰੋ';
+
+  @override
+  String get groupAnonMember => 'ਇੱਕ ਜਣਾ';
+
+  @override
+  String get groupYouSuffix => 'ਤੁਸੀਂ';
+
+  @override
+  String get groupAdmin => 'ਪ੍ਰਬੰਧਕ';
+
+  @override
+  String get groupLogTitle => 'ਪਾਠ ਦਰਜ ਕਰੋ';
+
+  @override
+  String get groupLogAdd => 'ਗਰੁੱਪ ਵਿੱਚ ਜੋੜੋ';
+
+  @override
+  String get groupLogged => 'ਗਰੁੱਪ ਵਿੱਚ ਜੁੜ ਗਿਆ';
+
+  @override
+  String get groupLeave => 'ਇਹ ਗਰੁੱਪ ਛੱਡੋ';
+
+  @override
+  String get groupLeft => 'ਤੁਸੀਂ ਗਰੁੱਪ ਛੱਡ ਦਿੱਤਾ';
+
+  @override
+  String get groupSetGoalTitle => 'ਸਾਂਝਾ ਸੰਕਲਪ';
+
+  @override
+  String get groupGoalWhat => 'ਗਰੁੱਪ ਕੀ ਕਰੇਗਾ';
+
+  @override
+  String get groupGoalHowMany => 'ਰਲ਼ ਕੇ ਕਿੰਨੇ';
+
+  @override
+  String get groupGoalByWhen => 'ਕਦੋਂ ਤੱਕ';
+
+  @override
+  String get groupGoalNoEnd => 'ਜਾਂ ਕੋਈ ਆਖ਼ਰੀ ਤਾਰੀਖ਼ ਨਹੀਂ';
+
+  @override
+  String get groupGoalPickDate => 'ਹੋਰ ਤਾਰੀਖ਼ ਚੁਣੋ';
+
+  @override
+  String get groupGoalWillSee => 'ਗਰੁੱਪ ਇਹ ਵੇਖੇਗਾ';
+
+  @override
+  String get groupGoalSet => 'ਸੰਕਲਪ ਤੈਅ ਕਰੋ';
+
+  @override
+  String get groupGoalSaved => 'ਗਰੁੱਪ ਦਾ ਸੰਕਲਪ ਤੈਅ ਹੋ ਗਿਆ';
+
+  @override
+  String get groupGoalNeedTarget => 'ਕਿੰਨੇ, ਇਹ ਚੁਣੋ ਜੀ';
+
+  @override
+  String get groupInviteTitle => 'ਸੱਦੋ';
+
+  @override
+  String get groupInviteShareLink => 'ਇਹ ਲਿੰਕ ਸਾਂਝਾ ਕਰੋ';
+
+  @override
+  String get groupInviteShare => 'ਲਿੰਕ ਸਾਂਝਾ ਕਰੋ';
+
+  @override
+  String get groupInviteCopied => 'ਲਿੰਕ ਕਾਪੀ ਹੋ ਗਿਆ';
+
+  @override
+  String get groupInviteRemove => 'ਹਟਾਓ';
+
+  @override
+  String get groupInviteStarted => 'ਇਹ ਗਰੁੱਪ ਤੁਸੀਂ ਸ਼ੁਰੂ ਕੀਤਾ';
+
+  @override
+  String get groupJoinByLinkTitle => 'ਗਰੁੱਪ ਨਾਲ ਜੁੜੋ';
+
+  @override
+  String get groupJoinByLinkBody =>
+      'ਜੋ ਲਿੰਕ ਕਿਸੇ ਨੇ ਭੇਜਿਆ ਹੈ ਉਹ ਪਾਓ, ਜਾਂ ਉਸ ਦੇ ਅੰਤ ਵਾਲਾ ਕੋਡ।';
+
+  @override
+  String get groupJoinByLinkLabel => 'ਲਿੰਕ ਜਾਂ ਕੋਡ';
+
+  @override
+  String get groupJoinByLinkCta => 'ਜੁੜੋ';
+
+  @override
+  String get groupJoinedOne => 'ਤੁਸੀਂ ਗਰੁੱਪ ਵਿੱਚ ਹੋ';
+
+  @override
+  String get groupSimranSlug => 'ਸਿਮਰਨ ਦੇ ਮਿੰਟ';
+
+  @override
+  String get navSangat => 'ਸੰਗਤ';
 }

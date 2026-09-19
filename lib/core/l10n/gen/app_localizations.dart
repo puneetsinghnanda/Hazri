@@ -2684,6 +2684,450 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Do this later'**
   String get verifyLater;
+
+  /// No description provided for @sangatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangat'**
+  String get sangatTitle;
+
+  /// No description provided for @sangatCreateOrJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or join'**
+  String get sangatCreateOrJoin;
+
+  /// No description provided for @sangatWorldwide.
+  ///
+  /// In en, this message translates to:
+  /// **'The sangat worldwide'**
+  String get sangatWorldwide;
+
+  /// No description provided for @sangatYourGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Your groups'**
+  String get sangatYourGroups;
+
+  /// No description provided for @sangatCanJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups you can join'**
+  String get sangatCanJoin;
+
+  /// No description provided for @sangatSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get sangatSeeAll;
+
+  /// No description provided for @sangatJoinGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get sangatJoinGroup;
+
+  /// No description provided for @sangatHaveLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a link? Join a group'**
+  String get sangatHaveLink;
+
+  /// No description provided for @sangatNoGroupsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You are in the sangat and not in a group yet. Make one for your family, or join one below.'**
+  String get sangatNoGroupsYet;
+
+  /// No description provided for @sangatNotJoinedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The sangat is where paath is counted together'**
+  String get sangatNotJoinedTitle;
+
+  /// No description provided for @groupKindFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'family group'**
+  String get groupKindFamily;
+
+  /// No description provided for @groupKindSangat.
+  ///
+  /// In en, this message translates to:
+  /// **'sangat'**
+  String get groupKindSangat;
+
+  /// No description provided for @groupKindCircle.
+  ///
+  /// In en, this message translates to:
+  /// **'simran circle'**
+  String get groupKindCircle;
+
+  /// No description provided for @groupMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members'**
+  String groupMembers(int count);
+
+  /// No description provided for @groupNoGoalYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No shared goal yet'**
+  String get groupNoGoalYet;
+
+  /// No description provided for @groupProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {target} {unit}'**
+  String groupProgress(String done, String target, String unit);
+
+  /// No description provided for @unitPaath.
+  ///
+  /// In en, this message translates to:
+  /// **'paath'**
+  String get unitPaath;
+
+  /// No description provided for @unitMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get unitMinutes;
+
+  /// No description provided for @groupGone.
+  ///
+  /// In en, this message translates to:
+  /// **'That group is no longer there'**
+  String get groupGone;
+
+  /// No description provided for @groupCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a group'**
+  String get groupCreateTitle;
+
+  /// No description provided for @groupWhatKind.
+  ///
+  /// In en, this message translates to:
+  /// **'What kind'**
+  String get groupWhatKind;
+
+  /// No description provided for @groupKindFamilySub.
+  ///
+  /// In en, this message translates to:
+  /// **'People you live with or call'**
+  String get groupKindFamilySub;
+
+  /// No description provided for @groupKindSangatSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A gurdwara or a wider group'**
+  String get groupKindSangatSub;
+
+  /// No description provided for @groupKindCircleSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted in minutes, not paath'**
+  String get groupKindCircleSub;
+
+  /// No description provided for @groupNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get groupNameLabel;
+
+  /// No description provided for @groupNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Seen by the people in the group. Change it whenever you like.'**
+  String get groupNameHint;
+
+  /// No description provided for @groupNeedName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please give the group a name'**
+  String get groupNeedName;
+
+  /// No description provided for @groupWhoCanFind.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can find it'**
+  String get groupWhoCanFind;
+
+  /// No description provided for @groupPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Private — people you send the link to'**
+  String get groupPrivate;
+
+  /// No description provided for @groupPrivateSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Live straight away'**
+  String get groupPrivateSub;
+
+  /// No description provided for @groupListed.
+  ///
+  /// In en, this message translates to:
+  /// **'Listed in Sangat — anyone can find it'**
+  String get groupListed;
+
+  /// No description provided for @groupListedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked before it appears'**
+  String get groupListedSub;
+
+  /// No description provided for @groupListedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The name of a listed group is seen by people who never met you, so we read it before it appears — usually the same day. Private groups go live at once.'**
+  String get groupListedNote;
+
+  /// No description provided for @groupCreateCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Create group'**
+  String get groupCreateCta;
+
+  /// No description provided for @groupCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your group is ready'**
+  String get groupCreated;
+
+  /// No description provided for @groupSharedGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared goal'**
+  String get groupSharedGoal;
+
+  /// No description provided for @groupYou.
+  ///
+  /// In en, this message translates to:
+  /// **'YOU'**
+  String get groupYou;
+
+  /// No description provided for @groupTheGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'THE GROUP'**
+  String get groupTheGroup;
+
+  /// No description provided for @groupStartPaath.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the paath'**
+  String get groupStartPaath;
+
+  /// No description provided for @groupLogPaath.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a paath'**
+  String get groupLogPaath;
+
+  /// No description provided for @groupMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get groupMembersTitle;
+
+  /// No description provided for @groupInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get groupInvite;
+
+  /// No description provided for @groupReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report this group'**
+  String get groupReport;
+
+  /// No description provided for @groupAnonMember.
+  ///
+  /// In en, this message translates to:
+  /// **'a member'**
+  String get groupAnonMember;
+
+  /// No description provided for @groupYouSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'you'**
+  String get groupYouSuffix;
+
+  /// No description provided for @groupAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get groupAdmin;
+
+  /// No description provided for @groupLogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a paath'**
+  String get groupLogTitle;
+
+  /// No description provided for @groupLogAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to the group'**
+  String get groupLogAdd;
+
+  /// No description provided for @groupLogged.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to the group'**
+  String get groupLogged;
+
+  /// No description provided for @groupLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this group'**
+  String get groupLeave;
+
+  /// No description provided for @groupLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'You have left the group'**
+  String get groupLeft;
+
+  /// No description provided for @groupSetGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared goal'**
+  String get groupSetGoalTitle;
+
+  /// No description provided for @groupGoalWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'What the group recites'**
+  String get groupGoalWhat;
+
+  /// No description provided for @groupGoalHowMany.
+  ///
+  /// In en, this message translates to:
+  /// **'How many, together'**
+  String get groupGoalHowMany;
+
+  /// No description provided for @groupGoalByWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'By when'**
+  String get groupGoalByWhen;
+
+  /// No description provided for @groupGoalNoEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Or no end date'**
+  String get groupGoalNoEnd;
+
+  /// No description provided for @groupGoalPickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick another date'**
+  String get groupGoalPickDate;
+
+  /// No description provided for @groupGoalWillSee.
+  ///
+  /// In en, this message translates to:
+  /// **'THE GROUP WILL SEE'**
+  String get groupGoalWillSee;
+
+  /// No description provided for @groupGoalSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the goal'**
+  String get groupGoalSet;
+
+  /// No description provided for @groupGoalSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'The group has its goal'**
+  String get groupGoalSaved;
+
+  /// No description provided for @groupGoalNeedTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose how many'**
+  String get groupGoalNeedTarget;
+
+  /// No description provided for @groupInviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get groupInviteTitle;
+
+  /// No description provided for @groupInviteShareLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this link'**
+  String get groupInviteShareLink;
+
+  /// No description provided for @groupInviteShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the link'**
+  String get groupInviteShare;
+
+  /// No description provided for @groupInviteCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get groupInviteCopied;
+
+  /// No description provided for @groupInviteRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get groupInviteRemove;
+
+  /// No description provided for @groupInviteStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'You started this group'**
+  String get groupInviteStarted;
+
+  /// No description provided for @groupJoinByLinkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a group'**
+  String get groupJoinByLinkTitle;
+
+  /// No description provided for @groupJoinByLinkBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the link somebody sent you, or the code at the end of it.'**
+  String get groupJoinByLinkBody;
+
+  /// No description provided for @groupJoinByLinkLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Link or code'**
+  String get groupJoinByLinkLabel;
+
+  /// No description provided for @groupJoinByLinkCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get groupJoinByLinkCta;
+
+  /// No description provided for @groupJoinedOne.
+  ///
+  /// In en, this message translates to:
+  /// **'You are in the group'**
+  String get groupJoinedOne;
+
+  /// No description provided for @groupSimranSlug.
+  ///
+  /// In en, this message translates to:
+  /// **'Simran minutes'**
+  String get groupSimranSlug;
+
+  /// No description provided for @navSangat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangat'**
+  String get navSangat;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {
