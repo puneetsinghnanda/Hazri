@@ -1,0 +1,120 @@
+rules_version = '2';
+
+// Hazri — Firestore security rules.
+//
+// These are the app's real defence, not App Check and not the API key. The
+// key in google-services.json ships inside every copy of the app and is not
+// a secret; anybody can extract it and talk to this project directly. What
+// stops them reading the whole user table is this file.
+//
+// App Check is registered but unenforced in Phase 2, because Play Integrity
+// needs a Play Console listing that does not exist yet. So for now these
+// rules are the ONLY thing standing between a curious person and everybody
+// else's data. They are written as if that will always be true.
+//
+// Shape: deny everything, then open the narrowest possible doors.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------------------------------------------------------------- deny
+    // Anything not matched below is refused. Every rule after this is an
+    // exception that has to earn itself.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // Fields a client may never set on itself. Counts that decide a shared
+    // goal are written by trusted code, never by the phone claiming them.
+    function noPrivilegedFields() {
+      return !request.resource.data.keys().hasAny(['role', 'verified', 'groupTotal']);
+    }
+
+    // -------------------------------------------------------------- people
+    // Your own profile. Readable only by you: the sangat never needs to read
+    // a person row, because everything it shows comes from the aggregates
+    // below. A name inside a group is carried on the membership document,
+    // which is scoped to that group.
+    match /users/{uid} {
+      allow read: if isSelf(uid);
+      allow create: if isSelf(uid)
+                    && noPrivilegedFields()
+                    && request.resource.data.keys().hasOnly(
+                         ['name', 'email', 'phone', 'city', 'lat', 'lon',
+                          'createdAt', 'updatedAt', 'showName']);
+      allow update: if isSelf(uid) && noPrivilegedFields();
+      allow delete: if isSelf(uid);
+
+      // The diary, only if sync is on. Nobody else, ever — not another
+      // member, not a group admin. This is the most private data in the app.
+      match /diary/{day} {
+        allow read, write: if isSelf(uid);
+      }
+    }
+
+    // -------------------------------------------------------------- sangat
+    // A group is readable by its members. Membership is a document under the
+    // group whose id is the member's uid, so "am I a member" is one get()
+    // rather than a scan.
+    function isMember(groupId) {
+      return signedIn() && exists(
+        /databases/$(database)/documents/groups/$(groupId)/members/$(request.auth.uid));
+    }
+
+    function isAdmin(groupId) {
+      return isMember(groupId) && get(
+        /databases/$(database)/documents/groups/$(groupId)/members/$(request.auth.uid)
+      ).data.role == 'admin';
+    }
+
+    match /groups/{groupId} {
+      // A listed group is findable by anybody signed in; a private one only
+      // by the people already in it. `listed` is set when the group is made
+      // and only an admin can change it.
+      allow read: if isMember(groupId)
+                  || (signedIn() && resource.data.listed == true);
+      allow create: if signedIn()
+                    && request.resource.data.createdBy == request.auth.uid
+                    && request.resource.data.listed == false;
+      allow update: if isAdmin(groupId);
+      allow delete: if isAdmin(groupId);
+
+      // Who is in it, and how much each has done. You write your own row and
+      // nobody else's, which is what stops a member inflating a neighbour.
+      match /members/{uid} {
+        allow read: if isMember(groupId);
+        allow create: if isSelf(uid)
+                      && request.resource.data.role == 'member';
+        allow update: if isSelf(uid)
+                      && request.resource.data.role == resource.data.role;
+        // Leave a group yourself, or be removed by an admin.
+        allow delete: if isSelf(uid) || isAdmin(groupId);
+      }
+    }
+
+    // ---------------------------------------------------------- aggregates
+    // What the globe and the group totals read: a handful of documents a
+    // scheduled job writes, never one document per person. This is the
+    // difference between a bill of a few hundred rupees a month and one of
+    // several lakh, so the rule says out loud that no client may write here.
+    match /aggregates/{doc} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // ------------------------------------------------------------- content
+    // Seeded groups people can join, and the Vichar index once it is served
+    // rather than bundled. Read-only to everybody; written by us.
+    match /content/{doc=**} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+  }
+}

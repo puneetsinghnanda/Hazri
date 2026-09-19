@@ -17,9 +17,11 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- Hazri makes no network requests in this build: no INTERNET permission
-         is declared, and any a dependency merges in is removed. -->
-    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
+    <!-- Phase 2 needs the network for the sangat, diary sync and analytics
+         (CLAUDE.md rule 4). Nothing a person reads needs it: every bani, its
+         recitation, the calendar and the diary are on this phone and work
+         with the radio off. -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- No advertising ID, ever (PRD §13). -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
 

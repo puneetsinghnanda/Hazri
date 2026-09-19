@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
+import 'core/backend/backend.dart';
+import 'core/backend/firebase_backend.dart';
 import 'core/db/content_db.dart';
 import 'core/db/content_repository.dart';
 import 'core/db/user_db.dart';
@@ -20,6 +22,11 @@ Future<void> main() async {
   // and let each screen handle its own insets.
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+  // The sangat is optional and start-up says so: this never throws, and if
+  // it fails the app is Phase 1's app (CLAUDE.md rule 4).
+  final backend = FirebaseBackend();
+  await backend.start();
 
   final prefs = await SharedPreferences.getInstance();
   final contentDb = await ContentDb.open();
@@ -45,6 +52,7 @@ Future<void> main() async {
         userDbProvider.overrideWithValue(userDb),
         reminderServiceProvider.overrideWithValue(reminders),
         audioHandlerProvider.overrideWithValue(audio),
+        backendProvider.overrideWithValue(backend),
       ],
       child: const HazriApp(),
     ),

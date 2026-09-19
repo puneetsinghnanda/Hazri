@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "335848754092",
+    "project_id": "hazri-dfcc1",
+    "storage_bucket": "hazri-dfcc1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335848754092:android:3db880a496f8d653bf8809",
+        "android_client_info": {
+          "package_name": "app.hazri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMxMrahs9HUN7-lFBx5T9r51AzPsDUhHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
