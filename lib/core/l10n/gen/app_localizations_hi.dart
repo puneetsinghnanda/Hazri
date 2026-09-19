@@ -1352,4 +1352,8 @@ class LHi extends L {
 
   @override
   String get sangatJoined => 'आप संगत में हैं';
+
+  @override
+  String get sangatRefused =>
+      'गड़बड़ हमारी तरफ़ है, आपकी तरफ़ नहीं। आपका पाठ इस फ़ोन में सुरक्षित है।';
 }

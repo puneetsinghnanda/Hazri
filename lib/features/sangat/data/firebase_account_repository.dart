@@ -88,8 +88,7 @@ class FirebaseAccountRepository implements AccountRepository {
     } on FirebaseAuthException catch (e) {
       return _authOutcome(e, email);
     } on FirebaseException catch (e) {
-      debugPrint('Hazri: join failed (${e.code})');
-      return const SangatUnavailable();
+      return _firestoreOutcome(e, 'join');
     }
   }
 
@@ -103,8 +102,7 @@ class FirebaseAccountRepository implements AccountRepository {
       _current = account;
       return JoinedSangat(account);
     } on FirebaseException catch (e) {
-      debugPrint('Hazri: profile update failed (${e.code})');
-      return const SangatUnavailable();
+      return _firestoreOutcome(e, 'profile update');
     }
   }
 
@@ -137,6 +135,33 @@ class FirebaseAccountRepository implements AccountRepository {
       _current = null;
     } on FirebaseException catch (e) {
       debugPrint('Hazri: sign out failed (${e.code})');
+    }
+  }
+
+  /// Separates "we could not reach it" from "it said no".
+  ///
+  /// They look identical from inside a catch and mean opposite things: one is
+  /// a train tunnel and the other is a bug in our rules. Reporting the second
+  /// as the first sends somebody to check their wifi while the fault sits in
+  /// a file nobody deployed.
+  JoinOutcome _firestoreOutcome(FirebaseException e, String what) {
+    switch (e.code) {
+      case 'permission-denied':
+      case 'unauthenticated':
+        // The rules refused it. In Phase 2 this nearly always means
+        // firestore.rules has not been published to the project, which leaves
+        // the production-mode default of deny-everything in force.
+        debugPrint('Hazri: $what REFUSED by rules (${e.code}). '
+            'Is firestore.rules published to this project?');
+        return SangatRefused(e.code);
+      case 'unavailable':
+      case 'deadline-exceeded':
+      case 'network-request-failed':
+        debugPrint('Hazri: $what could not reach Firestore (${e.code})');
+        return const SangatUnavailable();
+      default:
+        debugPrint('Hazri: $what failed (${e.code})');
+        return JoinFailed(e.code);
     }
   }
 

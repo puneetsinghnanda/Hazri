@@ -1355,4 +1355,8 @@ class LEn extends L {
 
   @override
   String get sangatJoined => 'You are in the sangat';
+
+  @override
+  String get sangatRefused =>
+      'Something is wrong at our end, not yours. Your paath is safe on this phone.';
 }

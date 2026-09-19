@@ -1353,4 +1353,8 @@ class LPa extends L {
 
   @override
   String get sangatJoined => 'ਤੁਸੀਂ ਸੰਗਤ ਵਿੱਚ ਹੋ';
+
+  @override
+  String get sangatRefused =>
+      'ਗੜਬੜ ਸਾਡੇ ਪਾਸੇ ਹੈ, ਤੁਹਾਡੇ ਪਾਸੇ ਨਹੀਂ। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ।';
 }

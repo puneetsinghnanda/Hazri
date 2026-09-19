@@ -2510,6 +2510,12 @@ abstract class L {
   /// In en, this message translates to:
   /// **'You are in the sangat'**
   String get sangatJoined;
+
+  /// No description provided for @sangatRefused.
+  ///
+  /// In en, this message translates to:
+  /// **'Something is wrong at our end, not yours. Your paath is safe on this phone.'**
+  String get sangatRefused;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

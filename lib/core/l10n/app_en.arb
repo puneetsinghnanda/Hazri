@@ -781,5 +781,6 @@
   "sangatNeedCity": "Please add your city",
   "sangatUnavailable": "Could not reach the sangat. Your paath is safe on this phone — try again when you have signal.",
   "sangatEmailInUse": "This email already has a Hazri account",
-  "sangatJoined": "You are in the sangat"
+  "sangatJoined": "You are in the sangat",
+  "sangatRefused": "Something is wrong at our end, not yours. Your paath is safe on this phone."
 }

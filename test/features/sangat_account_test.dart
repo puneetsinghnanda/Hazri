@@ -32,6 +32,8 @@ void main() {
     });
   });
 
+  group('what can go wrong', _outcomes);
+
   group('the account itself', () {
     const account = SangatAccount(
       id: 'uid-1',
@@ -83,5 +85,38 @@ void main() {
       expect(parsed.showName, isTrue, reason: 'the safe default is the drawn one');
       expect(parsed.isRecoverable, isFalse);
     });
+  });
+}
+
+/// Separating "could not reach it" from "it said no".
+///
+/// The first build of the joining screen collapsed both into one message and
+/// told somebody with perfect signal to check their signal, while the real
+/// cause was firestore.rules sitting undeployed in the repository. These are
+/// different failures with opposite fixes and the type system now says so.
+void _outcomes() {
+  test('a refusal and an outage are different outcomes', () {
+    const refused = SangatRefused('permission-denied');
+    const offline = SangatUnavailable();
+
+    expect(refused, isNot(isA<SangatUnavailable>()));
+    expect(offline, isNot(isA<SangatRefused>()));
+    expect(refused.code, 'permission-denied',
+        reason: 'the code has to reach the log or the cause stays invisible');
+  });
+
+  test('every outcome is handled, or the compiler says so', () {
+    // JoinOutcome is sealed, so a screen that forgets a case does not build.
+    // That is what caught SangatRefused the moment it was added.
+    String describe(JoinOutcome o) => switch (o) {
+          JoinedSangat() => 'joined',
+          SangatUnavailable() => 'offline',
+          SangatRefused() => 'refused',
+          EmailAlreadyHasAccount() => 'exists',
+          JoinFailed() => 'failed',
+        };
+
+    expect(describe(const SangatRefused('permission-denied')), 'refused');
+    expect(describe(const SangatUnavailable()), 'offline');
   });
 }

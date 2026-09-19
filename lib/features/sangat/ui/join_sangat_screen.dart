@@ -99,6 +99,14 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
           _busy = false;
           _error = l.sangatUnavailable;
         });
+      case SangatRefused():
+        // The server answered and said no, which is our bug rather than the
+        // reader's circumstances. Telling them to check their signal would
+        // send them hunting for a fault that is not theirs.
+        setState(() {
+          _busy = false;
+          _error = l.sangatRefused;
+        });
       case JoinFailed():
         setState(() {
           _busy = false;

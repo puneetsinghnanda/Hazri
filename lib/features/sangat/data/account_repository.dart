@@ -30,6 +30,20 @@ class EmailAlreadyHasAccount extends JoinOutcome {
   final String email;
 }
 
+/// The server was reached and said no. Almost always our fault: rules not
+/// deployed, or a field the rules do not allow.
+///
+/// Kept apart from [SangatUnavailable] because conflating them is exactly
+/// how an afternoon gets lost. The first build of this told somebody with
+/// perfect signal to check their signal, while the real cause was a rules
+/// file sitting undeployed in the repository.
+class SangatRefused extends JoinOutcome {
+  const SangatRefused(this.code);
+
+  /// The Firebase code, for the log. The screen shows its own words.
+  final String code;
+}
+
 /// Something went wrong that the person can act on. [message] is for the
 /// developer; the screen shows its own words.
 class JoinFailed extends JoinOutcome {
