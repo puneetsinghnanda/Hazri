@@ -484,8 +484,6 @@ def hazri_banner(t: dict = EN) -> str:
       <div class="disp" style="font-size:17px;font-weight:700">
         {t["hazriMarked"]}</div>
       <div class="{t['cls']}" style="font-size:12.5px;opacity:.9">{t["hazriWith"]}</div>
-      <div class="{t['cls']}" style="font-size:12px;opacity:.78;font-weight:600;
-        padding-top:3px">{t["streak"]}</div>
     </div>
     </div>
   </div>"""
