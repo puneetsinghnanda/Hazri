@@ -68,12 +68,16 @@ class FirebasePresenceRepository implements PresenceRepository {
     return SangatPresence(cities: cities, total: total, yours: _markedToday ? 1 : 0);
   }
 
-  /// Whether this phone already added itself today. Held in memory rather
-  /// than on the server: it exists only so the screen can say "47 others"
-  /// instead of counting somebody as their own company, and a wrong answer
-  /// after a restart is off by one on a number nobody is auditing.
-  bool _markedToday = false;
+  /// The day this phone last added itself, or null.
+  ///
+  /// Held in memory rather than on the server: it exists only so the screen
+  /// can say "47 others" instead of counting somebody as their own company,
+  /// and a wrong answer after a restart is off by one on a number nobody is
+  /// auditing. Storing the day rather than a flag is what makes it roll over
+  /// at midnight without anything having to notice.
   String? _markedDay;
+
+  bool get _markedToday => _markedDay == dayKey(_now());
 
   @override
   Future<void> markSitting({
@@ -89,7 +93,6 @@ class FirebasePresenceRepository implements PresenceRepository {
       // The rules accept exactly +1 and nothing else, so this is an update
       // first and a create only if the city is not there yet.
       await doc.update({'count': FieldValue.increment(1)});
-      _markedToday = true;
       _markedDay = day;
     } on FirebaseException catch (e) {
       if (e.code == 'not-found') {
@@ -100,7 +103,6 @@ class FirebasePresenceRepository implements PresenceRepository {
             'lon': lon,
             'count': 1,
           });
-          _markedToday = true;
           _markedDay = day;
         } on FirebaseException catch (e2) {
           debugPrint('Hazri: first sitting in $cityId failed (${e2.code})');
@@ -109,6 +111,5 @@ class FirebasePresenceRepository implements PresenceRepository {
         debugPrint('Hazri: marking sitting failed (${e.code})');
       }
     }
-    if (_markedDay != day) _markedToday = false;
   }
 }

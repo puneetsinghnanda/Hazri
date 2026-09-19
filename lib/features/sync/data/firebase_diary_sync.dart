@@ -143,7 +143,7 @@ class FirebaseDiarySync implements DiarySync {
         for (final baniId in day.baniIds) {
           await repo.logCompletion(
             baniId: baniId,
-            slot: _slot(day.slots, baniId),
+            slot: _slot(day.slots),
             source: CompletionSource.restored,
             on: date,
           );
@@ -165,10 +165,11 @@ class FirebaseDiarySync implements DiarySync {
     }
   }
 
-  /// The slot a restored bani belongs to. The server keeps the day's slots
-  /// as a set, so a day with one bani is unambiguous and a day with several
-  /// falls back to the first — the grid shows the day either way.
-  BaniSlotValue _slot(List<String> slots, String baniId) {
+  /// The slot a restored day belongs to. The server keeps the day's slots as
+  /// a set rather than per bani, so a day with one bani is exact and a day
+  /// with several takes the first — the grid shows the day either way, and
+  /// inventing a mapping would be worse than taking one.
+  BaniSlotValue _slot(List<String> slots) {
     for (final name in slots) {
       final match = BaniSlotValue.values.where((v) => v.name == name).firstOrNull;
       if (match != null) return match;
