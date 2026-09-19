@@ -204,9 +204,9 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <div class="topbar">
       <div class="brand">
         <h1>Hazri · Phase 2</h1>
-        <span class="sub">28 screens · round 4</span>
+        <span class="sub">30 screens · round 5</span>
       </div>
-      <span class="tally" id="tally">0 of 28 commented</span>
+      <span class="tally" id="tally">0 of 30 commented</span>
       <div class="seg" role="group" aria-label="Show screens in">
         <button type="button" id="t-light" aria-pressed="true">Light</button>
         <button type="button" id="t-dark" aria-pressed="false">Dark</button>
@@ -224,15 +224,13 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <p>Leave a comment under anything that should change, and mark it
       <strong>Fine</strong> or <strong>Change</strong> so we both know what is settled.
       Comments save as you type and I read them straight back from here.</p>
-    <p><strong>Round 4 adds ਹਾਜ਼ਰੀ itself.</strong> Three new screens and two revised
-      ones, all in the ਹਾਜ਼ਰੀ section: the moment the day is marked, the day in the
-      diary, and the month. Screens carrying a change are marked
-      <strong>Revised</strong> or <strong>New</strong>, with what changed written under
-      them.</p>
+    <p><strong>Round 5 separates ਹਾਜ਼ਰੀ from goals.</strong> They were tangled on Today
+      and in the diary; they are not the same thing and the screens now say so. Today gains
+      its two set-up states, and the month grid carries a dot for each.</p>
     <div class="note">
-      <span>Still nothing built. Two things need your word before anything else moves:
-        whether Vichar as redrawn is what you pictured, and what the section should be
-        called now that it no longer holds \u0a05\u0a71\u0a1c \u0a26\u0a3e \u0a35\u0a3f\u0a1a\u0a3e\u0a30.</span>
+      <span>Still nothing built. Two wordings need your ear, because both are mine:
+        the sentence on 55, and ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਬਾਕੀ ਹੈ on 59. Vichar’s name is
+        still open too, now that the section no longer holds ਅੱਜ ਦਾ ਵਿਚਾਰ.</span>
     </div>
   </div>
   <div id="sections"></div>
@@ -267,9 +265,15 @@ const SECTIONS = [
     id: "today", title: "Today & goals",
     line: "The screen most people open. \u0a05\u0a71\u0a1c \u0a26\u0a3e \u0a35\u0a3f\u0a1a\u0a3e\u0a30 is back to exactly what Phase 1 ships.",
     screens: [
-      { id: "30-Today", name: "Today",
-        cap: "The goals card now says whether today\u2019s hazri is marked, which is the thing the app is named after. The Gurpurab is in four days, not tomorrow \u2014 20 November is 5 \u0a2e\u0a71\u0a18\u0a30, and the card was printing the 24th\u2019s date under the word TOMORROW.",
-        was: "Revised again: hazri line, and a wrong date fixed." },
+      { id: "30-Today", name: "Today \u2014 before setup",
+        cap: "The join banner, and no hazri card \u2014 that is the rule that keeps two banners off this screen. The goals card says nothing about hazri any more: one paath marks the hazri, all three finish the goal, and they are not the same sentence.",
+        was: "Revised: the hazri line is out of the goals card." },
+      { id: "58-TodayHazri", name: "Today \u2014 hazri marked",
+        cap: "Once setup is done the join banner is gone for good, so its slot carries the hazri instead \u2014 the same card as the head of Diary \u2014 one day, with the streak on the end. The goals card underneath still reads 1 of 3.",
+        was: "New." },
+      { id: "59-TodayNotYet", name: "Today \u2014 hazri not yet",
+        cap: "The same slot at 5 AM, before anything is read, which is when most people open the app. It names the one thing that would mark it and says nothing else.",
+        was: "New \u2014 the other half of the state, worth a look." },
       { id: "47-AddGoal", name: "Add a goal",
         cap: "Naam Simran leads, as you asked.",
         was: "Revised: Naam Simran first." },
@@ -277,7 +281,7 @@ const SECTIONS = [
   },
   {
     id: "hazri", title: "\u0a39\u0a3e\u0a1c\u0a3c\u0a30\u0a40 \u00b7 The day marked",
-    line: "The app is named after this. Finish anything \u2014 a bani or a sitting of simran \u2014 and the day\u2019s hazri is marked, once, and the diary keeps it.",
+    line: "Finish one thing \u2014 a bani or a sitting of simran \u2014 and the day\u2019s hazri is marked. Finish everything you set yourself and the goal is met. Two different days, tracked separately everywhere.",
     screens: [
       { id: "48-ReaderComplete", name: "Reader \u2014 complete",
         cap: "The first thing finished today is what marks the hazri, and the screen says so. Anything finished later is added to the same hazri rather than announcing itself again.",
@@ -289,8 +293,8 @@ const SECTIONS = [
         cap: "The hazri at the top, what earned it underneath, still tickable the way Phase 1 lets the last seven days be corrected by hand.",
         was: "New." },
       { id: "57-Diary", name: "Diary \u2014 the month",
-        cap: "Phase 1\u2019s grid and its grace days, now saying what a filled day means: the day the hazri was marked. Future days carry no mark at all.",
-        was: "New." },
+        cap: "Two dots a day: kesri for the hazri, green for all goals met. The gap between the two rows of dots is the honest picture of a month \u2014 18 days turned up, 11 days finished everything. Grace days keep Phase 1\u2019s teal; future days carry nothing.",
+        was: "Revised: one dot becomes two." },
     ],
   },
   {

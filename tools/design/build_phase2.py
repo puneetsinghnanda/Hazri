@@ -410,6 +410,59 @@ def join_banner() -> str:
   </div>"""
 
 
+def hazri_banner() -> str:
+    """Today, for somebody set up, whose hazri is marked.
+
+    It stands where the join banner stands, and only once setup is done, so
+    the screen never carries two banners. It says the day is marked and what
+    marked it -- and deliberately nothing about goals, which are the card
+    underneath and a different question: the hazri is one thing finished,
+    the goal is all of them.
+    """
+    return f"""
+  <div class="card row" style="padding:14px 16px;gap:13px;
+    background:linear-gradient(135deg,var(--kesri),#B8560A);color:#fff">
+    <div style="width:46px;height:46px;border-radius:23px;flex:none;
+      background:rgba(255,255,255,.17);display:flex;align-items:center;
+      justify-content:center">{app_mark(28, "#fff", "#fff")}</div>
+    <div class="col" style="flex:1;gap:2px">
+      <div class="gur" style="font-size:17px;font-weight:600">ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
+      <div style="font-size:12.5px;opacity:.9">
+        Marked at 5:52 AM, with Japji Sahib</div>
+    </div>
+    <div class="col" style="align-items:center;flex:none">
+      <div class="disp" style="font-size:19px;font-weight:700;line-height:1.1">37</div>
+      <div style="font-size:10.5px;opacity:.85;font-weight:600">days</div>
+    </div>
+  </div>"""
+
+
+def hazri_pending() -> str:
+    """The same slot before anything is finished -- which is when most people
+    open the app. Quiet, and it names the one thing that would mark it."""
+    return f"""
+  <div class="card row" style="padding:14px 16px;gap:13px;
+    border:1px solid var(--rule)">
+    <div style="width:46px;height:46px;border-radius:23px;flex:none;
+      background:var(--card2);display:flex;align-items:center;
+      justify-content:center">{app_mark(28, "var(--ink2)", "var(--muted)")}</div>
+    <div class="col" style="flex:1;gap:2px">
+      <div class="gur" style="font-size:17px;font-weight:600;color:var(--ink2)">
+        ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਬਾਕੀ ਹੈ</div>
+      <div style="font-size:12.5px;color:var(--muted)">
+        One paath, or one sitting of simran, marks it</div>
+    </div>
+  </div>"""
+
+
+def today_hazri() -> str:
+    return today(hazri_banner())
+
+
+def today_not_yet() -> str:
+    return today(hazri_pending())
+
+
 def today(banner: str | None = None) -> str:
     goals = [("Japji Sahib", "5:30 AM", 1.0), ("Simran", "11 min", 0.62),
              ("Rehras Sahib", "6:40 PM", 0.0)]
@@ -425,12 +478,8 @@ def today(banner: str | None = None) -> str:
   {banner if banner is not None else join_banner()}
   <div class="card col" style="padding:16px;gap:12px">
     <div class="row" style="justify-content:space-between">
-      <div class="col" style="gap:3px">
-        <div class="row" style="gap:7px">
-          <div style="width:17px;height:17px;flex:none">{app_mark(17)}</div>
-          <div class="gur" style="font-size:13px;font-weight:600;
-            color:var(--kesriInk)">ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
-        </div>
+      <div class="col">
+        <div class="eyebrow">Your goals</div>
         <div class="disp" style="font-size:20px;font-weight:700">1 of 3 done</div>
       </div>
       <div style="position:relative;width:56px;height:56px">
@@ -1054,7 +1103,8 @@ def settings_menu() -> str:
   <div style="text-align:center;font-size:11.5px;color:var(--muted)">
     Hazri 2.0 · No ads on Gurbani, ever</div>
 """
-    return today().replace(nav("today"), "") + nav("today") + sheet(inner, 600)
+    return (today(hazri_banner()).replace(nav("today"), "") + nav("today")
+            + sheet(inner, 600))
 
 
 def sangat_home() -> str:
@@ -1770,7 +1820,13 @@ def diary_month() -> str:
     """
     import calendar as _cal
     weeks = _cal.Calendar(firstweekday=0).monthdayscalendar(2026, 11)
-    marked = set(range(1, 21)) - {6, 13}
+    # Two different questions, so two dots. The hazri asks "did you turn up",
+    # and one paath or one sitting of simran answers it. The goal asks "did
+    # you finish everything you set yourself", which is a harder day and a
+    # rarer dot -- that gap is the honest picture of a month and the reason
+    # one dot could never carry both.
+    hazri = set(range(1, 21)) - {6, 13}
+    goals = {1, 2, 4, 5, 8, 9, 12, 15, 16, 19, 20}
     grace = {6}
     cells = ""
     for wk in weeks:
@@ -1778,25 +1834,28 @@ def diary_month() -> str:
             if d == 0:
                 cells += '<div></div>'
                 continue
-            today = d == 20
-            on = d in marked
-            gr = d in grace
-            ring = ("border:1.5px solid var(--kesri)" if today else
-                    "border:1.5px solid transparent")
-            dot = ('<div style="width:7px;height:7px;border-radius:4px;'
-                   'background:var(--kesri)"></div>' if on else
-                   '<div style="width:7px;height:7px;border-radius:4px;'
-                   'background:var(--teal)"></div>' if gr else
-                   '<div style="height:7px"></div>' if d > 20 else
-                   '<div style="width:7px;height:7px;border-radius:4px;'
-                   'background:var(--rule)"></div>')
+            today_cell = d == 20
+            past = d <= 20
+            def dot(on, colour):
+                if not past:
+                    return '<div style="width:6px;height:6px"></div>'
+                return (f'<div style="width:6px;height:6px;border-radius:3px;'
+                        f'background:{colour if on else "var(--rule)"}"></div>')
+            dots = (dot(d in hazri or d in grace,
+                        "var(--teal)" if d in grace else "var(--kesri)")
+                    + dot(d in goals, "var(--sage)"))
+            ring = ("border:1.5px solid var(--kesri)" if today_cell
+                    else "border:1.5px solid transparent")
+            lit = d in hazri or d in grace
             cells += (
                 f'<div class="col" style="align-items:center;justify-content:center;'
                 f'gap:4px;height:44px;border-radius:13px;{ring};'
-                f'background:{"var(--card)" if on or gr else "transparent"}">'
-                f'<div style="font-size:13px;font-weight:{700 if today else 600};'
-                f'color:{"var(--ink)" if on or today else "var(--muted)"}">{d}</div>'
-                f'{dot}</div>')
+                f'background:{"var(--card)" if lit else "transparent"}">'
+                f'<div style="font-size:13px;'
+                f'font-weight:{700 if today_cell else 600};'
+                f'color:{"var(--ink)" if lit or today_cell else "var(--muted)"}">'
+                f'{d}</div>'
+                f'<div class="row" style="gap:3px">{dots}</div></div>')
     heads = "".join(
         f'<div style="text-align:center;font-size:11px;font-weight:700;'
         f'color:var(--muted)">{c}</div>' for c in "MTWTFSS")
@@ -1823,11 +1882,16 @@ def diary_month() -> str:
   <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
     {heads}{cells}
   </div>
-  <div class="row" style="gap:14px;justify-content:center;padding-top:2px">
+  <div class="row" style="gap:13px;justify-content:center;flex-wrap:wrap;
+    padding-top:2px">
     <div class="row" style="gap:6px"><div style="width:7px;height:7px;
       border-radius:4px;background:var(--kesri)"></div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">
-        Hazri marked</div></div>
+        Hazri</div></div>
+    <div class="row" style="gap:6px"><div style="width:7px;height:7px;
+      border-radius:4px;background:var(--sage)"></div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        All goals met</div></div>
     <div class="row" style="gap:6px"><div style="width:7px;height:7px;
       border-radius:4px;background:var(--teal)"></div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">
@@ -1835,20 +1899,22 @@ def diary_month() -> str:
   </div>
   <div class="card row" style="padding:14px 16px">
     <div class="col" style="flex:1;align-items:center;gap:1px">
-      <div class="disp" style="font-size:21px;font-weight:700">18</div>
+      <div class="disp" style="font-size:21px;font-weight:700;
+        color:var(--kesri)">18</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">
-        days marked</div>
+        hazri days</div>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
+    <div class="col" style="flex:1;align-items:center;gap:1px">
+      <div class="disp" style="font-size:21px;font-weight:700;
+        color:var(--sage)">11</div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        goals met</div>
     </div>
     <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
     <div class="col" style="flex:1;align-items:center;gap:1px">
       <div class="disp" style="font-size:21px;font-weight:700">54</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">paath</div>
-    </div>
-    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
-    <div class="col" style="flex:1;align-items:center;gap:1px">
-      <div class="disp" style="font-size:21px;font-weight:700">210</div>
-      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
-        simran minutes</div>
     </div>
   </div>
   <div style="font-size:11.5px;color:var(--muted);text-align:center">
@@ -1978,6 +2044,8 @@ SCREENS = [
     ("55-HazriMarked", "ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ", hazri_marked),
     ("56-DiaryToday", "Diary — one day", diary_today),
     ("57-Diary", "Diary — the month", diary_month),
+    ("58-TodayHazri", "Today — hazri marked", today_hazri),
+    ("59-TodayNotYet", "Today — hazri not yet", today_not_yet),
 ]
 
 
