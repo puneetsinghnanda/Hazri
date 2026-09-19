@@ -15,8 +15,16 @@ to every session in this repository.
    every meaning in the app comes from `content/source/` through
    `tools/content_pipeline/build_content_db.py`. Nothing Gurbani-related is
    typed into Dart.
-4. **No ad SDKs, no login, no own server, no tracking SDKs.** This build makes
-   no network requests at all; `INTERNET` is removed from the merged manifest.
+4. **No ad SDKs, no tracking SDKs, no login, ever.** Phase 1 goes further:
+   it makes no network requests at all and `INTERNET` is removed from the
+   merged manifest. **Phase 2 restores `INTERNET`** and adds Firebase — every
+   request it makes is one of: an anonymous account, the sangat (groups,
+   shared goals, the globe), or diary sync. Three things stay true across
+   both phases and are not negotiable: **no password and no sign-in screen**;
+   **no request is needed to read a bani, hear it, see the calendar or write
+   the diary** — all of that is on the phone and works with the radio off;
+   and the network is **opt-in**, so somebody who never joins the sangat is
+   in Phase 1's app exactly as before.
 5. **All UI strings are localised** in `pa`, `hi` and `en` from day one. No
    hard-coded user-facing strings; `test/core/l10n_test.dart` fails on a
    missing or untranslated key.
