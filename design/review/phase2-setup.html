@@ -358,6 +358,45 @@ storeFile=/absolute/path/to/hazri-upload.jks</code></pre>
 </section>
 
 <section>
+  <div class="sechead"><h2>Hosting on the free plan</h2><span class="tag go">Verified</span></div>
+  <p class="secline">Hosting is included on Spark — it is not a Blaze-only product. From the
+    pricing page: <b>10 GB stored, 360 MB transferred per day</b>, with custom domain, SSL and
+    multiple sites per project all ticked on the free column. Past those, Blaze charges
+    $0.026 a GB stored and $0.15 a GB transferred.</p>
+  <div class="card">
+    <h3>What 360 MB a day actually serves</h3>
+    <div class="scroll"><table>
+      <tr><th>Per day</th><th>Of</th></tr>
+      <tr><td>17,500</td><td>loads of assetlinks.json and a privacy page</td></tr>
+      <tr><td>30,700</td><td>text-only Vichar articles</td></tr>
+      <tr><td>1,150</td><td>articles carrying one photograph</td></tr>
+      <tr><td>410</td><td>articles carrying a gallery</td></tr>
+    </table></div>
+    <p><b>Text is never the problem; images are.</b> An article's words are kilobytes and fit
+      anywhere. One photograph on it costs thirty times as much and drops the allowance from
+      tens of thousands of readers a day to about a thousand.</p>
+    <div class="note"><b>Phase 2 uses almost none of this.</b> The only things hosted are
+      <code>assetlinks.json</code>, which makes the verification link open in the app, and a
+      privacy stub — a few kilobytes a day between them. Vichar's sample content ships inside
+      the app, so it costs no transfer at all.</div>
+    <p>And if it is ever exceeded, the failure is mild: on Blaze a day at <i>ten times</i> the
+      allowance costs about ₹42. This is a quota to design around, not one to fear.</p>
+  </div>
+  <div class="card">
+    <h3>Two things on that page worth knowing</h3>
+    <p><b>Phone number verification reads "not applicable" on Spark.</b> That does not affect
+      Hazri — the phone field on screen 32 is a profile detail somebody may fill in, not a way
+      to sign in, and there is no sign-in. But it does mean phone OTP is not a fallback
+      available to us on the free plan if the email route ever disappoints.</p>
+    <p><b>The Realtime Database row is a different product from Firestore.</b> Its free plan
+      caps <i>simultaneous connections at 100</i>, which would have put a ceiling on the live
+      globe at a hundred people watching. Firestore has no equivalent cap on Spark — its free
+      plan is measured in daily operations instead. That is the reason the design uses
+      Firestore, and it is worth not mixing the two rows up when reading the page.</p>
+  </div>
+</section>
+
+<section>
   <div class="sechead"><h2>Deferred to Phase 3, and what each one costs you meanwhile</h2></div>
   <div class="later">
     <dl>
