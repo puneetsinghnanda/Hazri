@@ -69,6 +69,11 @@ ICONS = {
     "check": '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
     "plus": '<path d="M12 5v14M5 12h14"/>',
     "bell": '<path d="M6.5 10a5.5 5.5 0 0 1 11 0c0 4 1.5 5.5 1.5 5.5H5S6.5 14 6.5 10z"/><path d="M10 18.5a2 2 0 0 0 4 0"/>',
+    "sparkle": '<path d="M12 3.5v4M12 16.5v4M3.5 12h4M16.5 12h4"/><circle cx="12" cy="12" r="3.1"/>',
+    "search": '<circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.4 15.4L20 20"/>',
+    "pin": '<path d="M12 21s6.5-6 6.5-10.5a6.5 6.5 0 1 0-13 0C5.5 15 12 21 12 21z"/><circle cx="12" cy="10.3" r="2.4"/>',
+    "flag": '<path d="M6 21V4.5M6 5h11l-2 3.5L17 12H6"/>',
+    "play": '<path d="M8 5.5l10 6.5-10 6.5z"/>',
     "mail": '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M4 8l8 5.5L20 8"/>',
     "alert": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5"/><circle cx="12" cy="16.3" r=".9" fill="currentColor" stroke="none"/>',
     "clock": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.4 2"/>',
@@ -354,27 +359,12 @@ def simran_tab() -> str:
   </div>
   <div style="flex:1"></div>
   <div class="col" style="gap:14px;padding-bottom:110px">
-    <div class="row" style="padding:0 6px">
-      <div class="col" style="flex:1;align-items:center">
-        <div class="disp" style="font-size:26px;font-weight:700;color:#fff;
-          line-height:1.1">12,400</div>
-        <div style="font-size:11.5px;color:rgba(255,255,255,.6);font-weight:600">
-          in the sangat</div>
-      </div>
-      <div style="width:1px;align-self:stretch;background:rgba(255,255,255,.14)"></div>
-      <div class="col" style="flex:1;align-items:center">
-        <div class="disp" style="font-size:26px;font-weight:700;color:#6FE3A6;
-          line-height:1.1">4,812</div>
-        <div style="font-size:11.5px;color:rgba(255,255,255,.6);font-weight:600">
-          here today</div>
-      </div>
-      <div style="width:1px;align-self:stretch;background:rgba(255,255,255,.14)"></div>
-      <div class="col" style="flex:1;align-items:center">
-        <div class="disp" style="font-size:26px;font-weight:700;color:#fff;
-          line-height:1.1">64</div>
-        <div style="font-size:11.5px;color:rgba(255,255,255,.6);font-weight:600">
-          countries</div>
-      </div>
+    <div class="col" style="align-items:center;gap:7px;padding:0 10px">
+      <div class="disp" style="font-size:25px;font-weight:700;color:#fff;
+        line-height:1.3;text-align:center">
+        You and <span style="color:#6FE3A6">47 others</span><br>are here today</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,.66);font-weight:600">
+        2,140 paath this month · 9 countries</div>
     </div>
     <div class="row" style="gap:13px;justify-content:center;flex-wrap:wrap">
       <div class="row" style="gap:6px"><div style="width:8px;height:8px;
@@ -420,29 +410,6 @@ def join_banner() -> str:
   </div>"""
 
 
-def verify_strip() -> str:
-    """Set up, but the email is not confirmed yet.
-
-    Quieter than the join banner on purpose: the account already works, and
-    this is the one thing still outstanding, not an advertisement. It stays
-    until the code is entered and then it is simply gone.
-    """
-    return f"""
-  <div class="card row" style="padding:12px 14px;gap:11px;
-    background:var(--kesriSoft);border:1px solid var(--kesri)">
-    <div style="width:34px;height:34px;border-radius:11px;flex:none;
-      background:var(--kesri);color:#fff;display:flex;align-items:center;
-      justify-content:center">{icon("mail", 18)}</div>
-    <div class="col" style="flex:1">
-      <div style="font-size:13.5px;font-weight:700;color:var(--kesriInk)">
-        Confirm your email</div>
-      <div style="font-size:12px;color:var(--kesriInk);opacity:.85">
-        Until you do, your sangat lives on this phone only</div>
-    </div>
-    <div class="chip" style="background:var(--kesri);color:#fff">Verify</div>
-  </div>"""
-
-
 def today(banner: str | None = None) -> str:
     goals = [("Japji Sahib", "5:30 AM", 1.0), ("Simran", "11 min", 0.62),
              ("Rehras Sahib", "6:40 PM", 0.0)]
@@ -454,7 +421,7 @@ def today(banner: str | None = None) -> str:
         f'</div>' for n, w, p in goals)
     return f"""
 <div class="pad col" style="gap:13px">
-  {header("Today", "Friday, 20 November", left="menu", right="bell")}
+  {header("Today", "Friday, 20 November", left="menu")}
   {banner if banner is not None else join_banner()}
   <div class="card col" style="padding:16px;gap:12px">
     <div class="row" style="justify-content:space-between">
@@ -486,13 +453,46 @@ def today(banner: str | None = None) -> str:
       <div class="gur" style="font-size:12.5px;color:var(--muted)">9 ਮੱਘਰ 558</div>
     </div>
   </div>
-  <div class="card col" style="padding:14px;gap:6px">
-    <div class="eyebrow">ਅੱਜ ਦਾ ਵਿਚਾਰ</div>
-    <div class="gur" style="font-size:16px;line-height:1.7;color:var(--ink)">
-      ਸੋ ਕਿਉ ਮੰਦਾ ਆਖੀਐ ਜਿਤੁ ਜੰਮਹਿ ਰਾਜਾਨ ॥</div>
-  </div>
+  {vichar_card()}
 </div>
 {nav("today")}
+"""
+
+
+def vichar_card() -> str:
+    """ਅੱਜ ਦਾ ਵਿਚਾਰ on Today, as Phase 1 already ships it.
+
+    Phase 1's `VicharCard` is an icon and title row with the source under it,
+    the line, its meaning in the reader\'s language, then Explore and Share.
+    Phase 2 had quietly reduced it to an eyebrow and one line, which is the
+    misalignment that was reported. It is restored here rather than
+    reinterpreted; the line and meaning are entry 178 of the shipped
+    `content/source/vichar/gurbani-200.json`, not typed in.
+    """
+    return f"""
+  <div class="card col" style="padding:14px;gap:0">
+    <div class="row" style="gap:10px">
+      <div style="width:36px;height:36px;border-radius:12px;flex:none;
+        background:var(--kesriSoft);color:var(--kesriInk);display:flex;
+        align-items:center;justify-content:center">{icon("sparkle", 19)}</div>
+      <div class="col" style="flex:1">
+        <div style="font-size:14.5px;font-weight:700">ਅੱਜ ਦਾ ਵਿਚਾਰ</div>
+        <div style="font-size:12px;color:var(--muted)">Sri Guru Granth Sahib Ji</div>
+      </div>
+      <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+    </div>
+    <div class="gur" style="font-size:19px;line-height:1.75;color:var(--word);
+      padding-top:13px">ਮਿਠਤੁ ਨੀਵੀ ਨਾਨਕਾ ਗੁਣ ਚੰਗਿਆਈਆ ਤਤੁ ॥</div>
+    <div style="font-size:13.5px;line-height:1.5;color:var(--ink2);padding-top:9px">
+      Humility is sweetness, and it is the essence of true goodness.</div>
+    <div class="row" style="gap:10px;padding-top:13px">
+      <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
+        min-height:44px;font-size:14.5px"><div>Explore</div></div>
+      <div class="btn" style="flex:1;background:var(--primary);
+        color:var(--onPrimary);min-height:44px;font-size:14.5px">
+        <div>Share</div></div>
+    </div>
+  </div>
 """
 
 
@@ -545,14 +545,23 @@ def group_detail() -> str:
       </div>
     </div>
   </div>
-  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
-    {icon("plus", 20)}<div>Log a paath</div></div>
+  <div class="row" style="gap:10px">
+    <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary)">
+      {icon("play", 19)}<div>Start the paath</div></div>
+    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2)">
+      {icon("plus", 19)}<div>Log a paath</div></div>
+  </div>
+  <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:-6px">
+    Starting it here counts towards the goal when you finish</div>
   <div class="col" style="gap:11px">
     <div class="row" style="justify-content:space-between">
       <div class="eyebrow">Members</div>
       <div style="font-size:12.5px;color:var(--kesriInk);font-weight:600">Invite</div>
     </div>
     {rows}
+    <div style="text-align:center;font-size:12px;color:var(--muted);
+      padding-top:6px">Report this group</div>
+    <div style="height:86px"></div>
   </div>
 </div>
 {nav("sangat")}
@@ -665,15 +674,15 @@ def profile() -> str:
   <div class="col" style="gap:14px">
     {field("Your name", "Harjit Singh")}
     {field("Email", "harjit@example.com",
-           "We send a 6-digit code here to confirm it is yours. Nobody else "
-           "in the app ever sees it.")}
+           "How your sangat comes back if you change phone. Nobody else in "
+           "the app ever sees it.")}
     {field("Phone", "~Add a number", optional=True)}
     {field("City", "Amritsar, Punjab",
            "Shown as a dot on the Global Simran globe.")}
   </div>
-  {quiet("Next we email you a code. There is no password to make or "
-         "remember, and never will be.", "mail", "var(--sage)")}
-  {primary("Send me the code")}
+  {quiet("No password to make or remember, and never will be. You are in "
+         "the sangat as soon as you tap Continue.", "check", "var(--sage)")}
+  {primary("Continue")}
   <div style="text-align:center;font-size:12px;color:var(--muted)">
     What we store &amp; why</div>
 </div>
@@ -693,21 +702,25 @@ def account() -> str:
   </div>
   <div class="card col" style="padding:4px 16px">
     {listrow("mail", "Email", "harjit@example.com",
-             right='<span style="color:var(--sage)">Verified</span>')}
+             right='<span style="color:var(--kesriInk)">Not verified</span>')}
     <div style="height:1px;background:var(--rule)"></div>
     {listrow("phone", "Phone", "Not added")}
     <div style="height:1px;background:var(--rule)"></div>
     {listrow("globe", "City", "Amritsar, Punjab")}
   </div>
-  <div class="card row" style="padding:14px;gap:11px;background:var(--sageSoft)">
-    <div style="color:var(--sage);flex:none">{icon("check", 20)}</div>
-    <div class="col" style="flex:1">
-      <div style="font-size:14px;font-weight:700;color:var(--sage)">
-        Your sangat is safe</div>
-      <div style="font-size:12.5px;color:var(--ink2);line-height:1.45">
-        Verified on 20 November. Sign in with this email on any phone and your
-        groups, goals and diary come back.</div>
+  <div class="card col" style="padding:14px;gap:11px;background:var(--kesriSoft)">
+    <div class="row" style="gap:10px">
+      <div style="color:var(--kesriInk);flex:none">{icon("mail", 20)}</div>
+      <div class="col" style="flex:1">
+        <div style="font-size:14px;font-weight:700;color:var(--kesriInk)">
+          Complete your verification</div>
+        <div style="font-size:12.5px;color:var(--kesriInk);opacity:.85;
+          line-height:1.45">Your account works either way. Confirming your
+          email is what brings it back if you change phone.</div>
+      </div>
     </div>
+    <div class="btn" style="background:var(--kesri);color:#fff;min-height:44px;
+      font-size:14.5px"><div>Verify my email</div></div>
   </div>
   <div class="card col" style="padding:4px 16px">
     {listrow("check", "Diary sync", "On · synced 2 minutes ago", right="On")}
@@ -768,15 +781,6 @@ def verify_email() -> str:
     Do this later</div>
 </div>
 """
-
-
-def today_unverified() -> str:
-    """Today, for somebody who set up but has not entered the code yet.
-
-    The account works: goals, reader, diary, the globe. Only the coming-back
-    is missing, so the screen says that and nothing more.
-    """
-    return today(verify_strip())
 
 
 def code_problems() -> str:
@@ -1050,9 +1054,25 @@ def sangat_home() -> str:
         f'padding-top:2px">{g}</div></div>'
         f'<div style="color:var(--muted);transform:rotate(180deg)">'
         f'{icon("back", 18)}</div></div>' for n, s, p, g in groups)
+    # Seeded by us, so there is no user-chosen name here to go wrong, and a
+    # new account has somewhere to belong on its first day.
+    seeded = [("simran", "Amrit Vela · 4 AM", "simran circle · 1,840 members"),
+              ("nitnem", "Japji Sahib every morning", "daily bani · 3,210 members"),
+              ("diary", "Gurpurab 2026 — together", "ends 24 Nov · 906 members"),
+              ("sangat", "New to Nitnem", "start slowly · 412 members")]
+    open_groups = "".join(
+        f'<div class="card row" style="padding:12px 14px;gap:12px">'
+        f'<div style="width:38px;height:38px;border-radius:12px;flex:none;'
+        f'background:var(--card2);color:var(--teal);display:flex;'
+        f'align-items:center;justify-content:center">{icon(i, 19)}</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14px;font-weight:700">{n}</div>'
+        f'<div style="font-size:12px;color:var(--muted)">{d}</div></div>'
+        f'<div class="chip" style="background:var(--kesriSoft);'
+        f'color:var(--kesriInk)">Join</div></div>' for i, n, d in seeded)
     return f"""
 <div class="pad col" style="gap:13px">
-  {header("Sangat", "Together, wherever you are", left="menu", right="plus")}
+  {header("Sangat", "Create or join", left="menu", right="plus")}
   <div class="card row" style="padding:14px;gap:12px;background:#0E1533;color:#EDECF6">
     <div style="width:50px;height:50px;border-radius:25px;background:#1B2450;
       color:#5B8DEF;display:flex;align-items:center;justify-content:center;flex:none">
@@ -1066,12 +1086,16 @@ def sangat_home() -> str:
   </div>
   <div class="eyebrow" style="padding-top:2px">Your groups</div>
   {cards}
-  <div class="row" style="gap:10px;padding-top:2px">
-    <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary);
-      min-height:48px;font-size:14.5px">{icon("plus", 18)}<div>Create</div></div>
-    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
-      min-height:48px;font-size:14.5px"><div>Join with a link</div></div>
+  <div class="row" style="justify-content:space-between;padding-top:6px">
+    <div class="eyebrow">Groups you can join</div>
+    <div style="font-size:12.5px;color:var(--kesriInk);font-weight:600">See all</div>
   </div>
+  <div style="font-size:12px;color:var(--muted);margin-top:-6px">
+    Started by Hazri, open to everyone — no link needed</div>
+  {open_groups}
+  <div style="text-align:center;font-size:13px;color:var(--kesriInk);
+    font-weight:600;padding-top:4px">Have a link? Join a group</div>
+  <div style="height:86px"></div>
 </div>
 {nav("sangat")}
 """
@@ -1093,6 +1117,23 @@ def create_group() -> str:
         f'<div style="font-size:14.5px;font-weight:700">{t}</div>'
         f'<div style="font-size:12.5px;color:var(--muted)">{s}</div></div></div>'
         for t, s, on in kinds)
+    # Private by default: a name only needs checking once strangers can see
+    # it, and almost no group ever needs that.
+    vis = [("Private — people you send the link to", "Live straight away", True),
+           ("Listed in Sangat — anyone can find it", "Checked before it appears",
+            False)]
+    visibility = "".join(
+        f'<div class="card row" style="padding:13px 14px;gap:12px;'
+        f'border:1.5px solid {"var(--kesri)" if on else "transparent"}">'
+        f'<div style="width:20px;height:20px;border-radius:10px;flex:none;'
+        f'border:2px solid {"var(--kesri)" if on else "var(--rule)"};'
+        f'background:{"var(--kesri)" if on else "transparent"};display:flex;'
+        f'align-items:center;justify-content:center;color:#fff">'
+        + (icon("check", 12) if on else "") + f'</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14px;font-weight:700;line-height:1.3">{t}</div>'
+        f'<div style="font-size:12px;color:var(--muted)">{d}</div></div></div>'
+        for t, d, on in vis)
     return f"""
 <div class="pad col" style="gap:15px">
   {header("Create a group")}
@@ -1100,19 +1141,16 @@ def create_group() -> str:
     <div class="eyebrow">What kind</div>
     {cards}
   </div>
-  {field("Group name", "Nanda Family")}
+  {field("Group name", "Nanda Family",
+         "Seen by the people in the group. Change it whenever you like.")}
   <div class="col" style="gap:9px">
-    <div class="eyebrow">Who can join</div>
-    <div class="card col" style="padding:6px 16px">
-      <div class="row" style="gap:12px;padding:13px 0">
-        <div class="col" style="flex:1">
-          <div style="font-size:14px;font-weight:600">Anyone with the link</div>
-          <div style="font-size:12px;color:var(--muted)">
-            Off means you add people yourself</div>
-        </div>{toggle(True)}
-      </div>
-    </div>
+    <div class="eyebrow">Who can find it</div>
+    {visibility}
   </div>
+  {quiet("The name of a listed group is seen by people who never met you, "
+         "so we "
+         "read it before it appears — usually the same day. Private groups "
+         "go live at once.", "check")}
   <div style="flex:1"></div>
   {primary("Create group")}
 </div>
@@ -1242,152 +1280,223 @@ def log_paath() -> str:
 
 
 
-def vichar_ask() -> str:
-    suggested = ["What does ਹੁਕਮ mean in Japji Sahib?",
-                 "Why is Sukhmani Sahib called the pearl of peace?",
-                 "What is said about ਸੰਗਤ?",
-                 "The meaning of ਨਾਮ ਜਪਣਾ"]
+def searchbox(placeholder: str) -> str:
+    return (f'<div class="card row" style="padding:13px 14px;gap:10px;'
+            f'border:1px solid var(--rule)">'
+            f'<div style="color:var(--muted)">{icon("search", 19)}</div>'
+            f'<div style="font-size:14.5px;color:var(--muted);flex:1">'
+            f'{placeholder}</div></div>')
+
+
+def tile(h: int = 132) -> str:
+    """An abstract tile for an article.
+
+    Deliberately geometric. No picture of a Guru is drawn anywhere in this
+    app, and an illustration slot is exactly where one would creep in, so
+    the slot itself is abstract by construction.
+    """
+    return (f'<div style="height:{h}px;border-radius:16px;overflow:hidden;'
+            f'background:linear-gradient(135deg,var(--primary),#0E1533);'
+            f'position:relative;flex:none">'
+            f'<svg width="100%" height="{h}" viewBox="0 0 320 {h}" '
+            f'preserveAspectRatio="xMidYMid slice" style="display:block">'
+            + "".join(f'<circle cx="252" cy="{h//2}" r="{r}" fill="none" '
+                      f'stroke="rgba(242,162,78,{0.40 - i*0.045:.2f})" '
+                      f'stroke-width="1.4"/>' for i, r in enumerate(range(26, 150, 17)))
+            + f'</svg></div>')
+
+
+def kicker(text: str, colour: str = "var(--teal)") -> str:
+    return (f'<div style="font-size:11px;font-weight:700;letter-spacing:.08em;'
+            f'text-transform:uppercase;color:{colour}">{text}</div>')
+
+
+def vichar_home() -> str:
+    """Vichar, as a place to read rather than a place to ask.
+
+    The brief: articles and blogs that live on the Hazri website, plus
+    reference entries -- gurdwaras, the Guru Sahibans, the banis, the days
+    that matter -- held in the backend and fetched. A box to search, and the
+    articles themselves on the page to be read inline. Gurbani meanings are
+    not here; ਅੱਜ ਦਾ ਵਿਚਾਰ keeps them, on Today.
+
+    It is the one part of Hazri that needs a connection, which is said on
+    the screen rather than discovered.
+    """
+    cats = [("Articles", True), ("Gurdwaras", False), ("Guru Sahibans", False),
+            ("Banis", False), ("Sikh days", False)]
     chips = "".join(
-        f'<div class="card" style="padding:13px 15px;font-size:14px;'
-        f'line-height:1.45;border-radius:16px">{q}</div>' for q in suggested)
+        f'<div class="chip" style="min-height:34px;'
+        f'background:{"var(--kesriSoft)" if on else "var(--card2)"};'
+        f'color:{"var(--kesriInk)" if on else "var(--ink2)"}">{t}</div>'
+        for t, on in cats)
+    more = [("GURDWARAS", "Gurdwara Bangla Sahib, Delhi", "4 min read"),
+            ("BANIS", "Why Rehras Sahib is read at sunset", "6 min read")]
+    rows = "".join(
+        f'<div class="card row" style="padding:13px 14px;gap:12px">'
+        f'<div class="col" style="flex:1;gap:3px">{kicker(k)}'
+        f'<div style="font-size:14.5px;font-weight:700;line-height:1.3">{t}</div>'
+        f'<div style="font-size:12px;color:var(--muted)">{m}</div></div>'
+        f'<div style="width:52px;height:52px;border-radius:13px;flex:none;'
+        f'background:linear-gradient(135deg,var(--primary),#0E1533)"></div></div>'
+        for k, t, m in more)
     return f"""
-<div class="pad col" style="gap:15px">
-  {header("ਵਿਚਾਰ", "Ask about Gurbani", left="menu")}
-  <div class="card row" style="padding:14px 16px;gap:10px">
-    <div style="color:var(--muted);flex:none">{icon("globe", 20)}</div>
-    <div style="font-size:15px;color:var(--muted);flex:1">
-      Ask about a line, a word, a bani…</div>
-  </div>
-  <div class="card col" style="padding:13px 15px;gap:8px;background:var(--card2);
-    box-shadow:none">
+<div class="pad col" style="gap:13px">
+  {header("ਵਿਚਾਰ", "Read, and look things up")}
+  {searchbox("Search articles, gurdwaras, banis…")}
+  <div class="row" style="gap:7px;flex-wrap:wrap">{chips}</div>
+  <div class="card col" style="padding:14px;gap:11px">
+    {tile()}
+    <div class="col" style="gap:4px">
+      {kicker("BANIS")}
+      <div class="disp" style="font-size:18px;font-weight:700;line-height:1.25">
+        The nine banis in Hazri</div>
+      <div style="font-size:13px;color:var(--ink2);line-height:1.5">
+        Which nine, why these, and where each recitation came from.</div>
+    </div>
     <div class="row" style="gap:8px">
-      <div style="color:var(--teal);flex:none">{icon("check", 18)}</div>
-      <div style="font-size:13px;font-weight:700">Where answers come from</div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600">
+        hazri.app · 7 min read</div>
     </div>
-    <div style="font-size:12.5px;color:var(--ink2);line-height:1.55">
-      Every answer is a passage from Sri Guru Granth Sahib Ji and a reviewed
-      teeka, shown as written, with its Ang. Nothing here is composed by a
-      machine. If it is not in the sources, Hazri says so.</div>
   </div>
-  <div class="col" style="gap:9px">
-    <div class="eyebrow">Try asking</div>
-    {chips}
-  </div>
+  <div class="eyebrow" style="padding-top:2px">More to read</div>
+  {rows}
+  {quiet("Vichar is the one part of Hazri that needs a connection. Your banis, "
+         "their recitations, the calendar and your diary never do.", "globe")}
+  <div style="height:20px"></div>
 </div>
 """
 
 
-def vichar_answer() -> str:
+def vichar_article() -> str:
+    """One article, read inside the app rather than bounced to a browser."""
+    body = [
+        "Hazri ships nine banis. Four of them are in Sri Guru Granth Sahib Ji "
+        "and five are not, which is why the meanings that can be shown differ "
+        "from one to the next.",
+        "Every line comes from a reviewed source file and is built into the "
+        "app before release. Nothing is translated by a machine, and where a "
+        "source has no entry the app shows a gap rather than filling it.",
+    ]
+    paras = "".join(
+        f'<div style="font-size:14.5px;line-height:1.72;color:var(--ink2)">{t}</div>'
+        for t in body)
     return f"""
 <div class="pad col" style="gap:14px">
-  {header("ਵਿਚਾਰ")}
-  <div class="card col" style="padding:14px 16px;gap:3px;background:var(--card2);
+  {header("", left="back", right="share")}
+  <div class="col" style="gap:7px;margin-top:-6px">
+    {kicker("BANIS")}
+    <div class="disp" style="font-size:25px;font-weight:700;line-height:1.22">
+      The nine banis in Hazri</div>
+    <div style="font-size:12.5px;color:var(--muted);font-weight:600">
+      hazri.app · 7 min read · updated 12 November</div>
+  </div>
+  {tile(150)}
+  <div class="col" style="gap:13px">{paras}</div>
+  <div class="card row" style="padding:12px 14px;gap:10px;background:var(--card2);
     box-shadow:none">
-    <div style="font-size:11.5px;color:var(--muted);font-weight:700">YOU ASKED</div>
-    <div style="font-size:14.5px;font-weight:600">
-      What does ਹੁਕਮ mean in Japji Sahib?</div>
+    <div style="color:var(--teal);flex:none">{icon("globe", 18)}</div>
+    <div style="font-size:12.5px;color:var(--ink2);line-height:1.5">
+      Written and reviewed on hazri.app. The app shows it as written and does
+      not summarise it.</div>
   </div>
-  <div class="card col" style="padding:16px;gap:12px">
-    <div class="eyebrow">The line</div>
-    <div class="gur" style="font-size:19px;line-height:1.75;color:var(--ink)">
-      ਹੁਕਮੀ ਹੋਵਨਿ ਆਕਾਰ ਹੁਕਮੁ ਨ ਕਹਿਆ ਜਾਈ ॥</div>
-    <div style="height:1px;background:var(--rule)"></div>
-    <div class="eyebrow">The teeka, as written</div>
-    <div style="font-size:14.5px;line-height:1.65;color:var(--ink2)">
-      By His Command, bodies are created; His Command cannot be described.</div>
-    <div class="row" style="gap:8px;flex-wrap:wrap;padding-top:2px">
-      <div class="chip" style="background:var(--card2);color:var(--ink2)">
-        Japji Sahib · Pauri 2</div>
-      <div class="chip" style="background:var(--card2);color:var(--ink2)">
-        Ang 1</div>
-    </div>
+  <div class="eyebrow">Read next</div>
+  {listrow("nitnem", "Why Rehras Sahib is read at sunset", "6 min read")}
+  <div style="height:20px"></div>
+</div>
+"""
+
+
+def vichar_topic() -> str:
+    """A reference entry, fetched rather than bundled.
+
+    Facts in fields, not prose: a row somebody can check and correct on the
+    website, and the app renders whatever it is given.
+    """
+    facts = [("pin", "Where", "Baba Kharak Singh Marg, New Delhi"),
+             ("diary", "Marks", "The stay of Guru Har Krishan Sahib Ji"),
+             ("globe", "Open", "All day, every day"),
+             ("sangat", "Langar", "Served continuously")]
+    rows = "".join(
+        f'<div class="row" style="gap:12px;padding:11px 0">'
+        f'<div style="width:34px;height:34px;border-radius:11px;flex:none;'
+        f'background:var(--card2);color:var(--teal);display:flex;'
+        f'align-items:center;justify-content:center">{icon(i, 17)}</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:12px;color:var(--muted);font-weight:700">{k}</div>'
+        f'<div style="font-size:14px;font-weight:600;line-height:1.35">{v}</div>'
+        f'</div></div>' for i, k, v in facts)
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("", left="back", right="share")}
+  <div class="col" style="gap:6px;margin-top:-6px">
+    {kicker("GURDWARAS")}
+    <div class="disp" style="font-size:25px;font-weight:700;line-height:1.22">
+      Gurdwara Bangla Sahib</div>
+    <div style="font-size:13px;color:var(--muted)">New Delhi, India</div>
   </div>
-  <div class="card row" style="padding:13px 15px;gap:11px">
-    <div style="width:38px;height:38px;border-radius:12px;background:var(--sageSoft);
-      color:var(--sage);display:flex;align-items:center;justify-content:center;
-      flex:none">{icon("check", 19)}</div>
+  {tile(140)}
+  <div class="card col" style="padding:6px 16px">{rows}</div>
+  <div class="card col" style="padding:14px;gap:7px">
+    <div style="font-size:14px;font-weight:700">About</div>
+    <div style="font-size:13.5px;line-height:1.65;color:var(--ink2)">
+      Placeholder. Every reference entry is written and checked on hazri.app
+      and fetched by the app; the layout is what is being reviewed here, not
+      the words.</div>
+  </div>
+  {quiet("Fetched from hazri.app. If something here is wrong, it is corrected "
+         "once on the website and every phone sees the correction.", "globe")}
+  <div style="height:20px"></div>
+</div>
+"""
+
+
+def vichar_search() -> str:
+    """Searching, and the two ways it comes back with nothing."""
+    hits = [("GURDWARAS", "Gurdwara Bangla Sahib, Delhi"),
+            ("GURDWARAS", "Gurdwara Sis Ganj Sahib, Delhi"),
+            ("SIKH DAYS", "Guru Har Krishan Sahib Ji — Joti Jot")]
+    rows = "".join(
+        f'<div class="card row" style="padding:12px 14px;gap:12px">'
+        f'<div class="col" style="flex:1;gap:2px">{kicker(k)}'
+        f'<div style="font-size:14px;font-weight:600;line-height:1.3">{t}</div>'
+        f'</div>'
+        f'<div style="color:var(--muted);transform:rotate(180deg)">'
+        f'{icon("back", 18)}</div></div>' for k, t in hits)
+    return f"""
+<div class="pad col" style="gap:13px">
+  {header("Search", "3 results for “bangla sahib”")}
+  <div class="card row" style="padding:13px 14px;gap:10px;
+    border:1.5px solid var(--kesri)">
+    <div style="color:var(--kesriInk)">{icon("search", 19)}</div>
+    <div style="font-size:14.5px;color:var(--ink);flex:1">bangla sahib</div>
+    <div style="font-size:13px;color:var(--muted);font-weight:600">Clear</div>
+  </div>
+  {rows}
+  <div class="eyebrow" style="padding-top:8px">When it finds nothing</div>
+  <div class="card row" style="padding:14px;gap:11px">
+    <div style="width:38px;height:38px;border-radius:12px;flex:none;
+      background:var(--card2);color:var(--muted);display:flex;
+      align-items:center;justify-content:center">{icon("search", 19)}</div>
     <div class="col" style="flex:1">
-      <div style="font-size:13.5px;font-weight:700">Faridkot Teeka</div>
-      <div style="font-size:12px;color:var(--muted)">
-        Reviewed source · see what it covers</div>
-    </div>
-    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
-  </div>
-  <div class="row" style="gap:10px">
-    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
-      min-height:46px;font-size:14px">{icon("nitnem", 18)}<div>Open in reader</div></div>
-    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
-      min-height:46px;font-size:14px">{icon("share", 18)}<div>Share</div></div>
-  </div>
-  <div style="font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5">
-    Shown exactly as the teeka has it. Hazri does not paraphrase Gurbani or
-    its meanings.</div>
-</div>
-"""
-
-
-def vichar_source() -> str:
-    rows = [("Covers", "Sri Guru Granth Sahib Ji, Ang 1–1430"),
-            ("Languages", "Punjabi and English · Hindi for SGGS only"),
-            ("Reviewed by", "The source file shipped with the app"),
-            ("Added", "Content build 8 · November 2026")]
-    body = "".join(
-        f'<div class="row" style="gap:12px;padding:11px 0;align-items:flex-start">'
-        f'<div style="font-size:12.5px;color:var(--muted);font-weight:700;'
-        f'width:96px;flex:none">{k}</div>'
-        f'<div style="font-size:13.5px;color:var(--ink2);flex:1;line-height:1.5">'
-        f'{v}</div></div>' for k, v in rows)
-    return f"""
-<div class="pad col" style="gap:15px">
-  {header("Faridkot Teeka", "The source behind this answer")}
-  <div class="card col" style="padding:6px 16px">{body}</div>
-  <div class="card col" style="padding:15px;gap:9px;background:var(--card2);
-    box-shadow:none">
-    <div style="font-size:13.5px;font-weight:700">Why only reviewed sources</div>
-    <div style="font-size:13px;color:var(--ink2);line-height:1.6">
-      Gurbani and its meanings are never written, translated or summarised by
-      this app. Hazri can only show you what is in a source somebody has
-      reviewed and shipped. Where a source has no entry, there is no answer —
-      and that is the honest result, not a failure.</div>
-  </div>
-  {ghost("See every source in this build")}
-</div>
-"""
-
-
-def vichar_no_answer() -> str:
-    return f"""
-<div class="pad col" style="gap:14px">
-  {header("ਵਿਚਾਰ")}
-  <div class="card col" style="padding:14px 16px;gap:3px;background:var(--card2);
-    box-shadow:none">
-    <div style="font-size:11.5px;color:var(--muted);font-weight:700">YOU ASKED</div>
-    <div style="font-size:14.5px;font-weight:600">
-      When was Gurdwara Bangla Sahib built?</div>
-  </div>
-  <div class="col" style="align-items:center;gap:14px;padding:24px 10px 6px">
-    <div style="width:84px;height:84px;border-radius:42px;background:var(--card2);
-      color:var(--muted);display:flex;align-items:center;justify-content:center">
-      {icon("globe", 40)}</div>
-    <div class="disp" style="font-size:21px;font-weight:700;text-align:center;
-      line-height:1.3">This is not in<br>the sources Hazri has</div>
-    <div style="font-size:14px;color:var(--ink2);text-align:center;line-height:1.6">
-      Hazri only answers from Sri Guru Granth Sahib Ji and the reviewed teekas
-      shipped with it. It will not guess, and it will not write an answer of
-      its own.</div>
-  </div>
-  <div class="card col" style="padding:15px;gap:10px">
-    <div style="font-size:13.5px;font-weight:700">What it can answer</div>
-    <div class="row" style="gap:8px;flex-wrap:wrap">
-      <div class="chip" style="background:var(--card2);color:var(--ink2)">
-        A line's meaning</div>
-      <div class="chip" style="background:var(--card2);color:var(--ink2)">
-        A word in a bani</div>
-      <div class="chip" style="background:var(--card2);color:var(--ink2)">
-        Where a shabad sits</div>
+      <div style="font-size:14px;font-weight:700">Nothing matches that yet</div>
+      <div style="font-size:12.5px;color:var(--ink2);line-height:1.45">
+        Vichar only holds what has been written on hazri.app. Ask for it and
+        it can be added.</div>
     </div>
   </div>
-  {ghost("Ask something else")}
+  <div class="card row" style="padding:14px;gap:11px">
+    <div style="width:38px;height:38px;border-radius:12px;flex:none;
+      background:var(--kesriSoft);color:var(--kesriInk);display:flex;
+      align-items:center;justify-content:center">{icon("globe", 19)}</div>
+    <div class="col" style="flex:1">
+      <div style="font-size:14px;font-weight:700">No connection</div>
+      <div style="font-size:12.5px;color:var(--ink2);line-height:1.45">
+        Vichar needs one. Everything else — your banis, the recitations, the
+        calendar, your diary — is already on this phone.</div>
+    </div>
+  </div>
+  <div style="height:20px"></div>
 </div>
 """
 
@@ -1396,9 +1505,9 @@ def add_goal() -> str:
     chips = "".join(
         f'<div class="chip" style="background:{"var(--kesriSoft)" if on else "var(--card2)"};'
         f'color:{"var(--kesriInk)" if on else "var(--ink2)"};min-height:36px">{t}</div>'
-        for t, on in [("Japji Sahib", False), ("Chaupai Sahib", False),
-                      ("Rehras Sahib", False), ("Sukhmani Sahib", False),
-                      ("Naam Simran", True), ("More…", False)])
+        for t, on in [("Naam Simran", True), ("Japji Sahib", False),
+                      ("Chaupai Sahib", False), ("Rehras Sahib", False),
+                      ("Sukhmani Sahib", False), ("More…", False)])
     inner = f"""
   <div class="col" style="gap:3px;padding-top:2px">
     <div class="disp" style="font-size:22px;font-weight:700">Add a goal</div>
@@ -1585,15 +1694,14 @@ SCREENS = [
     ("40-SetGoal", "Shared goal", set_goal),
     ("41-Invite", "Invite", invite),
     ("42-LogPaath", "Log a paath", log_paath),
-    ("43-VicharAsk", "Vichar — ask", vichar_ask),
-    ("44-VicharAnswer", "Vichar — answer", vichar_answer),
-    ("45-VicharSource", "Vichar — source", vichar_source),
-    ("46-VicharNoAnswer", "Vichar — not in the sources", vichar_no_answer),
+    ("43-Vichar", "Vichar", vichar_home),
+    ("44-VicharArticle", "Vichar — an article", vichar_article),
+    ("45-VicharTopic", "Vichar — a reference entry", vichar_topic),
+    ("46-VicharSearch", "Vichar — search", vichar_search),
     ("47-AddGoal", "Add a goal", add_goal),
     ("48-ReaderComplete", "Reader — complete", reader_complete),
     ("49-Sync", "Sync", sync_states),
     ("50-Notifications", "Notifications", notifications),
-    ("51-TodayUnverified", "Today — email not confirmed", today_unverified),
     ("52-CodeProblems", "That code did not work", code_problems),
     ("53-RestoreOrNew", "Restore, or start fresh", restore_or_new),
     ("54-Restored", "Your sangat is back", restored),

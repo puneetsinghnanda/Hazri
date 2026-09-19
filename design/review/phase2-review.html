@@ -204,9 +204,9 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <div class="topbar">
       <div class="brand">
         <h1>Hazri · Phase 2</h1>
-        <span class="sub">26 screens · round 2</span>
+        <span class="sub">25 screens · round 3</span>
       </div>
-      <span class="tally" id="tally">0 of 26 commented</span>
+      <span class="tally" id="tally">0 of 25 commented</span>
       <div class="seg" role="group" aria-label="Show screens in">
         <button type="button" id="t-light" aria-pressed="true">Light</button>
         <button type="button" id="t-dark" aria-pressed="false">Dark</button>
@@ -224,16 +224,15 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <p>Leave a comment under anything that should change, and mark it
       <strong>Fine</strong> or <strong>Change</strong> so we both know what is settled.
       Comments save as you type and I read them straight back from here.</p>
-    <p><strong>Round 2 is in.</strong> The joining flow has been redrawn around your four
-      answers on verification — nine screens, five of them new or replaced, marked
-      <strong>New</strong> and <strong>Revised</strong>. Your round-1 comments still show on
-      the screens that kept their number; clear one when you are happy it is settled.
-      Everything else — Today, Simran, Sangat and Vichar — is untouched and still
-      waiting on the changes you asked for.</p>
+    <p><strong>Round 3 is in.</strong> Every comment you left is now acted on: Today,
+      Add a goal, Group detail, Simran’s counts, Sangat’s groups and the whole of
+      Vichar. Screens carrying a change are marked <strong>Revised</strong> or
+      <strong>New</strong>, with what changed written under them. Your earlier comments are
+      still showing \u2014 clear one when you are happy it is settled.</p>
     <div class="note">
-      <span>Still nothing built. Vichar is the big one outstanding: you have said the whole
-        section is not what you envisioned, so those four screens need redrawing rather
-        than adjusting.</span>
+      <span>Still nothing built. Two things need your word before anything else moves:
+        whether Vichar as redrawn is what you pictured, and what the section should be
+        called now that it no longer holds \u0a05\u0a71\u0a1c \u0a26\u0a3e \u0a35\u0a3f\u0a1a\u0a3e\u0a30.</span>
     </div>
   </div>
   <div id="sections"></div>
@@ -266,92 +265,95 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
 const SECTIONS = [
   {
     id: "today", title: "Today & goals",
-    line: "The screen most people open, and the two things behind it that changed.",
+    line: "The screen most people open. \u0a05\u0a71\u0a1c \u0a26\u0a3e \u0a35\u0a3f\u0a1a\u0a3e\u0a30 is back to exactly what Phase 1 ships.",
     screens: [
       { id: "30-Today", name: "Today",
-        cap: "Goals, tomorrow's Gurpurab, ਅੱਜ ਦਾ ਵਿਚਾਰ, and the banner that invites you in. The Daily Simran card is gone and the tab bar is Today · Nitnem · Simran · Sangat · Diary." },
+        cap: "The Vichar card is Phase 1\u2019s again \u2014 icon, source, the line, its meaning, Explore and Share. The bell is gone. The line and meaning are entry 178 of the shipped dataset; the one that was here before was not in it at all.",
+        was: "Revised: your three Today comments." },
       { id: "47-AddGoal", name: "Add a goal",
-        cap: "Naam Simran is a goal now, counted in minutes, and the lengths go past five." },
-      { id: "48-ReaderComplete", name: "Reader — complete",
+        cap: "Naam Simran leads, as you asked.",
+        was: "Revised: Naam Simran first." },
+      { id: "48-ReaderComplete", name: "Reader \u2014 complete",
         cap: "What a finished paath does: logged, with Start again to clear the position instead of sitting on the last line." },
     ],
   },
   {
     id: "simran", title: "Simran",
-    line: "One screen. The globe takes the place the Waheguru counter had, and nobody is named on it.",
+    line: "Your cold-start question, answered by not having a scoreboard at all.",
     screens: [
-      { id: "29-Simran", name: "Simran — the globe",
-        cap: "Orange is you, green opened the app today, blue is everyone else. You can turn it with your hand. Counts sit outside the globe; no names, anywhere." },
+      { id: "29-Simran", name: "Simran \u2014 the globe",
+        cap: "\u201cYou and 47 others are here today\u201d reads as company at 47 and at 47,000; \u201c12,400 in the sangat\u201d only reads well once it is large. The all-time total is simply not shown until it is worth showing.",
+        was: "Revised: counts reframed as presence." },
     ],
   },
   {
     id: "sangat", title: "Sangat",
-    line: "Groups, shared goals and the people in them — the only place in the app a name appears.",
+    line: "Seeded groups so a new account has somewhere to belong, and a name policy that only bites where it has to.",
     screens: [
       { id: "38-SangatHome", name: "Sangat",
-        cap: "Your groups with their progress, the worldwide count above them, and the two ways in: create, or a link." },
+        cap: "\u201cGroups you can join\u201d \u2014 started by us, open to everyone, no link needed. Create and Join moved into the + so the seeded groups are not below the fold.",
+        was: "Revised: system groups added." },
       { id: "39-CreateGroup", name: "Create a group",
-        cap: "Family, sangat or simran circle — the kind decides whether it counts paath or minutes." },
+        cap: "Private by default and live at once. Only a group that asks to be listed publicly is read first \u2014 which is where the name problem actually is.",
+        was: "Revised: visibility replaces the link toggle." },
       { id: "40-SetGoal", name: "Shared goal",
-        cap: "What the group recites, how many between them, and by when — a Gurpurab is offered as the date." },
+        cap: "What the group recites, how many between them, and by when \u2014 a Gurpurab is offered as the date." },
       { id: "41-Invite", name: "Invite",
         cap: "The join link, what it exposes said plainly, and the members you can remove." },
-      { id: "31-GroupDetail", name: "Group — shared goal",
-        cap: "The group's count and your share of it, then every member and theirs." },
+      { id: "31-GroupDetail", name: "Group \u2014 shared goal",
+        cap: "Two buttons now: Start the paath opens the reader and counts when you finish, Log a paath records one you read elsewhere. Report this group sits at the foot of the members list.",
+        was: "Revised: your two-button comment." },
       { id: "42-LogPaath", name: "Log a paath",
-        cap: "Adding what you read today to the group's goal." },
+        cap: "Adding what you read today to the group\u2019s goal." },
     ],
   },
   {
-    id: "vichar", title: "ਵਿਚਾਰ · Ask about Gurbani",
-    line: "It answers from a reviewed source or it says there is no answer. It never writes one.",
+    id: "vichar", title: "\u0a35\u0a3f\u0a1a\u0a3e\u0a30 \u00b7 Read and look up",
+    line: "Redrawn from scratch. Articles from the website and reference entries from the backend, with a box to search. No Gurbani meanings \u2014 those stay on Today.",
     screens: [
-      { id: "43-VicharAsk", name: "Vichar — ask",
-        cap: "Where answers come from is on the screen before you type a word." },
-      { id: "44-VicharAnswer", name: "Vichar — answer",
-        cap: "The line and the teeka exactly as written, with its Ang and the source named under it." },
-      { id: "45-VicharSource", name: "Vichar — the source",
-        cap: "What a source covers, what it does not, and why that is the honest result rather than a failure." },
-      { id: "46-VicharNoAnswer", name: "Vichar — not in the sources",
-        cap: "The miss, and what it can answer instead." },
+      { id: "43-Vichar", name: "Vichar",
+        cap: "Search, categories, and the articles themselves on the page to read inline. It says outright that this is the one part of Hazri needing a connection.",
+        was: "New \u2014 replaces Vichar \u2014 ask." },
+      { id: "44-VicharArticle", name: "An article",
+        cap: "Read inside the app, not bounced to a browser. The illustration slot is abstract by construction, so no picture of a Guru can ever land in it. Body copy is placeholder \u2014 the real text is written on hazri.app.",
+        was: "New \u2014 replaces Vichar \u2014 answer." },
+      { id: "45-VicharTopic", name: "A reference entry",
+        cap: "A gurdwara, a Guru Sahiban, a bani, a Sikh day: facts in fields so they can be corrected once on the website and every phone sees it.",
+        was: "New \u2014 replaces Vichar \u2014 source." },
+      { id: "46-VicharSearch", name: "Search",
+        cap: "Results, plus the two ways it comes back empty \u2014 nothing written yet, and no connection.",
+        was: "New \u2014 replaces Vichar \u2014 no answer." },
     ],
   },
   {
     id: "account", title: "Joining & your account",
-    line: "Round 2 \u2014 redrawn around your four answers. The email is confirmed during setup, by link or by code, and every way that can go wrong now has a screen.",
+    line: "Setup no longer stops to verify. The prompt lives on your account screen and nowhere else \u2014 not on Today, not in the menu.",
     screens: [
       { id: "36-UnlockSheet", name: "The sheet that asks",
-        cap: "Over Today, with Not now sitting right there. The app is whole without it.",
-        was: "Copy only: \u201ctakes a couple of seconds\u201d, to match Today." },
+        cap: "Over Today, with Not now sitting right there. The app is whole without it." },
       { id: "32-Profile", name: "Join the sangat",
-        cap: "Name, email, optional phone, city. The button now sends the code rather than just moving on, so the address is checked while the person is still here to fix it.",
-        was: "Revised: verification starts at setup." },
-      { id: "34-VerifyEmail", name: "Verify your email",
-        cap: "The link and the code, both live, and changing the address without leaving. This is the screen you asked for in place of \u201csend me the link\u201d \u2014 and the code is what rescues the case where the mail is read on a laptop.",
-        was: "Replaces 34 Keep your sangat entirely." },
-      { id: "51-TodayUnverified", name: "Today \u2014 not confirmed yet",
-        cap: "If the code is left for later, this strip sits on Today until it is done, then disappears. Everything else on the screen works.",
-        was: "New." },
-      { id: "52-CodeProblems", name: "That code did not work",
-        cap: "Your point 3, drawn: a used code says when it was used and on what, because that is the only way somebody learns their email is being read by someone else. A lapsed one says so plainly.",
-        was: "New." },
-      { id: "53-RestoreOrNew", name: "Restore, or start fresh",
-        cap: "Your point 4. The existing account is described well enough to recognise \u2014 not enough for a stranger to use \u2014 and starting fresh is a real choice, because a shared family email is ordinary.",
-        was: "New." },
-      { id: "54-Restored", name: "Your sangat is back",
-        cap: "What actually came down, and the one honest caveat about the diary.",
-        was: "New." },
+        cap: "Name, email, optional phone, city, then Continue. Nothing is sent, nothing is waited for \u2014 you are in the sangat on the tap.",
+        was: "Revised: the verify step is gone." },
       { id: "33-Account", name: "Your account",
-        cap: "The orange \u201cSecure your sangat\u201d card is gone, as you asked \u2014 it only existed to chase people who skipped the email, and now nobody does.",
-        was: "Revised: nag card replaced by the verified state." },
+        cap: "The only place verification is ever mentioned. Email reads Not verified, and one card explains what confirming buys you.",
+        was: "Revised: the prompt lives here now." },
+      { id: "34-VerifyEmail", name: "Verify your email",
+        cap: "Reached from that card alone. Link or 6-digit code, and the address changeable in place \u2014 which is where somebody finds out they mistyped it.",
+        was: "Revised: now reached from Account only." },
+      { id: "52-CodeProblems", name: "That code did not work",
+        cap: "A used code says when it was used and on what, because that is the only way somebody learns their email is being read by someone else." },
+      { id: "53-RestoreOrNew", name: "Restore, or start fresh",
+        cap: "An address that already has an account. Restore and start-fresh carry equal weight, because a shared family email is ordinary." },
+      { id: "54-Restored", name: "Your sangat is back",
+        cap: "What actually came down, and the one honest caveat about the diary." },
       { id: "35-PrivacyData", name: "Privacy & my data",
-        cap: "First bullet is now just your name. The email moved to its own group, because it is held for the account and is not the sangat\u2019s business.",
-        was: "Revised: your comment, plus a home for the email." },
+        cap: "First bullet is just your name \u2014 this was already done last round. The email sits in its own group because it is held for the account, not shared with the sangat.",
+        was: "Revised last round, unchanged since." },
     ],
   },
   {
     id: "system", title: "Shell & system",
-    line: "The parts that hold the rest together.",
+    line: "The parts that hold the rest together \u2014 still the three you have not reached.",
     screens: [
       { id: "37-SettingsMenu", name: "Menu",
         cap: "Settings off the tab bar and into the header menu, as you asked." },
