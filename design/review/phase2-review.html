@@ -1,0 +1,650 @@
+<title>Hazri Phase 2 Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&family=Mukta:wght@400;500;600;700&family=Noto+Serif+Gurmukhi:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F2F1F6; --surface:#FFFFFF; --sunk:#E9E8F1; --ink:#191B33; --ink2:#4B4E6E;
+  --muted:#83869E; --rule:#DEDDE8; --rule2:#CFCEDD;
+  --accent:#D9730D; --accentSoft:#FBE8D2; --accentInk:#9A4F00;
+  --ok:#2E7A57; --okSoft:#DCEFE5;
+  --shadow:0 1px 2px rgba(25,27,51,.05), 0 10px 26px rgba(25,27,51,.07);
+  --shadowLift:0 2px 6px rgba(25,27,51,.08), 0 18px 44px rgba(25,27,51,.14);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B0E20; --surface:#151932; --sunk:#1E2242; --ink:#ECEBF5; --ink2:#B7B9D2;
+    --muted:#7E82A4; --rule:#292E52; --rule2:#39406B;
+    --accent:#F2A24E; --accentSoft:#3A2A1A; --accentInk:#FFC27E;
+    --ok:#6CCB9C; --okSoft:#173327;
+    --shadow:0 0 0 1px rgba(255,255,255,.04); --shadowLift:0 0 0 1px rgba(255,255,255,.08), 0 24px 60px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B0E20; --surface:#151932; --sunk:#1E2242; --ink:#ECEBF5; --ink2:#B7B9D2;
+  --muted:#7E82A4; --rule:#292E52; --rule2:#39406B;
+  --accent:#F2A24E; --accentSoft:#3A2A1A; --accentInk:#FFC27E;
+  --ok:#6CCB9C; --okSoft:#173327;
+  --shadow:0 0 0 1px rgba(255,255,255,.04); --shadowLift:0 0 0 1px rgba(255,255,255,.08), 0 24px 60px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:Mukta,system-ui,-apple-system,sans-serif; font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.disp{font-family:'Baloo Paaji 2',Mukta,system-ui,sans-serif}
+.gur{font-family:'Noto Serif Gurmukhi','Noto Sans Gurmukhi',serif}
+.wrap{max-width:1360px; margin:0 auto; padding:0 16px}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+/* ── header ─────────────────────────────────────────── */
+header.top{
+  position:sticky; top:env(safe-area-inset-top, 0px); z-index:40;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--rule);
+}
+.topbar{display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding-block:12px}
+.brand{display:flex; align-items:baseline; gap:10px; flex:1 1 auto; min-width:180px}
+.brand h1{font-family:'Baloo Paaji 2',Mukta,sans-serif; font-size:21px; font-weight:700; margin:0; letter-spacing:-.01em}
+.brand .sub{font-size:13px; color:var(--muted); font-weight:500}
+.tally{
+  font-size:12.5px; font-weight:600; color:var(--ink2);
+  background:var(--sunk); border-radius:999px; padding:5px 12px;
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.seg{display:inline-flex; background:var(--sunk); border-radius:11px; padding:3px; gap:2px}
+.seg button{
+  font:inherit; font-size:13px; font-weight:600; color:var(--ink2);
+  background:none; border:0; border-radius:8px; padding:6px 13px; cursor:pointer;
+}
+.seg button[aria-pressed="true"]{background:var(--surface); color:var(--ink); box-shadow:var(--shadow)}
+.jump{display:flex; gap:7px; overflow-x:auto; padding-bottom:11px; scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump a{
+  font-size:12.5px; font-weight:600; text-decoration:none; white-space:nowrap;
+  color:var(--ink2); border:1px solid var(--rule2); border-radius:999px; padding:5px 12px;
+}
+.jump a:hover{border-color:var(--accent); color:var(--accent)}
+.jump a .n{color:var(--muted); font-variant-numeric:tabular-nums; margin-left:5px}
+
+/* ── intro ──────────────────────────────────────────── */
+.intro{padding-block:26px 6px; max-width:62ch}
+.intro p{margin:0 0 10px; color:var(--ink2)}
+.intro strong{color:var(--ink); font-weight:600}
+.note{
+  display:flex; gap:9px; align-items:flex-start;
+  background:var(--accentSoft); color:var(--accentInk);
+  border-radius:12px; padding:11px 14px; font-size:13.5px; font-weight:500; margin-top:14px;
+}
+
+/* ── sections ───────────────────────────────────────── */
+section{padding-block:30px 4px; scroll-margin-top:150px}
+.sechead{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:4px}
+.sechead h2{font-family:'Baloo Paaji 2',Mukta,sans-serif; font-size:19px; font-weight:700; margin:0}
+.sechead .count{
+  font-size:11.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--muted); font-variant-numeric:tabular-nums;
+}
+.secline{color:var(--ink2); font-size:14px; margin:0 0 18px; max-width:62ch}
+
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(266px,1fr)); gap:18px; align-items:start}
+
+/* ── card ───────────────────────────────────────────── */
+.card{
+  background:var(--surface); border-radius:18px; padding:14px 14px 13px;
+  box-shadow:var(--shadow); display:flex; flex-direction:column; gap:12px;
+}
+.card.flag{box-shadow:var(--shadow), inset 3px 0 0 var(--accent)}
+.card.fine{box-shadow:var(--shadow), inset 3px 0 0 var(--ok)}
+.chead{display:flex; gap:9px; align-items:baseline}
+.num{
+  font-variant-numeric:tabular-nums; font-size:11.5px; font-weight:700; color:var(--muted);
+  background:var(--sunk); border-radius:7px; padding:3px 7px; flex:none;
+}
+.cname{font-family:'Baloo Paaji 2',Mukta,sans-serif; font-weight:600; font-size:15.5px; line-height:1.25}
+.ccap{font-size:12.5px; color:var(--ink2); line-height:1.45}
+
+.shot{
+  position:relative; width:234px; height:507px; margin:0 auto;
+  border-radius:20px; overflow:hidden; border:1px solid var(--rule2);
+  background:var(--sunk); max-width:100%;
+}
+.shot iframe{width:390px; height:844px; border:0; transform:scale(.6); transform-origin:0 0; display:block}
+.shot .zoom{
+  position:absolute; inset:0; width:100%; height:100%; border:0; background:none;
+  cursor:zoom-in; opacity:0;
+}
+.shot .zoom:focus-visible{opacity:1; background:rgba(217,115,13,.12)}
+.shot:hover{border-color:var(--accent)}
+
+.verdict{display:flex; gap:6px}
+.verdict button{
+  font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; flex:1;
+  border:1px solid var(--rule2); background:none; color:var(--ink2);
+  border-radius:9px; padding:6px 4px;
+}
+.verdict button[aria-pressed="true"][data-v="ok"]{background:var(--okSoft); border-color:var(--ok); color:var(--ok)}
+.verdict button[aria-pressed="true"][data-v="change"]{background:var(--accentSoft); border-color:var(--accent); color:var(--accentInk)}
+
+textarea{
+  font:inherit; font-size:13.5px; width:100%; resize:vertical; min-height:62px;
+  background:var(--sunk); color:var(--ink); border:1px solid transparent; border-radius:11px;
+  padding:9px 11px;
+}
+textarea::placeholder{color:var(--muted)}
+textarea:focus{border-color:var(--accent); background:var(--surface); outline:none}
+.state{font-size:11.5px; color:var(--muted); min-height:15px; font-weight:500}
+.state[data-s="saved"]{color:var(--ok)}
+.state[data-s="local"]{color:var(--accentInk)}
+
+/* ── all-comments panel ─────────────────────────────── */
+.summary{padding-block:36px 40px}
+.sumbox{background:var(--surface); border-radius:18px; box-shadow:var(--shadow); padding:18px 18px 20px}
+.sumbox h2{font-family:'Baloo Paaji 2',Mukta,sans-serif; font-size:17px; margin:0 0 4px}
+.sumbox .hint{font-size:13px; color:var(--muted); margin:0 0 14px}
+.sumlist{display:flex; flex-direction:column; gap:14px}
+.sumitem{border-left:2px solid var(--rule2); padding-left:12px}
+.sumitem.flag{border-color:var(--accent)}
+.sumitem.fine{border-color:var(--ok)}
+.sumitem h3{font-size:14px; margin:0 0 2px; font-weight:600; font-family:'Baloo Paaji 2',Mukta,sans-serif}
+.sumitem .v{font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.sumitem p{margin:3px 0 0; font-size:13.5px; color:var(--ink2); white-space:pre-wrap}
+.empty{font-size:13.5px; color:var(--muted); margin:0}
+
+footer{padding-block:6px 40px; color:var(--muted); font-size:12.5px; text-align:center}
+
+/* ── lightbox ───────────────────────────────────────── */
+dialog.lb{
+  border:0; padding:0; background:none; max-width:100vw; max-height:100vh; width:100%; height:100%;
+  color:var(--ink);
+}
+dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
+.lbin{
+  height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; padding:16px;
+}
+.lbframe{
+  width:390px; height:844px; border-radius:26px; overflow:hidden; background:var(--sunk);
+  box-shadow:var(--shadowLift); transform-origin:center center; flex:none;
+}
+.lbframe iframe{width:390px; height:844px; border:0; display:block}
+.lbbar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center;
+  background:var(--surface); border-radius:14px; padding:9px 12px; box-shadow:var(--shadow);
+  max-width:100%;
+}
+.lbbar .t{font-family:'Baloo Paaji 2',Mukta,sans-serif; font-weight:600; font-size:14.5px}
+.lbbar .n{font-size:11.5px; font-weight:700; color:var(--muted); font-variant-numeric:tabular-nums}
+.lbbar button{
+  font:inherit; font-size:13px; font-weight:600; cursor:pointer; color:var(--ink2);
+  background:var(--sunk); border:0; border-radius:9px; padding:6px 12px;
+}
+.lbbar button:hover{color:var(--accent)}
+
+@media (max-width:420px){
+  .brand h1{font-size:19px}
+  section{scroll-margin-top:172px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <h1>Hazri · Phase 2</h1>
+        <span class="sub">22 screens for sign-off</span>
+      </div>
+      <span class="tally" id="tally">0 of 22 commented</span>
+      <div class="seg" role="group" aria-label="Show screens in">
+        <button type="button" id="t-light" aria-pressed="true">Light</button>
+        <button type="button" id="t-dark" aria-pressed="false">Dark</button>
+      </div>
+    </div>
+    <nav class="jump" id="jump" aria-label="Jump to a section"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p>Every Phase 2 screen in one place, at <strong>390 × 844</strong> — the same size
+      the design files are drawn at, and the same size the phone is. Tap any screen to
+      see it full size; use <strong>←</strong> and <strong>→</strong> there to walk the set.</p>
+    <p>Leave a comment under anything that should change, and mark it
+      <strong>Fine</strong> or <strong>Change</strong> so we both know what is settled.
+      Comments save as you type and I read them straight back from here.</p>
+    <div class="note">
+      <span>Nothing is built yet. This is the design set only — implementation starts once
+        you say the set is right.</span>
+    </div>
+  </div>
+  <div id="sections"></div>
+
+  <div class="summary">
+    <div class="sumbox">
+      <h2>Everything you have said so far</h2>
+      <p class="hint">The same comments, in one list, so you can read them back before we call it final.</p>
+      <div class="sumlist" id="sumlist"><p class="empty">No comments yet.</p></div>
+    </div>
+  </div>
+</main>
+
+<footer>Hazri — design set, Phase 2 · screens rendered from <code>design/html/</code></footer>
+
+<dialog class="lb" id="lb">
+  <div class="lbin">
+    <div class="lbbar">
+      <span class="n" id="lb-n"></span>
+      <span class="t" id="lb-t"></span>
+      <button type="button" id="lb-prev">← Previous</button>
+      <button type="button" id="lb-next">Next →</button>
+      <button type="button" id="lb-close">Close</button>
+    </div>
+    <div class="lbframe" id="lb-frame"><iframe id="lb-if" title="Screen, full size"></iframe></div>
+  </div>
+</dialog>
+
+<script>
+const SECTIONS = [
+  {
+    id: "today", title: "Today & goals",
+    line: "The screen most people open, and the two things behind it that changed.",
+    screens: [
+      { id: "30-Today", name: "Today",
+        cap: "Goals, tomorrow's Gurpurab, ਅੱਜ ਦਾ ਵਿਚਾਰ, and the banner that invites you in. The Daily Simran card is gone and the tab bar is Today · Nitnem · Simran · Sangat · Diary." },
+      { id: "47-AddGoal", name: "Add a goal",
+        cap: "Naam Simran is a goal now, counted in minutes, and the lengths go past five." },
+      { id: "48-ReaderComplete", name: "Reader — complete",
+        cap: "What a finished paath does: logged, with Start again to clear the position instead of sitting on the last line." },
+    ],
+  },
+  {
+    id: "simran", title: "Simran",
+    line: "One screen. The globe takes the place the Waheguru counter had, and nobody is named on it.",
+    screens: [
+      { id: "29-Simran", name: "Simran — the globe",
+        cap: "Orange is you, green opened the app today, blue is everyone else. You can turn it with your hand. Counts sit outside the globe; no names, anywhere." },
+    ],
+  },
+  {
+    id: "sangat", title: "Sangat",
+    line: "Groups, shared goals and the people in them — the only place in the app a name appears.",
+    screens: [
+      { id: "38-SangatHome", name: "Sangat",
+        cap: "Your groups with their progress, the worldwide count above them, and the two ways in: create, or a link." },
+      { id: "39-CreateGroup", name: "Create a group",
+        cap: "Family, sangat or simran circle — the kind decides whether it counts paath or minutes." },
+      { id: "40-SetGoal", name: "Shared goal",
+        cap: "What the group recites, how many between them, and by when — a Gurpurab is offered as the date." },
+      { id: "41-Invite", name: "Invite",
+        cap: "The join link, what it exposes said plainly, and the members you can remove." },
+      { id: "31-GroupDetail", name: "Group — shared goal",
+        cap: "The group's count and your share of it, then every member and theirs." },
+      { id: "42-LogPaath", name: "Log a paath",
+        cap: "Adding what you read today to the group's goal." },
+    ],
+  },
+  {
+    id: "vichar", title: "ਵਿਚਾਰ · Ask about Gurbani",
+    line: "It answers from a reviewed source or it says there is no answer. It never writes one.",
+    screens: [
+      { id: "43-VicharAsk", name: "Vichar — ask",
+        cap: "Where answers come from is on the screen before you type a word." },
+      { id: "44-VicharAnswer", name: "Vichar — answer",
+        cap: "The line and the teeka exactly as written, with its Ang and the source named under it." },
+      { id: "45-VicharSource", name: "Vichar — the source",
+        cap: "What a source covers, what it does not, and why that is the honest result rather than a failure." },
+      { id: "46-VicharNoAnswer", name: "Vichar — not in the sources",
+        cap: "The miss, and what it can answer instead." },
+    ],
+  },
+  {
+    id: "account", title: "Joining & your account",
+    line: "A name, an email, no password — and one link back if the phone changes.",
+    screens: [
+      { id: "32-Profile", name: "Join the sangat",
+        cap: "Name, email, optional phone, city. The city is the dot on the globe; the email is only ever the way back." },
+      { id: "36-UnlockSheet", name: "The sheet that asks",
+        cap: "Over Today, with Not now sitting right there. The app is whole without it." },
+      { id: "33-Account", name: "Your account",
+        cap: "Once it exists: sync, privacy, and signing out of this phone." },
+      { id: "34-SecureAccount", name: "Keep your sangat",
+        cap: "The prompt to add an email, for an account that so far lives on one phone only." },
+      { id: "35-PrivacyData", name: "Privacy & my data",
+        cap: "What stays on the phone, what the sangat sees, the name toggle, and the two buttons that end it." },
+    ],
+  },
+  {
+    id: "system", title: "Shell & system",
+    line: "The parts that hold the rest together.",
+    screens: [
+      { id: "37-SettingsMenu", name: "Menu",
+        cap: "Settings off the tab bar and into the header menu, as you asked." },
+      { id: "49-Sync", name: "Sync",
+        cap: "The three states, and the promise that nothing you do needs a connection." },
+      { id: "50-Notifications", name: "Notifications",
+        cap: "Everything it can send, split into your own practice, your groups, and the global ones." },
+    ],
+  },
+];
+
+const ALL = SECTIONS.flatMap(s => s.screens);
+const VERDICT_WORD = { ok: "Fine", change: "Change" };
+
+let shotTheme = "light";
+let db = null;
+const notes = new Map();      // id -> {text, verdict}
+const els   = new Map();      // id -> {card, ta, state, ok, change}
+const timers = new Map();
+const editing = new Set();
+
+const src = (id, theme) => "screens/" + id + "." + theme + ".html";
+const note = id => notes.get(id) || { text: "", verdict: "" };
+
+/* ── local fallback (per-viewer convenience only) ───── */
+function localGet() {
+  try { return JSON.parse(localStorage.getItem("hazri-p2") || "{}"); } catch { return {}; }
+}
+function localSet(id, v) {
+  try {
+    const all = localGet(); all[id] = v;
+    localStorage.setItem("hazri-p2", JSON.stringify(all));
+  } catch { /* private window, blocked storage — the page works without it */ }
+}
+
+/* ── build ──────────────────────────────────────────── */
+const jump = document.getElementById("jump");
+const host = document.getElementById("sections");
+
+for (const sec of SECTIONS) {
+  const a = document.createElement("a");
+  a.href = "#" + sec.id;
+  a.innerHTML = "";
+  a.append(sec.title);
+  const n = document.createElement("span");
+  n.className = "n"; n.textContent = sec.screens.length;
+  a.append(n);
+  jump.append(a);
+
+  const el = document.createElement("section");
+  el.id = sec.id;
+  const head = document.createElement("div");
+  head.className = "sechead";
+  const h2 = document.createElement("h2");
+  h2.textContent = sec.title;
+  if (/[਀-੿]/.test(sec.title)) h2.classList.add("gur");
+  const cnt = document.createElement("span");
+  cnt.className = "count";
+  cnt.textContent = sec.screens.length + (sec.screens.length === 1 ? " screen" : " screens");
+  head.append(h2, cnt);
+  const line = document.createElement("p");
+  line.className = "secline"; line.textContent = sec.line;
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  for (const s of sec.screens) grid.append(buildCard(s));
+  el.append(head, line, grid);
+  host.append(el);
+}
+
+function buildCard(s) {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const chead = document.createElement("div");
+  chead.className = "chead";
+  const num = document.createElement("span");
+  num.className = "num"; num.textContent = s.id.split("-")[0];
+  const nm = document.createElement("div");
+  nm.className = "cname"; nm.textContent = s.name;
+  if (/[਀-੿]/.test(s.name)) nm.classList.add("gur");
+  const cp = document.createElement("div");
+  cp.className = "ccap"; cp.textContent = s.cap;
+  chead.append(num, nm);
+
+  const shot = document.createElement("div");
+  shot.className = "shot";
+  const frame = document.createElement("iframe");
+  frame.src = src(s.id, shotTheme);
+  frame.loading = "lazy";
+  frame.title = s.name + " — " + shotTheme;
+  frame.setAttribute("scrolling", "no");
+  const zoom = document.createElement("button");
+  zoom.type = "button"; zoom.className = "zoom";
+  zoom.setAttribute("aria-label", "Open " + s.name + " full size");
+  zoom.addEventListener("click", () => openLb(s.id));
+  shot.append(frame, zoom);
+
+  const verdict = document.createElement("div");
+  verdict.className = "verdict";
+  const mk = (v, label) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.dataset.v = v; b.textContent = label;
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", () => {
+      const cur = note(s.id).verdict;
+      setNote(s.id, { verdict: cur === v ? "" : v });
+      save(s.id, true);
+    });
+    return b;
+  };
+  const ok = mk("ok", "Fine"), change = mk("change", "Change");
+  verdict.append(ok, change);
+
+  const ta = document.createElement("textarea");
+  ta.id = "note-" + s.id;
+  ta.placeholder = "What should change on " + s.name + "?";
+  ta.setAttribute("aria-label", "Comment on " + s.name);
+  ta.addEventListener("focus", () => editing.add(s.id));
+  ta.addEventListener("blur", () => { editing.delete(s.id); save(s.id, true); });
+  ta.addEventListener("input", () => {
+    setNote(s.id, { text: ta.value });
+    clearTimeout(timers.get(s.id));
+    timers.set(s.id, setTimeout(() => save(s.id, false), 700));
+    state.textContent = "Saving…"; state.dataset.s = "";
+  });
+
+  const state = document.createElement("div");
+  state.className = "state"; state.textContent = "";
+
+  card.append(chead, shot, cp, verdict, ta, state);
+  els.set(s.id, { card, ta, state, ok, change, frame });
+  return card;
+}
+
+/* ── state ──────────────────────────────────────────── */
+function setNote(id, patch) {
+  const n = { ...note(id), ...patch };
+  notes.set(id, n);
+  paint(id);
+  paintTally();
+  paintSummary();
+}
+
+function paint(id) {
+  const e = els.get(id); if (!e) return;
+  const n = note(id);
+  if (!editing.has(id) && e.ta.value !== n.text) e.ta.value = n.text;
+  e.ok.setAttribute("aria-pressed", String(n.verdict === "ok"));
+  e.change.setAttribute("aria-pressed", String(n.verdict === "change"));
+  e.card.classList.toggle("fine", n.verdict === "ok");
+  e.card.classList.toggle("flag", n.verdict === "change");
+}
+
+function paintTally() {
+  let commented = 0, fine = 0, change = 0;
+  for (const s of ALL) {
+    const n = note(s.id);
+    if (n.text.trim() || n.verdict) commented++;
+    if (n.verdict === "ok") fine++;
+    if (n.verdict === "change") change++;
+  }
+  const bits = [commented + " of " + ALL.length + " commented"];
+  if (fine) bits.push(fine + " fine");
+  if (change) bits.push(change + " to change");
+  document.getElementById("tally").textContent = bits.join(" · ");
+}
+
+function paintSummary() {
+  const list = document.getElementById("sumlist");
+  const said = ALL.filter(s => note(s.id).text.trim() || note(s.id).verdict);
+  list.textContent = "";
+  if (!said.length) {
+    const p = document.createElement("p");
+    p.className = "empty"; p.textContent = "No comments yet.";
+    list.append(p);
+    return;
+  }
+  for (const s of said) {
+    const n = note(s.id);
+    const item = document.createElement("div");
+    item.className = "sumitem" + (n.verdict === "ok" ? " fine" : n.verdict === "change" ? " flag" : "");
+    const h3 = document.createElement("h3");
+    h3.textContent = s.id.split("-")[0] + " · " + s.name;
+    item.append(h3);
+    if (n.verdict) {
+      const v = document.createElement("div");
+      v.className = "v"; v.textContent = VERDICT_WORD[n.verdict];
+      item.append(v);
+    }
+    if (n.text.trim()) {
+      const p = document.createElement("p");
+      p.textContent = n.text.trim();
+      item.append(p);
+    }
+    list.append(item);
+  }
+}
+
+/* ── saving ─────────────────────────────────────────── */
+const lastSaved = new Map();
+async function save(id, immediate) {
+  clearTimeout(timers.get(id));
+  const n = note(id);
+  const body = JSON.stringify(n);
+  if (lastSaved.get(id) === body) return;
+  const e = els.get(id);
+  localSet(id, n);
+  if (!db) {
+    lastSaved.set(id, body);
+    if (e) { e.state.textContent = "Kept on this device only"; e.state.dataset.s = "local"; }
+    return;
+  }
+  if (e) { e.state.textContent = "Saving…"; e.state.dataset.s = ""; }
+  try {
+    await db.doc("review/" + id).set({
+      screen: id, text: n.text, verdict: n.verdict, updatedAt: new Date().toISOString(),
+    });
+    lastSaved.set(id, body);
+    if (e) { e.state.textContent = "Saved"; e.state.dataset.s = "saved"; }
+  } catch (err) {
+    if (e) {
+      e.state.dataset.s = "local";
+      e.state.textContent = err && err.code === "not_granted"
+        ? "Kept on this device only"
+        : "Could not save — kept on this device";
+    }
+  }
+}
+
+/* ── lightbox ───────────────────────────────────────── */
+const lb = document.getElementById("lb");
+const lbIf = document.getElementById("lb-if");
+const lbFrame = document.getElementById("lb-frame");
+let lbIndex = 0;
+
+function fitLb() {
+  const w = window.innerWidth - 32;
+  const h = window.innerHeight - 150;
+  const k = Math.min(1, w / 390, h / 844);
+  lbFrame.style.transform = "scale(" + k + ")";
+  lbFrame.style.margin = (844 * (k - 1) / 2) + "px " + (390 * (k - 1) / 2) + "px";
+}
+function showLb(i) {
+  lbIndex = (i + ALL.length) % ALL.length;
+  const s = ALL[lbIndex];
+  lbIf.src = src(s.id, shotTheme);
+  lbIf.title = s.name + " — " + shotTheme;
+  document.getElementById("lb-n").textContent = s.id.split("-")[0];
+  const t = document.getElementById("lb-t");
+  t.textContent = s.name;
+  t.classList.toggle("gur", /[਀-੿]/.test(s.name));
+  fitLb();
+}
+function openLb(id) {
+  showLb(ALL.findIndex(s => s.id === id));
+  if (!lb.open) lb.showModal();
+}
+document.getElementById("lb-prev").addEventListener("click", () => showLb(lbIndex - 1));
+document.getElementById("lb-next").addEventListener("click", () => showLb(lbIndex + 1));
+document.getElementById("lb-close").addEventListener("click", () => lb.close());
+lb.addEventListener("click", e => { if (e.target === lb) lb.close(); });
+window.addEventListener("resize", () => { if (lb.open) fitLb(); });
+document.addEventListener("keydown", e => {
+  if (!lb.open) return;
+  if (e.key === "ArrowRight") { e.preventDefault(); showLb(lbIndex + 1); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); showLb(lbIndex - 1); }
+});
+
+/* ── theme of the screens ───────────────────────────── */
+function setShotTheme(t) {
+  if (t === shotTheme) return;
+  shotTheme = t;
+  document.getElementById("t-light").setAttribute("aria-pressed", String(t === "light"));
+  document.getElementById("t-dark").setAttribute("aria-pressed", String(t === "dark"));
+  for (const s of ALL) {
+    const e = els.get(s.id);
+    e.frame.src = src(s.id, t);
+    e.frame.title = s.name + " — " + t;
+  }
+  if (lb.open) showLb(lbIndex);
+  try { localStorage.setItem("hazri-p2-theme", t); } catch { /* ignore */ }
+}
+document.getElementById("t-light").addEventListener("click", () => setShotTheme("light"));
+document.getElementById("t-dark").addEventListener("click", () => setShotTheme("dark"));
+
+/* ── start ──────────────────────────────────────────── */
+(function seedLocal() {
+  const all = localGet();
+  for (const s of ALL) {
+    const v = all[s.id];
+    if (v && (v.text || v.verdict)) notes.set(s.id, { text: v.text || "", verdict: v.verdict || "" });
+    paint(s.id);
+  }
+  paintTally(); paintSummary();
+  try {
+    const t = localStorage.getItem("hazri-p2-theme");
+    if (t === "dark") setShotTheme("dark");
+  } catch { /* ignore */ }
+})();
+
+(async function connect() {
+  db = await (window.claude?.use?.("db") ?? Promise.resolve(null));
+  if (!db) {
+    for (const s of ALL) {
+      const n = note(s.id);
+      if (n.text || n.verdict) {
+        const e = els.get(s.id);
+        e.state.textContent = "Kept on this device only";
+        e.state.dataset.s = "local";
+      }
+    }
+    return;
+  }
+  db.collection("review").onSnapshot(snap => {
+    for (const doc of snap.docs) {
+      const d = doc.data() || {};
+      const id = doc.id;
+      if (!els.has(id)) continue;
+      if (editing.has(id)) continue;
+      const n = { text: d.text || "", verdict: d.verdict || "" };
+      lastSaved.set(id, JSON.stringify(n));
+      notes.set(id, n);
+      paint(id);
+      const e = els.get(id);
+      if (n.text || n.verdict) { e.state.textContent = "Saved"; e.state.dataset.s = "saved"; }
+    }
+    paintTally(); paintSummary();
+  }, () => { db = null; });
+})();
+</script>
