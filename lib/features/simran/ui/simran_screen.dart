@@ -14,6 +14,10 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/simran_controller.dart';
+import '../../sangat/data/account_repository.dart';
+import '../../sangat/data/presence_repository.dart';
+import '../../sangat/domain/simran_presence.dart';
+import 'simran_globe.dart';
 import '../../today/data/today_controller.dart';
 import 'anhad_ring.dart';
 
@@ -81,7 +85,15 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
               children: [
                 Text(l.simranTitle, style: HazriText.display26.copyWith(color: c.ink)),
                 Text(l.simranSubtitle, style: HazriText.body.copyWith(color: c.ink2)),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+                // Design 29. Shown only to somebody who joined the sangat: a
+                // globe with nobody on it is not a feature, and showing one
+                // to a person who never opted in would be asking them to feel
+                // the absence of something they did not ask for.
+                if (ref.watch(hasJoinedSangatProvider)) ...[
+                  const SimranPresenceCard(),
+                  const SizedBox(height: 18),
+                ],
                 Center(
                   child: ProgressRing(
                     size: 240,
@@ -239,6 +251,57 @@ class _QuoteCard extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Design 29's hero: the globe, and how many are sitting with you.
+///
+/// The reader asked what these numbers look like on a new app with few
+/// people. The answer is that the screen never shows a zero: with nobody else
+/// there it says you are the first today, which is true, is the better thing
+/// to be, and stops being said the moment somebody else sits down.
+class SimranPresenceCard extends ConsumerWidget {
+  const SimranPresenceCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = L.of(context);
+    final presence = ref.watch(simranPresenceProvider).value ?? SangatPresence.empty;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(HazriRadius.card),
+      child: Container(
+        color: const Color(0xFF070A1A),
+        padding: const EdgeInsets.symmetric(vertical: 18),
+        child: Column(
+          children: [
+            SimranGlobe(presence: presence, size: 220),
+            const SizedBox(height: 14),
+            if (presence.isQuiet)
+              Text(
+                l.simranGlobeFirst,
+                textAlign: TextAlign.center,
+                style: HazriText.bodyStrong.copyWith(color: Colors.white),
+              )
+            else ...[
+              Text(
+                l.simranOthersHere(presence.others),
+                style: HazriText.display22.copyWith(color: Colors.white),
+              ),
+              Text(
+                l.simranOthersSub,
+                style: HazriText.caption.copyWith(color: Colors.white70),
+              ),
+            ],
+            const SizedBox(height: 6),
+            Text(
+              l.simranGlobeTurn,
+              style: HazriText.caption.copyWith(color: Colors.white38),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

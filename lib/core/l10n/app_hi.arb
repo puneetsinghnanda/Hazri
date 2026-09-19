@@ -521,5 +521,9 @@
   "groupJoinByLinkCta": "जुड़ें",
   "groupJoinedOne": "आप ग्रुप में हैं",
   "groupSimranSlug": "सिमरन के मिनट",
-  "navSangat": "संगत"
+  "navSangat": "संगत",
+  "simranOthersHere": "{count} और",
+  "simranOthersSub": "आज साथ बैठे हैं",
+  "simranGlobeFirst": "आज सबसे पहले आप हैं",
+  "simranGlobeTurn": "गोले को हाथ से घुमाएँ"
 }

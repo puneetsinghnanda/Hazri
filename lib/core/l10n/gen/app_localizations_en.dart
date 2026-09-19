@@ -1681,4 +1681,18 @@ class LEn extends L {
 
   @override
   String get navSangat => 'Sangat';
+
+  @override
+  String simranOthersHere(int count) {
+    return '$count others';
+  }
+
+  @override
+  String get simranOthersSub => 'are here today';
+
+  @override
+  String get simranGlobeFirst => 'You are the first here today';
+
+  @override
+  String get simranGlobeTurn => 'Turn the globe with your hand';
 }

@@ -8,6 +8,7 @@ import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../audio/data/audio_controller.dart';
+import '../../sangat/data/presence_repository.dart';
 
 /// A Simran session in progress (PRD 1.13).
 class SimranSession {
@@ -103,8 +104,31 @@ class SimranController extends Notifier<SimranSession> {
           completed: completed,
         );
     await ref.read(paathPlayerProvider)?.stop();
+    // The globe counts sittings that happened, not screens that were opened,
+    // so this is here and not in `start`. It is also the only thing simran
+    // sends anywhere, and only for somebody who joined the sangat: the
+    // repository is the no-op one for everybody else.
+    if (completed) unawaited(_markOnTheGlobe());
     if (completed) await HapticFeedback.mediumImpact();
     await WakelockPlus.disable();
     return completed;
+  }
+
+  /// Adds this sitting to today's count for the city the person chose.
+  ///
+  /// Never awaited and never allowed to fail loudly: a globe that did not get
+  /// the news is not a reason for somebody's simran to end in an error.
+  Future<void> _markOnTheGlobe() async {
+    final cityId = ref.read(settingsProvider).cityId;
+    final city = (await ref.read(citiesProvider.future))
+        .where((c) => c.id == cityId)
+        .firstOrNull;
+    if (city == null) return;
+    await ref.read(presenceRepositoryProvider).markSitting(
+          cityId: city.id,
+          cityName: city.nameEn,
+          lat: city.lat,
+          lon: city.lon,
+        );
   }
 }

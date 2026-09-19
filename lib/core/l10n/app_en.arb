@@ -911,5 +911,16 @@
   "groupJoinByLinkCta": "Join",
   "groupJoinedOne": "You are in the group",
   "groupSimranSlug": "Simran minutes",
-  "navSangat": "Sangat"
+  "navSangat": "Sangat",
+  "simranOthersHere": "{count} others",
+  "simranOthersSub": "are here today",
+  "simranGlobeFirst": "You are the first here today",
+  "simranGlobeTurn": "Turn the globe with your hand",
+  "@simranOthersHere": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  }
 }

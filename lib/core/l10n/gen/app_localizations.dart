@@ -3128,6 +3128,30 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Sangat'**
   String get navSangat;
+
+  /// No description provided for @simranOthersHere.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} others'**
+  String simranOthersHere(int count);
+
+  /// No description provided for @simranOthersSub.
+  ///
+  /// In en, this message translates to:
+  /// **'are here today'**
+  String get simranOthersSub;
+
+  /// No description provided for @simranGlobeFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'You are the first here today'**
+  String get simranGlobeFirst;
+
+  /// No description provided for @simranGlobeTurn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the globe with your hand'**
+  String get simranGlobeTurn;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

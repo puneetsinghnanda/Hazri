@@ -521,5 +521,9 @@
   "groupJoinByLinkCta": "ਜੁੜੋ",
   "groupJoinedOne": "ਤੁਸੀਂ ਗਰੁੱਪ ਵਿੱਚ ਹੋ",
   "groupSimranSlug": "ਸਿਮਰਨ ਦੇ ਮਿੰਟ",
-  "navSangat": "ਸੰਗਤ"
+  "navSangat": "ਸੰਗਤ",
+  "simranOthersHere": "{count} ਹੋਰ",
+  "simranOthersSub": "ਅੱਜ ਨਾਲ ਬੈਠੇ ਹਨ",
+  "simranGlobeFirst": "ਅੱਜ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਤੁਸੀਂ ਹੋ",
+  "simranGlobeTurn": "ਗੋਲੇ ਨੂੰ ਹੱਥ ਨਾਲ ਘੁਮਾਓ"
 }

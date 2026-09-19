@@ -1679,4 +1679,18 @@ class LHi extends L {
 
   @override
   String get navSangat => 'संगत';
+
+  @override
+  String simranOthersHere(int count) {
+    return '$count और';
+  }
+
+  @override
+  String get simranOthersSub => 'आज साथ बैठे हैं';
+
+  @override
+  String get simranGlobeFirst => 'आज सबसे पहले आप हैं';
+
+  @override
+  String get simranGlobeTurn => 'गोले को हाथ से घुमाएँ';
 }

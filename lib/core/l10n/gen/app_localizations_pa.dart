@@ -1679,4 +1679,18 @@ class LPa extends L {
 
   @override
   String get navSangat => 'ਸੰਗਤ';
+
+  @override
+  String simranOthersHere(int count) {
+    return '$count ਹੋਰ';
+  }
+
+  @override
+  String get simranOthersSub => 'ਅੱਜ ਨਾਲ ਬੈਠੇ ਹਨ';
+
+  @override
+  String get simranGlobeFirst => 'ਅੱਜ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਤੁਸੀਂ ਹੋ';
+
+  @override
+  String get simranGlobeTurn => 'ਗੋਲੇ ਨੂੰ ਹੱਥ ਨਾਲ ਘੁਮਾਓ';
 }

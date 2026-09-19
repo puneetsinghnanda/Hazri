@@ -124,6 +124,36 @@ service cloud.firestore {
       }
     }
 
+    // ---------------------------------------------------------- presence
+    // The globe on Simran: how many are sitting today, and roughly where.
+    //
+    // Keyed by CITY, never by person. One document per city per day means the
+    // globe costs a read per active city rather than a read per member, which
+    // is the difference between a bill of a few hundred rupees and one of
+    // several lakh. It also means the globe cannot identify anybody: there is
+    // no uid in here, no name, and no finer position than the city somebody
+    // chose themselves.
+    //
+    // A phone may only ever add one. `request.resource.data.count` is
+    // evaluated after the increment, so `== resource.data.count + 1` pins it
+    // to exactly that, and the city's position cannot be moved on the way
+    // past. Somebody determined could still call it repeatedly; that is a
+    // Cloud Function's job and Spark has none, so Phase 2 accepts it. What it
+    // does not accept is one write setting the counter to a million.
+    match /presence/{day}/cities/{cityId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+                    && request.resource.data.count == 1
+                    && request.resource.data.keys().hasOnly(
+                         ['city', 'lat', 'lon', 'count']);
+      allow update: if signedIn()
+                    && request.resource.data.count == resource.data.count + 1
+                    && request.resource.data.city == resource.data.city
+                    && request.resource.data.lat == resource.data.lat
+                    && request.resource.data.lon == resource.data.lon;
+      allow delete: if false;
+    }
+
     // ---------------------------------------------------------- aggregates
     // What the globe and the group totals read: a handful of documents a
     // scheduled job writes, never one document per person. This is the
