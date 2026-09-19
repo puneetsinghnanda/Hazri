@@ -65,7 +65,12 @@ class FirebasePresenceRepository implements PresenceRepository {
     } on FirebaseException catch (e) {
       debugPrint('Hazri: presence cities failed (${e.code})');
     }
-    return SangatPresence(cities: cities, total: total, yours: _markedToday ? 1 : 0);
+    return SangatPresence(
+      cities: cities,
+      total: total,
+      yours: _markedToday ? 1 : 0,
+      yourCityId: _markedToday ? _markedCity : null,
+    );
   }
 
   /// The day this phone last added itself, or null.
@@ -76,6 +81,7 @@ class FirebasePresenceRepository implements PresenceRepository {
   /// auditing. Storing the day rather than a flag is what makes it roll over
   /// at midnight without anything having to notice.
   String? _markedDay;
+  String? _markedCity;
 
   bool get _markedToday => _markedDay == dayKey(_now());
 
@@ -94,6 +100,7 @@ class FirebasePresenceRepository implements PresenceRepository {
       // first and a create only if the city is not there yet.
       await doc.update({'count': FieldValue.increment(1)});
       _markedDay = day;
+      _markedCity = cityId;
     } on FirebaseException catch (e) {
       if (e.code == 'not-found') {
         try {
@@ -104,6 +111,7 @@ class FirebasePresenceRepository implements PresenceRepository {
             'count': 1,
           });
           _markedDay = day;
+          _markedCity = cityId;
         } on FirebaseException catch (e2) {
           debugPrint('Hazri: first sitting in $cityId failed (${e2.code})');
         }

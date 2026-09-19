@@ -3,15 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/l10n/gen/app_localizations.dart';
-import 'router.dart';
 import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_colors.dart';
 import '../core/theme/hazri_text.dart';
 import '../core/theme/icon_data.dart';
 import '../core/widgets/app_icon.dart';
-import '../core/widgets/brand_bar.dart';
 import '../core/widgets/surfaces.dart';
-import '../features/today/ui/help_sheet.dart';
 import '../features/audio/ui/mini_player.dart';
 
 /// The five tabs, in branch order.
@@ -60,13 +57,10 @@ class HomeShell extends ConsumerWidget {
         body: SafeArea(
           bottom: false,
           child: Column(
-            children: [
-              BrandBar(
-                onHelp: () => showHelpSheet(context),
-                onSettings: () => context.push(Routes.settings),
-              ),
-              Expanded(child: PhoneWidth(child: shell)),
-            ],
+            // No brand bar. Every tab draws its own header with the menu
+            // button in it (design 30 and its neighbours), because the app's
+            // name above every screen was a line the reader had already read.
+            children: [Expanded(child: PhoneWidth(child: shell))],
           ),
         ),
         // The mini player rides above the nav rather than floating over the

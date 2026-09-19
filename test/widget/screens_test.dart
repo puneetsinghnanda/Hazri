@@ -48,10 +48,13 @@ void main() {
       testWidgets('Today renders in $label', (tester) async {
         await pumpScreen(tester, const TodayScreen(), locale: locale, dark: dark);
         final l = await L.delegate.load(locale);
-        expect(find.text(l.greeting), findsOneWidget);
-        // The app's name is the shell's brand bar now, not a heading Today
-        // repeats underneath it.
+        // Design 30's header: the tab's own name and today's date, with the
+        // menu beside them. The greeting and the brand bar both went: the
+        // design puts neither there, and the brand bar made every tab look
+        // like it was still starting up.
+        expect(find.text(l.navToday), findsWidgets);
         expect(find.text(l.appName), findsNothing);
+        expect(find.text(l.greeting), findsNothing);
       });
 
       testWidgets('Nitnem renders in $label', (tester) async {

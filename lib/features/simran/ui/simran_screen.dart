@@ -20,6 +20,12 @@ import '../../sangat/domain/simran_presence.dart';
 import 'simran_globe.dart';
 import '../../today/data/today_controller.dart';
 import 'anhad_ring.dart';
+import 'package:go_router/go_router.dart';
+import '../../../app/menu_sheet.dart';
+import '../../../app/router.dart';
+import '../../../core/theme/icon_data.dart';
+import '../../../core/widgets/app_icon.dart';
+import '../../../core/widgets/tab_header.dart';
 
 /// Daily Simran — five quiet minutes (Design 21).
 ///
@@ -64,6 +70,8 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     final total = controller.total;
     final remaining = total - session.elapsed;
     final doneToday = ref.watch(simranDoneTodayProvider).value ?? false;
+    final joined = ref.watch(hasJoinedSangatProvider);
+    final presence = ref.watch(simranPresenceProvider).value ?? SangatPresence.empty;
 
     // A session that ran its full length may well have finished while this
     // screen was not on top, so the toast follows the state, not the tap.
@@ -75,81 +83,90 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
       }
     });
 
+    // Design 29 is the screen at rest: the night sky, the globe, and who is
+    // sitting. The moment a session starts it becomes the Phase 1 screen --
+    // the ring, the countdown and the anhad wave -- because that is what
+    // somebody sitting with their eyes half closed needs, and a spinning
+    // globe is the opposite of it.
+    if (!session.running && joined) {
+      return _GlobeAtRest(
+        presence: presence,
+        minutes: settings.simranMinutes,
+        doneToday: doneToday,
+        onBegin: () => controller.start(title: l.simranTitle),
+      );
+    }
+
     return Scaffold(
       backgroundColor: c.bg,
       body: SafeArea(
         bottom: false,
         child: PhoneWidth(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 20),
-              children: [
-                Text(l.simranTitle, style: HazriText.display26.copyWith(color: c.ink)),
-                Text(l.simranSubtitle, style: HazriText.body.copyWith(color: c.ink2)),
-                const SizedBox(height: 16),
-                // Design 29. Shown only to somebody who joined the sangat: a
-                // globe with nobody on it is not a feature, and showing one
-                // to a person who never opted in would be asking them to feel
-                // the absence of something they did not ask for.
-                if (ref.watch(hasJoinedSangatProvider)) ...[
-                  const SimranPresenceCard(),
-                  const SizedBox(height: 18),
-                ],
-                Center(
-                  child: ProgressRing(
-                    size: 240,
-                    strokeWidth: 10,
-                    progress: total.inSeconds == 0
-                        ? 0
-                        : session.elapsed.inMilliseconds / total.inMilliseconds,
-                    child: AnhadRing(
-                      elapsed: session.elapsed,
-                      total: total,
-                      running: session.running,
-                      track: ref.watch(simranTrackProvider).value,
-                      child: Text(
-                        _waheguru(settings.script),
-                        style: _waheguruStyle(settings.script)
-                            .copyWith(color: c.simranThread),
-                      ),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
+            children: [
+              TabHeader(
+                title: l.simranTitle,
+                subtitle: l.simranSubtitle,
+                onMenu: () => showMenuSheet(context),
+              ),
+              const SizedBox(height: 14),
+              Center(
+                child: ProgressRing(
+                  size: 240,
+                  strokeWidth: 10,
+                  progress: total.inSeconds == 0
+                      ? 0
+                      : session.elapsed.inMilliseconds / total.inMilliseconds,
+                  child: AnhadRing(
+                    elapsed: session.elapsed,
+                    total: total,
+                    running: session.running,
+                    track: ref.watch(simranTrackProvider).value,
+                    child: Text(
+                      _waheguru(settings.script),
+                      style: _waheguruStyle(settings.script)
+                          .copyWith(color: c.simranThread),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                // The countdown sits under the circle so nothing competes with
-                // the wave inside it.
-                Center(
-                  child: Text(
-                    HazriDates.duration(session.running ? remaining : total),
-                    style: HazriText.display34.copyWith(color: c.kesriInk),
-                  ),
+              ),
+              const SizedBox(height: 16),
+              // The countdown sits under the circle so nothing competes with
+              // the wave inside it.
+              Center(
+                child: Text(
+                  HazriDates.duration(session.running ? remaining : total),
+                  style: HazriText.display34.copyWith(color: c.kesriInk),
                 ),
-                Center(
-                  child: Text(
-                    l.simranLeftOf(HazriDates.duration(total)),
-                    style: HazriText.caption.copyWith(color: c.muted),
-                  ),
+              ),
+              Center(
+                child: Text(
+                  l.simranLeftOf(HazriDates.duration(total)),
+                  style: HazriText.caption.copyWith(color: c.muted),
                 ),
-                const SizedBox(height: 20),
-                if (session.running)
-                  PrimaryButton(
-                    label: l.simranEnd,
-                    secondary: true,
-                    onPressed: () => controller.finish(completed: false),
-                  )
-                else
-                  PrimaryButton(
-                    label: doneToday ? l.simranTileDone : l.simranBegin,
-                    onPressed: () => controller.start(title: l.simranTitle),
-                  ),
-                const SizedBox(height: 20),
-                const _RecentCard(),
-                const SizedBox(height: 16),
-                const _QuoteCard(),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+              if (session.running)
+                PrimaryButton(
+                  label: l.simranEnd,
+                  secondary: true,
+                  onPressed: () => controller.finish(completed: false),
+                )
+              else
+                PrimaryButton(
+                  label: doneToday ? l.simranTileDone : l.simranBegin,
+                  onPressed: () => controller.start(title: l.simranTitle),
+                ),
+              const SizedBox(height: 20),
+              const _RecentCard(),
+              const SizedBox(height: 16),
+              const _QuoteCard(),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 
   static String _waheguru(GurbaniScript script) => switch (script) {
@@ -255,53 +272,192 @@ class _QuoteCard extends ConsumerWidget {
   }
 }
 
-/// Design 29's hero: the globe, and how many are sitting with you.
+/// Design 29 — the Simran tab before anybody starts.
 ///
-/// The reader asked what these numbers look like on a new app with few
-/// people. The answer is that the screen never shows a zero: with nobody else
-/// there it says you are the first today, which is true, is the better thing
-/// to be, and stops being said the moment somebody else sits down.
-class SimranPresenceCard extends ConsumerWidget {
-  const SimranPresenceCard({super.key});
+/// A night sky edge to edge, the earth turning in it, and the plain fact of
+/// how many are sitting. It replaces the card-on-a-light-page version, which
+/// put the globe in a box on a screen about something else.
+class _GlobeAtRest extends ConsumerWidget {
+  const _GlobeAtRest({
+    required this.presence,
+    required this.minutes,
+    required this.doneToday,
+    required this.onBegin,
+  });
+
+  final SangatPresence presence;
+  final int minutes;
+  final bool doneToday;
+  final VoidCallback onBegin;
+
+  /// The globe's own palette, which is a night sky on both themes.
+  static const _sky = Color(0xFF070A1A);
+  static const _others = Color(0xFF6FE3A6);
+  static const _you = Color(0xFFF2A24E);
+  static const _here = Color(0xFF3DBE7B);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = L.of(context);
-    final presence = ref.watch(simranPresenceProvider).value ?? SangatPresence.empty;
+    final white70 = Colors.white.withValues(alpha: 0.66);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(HazriRadius.card),
-      child: Container(
-        color: const Color(0xFF070A1A),
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        child: Column(
-          children: [
-            SimranGlobe(presence: presence, size: 220),
-            const SizedBox(height: 14),
-            if (presence.isQuiet)
-              Text(
-                l.simranGlobeFirst,
-                textAlign: TextAlign.center,
-                style: HazriText.bodyStrong.copyWith(color: Colors.white),
-              )
-            else ...[
-              Text(
-                l.simranOthersHere(presence.others),
-                style: HazriText.display22.copyWith(color: Colors.white),
-              ),
-              Text(
-                l.simranOthersSub,
-                style: HazriText.caption.copyWith(color: Colors.white70),
-              ),
-            ],
-            const SizedBox(height: 6),
-            Text(
-              l.simranGlobeTurn,
-              style: HazriText.caption.copyWith(color: Colors.white38),
+    return Scaffold(
+      backgroundColor: _sky,
+      body: SafeArea(
+        bottom: false,
+        child: PhoneWidth(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    _DarkButton(
+                      icon: HazriIconData.menu,
+                      tooltip: l.menuTooltip,
+                      onTap: () => showMenuSheet(context),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(l.simranTitle,
+                              style: HazriText.display22
+                                  .copyWith(color: Colors.white, fontSize: 22)),
+                          Text(
+                            l.simranTurnGlobeShort,
+                            textAlign: TextAlign.center,
+                            style: HazriText.caption.copyWith(color: white70),
+                          ),
+                        ],
+                      ),
+                    ),
+                    _DarkButton(
+                      icon: HazriIconData.bell,
+                      tooltip: l.notifTitle,
+                      onTap: () => context.push(Routes.notifications),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Center(
+                    child: LayoutBuilder(
+                      builder: (context, box) => SimranGlobe(
+                        presence: presence,
+                        // As wide as the screen allows, which is what makes
+                        // it a horizon rather than an illustration.
+                        size: box.maxWidth.clamp(0.0, box.maxHeight),
+                      ),
+                    ),
+                  ),
+                ),
+                if (presence.isQuiet)
+                  Text(
+                    l.simranGlobeFirst,
+                    textAlign: TextAlign.center,
+                    style: HazriText.display22
+                        .copyWith(color: Colors.white, fontSize: 25, height: 1.3),
+                  )
+                else
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: l.simranYouAndOthers(presence.others),
+                          style: HazriText.display22.copyWith(
+                              color: _others, fontSize: 25, height: 1.3),
+                        ),
+                        const TextSpan(text: '\n'),
+                        TextSpan(
+                          text: l.simranAreHereToday,
+                          style: HazriText.display22.copyWith(
+                              color: Colors.white, fontSize: 25, height: 1.3),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                const SizedBox(height: 7),
+                Text(
+                  // Only what is actually known. The design also carries a
+                  // month total and a country count; neither is stored, and
+                  // a number nobody counted is worse than no number.
+                  l.simranCitiesToday(presence.cities.length),
+                  style: HazriText.caption.copyWith(color: white70),
+                ),
+                const SizedBox(height: 14),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 13,
+                  runSpacing: 6,
+                  children: [
+                    _LegendDot(colour: _you, label: l.simranLegendYou),
+                    _LegendDot(colour: _here, label: l.simranLegendHere),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                PrimaryButton(
+                  label: doneToday
+                      ? l.simranTileDone
+                      : l.simranBeginMinutes(minutes),
+                  onPressed: onBegin,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
+}
+
+class _DarkButton extends StatelessWidget {
+  const _DarkButton({required this.icon, required this.tooltip, required this.onTap});
+
+  final String icon;
+  final String tooltip;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+        button: true,
+        label: tooltip,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(13),
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.09),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: Center(child: AppIcon(icon, size: 20, color: Colors.white)),
+          ),
+        ),
+      );
+}
+
+class _LegendDot extends StatelessWidget {
+  const _LegendDot({required this.colour, required this.label});
+
+  final Color colour;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(color: colour, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: HazriText.caption
+                .copyWith(color: Colors.white.withValues(alpha: 0.72)),
+          ),
+        ],
+      );
 }

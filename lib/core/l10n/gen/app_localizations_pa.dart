@@ -2044,4 +2044,49 @@ class LPa extends L {
   @override
   String get notifGroupsNotYet =>
       'ਇਹਨਾਂ ਲਈ ਸਰਵਰ ਤੋਂ ਸੁਨੇਹਾ ਭੇਜਣਾ ਪੈਂਦਾ ਹੈ, ਤੇ ਹਾਜ਼ਰੀ ਕੋਲ ਅਜੇ ਉਹ ਨਹੀਂ ਹੈ। ਉੱਤੇ ਵਾਲੀਆਂ ਤੁਹਾਡੀਆਂ ਆਪਣੀਆਂ ਯਾਦ-ਦਹਾਨੀਆਂ ਇਸੇ ਫ਼ੋਨ ਵੱਲੋਂ ਹਨ ਤੇ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀਆਂ ਹਨ।';
+
+  @override
+  String get menuTooltip => 'ਮੀਨੂੰ';
+
+  @override
+  String simranYouAndOthers(int count) {
+    return 'ਤੁਸੀਂ ਤੇ $count ਹੋਰ';
+  }
+
+  @override
+  String get simranAreHereToday => 'ਅੱਜ ਇੱਥੇ ਹਨ';
+
+  @override
+  String simranCitiesToday(int count) {
+    return 'ਅੱਜ $count ਸ਼ਹਿਰ';
+  }
+
+  @override
+  String get simranLegendYou => 'ਤੁਸੀਂ';
+
+  @override
+  String get simranLegendHere => 'ਅੱਜ ਇੱਥੇ';
+
+  @override
+  String simranBeginMinutes(int count) {
+    return 'ਸਿਮਰਨ ਸ਼ੁਰੂ ਕਰੋ · $count ਮਿੰਟ';
+  }
+
+  @override
+  String get simranTurnGlobeShort => 'ਗੋਲੇ ਨੂੰ ਹੱਥ ਨਾਲ ਘੁਮਾਓ';
+
+  @override
+  String readerLoggedInDiary(String time) {
+    return 'ਤੁਹਾਡੀ ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ · $time';
+  }
+
+  @override
+  String get readerThisMarkedHazri =>
+      'ਹਾਜ਼ਰੀ ਇਸੇ ਨਾਲ ਲੱਗੀ — ਅੱਜ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਇਹੀ ਪੂਰਾ ਹੋਇਆ';
+
+  @override
+  String get readerStartAgain => 'ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ';
+
+  @override
+  String get readerNextBani => 'ਅਗਲੀ ਬਾਣੀ';
 }

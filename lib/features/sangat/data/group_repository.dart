@@ -23,9 +23,17 @@ abstract interface class GroupRepository {
   /// Who is in it, best contributor first.
   Stream<List<GroupMember>> watchMembers(String groupId);
 
-  /// Makes a group and puts the maker in it as its admin. Always private:
-  /// `listed` is refused by the rules and set out of band after review.
-  Future<GroupOutcome> create({required String name, required GroupKind kind});
+  /// Makes a group and puts the maker in it as its admin.
+  ///
+  /// Always private. [wantsListing] records that the maker would like it in
+  /// the Sangat list, which is a request rather than a setting: `listed` is
+  /// refused by the rules on create and pinned on update, and is granted only
+  /// after somebody has read the name. See `docs/group-listing.md`.
+  Future<GroupOutcome> create({
+    required String name,
+    required GroupKind kind,
+    bool wantsListing,
+  });
 
   Future<GroupOutcome> join(String groupId);
 
@@ -88,7 +96,11 @@ class NoGroupRepository implements GroupRepository {
   Stream<List<GroupMember>> watchMembers(String groupId) => const Stream.empty();
 
   @override
-  Future<GroupOutcome> create({required String name, required GroupKind kind}) async =>
+  Future<GroupOutcome> create({
+    required String name,
+    required GroupKind kind,
+    bool wantsListing = false,
+  }) async =>
       const GroupUnavailable();
 
   @override

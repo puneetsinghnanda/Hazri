@@ -18,6 +18,8 @@ import '../../../core/widgets/day_arc.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../data/today_controller.dart';
+import '../../../app/menu_sheet.dart';
+import '../../../core/widgets/tab_header.dart';
 import '../../hazri/data/hazri_controller.dart';
 import '../../hazri/ui/goal_complete_sheet.dart';
 import '../../hazri/ui/hazri_banner.dart';
@@ -64,18 +66,15 @@ class TodayScreen extends ConsumerWidget {
         bottom: false,
         child: PhoneWidth(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 20),
+            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
             children: [
-              Text(
-                dates.longDate(now),
-                style: HazriText.body.copyWith(
-                  fontSize: 14,
-                  color: c.muted,
-                  fontWeight: FontWeight.w500,
-                ),
+              // Design 30's header: the menu, the tab's name, the date.
+              TabHeader(
+                title: l.navToday,
+                subtitle: dates.longDate(now),
+                onMenu: () => showMenuSheet(context),
               ),
-              Text(l.greeting, style: HazriText.display26.copyWith(color: c.ink)),
-              const SizedBox(height: 12),
+              const SizedBox(height: 6),
               // One or the other, never both: the join banner until somebody
               // has set up, the hazri banner after. The reader was explicit
               // about not stacking two.
@@ -83,13 +82,16 @@ class TodayScreen extends ConsumerWidget {
               const HazriBanner(),
               const _GoalsCard(),
               const SizedBox(height: 12),
-              _CtaButton(cta: ref.watch(todayCtaProvider)),
-              const SizedBox(height: 12),
-              const VicharCard(),
-              const SizedBox(height: 12),
               const _Tiles(),
               const SizedBox(height: 12),
+              _CtaButton(cta: ref.watch(todayCtaProvider)),
+              const SizedBox(height: 12),
+              // Gurpurab above the Vichar, as designs 30 and 58 have it: a
+              // Gurpurab is a date somebody has to plan around and the day's
+              // line is there whenever they get to it.
               const _GurpurabCard(),
+              const SizedBox(height: 12),
+              const VicharCard(),
             ],
           ),
         ),

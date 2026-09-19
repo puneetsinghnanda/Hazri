@@ -29,6 +29,8 @@ import '../../nitnem/domain/bani.dart';
 import 'gurbani_line_view.dart';
 import 'text_settings_sheet.dart';
 import '../../sangat/data/group_credit.dart';
+import '../../hazri/data/hazri_controller.dart';
+import '../../../core/time/date_format.dart';
 
 /// The reader (Design 13-16).
 ///
@@ -659,7 +661,13 @@ class _LegendRow extends ConsumerWidget {
   }
 }
 
-/// The closing card at the end of a bani (PRD 1.5).
+/// Design 48 — the closing card at the end of a bani.
+///
+/// Three things, in the order somebody wants them: that the bani is finished
+/// and in the diary, that it marked the day's hazri if it was the first thing
+/// finished, and where to go next. The hazri line appears only when this
+/// paath is what actually marked the day — saying it under the third bani of
+/// the morning would be flattering somebody with a fact about breakfast.
 class _EndOfBaniCard extends ConsumerWidget {
   const _EndOfBaniCard({required this.bani});
 
@@ -673,39 +681,107 @@ class _EndOfBaniCard extends ConsumerWidget {
     final next = banis
         .where((b) => b.defaultSlot == bani.defaultSlot && b.sort > bani.sort)
         .firstOrNull;
+    final hazri = ref.watch(hazriTodayProvider);
+    final markedByThis = hazri.isMarked && hazri.baniId == bani.id;
 
     return Padding(
       padding: const EdgeInsets.only(top: 24, bottom: 8),
       child: HazriCard(
-        colour: c.sageSoft,
+        border: Border.all(color: c.sage, width: 1.5),
+        padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                AppIcon(HazriIconData.check, size: 20, color: c.sage),
-                const SizedBox(width: 10),
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration:
+                      BoxDecoration(color: c.sageSoft, shape: BoxShape.circle),
+                  alignment: Alignment.center,
+                  child: AppIcon(HazriIconData.check, size: 24, color: c.sage),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    l.readerCompleteTitle(bani.name(l.localeName)),
-                    style: HazriText.bodyStrong.copyWith(color: c.sage),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l.readerCompleteTitle(bani.name(l.localeName)),
+                        style: HazriText.bodyStrong.copyWith(color: c.ink),
+                      ),
+                      if (hazri.markedAt != null)
+                        Text(
+                          l.readerLoggedInDiary(
+                              HazriDates.of(context).time(hazri.markedAt!)),
+                          style: HazriText.caption.copyWith(color: c.muted),
+                        ),
+                    ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 14),
-            if (next != null)
-              PrimaryButton(
-                label: l.readerCompleteNext(next.name(l.localeName)),
-                icon: HazriIconData.chevronRight,
-                onPressed: () => context.pushReplacement(Routes.reader(next.slug)),
-              )
-            else
-              PrimaryButton(
-                label: l.readerCompleteBackToNitnem,
-                secondary: true,
-                onPressed: () => context.canPop() ? context.pop() : context.go(Routes.nitnem),
+            if (markedByThis) ...[
+              const SizedBox(height: 13),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: c.kesriSoft,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    alignment: Alignment.center,
+                    child:
+                        AppIcon(HazriIconData.sunArc, size: 17, color: c.kesriInk),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l.hazriMarked,
+                            style:
+                                HazriText.captionStrong.copyWith(color: c.kesriInk)),
+                        Text(l.readerThisMarkedHazri,
+                            style: HazriText.caption.copyWith(color: c.muted)),
+                      ],
+                    ),
+                  ),
+                ],
               ),
+            ],
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: PrimaryButton(
+                    label: l.readerStartAgain,
+                    secondary: true,
+                    onPressed: () =>
+                        context.pushReplacement(Routes.reader(bani.slug)),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: next != null
+                      ? PrimaryButton(
+                          label: l.readerNextBani,
+                          onPressed: () =>
+                              context.pushReplacement(Routes.reader(next.slug)),
+                        )
+                      : PrimaryButton(
+                          label: l.readerCompleteBackToNitnem,
+                          onPressed: () => context.canPop()
+                              ? context.pop()
+                              : context.go(Routes.nitnem),
+                        ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

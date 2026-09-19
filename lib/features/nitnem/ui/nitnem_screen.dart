@@ -21,6 +21,8 @@ import '../../reminders/domain/reminder_plan.dart';
 import '../../today/data/today_controller.dart';
 import '../data/nitnem_controller.dart';
 import '../domain/bani.dart';
+import '../../../app/menu_sheet.dart';
+import '../../../core/widgets/tab_header.dart';
 
 /// The Nitnem list (Design 12).
 class NitnemScreen extends ConsumerWidget {
@@ -57,9 +59,13 @@ class NitnemScreen extends ConsumerWidget {
         bottom: false,
         child: PhoneWidth(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 20),
+            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
             children: [
-              Text(l.nitnemTitle, style: HazriText.display26.copyWith(color: c.ink)),
+              TabHeader(
+                title: l.nitnemTitle,
+                subtitle: l.nitnemVersionLine,
+                onMenu: () => showMenuSheet(context),
+              ),
               const SizedBox(height: 4),
               Row(
                 children: [

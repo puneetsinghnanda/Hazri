@@ -214,13 +214,22 @@ class FirebaseAccountRepository implements AccountRepository {
     try {
       // Memberships first. They live under groups this person does not own,
       // so leaving one behind would leave a name in somebody else's group
-      // with no account behind it.
-      final mine = await _db
-          .collectionGroup('members')
-          .where(FieldPath.documentId, isEqualTo: user.uid)
-          .get();
-      for (final doc in mine.docs) {
-        await doc.reference.delete();
+      // with no account behind it. The account's own list is what says which
+      // ones those are -- a collection-group query over every membership in
+      // the project needs an index and a rule that do not exist, and returns
+      // nothing at all until they do.
+      final me = await _db.collection('users').doc(user.uid).get();
+      final groupIds = [
+        for (final v in (me.data()?['groups'] as List<Object?>? ?? const []))
+          if (v is String) v,
+      ];
+      for (final groupId in groupIds) {
+        await _db
+            .collection('groups')
+            .doc(groupId)
+            .collection('members')
+            .doc(user.uid)
+            .delete();
       }
       await _db.collection('users').doc(user.uid).delete();
     } on FirebaseException catch (e) {

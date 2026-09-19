@@ -3794,6 +3794,78 @@ abstract class L {
   /// In en, this message translates to:
   /// **'These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off.'**
   String get notifGroupsNotYet;
+
+  /// No description provided for @menuTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get menuTooltip;
+
+  /// No description provided for @simranYouAndOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'You and {count} others'**
+  String simranYouAndOthers(int count);
+
+  /// No description provided for @simranAreHereToday.
+  ///
+  /// In en, this message translates to:
+  /// **'are here today'**
+  String get simranAreHereToday;
+
+  /// No description provided for @simranCitiesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cities today'**
+  String simranCitiesToday(int count);
+
+  /// No description provided for @simranLegendYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get simranLegendYou;
+
+  /// No description provided for @simranLegendHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Here today'**
+  String get simranLegendHere;
+
+  /// No description provided for @simranBeginMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin Simran · {count} min'**
+  String simranBeginMinutes(int count);
+
+  /// No description provided for @simranTurnGlobeShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the globe with your hand'**
+  String get simranTurnGlobeShort;
+
+  /// No description provided for @readerLoggedInDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged in your diary · {time}'**
+  String readerLoggedInDiary(String time);
+
+  /// No description provided for @readerThisMarkedHazri.
+  ///
+  /// In en, this message translates to:
+  /// **'This is what marked it — the first thing finished today'**
+  String get readerThisMarkedHazri;
+
+  /// No description provided for @readerStartAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Start again'**
+  String get readerStartAgain;
+
+  /// No description provided for @readerNextBani.
+  ///
+  /// In en, this message translates to:
+  /// **'Next bani'**
+  String get readerNextBani;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

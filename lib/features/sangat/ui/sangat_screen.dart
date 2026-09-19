@@ -14,6 +14,8 @@ import '../../../core/widgets/surfaces.dart';
 import '../data/account_repository.dart';
 import '../data/group_repository.dart';
 import '../domain/sangat_group.dart';
+import '../../../app/menu_sheet.dart';
+import '../../../core/widgets/tab_header.dart';
 import 'join_sangat_sheet.dart';
 
 /// Design 38 — the Sangat tab.
@@ -37,22 +39,18 @@ class SangatScreen extends ConsumerWidget {
     final listed = ref.watch(listedGroupsProvider).value ?? const <SangatGroup>[];
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 14, HazriSize.gutter, 24),
+      padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 24),
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(l.sangatTitle,
-                  style: HazriText.display26.copyWith(color: c.ink)),
-            ),
-            HazriChip(
-              label: l.sangatCreateOrJoin,
-              icon: HazriIconData.sangat,
-              background: c.kesriSoft,
-              foreground: c.kesriInk,
-              onTap: () => context.push(Routes.createGroup),
-            ),
-          ],
+        TabHeader(
+          title: l.sangatTitle,
+          onMenu: () => showMenuSheet(context),
+          trailing: HazriChip(
+            label: l.sangatCreateOrJoin,
+            icon: HazriIconData.sangat,
+            background: c.kesriSoft,
+            foreground: c.kesriInk,
+            onTap: () => context.push(Routes.createGroup),
+          ),
         ),
         const SizedBox(height: 14),
         // The globe lives on Simran; this is the door to it, not a second

@@ -632,5 +632,17 @@
   "notifGroupSummarySub": "एक संदेश, रात 9 बजे",
   "notifLargeGatherings": "बड़े इकट्ठ",
   "notifLargeGatheringsSub": "जब हज़ारों मिलकर बैठे हों",
-  "notifGroupsNotYet": "इनके लिए सर्वर से संदेश भेजना पड़ता है, और हाज़िरी के पास अभी वह नहीं है। ऊपर वाली आपकी अपनी याद-दिलाएँ इसी फ़ोन की हैं और बिना इंटरनेट चलती हैं।"
+  "notifGroupsNotYet": "इनके लिए सर्वर से संदेश भेजना पड़ता है, और हाज़िरी के पास अभी वह नहीं है। ऊपर वाली आपकी अपनी याद-दिलाएँ इसी फ़ोन की हैं और बिना इंटरनेट चलती हैं।",
+  "menuTooltip": "मेन्यू",
+  "simranYouAndOthers": "आप और {count} अन्य",
+  "simranAreHereToday": "आज यहाँ हैं",
+  "simranCitiesToday": "आज {count} शहर",
+  "simranLegendYou": "आप",
+  "simranLegendHere": "आज यहाँ",
+  "simranBeginMinutes": "सिमरन शुरू करें · {count} मिनट",
+  "simranTurnGlobeShort": "गोले को हाथ से घुमाएँ",
+  "readerLoggedInDiary": "आपकी डायरी में दर्ज · {time}",
+  "readerThisMarkedHazri": "हाज़िरी इसी से लगी — आज सबसे पहले यही पूरा हुआ",
+  "readerStartAgain": "फिर से शुरू करें",
+  "readerNextBani": "अगली बाणी"
 }

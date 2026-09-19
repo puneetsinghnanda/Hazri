@@ -53,7 +53,12 @@ class PresenceCity {
 /// Who is sitting today, worldwide.
 @immutable
 class SangatPresence {
-  const SangatPresence({this.cities = const [], this.total = 0, this.yours = 0});
+  const SangatPresence({
+    this.cities = const [],
+    this.total = 0,
+    this.yours = 0,
+    this.yourCityId,
+  });
 
   final List<PresenceCity> cities;
 
@@ -63,6 +68,10 @@ class SangatPresence {
   /// What this phone added today. Subtracted from [total] to say "47 others",
   /// so nobody is ever counted as their own company.
   final int yours;
+
+  /// The city this person chose, so the globe can light theirs differently
+  /// (design 29's legend). Null before they have sat anywhere.
+  final String? yourCityId;
 
   /// What the screen says: everybody but you.
   int get others => (total - yours).clamp(0, total);

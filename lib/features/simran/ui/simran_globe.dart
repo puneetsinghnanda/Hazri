@@ -81,6 +81,7 @@ class _SimranGlobeState extends State<SimranGlobe> with SingleTickerProviderStat
           size: Size.square(widget.size),
           painter: _GlobePainter(
             cities: widget.presence.cities,
+            yourCityId: widget.presence.yourCityId,
             rotation: _dragged + (reduceMotion ? 0 : _spin.value * 2 * math.pi),
           ),
         ),
@@ -90,10 +91,17 @@ class _SimranGlobeState extends State<SimranGlobe> with SingleTickerProviderStat
 }
 
 class _GlobePainter extends CustomPainter {
-  _GlobePainter({required this.cities, required this.rotation});
+  _GlobePainter({
+    required this.cities,
+    required this.rotation,
+    this.yourCityId,
+  });
 
   final List<PresenceCity> cities;
   final double rotation;
+
+  /// Lit differently, because design 29's legend says which dot is yours.
+  final String? yourCityId;
 
   /// The globe's own palette, not the theme's. It is a night sky on both
   /// themes, the way design 29 draws it, and a light-theme globe would be a
@@ -102,6 +110,7 @@ class _GlobePainter extends CustomPainter {
   static const _grid = Color(0xFF2A3A6B);
   static const _light = Color(0xFFE8F4F8);
   static const _halo = Color(0xFF6FC3D3);
+  static const _you = Color(0xFFF2A24E);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -164,7 +173,12 @@ class _GlobePainter extends CustomPainter {
           ..color = _halo.withValues(alpha: 0.18)
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
       );
-      canvas.drawCircle(centre + point, radius, Paint()..color = _light);
+      final mine = city.id == yourCityId;
+      canvas.drawCircle(
+        centre + point,
+        mine ? radius + 1 : radius,
+        Paint()..color = mine ? _you : _light,
+      );
     }
   }
 
@@ -181,5 +195,7 @@ class _GlobePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_GlobePainter old) =>
-      old.rotation != rotation || old.cities != cities;
+      old.rotation != rotation ||
+      old.cities != cities ||
+      old.yourCityId != yourCityId;
 }

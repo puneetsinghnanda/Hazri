@@ -103,9 +103,9 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   reason.
 - **A listed group cannot be listed from the app.** `listed` is refused by the
   rules on create and pinned on update, so a group made on a phone is always
-  private. Listing happens out of band after somebody reads the name, which
-  is the whole answer to "what stops a hurtful name appearing to strangers".
-  There is no admin tool for that yet: it is an edit in the console.
+  private. Asking to be listed writes `listingRequested`, and approving one is
+  a console edit -- `docs/group-listing.md` is the procedure. There is no
+  admin screen and no notification either way yet.
 - **The sangat's numbers are counted, never stored.** `count()` and `sum()`
   aggregation queries give the member count, the group total and the globe's
   headline. Do not add a counter field to a group document: every member can
@@ -120,8 +120,17 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
 - **Analytics ships with collection off** and sends nothing (PRD §13.1). The
   Settings switch is present and inert, and says so. Do not wire it up
   without also rewriting the privacy screen; the two are one promise.
-- **Sixty-odd Punjabi and Hindi UI strings added in Phase 2 are mine** and
-  want a native ear before release.
+- **Around a hundred and fifty Punjabi and Hindi UI strings added in Phase 2
+  are mine** and want a native ear before release.
+- **There is no brand bar.** Every tab draws its own header -- the menu
+  button, the tab's name, a line under it -- because the designs put the
+  screen's name there and the app's name above every screen made Today look
+  like it was still starting up. Settings is pushed from that menu and is no
+  longer a tab.
+- **The Simran tab is design 29's globe when nothing is running** and the
+  Phase 1 ring while a session is. Design 29 also carries a month total and a
+  country count; neither is stored anywhere and neither is shown, because a
+  number nobody counted is worse than no number.
 
 ### Content and audio
 

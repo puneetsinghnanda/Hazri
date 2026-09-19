@@ -2043,4 +2043,49 @@ class LHi extends L {
   @override
   String get notifGroupsNotYet =>
       'इनके लिए सर्वर से संदेश भेजना पड़ता है, और हाज़िरी के पास अभी वह नहीं है। ऊपर वाली आपकी अपनी याद-दिलाएँ इसी फ़ोन की हैं और बिना इंटरनेट चलती हैं।';
+
+  @override
+  String get menuTooltip => 'मेन्यू';
+
+  @override
+  String simranYouAndOthers(int count) {
+    return 'आप और $count अन्य';
+  }
+
+  @override
+  String get simranAreHereToday => 'आज यहाँ हैं';
+
+  @override
+  String simranCitiesToday(int count) {
+    return 'आज $count शहर';
+  }
+
+  @override
+  String get simranLegendYou => 'आप';
+
+  @override
+  String get simranLegendHere => 'आज यहाँ';
+
+  @override
+  String simranBeginMinutes(int count) {
+    return 'सिमरन शुरू करें · $count मिनट';
+  }
+
+  @override
+  String get simranTurnGlobeShort => 'गोले को हाथ से घुमाएँ';
+
+  @override
+  String readerLoggedInDiary(String time) {
+    return 'आपकी डायरी में दर्ज · $time';
+  }
+
+  @override
+  String get readerThisMarkedHazri =>
+      'हाज़िरी इसी से लगी — आज सबसे पहले यही पूरा हुआ';
+
+  @override
+  String get readerStartAgain => 'फिर से शुरू करें';
+
+  @override
+  String get readerNextBani => 'अगली बाणी';
 }

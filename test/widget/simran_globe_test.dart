@@ -44,7 +44,8 @@ class _FakePresence implements PresenceRepository {
       marked.add(cityId);
 }
 
-/// Design 29 — the globe, and what it says when there is nobody on it.
+/// Design 29 — the whole Simran tab at rest: the globe, and what it says
+/// when there is nobody on it.
 void main() {
   Future<L> pump(
     WidgetTester tester, {
@@ -64,7 +65,7 @@ void main() {
     addTearDown(app.dispose);
     usePhoneFrame(tester);
     await tester.pumpWidget(
-      app.wrapRouted(const Scaffold(body: SimranPresenceCard()), locale: locale),
+      app.wrapRouted(const SimranScreen(), locale: locale),
     );
     await settle(tester);
     return L.delegate.load(locale);
@@ -82,8 +83,24 @@ void main() {
       tester,
       presence: const SangatPresence(cities: _cities, total: 48, yours: 1),
     );
-    expect(find.text(l.simranOthersHere(47)), findsOneWidget);
-    expect(find.text(l.simranOthersSub), findsOneWidget);
+    // Design 29 sets the count and the words in one paragraph, with the
+    // number coloured, so this is one rich span rather than two Texts.
+    final line = tester.widget<Text>(
+      find.byWidgetPredicate(
+        (w) => w is Text && (w.textSpan?.toPlainText() ?? '').contains(
+            l.simranYouAndOthers(47)),
+      ),
+    );
+    expect(line.textSpan!.toPlainText(), contains(l.simranAreHereToday));
+  });
+
+  testWidgets('and says how many cities, which is a number we actually have',
+      (tester) async {
+    final l = await pump(
+      tester,
+      presence: const SangatPresence(cities: _cities, total: 48, yours: 1),
+    );
+    expect(find.text(l.simranCitiesToday(3)), findsOneWidget);
   });
 
   testWidgets('the globe draws without throwing, spinning or still',

@@ -53,8 +53,11 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
       _error = null;
     });
 
-    final outcome =
-        await ref.read(groupRepositoryProvider).create(name: name, kind: _kind);
+    final outcome = await ref.read(groupRepositoryProvider).create(
+          name: name,
+          kind: _kind,
+          wantsListing: _wantsListed,
+        );
     if (!mounted) return;
 
     switch (outcome) {

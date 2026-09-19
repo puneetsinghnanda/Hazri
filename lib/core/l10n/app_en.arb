@@ -1070,5 +1070,45 @@
   "notifGroupSummarySub": "One message, at 9 PM",
   "notifLargeGatherings": "Large gatherings",
   "notifLargeGatheringsSub": "When thousands are sitting together",
-  "notifGroupsNotYet": "These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off."
+  "notifGroupsNotYet": "These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off.",
+  "menuTooltip": "Menu",
+  "simranYouAndOthers": "You and {count} others",
+  "simranAreHereToday": "are here today",
+  "simranCitiesToday": "{count} cities today",
+  "simranLegendYou": "You",
+  "simranLegendHere": "Here today",
+  "simranBeginMinutes": "Begin Simran · {count} min",
+  "simranTurnGlobeShort": "Turn the globe with your hand",
+  "@simranYouAndOthers": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "@simranCitiesToday": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "@simranBeginMinutes": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "readerLoggedInDiary": "Logged in your diary · {time}",
+  "readerThisMarkedHazri": "This is what marked it — the first thing finished today",
+  "readerStartAgain": "Start again",
+  "readerNextBani": "Next bani",
+  "@readerLoggedInDiary": {
+      "placeholders": {
+          "time": {
+              "type": "String"
+          }
+      }
+  }
 }

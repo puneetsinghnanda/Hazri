@@ -173,6 +173,9 @@ void main() {
     expect(groups.created?.name, 'Nanda Family');
     expect(groups.created?.listed, isFalse,
         reason: 'listing is decided after review, never by the phone');
+    // The ask is recorded so somebody can act on it; it is a request, and
+    // the group is private and working in the meantime.
+    expect(groups.listingRequested, isTrue);
   });
 
   for (final locale in [const Locale('en'), const Locale('pa'), const Locale('hi')]) {

@@ -20,6 +20,7 @@ class SangatAccount {
     this.phone,
     this.emailVerified = false,
     this.showName = true,
+    this.groupIds = const [],
   });
 
   /// The Firebase uid. Owns every group membership and every count, so
@@ -62,6 +63,17 @@ class SangatAccount {
     return at > 0 && v.indexOf('.', at) > at + 1 && !v.contains(' ');
   }
 
+  /// The groups this person is in.
+  ///
+  /// Kept on the account rather than found by querying every membership in
+  /// the project. A collection-group query would be the tidier answer and was
+  /// the first one tried; it needs its own index and its own security rule,
+  /// and until both exist it returns nothing at all — which is exactly how
+  /// a freshly created group came to be invisible to the person who made it.
+  /// This costs one array write per join and reads in the document that is
+  /// already being watched.
+  final List<String> groupIds;
+
   /// Whether this account can survive a change of phone.
   bool get isRecoverable => emailVerified && (email?.isNotEmpty ?? false);
 
@@ -72,6 +84,7 @@ class SangatAccount {
     String? phone,
     bool? emailVerified,
     bool? showName,
+    List<String>? groupIds,
   }) =>
       SangatAccount(
         id: id,
@@ -81,6 +94,7 @@ class SangatAccount {
         phone: phone ?? this.phone,
         emailVerified: emailVerified ?? this.emailVerified,
         showName: showName ?? this.showName,
+        groupIds: groupIds ?? this.groupIds,
       );
 
   /// What goes to Firestore. Deliberately hand-written rather than generated:
@@ -108,6 +122,10 @@ class SangatAccount {
         phone: data['phone'] as String?,
         emailVerified: emailVerified,
         showName: (data['showName'] as bool?) ?? true,
+        groupIds: [
+          for (final v in (data['groups'] as List<Object?>? ?? const []))
+            if (v is String) v,
+        ],
       );
 
   @override
@@ -119,9 +137,10 @@ class SangatAccount {
       other.email == email &&
       other.phone == phone &&
       other.emailVerified == emailVerified &&
-      other.showName == showName;
+      other.showName == showName &&
+      listEquals(other.groupIds, groupIds);
 
   @override
-  int get hashCode =>
-      Object.hash(id, name, city, email, phone, emailVerified, showName);
+  int get hashCode => Object.hash(id, name, city, email, phone, emailVerified,
+      showName, Object.hashAll(groupIds));
 }

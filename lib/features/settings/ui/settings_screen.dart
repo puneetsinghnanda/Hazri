@@ -10,6 +10,7 @@ import '../../../core/settings/app_settings.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
+import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/audio_controller.dart';
 import '../../audio/data/notification_access.dart';
@@ -54,9 +55,27 @@ class SettingsScreen extends ConsumerWidget {
         bottom: false,
         child: PhoneWidth(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 24),
+            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 14, HazriSize.gutter, 24),
             children: [
-              Text(l.settingsTitle, style: HazriText.display26.copyWith(color: c.ink)),
+              // Pushed from the menu rather than a tab, so this is a way back
+              // and not another menu button.
+              Row(
+                children: [
+                  CardIconButton(
+                    icon: HazriIconData.chevronLeft,
+                    tooltip: l.actionBack,
+                    onPressed: () =>
+                        context.canPop() ? context.pop() : context.go(Routes.today),
+                    size: 40,
+                    iconSize: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(l.settingsTitle,
+                        style: HazriText.display26.copyWith(color: c.ink)),
+                  ),
+                ],
+              ),
 
               // The account is reached from here for now. Design 37 puts it
               // behind the header menu, which is a navigation change of its

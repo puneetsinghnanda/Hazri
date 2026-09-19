@@ -30,6 +30,7 @@ class FakeGroupRepository implements GroupRepository {
   final goalsSet = <(String, GroupGoal)>[];
   final left = <String>[];
   SangatGroup? created;
+  bool listingRequested = false;
 
   @override
   Stream<List<SangatGroup>> watchMine() async* {
@@ -50,7 +51,12 @@ class FakeGroupRepository implements GroupRepository {
       Stream.value(List.unmodifiable(_members));
 
   @override
-  Future<GroupOutcome> create({required String name, required GroupKind kind}) async {
+  Future<GroupOutcome> create({
+    required String name,
+    required GroupKind kind,
+    bool wantsListing = false,
+  }) async {
+    listingRequested = wantsListing;
     final failure = nextOutcome;
     if (failure != null) return failure;
     final group = SangatGroup(

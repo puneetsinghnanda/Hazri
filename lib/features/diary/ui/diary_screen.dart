@@ -15,6 +15,8 @@ import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../domain/streak.dart';
+import '../../../app/menu_sheet.dart';
+import '../../../core/widgets/tab_header.dart';
 
 /// The month being shown in the diary.
 final diaryMonthProvider = StateProvider<DateTime>((ref) {
@@ -54,8 +56,14 @@ class DiaryScreen extends ConsumerWidget {
         bottom: false,
         child: PhoneWidth(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 20),
+            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
             children: [
+              TabHeader(
+                title: l.navDiary,
+                subtitle: dates.monthYear(month),
+                onMenu: () => showMenuSheet(context),
+              ),
+              const SizedBox(height: 6),
               Row(
                 children: [
                   Expanded(

@@ -93,6 +93,11 @@ service cloud.firestore {
                     && request.resource.data.createdBy == request.auth.uid
                     && request.resource.data.listed == false;
 
+      // `listingRequested` is the maker asking to be listed. It is a request,
+      // not a setting: it is written on create and an admin may set it on
+      // update, and it changes nothing by itself. `listed` is what the app
+      // reads, and only we can set that -- after reading the name.
+
       // `listed` is the one field an admin may NOT set. The name of a listed
       // group is read by people who never met the person who chose it, so it
       // is reviewed before it appears; if an admin could flip this, the

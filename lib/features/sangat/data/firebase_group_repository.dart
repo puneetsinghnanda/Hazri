@@ -34,19 +34,24 @@ class FirebaseGroupRepository implements GroupRepository {
   Stream<List<SangatGroup>> watchMine() {
     final uid = _uid;
     if (uid == null) return Stream.value(const []);
-    // A collection-group query over the membership rows is what makes "my
-    // groups" one query rather than one per group. It needs the composite
-    // index Firestore offers on first run.
-    return _db
-        .collectionGroup('members')
-        .where(FieldPath.documentId, isEqualTo: uid)
-        .snapshots()
-        .asyncMap((snap) async {
+    // Driven by the account document, which lists the groups this person is
+    // in. The first version asked Firestore for every membership row whose id
+    // was this uid, with a collection-group query -- and that silently
+    // returned nothing, because in a collection-group query
+    // `FieldPath.documentId` is matched against the whole document PATH, not
+    // the id. A group somebody had just made was invisible to them, which is
+    // about as bad as this feature gets. It also needed an index and a rule
+    // of its own that did not exist.
+    return _db.collection('users').doc(uid).snapshots().asyncMap((snap) async {
+      final ids = [
+        for (final v in (snap.data()?['groups'] as List<Object?>? ?? const []))
+          if (v is String) v,
+      ];
       final groups = <SangatGroup>[];
-      for (final doc in snap.docs) {
-        final groupId = doc.reference.parent.parent?.id;
-        if (groupId == null) continue;
-        final group = await _load(groupId, mine: doc.data());
+      for (final id in ids) {
+        final group = await _load(id, uid: uid);
+        // A group somebody else deleted leaves an id behind. It is skipped
+        // rather than shown as an empty card.
         if (group != null) groups.add(group);
       }
       return groups;
@@ -99,6 +104,7 @@ class FirebaseGroupRepository implements GroupRepository {
   Future<GroupOutcome> create({
     required String name,
     required GroupKind kind,
+    bool wantsListing = false,
   }) async {
     final uid = _uid;
     if (uid == null) return const GroupRefused('unauthenticated');
@@ -112,6 +118,11 @@ class FirebaseGroupRepository implements GroupRepository {
       final doc = _groups.doc();
       await doc.set({
         ...group.toFirestore(),
+        // What the maker asked for, which is a request and not a setting.
+        // `listed` itself is refused by the rules on create and pinned on
+        // update, so this is the only way to ask, and somebody reads the name
+        // before it is granted.
+        'listingRequested': wantsListing,
         'createdAt': FieldValue.serverTimestamp(),
       });
       // The maker is the admin. The rules allow the claim only because they
@@ -123,7 +134,15 @@ class FirebaseGroupRepository implements GroupRepository {
         'count': 0,
         'joinedAt': FieldValue.serverTimestamp(),
       });
-      return GroupOk(group.copyWith(memberCount: 1, youAreAdmin: true));
+      await _remember(uid, doc.id);
+      return GroupOk(SangatGroup(
+        id: doc.id,
+        name: group.name,
+        kind: group.kind,
+        createdBy: uid,
+        memberCount: 1,
+        youAreAdmin: true,
+      ));
     } on FirebaseException catch (e) {
       return _outcome(e, 'create group');
     }
@@ -142,6 +161,7 @@ class FirebaseGroupRepository implements GroupRepository {
         'count': 0,
         'joinedAt': FieldValue.serverTimestamp(),
       });
+      await _remember(uid, groupId);
       return const GroupOk();
     } on FirebaseException catch (e) {
       return _outcome(e, 'join group');
@@ -180,6 +200,9 @@ class FirebaseGroupRepository implements GroupRepository {
     if (uid == null) return const GroupRefused('unauthenticated');
     try {
       await _members(groupId).doc(uid).delete();
+      await _db.collection('users').doc(uid).update({
+        'groups': FieldValue.arrayRemove([groupId]),
+      });
       return const GroupOk();
     } on FirebaseException catch (e) {
       return _outcome(e, 'leave group');
@@ -187,17 +210,20 @@ class FirebaseGroupRepository implements GroupRepository {
   }
 
   /// Loads a group and hangs this person's own membership off it.
-  Future<SangatGroup?> _load(String groupId, {Map<String, Object?>? mine}) async {
+  Future<SangatGroup?> _load(String groupId, {String? uid}) async {
     try {
       final snap = await _groups.doc(groupId).get();
       final data = snap.data();
       if (data == null) return null;
       var group = SangatGroup.fromFirestore(groupId, data);
-      if (mine != null) {
-        group = group.copyWith(
-          yours: ((mine['count'] as num?) ?? 0).toInt(),
-          youAreAdmin: mine['role'] == 'admin',
-        );
+      if (uid != null) {
+        final mine = (await _members(groupId).doc(uid).get()).data();
+        if (mine != null) {
+          group = group.copyWith(
+            yours: ((mine['count'] as num?) ?? 0).toInt(),
+            youAreAdmin: mine['role'] == 'admin',
+          );
+        }
       }
       return await _withCounts(group);
     } on FirebaseException catch (e) {
@@ -224,6 +250,21 @@ class FirebaseGroupRepository implements GroupRepository {
       debugPrint('Hazri: group total failed (${e.code})');
     }
     return out;
+  }
+
+  /// Adds a group to the account's list, which is what `watchMine` reads.
+  ///
+  /// Second write rather than one, and the order matters: the membership row
+  /// is written first, so a failure here leaves somebody in a group they
+  /// cannot see rather than a group they are not in.
+  Future<void> _remember(String uid, String groupId) async {
+    try {
+      await _db.collection('users').doc(uid).update({
+        'groups': FieldValue.arrayUnion([groupId]),
+      });
+    } on FirebaseException catch (e) {
+      debugPrint('Hazri: remembering group $groupId failed (${e.code})');
+    }
   }
 
   /// The name this person shows inside groups, or empty if they turned it

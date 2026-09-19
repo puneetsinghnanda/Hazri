@@ -50,6 +50,10 @@ abstract final class HazriIconData {
       '<circle cx="9" cy="9" r="3.2"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/>'
       '<circle cx="17" cy="7.5" r="2.4"/><path d="M15.5 13.2a4.6 4.6 0 0 1 5 4.6"/>';
 
+  /// `menu` — 24dp outline, stroke 1.8 (design/html). The button at the top
+  /// left of every tab, which opens design 37's menu.
+  static const String menu = '<path d="M4 7h16M4 12h16M4 17h16"/>';
+
   /// `mail` — 24dp outline, stroke 1.8 (design/html). The account's email
   /// row, the verification card and screen 34's big circle.
   static const String mail =

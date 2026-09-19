@@ -2048,4 +2048,49 @@ class LEn extends L {
   @override
   String get notifGroupsNotYet =>
       'These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off.';
+
+  @override
+  String get menuTooltip => 'Menu';
+
+  @override
+  String simranYouAndOthers(int count) {
+    return 'You and $count others';
+  }
+
+  @override
+  String get simranAreHereToday => 'are here today';
+
+  @override
+  String simranCitiesToday(int count) {
+    return '$count cities today';
+  }
+
+  @override
+  String get simranLegendYou => 'You';
+
+  @override
+  String get simranLegendHere => 'Here today';
+
+  @override
+  String simranBeginMinutes(int count) {
+    return 'Begin Simran · $count min';
+  }
+
+  @override
+  String get simranTurnGlobeShort => 'Turn the globe with your hand';
+
+  @override
+  String readerLoggedInDiary(String time) {
+    return 'Logged in your diary · $time';
+  }
+
+  @override
+  String get readerThisMarkedHazri =>
+      'This is what marked it — the first thing finished today';
+
+  @override
+  String get readerStartAgain => 'Start again';
+
+  @override
+  String get readerNextBani => 'Next bani';
 }
