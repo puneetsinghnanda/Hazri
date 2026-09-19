@@ -375,6 +375,12 @@ storeFile=/absolute/path/to/hazri-upload.jks</code></pre>
     <p><b>Text is never the problem; images are.</b> An article's words are kilobytes and fit
       anywhere. One photograph on it costs thirty times as much and drops the allowance from
       tens of thousands of readers a day to about a thousand.</p>
+    <div class="note"><b>Decided: Vichar is text only.</b> No photographs, no galleries. That
+      settles the row that mattered — thirty thousand article reads a day on the free plan, so
+      the allowance is not a constraint on this app at any size it will plausibly reach. It
+      also removes an image store, a CDN and an image pipeline from Phase 3 before any of them
+      were built, and it means Vichar content could sit in Firestore documents rather than on
+      Hosting at all, whichever turns out to suit the way you write.</div>
     <div class="note"><b>Phase 2 uses almost none of this.</b> The only things hosted are
       <code>assetlinks.json</code>, which makes the verification link open in the app, and a
       privacy stub — a few kilobytes a day between them. Vichar's sample content ships inside
