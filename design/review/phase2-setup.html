@@ -125,8 +125,8 @@ footer{padding-block:34px 44px; color:var(--muted); font-size:13px; text-align:c
       <div class="n">nothing in Phase 2 works without it</div></div>
     <div class="fact"><div class="k">To spend</div><div class="v">$0</div>
       <div class="n">free tiers, and no domain to buy</div></div>
-    <div class="fact"><div class="k">Bill at 100k daily</div><div class="v">≈ ₹4,100/mo</div>
-      <div class="n">free below ~30k · see the model</div></div>
+    <div class="fact"><div class="k">Bill at 100k daily</div><div class="v">≈ ₹1,850/mo</div>
+      <div class="n">free below ~30k · verified rates</div></div>
   </div>
 </header>
 
@@ -271,38 +271,45 @@ storeFile=/absolute/path/to/hazri-upload.jks</code></pre>
 
   <div class="card">
     <h3>The bill, by daily active users</h3>
-    <p>Firestore's free allowance continues on Blaze, so a project only pays for what it uses
-      above it. Modelled on what Phase 2 actually touches — the banis, recitations, calendar,
-      diary and goals are all local, so the network only carries a profile, group membership,
-      group totals and the globe:</p>
+    <p>Checked against Google's published rates on 19 September 2026:
+      <b>$0.03 per 100,000 reads</b>, <b>$0.09 per 100,000 writes</b>,
+      <b>$0.01 per 100,000 deletes</b>, about <b>$0.15 per GiB-month</b> stored, and outbound
+      transfer free to 10 GiB a month then $0.12 a GiB. The free quota —
+      <b>50,000 reads, 20,000 writes and 20,000 deletes every day</b>, reset around midnight
+      Pacific — <b>continues once billing is on</b>; the page states outright that the listed
+      prices are "the price beyond the free quota".</p>
+    <p>Modelled on what Phase 2 actually touches. The banis, recitations, calendar, diary and
+      goals are all local, so the network carries only a profile, group membership, group
+      totals and the globe — about ten reads and four writes per person per day.</p>
     <div class="scroll"><table>
       <tr><th>Daily active</th><th>Reads / month</th><th>Writes / month</th><th>Per month</th></tr>
       <tr><td>1,000</td><td>300 K</td><td>120 K</td><td><span class="pick">free</span></td></tr>
-      <tr><td>10,000</td><td>3 M</td><td>1.2 M</td><td>≈ ₹220</td></tr>
-      <tr><td>50,000</td><td>15 M</td><td>6 M</td><td>≈ ₹1,960</td></tr>
-      <tr><td>100,000</td><td>30 M</td><td>12 M</td><td>≈ ₹4,100</td></tr>
-      <tr><td>150,000</td><td>45 M</td><td>18 M</td><td>≈ ₹6,300</td></tr>
-      <tr><td>1,000,000</td><td>300 M</td><td>120 M</td><td>≈ ₹43,000</td></tr>
+      <tr><td>10,000</td><td>3 M</td><td>1.2 M</td><td>≈ ₹87</td></tr>
+      <tr><td>50,000</td><td>15 M</td><td>6 M</td><td>≈ ₹830</td></tr>
+      <tr><td>100,000</td><td>30 M</td><td>12 M</td><td>≈ ₹1,850</td></tr>
+      <tr><td>250,000</td><td>75 M</td><td>30 M</td><td>≈ ₹4,900</td></tr>
+      <tr><td>1,000,000</td><td>300 M</td><td>120 M</td><td>≈ ₹20,300</td></tr>
     </table></div>
-    <div class="note"><b>So ₹2,000–5,000 a month buys roughly 50,000 to 120,000 daily active
-      users.</b> If "1 million users" means a million <i>installs</i>, of whom ten or fifteen
-      percent open the app on a given day, that lands inside your number. If it means a million
-      people opening it <i>every day</i>, it is about ₹43,000 — and an app with a million daily
-      readers has options that a hobby project does not.</div>
-    <div class="warn"><b>I cannot verify today's prices.</b> Google has changed Firestore's
-      rates and free tier before. Treat the shape of this table as reliable and the rupees as
-      an estimate to re-check on the pricing page when you upgrade.</div>
+    <div class="note"><b>₹2,000–5,000 a month buys roughly 110,000 to 250,000 daily active
+      users.</b> A million installs, at the ten to fifteen percent who open an app on a given
+      day, sits comfortably inside that. Even a million people opening it <i>every single
+      day</i> is about ₹20,000 — four times your ceiling, for an app four hundred times bigger
+      than the one that reaches it.</div>
+    <div class="warn"><b>Two caveats on the figures.</b> They are the default
+      <code>us-central1</code> column; Mumbai and London may differ, and the pricing page only
+      reveals that through a region selector I cannot read. And Google has changed these rates
+      before — re-check them the day you upgrade.</div>
   </div>
 
   <div class="card">
     <h3>The number above is a design decision, not a user count</h3>
-    <p>The same app at 100,000 daily users costs ₹4,100 a month or ₹1.6 crore a month, depending
+    <p>The same app at 100,000 daily users costs ₹1,850 a month or ₹79 lakh a month, depending
       on one choice: whether the Simran globe reads <b>one aggregate document</b> or <b>one
       document per person</b>.</p>
     <div class="scroll"><table>
       <tr><th>At 100,000 daily users</th><th>Reads / month</th><th>Per month</th></tr>
-      <tr><td>Globe as one aggregate</td><td>30 M</td><td>≈ ₹4,100</td></tr>
-      <tr><td>Globe as a document each</td><td>300 billion</td><td>≈ ₹1.6 crore</td></tr>
+      <tr><td>Globe as one aggregate</td><td>30 M</td><td>≈ ₹1,850</td></tr>
+      <tr><td>Globe as a document each</td><td>300 billion</td><td>≈ ₹79 lakh</td></tr>
     </table></div>
     <p>That is the whole lesson. Group totals get the same treatment — a counter a function
       maintains, never a client adding up every member — and Vichar ships in the app rather than
