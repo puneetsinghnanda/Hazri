@@ -206,8 +206,8 @@ class AccountScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: _AccountRow(
           icon: HazriIconData.lock,
-          title: l.settingsPrivacy,
-          value: l.settingsPrivacySub,
+          title: l.privacyDataTitle,
+          value: l.privacyDownloadSub,
           chevron: true,
           onTap: () => context.push(Routes.privacy),
         ),

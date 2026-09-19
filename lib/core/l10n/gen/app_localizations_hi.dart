@@ -1813,4 +1813,73 @@ class LHi extends L {
 
   @override
   String get verifyConfirmed => 'आपकी ईमेल की पुष्टि हो गई';
+
+  @override
+  String get privacyDataTitle => 'निजता और मेरा डेटा';
+
+  @override
+  String get privacyOnPhoneOnly => 'सिर्फ़ इसी फ़ोन में';
+
+  @override
+  String get privacyPhoneDiary => 'आपकी डायरी और निरंतरता';
+
+  @override
+  String get privacyPhoneProgress => 'पढ़ने की जगह और संकल्प';
+
+  @override
+  String get privacyPhoneContent => 'हर बाणी, उसका पाठ और कैलेंडर';
+
+  @override
+  String get privacySharedWithSangat => 'संगत के साथ साझा';
+
+  @override
+  String get privacyShareName => 'आपका नाम';
+
+  @override
+  String get privacyShareCity => 'आपका चुना शहर — गोले पर एक बिंदु के रूप में';
+
+  @override
+  String get privacyShareGroups => 'आप किन ग्रुपों में हैं';
+
+  @override
+  String get privacyShareCounts => 'साझा संकल्प में आपने कितना किया';
+
+  @override
+  String get privacyAccountOnly => 'सिर्फ़ आपके खाते के लिए रखा';
+
+  @override
+  String get privacyAccountEmail =>
+      'आपकी ईमेल — इसका एक ही काम है, खाता वापस लाना';
+
+  @override
+  String get privacyShowMyName => 'ग्रुपों में मेरा नाम दिखाएँ';
+
+  @override
+  String get privacyShowMyNameSub => 'बंद हो तो “एक सदस्य” दिखाई देता है';
+
+  @override
+  String get privacyDownload => 'जो कुछ हमारे पास है, सब डाउनलोड करें';
+
+  @override
+  String get privacyDownloadSub => 'एक फ़ाइल जो आप रख और पढ़ सकते हैं';
+
+  @override
+  String get privacyDelete => 'मेरा खाता और डेटा मिटाएँ';
+
+  @override
+  String get privacyDeleteSub => 'आपकी डायरी इसी फ़ोन में रहेगी';
+
+  @override
+  String get privacyDeleteConfirm =>
+      'जो संगत के पास है, सब मिटा दें? आपके ग्रुप, आपकी गिनती और खाता चले जाएँगे। इस फ़ोन में कुछ नहीं छेड़ा जाएगा।';
+
+  @override
+  String get privacyDeleteDo => 'मिटा दें';
+
+  @override
+  String get privacyDeleted => 'आपका खाता और उसका डेटा मिट गया';
+
+  @override
+  String get privacyNotJoined =>
+      'आप संगत से नहीं जुड़े, इसलिए यहाँ से कुछ भी इस फ़ोन से बाहर नहीं गया।';
 }

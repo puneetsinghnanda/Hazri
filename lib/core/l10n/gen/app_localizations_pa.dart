@@ -1813,4 +1813,74 @@ class LPa extends L {
 
   @override
   String get verifyConfirmed => 'ਤੁਹਾਡੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਗਈ';
+
+  @override
+  String get privacyDataTitle => 'ਨਿੱਜਤਾ ਤੇ ਮੇਰਾ ਡਾਟਾ';
+
+  @override
+  String get privacyOnPhoneOnly => 'ਸਿਰਫ਼ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ';
+
+  @override
+  String get privacyPhoneDiary => 'ਤੁਹਾਡੀ ਡਾਇਰੀ ਤੇ ਲਗਾਤਾਰਤਾ';
+
+  @override
+  String get privacyPhoneProgress => 'ਪੜ੍ਹਨ ਦੀ ਥਾਂ ਤੇ ਸੰਕਲਪ';
+
+  @override
+  String get privacyPhoneContent => 'ਹਰ ਬਾਣੀ, ਉਸ ਦਾ ਪਾਠ ਤੇ ਕੈਲੰਡਰ';
+
+  @override
+  String get privacySharedWithSangat => 'ਸੰਗਤ ਨਾਲ ਸਾਂਝਾ';
+
+  @override
+  String get privacyShareName => 'ਤੁਹਾਡਾ ਨਾਂ';
+
+  @override
+  String get privacyShareCity =>
+      'ਤੁਹਾਡਾ ਚੁਣਿਆ ਸ਼ਹਿਰ — ਗੋਲੇ ਉੱਤੇ ਇੱਕ ਬਿੰਦੀ ਵਜੋਂ';
+
+  @override
+  String get privacyShareGroups => 'ਤੁਸੀਂ ਕਿਹੜੇ ਗਰੁੱਪਾਂ ਵਿੱਚ ਹੋ';
+
+  @override
+  String get privacyShareCounts => 'ਸਾਂਝੇ ਸੰਕਲਪ ਵਿੱਚ ਤੁਸੀਂ ਕਿੰਨਾ ਕੀਤਾ';
+
+  @override
+  String get privacyAccountOnly => 'ਸਿਰਫ਼ ਤੁਹਾਡੇ ਖਾਤੇ ਲਈ ਰੱਖਿਆ';
+
+  @override
+  String get privacyAccountEmail =>
+      'ਤੁਹਾਡੀ ਈਮੇਲ — ਇਸ ਦਾ ਇੱਕੋ ਕੰਮ ਹੈ, ਖਾਤਾ ਵਾਪਸ ਲਿਆਉਣਾ';
+
+  @override
+  String get privacyShowMyName => 'ਗਰੁੱਪਾਂ ਵਿੱਚ ਮੇਰਾ ਨਾਂ ਵਿਖਾਓ';
+
+  @override
+  String get privacyShowMyNameSub => 'ਬੰਦ ਹੋਵੇ ਤਾਂ “ਇੱਕ ਜਣਾ” ਵਿਖਾਈ ਦਿੰਦਾ ਹੈ';
+
+  @override
+  String get privacyDownload => 'ਜੋ ਕੁਝ ਸਾਡੇ ਕੋਲ ਹੈ, ਸਭ ਡਾਊਨਲੋਡ ਕਰੋ';
+
+  @override
+  String get privacyDownloadSub => 'ਇੱਕ ਫ਼ਾਈਲ ਜੋ ਤੁਸੀਂ ਰੱਖ ਤੇ ਪੜ੍ਹ ਸਕਦੇ ਹੋ';
+
+  @override
+  String get privacyDelete => 'ਮੇਰਾ ਖਾਤਾ ਤੇ ਡਾਟਾ ਮਿਟਾਓ';
+
+  @override
+  String get privacyDeleteSub => 'ਤੁਹਾਡੀ ਡਾਇਰੀ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹੇਗੀ';
+
+  @override
+  String get privacyDeleteConfirm =>
+      'ਜੋ ਸੰਗਤ ਕੋਲ ਹੈ, ਸਭ ਮਿਟਾ ਦੇਈਏ? ਤੁਹਾਡੇ ਗਰੁੱਪ, ਤੁਹਾਡੀ ਗਿਣਤੀ ਤੇ ਖਾਤਾ ਚਲੇ ਜਾਣਗੇ। ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਕੁਝ ਨਹੀਂ ਛੇੜਿਆ ਜਾਵੇਗਾ।';
+
+  @override
+  String get privacyDeleteDo => 'ਮਿਟਾ ਦਿਓ';
+
+  @override
+  String get privacyDeleted => 'ਤੁਹਾਡਾ ਖਾਤਾ ਤੇ ਉਸ ਦਾ ਡਾਟਾ ਮਿਟ ਗਿਆ';
+
+  @override
+  String get privacyNotJoined =>
+      'ਤੁਸੀਂ ਸੰਗਤ ਨਾਲ ਨਹੀਂ ਜੁੜੇ, ਇਸ ਲਈ ਇੱਥੋਂ ਕੁਝ ਵੀ ਇਸ ਫ਼ੋਨ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਗਿਆ।';
 }

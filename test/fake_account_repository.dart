@@ -89,6 +89,17 @@ class FakeAccountRepository implements AccountRepository {
     return JoinedSangat(account);
   }
 
+  int deleteCalls = 0;
+
+  @override
+  Future<JoinOutcome> deleteEverything() async {
+    deleteCalls++;
+    final failure = nextOutcome;
+    if (failure != null) return failure;
+    emit(null);
+    return const JoinedSangat(SangatAccount(id: '', name: '', city: ''));
+  }
+
   @override
   Future<void> signOut() async {
     signOutCalls++;

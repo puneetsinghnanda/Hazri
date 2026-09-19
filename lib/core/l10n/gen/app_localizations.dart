@@ -3368,6 +3368,138 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Your email is confirmed'**
   String get verifyConfirmed;
+
+  /// No description provided for @privacyDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & my data'**
+  String get privacyDataTitle;
+
+  /// No description provided for @privacyOnPhoneOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'On this phone only'**
+  String get privacyOnPhoneOnly;
+
+  /// No description provided for @privacyPhoneDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diary and streaks'**
+  String get privacyPhoneDiary;
+
+  /// No description provided for @privacyPhoneProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading position and goals'**
+  String get privacyPhoneProgress;
+
+  /// No description provided for @privacyPhoneContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Every bani, its audio and the calendar'**
+  String get privacyPhoneContent;
+
+  /// No description provided for @privacySharedWithSangat.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared with the sangat'**
+  String get privacySharedWithSangat;
+
+  /// No description provided for @privacyShareName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get privacyShareName;
+
+  /// No description provided for @privacyShareCity.
+  ///
+  /// In en, this message translates to:
+  /// **'The city you chose — shown as one dot on the globe'**
+  String get privacyShareCity;
+
+  /// No description provided for @privacyShareGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Which groups you are in'**
+  String get privacyShareGroups;
+
+  /// No description provided for @privacyShareCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'How much you have completed towards a shared goal'**
+  String get privacyShareCounts;
+
+  /// No description provided for @privacyAccountOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Held for your account alone'**
+  String get privacyAccountOnly;
+
+  /// No description provided for @privacyAccountEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email — the only thing it does is bring your account back'**
+  String get privacyAccountEmail;
+
+  /// No description provided for @privacyShowMyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Show my name in groups'**
+  String get privacyShowMyName;
+
+  /// No description provided for @privacyShowMyNameSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Off shows you as “a member”'**
+  String get privacyShowMyNameSub;
+
+  /// No description provided for @privacyDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download everything we hold'**
+  String get privacyDownload;
+
+  /// No description provided for @privacyDownloadSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A file you can keep, read and check'**
+  String get privacyDownloadSub;
+
+  /// No description provided for @privacyDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account and data'**
+  String get privacyDelete;
+
+  /// No description provided for @privacyDeleteSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diary stays on this phone'**
+  String get privacyDeleteSub;
+
+  /// No description provided for @privacyDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete everything the sangat holds? Your groups, your counts and your account go. Nothing on this phone is touched.'**
+  String get privacyDeleteConfirm;
+
+  /// No description provided for @privacyDeleteDo.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete it'**
+  String get privacyDeleteDo;
+
+  /// No description provided for @privacyDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account and its data are gone'**
+  String get privacyDeleted;
+
+  /// No description provided for @privacyNotJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not joined the sangat, so nothing here has left this phone.'**
+  String get privacyNotJoined;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

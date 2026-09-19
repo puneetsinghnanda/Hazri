@@ -208,6 +208,37 @@ class FirebaseAccountRepository implements AccountRepository {
   }
 
   @override
+  Future<JoinOutcome> deleteEverything() async {
+    final user = _auth.currentUser;
+    if (user == null) return const JoinedSangat(SangatAccount(id: '', name: '', city: ''));
+    try {
+      // Memberships first. They live under groups this person does not own,
+      // so leaving one behind would leave a name in somebody else's group
+      // with no account behind it.
+      final mine = await _db
+          .collectionGroup('members')
+          .where(FieldPath.documentId, isEqualTo: user.uid)
+          .get();
+      for (final doc in mine.docs) {
+        await doc.reference.delete();
+      }
+      await _db.collection('users').doc(user.uid).delete();
+    } on FirebaseException catch (e) {
+      return _firestoreOutcome(e, 'delete account');
+    }
+    try {
+      await user.delete();
+    } on FirebaseAuthException catch (e) {
+      // The row is already gone, so the account is unreachable either way.
+      // Saying it failed here would be worse than true.
+      debugPrint('Hazri: deleting the auth user failed (${e.code})');
+      await _auth.signOut();
+    }
+    _current = null;
+    return const JoinedSangat(SangatAccount(id: '', name: '', city: ''));
+  }
+
+  @override
   Future<void> signOut() async {
     try {
       await _auth.signOut();

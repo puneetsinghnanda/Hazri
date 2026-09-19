@@ -1815,4 +1815,75 @@ class LEn extends L {
 
   @override
   String get verifyConfirmed => 'Your email is confirmed';
+
+  @override
+  String get privacyDataTitle => 'Privacy & my data';
+
+  @override
+  String get privacyOnPhoneOnly => 'On this phone only';
+
+  @override
+  String get privacyPhoneDiary => 'Your diary and streaks';
+
+  @override
+  String get privacyPhoneProgress => 'Reading position and goals';
+
+  @override
+  String get privacyPhoneContent => 'Every bani, its audio and the calendar';
+
+  @override
+  String get privacySharedWithSangat => 'Shared with the sangat';
+
+  @override
+  String get privacyShareName => 'Your name';
+
+  @override
+  String get privacyShareCity =>
+      'The city you chose — shown as one dot on the globe';
+
+  @override
+  String get privacyShareGroups => 'Which groups you are in';
+
+  @override
+  String get privacyShareCounts =>
+      'How much you have completed towards a shared goal';
+
+  @override
+  String get privacyAccountOnly => 'Held for your account alone';
+
+  @override
+  String get privacyAccountEmail =>
+      'Your email — the only thing it does is bring your account back';
+
+  @override
+  String get privacyShowMyName => 'Show my name in groups';
+
+  @override
+  String get privacyShowMyNameSub => 'Off shows you as “a member”';
+
+  @override
+  String get privacyDownload => 'Download everything we hold';
+
+  @override
+  String get privacyDownloadSub => 'A file you can keep, read and check';
+
+  @override
+  String get privacyDelete => 'Delete my account and data';
+
+  @override
+  String get privacyDeleteSub => 'Your diary stays on this phone';
+
+  @override
+  String get privacyDeleteConfirm =>
+      'Delete everything the sangat holds? Your groups, your counts and your account go. Nothing on this phone is touched.';
+
+  @override
+  String get privacyDeleteDo => 'Delete it';
+
+  @override
+  String get privacyDeleted => 'Your account and its data are gone';
+
+  @override
+  String get privacyNotJoined =>
+      'You have not joined the sangat, so nothing here has left this phone.';
 }

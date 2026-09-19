@@ -115,6 +115,14 @@ abstract interface class AccountRepository {
   /// password to check because there is no password.
   Future<JoinOutcome> continueWithLink({required String email, required String link});
 
+  /// Deletes the account and everything the server holds for it (design 35).
+  ///
+  /// Not a flag and not a queue: the profile row goes, the memberships go,
+  /// and the anonymous user itself goes. What stays is what never left the
+  /// phone, which is the diary, the streaks and the reading position — and
+  /// the person still has those.
+  Future<JoinOutcome> deleteEverything();
+
   /// Signs out of this phone. The account itself is untouched and comes back
   /// with the email — which is exactly why verifying it matters.
   Future<void> signOut();
@@ -157,6 +165,9 @@ class NoAccountRepository implements AccountRepository {
     required String link,
   }) async =>
       const SangatUnavailable();
+
+  @override
+  Future<JoinOutcome> deleteEverything() async => const SangatUnavailable();
 
   @override
   Future<void> signOut() async {}
