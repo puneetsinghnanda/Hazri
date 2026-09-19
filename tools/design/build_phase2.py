@@ -1743,16 +1743,23 @@ def reader_complete() -> str:
 def goal_complete(t: dict = EN) -> str:
     """The one full-screen moment in the app: the day is finished.
 
-    There was a second, on the first thing completed each day, and it is
-    gone. A hazri is marked by one paath and most days hold several, so a
-    takeover at the first of them interrupts the practice it is meant to
-    honour -- and having fired already, it made the harder moment the
-    quieter one. The hazri is still said at every step it happens: on the
-    reader when a bani ends, on Today, and in the diary. Only this is
-    ceremonial, and only on a day everything is done.
+    It has exactly one trigger, and no fallback. The last goal of the day
+    is completed and this appears. **Somebody who has set no goals never
+    sees it at all** -- not on their first paath, not on their fiftieth --
+    and that is deliberate rather than a gap: without a goal there is no
+    day to finish, and a screen that fired anyway would be congratulating
+    somebody for nothing.
 
-    The hazri gets a line here rather than the headline, because by now it
-    was marked hours ago.
+    There was a second moment, on the first thing completed each day, and
+    it is gone. A hazri is marked by one paath and most days hold several,
+    so a takeover at the first of them interrupts the practice it is meant
+    to honour -- and having fired already, it made the harder moment the
+    quieter one. The hazri is still said at every step it happens: on the
+    reader when a bani ends, on Today, and at the head of the day in the
+    diary. Those never depend on a goal existing.
+
+    The hazri gets a line here rather than the headline, because by the
+    time this appears it was marked hours ago.
     """
     goals = [(t["japji"], "5:52 AM"), (t["simran"], "11 minutes"),
              (t["rehras"], "6:44 PM")]
