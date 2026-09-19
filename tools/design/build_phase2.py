@@ -130,6 +130,11 @@ LAT0, LON0 = 22.0, 52.0          # centred so India, the UK and Africa all show
 R = 150.0
 CX = CY = 160.0
 
+# Natural Earth 110m land, public domain, simplified to what a 300 px globe can
+# show. 17 KB, bundled, so the globe needs no tiles and no network.
+with open(os.path.join(ROOT, "design", "world-110m.json"), encoding="utf-8") as _fh:
+    WORLD = json.load(_fh)["rings"]
+
 
 def project(lat: float, lon: float) -> tuple[float, float] | None:
     """Orthographic projection. None when the point is on the far side."""
@@ -172,11 +177,11 @@ def polyline(points) -> str:
         for r in runs)
 
 
-DOT = {"you": ("var(--kesri)", 5.5), "member": ("#5B8DEF", 3.0),
+DOT = {"you": ("#F2A24E", 5.0), "member": ("#5B8DEF", 3.0),
        "today": ("#3DBE7B", 3.4)}
 
 
-def dots() -> str:
+def dots(glow: bool = True) -> str:
     out = []
     for lat, lon, kind in PEOPLE:
         p = project(lat, lon)
@@ -189,7 +194,62 @@ def dots() -> str:
                        f'opacity="0.18"/>')
             out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="8" fill="{colour}" '
                        f'opacity="0.30"/>')
+        elif glow:
+            out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r*2.4:.1f}" '
+                       f'fill="{colour}" opacity="0.18"/>')
         out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r}" fill="{colour}"/>')
+    return "".join(out)
+
+
+def coastline() -> str:
+    """The land, outlined, culled to the visible hemisphere."""
+    out = []
+    for ring in WORLD:
+        for r in polyline_runs([project(lat, lon) for lon, lat in ring]):
+            out.append('<path d="M' + "L".join(f"{x:.1f} {y:.1f}" for x, y in r)
+                       + 'Z" fill="none" stroke="#41609E" stroke-width="1" '
+                         'stroke-linejoin="round"/>')
+    return "".join(out)
+
+
+def polyline_runs(points):
+    out, run = [], []
+    for p in points:
+        if p is None:
+            if len(run) > 1:
+                out.append(run)
+            run = []
+        else:
+            run.append(p)
+    if len(run) > 1:
+        out.append(run)
+    return out
+
+
+def threads() -> str:
+    """A thread from your dot to every other.
+
+    This is the look chosen for the globe. It holds to a few hundred people
+    and then turns off, leaving the dots alone -- but a Sangat group is never
+    that large, so on a group's paath the threads always show.
+    """
+    me = next(p for p in PEOPLE if p[2] == "you")
+    origin = project(me[0], me[1])
+    if origin is None:
+        return ""
+    out = []
+    for lat, lon, kind in PEOPLE:
+        if kind == "you":
+            continue
+        p = project(lat, lon)
+        if p is None:
+            continue
+        mx, my = (origin[0] + p[0]) / 2, (origin[1] + p[1]) / 2
+        dx, dy = p[0] - origin[0], p[1] - origin[1]
+        cx, cy = mx - dy * 0.14, my + dx * 0.14
+        out.append(f'<path d="M{origin[0]:.1f} {origin[1]:.1f} Q{cx:.1f} {cy:.1f} '
+                   f'{p[0]:.1f} {p[1]:.1f}" fill="none" stroke="#F2A24E" '
+                   f'stroke-width="0.7" opacity="0.28"/>')
     return "".join(out)
 
 
@@ -197,15 +257,11 @@ def globe(size: int = 320) -> str:
     return (
         f'<svg width="{size}" height="{size}" viewBox="0 0 320 320" '
         f'style="display:block">'
-        f'<defs><radialGradient id="g" cx="35%" cy="30%">'
-        f'<stop offset="0%" stop-color="#1B2450"/>'
-        f'<stop offset="70%" stop-color="#0E1533"/>'
-        f'<stop offset="100%" stop-color="#080B1C"/></radialGradient></defs>'
-        f'<circle cx="160" cy="160" r="150" fill="url(#g)"/>'
-        f'{graticule()}'
-        f'<circle cx="160" cy="160" r="150" fill="none" stroke="#3A4A80" '
-        f'stroke-width="1.2" opacity="0.8"/>'
-        f'{dots()}</svg>')
+        f'<circle cx="160" cy="160" r="150" fill="#080B1C"/>'
+        f'{graticule()}{coastline()}{threads()}'
+        f'<circle cx="160" cy="160" r="150" fill="none" stroke="#33427A" '
+        f'stroke-width="1"/>'
+        f'{dots(glow=False)}</svg>')
 
 
 def legend() -> str:
@@ -260,103 +316,78 @@ def header(title: str, sub: str | None = None, left: str = "back",
 
 # ------------------------------------------------------------------ screens
 
-def global_simran() -> str:
-    people = [("GK", "Gurpreet Kaur", "Southall"), ("HS", "Harjit Singh", "Ludhiana")]
-    rows = "".join(
-        f'<div class="row" style="gap:10px">{avatar(i)}'
-        f'<div class="col" style="flex:1"><div style="font-size:14px;font-weight:600">'
-        f'{n}</div><div style="font-size:12px;color:var(--muted)">{c}</div></div>'
-        f'<div class="chip" style="background:var(--sageSoft);color:var(--sage)">'
-        f'11 min</div></div>' for i, n, c in people)
-    return f"""
-<div class="pad col" style="gap:12px">
-  {header("Global Simran", "Waheguru, together", right="share")}
-  <div style="display:flex;justify-content:center">{globe(296)}</div>
-  {legend()}
-  <div style="text-align:center;font-size:11.5px;color:var(--muted);font-weight:600;
-    margin-top:-6px">Drag to turn the globe</div>
-  <div class="card row" style="padding:14px;gap:0">
-    <div class="col" style="flex:1;align-items:center">
-      <div class="disp" style="font-size:24px;font-weight:700">4,812</div>
-      <div style="font-size:11.5px;color:var(--muted);font-weight:600">sat today</div>
-    </div>
-    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
-    <div class="col" style="flex:1;align-items:center">
-      <div class="disp" style="font-size:24px;font-weight:700;color:var(--sage)">
-        1,240</div>
-      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
-        sitting now</div>
-    </div>
-    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
-    <div class="col" style="flex:1;align-items:center">
-      <div class="disp" style="font-size:24px;font-weight:700">64</div>
-      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
-        countries</div>
-    </div>
-  </div>
-  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
-    {icon("simran", 20)}<div>Sit with them</div></div>
-  <div class="col" style="gap:10px">
-    <div class="row" style="justify-content:space-between">
-      <div class="eyebrow">In your sangat today</div>
-      <div style="font-size:12.5px;color:var(--kesriInk);font-weight:600">See all 8</div>
-    </div>
-    {rows}
-  </div>
-</div>
-{nav("simran")}
-"""
-
-
 def simran_tab() -> str:
-    chips = "".join(
-        f'<div class="chip" style="background:{"var(--kesriSoft)" if on else "var(--card2)"};'
-        f'color:{"var(--kesriInk)" if on else "var(--ink2)"};min-height:34px">{t}</div>'
-        for t, on in [("5 min", False), ("11 min", True), ("21 min", False),
-                      ("31 min", False)])
-    faces = "".join(avatar(i, size=30) for i in ["GK", "HS", "MK", "AS"])
+    """The Simran tab: the sangat as a globe you turn with your hand.
+
+    Full bleed, and dark in both themes -- the globe is the screen, not a
+    picture on it, and a planetarium does not change colour with the room.
+
+    **No names here, ever.** A dot says a person exists and whether they
+    opened Hazri today; who they are is the group's business, and groups live
+    in Sangat. Nothing on this screen identifies anybody but you.
+    """
     return f"""
-<div class="pad col" style="gap:14px">
-  {header("Simran", "Goal · 11 minutes a day", left="menu", right="bell")}
-  <div style="position:relative;display:flex;justify-content:center;padding:6px 0 0">
-    {ring(0.62, 232, 14)}
-    <div style="position:absolute;inset:0;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;gap:2px">
-      <div class="gur" style="font-size:32px;font-weight:600">ਵਾਹਿਗੁਰੂ</div>
-      <div class="disp" style="font-size:30px;font-weight:700;
-        font-variant-numeric:tabular-nums">6:48</div>
-      <div style="font-size:12px;color:var(--muted);font-weight:600">left of 11:00</div>
+<div style="position:absolute;inset:0;background:#070A1A"></div>
+<div style="position:absolute;left:50%;top:296px;transform:translate(-50%,-50%);
+  width:520px;height:520px;display:flex;align-items:center;justify-content:center">
+  {globe(520)}</div>
+<div style="position:absolute;left:0;right:0;bottom:96px;height:300px;
+  background:linear-gradient(to bottom,rgba(7,10,26,0),#070A1A 46%)"></div>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:22px 20px 0">
+  <div class="row" style="justify-content:space-between">
+    <div style="width:40px;height:40px;border-radius:13px;display:flex;
+      align-items:center;justify-content:center;background:rgba(255,255,255,.09);
+      color:#fff">{icon("menu", 20)}</div>
+    <div class="col" style="align-items:center">
+      <div class="disp" style="font-size:22px;font-weight:700;color:#fff">Simran</div>
+      <div style="font-size:11.5px;color:rgba(255,255,255,.6);font-weight:600">
+        Turn the globe with your hand</div>
     </div>
+    <div style="width:40px;height:40px;border-radius:13px;display:flex;
+      align-items:center;justify-content:center;background:rgba(255,255,255,.09);
+      color:#fff">{icon("bell", 20)}</div>
   </div>
-  <div class="row" style="gap:8px;justify-content:center;flex-wrap:wrap">{chips}</div>
-  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
-    <div>Begin</div></div>
-  <div class="card col" style="padding:14px;gap:10px">
-    <div class="row" style="justify-content:space-between">
-      <div style="font-size:13.5px;font-weight:700">Today in your sangat</div>
-      <div style="font-size:12.5px;color:var(--kesriInk);font-weight:600">See all</div>
+  <div style="flex:1"></div>
+  <div class="col" style="gap:14px;padding-bottom:110px">
+    <div class="row" style="padding:0 6px">
+      <div class="col" style="flex:1;align-items:center">
+        <div class="disp" style="font-size:26px;font-weight:700;color:#fff;
+          line-height:1.1">12,400</div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.6);font-weight:600">
+          in the sangat</div>
+      </div>
+      <div style="width:1px;align-self:stretch;background:rgba(255,255,255,.14)"></div>
+      <div class="col" style="flex:1;align-items:center">
+        <div class="disp" style="font-size:26px;font-weight:700;color:#6FE3A6;
+          line-height:1.1">4,812</div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.6);font-weight:600">
+          here today</div>
+      </div>
+      <div style="width:1px;align-self:stretch;background:rgba(255,255,255,.14)"></div>
+      <div class="col" style="flex:1;align-items:center">
+        <div class="disp" style="font-size:26px;font-weight:700;color:#fff;
+          line-height:1.1">64</div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.6);font-weight:600">
+          countries</div>
+      </div>
     </div>
-    <div class="row" style="gap:10px">
-      <div class="row" style="gap:-6px">{faces}</div>
-      <div style="font-size:13px;color:var(--ink2);flex:1">
-        Gurpreet, Harjit and 6 others sat today</div>
+    <div class="row" style="gap:13px;justify-content:center;flex-wrap:wrap">
+      <div class="row" style="gap:6px"><div style="width:8px;height:8px;
+        border-radius:4px;background:#F2A24E"></div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.72);font-weight:600">
+          You</div></div>
+      <div class="row" style="gap:6px"><div style="width:8px;height:8px;
+        border-radius:4px;background:#5B8DEF"></div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.72);font-weight:600">
+          In the sangat</div></div>
+      <div class="row" style="gap:6px"><div style="width:8px;height:8px;
+        border-radius:4px;background:#3DBE7B"></div>
+        <div style="font-size:11.5px;color:rgba(255,255,255,.72);font-weight:600">
+          Here today</div></div>
     </div>
-  </div>
-  <div class="card row" style="padding:14px;gap:12px">
-    <div style="width:52px;height:52px;border-radius:26px;background:#0E1533;
-      display:flex;align-items:center;justify-content:center;color:#5B8DEF;flex:none">
-      {icon("globe", 26)}</div>
-    <div class="col" style="flex:1">
-      <div style="font-size:14px;font-weight:700">Around the world</div>
-      <div style="font-size:12.5px;color:var(--muted)">
-        4,812 sat today · 1,240 sitting now</div>
-    </div>
-    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 20)}</div>
-  </div>
-  <div class="col" style="align-items:center;gap:0;padding-top:2px">
-    <div class="gur" style="font-size:16px;line-height:1.6;color:var(--ink2)">
-      ਸਿਮਰਉ ਸਿਮਰਿ ਸਿਮਰਿ ਸੁਖੁ ਪਾਵਉ ॥</div>
-    <div style="font-size:11px;color:var(--muted);font-weight:600">Sukhmani Sahib</div>
+    <div class="btn" style="background:var(--kesri);color:#231104">
+      {icon("simran", 20)}<div>Begin Simran · 11 min</div></div>
   </div>
 </div>
 {nav("simran")}
@@ -673,7 +704,9 @@ def secure_account() -> str:
 def privacy_data() -> str:
     on_phone = ["Your diary and streaks", "Reading position and goals",
                 "Every bani, its audio and the calendar"]
-    on_server = ["Your name, email, city", "Which groups you are in",
+    on_server = ["Your name and email",
+                 "The city you chose — shown as one dot on the globe",
+                 "Which groups you are in",
                  "How much you have completed towards a shared goal"]
     def bullets(items, colour):
         return "".join(
@@ -702,16 +735,10 @@ def privacy_data() -> str:
   <div class="card col" style="padding:6px 16px">
     <div class="row" style="gap:12px;padding:13px 0">
       <div class="col" style="flex:1">
-        <div style="font-size:14px;font-weight:600">Show me on the globe</div>
-        <div style="font-size:12px;color:var(--muted)">A dot at your city</div>
-      </div>{toggle(True)}
-    </div>
-    <div style="height:1px;background:var(--rule)"></div>
-    <div class="row" style="gap:12px;padding:13px 0">
-      <div class="col" style="flex:1">
         <div style="font-size:14px;font-weight:600">Show my name in groups</div>
         <div style="font-size:12px;color:var(--muted)">
-          Off shows you as "a member"</div>
+          Off shows you as "a member". Your name is never shown outside a
+          group you joined.</div>
       </div>{toggle(True)}
     </div>
   </div>
@@ -811,9 +838,9 @@ def sangat_home() -> str:
       color:#5B8DEF;display:flex;align-items:center;justify-content:center;flex:none">
       {icon("globe", 26)}</div>
     <div class="col" style="flex:1">
-      <div style="font-size:15px;font-weight:700">Global Naam Simran</div>
+      <div style="font-size:15px;font-weight:700">The sangat worldwide</div>
       <div style="font-size:12.5px;opacity:.7">
-        4,812 sat today · 1,240 sitting now</div>
+        12,400 in 64 countries · see it in Simran</div>
     </div>
     <div style="opacity:.6;transform:rotate(180deg)">{icon("back", 18)}</div>
   </div>
@@ -1324,7 +1351,6 @@ def notifications() -> str:
 
 
 SCREENS = [
-    ("28-GlobalSimran", "Global Simran", global_simran),
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
     ("31-GroupDetail", "Group — shared goal", group_detail),
