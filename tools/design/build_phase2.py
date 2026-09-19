@@ -69,6 +69,10 @@ ICONS = {
     "check": '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
     "plus": '<path d="M12 5v14M5 12h14"/>',
     "bell": '<path d="M6.5 10a5.5 5.5 0 0 1 11 0c0 4 1.5 5.5 1.5 5.5H5S6.5 14 6.5 10z"/><path d="M10 18.5a2 2 0 0 0 4 0"/>',
+    "mail": '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M4 8l8 5.5L20 8"/>',
+    "alert": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5"/><circle cx="12" cy="16.3" r=".9" fill="currentColor" stroke="none"/>',
+    "clock": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.4 2"/>',
+    "phone": '<rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 18.6h3"/>',
     "share": '<circle cx="17" cy="6" r="2.4"/><circle cx="7" cy="12" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M9.2 10.9l5.6-3.3M9.2 13.1l5.6 3.3"/>',
 }
 
@@ -394,18 +398,9 @@ def simran_tab() -> str:
 """
 
 
-def today() -> str:
-    goals = [("Japji Sahib", "5:30 AM", 1.0), ("Simran", "11 min", 0.62),
-             ("Rehras Sahib", "6:40 PM", 0.0)]
-    rows = "".join(
-        f'<div class="row" style="gap:10px">'
-        f'<div style="width:26px;height:26px;flex:none">{ring(p, 26, 4)}</div>'
-        f'<div style="font-size:13.5px;font-weight:600;flex:1">{n}</div>'
-        f'<div style="font-size:12.5px;color:var(--muted);font-weight:600">{w}</div>'
-        f'</div>' for n, w, p in goals)
+def join_banner() -> str:
+    """The orange banner for somebody who has not set up at all."""
     return f"""
-<div class="pad col" style="gap:13px">
-  {header("Today", "Friday, 20 November", left="menu", right="bell")}
   <div class="card col" style="padding:14px 16px;gap:10px;
     background:linear-gradient(135deg,var(--kesri),#B8560A);color:#fff">
     <div class="row" style="gap:10px">
@@ -419,10 +414,48 @@ def today() -> str:
       </div>
     </div>
     <div class="row" style="justify-content:space-between;align-items:center">
-      <div style="font-size:12px;opacity:.85">Takes a minute · no password</div>
+      <div style="font-size:12px;opacity:.85">Takes a couple of seconds</div>
       <div class="chip" style="background:#fff;color:#9A4F00">Set up</div>
     </div>
-  </div>
+  </div>"""
+
+
+def verify_strip() -> str:
+    """Set up, but the email is not confirmed yet.
+
+    Quieter than the join banner on purpose: the account already works, and
+    this is the one thing still outstanding, not an advertisement. It stays
+    until the code is entered and then it is simply gone.
+    """
+    return f"""
+  <div class="card row" style="padding:12px 14px;gap:11px;
+    background:var(--kesriSoft);border:1px solid var(--kesri)">
+    <div style="width:34px;height:34px;border-radius:11px;flex:none;
+      background:var(--kesri);color:#fff;display:flex;align-items:center;
+      justify-content:center">{icon("mail", 18)}</div>
+    <div class="col" style="flex:1">
+      <div style="font-size:13.5px;font-weight:700;color:var(--kesriInk)">
+        Confirm your email</div>
+      <div style="font-size:12px;color:var(--kesriInk);opacity:.85">
+        Until you do, your sangat lives on this phone only</div>
+    </div>
+    <div class="chip" style="background:var(--kesri);color:#fff">Verify</div>
+  </div>"""
+
+
+def today(banner: str | None = None) -> str:
+    goals = [("Japji Sahib", "5:30 AM", 1.0), ("Simran", "11 min", 0.62),
+             ("Rehras Sahib", "6:40 PM", 0.0)]
+    rows = "".join(
+        f'<div class="row" style="gap:10px">'
+        f'<div style="width:26px;height:26px;flex:none">{ring(p, 26, 4)}</div>'
+        f'<div style="font-size:13.5px;font-weight:600;flex:1">{n}</div>'
+        f'<div style="font-size:12.5px;color:var(--muted);font-weight:600">{w}</div>'
+        f'</div>' for n, w, p in goals)
+    return f"""
+<div class="pad col" style="gap:13px">
+  {header("Today", "Friday, 20 November", left="menu", right="bell")}
+  {banner if banner is not None else join_banner()}
   <div class="card col" style="padding:16px;gap:12px">
     <div class="row" style="justify-content:space-between">
       <div class="col">
@@ -588,6 +621,31 @@ def toggle(on: bool) -> str:
             f'width:20px;height:20px;border-radius:10px;background:#fff"></div></div>')
 
 
+def otp(typed: str, total: int = 6) -> str:
+    """The code boxes, part-typed, with the caret on the next one."""
+    out = '<div class="row" style="gap:8px;justify-content:center">'
+    for i in range(total):
+        ch = typed[i] if i < len(typed) else ""
+        here = i == len(typed)
+        edge = "var(--kesri)" if here else ("var(--ink2)" if ch else "var(--rule)")
+        inner = ch or ('<div style="width:2px;height:22px;background:var(--kesri)">'
+                       '</div>' if here else "")
+        out += (f'<div style="width:46px;height:56px;border-radius:14px;'
+                f'background:var(--card);border:1.5px solid {edge};display:flex;'
+                f'align-items:center;justify-content:center;font-size:22px;'
+                f'font-weight:700">{inner}</div>')
+    return out + "</div>"
+
+
+def quiet(text: str, ic: str = "check", colour: str = "var(--muted)") -> str:
+    """A calm note in a sunk card -- the pattern the set already uses."""
+    return (f'<div class="card row" style="padding:12px 14px;gap:10px;'
+            f'background:var(--card2);box-shadow:none">'
+            f'<div style="color:{colour};flex:none">{icon(ic, 18)}</div>'
+            f'<div style="font-size:12.5px;color:var(--ink2);line-height:1.5">'
+            f'{text}</div></div>')
+
+
 def primary(label: str, ic: str | None = None) -> str:
     return (f'<div class="btn" style="background:var(--primary);color:var(--onPrimary)">'
             + (icon(ic, 20) if ic else "") + f'<div>{label}</div></div>')
@@ -607,20 +665,15 @@ def profile() -> str:
   <div class="col" style="gap:14px">
     {field("Your name", "Harjit Singh")}
     {field("Email", "harjit@example.com",
-           "Only used to bring your sangat back if you change phone. "
-           "Nobody else in the app sees it.")}
+           "We send a 6-digit code here to confirm it is yours. Nobody else "
+           "in the app ever sees it.")}
     {field("Phone", "~Add a number", optional=True)}
     {field("City", "Amritsar, Punjab",
            "Shown as a dot on the Global Simran globe.")}
   </div>
-  <div class="card row" style="padding:12px 14px;gap:10px;background:var(--card2);
-    box-shadow:none">
-    <div style="color:var(--sage);flex:none">{icon("check", 18)}</div>
-    <div style="font-size:12.5px;color:var(--ink2);line-height:1.5">
-      No password to make or remember. Your diary and your paath stay on this
-      phone unless you turn on sync.</div>
-  </div>
-  {primary("Continue")}
+  {quiet("Next we email you a code. There is no password to make or "
+         "remember, and never will be.", "mail", "var(--sage)")}
+  {primary("Send me the code")}
   <div style="text-align:center;font-size:12px;color:var(--muted)">
     What we store &amp; why</div>
 </div>
@@ -639,25 +692,22 @@ def account() -> str:
     </div>
   </div>
   <div class="card col" style="padding:4px 16px">
-    {listrow("bell", "Email", "harjit@example.com")}
+    {listrow("mail", "Email", "harjit@example.com",
+             right='<span style="color:var(--sage)">Verified</span>')}
     <div style="height:1px;background:var(--rule)"></div>
-    {listrow("bell", "Phone", "Not added")}
+    {listrow("phone", "Phone", "Not added")}
     <div style="height:1px;background:var(--rule)"></div>
     {listrow("globe", "City", "Amritsar, Punjab")}
   </div>
-  <div class="card col" style="padding:14px;gap:11px;background:var(--kesriSoft)">
-    <div class="row" style="gap:10px">
-      <div style="color:var(--kesriInk);flex:none">{icon("share", 20)}</div>
-      <div class="col" style="flex:1">
-        <div style="font-size:14px;font-weight:700;color:var(--kesriInk)">
-          Secure your sangat</div>
-        <div style="font-size:12.5px;color:var(--kesriInk);opacity:.85;
-          line-height:1.45">Right now this account lives on this phone only.
-          Add your email and it comes back if you change phone.</div>
-      </div>
+  <div class="card row" style="padding:14px;gap:11px;background:var(--sageSoft)">
+    <div style="color:var(--sage);flex:none">{icon("check", 20)}</div>
+    <div class="col" style="flex:1">
+      <div style="font-size:14px;font-weight:700;color:var(--sage)">
+        Your sangat is safe</div>
+      <div style="font-size:12.5px;color:var(--ink2);line-height:1.45">
+        Verified on 20 November. Sign in with this email on any phone and your
+        groups, goals and diary come back.</div>
     </div>
-    <div class="btn" style="background:var(--kesri);color:#fff;min-height:44px;
-      font-size:14.5px"><div>Send me the link</div></div>
   </div>
   <div class="card col" style="padding:4px 16px">
     {listrow("check", "Diary sync", "On · synced 2 minutes ago", right="On")}
@@ -671,32 +721,194 @@ def account() -> str:
 """
 
 
-def secure_account() -> str:
+def verify_email() -> str:
+    """Confirming the email, from setup or from the strip on Today.
+
+    One screen does both jobs, because they are the same job: the address is
+    unconfirmed and the account is not yet recoverable. The link and the code
+    are two ways through the same door -- the link is one tap when the mail
+    is read on this phone, and the code is what saves it when it is read on a
+    laptop, which is where the old design quietly dead-ended.
+
+    Changing the address lives here rather than in Account, because this is
+    where somebody finds out they mistyped it.
+    """
     return f"""
-<div class="pad col" style="gap:18px">
-  {header("Keep your sangat")}
-  <div class="col" style="align-items:center;gap:14px;padding-top:10px">
-    <div style="width:92px;height:92px;border-radius:46px;background:var(--kesriSoft);
+<div class="pad col" style="gap:16px">
+  {header("Verify your email")}
+  <div class="col" style="align-items:center;gap:12px;padding-top:6px">
+    <div style="width:80px;height:80px;border-radius:40px;background:var(--kesriSoft);
       color:var(--kesriInk);display:flex;align-items:center;justify-content:center">
-      {icon("share", 44)}</div>
-    <div class="disp" style="font-size:22px;font-weight:700;text-align:center;
-      line-height:1.25">There is no password<br>to forget</div>
+      {icon("mail", 38)}</div>
+    <div class="disp" style="font-size:22px;font-weight:700;text-align:center">
+      Check your email</div>
     <div style="font-size:14px;color:var(--ink2);text-align:center;line-height:1.6;
-      padding:0 6px">Your account lives on this phone. Add your email and we
-      will send one link — tap it and your groups, goals and diary come back on
-      any phone you sign in from.</div>
+      padding:0 4px">We sent a link and a 6-digit code to
+      <span style="font-weight:700;color:var(--ink)">harjit@example.com</span>.
+      Tap the link, or type the code here.</div>
   </div>
-  {field("Email", "harjit@example.com")}
-  {primary("Send the link")}
-  <div class="card row" style="padding:12px 14px;gap:10px;background:var(--card2);
-    box-shadow:none">
-    <div style="color:var(--muted);flex:none">{icon("check", 18)}</div>
-    <div style="font-size:12.5px;color:var(--ink2);line-height:1.5">
-      We never show your email to anyone else, and we never send anything but
-      this link.</div>
+  {otp("4291")}
+  <div class="row" style="justify-content:center;gap:6px;font-size:13px">
+    <div style="color:var(--muted)">Did not arrive?</div>
+    <div style="color:var(--muted);font-weight:600">Send again in 0:42</div>
   </div>
+  <div class="card row" style="padding:13px 14px;gap:11px">
+    <div style="color:var(--teal);flex:none">{icon("mail", 19)}</div>
+    <div class="col" style="flex:1">
+      <div style="font-size:13.5px;font-weight:600">Wrong address?</div>
+      <div style="font-size:12px;color:var(--muted)">
+        harjit@example.com — change it and we will send a new code</div>
+    </div>
+    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>
+  {quiet("Until this is done your groups and goals live on this phone only, "
+         "and they cannot be brought back if you change phone.", "alert",
+         "var(--kesriInk)")}
+  <div style="text-align:center;font-size:13px;color:var(--muted);font-weight:600">
+    Do this later</div>
+</div>
+"""
+
+
+def today_unverified() -> str:
+    """Today, for somebody who set up but has not entered the code yet.
+
+    The account works: goals, reader, diary, the globe. Only the coming-back
+    is missing, so the screen says that and nothing more.
+    """
+    return today(verify_strip())
+
+
+def code_problems() -> str:
+    """The two ways a code fails, on one screen, as Sync does its three.
+
+    A used code can say what it was used for, because the use is recorded --
+    which turns a dead end into an answer, and is the only way somebody finds
+    out their address is being read by somebody else.
+    """
+    def state(ic, colour, tint, title, body, when):
+        return f'''
+  <div class="card col" style="padding:15px;gap:9px">
+    <div class="row" style="gap:11px">
+      <div style="width:38px;height:38px;border-radius:12px;flex:none;
+        background:{tint};color:{colour};display:flex;align-items:center;
+        justify-content:center">{icon(ic, 19)}</div>
+      <div class="col" style="flex:1">
+        <div style="font-size:14.5px;font-weight:700">{title}</div>
+        <div style="font-size:12px;color:var(--muted)">{when}</div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.55">{body}</div>
+  </div>'''
+    return f"""
+<div class="pad col" style="gap:13px">
+  {header("That code did not work", "What happened, and what to do")}
+  {state("alert", "var(--teal)", "var(--card2)", "Already used",
+         "This code signed in a phone on 20 November at 6:12 PM. Every code "
+         "works once and then stops, which is what keeps a forwarded email "
+         "from being a way in.",
+         "USED · 20 NOV, 6:12 PM")}
+  {state("clock", "var(--kesriInk)", "var(--kesriSoft)", "Too old",
+         "Codes last an hour. This one was sent yesterday, so it has lapsed "
+         "on its own — nobody used it.",
+         "SENT · 19 NOV, 9:04 PM")}
+  {primary("Send a new code", "mail")}
+  {quiet("If neither of those was you, change your email address before you "
+         "verify. A code is only ever sent to the address on the account.",
+         "alert", "var(--kesriInk)")}
   <div style="text-align:center;font-size:13px;color:var(--muted);font-weight:600">
     Not now</div>
+</div>
+"""
+
+
+def restore_or_new() -> str:
+    """A new phone, and the address already has an account behind it.
+
+    Restoring and starting again are both legitimate -- a shared family email
+    is the ordinary case -- so neither is hidden behind the other, and the
+    existing account is described well enough to be recognised without
+    showing anything a stranger could use.
+    """
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("You have been here before", "harjit@example.com")}
+  <div class="card col" style="padding:16px;gap:13px;border:1.5px solid var(--kesri)">
+    <div class="row" style="gap:13px">
+      {avatar("HS", "var(--kesriSoft)", "var(--kesriInk)", 52)}
+      <div class="col" style="flex:1">
+        <div class="disp" style="font-size:19px;font-weight:700">Harjit Singh</div>
+        <div style="font-size:13px;color:var(--muted)">Amritsar, Punjab</div>
+      </div>
+    </div>
+    <div class="row" style="gap:0;border-top:1px solid var(--rule);padding-top:11px">
+      <div class="col" style="flex:1;gap:1px">
+        <div class="disp" style="font-size:17px;font-weight:700">3</div>
+        <div style="font-size:11.5px;color:var(--muted)">groups</div>
+      </div>
+      <div class="col" style="flex:1;gap:1px">
+        <div class="disp" style="font-size:17px;font-weight:700">412</div>
+        <div style="font-size:11.5px;color:var(--muted)">paath logged</div>
+      </div>
+      <div class="col" style="flex:1;gap:1px">
+        <div class="disp" style="font-size:17px;font-weight:700">Mar</div>
+        <div style="font-size:11.5px;color:var(--muted)">since 2026</div>
+      </div>
+    </div>
+    {primary("Restore this account")}
+  </div>
+  <div class="row" style="gap:12px">
+    <div style="height:1px;background:var(--rule);flex:1"></div>
+    <div style="font-size:12px;color:var(--muted);font-weight:600">or</div>
+    <div style="height:1px;background:var(--rule);flex:1"></div>
+  </div>
+  <div class="card col" style="padding:15px;gap:11px">
+    <div class="col" style="gap:3px">
+      <div style="font-size:14.5px;font-weight:700">Start a new account</div>
+      <div style="font-size:12.5px;color:var(--ink2);line-height:1.5">
+        For somebody else on this phone. The account above is left exactly as
+        it is, on whatever phone has it.</div>
+    </div>
+    {ghost("Start fresh")}
+  </div>
+  {quiet("Restoring signs nothing out. The same account can be on more than "
+         "one phone at once.")}
+</div>
+"""
+
+
+def restored() -> str:
+    """What came back, said plainly, because the point is to be believed."""
+    items = [("sangat", "3 groups", "Nanda Family, Gurdwara Sangat, Amrit Vela Circle"),
+             ("check", "Your goals", "2 shared · 3 daily, at the times you set"),
+             ("diary", "Your diary", "412 entries, from 2 March"),
+             ("globe", "Your dot", "Amritsar, Punjab")]
+    rows = "".join(
+        f'<div class="row" style="gap:12px;padding:10px 0">'
+        f'<div style="width:36px;height:36px;border-radius:12px;flex:none;'
+        f'background:var(--sageSoft);color:var(--sage);display:flex;'
+        f'align-items:center;justify-content:center">{icon(i, 18)}</div>'
+        f'<div class="col" style="flex:1">'
+        f'<div style="font-size:14px;font-weight:600">{t}</div>'
+        f'<div style="font-size:12px;color:var(--muted)">{d}</div></div>'
+        f'<div style="color:var(--sage)">{icon("check", 18)}</div></div>'
+        for i, t, d in items)
+    return f"""
+<div class="pad col" style="gap:16px">
+  <div class="col" style="align-items:center;gap:12px;padding-top:34px">
+    <div style="width:88px;height:88px;border-radius:44px;background:var(--sageSoft);
+      color:var(--sage);display:flex;align-items:center;justify-content:center">
+      {icon("check", 44)}</div>
+    <div class="disp" style="font-size:24px;font-weight:700;text-align:center">
+      Your sangat is back</div>
+    <div style="font-size:14px;color:var(--ink2);text-align:center;line-height:1.55">
+      Everything below came down in a moment. The banis and their recitations
+      were already on this phone.</div>
+  </div>
+  <div class="card col" style="padding:6px 16px">{rows}</div>
+  {quiet("Your diary came back because sync was on. With sync off, only your "
+         "groups and goals are kept — the diary stays on the phone that wrote it.")}
+  {primary("Open Today")}
 </div>
 """
 
@@ -704,7 +916,7 @@ def secure_account() -> str:
 def privacy_data() -> str:
     on_phone = ["Your diary and streaks", "Reading position and goals",
                 "Every bani, its audio and the calendar"]
-    on_server = ["Your name and email",
+    on_server = ["Your name",
                  "The city you chose — shown as one dot on the globe",
                  "Which groups you are in",
                  "How much you have completed towards a shared goal"]
@@ -731,6 +943,14 @@ def privacy_data() -> str:
       <div style="font-size:14px;font-weight:700">Shared with the sangat</div>
     </div>
     {bullets(on_server, "var(--teal)")}
+  </div>
+  <div class="card col" style="padding:15px;gap:6px">
+    <div class="row" style="gap:8px">
+      <div style="color:var(--kesriInk)">{icon("mail", 18)}</div>
+      <div style="font-size:14px;font-weight:700">Held for your account alone</div>
+    </div>
+    {bullets(["Your email — the only thing it does is bring your account back"],
+             "var(--kesri)")}
   </div>
   <div class="card col" style="padding:6px 16px">
     <div class="row" style="gap:12px;padding:13px 0">
@@ -770,7 +990,7 @@ def unlock_sheet() -> str:
   </div>
   <div class="col" style="gap:14px;padding-top:4px">{rows}</div>
   <div style="flex:1"></div>
-  {primary("Set up — takes a minute")}
+  {primary("Set up — takes a couple of seconds")}
   {ghost("Not now")}
   <div style="text-align:center;font-size:11.5px;color:var(--muted)">
     No password · no ads · your paath stays on your phone</div>
@@ -1356,7 +1576,7 @@ SCREENS = [
     ("31-GroupDetail", "Group — shared goal", group_detail),
     ("32-Profile", "Join the sangat", profile),
     ("33-Account", "Your account", account),
-    ("34-SecureAccount", "Keep your sangat", secure_account),
+    ("34-VerifyEmail", "Verify your email", verify_email),
     ("35-PrivacyData", "Privacy & my data", privacy_data),
     ("36-UnlockSheet", "Join the sangat — sheet", unlock_sheet),
     ("37-SettingsMenu", "Menu", settings_menu),
@@ -1373,6 +1593,10 @@ SCREENS = [
     ("48-ReaderComplete", "Reader — complete", reader_complete),
     ("49-Sync", "Sync", sync_states),
     ("50-Notifications", "Notifications", notifications),
+    ("51-TodayUnverified", "Today — email not confirmed", today_unverified),
+    ("52-CodeProblems", "That code did not work", code_problems),
+    ("53-RestoreOrNew", "Restore, or start fresh", restore_or_new),
+    ("54-Restored", "Your sangat is back", restored),
 ]
 
 

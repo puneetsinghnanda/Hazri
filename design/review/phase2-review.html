@@ -104,6 +104,16 @@ section{padding-block:30px 4px; scroll-margin-top:150px}
 }
 .cname{font-family:'Baloo Paaji 2',Mukta,sans-serif; font-weight:600; font-size:15.5px; line-height:1.25}
 .ccap{font-size:12.5px; color:var(--ink2); line-height:1.45}
+.chead .was{
+  margin-left:auto; flex:none; font-size:10.5px; font-weight:700;
+  letter-spacing:.05em; text-transform:uppercase; border-radius:999px;
+  padding:3px 8px; background:var(--sunk); color:var(--muted);
+}
+.chead .was.new{background:var(--accentSoft); color:var(--accentInk)}
+.wasline{
+  font-size:11.5px; font-weight:600; color:var(--accentInk);
+  background:var(--accentSoft); border-radius:9px; padding:6px 10px; line-height:1.4;
+}
 
 .shot{
   position:relative; width:234px; height:507px; margin:0 auto;
@@ -194,9 +204,9 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <div class="topbar">
       <div class="brand">
         <h1>Hazri · Phase 2</h1>
-        <span class="sub">22 screens for sign-off</span>
+        <span class="sub">26 screens · round 2</span>
       </div>
-      <span class="tally" id="tally">0 of 22 commented</span>
+      <span class="tally" id="tally">0 of 26 commented</span>
       <div class="seg" role="group" aria-label="Show screens in">
         <button type="button" id="t-light" aria-pressed="true">Light</button>
         <button type="button" id="t-dark" aria-pressed="false">Dark</button>
@@ -214,9 +224,16 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <p>Leave a comment under anything that should change, and mark it
       <strong>Fine</strong> or <strong>Change</strong> so we both know what is settled.
       Comments save as you type and I read them straight back from here.</p>
+    <p><strong>Round 2 is in.</strong> The joining flow has been redrawn around your four
+      answers on verification — nine screens, five of them new or replaced, marked
+      <strong>New</strong> and <strong>Revised</strong>. Your round-1 comments still show on
+      the screens that kept their number; clear one when you are happy it is settled.
+      Everything else — Today, Simran, Sangat and Vichar — is untouched and still
+      waiting on the changes you asked for.</p>
     <div class="note">
-      <span>Nothing is built yet. This is the design set only — implementation starts once
-        you say the set is right.</span>
+      <span>Still nothing built. Vichar is the big one outstanding: you have said the whole
+        section is not what you envisioned, so those four screens need redrawing rather
+        than adjusting.</span>
     </div>
   </div>
   <div id="sections"></div>
@@ -301,18 +318,35 @@ const SECTIONS = [
   },
   {
     id: "account", title: "Joining & your account",
-    line: "A name, an email, no password — and one link back if the phone changes.",
+    line: "Round 2 \u2014 redrawn around your four answers. The email is confirmed during setup, by link or by code, and every way that can go wrong now has a screen.",
     screens: [
-      { id: "32-Profile", name: "Join the sangat",
-        cap: "Name, email, optional phone, city. The city is the dot on the globe; the email is only ever the way back." },
       { id: "36-UnlockSheet", name: "The sheet that asks",
-        cap: "Over Today, with Not now sitting right there. The app is whole without it." },
+        cap: "Over Today, with Not now sitting right there. The app is whole without it.",
+        was: "Copy only: \u201ctakes a couple of seconds\u201d, to match Today." },
+      { id: "32-Profile", name: "Join the sangat",
+        cap: "Name, email, optional phone, city. The button now sends the code rather than just moving on, so the address is checked while the person is still here to fix it.",
+        was: "Revised: verification starts at setup." },
+      { id: "34-VerifyEmail", name: "Verify your email",
+        cap: "The link and the code, both live, and changing the address without leaving. This is the screen you asked for in place of \u201csend me the link\u201d \u2014 and the code is what rescues the case where the mail is read on a laptop.",
+        was: "Replaces 34 Keep your sangat entirely." },
+      { id: "51-TodayUnverified", name: "Today \u2014 not confirmed yet",
+        cap: "If the code is left for later, this strip sits on Today until it is done, then disappears. Everything else on the screen works.",
+        was: "New." },
+      { id: "52-CodeProblems", name: "That code did not work",
+        cap: "Your point 3, drawn: a used code says when it was used and on what, because that is the only way somebody learns their email is being read by someone else. A lapsed one says so plainly.",
+        was: "New." },
+      { id: "53-RestoreOrNew", name: "Restore, or start fresh",
+        cap: "Your point 4. The existing account is described well enough to recognise \u2014 not enough for a stranger to use \u2014 and starting fresh is a real choice, because a shared family email is ordinary.",
+        was: "New." },
+      { id: "54-Restored", name: "Your sangat is back",
+        cap: "What actually came down, and the one honest caveat about the diary.",
+        was: "New." },
       { id: "33-Account", name: "Your account",
-        cap: "Once it exists: sync, privacy, and signing out of this phone." },
-      { id: "34-SecureAccount", name: "Keep your sangat",
-        cap: "The prompt to add an email, for an account that so far lives on one phone only." },
+        cap: "The orange \u201cSecure your sangat\u201d card is gone, as you asked \u2014 it only existed to chase people who skipped the email, and now nobody does.",
+        was: "Revised: nag card replaced by the verified state." },
       { id: "35-PrivacyData", name: "Privacy & my data",
-        cap: "What stays on the phone, what the sangat sees, the name toggle, and the two buttons that end it." },
+        cap: "First bullet is now just your name. The email moved to its own group, because it is held for the account and is not the sangat\u2019s business.",
+        was: "Revised: your comment, plus a home for the email." },
     ],
   },
   {
@@ -401,6 +435,13 @@ function buildCard(s) {
   const cp = document.createElement("div");
   cp.className = "ccap"; cp.textContent = s.cap;
   chead.append(num, nm);
+  if (s.was) {
+    const w = document.createElement("span");
+    w.className = "was" + (/^New/.test(s.was) ? " new" : "");
+    w.textContent = /^New/.test(s.was) ? "New" : "Revised";
+    w.title = s.was;
+    chead.append(w);
+  }
 
   const shot = document.createElement("div");
   shot.className = "shot";
@@ -447,7 +488,13 @@ function buildCard(s) {
   const state = document.createElement("div");
   state.className = "state"; state.textContent = "";
 
-  card.append(chead, shot, cp, verdict, ta, state);
+  card.append(chead, shot, cp);
+  if (s.was) {
+    const w = document.createElement("div");
+    w.className = "wasline"; w.textContent = s.was;
+    card.append(w);
+  }
+  card.append(verdict, ta, state);
   els.set(s.id, { card, ta, state, ok, change, frame });
   return card;
 }
