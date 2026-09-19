@@ -113,7 +113,7 @@ EN = {
     "goalsAllDone": "All of today’s goals are done",
     "hazriWas": "Your hazri was marked at 5:52 AM, with Japji Sahib",
     "inPresence": "Read in the presence of Sri Guru Granth Sahib Ji",
-    "streak": "37 days in a row", "gentle": "a gentle streak",
+    "streak": "11 days in a row", "gentle": "a gentle streak",
     "seeDiary": "See my diary", "done": "Done",
 }
 PA = {
@@ -138,7 +138,7 @@ PA = {
     "goalsAllDone": "ਅੱਜ ਦੇ ਸਾਰੇ ਸੰਕਲਪ ਪੂਰੇ",
     "hazriWas": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ 5:52 AM ਉੱਤੇ ਲੱਗੀ, ਜਪੁ ਜੀ ਸਾਹਿਬ ਨਾਲ",
     "inPresence": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੀ ਹਜ਼ੂਰੀ ਵਿੱਚ",
-    "streak": "ਲਗਾਤਾਰ 37 ਦਿਨ", "gentle": "ਇੱਕ ਨਰਮ ਲੜੀ",
+    "streak": "ਲਗਾਤਾਰ 11 ਦਿਨ", "gentle": "ਇੱਕ ਨਰਮ ਲੜੀ",
     "seeDiary": "ਮੇਰੀ ਡਾਇਰੀ ਵੇਖੋ", "done": "ਹੋ ਗਿਆ",
 }
 
@@ -484,11 +484,9 @@ def hazri_banner(t: dict = EN) -> str:
       <div class="disp" style="font-size:17px;font-weight:700">
         {t["hazriMarked"]}</div>
       <div class="{t['cls']}" style="font-size:12.5px;opacity:.9">{t["hazriWith"]}</div>
+      <div class="{t['cls']}" style="font-size:12px;opacity:.78;font-weight:600;
+        padding-top:3px">{t["streak"]}</div>
     </div>
-    <div class="col" style="align-items:center;flex:none">
-      <div class="disp" style="font-size:19px;font-weight:700;line-height:1.1">37</div>
-      <div class="{t['cls']}" style="font-size:10.5px;opacity:.85;font-weight:600">
-        {t["days"]}</div>
     </div>
   </div>"""
 
@@ -1942,7 +1940,7 @@ def diary_today() -> str:
     </div>
     <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
     <div class="col" style="flex:1;align-items:center;gap:1px">
-      <div class="disp" style="font-size:21px;font-weight:700">37</div>
+      <div class="disp" style="font-size:21px;font-weight:700">11</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">
         days in a row</div>
     </div>
@@ -1969,9 +1967,9 @@ def diary_month() -> str:
     # you finish everything you set yourself", which is a harder day and a
     # rarer dot -- that gap is the honest picture of a month and the reason
     # one dot could never carry both.
-    hazri = set(range(1, 21)) - {6, 13}
-    goals = {1, 2, 4, 5, 8, 9, 12, 15, 16, 19, 20}
-    grace = {6}
+    hazri = set(range(1, 21)) - {2, 6, 9}
+    goals = {1, 4, 5, 8, 12, 15, 16, 19, 20}
+    grace = {2, 6}
     cells = ""
     for wk in weeks:
         for d in wk:
@@ -2012,9 +2010,9 @@ def diary_month() -> str:
       justify-content:center">{app_mark(32)}</div>
     <div class="col" style="flex:1;gap:1px">
       <div class="disp" style="font-size:23px;font-weight:700;line-height:1.1">
-        37 days in a row</div>
+        11 days in a row</div>
       <div style="font-size:12.5px;color:var(--muted)">
-        A gentle streak · 2 grace days left this month</div>
+        A gentle streak · both grace days used this month</div>
     </div>
   </div>
   <div class="row" style="justify-content:space-between;padding-top:2px">
@@ -2044,14 +2042,14 @@ def diary_month() -> str:
   <div class="card row" style="padding:14px 16px">
     <div class="col" style="flex:1;align-items:center;gap:1px">
       <div class="disp" style="font-size:21px;font-weight:700;
-        color:var(--kesri)">18</div>
+        color:var(--kesri)">17</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">
         hazri days</div>
     </div>
     <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
     <div class="col" style="flex:1;align-items:center;gap:1px">
       <div class="disp" style="font-size:21px;font-weight:700;
-        color:var(--sage)">11</div>
+        color:var(--sage)">9</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">
         goals met</div>
     </div>
