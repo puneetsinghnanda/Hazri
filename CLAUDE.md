@@ -19,10 +19,15 @@ to every session in this repository.
    ever.** Phase 1 goes further: it makes no network requests at all and
    `INTERNET` is removed from the merged manifest. **Phase 2 restores
    `INTERNET`** and adds Firebase. What it may then send is a closed list:
-   an anonymous account, the sangat (groups, shared goals, the globe), diary
-   sync, and Firebase Analytics and Crashlytics on the terms PRD §13 already
-   sets — no PII, no free text, no advertising ID (`AD_ID` stays out of the
-   merged manifest), ad personalisation off, and an opt-out that stops both.
+   an anonymous account, the sangat (groups, shared goals, the globe) and
+   diary sync. **Firebase Analytics ships in Phase 2 with collection off and
+   sends nothing** (`setAnalyticsCollectionEnabled(false)` at start-up);
+   Crashlytics is not added at all until Phase 3, which is where collection is
+   switched on and the opt-out becomes live. PRD §13.1 is the per-phase table
+   and the privacy screen is its reader-facing copy — neither is allowed to
+   run ahead of the other. Across every phase: no PII, no free text, no
+   advertising ID (`AD_ID` stays out of the merged manifest) and ad
+   personalisation off.
    Three things stay true across both phases and are not negotiable: **no
    password and no sign-in screen**; **no request is needed to read a bani,
    hear it, see the calendar or write the diary** — all of that is on the

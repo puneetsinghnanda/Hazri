@@ -35,7 +35,7 @@ Live design canvas (all screens side by side, with notes): https://claude.ai/cod
 1. **The HTML files are the visual spec, not code to port.** Frames are 390 × 844 CSS px = 390 × 844 dp. Match layout, spacing, radii, colours and type from the HTML/CSS; build with Flutter widgets. Artboards titled "full scroll" are taller than a phone and show the whole scrolling content.
 2. **Behaviour comes from this PRD.** Where a design and this PRD disagree, the PRD wins. Flag the conflict in the PR description.
 3. **Never create, paraphrase, auto-translate or AI-generate Gurbani text, Gurbani audio, meanings or images of the Gurus.** All Gurbani and meanings come only from the content pipeline (§8). Sample text in the designs and `design/data/` is a placeholder. English/Hindi meanings in the designs are placeholder paraphrases.
-4. **No ad SDKs, no login, no own server in Phase 1.** This build makes no network requests at all; `INTERNET` is removed from the merged manifest. ਅੱਜ ਦਾ ਵਿਚਾਰ is bundled rather than fetched, which is what allows that.
+4. **No ad SDKs, no third-party tracking or attribution SDKs, no login, ever.** Phase 1 goes further: it makes no network requests at all, `INTERNET` is removed from the merged manifest, and ਅੱਜ ਦਾ ਵਿਚਾਰ is bundled rather than fetched, which is what allows that. **Phase 2 restores `INTERNET`** and adds Firebase; what it may then send is the closed list in §13.1. Three things hold across every phase and are not negotiable: **no password and no sign-in screen**; **no request is needed to read a bani, hear it, see the calendar or write the diary**; and **the sangat is opt-in**, so somebody who never joins it is reading, listening and keeping a diary entirely on their own phone.
 5. **All UI strings are localised** (Punjabi, Hindi, English) from day one. No hard-coded user-facing strings.
 6. **Keep platform-specific code behind interfaces** (§6.4) so the iOS app in Phase 3 needs new adapters, not rewrites.
 7. Work milestone by milestone (§15). Each milestone ends with passing tests, `flutter analyze` clean, and a short changelog.
@@ -122,8 +122,8 @@ Sign-in, sync, any backend; Sangat Paath; Global Naam Simran / Simran Circle; fa
 | Phase | Theme | Items |
 |---|---|---|
 | **1 · Launch (this PRD)** | Best daily Nitnem app. Free, offline, no login, no own server. **Android only.** | 1.1–1.17 |
-| **2 · Together** | Server added (Firebase; Vercel for extras). Still free. Android only. | 2.1 Optional sign-in & diary sync · 2.2 Sangat Paath · 2.3 Global Naam Simran · 2.4 Family view · 2.5 Simran Circle · 2.6 Gurbani Vichar AI (curated knowledge base only, cites Ang/teeka) · 2.7 Extended banis · 2.8 Invite links on own domain |
-| **3 · Depth + iOS** | Harder to copy; second platform | 3.1 Recitation check · 3.2 Kids' kantth mode & Gurmukhi letters · 3.3 Gurdwara Connect · 3.4 Wear OS Simran counter (+ Apple Watch after iOS) · 3.5 Home-screen widgets (Android + iOS) · 3.6 Report an error · 3.7 Ask a question · 3.8 Pronunciation practice · 3.9 More voices · 3.10 Cast to TV · 3.11 Live Kirtan (with SGPC written permission) · 3.12 Saakhis (never depicting the Gurus) · 3.13 Badges · 3.14 Sehaj Path marker · 3.15 Daily quotes · **3.16 iOS app (iPhone) from the same Flutter codebase — see §17.2** |
+| **2 · Together** | Server added (Firebase; Vercel for extras). Still free. Android only. | 2.1 Optional sign-in & diary sync · 2.2 Sangat Paath · 2.3 Global Naam Simran · 2.4 Family view · 2.5 Simran Circle · 2.6 Gurbani Vichar AI (curated knowledge base only, cites Ang/teeka) · 2.7 Extended banis · 2.8 Invite links on own domain · 2.9 Firebase Analytics and Crashlytics wired in, collection off (§13.1) |
+| **3 · Depth + iOS** | Harder to copy; second platform | 3.1 Recitation check · 3.2 Kids' kantth mode & Gurmukhi letters · 3.3 Gurdwara Connect · 3.4 Wear OS Simran counter (+ Apple Watch after iOS) · 3.5 Home-screen widgets (Android + iOS) · 3.6 Report an error · 3.7 Ask a question · 3.8 Pronunciation practice · 3.9 More voices · 3.10 Cast to TV · 3.11 Live Kirtan (with SGPC written permission) · 3.12 Saakhis (never depicting the Gurus) · 3.13 Badges · 3.14 Sehaj Path marker · 3.15 Daily quotes · **3.16 iOS app (iPhone) from the same Flutter codebase — see §17.2** · 3.17 Analytics collection switched on, with the opt-out working (§13.1) |
 | Later | Earning (after forming a non-profit/company) | Dasvandh, Plus plan, occasion pages, gurdwara plans, sewa sponsorship, Paath marketplace, grants |
 
 ---
@@ -715,6 +715,35 @@ Source: `design/tokens.json` and `design/html/00-Foundations.html`.
 User properties: `app_lang`, `script`, `elder_mode`, `theme`.
 
 **Privacy:** no accounts, no advertising ID (`com.google.android.gms.permission.AD_ID` removed from the merged manifest; Analytics ad personalisation disabled), no location upload. Opt-out toggle disables Analytics and Crashlytics collection.
+
+### 13.1 What each phase actually sends
+
+The event list above is the design. When it starts running is a separate
+decision, taken deliberately, because "we added the SDK" and "we are
+collecting" are not the same sentence and a privacy screen that blurs them is
+a lie to the reader.
+
+| | Phase 1 | Phase 2 | Phase 3 |
+|---|---|---|---|
+| `INTERNET` in the merged manifest | removed | **restored** | present |
+| Firebase SDKs in the build | none | Core, Auth, Firestore, **Analytics** | the same, plus Crashlytics |
+| Analytics collection | n/a | **off** — `setAnalyticsCollectionEnabled(false)` at start-up, before any event can be recorded | **on**, defaulting to on, with the opt-out working |
+| Crashlytics | n/a | not added | on, same opt-out |
+| Events leaving the phone | none at all | none from Analytics; only the sangat, the account and diary sync, and only for somebody who joined | the §13 event list, no PII, no free text |
+| The Settings opt-out switch | absent | present but inert, and shown as unavailable rather than pretending to work | live, and stops both Analytics and Crashlytics |
+| Advertising ID | absent | absent | absent |
+
+**Phase 2 ships the Analytics SDK and sends nothing through it.** Wiring it in
+Phase 2 means the events are defined, the calls sit where they belong and the
+switch already exists; flipping collection on in Phase 3 is then one line and
+a truthful privacy screen, rather than a new dependency added late.
+
+**What the privacy screen must say, per phase.** It is the reader's copy of
+this table and it is not allowed to run ahead of it. In Phase 1 it says the
+app makes no network requests at all. In Phase 2 that sentence is retired:
+what it says instead is that nothing is sent unless you join the sangat, that
+analytics are not being collected, and what joining does send. In Phase 3 it
+names analytics as a fourth category and points at the switch.
 
 **Non-functional**
 

@@ -1025,11 +1025,15 @@ class LEn extends L {
 
   @override
   String get privacyBody =>
-      'Hazri has no account and collects no personal data. Your diary, goals and settings stay on this phone and in your own Google backup. If you pick a city or use your location, it stays on the phone and is used only to work out sunrise and sunset.';
+      'Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with the radio off. Your diary, goals and settings stay on this phone and in your own Google backup. If you pick a city or use your location, it stays on the phone and is used only to work out sunrise and sunset.';
 
   @override
   String get privacyNoAnalytics =>
-      'This build sends nothing anywhere: no analytics, no crash reporting, no network requests at all.';
+      'Nothing leaves this phone unless you join the sangat. Analytics are switched off in this build and no crash reports are sent.';
+
+  @override
+  String get privacySangat =>
+      'If you join the sangat, what goes to the server is your name, city, email and the counts behind the groups and goals you joined. The words in your diary never go, and your email is never shown to anybody else.';
 
   @override
   String get notifChannelNitnem => 'Nitnem reminders';

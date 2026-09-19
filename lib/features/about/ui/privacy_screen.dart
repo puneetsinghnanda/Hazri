@@ -6,7 +6,13 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
 
-/// Privacy (PRD 1.17). This build makes no network requests at all, and says so.
+/// Privacy (PRD 1.17, §13.1).
+///
+/// The words here are the reader's copy of PRD §13.1 and are not allowed to
+/// run ahead of it. Until Phase 2 this screen said the app made no network
+/// requests at all; that stopped being true the moment somebody could join
+/// the sangat, so it now says what is actually true of this build — nothing
+/// leaves the phone unless you join, and analytics are off.
 class PrivacyScreen extends StatelessWidget {
   const PrivacyScreen({super.key});
 
@@ -25,6 +31,14 @@ class PrivacyScreen extends StatelessWidget {
           child: Text(
             l.privacyNoAnalytics,
             style: HazriText.bodySmall.copyWith(color: c.sage),
+          ),
+        ),
+        const SizedBox(height: 16),
+        HazriCard(
+          colour: c.card2,
+          child: Text(
+            l.privacySangat,
+            style: HazriText.bodySmall.copyWith(color: c.ink2),
           ),
         ),
         const SizedBox(height: 16),
