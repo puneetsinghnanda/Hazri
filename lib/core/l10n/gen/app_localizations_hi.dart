@@ -1356,4 +1356,92 @@ class LHi extends L {
   @override
   String get sangatRefused =>
       'गड़बड़ हमारी तरफ़ है, आपकी तरफ़ नहीं। आपका पाठ इस फ़ोन में सुरक्षित है।';
+
+  @override
+  String get accountTitle => 'आपका खाता';
+
+  @override
+  String get accountEmail => 'ईमेल';
+
+  @override
+  String get accountPhone => 'फ़ोन';
+
+  @override
+  String get accountCity => 'शहर';
+
+  @override
+  String get accountNotAdded => 'नहीं जोड़ा';
+
+  @override
+  String get accountVerified => 'पुष्टि हो गई';
+
+  @override
+  String get accountNotVerified => 'पुष्टि बाकी';
+
+  @override
+  String get accountVerifyTitle => 'अपनी पुष्टि पूरी करें';
+
+  @override
+  String get accountVerifyBody =>
+      'आपका खाता दोनों हालात में चलता है। ईमेल की पुष्टि ही इसे फ़ोन बदलने पर वापस लाती है।';
+
+  @override
+  String get accountVerifyCta => 'मेरी ईमेल की पुष्टि करें';
+
+  @override
+  String get accountSafeTitle => 'आपकी संगत सुरक्षित है';
+
+  @override
+  String get accountSafeBody =>
+      'किसी भी फ़ोन पर इस ईमेल से दाखिल हों और आपके समूह, संकल्प और डायरी वापस आ जाएँगे।';
+
+  @override
+  String get accountSignOut => 'इस फ़ोन से बाहर आएँ';
+
+  @override
+  String get accountSignOutWarn =>
+      'आपके खाते की अभी पुष्टि नहीं हुई, इसलिए बाहर आने पर यह खो जाएगा। पहले ईमेल की पुष्टि करें।';
+
+  @override
+  String get accountSignOutConfirm => 'फिर भी बाहर आएँ';
+
+  @override
+  String get accountSectionYou => 'आप';
+
+  @override
+  String get accountJoinedFirst =>
+      'अपना खाता यहाँ देखने के लिए संगत से जुड़ें।';
+
+  @override
+  String get verifyTitle => 'ईमेल की पुष्टि करें';
+
+  @override
+  String get verifyCheckInbox => 'अपनी ईमेल देखें';
+
+  @override
+  String verifySentTo(String email) {
+    return 'हमने $email पर एक लिंक भेजा है। उसे दबाएँ और इस फ़ोन की पुष्टि हो जाएगी।';
+  }
+
+  @override
+  String get verifySend => 'लिंक भेजें';
+
+  @override
+  String get verifySendAgain => 'दोबारा भेजें';
+
+  @override
+  String get verifySent => 'भेज दिया। पहुँचने में एक मिनट लग सकता है।';
+
+  @override
+  String get verifyWrongAddress => 'ग़लत पता?';
+
+  @override
+  String get verifyChangeIt => 'इसे बदलें और हम नया लिंक भेजेंगे';
+
+  @override
+  String get verifyUntilThen =>
+      'जब तक यह नहीं होता, आपके समूह और संकल्प सिर्फ़ इसी फ़ोन में रहते हैं, और फ़ोन बदलने पर वापस नहीं आ सकते।';
+
+  @override
+  String get verifyLater => 'यह बाद में करें';
 }

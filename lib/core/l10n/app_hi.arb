@@ -412,5 +412,39 @@
   "sangatUnavailable": "संगत तक नहीं पहुँच सके। आपका पाठ इस फ़ोन में सुरक्षित है — सिग्नल आने पर फिर कोशिश करें।",
   "sangatEmailInUse": "इस ईमेल से पहले ही हाज़री खाता है",
   "sangatJoined": "आप संगत में हैं",
-  "sangatRefused": "गड़बड़ हमारी तरफ़ है, आपकी तरफ़ नहीं। आपका पाठ इस फ़ोन में सुरक्षित है।"
+  "sangatRefused": "गड़बड़ हमारी तरफ़ है, आपकी तरफ़ नहीं। आपका पाठ इस फ़ोन में सुरक्षित है।",
+  "accountTitle": "आपका खाता",
+  "accountEmail": "ईमेल",
+  "accountPhone": "फ़ोन",
+  "accountCity": "शहर",
+  "accountNotAdded": "नहीं जोड़ा",
+  "accountVerified": "पुष्टि हो गई",
+  "accountNotVerified": "पुष्टि बाकी",
+  "accountVerifyTitle": "अपनी पुष्टि पूरी करें",
+  "accountVerifyBody": "आपका खाता दोनों हालात में चलता है। ईमेल की पुष्टि ही इसे फ़ोन बदलने पर वापस लाती है।",
+  "accountVerifyCta": "मेरी ईमेल की पुष्टि करें",
+  "accountSafeTitle": "आपकी संगत सुरक्षित है",
+  "accountSafeBody": "किसी भी फ़ोन पर इस ईमेल से दाखिल हों और आपके समूह, संकल्प और डायरी वापस आ जाएँगे।",
+  "accountSignOut": "इस फ़ोन से बाहर आएँ",
+  "accountSignOutWarn": "आपके खाते की अभी पुष्टि नहीं हुई, इसलिए बाहर आने पर यह खो जाएगा। पहले ईमेल की पुष्टि करें।",
+  "accountSignOutConfirm": "फिर भी बाहर आएँ",
+  "accountSectionYou": "आप",
+  "accountJoinedFirst": "अपना खाता यहाँ देखने के लिए संगत से जुड़ें।",
+  "verifyTitle": "ईमेल की पुष्टि करें",
+  "verifyCheckInbox": "अपनी ईमेल देखें",
+  "verifySentTo": "हमने {email} पर एक लिंक भेजा है। उसे दबाएँ और इस फ़ोन की पुष्टि हो जाएगी।",
+  "verifySend": "लिंक भेजें",
+  "verifySendAgain": "दोबारा भेजें",
+  "verifySent": "भेज दिया। पहुँचने में एक मिनट लग सकता है।",
+  "verifyWrongAddress": "ग़लत पता?",
+  "verifyChangeIt": "इसे बदलें और हम नया लिंक भेजेंगे",
+  "verifyUntilThen": "जब तक यह नहीं होता, आपके समूह और संकल्प सिर्फ़ इसी फ़ोन में रहते हैं, और फ़ोन बदलने पर वापस नहीं आ सकते।",
+  "verifyLater": "यह बाद में करें",
+  "@verifySentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -1357,4 +1357,91 @@ class LPa extends L {
   @override
   String get sangatRefused =>
       'ਗੜਬੜ ਸਾਡੇ ਪਾਸੇ ਹੈ, ਤੁਹਾਡੇ ਪਾਸੇ ਨਹੀਂ। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ।';
+
+  @override
+  String get accountTitle => 'ਤੁਹਾਡਾ ਖਾਤਾ';
+
+  @override
+  String get accountEmail => 'ਈਮੇਲ';
+
+  @override
+  String get accountPhone => 'ਫ਼ੋਨ';
+
+  @override
+  String get accountCity => 'ਸ਼ਹਿਰ';
+
+  @override
+  String get accountNotAdded => 'ਨਹੀਂ ਜੋੜਿਆ';
+
+  @override
+  String get accountVerified => 'ਪੁਸ਼ਟੀ ਹੋ ਗਈ';
+
+  @override
+  String get accountNotVerified => 'ਪੁਸ਼ਟੀ ਬਾਕੀ';
+
+  @override
+  String get accountVerifyTitle => 'ਆਪਣੀ ਪੁਸ਼ਟੀ ਪੂਰੀ ਕਰੋ';
+
+  @override
+  String get accountVerifyBody =>
+      'ਤੁਹਾਡਾ ਖਾਤਾ ਦੋਵੇਂ ਹਾਲਤਾਂ ਵਿੱਚ ਚੱਲਦਾ ਹੈ। ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਹੀ ਇਸਨੂੰ ਫ਼ੋਨ ਬਦਲਣ ਉੱਤੇ ਵਾਪਸ ਲਿਆਉਂਦੀ ਹੈ।';
+
+  @override
+  String get accountVerifyCta => 'ਮੇਰੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ';
+
+  @override
+  String get accountSafeTitle => 'ਤੁਹਾਡੀ ਸੰਗਤ ਸੁਰੱਖਿਅਤ ਹੈ';
+
+  @override
+  String get accountSafeBody =>
+      'ਕਿਸੇ ਵੀ ਫ਼ੋਨ ਉੱਤੇ ਇਸ ਈਮੇਲ ਨਾਲ ਦਾਖ਼ਲ ਹੋਵੋ ਤੇ ਤੁਹਾਡੇ ਸਮੂਹ, ਸੰਕਲਪ ਤੇ ਡਾਇਰੀ ਵਾਪਸ ਆ ਜਾਣਗੇ।';
+
+  @override
+  String get accountSignOut => 'ਇਸ ਫ਼ੋਨ ਤੋਂ ਬਾਹਰ ਆਓ';
+
+  @override
+  String get accountSignOutWarn =>
+      'ਤੁਹਾਡੇ ਖਾਤੇ ਦੀ ਅਜੇ ਪੁਸ਼ਟੀ ਨਹੀਂ ਹੋਈ, ਇਸ ਲਈ ਬਾਹਰ ਆਉਣ ਉੱਤੇ ਇਹ ਗੁਆਚ ਜਾਵੇਗਾ। ਪਹਿਲਾਂ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।';
+
+  @override
+  String get accountSignOutConfirm => 'ਫਿਰ ਵੀ ਬਾਹਰ ਆਓ';
+
+  @override
+  String get accountSectionYou => 'ਤੁਸੀਂ';
+
+  @override
+  String get accountJoinedFirst => 'ਆਪਣਾ ਖਾਤਾ ਇੱਥੇ ਵੇਖਣ ਲਈ ਸੰਗਤ ਨਾਲ ਜੁੜੋ।';
+
+  @override
+  String get verifyTitle => 'ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ';
+
+  @override
+  String get verifyCheckInbox => 'ਆਪਣੀ ਈਮੇਲ ਵੇਖੋ';
+
+  @override
+  String verifySentTo(String email) {
+    return 'ਅਸੀਂ $email ਉੱਤੇ ਇੱਕ ਲਿੰਕ ਭੇਜਿਆ ਹੈ। ਉਸਨੂੰ ਦਬਾਓ ਤੇ ਇਸ ਫ਼ੋਨ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਜਾਵੇਗੀ।';
+  }
+
+  @override
+  String get verifySend => 'ਲਿੰਕ ਭੇਜੋ';
+
+  @override
+  String get verifySendAgain => 'ਦੁਬਾਰਾ ਭੇਜੋ';
+
+  @override
+  String get verifySent => 'ਭੇਜ ਦਿੱਤਾ। ਪਹੁੰਚਣ ਵਿੱਚ ਇੱਕ ਮਿੰਟ ਲੱਗ ਸਕਦਾ ਹੈ।';
+
+  @override
+  String get verifyWrongAddress => 'ਗ਼ਲਤ ਪਤਾ?';
+
+  @override
+  String get verifyChangeIt => 'ਇਸਨੂੰ ਬਦਲੋ ਤੇ ਅਸੀਂ ਨਵਾਂ ਲਿੰਕ ਭੇਜਾਂਗੇ';
+
+  @override
+  String get verifyUntilThen =>
+      'ਜਦੋਂ ਤੱਕ ਇਹ ਨਹੀਂ ਹੁੰਦਾ, ਤੁਹਾਡੇ ਸਮੂਹ ਤੇ ਸੰਕਲਪ ਸਿਰਫ਼ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦੇ ਹਨ, ਤੇ ਫ਼ੋਨ ਬਦਲਣ ਉੱਤੇ ਵਾਪਸ ਨਹੀਂ ਆ ਸਕਦੇ।';
+
+  @override
+  String get verifyLater => 'ਇਹ ਬਾਅਦ ਵਿੱਚ ਕਰੋ';
 }

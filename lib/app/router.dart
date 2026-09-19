@@ -6,7 +6,9 @@ import '../core/settings/settings_controller.dart';
 import '../features/about/ui/about_screen.dart';
 import '../features/about/ui/licences_screen.dart';
 import '../features/about/ui/privacy_screen.dart';
+import '../features/sangat/ui/account_screen.dart';
 import '../features/sangat/ui/join_sangat_screen.dart';
+import '../features/sangat/ui/verify_email_screen.dart';
 import '../features/diary/ui/diary_screen.dart';
 import '../features/goals/ui/goals_screen.dart';
 import '../features/gurpurab/ui/gurpurab_screen.dart';
@@ -41,6 +43,12 @@ abstract final class Routes {
   /// Joining the sangat (design 32). Pushed from the sheet, never a tab: the
   /// sangat is opt-in and nothing routes here on its own.
   static const sangatJoin = '/sangat/join';
+
+  /// The account (design 33), and the verification behind it (design 34).
+  /// Nothing else in the app links to [verifyEmail]: asking somebody to
+  /// confirm an address belongs here and only here.
+  static const account = '/account';
+  static const verifyEmail = '/account/verify';
   static const licences = '/licences';
   static const batteryHelp = '/reminders-help';
 
@@ -108,6 +116,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
       GoRoute(path: Routes.privacy, builder: (_, _) => const PrivacyScreen()),
       GoRoute(path: Routes.sangatJoin, builder: (_, _) => const JoinSangatScreen()),
+      GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
+      GoRoute(path: Routes.verifyEmail, builder: (_, _) => const VerifyEmailScreen()),
       GoRoute(path: Routes.licences, builder: (_, _) => const LicencesScreen()),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
     ],

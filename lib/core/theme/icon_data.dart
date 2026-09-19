@@ -50,6 +50,24 @@ abstract final class HazriIconData {
       '<circle cx="9" cy="9" r="3.2"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/>'
       '<circle cx="17" cy="7.5" r="2.4"/><path d="M15.5 13.2a4.6 4.6 0 0 1 5 4.6"/>';
 
+  /// `mail` — 24dp outline, stroke 1.8 (design/html). The account's email
+  /// row, the verification card and screen 34's big circle.
+  static const String mail =
+      '<rect x="3" y="5.5" width="18" height="13" rx="3"/>'
+      '<path d="M4 8l8 5.5L20 8"/>';
+
+  /// `alert` — 24dp outline, stroke 1.8 (design/html). A warning that is not
+  /// an error: something still to do, not something gone wrong.
+  static const String alert =
+      '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5"/>'
+      '<circle cx="12" cy="16.3" r=".9" fill="currentColor" stroke="none"/>';
+
+  /// `mobile` — 24dp outline, stroke 1.8 (design/html). The phone as an
+  /// object, distinct from [phone], which is a handset being spoken into.
+  static const String mobile =
+      '<rect x="6.5" y="2.5" width="11" height="19" rx="3"/>'
+      '<path d="M10.5 18.6h3"/>';
+
   /// `globe` — 24dp outline, stroke 1.8 (design/html)
   static const String globe = '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.5 5.5 3.5 8.5s-1 5.9-3.5 8.5c-2.5-2.6-3.5-5.5-3.5-8.5s1-5.9 3.5-8.5z"/>';
   /// `eye` — 24dp outline, stroke 1.8 (design/html)

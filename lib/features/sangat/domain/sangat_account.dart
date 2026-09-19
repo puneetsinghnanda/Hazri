@@ -50,6 +50,18 @@ class SangatAccount {
   /// this says (screen 35).
   final bool showName;
 
+  /// A deliberately loose check that a string is an address at all.
+  ///
+  /// A stricter pattern rejects addresses that are perfectly valid, and the
+  /// real test is whether the mail arrives — which the person finds out in a
+  /// minute either way. Both the join form and the verify screen use this, so
+  /// an address accepted on one is never refused by the other.
+  static bool looksLikeEmail(String value) {
+    final v = value.trim();
+    final at = v.indexOf('@');
+    return at > 0 && v.indexOf('.', at) > at + 1 && !v.contains(' ');
+  }
+
   /// Whether this account can survive a change of phone.
   bool get isRecoverable => emailVerified && (email?.isNotEmpty ?? false);
 

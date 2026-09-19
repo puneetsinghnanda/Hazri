@@ -19,6 +19,7 @@ import '../../reminders/data/reminders_controller.dart';
 import '../../reminders/domain/reminder_plan.dart';
 import '../../reminders/ui/city_picker_sheet.dart';
 import '../../reminders/ui/reminder_row.dart';
+import '../../sangat/data/account_repository.dart';
 import 'screen_scaffold.dart';
 
 final _exactAlarmProvider = FutureProvider<bool>(
@@ -40,6 +41,7 @@ class SettingsScreen extends ConsumerWidget {
     final goals = ref.watch(goalsSummaryProvider);
     final exact = ref.watch(_exactAlarmProvider).value;
     final hasAudio = ref.watch(hasAudioProvider);
+    final account = ref.watch(sangatAccountProvider).value;
     final city = ref
         .watch(citiesProvider)
         .value
@@ -55,6 +57,23 @@ class SettingsScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 20, HazriSize.gutter, 24),
             children: [
               Text(l.settingsTitle, style: HazriText.display26.copyWith(color: c.ink)),
+
+              // The account is reached from here for now. Design 37 puts it
+              // behind the header menu, which is a navigation change of its
+              // own and not this one.
+              SettingsSection(
+                title: l.accountSectionYou,
+                children: [
+                  SettingsRow(
+                    title: l.accountTitle,
+                    subtitle: account?.email ?? l.sangatBannerBody,
+                    value: account != null && !account.emailVerified
+                        ? l.accountNotVerified
+                        : null,
+                    onTap: () => context.push(Routes.account),
+                  ),
+                ],
+              ),
 
               SettingsSection(
                 title: l.settingsSectionLanguage,

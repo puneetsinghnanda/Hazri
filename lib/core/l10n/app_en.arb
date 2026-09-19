@@ -782,5 +782,39 @@
   "sangatUnavailable": "Could not reach the sangat. Your paath is safe on this phone — try again when you have signal.",
   "sangatEmailInUse": "This email already has a Hazri account",
   "sangatJoined": "You are in the sangat",
-  "sangatRefused": "Something is wrong at our end, not yours. Your paath is safe on this phone."
+  "sangatRefused": "Something is wrong at our end, not yours. Your paath is safe on this phone.",
+  "accountTitle": "Your account",
+  "accountEmail": "Email",
+  "accountPhone": "Phone",
+  "accountCity": "City",
+  "accountNotAdded": "Not added",
+  "accountVerified": "Verified",
+  "accountNotVerified": "Not verified",
+  "accountVerifyTitle": "Complete your verification",
+  "accountVerifyBody": "Your account works either way. Confirming your email is what brings it back if you change phone.",
+  "accountVerifyCta": "Verify my email",
+  "accountSafeTitle": "Your sangat is safe",
+  "accountSafeBody": "Sign in with this email on any phone and your groups, goals and diary come back.",
+  "accountSignOut": "Sign out of this phone",
+  "accountSignOutWarn": "Your account is not verified yet, so signing out loses it. Verify your email first.",
+  "accountSignOutConfirm": "Sign out anyway",
+  "accountSectionYou": "You",
+  "accountJoinedFirst": "Join the sangat to see your account here.",
+  "verifyTitle": "Verify your email",
+  "verifyCheckInbox": "Check your email",
+  "verifySentTo": "We sent a link to {email}. Tap it and this phone is confirmed.",
+  "verifySend": "Send the link",
+  "verifySendAgain": "Send it again",
+  "verifySent": "Sent. It can take a minute to arrive.",
+  "verifyWrongAddress": "Wrong address?",
+  "verifyChangeIt": "Change it and we will send a new link",
+  "verifyUntilThen": "Until this is done your groups and goals live on this phone only, and cannot be brought back if you change phone.",
+  "verifyLater": "Do this later",
+  "@verifySentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  }
 }

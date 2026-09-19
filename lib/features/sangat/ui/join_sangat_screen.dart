@@ -9,6 +9,8 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/account_repository.dart';
+import '../domain/sangat_account.dart';
+import 'sangat_field.dart';
 
 /// Design 32 — the form that joins the sangat.
 ///
@@ -39,14 +41,6 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
     super.dispose();
   }
 
-  /// Deliberately loose. A stricter pattern rejects addresses that are
-  /// perfectly valid, and the real check is whether the verification mail
-  /// arrives — which the person finds out in a minute either way.
-  bool _looksLikeEmail(String v) {
-    final at = v.indexOf('@');
-    return at > 0 && v.indexOf('.', at) > at + 1 && !v.contains(' ');
-  }
-
   Future<void> _join() async {
     final l = L.of(context);
     final name = _name.text.trim();
@@ -58,7 +52,7 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
       complaint = l.sangatNeedName;
     } else if (email.isEmpty) {
       complaint = l.sangatNeedEmail;
-    } else if (!_looksLikeEmail(email)) {
+    } else if (!SangatAccount.looksLikeEmail(email)) {
       complaint = l.sangatBadEmail;
     } else if (city.isEmpty) {
       complaint = l.sangatNeedCity;
@@ -149,20 +143,20 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              _Field(
+              SangatField(
                 label: l.sangatFieldName,
                 controller: _name,
                 textCapitalization: TextCapitalization.words,
               ),
               const SizedBox(height: 14),
-              _Field(
+              SangatField(
                 label: l.sangatFieldEmail,
                 controller: _email,
                 hint: l.sangatFieldEmailHint,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 14),
-              _Field(
+              SangatField(
                 label: l.sangatFieldPhone,
                 controller: _phone,
                 placeholder: l.sangatFieldPhoneHint,
@@ -170,7 +164,7 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 14),
-              _Field(
+              SangatField(
                 label: l.sangatFieldCity,
                 controller: _city,
                 hint: l.sangatFieldCityHint,
@@ -213,75 +207,6 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _Field extends StatelessWidget {
-  const _Field({
-    required this.label,
-    required this.controller,
-    this.hint,
-    this.placeholder,
-    this.optionalLabel,
-    this.keyboardType,
-    this.textCapitalization = TextCapitalization.none,
-  });
-
-  final String label;
-  final TextEditingController controller;
-
-  /// The explanation under the box — why the app is asking at all.
-  final String? hint;
-  final String? placeholder;
-  final String? optionalLabel;
-  final TextInputType? keyboardType;
-  final TextCapitalization textCapitalization;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(label, style: HazriText.captionStrong.copyWith(color: c.ink2)),
-            if (optionalLabel != null) ...[
-              const SizedBox(width: 6),
-              Text(optionalLabel!,
-                  style: HazriText.caption.copyWith(color: c.muted)),
-            ],
-          ],
-        ),
-        const SizedBox(height: 5),
-        TextField(
-          controller: controller,
-          keyboardType: keyboardType,
-          textCapitalization: textCapitalization,
-          style: HazriText.body.copyWith(color: c.ink),
-          decoration: InputDecoration(
-            hintText: placeholder,
-            hintStyle: HazriText.body.copyWith(color: c.muted),
-            filled: true,
-            fillColor: c.card,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: c.rule),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: c.kesri, width: 1.5),
-            ),
-          ),
-        ),
-        if (hint != null) ...[
-          const SizedBox(height: 5),
-          Text(hint!, style: HazriText.caption.copyWith(color: c.muted)),
-        ],
-      ],
     );
   }
 }

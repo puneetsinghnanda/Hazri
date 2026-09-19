@@ -412,5 +412,39 @@
   "sangatUnavailable": "ਸੰਗਤ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚ ਸਕੇ। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ — ਸਿਗਨਲ ਆਉਣ ਉੱਤੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "sangatEmailInUse": "ਇਸ ਈਮੇਲ ਨਾਲ ਪਹਿਲਾਂ ਹੀ ਹਾਜ਼ਰੀ ਖਾਤਾ ਹੈ",
   "sangatJoined": "ਤੁਸੀਂ ਸੰਗਤ ਵਿੱਚ ਹੋ",
-  "sangatRefused": "ਗੜਬੜ ਸਾਡੇ ਪਾਸੇ ਹੈ, ਤੁਹਾਡੇ ਪਾਸੇ ਨਹੀਂ। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ।"
+  "sangatRefused": "ਗੜਬੜ ਸਾਡੇ ਪਾਸੇ ਹੈ, ਤੁਹਾਡੇ ਪਾਸੇ ਨਹੀਂ। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ।",
+  "accountTitle": "ਤੁਹਾਡਾ ਖਾਤਾ",
+  "accountEmail": "ਈਮੇਲ",
+  "accountPhone": "ਫ਼ੋਨ",
+  "accountCity": "ਸ਼ਹਿਰ",
+  "accountNotAdded": "ਨਹੀਂ ਜੋੜਿਆ",
+  "accountVerified": "ਪੁਸ਼ਟੀ ਹੋ ਗਈ",
+  "accountNotVerified": "ਪੁਸ਼ਟੀ ਬਾਕੀ",
+  "accountVerifyTitle": "ਆਪਣੀ ਪੁਸ਼ਟੀ ਪੂਰੀ ਕਰੋ",
+  "accountVerifyBody": "ਤੁਹਾਡਾ ਖਾਤਾ ਦੋਵੇਂ ਹਾਲਤਾਂ ਵਿੱਚ ਚੱਲਦਾ ਹੈ। ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਹੀ ਇਸਨੂੰ ਫ਼ੋਨ ਬਦਲਣ ਉੱਤੇ ਵਾਪਸ ਲਿਆਉਂਦੀ ਹੈ।",
+  "accountVerifyCta": "ਮੇਰੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+  "accountSafeTitle": "ਤੁਹਾਡੀ ਸੰਗਤ ਸੁਰੱਖਿਅਤ ਹੈ",
+  "accountSafeBody": "ਕਿਸੇ ਵੀ ਫ਼ੋਨ ਉੱਤੇ ਇਸ ਈਮੇਲ ਨਾਲ ਦਾਖ਼ਲ ਹੋਵੋ ਤੇ ਤੁਹਾਡੇ ਸਮੂਹ, ਸੰਕਲਪ ਤੇ ਡਾਇਰੀ ਵਾਪਸ ਆ ਜਾਣਗੇ।",
+  "accountSignOut": "ਇਸ ਫ਼ੋਨ ਤੋਂ ਬਾਹਰ ਆਓ",
+  "accountSignOutWarn": "ਤੁਹਾਡੇ ਖਾਤੇ ਦੀ ਅਜੇ ਪੁਸ਼ਟੀ ਨਹੀਂ ਹੋਈ, ਇਸ ਲਈ ਬਾਹਰ ਆਉਣ ਉੱਤੇ ਇਹ ਗੁਆਚ ਜਾਵੇਗਾ। ਪਹਿਲਾਂ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।",
+  "accountSignOutConfirm": "ਫਿਰ ਵੀ ਬਾਹਰ ਆਓ",
+  "accountSectionYou": "ਤੁਸੀਂ",
+  "accountJoinedFirst": "ਆਪਣਾ ਖਾਤਾ ਇੱਥੇ ਵੇਖਣ ਲਈ ਸੰਗਤ ਨਾਲ ਜੁੜੋ।",
+  "verifyTitle": "ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+  "verifyCheckInbox": "ਆਪਣੀ ਈਮੇਲ ਵੇਖੋ",
+  "verifySentTo": "ਅਸੀਂ {email} ਉੱਤੇ ਇੱਕ ਲਿੰਕ ਭੇਜਿਆ ਹੈ। ਉਸਨੂੰ ਦਬਾਓ ਤੇ ਇਸ ਫ਼ੋਨ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਜਾਵੇਗੀ।",
+  "verifySend": "ਲਿੰਕ ਭੇਜੋ",
+  "verifySendAgain": "ਦੁਬਾਰਾ ਭੇਜੋ",
+  "verifySent": "ਭੇਜ ਦਿੱਤਾ। ਪਹੁੰਚਣ ਵਿੱਚ ਇੱਕ ਮਿੰਟ ਲੱਗ ਸਕਦਾ ਹੈ।",
+  "verifyWrongAddress": "ਗ਼ਲਤ ਪਤਾ?",
+  "verifyChangeIt": "ਇਸਨੂੰ ਬਦਲੋ ਤੇ ਅਸੀਂ ਨਵਾਂ ਲਿੰਕ ਭੇਜਾਂਗੇ",
+  "verifyUntilThen": "ਜਦੋਂ ਤੱਕ ਇਹ ਨਹੀਂ ਹੁੰਦਾ, ਤੁਹਾਡੇ ਸਮੂਹ ਤੇ ਸੰਕਲਪ ਸਿਰਫ਼ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦੇ ਹਨ, ਤੇ ਫ਼ੋਨ ਬਦਲਣ ਉੱਤੇ ਵਾਪਸ ਨਹੀਂ ਆ ਸਕਦੇ।",
+  "verifyLater": "ਇਹ ਬਾਅਦ ਵਿੱਚ ਕਰੋ",
+  "@verifySentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  }
 }

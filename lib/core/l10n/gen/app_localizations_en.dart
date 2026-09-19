@@ -1359,4 +1359,91 @@ class LEn extends L {
   @override
   String get sangatRefused =>
       'Something is wrong at our end, not yours. Your paath is safe on this phone.';
+
+  @override
+  String get accountTitle => 'Your account';
+
+  @override
+  String get accountEmail => 'Email';
+
+  @override
+  String get accountPhone => 'Phone';
+
+  @override
+  String get accountCity => 'City';
+
+  @override
+  String get accountNotAdded => 'Not added';
+
+  @override
+  String get accountVerified => 'Verified';
+
+  @override
+  String get accountNotVerified => 'Not verified';
+
+  @override
+  String get accountVerifyTitle => 'Complete your verification';
+
+  @override
+  String get accountVerifyBody =>
+      'Your account works either way. Confirming your email is what brings it back if you change phone.';
+
+  @override
+  String get accountVerifyCta => 'Verify my email';
+
+  @override
+  String get accountSafeTitle => 'Your sangat is safe';
+
+  @override
+  String get accountSafeBody =>
+      'Sign in with this email on any phone and your groups, goals and diary come back.';
+
+  @override
+  String get accountSignOut => 'Sign out of this phone';
+
+  @override
+  String get accountSignOutWarn =>
+      'Your account is not verified yet, so signing out loses it. Verify your email first.';
+
+  @override
+  String get accountSignOutConfirm => 'Sign out anyway';
+
+  @override
+  String get accountSectionYou => 'You';
+
+  @override
+  String get accountJoinedFirst => 'Join the sangat to see your account here.';
+
+  @override
+  String get verifyTitle => 'Verify your email';
+
+  @override
+  String get verifyCheckInbox => 'Check your email';
+
+  @override
+  String verifySentTo(String email) {
+    return 'We sent a link to $email. Tap it and this phone is confirmed.';
+  }
+
+  @override
+  String get verifySend => 'Send the link';
+
+  @override
+  String get verifySendAgain => 'Send it again';
+
+  @override
+  String get verifySent => 'Sent. It can take a minute to arrive.';
+
+  @override
+  String get verifyWrongAddress => 'Wrong address?';
+
+  @override
+  String get verifyChangeIt => 'Change it and we will send a new link';
+
+  @override
+  String get verifyUntilThen =>
+      'Until this is done your groups and goals live on this phone only, and cannot be brought back if you change phone.';
+
+  @override
+  String get verifyLater => 'Do this later';
 }

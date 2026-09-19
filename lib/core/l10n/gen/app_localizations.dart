@@ -2516,6 +2516,168 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Something is wrong at our end, not yours. Your paath is safe on this phone.'**
   String get sangatRefused;
+
+  /// No description provided for @accountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account'**
+  String get accountTitle;
+
+  /// No description provided for @accountEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get accountEmail;
+
+  /// No description provided for @accountPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get accountPhone;
+
+  /// No description provided for @accountCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get accountCity;
+
+  /// No description provided for @accountNotAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not added'**
+  String get accountNotAdded;
+
+  /// No description provided for @accountVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get accountVerified;
+
+  /// No description provided for @accountNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not verified'**
+  String get accountNotVerified;
+
+  /// No description provided for @accountVerifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your verification'**
+  String get accountVerifyTitle;
+
+  /// No description provided for @accountVerifyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account works either way. Confirming your email is what brings it back if you change phone.'**
+  String get accountVerifyBody;
+
+  /// No description provided for @accountVerifyCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify my email'**
+  String get accountVerifyCta;
+
+  /// No description provided for @accountSafeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your sangat is safe'**
+  String get accountSafeTitle;
+
+  /// No description provided for @accountSafeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with this email on any phone and your groups, goals and diary come back.'**
+  String get accountSafeBody;
+
+  /// No description provided for @accountSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out of this phone'**
+  String get accountSignOut;
+
+  /// No description provided for @accountSignOutWarn.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is not verified yet, so signing out loses it. Verify your email first.'**
+  String get accountSignOutWarn;
+
+  /// No description provided for @accountSignOutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out anyway'**
+  String get accountSignOutConfirm;
+
+  /// No description provided for @accountSectionYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get accountSectionYou;
+
+  /// No description provided for @accountJoinedFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the sangat to see your account here.'**
+  String get accountJoinedFirst;
+
+  /// No description provided for @verifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email'**
+  String get verifyTitle;
+
+  /// No description provided for @verifyCheckInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get verifyCheckInbox;
+
+  /// No description provided for @verifySentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a link to {email}. Tap it and this phone is confirmed.'**
+  String verifySentTo(String email);
+
+  /// No description provided for @verifySend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the link'**
+  String get verifySend;
+
+  /// No description provided for @verifySendAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Send it again'**
+  String get verifySendAgain;
+
+  /// No description provided for @verifySent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent. It can take a minute to arrive.'**
+  String get verifySent;
+
+  /// No description provided for @verifyWrongAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong address?'**
+  String get verifyWrongAddress;
+
+  /// No description provided for @verifyChangeIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Change it and we will send a new link'**
+  String get verifyChangeIt;
+
+  /// No description provided for @verifyUntilThen.
+  ///
+  /// In en, this message translates to:
+  /// **'Until this is done your groups and goals live on this phone only, and cannot be brought back if you change phone.'**
+  String get verifyUntilThen;
+
+  /// No description provided for @verifyLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Do this later'**
+  String get verifyLater;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {
