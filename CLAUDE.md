@@ -87,6 +87,45 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
 ## Known gaps in this build
 
+### Phase 2
+
+- **`firestore.rules` must be published by hand and is not, automatically.**
+  See "Regenerating" above. Every group write and the globe depend on the
+  current file being live in the console; until it is, writes are refused and
+  the app says so (`SangatRefused`), which is not the same as being offline
+  and must never be reported as though it were.
+- **A verification or restore link is pasted, not tapped.** Android App Links
+  need an `assetlinks.json` carrying the release signing fingerprint, and
+  there is no keystore yet (Phase 3). Pasting the link needs nothing, so both
+  flows work today; the intent filter is the Phase 3 change, and the screens
+  do not otherwise move.
+- **An invite is a pasted link or the code off the end of it**, for the same
+  reason.
+- **A listed group cannot be listed from the app.** `listed` is refused by the
+  rules on create and pinned on update, so a group made on a phone is always
+  private. Listing happens out of band after somebody reads the name, which
+  is the whole answer to "what stops a hurtful name appearing to strangers".
+  There is no admin tool for that yet: it is an edit in the console.
+- **The sangat's numbers are counted, never stored.** `count()` and `sum()`
+  aggregation queries give the member count, the group total and the globe's
+  headline. Do not add a counter field to a group document: every member can
+  write that document, so every member could lie about it, and Spark has no
+  Cloud Function to keep an honest one.
+- **Group and global notifications cannot be sent.** They need a push from a
+  server and Phase 2 has none. Screen 50 shows them switched off and
+  unavailable rather than pretending.
+- **The Vichar library is empty until entries are published.** Nothing in it
+  is written in Dart -- see `docs/vichar-content.md` for the document shape.
+  This is rule 3 applied past Gurbani to everything the app says about Sikhi.
+- **Analytics ships with collection off** and sends nothing (PRD §13.1). The
+  Settings switch is present and inert, and says so. Do not wire it up
+  without also rewriting the privacy screen; the two are one promise.
+- **Sixty-odd Punjabi and Hindi UI strings added in Phase 2 are mine** and
+  want a native ear before release.
+
+### Content and audio
+
+
 - **All nine banis now have text and a recitation.** Japji came from a
   schema-1.0 source file; the other eight are schema 2.0 and are loaded by
   `build_bani_v2()`. Daily Simran has its own recitation, which is not a bani
