@@ -1,0 +1,367 @@
+<title>Hazri Phase 2 Setup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F2F1F6; --surface:#FFFFFF; --sunk:#E9E8F1; --ink:#191B33; --ink2:#4B4E6E;
+  --muted:#83869E; --rule:#DEDDE8; --rule2:#CFCEDD;
+  --accent:#D9730D; --accentSoft:#FBE8D2; --accentInk:#9A4F00;
+  --ok:#2E7A57; --okSoft:#DCEFE5;
+  --stop:#B3261E; --stopSoft:#FBE9E7;
+  --shadow:0 1px 2px rgba(25,27,51,.05), 0 10px 26px rgba(25,27,51,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B0E20; --surface:#151932; --sunk:#1E2242; --ink:#ECEBF5; --ink2:#B7B9D2;
+    --muted:#7E82A4; --rule:#292E52; --rule2:#39406B;
+    --accent:#F2A24E; --accentSoft:#3A2A1A; --accentInk:#FFC27E;
+    --ok:#6CCB9C; --okSoft:#173327;
+    --stop:#F2B8B5; --stopSoft:#3A1A19;
+    --shadow:0 0 0 1px rgba(255,255,255,.05);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B0E20; --surface:#151932; --sunk:#1E2242; --ink:#ECEBF5; --ink2:#B7B9D2;
+  --muted:#7E82A4; --rule:#292E52; --rule2:#39406B;
+  --accent:#F2A24E; --accentSoft:#3A2A1A; --accentInk:#FFC27E;
+  --ok:#6CCB9C; --okSoft:#173327;
+  --stop:#F2B8B5; --stopSoft:#3A1A19;
+  --shadow:0 0 0 1px rgba(255,255,255,.05);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); margin:0;
+  font-family:Mukta,system-ui,-apple-system,sans-serif; font-size:15.5px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:820px; margin:0 auto; padding-inline:16px}
+h1,h2,h3{font-family:'Baloo Paaji 2',Mukta,sans-serif; margin:0}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:6px}
+
+header{padding-block:40px 8px}
+header h1{font-size:30px; font-weight:700; letter-spacing:-.015em; text-wrap:balance}
+header .lede{color:var(--ink2); margin:10px 0 0; max-width:60ch}
+.facts{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px}
+.fact{
+  background:var(--surface); border-radius:13px; box-shadow:var(--shadow);
+  padding:11px 15px; flex:1 1 168px;
+}
+.fact .k{font-size:11.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+.fact .v{font-family:'Baloo Paaji 2',Mukta,sans-serif; font-size:19px; font-weight:700; margin-top:1px}
+.fact .n{font-size:12.5px; color:var(--muted)}
+
+.tally{
+  margin-top:18px; font-size:13px; font-weight:600; color:var(--ink2);
+  background:var(--sunk); border-radius:999px; padding:7px 15px; display:inline-block;
+  font-variant-numeric:tabular-nums;
+}
+
+section{padding-block:34px 0}
+.sechead{display:flex; align-items:baseline; gap:11px; flex-wrap:wrap}
+.sechead h2{font-size:20px; font-weight:700}
+.sechead .tag{
+  font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  border-radius:999px; padding:3px 9px; background:var(--accentSoft); color:var(--accentInk);
+}
+.sechead .tag.calm{background:var(--sunk); color:var(--muted)}
+.secline{color:var(--ink2); font-size:14.5px; margin:6px 0 16px; max-width:62ch}
+
+.items{display:flex; flex-direction:column; gap:12px}
+.item{
+  background:var(--surface); border-radius:16px; box-shadow:var(--shadow);
+  padding:16px 16px 14px; display:flex; gap:13px; align-items:flex-start;
+}
+.item.done{box-shadow:var(--shadow), inset 3px 0 0 var(--ok)}
+.tick{
+  appearance:none; -webkit-appearance:none; margin:2px 0 0; flex:none; cursor:pointer;
+  width:23px; height:23px; border-radius:7px; border:2px solid var(--rule2);
+  background:var(--surface); display:grid; place-content:center;
+}
+.tick:checked{background:var(--ok); border-color:var(--ok)}
+.tick:checked::after{
+  content:""; width:11px; height:6px; border:2.2px solid #fff; border-top:0; border-right:0;
+  transform:rotate(-45deg) translateY(-1px);
+}
+.body{flex:1; min-width:0}
+.item h3{font-size:16.5px; font-weight:700; line-height:1.3}
+.item.done h3{text-decoration:line-through; text-decoration-color:var(--muted); color:var(--muted)}
+.meta{display:flex; gap:7px; flex-wrap:wrap; margin:7px 0 0}
+.chip{
+  font-size:11.5px; font-weight:700; border-radius:999px; padding:3px 9px;
+  background:var(--sunk); color:var(--ink2); white-space:nowrap;
+}
+.chip.cost{background:var(--accentSoft); color:var(--accentInk)}
+.chip.lead{background:var(--stopSoft); color:var(--stop)}
+.item p{margin:10px 0 0; font-size:14px; color:var(--ink2)}
+.item p.why{color:var(--ink); font-weight:500}
+.hand{
+  margin-top:11px; background:var(--sunk); border-radius:10px; padding:9px 12px;
+  font-size:13px; color:var(--ink2);
+}
+.hand b{color:var(--ink); font-weight:700}
+.hand code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px;
+  background:var(--surface); border-radius:5px; padding:1px 5px;
+}
+
+.order{background:var(--surface); border-radius:16px; box-shadow:var(--shadow); padding:18px}
+.order ol{margin:0; padding-left:20px}
+.order li{margin-bottom:9px; color:var(--ink2)}
+.order li b{color:var(--ink)}
+.order li:last-child{margin-bottom:0}
+
+.never{
+  background:var(--stopSoft); border-radius:16px; padding:18px;
+  border:1px solid color-mix(in srgb, var(--stop) 35%, transparent);
+}
+.never h2{font-size:18px; color:var(--stop); margin-bottom:8px}
+.never ul{margin:0; padding-left:20px; color:var(--ink2); font-size:14.5px}
+.never li{margin-bottom:6px}
+.never li:last-child{margin-bottom:0}
+
+.notneeded{background:var(--surface); border-radius:16px; box-shadow:var(--shadow); padding:18px}
+.notneeded ul{margin:8px 0 0; padding-left:20px; color:var(--ink2); font-size:14.5px; columns:2; column-gap:26px}
+.notneeded li{margin-bottom:5px; break-inside:avoid}
+@media (max-width:560px){ .notneeded ul{columns:1} }
+
+footer{padding-block:34px 44px; color:var(--muted); font-size:13px; text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>What Phase 2 needs you to sign up for</h1>
+  <p class="lede">Phase 1 makes no network requests at all — <code>INTERNET</code> is stripped from
+    the manifest and there is no Firebase in the project. Phase 2 adds the sangat, so it needs
+    accounts that only you can open. Six of them, and two have long lead times.</p>
+  <div class="facts">
+    <div class="fact"><div class="k">To start</div><div class="v">≈ $40</div>
+      <div class="n">$25 once + a domain</div></div>
+    <div class="fact"><div class="k">Then</div><div class="v">≈ $0 / month</div>
+      <div class="n">free tiers cover launch scale</div></div>
+    <div class="fact"><div class="k">Longest wait</div><div class="v">2–4 weeks</div>
+      <div class="n">Play identity check, then closed testing</div></div>
+  </div>
+  <div class="tally" id="tally">0 of 6 done</div>
+</header>
+
+<section>
+  <div class="sechead"><h2>Start these today</h2><span class="tag">Blocks everything else</span></div>
+  <p class="secline">Both take days or weeks of somebody else's time. Nothing else on this page
+    is urgent, and neither of these can be hurried once we need them.</p>
+  <div class="items" id="urgent"></div>
+</section>
+
+<section>
+  <div class="sechead"><h2>Once those are moving</h2><span class="tag calm">Same-day setup</span></div>
+  <p class="secline">These take an afternoon each and can be done in any order, except that
+    Firebase wants the domain and the signing key before it is finished.</p>
+  <div class="items" id="rest"></div>
+</section>
+
+<section>
+  <div class="sechead"><h2>The order that avoids rework</h2></div>
+  <div class="order">
+    <ol>
+      <li><b>Play Console identity verification</b> — start it now; it is the only thing that
+        can hold up a launch date by weeks.</li>
+      <li><b>Buy the domain</b> — everything else references it, and DNS changes need hours to settle.</li>
+      <li><b>Create the upload keystore</b> (or turn on Play App Signing) — Firebase needs its
+        SHA-256 fingerprint, so doing this late means redoing the Firebase step.</li>
+      <li><b>Firebase project</b> — with the domain and fingerprint in hand it is one sitting.</li>
+      <li><b>Email sender</b> — the DNS records go on the domain from step 2.</li>
+      <li><b>Hosting</b> — last, because it only needs the domain and serves the verification
+        file that makes the links open in the app.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="never">
+    <h2>Never send me these</h2>
+    <ul>
+      <li>The <b>keystore file or its passwords</b>. Lose control of it and anybody can ship an
+        update as you; lose the file itself and, without Play App Signing, the app can never be
+        updated again. I only need the certificate's SHA-256 fingerprint, which is public by design.</li>
+      <li><b>API keys or service-account JSON</b> for email or Google Cloud. Those go into Cloud
+        Functions secrets, never into the repository — an email key in git history is a spam relay
+        somebody else owns.</li>
+      <li>Your <b>Google account password</b>, or 2FA codes. Nothing here needs me signed in as you.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><h2>What Phase 2 does not need</h2></div>
+  <p class="secline">Worth stating, because most apps at this point collect a drawer full of
+    vendors. The design rules these out rather than leaving them for later.</p>
+  <div class="notneeded">
+    <ul>
+      <li>No ad network</li>
+      <li>No analytics or attribution SDK</li>
+      <li>No Google or Apple sign-in — there is no login</li>
+      <li>No maps or geocoding key — the globe is drawn geometry</li>
+      <li>No payment processor</li>
+      <li>No CDN — the banis and audio ship in the app</li>
+      <li>No push vendor — Firebase covers it if we add group push</li>
+      <li>No AI or LLM account — Vichar reads reviewed sources</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Hazri — Phase 2 setup. Nothing is implemented yet; this is what unblocks it.</footer>
+</div>
+
+<script>
+const URGENT = [
+  {
+    id: "play", short: "Play Console",
+    title: "Google Play Console",
+    chips: [["cost","$25, once"],["lead","identity check: days to weeks"]],
+    why: "The only way to ship the app, and the design leans on it for more than distribution.",
+    body: "Play Integrity is what stops somebody scripting the API to inflate a group’s paath count or claim a hazri they did not sit for — it proves a request came from the genuine app. That is the anti-abuse answer I gave you for a sangat with no login, and it lives here.\n\nA personal account also carries Google’s testing rule: 12 testers opted in for 14 continuous days before you can apply for production. That clock cannot start until the account exists, which is why this is first.",
+    hand: "Nothing, yet. Tell me when it is verified and whether you chose a personal or organisation account — the organisation route asks for a D-U-N-S number and takes longer.",
+  },
+  {
+    id: "domain", short: "domain",
+    title: "A domain — the design says hazri.app",
+    chips: [["cost","$12–25 a year"],["lead","minutes to buy, hours for DNS"]],
+    why: "Four separate things in the design break without it, and none of them have a workaround.",
+    body: "Group invite links (hazri.app/j/…). The Android App Links file at /.well-known/assetlinks.json — without a verified domain the verification email opens a browser instead of the app, which is the case the 6-digit code exists to rescue. The privacy policy URL that Play requires before review. And the Vichar articles themselves, which are fetched from the site.\n\nI cannot check whether hazri.app is available. If it is taken, any domain works — tell me which and I will change the design copy. Note .app is HTTPS-only by force, which is fine: Firebase Hosting and Vercel both issue certificates free.",
+    hand: "The domain name, and access to its DNS records — or just tell me the records to add and add them yourself.",
+  },
+];
+
+const REST = [
+  {
+    id: "firebase", short: "Firebase",
+    title: "Firebase project, on the Blaze plan",
+    chips: [["cost","card required, ~$0 in practice"],["lead","an afternoon"]],
+    why: "The whole sangat runs on it: accounts, groups, goals, the globe, sync.",
+    body: "Anonymous Auth and email-link sign-in, Firestore, App Check wired to Play Integrity, and Cloud Functions.\n\nThe free Spark plan will not do, because Cloud Functions need Blaze — which means a billing account with a card on it. Blaze keeps the same free allowances on top, so at launch scale the bill should be pennies or nothing; set a budget alert anyway so a mistake cannot run away.\n\nThe Function is what sends the 6-digit code. Firebase Auth sends the link for free but has no email OTP of its own — that is the correction I flagged when we designed screen 34.",
+    hand: "Add me as a collaborator, or send google-services.json. That file is fine to commit while this repository stays private; if it ever goes public we inject it at build time instead.",
+  },
+  {
+    id: "keystore", short: "signing key",
+    title: "Release signing key",
+    chips: [["cost","free"],["lead","ten minutes"]],
+    why: "Not a signup, but Firebase cannot finish without its fingerprint.",
+    body: "Turn on Play App Signing when you create the app in Play Console — it means Google holds the real signing key and a lost upload key can be reset, rather than ending the app’s life.\n\nApp Check verifies requests against the certificate fingerprint, so this has to exist before the Firebase step or that step gets done twice.",
+    hand: "The SHA-256 fingerprint only — it is public by design. `keytool -list -v -keystore <file>` prints it. Never the keystore or its passwords.",
+  },
+  {
+    id: "email", short: "email sender",
+    title: "A transactional email sender",
+    chips: [["cost","free tier is ample"],["lead","an hour, plus DNS"]],
+    why: "The 6-digit code on screen 34 has to arrive, and arrive in the inbox.",
+    body: "Resend, SendGrid, Mailgun or Amazon SES — any of them, they are interchangeable here. Free tiers run to thousands of messages a month, which is far beyond what verification codes will use.\n\nThe part that matters is domain verification: SPF and DKIM records on the domain from step 2. Skip it and the codes land in spam, which looks exactly like the app being broken.",
+    hand: "Which provider you picked, and the sending address (something like hazri.app). The API key goes into Functions secrets — do not send it to me or put it in the repo.",
+  },
+  {
+    id: "hosting", short: "hosting",
+    title: "Hosting for the site and Vichar content",
+    chips: [["cost","free tier"],["lead","an afternoon"]],
+    why: "Serves the App Links file, the privacy policy, and everything Vichar reads.",
+    body: "The PRD says Vercel. I would use Firebase Hosting instead, purely to avoid a second vendor — the assetlinks.json file and the site then sit beside the project that already needs them. Your call; Vercel is a perfectly good answer and the PRD’s reasoning still holds.\n\nEither way this is where the Vichar articles and reference entries live, so it needs somewhere to write them — which is a content question we have not had yet.",
+    hand: "Which one. If Vercel, add me or hand over the deploy hook; if Firebase Hosting, the collaborator access above covers it.",
+  },
+];
+
+const notes = new Map();
+const els = new Map();
+let db = null;
+
+function localGet(){ try { return JSON.parse(localStorage.getItem("hazri-setup") || "{}"); } catch { return {}; } }
+function localSet(id, done){
+  try { const a = localGet(); a[id] = done; localStorage.setItem("hazri-setup", JSON.stringify(a)); }
+  catch { /* private window, blocked storage — the page still works */ }
+}
+
+function build(list, host) {
+  for (const it of list) {
+    const row = document.createElement("div");
+    row.className = "item";
+
+    const tick = document.createElement("input");
+    tick.type = "checkbox"; tick.className = "tick"; tick.id = "tick-" + it.id;
+    tick.setAttribute("aria-label", "Mark " + it.title + " as done");
+
+    const body = document.createElement("div");
+    body.className = "body";
+    const h3 = document.createElement("h3"); h3.textContent = it.title;
+    const meta = document.createElement("div"); meta.className = "meta";
+    for (const [kind, text] of it.chips) {
+      const c = document.createElement("span");
+      c.className = "chip " + kind; c.textContent = text;
+      meta.append(c);
+    }
+    const why = document.createElement("p"); why.className = "why"; why.textContent = it.why;
+    body.append(h3, meta, why);
+    for (const para of it.body.split("\n\n")) {
+      const p = document.createElement("p"); p.textContent = para; body.append(p);
+    }
+    const hand = document.createElement("div");
+    hand.className = "hand";
+    const b = document.createElement("b"); b.textContent = "Hand me: ";
+    hand.append(b, document.createTextNode(it.hand));
+    body.append(hand);
+
+    row.append(tick, body);
+    host.append(row);
+    els.set(it.id, { row, tick });
+
+    tick.addEventListener("change", () => {
+      notes.set(it.id, tick.checked);
+      paint(it.id); paintTally(); save(it.id);
+    });
+  }
+}
+
+function paint(id) {
+  const e = els.get(id); if (!e) return;
+  const done = notes.get(id) === true;
+  if (e.tick.checked !== done) e.tick.checked = done;
+  e.row.classList.toggle("done", done);
+}
+
+function paintTally() {
+  const all = [...URGENT, ...REST];
+  const n = all.filter(i => notes.get(i.id) === true).length;
+  const left = all.filter(i => notes.get(i.id) !== true).map(i => i.short);
+  document.getElementById("tally").textContent =
+    n === all.length ? "All six done — tell me and I can start" :
+    `${n} of ${all.length} done · still open: ${left.join(", ")}`;
+}
+
+async function save(id) {
+  const done = notes.get(id) === true;
+  localSet(id, done);
+  if (!db) return;
+  try { await db.doc("setup/" + id).set({ item: id, done, updatedAt: new Date().toISOString() }); }
+  catch { /* read-only view, or db withdrawn — the tick still shows locally */ }
+}
+
+build(URGENT, document.getElementById("urgent"));
+build(REST, document.getElementById("rest"));
+
+(function seed(){
+  const all = localGet();
+  for (const it of [...URGENT, ...REST]) {
+    if (all[it.id] === true) notes.set(it.id, true);
+    paint(it.id);
+  }
+  paintTally();
+})();
+
+(async function connect(){
+  db = await (window.claude?.use?.("db") ?? Promise.resolve(null));
+  if (!db) return;
+  db.collection("setup").onSnapshot(snap => {
+    for (const doc of snap.docs) {
+      if (!els.has(doc.id)) continue;
+      notes.set(doc.id, (doc.data() || {}).done === true);
+      paint(doc.id);
+    }
+    paintTally();
+  }, () => { db = null; });
+})();
+</script>
