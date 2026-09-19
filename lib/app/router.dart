@@ -29,6 +29,7 @@ import '../features/onboarding/ui/splash_screen.dart';
 import '../features/reader/ui/reader_screen.dart';
 import '../features/reminders/data/reminder_service.dart';
 import '../features/reminders/ui/battery_help_screen.dart';
+import '../features/reminders/ui/notifications_screen.dart';
 import '../features/settings/ui/settings_screen.dart';
 import '../features/sync/ui/sync_screen.dart';
 import '../features/simran/ui/simran_screen.dart';
@@ -86,6 +87,9 @@ abstract final class Routes {
   static String groupInvite(String id) => '/sangat/g/$id/invite';
   static const licences = '/licences';
   static const batteryHelp = '/reminders-help';
+
+  /// Every notification Hazri can send, in one place (design 50).
+  static const notifications = '/notifications';
 
   /// The five bottom-nav branches. Going to one of these switches tabs;
   /// pushing one would stack a second copy on top of the shell.
@@ -180,6 +184,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
       GoRoute(path: Routes.verifyEmail, builder: (_, _) => const VerifyEmailScreen()),
       GoRoute(path: Routes.licences, builder: (_, _) => const LicencesScreen()),
+      GoRoute(path: Routes.notifications, builder: (_, _) => const NotificationsScreen()),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
     ],
     redirect: (context, state) {

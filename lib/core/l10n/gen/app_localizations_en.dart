@@ -2008,4 +2008,44 @@ class LEn extends L {
   @override
   String get syncNeedsAccount =>
       'Join the sangat first — there is nowhere to sync to without an account.';
+
+  @override
+  String get notifTitle => 'Notifications';
+
+  @override
+  String get notifOwnPractice => 'Your own practice';
+
+  @override
+  String get notifYourGroups => 'Your groups';
+
+  @override
+  String get notifGlobal => 'Global Simran';
+
+  @override
+  String get notifGoalClose => 'A goal is close';
+
+  @override
+  String get notifGoalCloseSub => 'When the group passes 90%';
+
+  @override
+  String get notifSomeoneJoined => 'Someone joined';
+
+  @override
+  String get notifSomeoneJoinedSub => 'New members in your groups';
+
+  @override
+  String get notifGroupSummary => 'Daily group summary';
+
+  @override
+  String get notifGroupSummarySub => 'One message, at 9 PM';
+
+  @override
+  String get notifLargeGatherings => 'Large gatherings';
+
+  @override
+  String get notifLargeGatheringsSub => 'When thousands are sitting together';
+
+  @override
+  String get notifGroupsNotYet =>
+      'These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off.';
 }

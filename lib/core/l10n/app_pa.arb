@@ -619,5 +619,18 @@
   "syncWifiOnly": "ਸਿਰਫ਼ ਵਾਈ-ਫਾਈ ਉੱਤੇ",
   "syncWifiOnlySub": "ਮੋਬਾਈਲ ਡਾਟਾ ਬਚਾਉਂਦਾ ਹੈ",
   "syncNow": "ਹੁਣੇ ਸਿੰਕ ਕਰੋ",
-  "syncNeedsAccount": "ਪਹਿਲਾਂ ਸੰਗਤ ਨਾਲ ਜੁੜੋ — ਖਾਤੇ ਤੋਂ ਬਿਨਾਂ ਸਿੰਕ ਕਰਨ ਲਈ ਕੋਈ ਥਾਂ ਨਹੀਂ।"
+  "syncNeedsAccount": "ਪਹਿਲਾਂ ਸੰਗਤ ਨਾਲ ਜੁੜੋ — ਖਾਤੇ ਤੋਂ ਬਿਨਾਂ ਸਿੰਕ ਕਰਨ ਲਈ ਕੋਈ ਥਾਂ ਨਹੀਂ।",
+  "notifTitle": "ਸੂਚਨਾਵਾਂ",
+  "notifOwnPractice": "ਤੁਹਾਡਾ ਆਪਣਾ ਅਭਿਆਸ",
+  "notifYourGroups": "ਤੁਹਾਡੇ ਗਰੁੱਪ",
+  "notifGlobal": "ਸੰਸਾਰ ਭਰ ਦਾ ਸਿਮਰਨ",
+  "notifGoalClose": "ਸੰਕਲਪ ਨੇੜੇ ਹੈ",
+  "notifGoalCloseSub": "ਜਦੋਂ ਗਰੁੱਪ 90% ਤੋਂ ਲੰਘ ਜਾਵੇ",
+  "notifSomeoneJoined": "ਕੋਈ ਜੁੜਿਆ",
+  "notifSomeoneJoinedSub": "ਤੁਹਾਡੇ ਗਰੁੱਪਾਂ ਵਿੱਚ ਨਵੇਂ ਜਣੇ",
+  "notifGroupSummary": "ਰੋਜ਼ਾਨਾ ਗਰੁੱਪ ਦਾ ਸਾਰ",
+  "notifGroupSummarySub": "ਇੱਕ ਸੁਨੇਹਾ, ਰਾਤ 9 ਵਜੇ",
+  "notifLargeGatherings": "ਵੱਡੇ ਇਕੱਠ",
+  "notifLargeGatheringsSub": "ਜਦੋਂ ਹਜ਼ਾਰਾਂ ਰਲ਼ ਕੇ ਬੈਠੇ ਹੋਣ",
+  "notifGroupsNotYet": "ਇਹਨਾਂ ਲਈ ਸਰਵਰ ਤੋਂ ਸੁਨੇਹਾ ਭੇਜਣਾ ਪੈਂਦਾ ਹੈ, ਤੇ ਹਾਜ਼ਰੀ ਕੋਲ ਅਜੇ ਉਹ ਨਹੀਂ ਹੈ। ਉੱਤੇ ਵਾਲੀਆਂ ਤੁਹਾਡੀਆਂ ਆਪਣੀਆਂ ਯਾਦ-ਦਹਾਨੀਆਂ ਇਸੇ ਫ਼ੋਨ ਵੱਲੋਂ ਹਨ ਤੇ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀਆਂ ਹਨ।"
 }

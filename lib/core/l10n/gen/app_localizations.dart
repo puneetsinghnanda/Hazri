@@ -3716,6 +3716,84 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Join the sangat first — there is nowhere to sync to without an account.'**
   String get syncNeedsAccount;
+
+  /// No description provided for @notifTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifTitle;
+
+  /// No description provided for @notifOwnPractice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own practice'**
+  String get notifOwnPractice;
+
+  /// No description provided for @notifYourGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Your groups'**
+  String get notifYourGroups;
+
+  /// No description provided for @notifGlobal.
+  ///
+  /// In en, this message translates to:
+  /// **'Global Simran'**
+  String get notifGlobal;
+
+  /// No description provided for @notifGoalClose.
+  ///
+  /// In en, this message translates to:
+  /// **'A goal is close'**
+  String get notifGoalClose;
+
+  /// No description provided for @notifGoalCloseSub.
+  ///
+  /// In en, this message translates to:
+  /// **'When the group passes 90%'**
+  String get notifGoalCloseSub;
+
+  /// No description provided for @notifSomeoneJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone joined'**
+  String get notifSomeoneJoined;
+
+  /// No description provided for @notifSomeoneJoinedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'New members in your groups'**
+  String get notifSomeoneJoinedSub;
+
+  /// No description provided for @notifGroupSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily group summary'**
+  String get notifGroupSummary;
+
+  /// No description provided for @notifGroupSummarySub.
+  ///
+  /// In en, this message translates to:
+  /// **'One message, at 9 PM'**
+  String get notifGroupSummarySub;
+
+  /// No description provided for @notifLargeGatherings.
+  ///
+  /// In en, this message translates to:
+  /// **'Large gatherings'**
+  String get notifLargeGatherings;
+
+  /// No description provided for @notifLargeGatheringsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'When thousands are sitting together'**
+  String get notifLargeGatheringsSub;
+
+  /// No description provided for @notifGroupsNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off.'**
+  String get notifGroupsNotYet;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

@@ -2004,4 +2004,44 @@ class LPa extends L {
   @override
   String get syncNeedsAccount =>
       'ਪਹਿਲਾਂ ਸੰਗਤ ਨਾਲ ਜੁੜੋ — ਖਾਤੇ ਤੋਂ ਬਿਨਾਂ ਸਿੰਕ ਕਰਨ ਲਈ ਕੋਈ ਥਾਂ ਨਹੀਂ।';
+
+  @override
+  String get notifTitle => 'ਸੂਚਨਾਵਾਂ';
+
+  @override
+  String get notifOwnPractice => 'ਤੁਹਾਡਾ ਆਪਣਾ ਅਭਿਆਸ';
+
+  @override
+  String get notifYourGroups => 'ਤੁਹਾਡੇ ਗਰੁੱਪ';
+
+  @override
+  String get notifGlobal => 'ਸੰਸਾਰ ਭਰ ਦਾ ਸਿਮਰਨ';
+
+  @override
+  String get notifGoalClose => 'ਸੰਕਲਪ ਨੇੜੇ ਹੈ';
+
+  @override
+  String get notifGoalCloseSub => 'ਜਦੋਂ ਗਰੁੱਪ 90% ਤੋਂ ਲੰਘ ਜਾਵੇ';
+
+  @override
+  String get notifSomeoneJoined => 'ਕੋਈ ਜੁੜਿਆ';
+
+  @override
+  String get notifSomeoneJoinedSub => 'ਤੁਹਾਡੇ ਗਰੁੱਪਾਂ ਵਿੱਚ ਨਵੇਂ ਜਣੇ';
+
+  @override
+  String get notifGroupSummary => 'ਰੋਜ਼ਾਨਾ ਗਰੁੱਪ ਦਾ ਸਾਰ';
+
+  @override
+  String get notifGroupSummarySub => 'ਇੱਕ ਸੁਨੇਹਾ, ਰਾਤ 9 ਵਜੇ';
+
+  @override
+  String get notifLargeGatherings => 'ਵੱਡੇ ਇਕੱਠ';
+
+  @override
+  String get notifLargeGatheringsSub => 'ਜਦੋਂ ਹਜ਼ਾਰਾਂ ਰਲ਼ ਕੇ ਬੈਠੇ ਹੋਣ';
+
+  @override
+  String get notifGroupsNotYet =>
+      'ਇਹਨਾਂ ਲਈ ਸਰਵਰ ਤੋਂ ਸੁਨੇਹਾ ਭੇਜਣਾ ਪੈਂਦਾ ਹੈ, ਤੇ ਹਾਜ਼ਰੀ ਕੋਲ ਅਜੇ ਉਹ ਨਹੀਂ ਹੈ। ਉੱਤੇ ਵਾਲੀਆਂ ਤੁਹਾਡੀਆਂ ਆਪਣੀਆਂ ਯਾਦ-ਦਹਾਨੀਆਂ ਇਸੇ ਫ਼ੋਨ ਵੱਲੋਂ ਹਨ ਤੇ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀਆਂ ਹਨ।';
 }

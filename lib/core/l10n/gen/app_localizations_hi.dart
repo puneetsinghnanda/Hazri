@@ -2003,4 +2003,44 @@ class LHi extends L {
   @override
   String get syncNeedsAccount =>
       'पहले संगत से जुड़ें — खाते के बिना सिंक करने के लिए कोई जगह नहीं।';
+
+  @override
+  String get notifTitle => 'सूचनाएँ';
+
+  @override
+  String get notifOwnPractice => 'आपका अपना अभ्यास';
+
+  @override
+  String get notifYourGroups => 'आपके ग्रुप';
+
+  @override
+  String get notifGlobal => 'दुनिया भर का सिमरन';
+
+  @override
+  String get notifGoalClose => 'संकल्प नज़दीक है';
+
+  @override
+  String get notifGoalCloseSub => 'जब ग्रुप 90% से आगे निकले';
+
+  @override
+  String get notifSomeoneJoined => 'कोई जुड़ा';
+
+  @override
+  String get notifSomeoneJoinedSub => 'आपके ग्रुपों में नए सदस्य';
+
+  @override
+  String get notifGroupSummary => 'रोज़ाना ग्रुप का सार';
+
+  @override
+  String get notifGroupSummarySub => 'एक संदेश, रात 9 बजे';
+
+  @override
+  String get notifLargeGatherings => 'बड़े इकट्ठ';
+
+  @override
+  String get notifLargeGatheringsSub => 'जब हज़ारों मिलकर बैठे हों';
+
+  @override
+  String get notifGroupsNotYet =>
+      'इनके लिए सर्वर से संदेश भेजना पड़ता है, और हाज़िरी के पास अभी वह नहीं है। ऊपर वाली आपकी अपनी याद-दिलाएँ इसी फ़ोन की हैं और बिना इंटरनेट चलती हैं।';
 }

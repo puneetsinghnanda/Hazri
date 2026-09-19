@@ -239,6 +239,11 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () => showCityPickerSheet(context),
                   ),
                   SettingsRow(
+                    title: l.notifTitle,
+                    subtitle: l.notifOwnPractice,
+                    onTap: () => context.push(Routes.notifications),
+                  ),
+                  SettingsRow(
                     title: l.settingsRemindersNotArriving,
                     onTap: () => context.push(Routes.batteryHelp),
                   ),

@@ -1057,5 +1057,18 @@
               "type": "int"
           }
       }
-  }
+  },
+  "notifTitle": "Notifications",
+  "notifOwnPractice": "Your own practice",
+  "notifYourGroups": "Your groups",
+  "notifGlobal": "Global Simran",
+  "notifGoalClose": "A goal is close",
+  "notifGoalCloseSub": "When the group passes 90%",
+  "notifSomeoneJoined": "Someone joined",
+  "notifSomeoneJoinedSub": "New members in your groups",
+  "notifGroupSummary": "Daily group summary",
+  "notifGroupSummarySub": "One message, at 9 PM",
+  "notifLargeGatherings": "Large gatherings",
+  "notifLargeGatheringsSub": "When thousands are sitting together",
+  "notifGroupsNotYet": "These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off."
 }
