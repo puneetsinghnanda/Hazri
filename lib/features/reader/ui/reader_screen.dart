@@ -28,6 +28,7 @@ import '../../audio/ui/player_bar.dart';
 import '../../nitnem/domain/bani.dart';
 import 'gurbani_line_view.dart';
 import 'text_settings_sheet.dart';
+import '../../sangat/data/group_credit.dart';
 
 /// The reader (Design 13-16).
 ///
@@ -231,6 +232,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
       source: CompletionSource.read,
     );
     await _repo.creditGoalsFor(bani.id);
+    // And the groups reciting the same bani together, so a paath
+    // actually read does not need logging by hand a second time.
+    await creditGroupsFor(ref.read, bani.id);
   }
 
   static BaniSlotValue _slotValue(BaniSlot slot) => switch (slot) {

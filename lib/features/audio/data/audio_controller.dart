@@ -15,6 +15,7 @@ import '../../simran/domain/simran_track.dart';
 import '../domain/paath_player.dart';
 import 'audio_handler.dart';
 import 'notification_access.dart';
+import '../../sangat/data/group_credit.dart';
 
 /// Set during bootstrap in `main.dart`. Null when the media session could not
 /// start, so the app still runs as a text-only reader.
@@ -96,6 +97,8 @@ class PlaybackController {
       source: CompletionSource.listen,
     );
     await repo.creditGoalsFor(bani.id);
+    // And the groups reciting the same bani together.
+    await creditGroupsFor(_ref.read, bani.id);
   }
 
   PaathTrack? _trackFor(Bani bani, Map<String, AudioTrackRow> tracks, String language) {
