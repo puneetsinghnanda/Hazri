@@ -1742,88 +1742,19 @@ def reader_complete() -> str:
 """
 
 
-def hazri_marked(t: dict = EN) -> str:
-    """The moment the day\u2019s hazri is marked.
-
-    Shown once a day, on the first thing completed -- a bani or a sitting of
-    simran, whichever comes first. Everything after it that day is added to
-    the same hazri rather than announcing itself again, because a hazri is
-    a day marked, not a tally of interruptions.
-
-    Dark in both themes, like Simran, so it reads as a moment and not as
-    another card in the flow.
-
-    On the wording: the app says the hazri is marked and names what was read
-    and where the reader sat. It does not say it has registered anything
-    with the Guru on the reader\u2019s behalf -- that is not the app\u2019s to
-    claim, and the quieter sentence is the truer one.
-    """
-    done = [("Japji Sahib", "5:52 AM"), ("Naam Simran", "11 minutes")]
-    rows = "".join(
-        f'<div class="row" style="gap:11px;padding:9px 0">'
-        f'<div style="width:22px;height:22px;border-radius:11px;flex:none;'
-        f'background:rgba(108,203,156,.16);color:#6FE3A6;display:flex;'
-        f'align-items:center;justify-content:center">{icon("check", 13)}</div>'
-        f'<div style="font-size:14.5px;font-weight:600;color:#EDECF6;flex:1">{n}</div>'
-        f'<div style="font-size:13px;color:rgba(255,255,255,.55);font-weight:600">'
-        f'{w}</div></div>' for n, w in done)
-    return f"""
-<div style="position:absolute;inset:0;background:#070A1A"></div>
-<div style="position:absolute;left:50%;top:150px;transform:translate(-50%,-50%);
-  width:460px;height:460px;border-radius:230px;
-  background:radial-gradient(circle,rgba(242,162,78,.20),rgba(7,10,26,0) 62%)"></div>
-<div style="position:absolute;inset:0;display:flex;flex-direction:column;
-  padding:60px 24px 26px">
-  <div class="col" style="align-items:center;gap:16px">
-    <div style="width:104px;height:104px;border-radius:52px;
-      background:rgba(255,255,255,.05);border:1px solid rgba(242,162,78,.35);
-      display:flex;align-items:center;justify-content:center">
-      {app_mark(56, "rgba(255,255,255,.78)", "#F2A24E")}</div>
-    <div class="disp gur" style="font-size:28px;font-weight:700;color:#fff;
-      text-align:center;line-height:1.35">{t["hazriMarked"]}</div>
-    <div class="row" style="gap:9px;align-items:center">
-      <div style="font-size:12.5px;color:rgba(255,255,255,.5);font-weight:600">
-        Friday, 20 November</div>
-      <div style="width:3px;height:3px;border-radius:2px;
-        background:rgba(255,255,255,.3)"></div>
-      <div class="gur" style="font-size:12.5px;color:rgba(255,255,255,.5);
-        font-weight:600">5 ਮੱਘਰ 558</div>
-    </div>
-  </div>
-  <div style="height:26px"></div>
-  <div style="border-radius:20px;background:rgba(255,255,255,.055);
-    border:1px solid rgba(255,255,255,.09);padding:6px 16px 8px">{rows}</div>
-  <div style="font-size:13px;color:rgba(255,255,255,.55);text-align:center;
-    line-height:1.6;padding:16px 4px 0">
-    {t["inPresence"]}</div>
-  <div style="flex:1"></div>
-  <div class="row" style="gap:9px;justify-content:center;padding-bottom:16px">
-    <div class="{t['cls']}" style="font-size:13px;color:#F2A24E;font-weight:700">
-      {t["streak"]}</div>
-    <div style="width:3px;height:3px;border-radius:2px;
-      background:rgba(255,255,255,.3)"></div>
-    <div class="{t['cls']}" style="font-size:13px;color:rgba(255,255,255,.5);
-      font-weight:600">{t["gentle"]}</div>
-  </div>
-  <div class="btn" style="background:var(--kesri);color:#231104">
-    {icon("diary", 19)}<div class="{t['cls']}">{t["seeDiary"]}</div></div>
-  <div class="{t['cls']}" style="text-align:center;font-size:14px;
-    color:rgba(255,255,255,.55);font-weight:600;padding-top:16px">{t["done"]}</div>
-</div>
-"""
-
-
 def goal_complete(t: dict = EN) -> str:
-    """The day everything you set yourself is finished.
+    """The one full-screen moment in the app: the day is finished.
 
-    It takes the place of the hazri screen rather than following it: the
-    hazri was already marked hours ago, by the first thing you read, and
-    saying so twice would make the smaller moment the louder one. So the
-    hazri is stated here in one quiet line and the screen belongs to the
-    harder thing.
+    There was a second, on the first thing completed each day, and it is
+    gone. A hazri is marked by one paath and most days hold several, so a
+    takeover at the first of them interrupts the practice it is meant to
+    honour -- and having fired already, it made the harder moment the
+    quieter one. The hazri is still said at every step it happens: on the
+    reader when a bani ends, on Today, and in the diary. Only this is
+    ceremonial, and only on a day everything is done.
 
-    Sage rather than kesri, and the ring around the mark is closed, so the
-    two moments are told apart before a word is read.
+    The hazri gets a line here rather than the headline, because by now it
+    was marked hours ago.
     """
     goals = [(t["japji"], "5:52 AM"), (t["simran"], "11 minutes"),
              (t["rehras"], "6:44 PM")]
@@ -2183,7 +2114,6 @@ SCREENS = [
     ("52-CodeProblems", "That code did not work", code_problems),
     ("53-RestoreOrNew", "Restore, or start fresh", restore_or_new),
     ("54-Restored", "Your sangat is back", restored),
-    ("55-HazriMarked", "ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ", hazri_marked),
     ("56-DiaryToday", "Diary — one day", diary_today),
     ("57-Diary", "Diary — the month", diary_month),
     ("58-TodayHazri", "Today — hazri marked", today_hazri),

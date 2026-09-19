@@ -204,9 +204,9 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <div class="topbar">
       <div class="brand">
         <h1>Hazri · Phase 2</h1>
-        <span class="sub">32 screens · round 6</span>
+        <span class="sub">31 screens · round 7</span>
       </div>
-      <span class="tally" id="tally">0 of 32 commented</span>
+      <span class="tally" id="tally">0 of 31 commented</span>
       <div class="seg" role="group" aria-label="Show screens in">
         <button type="button" id="t-light" aria-pressed="true">Light</button>
         <button type="button" id="t-dark" aria-pressed="false">Dark</button>
@@ -224,15 +224,12 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <p>Leave a comment under anything that should change, and mark it
       <strong>Fine</strong> or <strong>Change</strong> so we both know what is settled.
       Comments save as you type and I read them straight back from here.</p>
-    <p><strong>Round 6 is your three comments.</strong> The hazri line follows the
-      reader’s language rather than always being Gurmukhi (58), the card names the day
-      (56), and a day where everything is finished gets its own screen instead of the
-      hazri one (55 → 61). Screen 60 is Today in Punjabi, so the language rule can be
-      seen rather than described.</p>
+    <p><strong>Round 7.</strong> One full-screen moment, not two: it fires when the day’s
+      goals are finished, and the first-completion screen is gone. The streak now says what
+      it counts and matches the month the diary draws — it could not have, before.</p>
     <div class="note">
-      <span>Still nothing built. The four Phase 2 hazri strings on 60 are mine and want a
-        native ear before they become ARB keys — every other word on that screen already
-        exists in the app.</span>
+      <span>Still nothing built. If you set no goals at all, 61 never fires and the hazri is
+        only ever said in place — worth deciding whether that is right.</span>
     </div>
   </div>
   <div id="sections"></div>
@@ -286,22 +283,19 @@ const SECTIONS = [
   },
   {
     id: "hazri", title: "\u0a39\u0a3e\u0a1c\u0a3c\u0a30\u0a40 \u00b7 The day marked",
-    line: "Finish one thing \u2014 a bani or a sitting of simran \u2014 and the day\u2019s hazri is marked. Finish everything you set yourself and the goal is met. Two different days, tracked separately everywhere.",
+    line: "Finish one thing \u2014 a bani or a sitting of simran \u2014 and the day\u2019s hazri is marked, said in place rather than on a screen of its own. Finish everything you set yourself and the goal is met, and that is the one moment that takes the whole screen.",
     screens: [
       { id: "48-ReaderComplete", name: "Reader \u2014 complete",
-        cap: "The first thing finished today is what marks the hazri, and the screen says so. Anything finished later is added to the same hazri rather than announcing itself again.",
-        was: "Revised: localised." },
-      { id: "55-HazriMarked", name: "Hazri marked",
-        cap: "Once a day, on the first thing completed \u2014 unless that same thing finishes the day\u2019s goals, in which case 61 takes its place. Dark in both themes so it reads as a moment. The emblem is the app\u2019s own mark, the day arc with the sun on the horizon.",
-        was: "Revised: localised, and it steps aside for 61." },
+        cap: "With the first-completion screen gone, this card is the whole of what happens when a bani ends on an ordinary day \u2014 the hazri said once, in place, without taking over the screen.",
+        was: "Revised: this now carries the moment." },
       { id: "61-GoalComplete", name: "All of today\u2019s goals are done",
-        cap: "Your comment on 55, drawn. It replaces the hazri screen rather than following it: the hazri was marked hours ago and saying so twice makes the smaller moment the louder one, so it is one quiet line here instead. Sage rather than kesri, and the ring around the mark is closed.",
-        was: "New." },
+        cap: "The one full-screen moment in the app, and it fires only on a day everything you set yourself is finished. The first-completion screen is gone: a hazri is marked by one paath and most days hold several, so a takeover at the first of them interrupted the practice it was meant to honour. The hazri gets a line here rather than the headline, because by now it was marked hours ago.",
+        was: "Revised: it is now the only one." },
       { id: "56-DiaryToday", name: "Diary \u2014 one day",
         cap: "Your comment: the card names the day \u2014 Today\u2019s hazri is marked, and \u0a05\u0a71\u0a1c \u0a26\u0a40 \u0a39\u0a3e\u0a1c\u0a3c\u0a30\u0a40 \u0a32\u0a71\u0a17 \u0a17\u0a08 in Punjabi \u2014 rather than the bare phrase.",
         was: "Revised: localised, and it says \u2018today\u2019." },
       { id: "57-Diary", name: "Diary \u2014 the month",
-        cap: "Two dots a day: kesri for the hazri, green for all goals met. The gap between the two rows of dots is the honest picture of a month \u2014 18 days turned up, 11 days finished everything. Grace days keep Phase 1\u2019s teal; future days carry nothing.",
+        cap: "Two dots a day: kesri for the hazri, green for all goals met. The gap between the two rows of dots is the honest picture of a month \u2014 17 days turned up, 9 days finished everything. Both of November\u2019s grace days went on the 2nd and the 6th, and the 9th had none left to bridge it, which is where the streak restarted.",
         was: "Revised: one dot becomes two." },
     ],
   },
