@@ -8,8 +8,19 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Only the newest push to a branch needs building. Without this every push
+# started its own sixteen-minute Android build and they queued behind each
+# other, so the result you were waiting on was the third one in line.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   FLUTTER_VERSION: '3.47.4'
+  # No resident daemon: this runner builds once and is destroyed. A daemon
+  # holds a JVM open for a next build that never comes, on a machine with
+  # 7 GB to share.
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
 
 jobs:
   build:
@@ -29,6 +40,17 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+
+      # The Android build is the long pole at twelve minutes cold. Most of
+      # that is Gradle fetching and unpacking the same artifacts every run.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/gradle/wrapper/gradle-wrapper.properties', 'pubspec.lock') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
 
       - name: Install dependencies
         run: flutter pub get
@@ -51,6 +73,11 @@ jobs:
 
       - name: Test
         run: flutter test --reporter expanded
+
+      - name: How much memory this runner actually has
+        # Printed before the build, so the next time it dies at twelve minutes
+        # there is a number in the log rather than a guess.
+        run: free -h && df -h /
 
       - name: Build debug-signed release APK (arm64)
         # Split per ABI: a phone only needs its own slice, and arm64-v8a covers
