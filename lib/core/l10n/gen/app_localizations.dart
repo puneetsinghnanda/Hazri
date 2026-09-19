@@ -3152,6 +3152,84 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Turn the globe with your hand'**
   String get simranGlobeTurn;
+
+  /// No description provided for @hazriMarked.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s hazri is marked'**
+  String get hazriMarked;
+
+  /// No description provided for @hazriNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s hazri is not marked yet'**
+  String get hazriNotYet;
+
+  /// No description provided for @hazriMarkedAtWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked at {time}, with {what}'**
+  String hazriMarkedAtWith(String time, String what);
+
+  /// No description provided for @hazriMarkedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked at {time}'**
+  String hazriMarkedAt(String time);
+
+  /// No description provided for @hazriHow.
+  ///
+  /// In en, this message translates to:
+  /// **'One paath, or one sitting of simran, marks it'**
+  String get hazriHow;
+
+  /// No description provided for @hazriSimran.
+  ///
+  /// In en, this message translates to:
+  /// **'Naam Simran'**
+  String get hazriSimran;
+
+  /// No description provided for @hazriGoalsAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All of today\'s goals are done'**
+  String get hazriGoalsAllDone;
+
+  /// No description provided for @hazriSeeDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'See my diary'**
+  String get hazriSeeDiary;
+
+  /// No description provided for @diaryHazriDot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri'**
+  String get diaryHazriDot;
+
+  /// No description provided for @diaryGoalsDot.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals'**
+  String get diaryGoalsDot;
+
+  /// No description provided for @diaryWhatYouDid.
+  ///
+  /// In en, this message translates to:
+  /// **'What you completed'**
+  String get diaryWhatYouDid;
+
+  /// No description provided for @diaryNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'not yet'**
+  String get diaryNotYet;
+
+  /// No description provided for @diaryHazriNote.
+  ///
+  /// In en, this message translates to:
+  /// **'One paath or five, a single sitting of simran — any of them marks the day\'s hazri. The count is what you did, not what you owed.'**
+  String get diaryHazriNote;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

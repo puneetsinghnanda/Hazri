@@ -11,6 +11,7 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../domain/streak.dart';
@@ -213,17 +214,17 @@ class _MonthGrid extends ConsumerWidget {
             },
           ),
           const SizedBox(height: 10),
-          // A Wrap rather than a Row: the three slot names are much longer in
-          // Punjabi and Hindi than in English.
+          // A Wrap rather than a Row: the names are much longer in Punjabi
+          // and Hindi than in English. Two entries now, matching the two dots
+          // in each cell.
           Wrap(
             alignment: WrapAlignment.center,
             spacing: 12,
             runSpacing: 4,
             children: [
               for (final (label, colour) in [
-                (l.slotAmritVela, c.kesri),
-                (l.diaryStatRehras, c.teal),
-                (l.diaryStatSohila, c.sage),
+                (l.diaryHazriDot, c.kesri),
+                (l.diaryGoalsDot, c.sage),
               ])
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -281,10 +282,13 @@ class _DayCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final segments = [
-      (BaniSlotValue.morning, c.kesri),
-      (BaniSlotValue.evening, c.teal),
-      (BaniSlotValue.bedtime, c.sage),
+    // Two dots, not three slots. The reader asked for exactly this: one for
+    // hazri -- did somebody turn up at all -- and one for whether the day's
+    // goals were met. They are different achievements, and on most days the
+    // first is lit and the second is not, which is the honest picture.
+    final dots = [
+      (day.hazri, c.kesri),
+      (day.goalsMet, c.sage),
     ];
 
     return InkWell(
@@ -315,14 +319,14 @@ class _DayCell extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (final (slot, colour) in segments)
+                  for (final (lit, colour) in dots)
                     Container(
-                      width: 6,
-                      height: 3,
-                      margin: const EdgeInsets.symmetric(horizontal: 1),
+                      width: 5,
+                      height: 5,
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
                       decoration: BoxDecoration(
-                        color: day.slots.contains(slot) ? colour : c.rule,
-                        borderRadius: BorderRadius.circular(2),
+                        color: lit ? colour : c.rule,
+                        shape: BoxShape.circle,
                       ),
                     ),
                 ],
@@ -375,6 +379,33 @@ class _TickSheet extends ConsumerWidget {
               const SizedBox(height: 4),
               Text(l.diaryTickHint, style: HazriText.bodySmall.copyWith(color: c.muted)),
               const SizedBox(height: 12),
+              // Design 56. Hazri first, because it is the thing the app is
+              // named after and the thing most days have.
+              HazriCard(
+                colour: day.hazri ? c.sageSoft : c.card2,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                child: Row(
+                  children: [
+                    AppIcon(
+                      day.hazri ? HazriIconData.check : HazriIconData.sunArc,
+                      size: 19,
+                      color: day.hazri ? c.sage : c.muted,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        day.hazri ? l.hazriMarked : l.hazriNotYet,
+                        style: HazriText.captionStrong
+                            .copyWith(color: day.hazri ? c.sage : c.ink2),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(l.diaryWhatYouDid,
+                  style: HazriText.eyebrow.copyWith(color: c.muted)),
+              const SizedBox(height: 6),
               for (final bani in nitnem)
                 _TickRow(
                   label: bani.name(l.localeName),
@@ -420,6 +451,11 @@ class _TickSheet extends ConsumerWidget {
                   }
                   setState(() {});
                 },
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l.diaryHazriNote,
+                style: HazriText.caption.copyWith(color: c.muted),
               ),
               const SizedBox(height: 12),
               PrimaryButton(

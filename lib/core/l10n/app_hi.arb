@@ -525,5 +525,18 @@
   "simranOthersHere": "{count} और",
   "simranOthersSub": "आज साथ बैठे हैं",
   "simranGlobeFirst": "आज सबसे पहले आप हैं",
-  "simranGlobeTurn": "गोले को हाथ से घुमाएँ"
+  "simranGlobeTurn": "गोले को हाथ से घुमाएँ",
+  "hazriMarked": "आज की हाज़िरी लग गई",
+  "hazriNotYet": "आज की हाज़िरी अभी नहीं लगी",
+  "hazriMarkedAtWith": "{time} बजे, {what} के साथ",
+  "hazriMarkedAt": "{time} बजे लगी",
+  "hazriHow": "एक पाठ, या एक बार का सिमरन — हाज़िरी लग जाती है",
+  "hazriSimran": "नाम सिमरन",
+  "hazriGoalsAllDone": "आज के सभी संकल्प पूरे हुए",
+  "hazriSeeDiary": "मेरी डायरी देखें",
+  "diaryHazriDot": "हाज़िरी",
+  "diaryGoalsDot": "संकल्प",
+  "diaryWhatYouDid": "जो आपने पूरा किया",
+  "diaryNotYet": "अभी नहीं",
+  "diaryHazriNote": "एक पाठ हो या पाँच, या एक बार का सिमरन — हाज़िरी लग जाती है। गिनती वह है जो आपने किया, वह नहीं जो करना था।"
 }

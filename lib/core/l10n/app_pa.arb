@@ -525,5 +525,18 @@
   "simranOthersHere": "{count} ਹੋਰ",
   "simranOthersSub": "ਅੱਜ ਨਾਲ ਬੈਠੇ ਹਨ",
   "simranGlobeFirst": "ਅੱਜ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਤੁਸੀਂ ਹੋ",
-  "simranGlobeTurn": "ਗੋਲੇ ਨੂੰ ਹੱਥ ਨਾਲ ਘੁਮਾਓ"
+  "simranGlobeTurn": "ਗੋਲੇ ਨੂੰ ਹੱਥ ਨਾਲ ਘੁਮਾਓ",
+  "hazriMarked": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ",
+  "hazriNotYet": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਅਜੇ ਨਹੀਂ ਲੱਗੀ",
+  "hazriMarkedAtWith": "{time} ਵਜੇ, {what} ਨਾਲ",
+  "hazriMarkedAt": "{time} ਵਜੇ ਲੱਗੀ",
+  "hazriHow": "ਇੱਕ ਪਾਠ, ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ — ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ",
+  "hazriSimran": "ਨਾਮ ਸਿਮਰਨ",
+  "hazriGoalsAllDone": "ਅੱਜ ਦੇ ਸਾਰੇ ਸੰਕਲਪ ਪੂਰੇ ਹੋਏ",
+  "hazriSeeDiary": "ਮੇਰੀ ਡਾਇਰੀ ਵੇਖੋ",
+  "diaryHazriDot": "ਹਾਜ਼ਰੀ",
+  "diaryGoalsDot": "ਸੰਕਲਪ",
+  "diaryWhatYouDid": "ਜੋ ਤੁਸੀਂ ਪੂਰਾ ਕੀਤਾ",
+  "diaryNotYet": "ਅਜੇ ਨਹੀਂ",
+  "diaryHazriNote": "ਇੱਕ ਪਾਠ ਹੋਵੇ ਜਾਂ ਪੰਜ, ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ — ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ। ਗਿਣਤੀ ਉਹ ਹੈ ਜੋ ਤੁਸੀਂ ਕੀਤਾ, ਉਹ ਨਹੀਂ ਜੋ ਕਰਨਾ ਸੀ।"
 }

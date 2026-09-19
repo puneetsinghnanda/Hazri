@@ -18,14 +18,30 @@ final userRepositoryProvider = Provider<UserRepository>(
 
 /// One day's worth of diary marks.
 class DiaryDay {
-  DiaryDay({required this.date, required this.slots, required this.isGrace, required this.simran});
+  DiaryDay({
+    required this.date,
+    required this.slots,
+    required this.isGrace,
+    required this.simran,
+    this.goalsMet = false,
+  });
 
   final DateTime date;
   final Set<BaniSlotValue> slots;
   final bool isGrace;
   final bool simran;
 
+  /// Every goal that was active that day was met on it. The diary's second
+  /// dot, and the one that is often dark on a day the first one is lit.
+  final bool goalsMet;
+
   bool get isNitnemDay => slots.isNotEmpty;
+
+  /// Whether somebody turned up at all: one paath, or one sitting of simran.
+  ///
+  /// The diary's first dot. It is deliberately a lower bar than [goalsMet] —
+  /// hazri is being present, not finishing the list.
+  bool get hazri => slots.isNotEmpty || simran;
 }
 
 /// Everything written to `user.db`: progress, completions, goals, Simran,
@@ -173,6 +189,19 @@ class UserRepository {
     final grace = await (_db.select(_db.graceDays)
           ..where((g) => g.monthKey.equals(monthKey(first))))
         .get();
+    // Goals are per-day and a goal made later does not retroactively fail the
+    // days before it, so a day counts as met when every goal that had started
+    // by then was ticked on it.
+    final goals = await _db.select(_db.goals).get();
+    final ticks = await (_db.select(_db.goalTicks)
+          ..where((t) =>
+              t.localDate.isBiggerOrEqualValue(from) &
+              t.localDate.isSmallerOrEqualValue(to)))
+        .get();
+    final ticksByDay = <String, Set<String>>{};
+    for (final t in ticks) {
+      ticksByDay.putIfAbsent(t.localDate, () => {}).add(t.goalId);
+    }
 
     final bySlot = <String, Set<BaniSlotValue>>{};
     for (final c in completions) {
@@ -186,11 +215,17 @@ class UserRepository {
         () {
           final date = DateTime(month.year, month.month, d);
           final key = localDateKey(date);
+          final running = goals
+              .where((g) => g.startDate.compareTo(key) <= 0)
+              .map((g) => g.id)
+              .toSet();
+          final tickedThatDay = ticksByDay[key] ?? const <String>{};
           return DiaryDay(
             date: date,
             slots: bySlot[key] ?? const {},
             isGrace: graceDays.contains(key),
             simran: simranDays.contains(key),
+            goalsMet: running.isNotEmpty && running.difference(tickedThatDay).isEmpty,
           );
         }(),
     ];

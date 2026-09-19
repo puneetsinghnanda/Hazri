@@ -18,6 +18,9 @@ import '../../../core/widgets/day_arc.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../data/today_controller.dart';
+import '../../hazri/data/hazri_controller.dart';
+import '../../hazri/ui/goal_complete_sheet.dart';
+import '../../hazri/ui/hazri_banner.dart';
 import '../domain/today_state.dart';
 import 'elder_today.dart';
 import '../../goals/data/goals_controller.dart';
@@ -41,6 +44,20 @@ class TodayScreen extends ConsumerWidget {
     final dates = HazriDates.of(context);
     final now = ref.watch(clockProvider).now();
 
+    // Design 61, on the day the last goal is ticked and once on that day.
+    // It follows the state rather than the tap, because the tick can happen
+    // in the reader or the diary rather than here.
+    ref.listen(goalsAllDoneTodayProvider, (was, isNow) {
+      if (!isNow || (was ?? false)) return;
+      final cue = ref.read(goalCompleteCueProvider);
+      final today = ref.read(clockProvider).today();
+      if (!cue.shouldShowFor(today)) return;
+      cue.markShown(today);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) showGoalCompleteSheet(context);
+      });
+    });
+
     return Scaffold(
       backgroundColor: c.bg,
       body: SafeArea(
@@ -59,7 +76,11 @@ class TodayScreen extends ConsumerWidget {
               ),
               Text(l.greeting, style: HazriText.display26.copyWith(color: c.ink)),
               const SizedBox(height: 12),
+              // One or the other, never both: the join banner until somebody
+              // has set up, the hazri banner after. The reader was explicit
+              // about not stacking two.
               const _JoinSangatBanner(),
+              const HazriBanner(),
               const _GoalsCard(),
               const SizedBox(height: 12),
               _CtaButton(cta: ref.watch(todayCtaProvider)),

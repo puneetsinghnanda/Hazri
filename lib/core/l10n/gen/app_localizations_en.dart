@@ -1695,4 +1695,48 @@ class LEn extends L {
 
   @override
   String get simranGlobeTurn => 'Turn the globe with your hand';
+
+  @override
+  String get hazriMarked => 'Today\'s hazri is marked';
+
+  @override
+  String get hazriNotYet => 'Today\'s hazri is not marked yet';
+
+  @override
+  String hazriMarkedAtWith(String time, String what) {
+    return 'Marked at $time, with $what';
+  }
+
+  @override
+  String hazriMarkedAt(String time) {
+    return 'Marked at $time';
+  }
+
+  @override
+  String get hazriHow => 'One paath, or one sitting of simran, marks it';
+
+  @override
+  String get hazriSimran => 'Naam Simran';
+
+  @override
+  String get hazriGoalsAllDone => 'All of today\'s goals are done';
+
+  @override
+  String get hazriSeeDiary => 'See my diary';
+
+  @override
+  String get diaryHazriDot => 'Hazri';
+
+  @override
+  String get diaryGoalsDot => 'Goals';
+
+  @override
+  String get diaryWhatYouDid => 'What you completed';
+
+  @override
+  String get diaryNotYet => 'not yet';
+
+  @override
+  String get diaryHazriNote =>
+      'One paath or five, a single sitting of simran — any of them marks the day\'s hazri. The count is what you did, not what you owed.';
 }

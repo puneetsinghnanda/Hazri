@@ -1693,4 +1693,48 @@ class LHi extends L {
 
   @override
   String get simranGlobeTurn => 'गोले को हाथ से घुमाएँ';
+
+  @override
+  String get hazriMarked => 'आज की हाज़िरी लग गई';
+
+  @override
+  String get hazriNotYet => 'आज की हाज़िरी अभी नहीं लगी';
+
+  @override
+  String hazriMarkedAtWith(String time, String what) {
+    return '$time बजे, $what के साथ';
+  }
+
+  @override
+  String hazriMarkedAt(String time) {
+    return '$time बजे लगी';
+  }
+
+  @override
+  String get hazriHow => 'एक पाठ, या एक बार का सिमरन — हाज़िरी लग जाती है';
+
+  @override
+  String get hazriSimran => 'नाम सिमरन';
+
+  @override
+  String get hazriGoalsAllDone => 'आज के सभी संकल्प पूरे हुए';
+
+  @override
+  String get hazriSeeDiary => 'मेरी डायरी देखें';
+
+  @override
+  String get diaryHazriDot => 'हाज़िरी';
+
+  @override
+  String get diaryGoalsDot => 'संकल्प';
+
+  @override
+  String get diaryWhatYouDid => 'जो आपने पूरा किया';
+
+  @override
+  String get diaryNotYet => 'अभी नहीं';
+
+  @override
+  String get diaryHazriNote =>
+      'एक पाठ हो या पाँच, या एक बार का सिमरन — हाज़िरी लग जाती है। गिनती वह है जो आपने किया, वह नहीं जो करना था।';
 }

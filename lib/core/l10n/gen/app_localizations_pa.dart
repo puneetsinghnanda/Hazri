@@ -1693,4 +1693,48 @@ class LPa extends L {
 
   @override
   String get simranGlobeTurn => 'ਗੋਲੇ ਨੂੰ ਹੱਥ ਨਾਲ ਘੁਮਾਓ';
+
+  @override
+  String get hazriMarked => 'ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ';
+
+  @override
+  String get hazriNotYet => 'ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਅਜੇ ਨਹੀਂ ਲੱਗੀ';
+
+  @override
+  String hazriMarkedAtWith(String time, String what) {
+    return '$time ਵਜੇ, $what ਨਾਲ';
+  }
+
+  @override
+  String hazriMarkedAt(String time) {
+    return '$time ਵਜੇ ਲੱਗੀ';
+  }
+
+  @override
+  String get hazriHow => 'ਇੱਕ ਪਾਠ, ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ — ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ';
+
+  @override
+  String get hazriSimran => 'ਨਾਮ ਸਿਮਰਨ';
+
+  @override
+  String get hazriGoalsAllDone => 'ਅੱਜ ਦੇ ਸਾਰੇ ਸੰਕਲਪ ਪੂਰੇ ਹੋਏ';
+
+  @override
+  String get hazriSeeDiary => 'ਮੇਰੀ ਡਾਇਰੀ ਵੇਖੋ';
+
+  @override
+  String get diaryHazriDot => 'ਹਾਜ਼ਰੀ';
+
+  @override
+  String get diaryGoalsDot => 'ਸੰਕਲਪ';
+
+  @override
+  String get diaryWhatYouDid => 'ਜੋ ਤੁਸੀਂ ਪੂਰਾ ਕੀਤਾ';
+
+  @override
+  String get diaryNotYet => 'ਅਜੇ ਨਹੀਂ';
+
+  @override
+  String get diaryHazriNote =>
+      'ਇੱਕ ਪਾਠ ਹੋਵੇ ਜਾਂ ਪੰਜ, ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ — ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ। ਗਿਣਤੀ ਉਹ ਹੈ ਜੋ ਤੁਸੀਂ ਕੀਤਾ, ਉਹ ਨਹੀਂ ਜੋ ਕਰਨਾ ਸੀ।';
 }
