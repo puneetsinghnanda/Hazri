@@ -425,8 +425,12 @@ def today(banner: str | None = None) -> str:
   {banner if banner is not None else join_banner()}
   <div class="card col" style="padding:16px;gap:12px">
     <div class="row" style="justify-content:space-between">
-      <div class="col">
-        <div class="eyebrow">Your goals</div>
+      <div class="col" style="gap:3px">
+        <div class="row" style="gap:7px">
+          <div style="width:17px;height:17px;flex:none">{app_mark(17)}</div>
+          <div class="gur" style="font-size:13px;font-weight:600;
+            color:var(--kesriInk)">ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
+        </div>
         <div class="disp" style="font-size:20px;font-weight:700">1 of 3 done</div>
       </div>
       <div style="position:relative;width:56px;height:56px">
@@ -447,7 +451,7 @@ def today(banner: str | None = None) -> str:
       flex:none">{icon("diary", 22)}</div>
     <div class="col" style="flex:1">
       <div style="font-size:12px;color:var(--muted);font-weight:700">
-        TOMORROW · GURPURAB</div>
+        IN 4 DAYS · GURPURAB</div>
       <div style="font-size:14px;font-weight:700">
         Prakash Purab, Guru Nanak Dev Ji</div>
       <div class="gur" style="font-size:12.5px;color:var(--muted)">9 ਮੱਘਰ 558</div>
@@ -628,6 +632,25 @@ def toggle(on: bool) -> str:
             f'background:{"var(--sage)" if on else "var(--rule)"};position:relative">'
             f'<div style="position:absolute;top:3px;{"right" if on else "left"}:3px;'
             f'width:20px;height:20px;border-radius:10px;background:#fff"></div></div>')
+
+
+def app_mark(size: int = 40, arc: str = "var(--primary)",
+             sun: str = "var(--kesri)") -> str:
+    """The brand mark, drawn to the same 40x40 grid as `AppMark` in Dart.
+
+    The day arc with the sun on the horizon: the app already means "a day",
+    which is what a hazri is. Nothing devotional is drawn anywhere in Hazri
+    and this screen is the one most likely to tempt it, so the emblem for
+    the moment is the app\u2019s own mark and nothing else.
+    """
+    w = size * 2.4 / 40
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 40 40" '
+            f'style="display:block;flex:none">'
+            f'<path d="M4 27A16 16 0 0 1 36 27" fill="none" stroke="{arc}" '
+            f'stroke-width="{w:.2f}" stroke-linecap="round"/>'
+            f'<path d="M6 31.5H34" fill="none" stroke="{arc}" '
+            f'stroke-width="{w:.2f}" stroke-linecap="round"/>'
+            f'<path d="M12 27A8 8 0 0 1 28 27Z" fill="{sun}"/></svg>')
 
 
 def otp(typed: str, total: int = 6) -> str:
@@ -1576,6 +1599,17 @@ def reader_complete() -> str:
           Logged in your diary · 5:52 AM</div>
       </div>
     </div>
+    <div class="row" style="gap:10px;padding:2px 0 0">
+      <div style="width:30px;height:30px;border-radius:10px;flex:none;
+        background:var(--kesriSoft);display:flex;align-items:center;
+        justify-content:center">{app_mark(19)}</div>
+      <div class="col" style="flex:1">
+        <div class="gur" style="font-size:14px;font-weight:600;
+          color:var(--kesriInk)">ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
+        <div style="font-size:12px;color:var(--muted)">
+          This is what marked today’s hazri</div>
+      </div>
+    </div>
     <div class="row" style="gap:10px">
       <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary);
         min-height:48px;font-size:14.5px">{icon("back", 18)}<div>Start again</div></div>
@@ -1586,6 +1620,242 @@ def reader_complete() -> str:
       Start again takes you to the first line and clears where you left off.</div>
   </div>
 </div>
+"""
+
+
+def hazri_marked() -> str:
+    """The moment the day\u2019s hazri is marked.
+
+    Shown once a day, on the first thing completed -- a bani or a sitting of
+    simran, whichever comes first. Everything after it that day is added to
+    the same hazri rather than announcing itself again, because a hazri is
+    a day marked, not a tally of interruptions.
+
+    Dark in both themes, like Simran, so it reads as a moment and not as
+    another card in the flow.
+
+    On the wording: the app says the hazri is marked and names what was read
+    and where the reader sat. It does not say it has registered anything
+    with the Guru on the reader\u2019s behalf -- that is not the app\u2019s to
+    claim, and the quieter sentence is the truer one.
+    """
+    done = [("Japji Sahib", "5:52 AM"), ("Naam Simran", "11 minutes")]
+    rows = "".join(
+        f'<div class="row" style="gap:11px;padding:9px 0">'
+        f'<div style="width:22px;height:22px;border-radius:11px;flex:none;'
+        f'background:rgba(108,203,156,.16);color:#6FE3A6;display:flex;'
+        f'align-items:center;justify-content:center">{icon("check", 13)}</div>'
+        f'<div style="font-size:14.5px;font-weight:600;color:#EDECF6;flex:1">{n}</div>'
+        f'<div style="font-size:13px;color:rgba(255,255,255,.55);font-weight:600">'
+        f'{w}</div></div>' for n, w in done)
+    return f"""
+<div style="position:absolute;inset:0;background:#070A1A"></div>
+<div style="position:absolute;left:50%;top:150px;transform:translate(-50%,-50%);
+  width:460px;height:460px;border-radius:230px;
+  background:radial-gradient(circle,rgba(242,162,78,.20),rgba(7,10,26,0) 62%)"></div>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:60px 24px 26px">
+  <div class="col" style="align-items:center;gap:16px">
+    <div style="width:104px;height:104px;border-radius:52px;
+      background:rgba(255,255,255,.05);border:1px solid rgba(242,162,78,.35);
+      display:flex;align-items:center;justify-content:center">
+      {app_mark(56, "rgba(255,255,255,.78)", "#F2A24E")}</div>
+    <div class="gur" style="font-size:30px;font-weight:600;color:#fff;
+      text-align:center;line-height:1.4">ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
+    <div style="font-size:15px;color:rgba(255,255,255,.78);text-align:center;
+      line-height:1.55">Your hazri is marked for today</div>
+    <div class="row" style="gap:9px;align-items:center">
+      <div style="font-size:12.5px;color:rgba(255,255,255,.5);font-weight:600">
+        Friday, 20 November</div>
+      <div style="width:3px;height:3px;border-radius:2px;
+        background:rgba(255,255,255,.3)"></div>
+      <div class="gur" style="font-size:12.5px;color:rgba(255,255,255,.5);
+        font-weight:600">5 ਮੱਘਰ 558</div>
+    </div>
+  </div>
+  <div style="height:26px"></div>
+  <div style="border-radius:20px;background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.09);padding:6px 16px 8px">{rows}</div>
+  <div style="font-size:13px;color:rgba(255,255,255,.55);text-align:center;
+    line-height:1.6;padding:16px 4px 0">
+    Read in the presence of Sri Guru Granth Sahib Ji</div>
+  <div style="flex:1"></div>
+  <div class="row" style="gap:9px;justify-content:center;padding-bottom:16px">
+    <div style="font-size:13px;color:#F2A24E;font-weight:700">37 days in a row</div>
+    <div style="width:3px;height:3px;border-radius:2px;
+      background:rgba(255,255,255,.3)"></div>
+    <div style="font-size:13px;color:rgba(255,255,255,.5);font-weight:600">
+      a gentle streak</div>
+  </div>
+  <div class="btn" style="background:var(--kesri);color:#231104">
+    {icon("diary", 19)}<div>See my diary</div></div>
+  <div style="text-align:center;font-size:14px;color:rgba(255,255,255,.55);
+    font-weight:600;padding-top:16px">Done</div>
+</div>
+"""
+
+
+def diary_today() -> str:
+    """One day in the diary, opened.
+
+    The hazri at the top and what earned it underneath, still tickable --
+    Phase 1 lets any of the last seven days be corrected by hand and that
+    does not change.
+    """
+    items = [("Japji Sahib", "5:52 AM", True), ("Naam Simran", "11 minutes", True),
+             ("Rehras Sahib", "not yet · 6:40 PM", False),
+             ("Kirtan Sohila", "not yet", False)]
+    rows = "".join(
+        f'<div class="row" style="gap:12px;padding:12px 0">'
+        f'<div style="width:24px;height:24px;border-radius:12px;flex:none;'
+        + (f'background:var(--sage);color:#fff;display:flex;align-items:center;'
+           f'justify-content:center">{icon("check", 14)}'
+           if on else f'border:2px solid var(--rule)">')
+        + f'</div>'
+        f'<div style="font-size:14.5px;font-weight:600;flex:1;'
+        f'color:{"var(--ink)" if on else "var(--muted)"}">{n}</div>'
+        f'<div style="font-size:12.5px;color:var(--muted);font-weight:600">{w}</div>'
+        f'</div>' for n, w, on in items)
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Friday, 20 November", "5 ਮੱਘਰ 558")}
+  <div class="card row" style="padding:16px;gap:14px;
+    background:linear-gradient(135deg,var(--kesri),#B8560A);color:#fff">
+    <div style="width:58px;height:58px;border-radius:29px;flex:none;
+      background:rgba(255,255,255,.17);display:flex;align-items:center;
+      justify-content:center">{app_mark(34, "#fff", "#fff")}</div>
+    <div class="col" style="flex:1;gap:2px">
+      <div class="gur" style="font-size:19px;font-weight:600">ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
+      <div style="font-size:13px;opacity:.9">Marked at 5:52 AM, with Japji Sahib</div>
+    </div>
+  </div>
+  <div class="col" style="gap:4px">
+    <div class="eyebrow">What you completed</div>
+    <div style="font-size:12px;color:var(--muted)">
+      Tick anything you completed on this day</div>
+  </div>
+  <div class="card col" style="padding:4px 16px">{rows}</div>
+  <div class="card row" style="padding:14px 16px">
+    <div class="col" style="flex:1;align-items:center;gap:1px">
+      <div class="disp" style="font-size:21px;font-weight:700">2</div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">paath</div>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
+    <div class="col" style="flex:1;align-items:center;gap:1px">
+      <div class="disp" style="font-size:21px;font-weight:700">11</div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        simran minutes</div>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
+    <div class="col" style="flex:1;align-items:center;gap:1px">
+      <div class="disp" style="font-size:21px;font-weight:700">37</div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        days in a row</div>
+    </div>
+  </div>
+  {quiet("One paath or five, a single sitting of simran — any of them "
+         "marks the day’s hazri. The count is what you did, not what you "
+         "owed.")}
+  <div style="height:86px"></div>
+</div>
+{nav("diary")}
+"""
+
+
+def diary_month() -> str:
+    """The diary, a month at a time, with the days a hazri was marked.
+
+    Phase 1\u2019s grid and its grace days, now saying what the ticks mean: a
+    filled day is a day the hazri was marked.
+    """
+    import calendar as _cal
+    weeks = _cal.Calendar(firstweekday=0).monthdayscalendar(2026, 11)
+    marked = set(range(1, 21)) - {6, 13}
+    grace = {6}
+    cells = ""
+    for wk in weeks:
+        for d in wk:
+            if d == 0:
+                cells += '<div></div>'
+                continue
+            today = d == 20
+            on = d in marked
+            gr = d in grace
+            ring = ("border:1.5px solid var(--kesri)" if today else
+                    "border:1.5px solid transparent")
+            dot = ('<div style="width:7px;height:7px;border-radius:4px;'
+                   'background:var(--kesri)"></div>' if on else
+                   '<div style="width:7px;height:7px;border-radius:4px;'
+                   'background:var(--teal)"></div>' if gr else
+                   '<div style="height:7px"></div>' if d > 20 else
+                   '<div style="width:7px;height:7px;border-radius:4px;'
+                   'background:var(--rule)"></div>')
+            cells += (
+                f'<div class="col" style="align-items:center;justify-content:center;'
+                f'gap:4px;height:44px;border-radius:13px;{ring};'
+                f'background:{"var(--card)" if on or gr else "transparent"}">'
+                f'<div style="font-size:13px;font-weight:{700 if today else 600};'
+                f'color:{"var(--ink)" if on or today else "var(--muted)"}">{d}</div>'
+                f'{dot}</div>')
+    heads = "".join(
+        f'<div style="text-align:center;font-size:11px;font-weight:700;'
+        f'color:var(--muted)">{c}</div>' for c in "MTWTFSS")
+    return f"""
+<div class="pad col" style="gap:13px">
+  {header("Nitnem Diary", "Every day you marked your hazri", left="menu")}
+  <div class="card row" style="padding:16px;gap:14px">
+    <div style="width:56px;height:56px;border-radius:18px;flex:none;
+      background:var(--kesriSoft);display:flex;align-items:center;
+      justify-content:center">{app_mark(32)}</div>
+    <div class="col" style="flex:1;gap:1px">
+      <div class="disp" style="font-size:23px;font-weight:700;line-height:1.1">
+        37 days in a row</div>
+      <div style="font-size:12.5px;color:var(--muted)">
+        A gentle streak · 2 grace days left this month</div>
+    </div>
+  </div>
+  <div class="row" style="justify-content:space-between;padding-top:2px">
+    <div style="font-size:15px;font-weight:700">November 2026</div>
+    <div class="row" style="gap:14px;color:var(--muted)">
+      {icon("back", 18)}<div style="transform:rotate(180deg)">{icon("back", 18)}</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+    {heads}{cells}
+  </div>
+  <div class="row" style="gap:14px;justify-content:center;padding-top:2px">
+    <div class="row" style="gap:6px"><div style="width:7px;height:7px;
+      border-radius:4px;background:var(--kesri)"></div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        Hazri marked</div></div>
+    <div class="row" style="gap:6px"><div style="width:7px;height:7px;
+      border-radius:4px;background:var(--teal)"></div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        Grace day</div></div>
+  </div>
+  <div class="card row" style="padding:14px 16px">
+    <div class="col" style="flex:1;align-items:center;gap:1px">
+      <div class="disp" style="font-size:21px;font-weight:700">18</div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        days marked</div>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
+    <div class="col" style="flex:1;align-items:center;gap:1px">
+      <div class="disp" style="font-size:21px;font-weight:700">54</div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">paath</div>
+    </div>
+    <div style="width:1px;align-self:stretch;background:var(--rule)"></div>
+    <div class="col" style="flex:1;align-items:center;gap:1px">
+      <div class="disp" style="font-size:21px;font-weight:700">210</div>
+      <div style="font-size:11.5px;color:var(--muted);font-weight:600">
+        simran minutes</div>
+    </div>
+  </div>
+  <div style="font-size:11.5px;color:var(--muted);text-align:center">
+    Kept on this phone. Synced only if you turned sync on.</div>
+  <div style="height:86px"></div>
+</div>
+{nav("diary")}
 """
 
 
@@ -1705,6 +1975,9 @@ SCREENS = [
     ("52-CodeProblems", "That code did not work", code_problems),
     ("53-RestoreOrNew", "Restore, or start fresh", restore_or_new),
     ("54-Restored", "Your sangat is back", restored),
+    ("55-HazriMarked", "ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ", hazri_marked),
+    ("56-DiaryToday", "Diary — one day", diary_today),
+    ("57-Diary", "Diary — the month", diary_month),
 ]
 
 

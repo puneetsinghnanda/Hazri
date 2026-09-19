@@ -204,9 +204,9 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <div class="topbar">
       <div class="brand">
         <h1>Hazri · Phase 2</h1>
-        <span class="sub">25 screens · round 3</span>
+        <span class="sub">28 screens · round 4</span>
       </div>
-      <span class="tally" id="tally">0 of 25 commented</span>
+      <span class="tally" id="tally">0 of 28 commented</span>
       <div class="seg" role="group" aria-label="Show screens in">
         <button type="button" id="t-light" aria-pressed="true">Light</button>
         <button type="button" id="t-dark" aria-pressed="false">Dark</button>
@@ -224,11 +224,11 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <p>Leave a comment under anything that should change, and mark it
       <strong>Fine</strong> or <strong>Change</strong> so we both know what is settled.
       Comments save as you type and I read them straight back from here.</p>
-    <p><strong>Round 3 is in.</strong> Every comment you left is now acted on: Today,
-      Add a goal, Group detail, Simran’s counts, Sangat’s groups and the whole of
-      Vichar. Screens carrying a change are marked <strong>Revised</strong> or
-      <strong>New</strong>, with what changed written under them. Your earlier comments are
-      still showing \u2014 clear one when you are happy it is settled.</p>
+    <p><strong>Round 4 adds ਹਾਜ਼ਰੀ itself.</strong> Three new screens and two revised
+      ones, all in the ਹਾਜ਼ਰੀ section: the moment the day is marked, the day in the
+      diary, and the month. Screens carrying a change are marked
+      <strong>Revised</strong> or <strong>New</strong>, with what changed written under
+      them.</p>
     <div class="note">
       <span>Still nothing built. Two things need your word before anything else moves:
         whether Vichar as redrawn is what you pictured, and what the section should be
@@ -268,13 +268,29 @@ const SECTIONS = [
     line: "The screen most people open. \u0a05\u0a71\u0a1c \u0a26\u0a3e \u0a35\u0a3f\u0a1a\u0a3e\u0a30 is back to exactly what Phase 1 ships.",
     screens: [
       { id: "30-Today", name: "Today",
-        cap: "The Vichar card is Phase 1\u2019s again \u2014 icon, source, the line, its meaning, Explore and Share. The bell is gone. The line and meaning are entry 178 of the shipped dataset; the one that was here before was not in it at all.",
-        was: "Revised: your three Today comments." },
+        cap: "The goals card now says whether today\u2019s hazri is marked, which is the thing the app is named after. The Gurpurab is in four days, not tomorrow \u2014 20 November is 5 \u0a2e\u0a71\u0a18\u0a30, and the card was printing the 24th\u2019s date under the word TOMORROW.",
+        was: "Revised again: hazri line, and a wrong date fixed." },
       { id: "47-AddGoal", name: "Add a goal",
         cap: "Naam Simran leads, as you asked.",
         was: "Revised: Naam Simran first." },
+    ],
+  },
+  {
+    id: "hazri", title: "\u0a39\u0a3e\u0a1c\u0a3c\u0a30\u0a40 \u00b7 The day marked",
+    line: "The app is named after this. Finish anything \u2014 a bani or a sitting of simran \u2014 and the day\u2019s hazri is marked, once, and the diary keeps it.",
+    screens: [
       { id: "48-ReaderComplete", name: "Reader \u2014 complete",
-        cap: "What a finished paath does: logged, with Start again to clear the position instead of sitting on the last line." },
+        cap: "The first thing finished today is what marks the hazri, and the screen says so. Anything finished later is added to the same hazri rather than announcing itself again.",
+        was: "Revised: carries the hazri line." },
+      { id: "55-HazriMarked", name: "\u0a39\u0a3e\u0a1c\u0a3c\u0a30\u0a40 \u0a32\u0a71\u0a17 \u0a17\u0a08",
+        cap: "Once a day, on the first thing completed. Dark in both themes so it reads as a moment, not another card. The emblem is the app\u2019s own mark \u2014 the day arc with the sun on the horizon \u2014 because nothing devotional is drawn anywhere in Hazri and this screen is where it would be tempting.",
+        was: "New." },
+      { id: "56-DiaryToday", name: "Diary \u2014 one day",
+        cap: "The hazri at the top, what earned it underneath, still tickable the way Phase 1 lets the last seven days be corrected by hand.",
+        was: "New." },
+      { id: "57-Diary", name: "Diary \u2014 the month",
+        cap: "Phase 1\u2019s grid and its grace days, now saying what a filled day means: the day the hazri was marked. Future days carry no mark at all.",
+        was: "New." },
     ],
   },
   {
