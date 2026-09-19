@@ -14,6 +14,14 @@ rules_version = '2';
 // the ONLY thing standing between a curious person and everybody else's data.
 // They are written as if that will always be true.
 //
+// PUBLISHING. This file does nothing until it is pasted into the Firebase
+// console (Firestore Database -> Rules -> Publish), or pushed with the
+// Firebase CLI. Editing it here changes nothing in the project, and the
+// failure is quiet: writes are answered and refused, which reads exactly
+// like being offline. That cost an afternoon once. If a change to this file
+// does not seem to take effect, check the console's Rules tab first -- the
+// text there, not this text, is what is enforced.
+//
 // Shape: deny everything, then open the narrowest possible doors.
 service cloud.firestore {
   match /databases/{database}/documents {

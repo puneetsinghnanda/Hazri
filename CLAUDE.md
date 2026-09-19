@@ -64,6 +64,13 @@ flutter gen-l10n                                      # lib/core/l10n/gen
 dart run build_runner build                           # drift *.g.dart
 ```
 
+**`firestore.rules` is not deployed by any of these.** It is published by
+hand, in the Firebase console under Firestore Database -> Rules, or with the
+Firebase CLI. Changing the file in git changes nothing in the project, and
+the failure mode is quiet: Firestore answers every write and refuses it,
+which the app reports as though it were offline. Any change to that file is
+only half done until it is published.
+
 ## Audio
 
 Masters are **not** in git; they live on the `audio-masters` GitHub release.
