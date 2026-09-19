@@ -7,10 +7,12 @@ rules_version = '2';
 // a secret; anybody can extract it and talk to this project directly. What
 // stops them reading the whole user table is this file.
 //
-// App Check is registered but unenforced in Phase 2, because Play Integrity
-// needs a Play Console listing that does not exist yet. So for now these
-// rules are the ONLY thing standing between a curious person and everybody
-// else's data. They are written as if that will always be true.
+// App Check is not set up at all in Phase 2. Registering its Play Integrity
+// provider requires a SHA-256 certificate fingerprint, there is no keystore
+// yet, and Play Integrity cannot issue a token for an app that did not come
+// from Play in any case — so it waits for Phase 3. Until then these rules are
+// the ONLY thing standing between a curious person and everybody else's data.
+// They are written as if that will always be true.
 //
 // Shape: deny everything, then open the narrowest possible doors.
 service cloud.firestore {

@@ -182,20 +182,25 @@ footer{padding-block:34px 44px; color:var(--muted); font-size:13px; text-align:c
       <li><b>Firestore Database</b> → Create. Start in <b>production mode</b> (I will write the
         rules), and pick a region close to your users — <code>asia-south1</code> (Mumbai) or
         <code>europe-west2</code> (London). <b>The region cannot be changed later.</b></li>
-      <li><b>App Check</b> → Get started, register the app with the <b>Play Integrity</b>
-        provider, but leave enforcement <b>OFF</b> everywhere.
-        <span class="sub">Play Integrity needs a Play Console app, which you have deferred. I
-        will use debug tokens for testing; enforcement gets switched on in Phase 3 when the
-        Play listing exists.</span></li>
+      <li><b>App Check — skip it entirely.</b> Do not register anything. If you have opened
+        the Play Integrity screen and it is asking for a SHA-256 certificate fingerprint,
+        close it without saving.
+        <span class="sub">This step used to say "register it but leave enforcement off",
+        which was wrong: registering <i>requires</i> a fingerprint you do not have yet, and
+        Play Integrity cannot issue a token for an app that did not come from Play. Doing it
+        now would achieve nothing and leave a stale fingerprint to clean up. App Check belongs
+        in Phase 3, with the keystore and the Play listing, and it is one screen then.</span></li>
       <li><b>Path B only:</b> Settings → Usage and billing → modify plan → <b>Blaze</b>, then
         immediately set a <b>budget alert</b> at a figure you are comfortable with.</li>
       <li><b>Add me</b> — Settings → Users and permissions → Add member as Editor, or just send
         the <code>google-services.json</code>. Either works; the file alone is enough for me to
         build and wire everything.</li>
     </ol>
-    <div class="warn"><b>Do not turn App Check enforcement on.</b> With no Play Console app the
-      Play Integrity provider cannot issue real tokens, and every request from the app would be
-      rejected. It looks exactly like the backend being broken.</div>
+    <div class="warn"><b>App Check is a Phase 3 job, not a Phase 2 one.</b> With no Play
+      listing the Play Integrity provider cannot issue real tokens, so registering it does
+      nothing and enforcing it would reject every request from the app — which looks exactly
+      like the backend being broken. Until then, <code>firestore.rules</code> is the defence,
+      and it is written as if it always will be.</div>
   </div>
 </section>
 
