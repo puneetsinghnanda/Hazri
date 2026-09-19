@@ -15,6 +15,8 @@ import 'features/audio/data/audio_controller.dart';
 import 'features/audio/data/audio_handler.dart';
 import 'features/reminders/data/reminder_service.dart';
 import 'features/sangat/data/account_repository.dart';
+import 'features/library/data/firebase_library_repository.dart';
+import 'features/library/data/library_repository.dart';
 import 'features/sangat/data/firebase_account_repository.dart';
 import 'features/sangat/data/firebase_group_repository.dart';
 import 'features/sangat/data/firebase_presence_repository.dart';
@@ -70,6 +72,9 @@ Future<void> main() async {
         if (backend.isUp)
           presenceRepositoryProvider
               .overrideWithValue(FirebasePresenceRepository()),
+        if (backend.isUp)
+          libraryRepositoryProvider
+              .overrideWithValue(FirebaseLibraryRepository()),
       ],
       child: const HazriApp(),
     ),

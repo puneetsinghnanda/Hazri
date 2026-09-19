@@ -997,5 +997,41 @@
   "privacyDeleteConfirm": "Delete everything the sangat holds? Your groups, your counts and your account go. Nothing on this phone is touched.",
   "privacyDeleteDo": "Delete it",
   "privacyDeleted": "Your account and its data are gone",
-  "privacyNotJoined": "You have not joined the sangat, so nothing here has left this phone."
+  "privacyNotJoined": "You have not joined the sangat, so nothing here has left this phone.",
+  "libraryTitle": "Vichar",
+  "librarySubtitle": "Read, and look things up",
+  "librarySearchHint": "Search articles, gurdwaras, banis…",
+  "libraryKindAll": "All",
+  "libraryKindArticle": "Articles",
+  "libraryKindGurdwara": "Gurdwaras",
+  "libraryKindGuru": "Guru Sahibans",
+  "libraryKindBani": "Banis",
+  "libraryKindDay": "Sikh days",
+  "libraryMoreToRead": "More to read",
+  "libraryMinutes": "{count} min read",
+  "libraryNeedsConnection": "Vichar is the one part of Hazri that needs a connection. Your banis, their recitations, the calendar and your diary never do.",
+  "libraryNothingMatches": "Nothing matches that yet",
+  "libraryEmpty": "There is nothing here yet. Vichar is written on the website and every phone reads the same copy, so what appears here is whatever has been published.",
+  "libraryOffline": "No connection",
+  "libraryClear": "Clear",
+  "libraryResults": "{count} results for “{query}”",
+  "libraryCorrections": "Fetched from the website. If something here is wrong, it is corrected once there and every phone sees the correction.",
+  "libraryOpen": "Open",
+  "@libraryMinutes": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "@libraryResults": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          },
+          "query": {
+              "type": "String"
+          }
+      }
+  }
 }

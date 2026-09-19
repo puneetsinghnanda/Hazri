@@ -19,6 +19,8 @@ import '../features/sangat/ui/verify_email_screen.dart';
 import '../features/diary/ui/diary_screen.dart';
 import '../features/goals/ui/goals_screen.dart';
 import '../features/gurpurab/ui/gurpurab_screen.dart';
+import '../features/library/ui/library_entry_screen.dart';
+import '../features/library/ui/library_screen.dart';
 import '../features/vichar/ui/vichar_screen.dart';
 import '../features/nitnem/ui/nitnem_screen.dart';
 import '../features/onboarding/ui/intro_screen.dart';
@@ -42,6 +44,12 @@ abstract final class Routes {
   static const diary = '/diary';
   static const settings = '/settings';
   static const vichar = '/vichar';
+
+  /// The reading-and-looking-up section (designs 43 to 46). Separate from
+  /// [vichar], which is the one line from Sri Guru Granth Sahib Ji on Today.
+  static const library = '/library';
+
+  static String libraryEntry(String id) => '/library/$id';
   static const gurpurab = '/gurpurab';
   static const goals = '/goals';
   static const about = '/about';
@@ -134,6 +142,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
       GoRoute(path: Routes.vichar, builder: (_, _) => const VicharScreen()),
+      GoRoute(path: Routes.library, builder: (_, _) => const LibraryScreen()),
+      GoRoute(
+        path: '/library/:id',
+        builder: (_, state) => LibraryEntryScreen(id: state.pathParameters['id']!),
+      ),
       GoRoute(path: Routes.gurpurab, builder: (_, _) => const GurpurabScreen()),
       GoRoute(path: Routes.goals, builder: (_, _) => const GoalsScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),

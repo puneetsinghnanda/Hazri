@@ -1882,4 +1882,68 @@ class LHi extends L {
   @override
   String get privacyNotJoined =>
       'आप संगत से नहीं जुड़े, इसलिए यहाँ से कुछ भी इस फ़ोन से बाहर नहीं गया।';
+
+  @override
+  String get libraryTitle => 'विचार';
+
+  @override
+  String get librarySubtitle => 'पढ़ें, और ढूँढें';
+
+  @override
+  String get librarySearchHint => 'लेख, गुरुद्वारे, बाणियाँ ढूँढें…';
+
+  @override
+  String get libraryKindAll => 'सभी';
+
+  @override
+  String get libraryKindArticle => 'लेख';
+
+  @override
+  String get libraryKindGurdwara => 'गुरुद्वारे';
+
+  @override
+  String get libraryKindGuru => 'गुरु साहिबान';
+
+  @override
+  String get libraryKindBani => 'बाणियाँ';
+
+  @override
+  String get libraryKindDay => 'सिख दिवस';
+
+  @override
+  String get libraryMoreToRead => 'और पढ़ने के लिए';
+
+  @override
+  String libraryMinutes(int count) {
+    return '$count मिनट का पाठ';
+  }
+
+  @override
+  String get libraryNeedsConnection =>
+      'विचार ही हाज़िरी का वह एक हिस्सा है जिसे इंटरनेट चाहिए। आपकी बाणियाँ, उनका पाठ, कैलेंडर और डायरी को कभी नहीं।';
+
+  @override
+  String get libraryNothingMatches => 'इससे अभी कुछ नहीं मिलता';
+
+  @override
+  String get libraryEmpty =>
+      'यहाँ अभी कुछ नहीं है। विचार वेबसाइट पर लिखा जाता है और हर फ़ोन वही पढ़ता है, इसलिए यहाँ वही आएगा जो छापा गया है।';
+
+  @override
+  String get libraryOffline => 'कोई कनेक्शन नहीं';
+
+  @override
+  String get libraryClear => 'हटाएँ';
+
+  @override
+  String libraryResults(int count, String query) {
+    return '“$query” के लिए $count नतीजे';
+  }
+
+  @override
+  String get libraryCorrections =>
+      'वेबसाइट से लिया गया। अगर यहाँ कुछ ग़लत है, वहाँ एक बार ठीक होता है और हर फ़ोन को ठीक दिखता है।';
+
+  @override
+  String get libraryOpen => 'खोलें';
 }

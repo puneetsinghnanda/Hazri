@@ -1886,4 +1886,68 @@ class LEn extends L {
   @override
   String get privacyNotJoined =>
       'You have not joined the sangat, so nothing here has left this phone.';
+
+  @override
+  String get libraryTitle => 'Vichar';
+
+  @override
+  String get librarySubtitle => 'Read, and look things up';
+
+  @override
+  String get librarySearchHint => 'Search articles, gurdwaras, banis…';
+
+  @override
+  String get libraryKindAll => 'All';
+
+  @override
+  String get libraryKindArticle => 'Articles';
+
+  @override
+  String get libraryKindGurdwara => 'Gurdwaras';
+
+  @override
+  String get libraryKindGuru => 'Guru Sahibans';
+
+  @override
+  String get libraryKindBani => 'Banis';
+
+  @override
+  String get libraryKindDay => 'Sikh days';
+
+  @override
+  String get libraryMoreToRead => 'More to read';
+
+  @override
+  String libraryMinutes(int count) {
+    return '$count min read';
+  }
+
+  @override
+  String get libraryNeedsConnection =>
+      'Vichar is the one part of Hazri that needs a connection. Your banis, their recitations, the calendar and your diary never do.';
+
+  @override
+  String get libraryNothingMatches => 'Nothing matches that yet';
+
+  @override
+  String get libraryEmpty =>
+      'There is nothing here yet. Vichar is written on the website and every phone reads the same copy, so what appears here is whatever has been published.';
+
+  @override
+  String get libraryOffline => 'No connection';
+
+  @override
+  String get libraryClear => 'Clear';
+
+  @override
+  String libraryResults(int count, String query) {
+    return '$count results for “$query”';
+  }
+
+  @override
+  String get libraryCorrections =>
+      'Fetched from the website. If something here is wrong, it is corrected once there and every phone sees the correction.';
+
+  @override
+  String get libraryOpen => 'Open';
 }

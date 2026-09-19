@@ -3500,6 +3500,120 @@ abstract class L {
   /// In en, this message translates to:
   /// **'You have not joined the sangat, so nothing here has left this phone.'**
   String get privacyNotJoined;
+
+  /// No description provided for @libraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vichar'**
+  String get libraryTitle;
+
+  /// No description provided for @librarySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read, and look things up'**
+  String get librarySubtitle;
+
+  /// No description provided for @librarySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search articles, gurdwaras, banis…'**
+  String get librarySearchHint;
+
+  /// No description provided for @libraryKindAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get libraryKindAll;
+
+  /// No description provided for @libraryKindArticle.
+  ///
+  /// In en, this message translates to:
+  /// **'Articles'**
+  String get libraryKindArticle;
+
+  /// No description provided for @libraryKindGurdwara.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurdwaras'**
+  String get libraryKindGurdwara;
+
+  /// No description provided for @libraryKindGuru.
+  ///
+  /// In en, this message translates to:
+  /// **'Guru Sahibans'**
+  String get libraryKindGuru;
+
+  /// No description provided for @libraryKindBani.
+  ///
+  /// In en, this message translates to:
+  /// **'Banis'**
+  String get libraryKindBani;
+
+  /// No description provided for @libraryKindDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Sikh days'**
+  String get libraryKindDay;
+
+  /// No description provided for @libraryMoreToRead.
+  ///
+  /// In en, this message translates to:
+  /// **'More to read'**
+  String get libraryMoreToRead;
+
+  /// No description provided for @libraryMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min read'**
+  String libraryMinutes(int count);
+
+  /// No description provided for @libraryNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Vichar is the one part of Hazri that needs a connection. Your banis, their recitations, the calendar and your diary never do.'**
+  String get libraryNeedsConnection;
+
+  /// No description provided for @libraryNothingMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing matches that yet'**
+  String get libraryNothingMatches;
+
+  /// No description provided for @libraryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing here yet. Vichar is written on the website and every phone reads the same copy, so what appears here is whatever has been published.'**
+  String get libraryEmpty;
+
+  /// No description provided for @libraryOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection'**
+  String get libraryOffline;
+
+  /// No description provided for @libraryClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get libraryClear;
+
+  /// No description provided for @libraryResults.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} results for “{query}”'**
+  String libraryResults(int count, String query);
+
+  /// No description provided for @libraryCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetched from the website. If something here is wrong, it is corrected once there and every phone sees the correction.'**
+  String get libraryCorrections;
+
+  /// No description provided for @libraryOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get libraryOpen;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

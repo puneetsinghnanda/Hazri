@@ -1883,4 +1883,68 @@ class LPa extends L {
   @override
   String get privacyNotJoined =>
       'ਤੁਸੀਂ ਸੰਗਤ ਨਾਲ ਨਹੀਂ ਜੁੜੇ, ਇਸ ਲਈ ਇੱਥੋਂ ਕੁਝ ਵੀ ਇਸ ਫ਼ੋਨ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਗਿਆ।';
+
+  @override
+  String get libraryTitle => 'ਵਿਚਾਰ';
+
+  @override
+  String get librarySubtitle => 'ਪੜ੍ਹੋ, ਤੇ ਲੱਭੋ';
+
+  @override
+  String get librarySearchHint => 'ਲੇਖ, ਗੁਰਦੁਆਰੇ, ਬਾਣੀਆਂ ਲੱਭੋ…';
+
+  @override
+  String get libraryKindAll => 'ਸਾਰੇ';
+
+  @override
+  String get libraryKindArticle => 'ਲੇਖ';
+
+  @override
+  String get libraryKindGurdwara => 'ਗੁਰਦੁਆਰੇ';
+
+  @override
+  String get libraryKindGuru => 'ਗੁਰੂ ਸਾਹਿਬਾਨ';
+
+  @override
+  String get libraryKindBani => 'ਬਾਣੀਆਂ';
+
+  @override
+  String get libraryKindDay => 'ਸਿੱਖ ਦਿਹਾੜੇ';
+
+  @override
+  String get libraryMoreToRead => 'ਹੋਰ ਪੜ੍ਹਨ ਲਈ';
+
+  @override
+  String libraryMinutes(int count) {
+    return '$count ਮਿੰਟ ਦਾ ਪਾਠ';
+  }
+
+  @override
+  String get libraryNeedsConnection =>
+      'ਵਿਚਾਰ ਹੀ ਹਾਜ਼ਰੀ ਦਾ ਉਹ ਇੱਕੋ ਹਿੱਸਾ ਹੈ ਜਿਸ ਨੂੰ ਇੰਟਰਨੈੱਟ ਚਾਹੀਦਾ ਹੈ। ਤੁਹਾਡੀਆਂ ਬਾਣੀਆਂ, ਉਹਨਾਂ ਦਾ ਪਾਠ, ਕੈਲੰਡਰ ਤੇ ਡਾਇਰੀ ਨੂੰ ਕਦੇ ਨਹੀਂ।';
+
+  @override
+  String get libraryNothingMatches => 'ਇਸ ਨਾਲ ਅਜੇ ਕੁਝ ਨਹੀਂ ਮਿਲਦਾ';
+
+  @override
+  String get libraryEmpty =>
+      'ਇੱਥੇ ਅਜੇ ਕੁਝ ਨਹੀਂ ਹੈ। ਵਿਚਾਰ ਵੈੱਬਸਾਈਟ ਉੱਤੇ ਲਿਖਿਆ ਜਾਂਦਾ ਹੈ ਤੇ ਹਰ ਫ਼ੋਨ ਉਹੀ ਪੜ੍ਹਦਾ ਹੈ, ਸੋ ਇੱਥੇ ਉਹੀ ਆਵੇਗਾ ਜੋ ਛਾਪਿਆ ਗਿਆ ਹੈ।';
+
+  @override
+  String get libraryOffline => 'ਕੋਈ ਕੁਨੈਕਸ਼ਨ ਨਹੀਂ';
+
+  @override
+  String get libraryClear => 'ਹਟਾਓ';
+
+  @override
+  String libraryResults(int count, String query) {
+    return '“$query” ਲਈ $count ਨਤੀਜੇ';
+  }
+
+  @override
+  String get libraryCorrections =>
+      'ਵੈੱਬਸਾਈਟ ਤੋਂ ਲਿਆ ਗਿਆ। ਜੇ ਇੱਥੇ ਕੁਝ ਗ਼ਲਤ ਹੈ, ਉੱਥੇ ਇੱਕ ਵਾਰ ਠੀਕ ਹੁੰਦਾ ਹੈ ਤੇ ਹਰ ਫ਼ੋਨ ਨੂੰ ਠੀਕ ਦਿਸਦਾ ਹੈ।';
+
+  @override
+  String get libraryOpen => 'ਖੋਲ੍ਹੋ';
 }
