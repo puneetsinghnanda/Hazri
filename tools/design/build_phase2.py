@@ -108,7 +108,7 @@ EN = {
     "hazriPending": "Today\u2019s hazri is not marked yet",
     "hazriWith": "Marked at 5:52 AM, with Japji Sahib",
     "hazriHow": "One paath, or one sitting of simran, marks it",
-    "cls": "",
+    "cls": "", "lh": "1.15", "rg": "0px", "leading": "1.45",
     "days": "days",
     "goalsAllDone": "All of today’s goals are done",
     "hazriWas": "Your hazri was marked at 5:52 AM, with Japji Sahib",
@@ -133,7 +133,7 @@ PA = {
     "hazriPending": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਬਾਕੀ ਹੈ",
     "hazriWith": "5:52 AM ਉੱਤੇ, ਜਪੁ ਜੀ ਸਾਹਿਬ ਨਾਲ",
     "hazriHow": "ਇੱਕ ਪਾਠ, ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ, ਇਸ ਨੂੰ ਲਾ ਦਿੰਦਾ ਹੈ",
-    "cls": "gur",
+    "cls": "gur", "lh": "1.5", "rg": "4px", "leading": "1.75",
     "days": "ਦਿਨ",
     "goalsAllDone": "ਅੱਜ ਦੇ ਸਾਰੇ ਸੰਕਲਪ ਪੂਰੇ",
     "hazriWas": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ 5:52 AM ਉੱਤੇ ਲੱਗੀ, ਜਪੁ ਜੀ ਸਾਹਿਬ ਨਾਲ",
@@ -157,7 +157,8 @@ def nav(active: str, t: dict = EN) -> str:
         out += (f'<div class="col" style="align-items:center;gap:4px;flex:1">'
                 f'<div style="width:58px;height:32px;border-radius:16px;display:flex;'
                 f'align-items:center;justify-content:center;{pill}">{icon(key)}</div>'
-                f'<div style="font-size:12px;{text}">{label}</div></div>')
+                f'<div class="{t["cls"]}" style="font-size:12px;'
+                f'line-height:{t["leading"]};{text}">{label}</div></div>')
     return out + "</div>"
 
 
@@ -361,7 +362,7 @@ def ring(pct: float, size: int, stroke: int, colour: str = "var(--kesri)",
 
 
 def header(title: str, sub: str | None = None, left: str = "back",
-           right: str | None = None) -> str:
+           right: str | None = None, t: dict = EN) -> str:
     r = (f'<div style="width:44px;height:44px;border-radius:14px;display:flex;'
          f'align-items:center;justify-content:center;background:var(--card);'
          f'box-shadow:var(--shadow)">{icon(right)}</div>' if right else
@@ -371,8 +372,9 @@ def header(title: str, sub: str | None = None, left: str = "back",
             f'<div style="width:40px;height:40px;border-radius:13px;display:flex;'
             f'align-items:center;justify-content:center;background:var(--card);'
             f'box-shadow:var(--shadow)">{icon(left, 20)}</div>'
-            f'<div class="col"><div class="disp" style="font-size:24px;'
-            f'font-weight:700;line-height:1.15">{title}</div>'
+            f'<div class="col" style="gap:{t["rg"]}">'
+            f'<div class="disp" style="font-size:24px;font-weight:700;'
+            f'line-height:{t["lh"]}">{title}</div>'
             + (f'<div style="font-size:12.5px;color:var(--muted);font-weight:500">'
                f'{sub}</div>' if sub else "")
             + f'</div></div>{r}</div>')
@@ -480,11 +482,10 @@ def hazri_banner(t: dict = EN) -> str:
     <div style="width:46px;height:46px;border-radius:23px;flex:none;
       background:rgba(255,255,255,.17);display:flex;align-items:center;
       justify-content:center">{app_mark(28, "#fff", "#fff")}</div>
-    <div class="col" style="flex:1;gap:2px">
-      <div class="disp" style="font-size:17px;font-weight:700">
-        {t["hazriMarked"]}</div>
+    <div class="col" style="flex:1;gap:{t["rg"]}">
+      <div class="disp" style="font-size:17px;font-weight:700;
+        line-height:{t["lh"]}">{t["hazriMarked"]}</div>
       <div class="{t['cls']}" style="font-size:12.5px;opacity:.9">{t["hazriWith"]}</div>
-    </div>
     </div>
   </div>"""
 
@@ -498,9 +499,9 @@ def hazri_pending(t: dict = EN) -> str:
     <div style="width:46px;height:46px;border-radius:23px;flex:none;
       background:var(--card2);display:flex;align-items:center;
       justify-content:center">{app_mark(28, "var(--ink2)", "var(--muted)")}</div>
-    <div class="col" style="flex:1;gap:2px">
-      <div class="disp" style="font-size:17px;font-weight:700;color:var(--ink2)">
-        {t["hazriPending"]}</div>
+    <div class="col" style="flex:1;gap:{t["rg"]}">
+      <div class="disp" style="font-size:17px;font-weight:700;color:var(--ink2);
+        line-height:{t["lh"]}">{t["hazriPending"]}</div>
       <div class="{t['cls']}" style="font-size:12.5px;color:var(--muted)">
         {t["hazriHow"]}</div>
     </div>
@@ -534,20 +535,21 @@ def today(banner: str | None = None, t: dict = EN) -> str:
     rows = "".join(
         f'<div class="row" style="gap:10px">'
         f'<div style="width:26px;height:26px;flex:none">{ring(p, 26, 4)}</div>'
-        f'<div class="{t["cls"]}" style="font-size:13.5px;font-weight:600;flex:1">'
-        f'{n}</div>'
+        f'<div class="{t["cls"]}" style="font-size:13.5px;font-weight:600;'
+        f'flex:1;line-height:{t["leading"]}">{n}</div>'
         f'<div style="font-size:12.5px;color:var(--muted);font-weight:600">{w}</div>'
         f'</div>' for n, w, p in goals)
     return f"""
 <div class="pad col" style="gap:13px">
-  {header(t["today"], t["date"], left="menu")}
+  {header(t["today"], t["date"], left="menu", t=t)}
   {banner if banner is not None else join_banner()}
   <div class="card col" style="padding:16px;gap:12px">
     <div class="row" style="justify-content:space-between">
-      <div class="col">
-        <div class="eyebrow {t['cls']}">{t["goals"]}</div>
-        <div class="disp gur" style="font-size:20px;font-weight:700">
-          {t["goalsDone"]}</div>
+      <div class="col" style="gap:{t["rg"]}">
+        <div class="eyebrow {t['cls']}" style="line-height:{t["leading"]}">
+          {t["goals"]}</div>
+        <div class="disp {t['cls']}" style="font-size:20px;font-weight:700;
+          line-height:{t["lh"]}">{t["goalsDone"]}</div>
       </div>
       <div style="position:relative;width:56px;height:56px">
         {ring(0.54, 56, 7)}
@@ -565,10 +567,11 @@ def today(banner: str | None = None, t: dict = EN) -> str:
     <div style="width:46px;height:46px;border-radius:14px;background:var(--kesriSoft);
       color:var(--kesriInk);display:flex;align-items:center;justify-content:center;
       flex:none">{icon("diary", 22)}</div>
-    <div class="col" style="flex:1">
+    <div class="col" style="flex:1;gap:{t["rg"]}">
       <div class="{t['cls']}" style="font-size:12px;color:var(--muted);
-        font-weight:700">{t["gurpurabWhen"]}</div>
-      <div class="{t['cls']}" style="font-size:14px;font-weight:700">{t["gurpurab"]}</div>
+        font-weight:700;line-height:{t["leading"]}">{t["gurpurabWhen"]}</div>
+      <div class="{t['cls']}" style="font-size:14px;font-weight:700;
+        line-height:{t["lh"]}">{t["gurpurab"]}</div>
       <div class="gur" style="font-size:12.5px;color:var(--muted)">9 ਮੱਘਰ 558</div>
     </div>
   </div>
@@ -594,10 +597,11 @@ def vichar_card(t: dict = EN) -> str:
       <div style="width:36px;height:36px;border-radius:12px;flex:none;
         background:var(--kesriSoft);color:var(--kesriInk);display:flex;
         align-items:center;justify-content:center">{icon("sparkle", 19)}</div>
-      <div class="col" style="flex:1">
-        <div class="{t['cls']}" style="font-size:14.5px;font-weight:700">{t["vichar"]}</div>
-        <div class="{t['cls']}" style="font-size:12px;color:var(--muted)">
-          {t["vicharSource"]}</div>
+      <div class="col" style="flex:1;gap:{t["rg"]}">
+        <div class="{t['cls']}" style="font-size:14.5px;font-weight:700;
+          line-height:{t["lh"]}">{t["vichar"]}</div>
+        <div class="{t['cls']}" style="font-size:12px;color:var(--muted);
+          line-height:{t["leading"]}">{t["vicharSource"]}</div>
       </div>
       <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
     </div>
