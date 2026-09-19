@@ -204,9 +204,9 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <div class="topbar">
       <div class="brand">
         <h1>Hazri · Phase 2</h1>
-        <span class="sub">30 screens · round 5</span>
+        <span class="sub">32 screens · round 6</span>
       </div>
-      <span class="tally" id="tally">0 of 30 commented</span>
+      <span class="tally" id="tally">0 of 32 commented</span>
       <div class="seg" role="group" aria-label="Show screens in">
         <button type="button" id="t-light" aria-pressed="true">Light</button>
         <button type="button" id="t-dark" aria-pressed="false">Dark</button>
@@ -224,13 +224,15 @@ dialog.lb::backdrop{background:rgba(10,11,26,.72); backdrop-filter:blur(3px)}
     <p>Leave a comment under anything that should change, and mark it
       <strong>Fine</strong> or <strong>Change</strong> so we both know what is settled.
       Comments save as you type and I read them straight back from here.</p>
-    <p><strong>Round 5 separates ਹਾਜ਼ਰੀ from goals.</strong> They were tangled on Today
-      and in the diary; they are not the same thing and the screens now say so. Today gains
-      its two set-up states, and the month grid carries a dot for each.</p>
+    <p><strong>Round 6 is your three comments.</strong> The hazri line follows the
+      reader’s language rather than always being Gurmukhi (58), the card names the day
+      (56), and a day where everything is finished gets its own screen instead of the
+      hazri one (55 → 61). Screen 60 is Today in Punjabi, so the language rule can be
+      seen rather than described.</p>
     <div class="note">
-      <span>Still nothing built. Two wordings need your ear, because both are mine:
-        the sentence on 55, and ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਬਾਕੀ ਹੈ on 59. Vichar’s name is
-        still open too, now that the section no longer holds ਅੱਜ ਦਾ ਵਿਚਾਰ.</span>
+      <span>Still nothing built. The four Phase 2 hazri strings on 60 are mine and want a
+        native ear before they become ARB keys — every other word on that screen already
+        exists in the app.</span>
     </div>
   </div>
   <div id="sections"></div>
@@ -269,11 +271,14 @@ const SECTIONS = [
         cap: "The join banner, and no hazri card \u2014 that is the rule that keeps two banners off this screen. The goals card says nothing about hazri any more: one paath marks the hazri, all three finish the goal, and they are not the same sentence.",
         was: "Revised: the hazri line is out of the goals card." },
       { id: "58-TodayHazri", name: "Today \u2014 hazri marked",
-        cap: "Once setup is done the join banner is gone for good, so its slot carries the hazri instead \u2014 the same card as the head of Diary \u2014 one day, with the streak on the end. The goals card underneath still reads 1 of 3.",
-        was: "New." },
+        cap: "Your comment: it now reads in the reader\u2019s language rather than always in Gurmukhi. This is the English rendering \u2014 60 is the same screen in Punjabi. The join banner is gone for good once setup is done, so this slot is free.",
+        was: "Revised: the hazri line is localised." },
       { id: "59-TodayNotYet", name: "Today \u2014 hazri not yet",
         cap: "The same slot at 5 AM, before anything is read, which is when most people open the app. It names the one thing that would mark it and says nothing else.",
-        was: "New \u2014 the other half of the state, worth a look." },
+        was: "Revised: localised too." },
+      { id: "60-TodayPunjabi", name: "Today \u2014 in Punjabi",
+        cap: "The language rule shown rather than described. Almost every word already exists \u2014 interface strings from app_pa.arb, bani names from content.db, the Gurpurab from calendar-names.json, the line and its meaning from the vichar dataset. Only the four hazri strings are new, and those are mine.",
+        was: "New." },
       { id: "47-AddGoal", name: "Add a goal",
         cap: "Naam Simran leads, as you asked.",
         was: "Revised: Naam Simran first." },
@@ -285,13 +290,16 @@ const SECTIONS = [
     screens: [
       { id: "48-ReaderComplete", name: "Reader \u2014 complete",
         cap: "The first thing finished today is what marks the hazri, and the screen says so. Anything finished later is added to the same hazri rather than announcing itself again.",
-        was: "Revised: carries the hazri line." },
-      { id: "55-HazriMarked", name: "\u0a39\u0a3e\u0a1c\u0a3c\u0a30\u0a40 \u0a32\u0a71\u0a17 \u0a17\u0a08",
-        cap: "Once a day, on the first thing completed. Dark in both themes so it reads as a moment, not another card. The emblem is the app\u2019s own mark \u2014 the day arc with the sun on the horizon \u2014 because nothing devotional is drawn anywhere in Hazri and this screen is where it would be tempting.",
+        was: "Revised: localised." },
+      { id: "55-HazriMarked", name: "Hazri marked",
+        cap: "Once a day, on the first thing completed \u2014 unless that same thing finishes the day\u2019s goals, in which case 61 takes its place. Dark in both themes so it reads as a moment. The emblem is the app\u2019s own mark, the day arc with the sun on the horizon.",
+        was: "Revised: localised, and it steps aside for 61." },
+      { id: "61-GoalComplete", name: "All of today\u2019s goals are done",
+        cap: "Your comment on 55, drawn. It replaces the hazri screen rather than following it: the hazri was marked hours ago and saying so twice makes the smaller moment the louder one, so it is one quiet line here instead. Sage rather than kesri, and the ring around the mark is closed.",
         was: "New." },
       { id: "56-DiaryToday", name: "Diary \u2014 one day",
-        cap: "The hazri at the top, what earned it underneath, still tickable the way Phase 1 lets the last seven days be corrected by hand.",
-        was: "New." },
+        cap: "Your comment: the card names the day \u2014 Today\u2019s hazri is marked, and \u0a05\u0a71\u0a1c \u0a26\u0a40 \u0a39\u0a3e\u0a1c\u0a3c\u0a30\u0a40 \u0a32\u0a71\u0a17 \u0a17\u0a08 in Punjabi \u2014 rather than the bare phrase.",
+        was: "Revised: localised, and it says \u2018today\u2019." },
       { id: "57-Diary", name: "Diary \u2014 the month",
         cap: "Two dots a day: kesri for the hazri, green for all goals met. The gap between the two rows of dots is the honest picture of a month \u2014 18 days turned up, 11 days finished everything. Grace days keep Phase 1\u2019s teal; future days carry nothing.",
         was: "Revised: one dot becomes two." },

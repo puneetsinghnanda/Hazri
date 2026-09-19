@@ -87,10 +87,65 @@ def icon(name: str, size: int = 22) -> str:
             f'{ICONS[name]}</svg>')
 
 
-def nav(active: str) -> str:
+# The words on a screen, in the reader\'s language. Everything already in
+# `lib/core/l10n/app_pa.arb` or the content database is taken from there
+# rather than written again here; the handful of Phase 2 strings that do not
+# exist yet are marked, because they are mine and want a native ear.
+EN = {
+    "nav": ["Today", "Nitnem", "Simran", "Sangat", "Diary"],
+    "today": "Today", "date": "Friday, 20 November",
+    "goals": "Your goals", "goalsDone": "1 of 3 done",
+    "japji": "Japji Sahib", "simran": "Simran", "rehras": "Rehras Sahib",
+    "japjiAt": "5:30 AM", "simranAt": "11 min", "rehrasAt": "6:40 PM",
+    "start": "Start Nitnem",
+    "gurpurabWhen": "IN 4 DAYS · GURPURAB",
+    "gurpurab": "Prakash Purab, Guru Nanak Dev Ji",
+    "vichar": "Today\u2019s Vichar", "vicharSource": "Sri Guru Granth Sahib Ji",
+    "meaning": "Humility is sweetness, and it is the essence of true goodness.",
+    "explore": "Explore", "share": "Share",
+    # new in Phase 2
+    "hazriMarked": "Today\u2019s hazri is marked",
+    "hazriPending": "Today\u2019s hazri is not marked yet",
+    "hazriWith": "Marked at 5:52 AM, with Japji Sahib",
+    "hazriHow": "One paath, or one sitting of simran, marks it",
+    "cls": "",
+    "days": "days",
+    "goalsAllDone": "All of today’s goals are done",
+    "hazriWas": "Your hazri was marked at 5:52 AM, with Japji Sahib",
+    "inPresence": "Read in the presence of Sri Guru Granth Sahib Ji",
+    "streak": "37 days in a row", "gentle": "a gentle streak",
+    "seeDiary": "See my diary", "done": "Done",
+}
+PA = {
+    "nav": ["ਅੱਜ", "ਨਿਤਨੇਮ", "ਸਿਮਰਨ", "ਸੰਗਤ", "ਡਾਇਰੀ"],
+    "today": "ਅੱਜ", "date": "ਸ਼ੁੱਕਰਵਾਰ, 20 ਨਵੰਬਰ",
+    "goals": "ਮੇਰੇ ਸੰਕਲਪ", "goalsDone": "3 ਵਿੱਚੋਂ 1 ਅੱਜ ਪੂਰੇ",
+    "japji": "ਜਪੁ ਜੀ ਸਾਹਿਬ", "simran": "ਸਿਮਰਨ", "rehras": "ਰਹਰਾਸਿ ਸਾਹਿਬ",
+    "japjiAt": "5:30 AM", "simranAt": "11 ਮਿੰਟ", "rehrasAt": "6:40 PM",
+    "start": "ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ",
+    "gurpurabWhen": "4 ਦਿਨਾਂ ਵਿੱਚ · ਗੁਰਪੁਰਬ",
+    "gurpurab": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ, ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ",
+    "vichar": "ਅੱਜ ਦਾ ਵਿਚਾਰ", "vicharSource": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ",
+    "meaning": "ਨਿਮਰਤਾ ਮਿੱਠਾਸ ਦਾ ਮੂਲ ਹੈ ਅਤੇ ਇਹੀ ਅਸਲ ਚੰਗਿਆਈਆਂ ਦਾ ਸਾਰ ਹੈ।",
+    "explore": "ਹੋਰ ਵੇਖੋ", "share": "ਸਾਂਝਾ ਕਰੋ",
+    # new in Phase 2
+    "hazriMarked": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ",
+    "hazriPending": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਬਾਕੀ ਹੈ",
+    "hazriWith": "5:52 AM ਉੱਤੇ, ਜਪੁ ਜੀ ਸਾਹਿਬ ਨਾਲ",
+    "hazriHow": "ਇੱਕ ਪਾਠ, ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ, ਇਸ ਨੂੰ ਲਾ ਦਿੰਦਾ ਹੈ",
+    "cls": "gur",
+    "days": "ਦਿਨ",
+    "goalsAllDone": "ਅੱਜ ਦੇ ਸਾਰੇ ਸੰਕਲਪ ਪੂਰੇ",
+    "hazriWas": "ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ 5:52 AM ਉੱਤੇ ਲੱਗੀ, ਜਪੁ ਜੀ ਸਾਹਿਬ ਨਾਲ",
+    "inPresence": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੀ ਹਜ਼ੂਰੀ ਵਿੱਚ",
+    "streak": "ਲਗਾਤਾਰ 37 ਦਿਨ", "gentle": "ਇੱਕ ਨਰਮ ਲੜੀ",
+    "seeDiary": "ਮੇਰੀ ਡਾਇਰੀ ਵੇਖੋ", "done": "ਹੋ ਗਿਆ",
+}
+
+
+def nav(active: str, t: dict = EN) -> str:
     """The bottom bar. Settings has left it; Sangat has taken the slot."""
-    tabs = [("today", "Today"), ("nitnem", "Nitnem"), ("simran", "Simran"),
-            ("sangat", "Sangat"), ("diary", "Diary")]
+    tabs = list(zip(["today", "nitnem", "simran", "sangat", "diary"], t["nav"]))
     out = ('<div style="position:absolute;left:0;right:0;bottom:0;background:var(--card);'
            'border-top:1px solid var(--rule);display:flex;padding:10px 4px 22px">')
     for key, label in tabs:
@@ -410,7 +465,7 @@ def join_banner() -> str:
   </div>"""
 
 
-def hazri_banner() -> str:
+def hazri_banner(t: dict = EN) -> str:
     """Today, for somebody set up, whose hazri is marked.
 
     It stands where the join banner stands, and only once setup is done, so
@@ -426,18 +481,19 @@ def hazri_banner() -> str:
       background:rgba(255,255,255,.17);display:flex;align-items:center;
       justify-content:center">{app_mark(28, "#fff", "#fff")}</div>
     <div class="col" style="flex:1;gap:2px">
-      <div class="gur" style="font-size:17px;font-weight:600">ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
-      <div style="font-size:12.5px;opacity:.9">
-        Marked at 5:52 AM, with Japji Sahib</div>
+      <div class="disp" style="font-size:17px;font-weight:700">
+        {t["hazriMarked"]}</div>
+      <div class="{t['cls']}" style="font-size:12.5px;opacity:.9">{t["hazriWith"]}</div>
     </div>
     <div class="col" style="align-items:center;flex:none">
       <div class="disp" style="font-size:19px;font-weight:700;line-height:1.1">37</div>
-      <div style="font-size:10.5px;opacity:.85;font-weight:600">days</div>
+      <div class="{t['cls']}" style="font-size:10.5px;opacity:.85;font-weight:600">
+        {t["days"]}</div>
     </div>
   </div>"""
 
 
-def hazri_pending() -> str:
+def hazri_pending(t: dict = EN) -> str:
     """The same slot before anything is finished -- which is when most people
     open the app. Quiet, and it names the one thing that would mark it."""
     return f"""
@@ -447,10 +503,10 @@ def hazri_pending() -> str:
       background:var(--card2);display:flex;align-items:center;
       justify-content:center">{app_mark(28, "var(--ink2)", "var(--muted)")}</div>
     <div class="col" style="flex:1;gap:2px">
-      <div class="gur" style="font-size:17px;font-weight:600;color:var(--ink2)">
-        ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਬਾਕੀ ਹੈ</div>
-      <div style="font-size:12.5px;color:var(--muted)">
-        One paath, or one sitting of simran, marks it</div>
+      <div class="disp" style="font-size:17px;font-weight:700;color:var(--ink2)">
+        {t["hazriPending"]}</div>
+      <div class="{t['cls']}" style="font-size:12.5px;color:var(--muted)">
+        {t["hazriHow"]}</div>
     </div>
   </div>"""
 
@@ -463,24 +519,39 @@ def today_not_yet() -> str:
     return today(hazri_pending())
 
 
-def today(banner: str | None = None) -> str:
-    goals = [("Japji Sahib", "5:30 AM", 1.0), ("Simran", "11 min", 0.62),
-             ("Rehras Sahib", "6:40 PM", 0.0)]
+def today_punjabi() -> str:
+    """The same screen for a reader whose language is Punjabi.
+
+    Almost every word here already exists: the interface strings come from
+    `app_pa.arb`, the bani names from `content.db`, the Gurpurab from
+    `calendar-names.json`, and the line with its meaning from entry 178 of
+    the vichar dataset. Only the four Phase 2 hazri strings are new, and
+    those are mine rather than anybody else\u2019s -- they want a native ear
+    before they become ARB keys.
+    """
+    return today(hazri_banner(PA), PA)
+
+
+def today(banner: str | None = None, t: dict = EN) -> str:
+    goals = [(t["japji"], t["japjiAt"], 1.0), (t["simran"], t["simranAt"], 0.62),
+             (t["rehras"], t["rehrasAt"], 0.0)]
     rows = "".join(
         f'<div class="row" style="gap:10px">'
         f'<div style="width:26px;height:26px;flex:none">{ring(p, 26, 4)}</div>'
-        f'<div style="font-size:13.5px;font-weight:600;flex:1">{n}</div>'
+        f'<div class="{t["cls"]}" style="font-size:13.5px;font-weight:600;flex:1">'
+        f'{n}</div>'
         f'<div style="font-size:12.5px;color:var(--muted);font-weight:600">{w}</div>'
         f'</div>' for n, w, p in goals)
     return f"""
 <div class="pad col" style="gap:13px">
-  {header("Today", "Friday, 20 November", left="menu")}
+  {header(t["today"], t["date"], left="menu")}
   {banner if banner is not None else join_banner()}
   <div class="card col" style="padding:16px;gap:12px">
     <div class="row" style="justify-content:space-between">
       <div class="col">
-        <div class="eyebrow">Your goals</div>
-        <div class="disp" style="font-size:20px;font-weight:700">1 of 3 done</div>
+        <div class="eyebrow {t['cls']}">{t["goals"]}</div>
+        <div class="disp gur" style="font-size:20px;font-weight:700">
+          {t["goalsDone"]}</div>
       </div>
       <div style="position:relative;width:56px;height:56px">
         {ring(0.54, 56, 7)}
@@ -493,26 +564,25 @@ def today(banner: str | None = None) -> str:
     </div>
   </div>
   <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
-    {icon("nitnem", 20)}<div>Start Nitnem</div></div>
+    {icon("nitnem", 20)}<div class="{t['cls']}">{t["start"]}</div></div>
   <div class="card row" style="padding:14px;gap:12px">
     <div style="width:46px;height:46px;border-radius:14px;background:var(--kesriSoft);
       color:var(--kesriInk);display:flex;align-items:center;justify-content:center;
       flex:none">{icon("diary", 22)}</div>
     <div class="col" style="flex:1">
-      <div style="font-size:12px;color:var(--muted);font-weight:700">
-        IN 4 DAYS · GURPURAB</div>
-      <div style="font-size:14px;font-weight:700">
-        Prakash Purab, Guru Nanak Dev Ji</div>
+      <div class="{t['cls']}" style="font-size:12px;color:var(--muted);
+        font-weight:700">{t["gurpurabWhen"]}</div>
+      <div class="{t['cls']}" style="font-size:14px;font-weight:700">{t["gurpurab"]}</div>
       <div class="gur" style="font-size:12.5px;color:var(--muted)">9 ਮੱਘਰ 558</div>
     </div>
   </div>
-  {vichar_card()}
+  {vichar_card(t)}
 </div>
-{nav("today")}
+{nav("today", t)}
 """
 
 
-def vichar_card() -> str:
+def vichar_card(t: dict = EN) -> str:
     """ਅੱਜ ਦਾ ਵਿਚਾਰ on Today, as Phase 1 already ships it.
 
     Phase 1's `VicharCard` is an icon and title row with the source under it,
@@ -529,21 +599,22 @@ def vichar_card() -> str:
         background:var(--kesriSoft);color:var(--kesriInk);display:flex;
         align-items:center;justify-content:center">{icon("sparkle", 19)}</div>
       <div class="col" style="flex:1">
-        <div style="font-size:14.5px;font-weight:700">ਅੱਜ ਦਾ ਵਿਚਾਰ</div>
-        <div style="font-size:12px;color:var(--muted)">Sri Guru Granth Sahib Ji</div>
+        <div class="{t['cls']}" style="font-size:14.5px;font-weight:700">{t["vichar"]}</div>
+        <div class="{t['cls']}" style="font-size:12px;color:var(--muted)">
+          {t["vicharSource"]}</div>
       </div>
       <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
     </div>
     <div class="gur" style="font-size:19px;line-height:1.75;color:var(--word);
       padding-top:13px">ਮਿਠਤੁ ਨੀਵੀ ਨਾਨਕਾ ਗੁਣ ਚੰਗਿਆਈਆ ਤਤੁ ॥</div>
-    <div style="font-size:13.5px;line-height:1.5;color:var(--ink2);padding-top:9px">
-      Humility is sweetness, and it is the essence of true goodness.</div>
+    <div class="{t['cls']}" style="font-size:13.5px;line-height:1.5;
+      color:var(--ink2);padding-top:9px">{t["meaning"]}</div>
     <div class="row" style="gap:10px;padding-top:13px">
       <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);
-        min-height:44px;font-size:14.5px"><div>Explore</div></div>
+        min-height:44px;font-size:14.5px"><div class="{t['cls']}">{t["explore"]}</div></div>
       <div class="btn" style="flex:1;background:var(--primary);
         color:var(--onPrimary);min-height:44px;font-size:14.5px">
-        <div>Share</div></div>
+        <div class="{t['cls']}">{t["share"]}</div></div>
     </div>
   </div>
 """
@@ -1654,10 +1725,10 @@ def reader_complete() -> str:
         background:var(--kesriSoft);display:flex;align-items:center;
         justify-content:center">{app_mark(19)}</div>
       <div class="col" style="flex:1">
-        <div class="gur" style="font-size:14px;font-weight:600;
-          color:var(--kesriInk)">ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
+        <div style="font-size:14px;font-weight:600;color:var(--kesriInk)">
+          {EN["hazriMarked"]}</div>
         <div style="font-size:12px;color:var(--muted)">
-          This is what marked today’s hazri</div>
+          This is what marked it — the first thing finished today</div>
       </div>
     </div>
     <div class="row" style="gap:10px">
@@ -1673,7 +1744,7 @@ def reader_complete() -> str:
 """
 
 
-def hazri_marked() -> str:
+def hazri_marked(t: dict = EN) -> str:
     """The moment the day\u2019s hazri is marked.
 
     Shown once a day, on the first thing completed -- a bani or a sitting of
@@ -1710,10 +1781,8 @@ def hazri_marked() -> str:
       background:rgba(255,255,255,.05);border:1px solid rgba(242,162,78,.35);
       display:flex;align-items:center;justify-content:center">
       {app_mark(56, "rgba(255,255,255,.78)", "#F2A24E")}</div>
-    <div class="gur" style="font-size:30px;font-weight:600;color:#fff;
-      text-align:center;line-height:1.4">ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
-    <div style="font-size:15px;color:rgba(255,255,255,.78);text-align:center;
-      line-height:1.55">Your hazri is marked for today</div>
+    <div class="disp gur" style="font-size:28px;font-weight:700;color:#fff;
+      text-align:center;line-height:1.35">{t["hazriMarked"]}</div>
     <div class="row" style="gap:9px;align-items:center">
       <div style="font-size:12.5px;color:rgba(255,255,255,.5);font-weight:600">
         Friday, 20 November</div>
@@ -1728,19 +1797,93 @@ def hazri_marked() -> str:
     border:1px solid rgba(255,255,255,.09);padding:6px 16px 8px">{rows}</div>
   <div style="font-size:13px;color:rgba(255,255,255,.55);text-align:center;
     line-height:1.6;padding:16px 4px 0">
-    Read in the presence of Sri Guru Granth Sahib Ji</div>
+    {t["inPresence"]}</div>
   <div style="flex:1"></div>
   <div class="row" style="gap:9px;justify-content:center;padding-bottom:16px">
-    <div style="font-size:13px;color:#F2A24E;font-weight:700">37 days in a row</div>
+    <div class="{t['cls']}" style="font-size:13px;color:#F2A24E;font-weight:700">
+      {t["streak"]}</div>
     <div style="width:3px;height:3px;border-radius:2px;
       background:rgba(255,255,255,.3)"></div>
-    <div style="font-size:13px;color:rgba(255,255,255,.5);font-weight:600">
-      a gentle streak</div>
+    <div class="{t['cls']}" style="font-size:13px;color:rgba(255,255,255,.5);
+      font-weight:600">{t["gentle"]}</div>
   </div>
   <div class="btn" style="background:var(--kesri);color:#231104">
-    {icon("diary", 19)}<div>See my diary</div></div>
-  <div style="text-align:center;font-size:14px;color:rgba(255,255,255,.55);
-    font-weight:600;padding-top:16px">Done</div>
+    {icon("diary", 19)}<div class="{t['cls']}">{t["seeDiary"]}</div></div>
+  <div class="{t['cls']}" style="text-align:center;font-size:14px;
+    color:rgba(255,255,255,.55);font-weight:600;padding-top:16px">{t["done"]}</div>
+</div>
+"""
+
+
+def goal_complete(t: dict = EN) -> str:
+    """The day everything you set yourself is finished.
+
+    It takes the place of the hazri screen rather than following it: the
+    hazri was already marked hours ago, by the first thing you read, and
+    saying so twice would make the smaller moment the louder one. So the
+    hazri is stated here in one quiet line and the screen belongs to the
+    harder thing.
+
+    Sage rather than kesri, and the ring around the mark is closed, so the
+    two moments are told apart before a word is read.
+    """
+    goals = [(t["japji"], "5:52 AM"), (t["simran"], "11 minutes"),
+             (t["rehras"], "6:44 PM")]
+    rows = "".join(
+        f'<div class="row" style="gap:11px;padding:9px 0">'
+        f'<div style="width:22px;height:22px;border-radius:11px;flex:none;'
+        f'background:#6FE3A6;color:#06331F;display:flex;align-items:center;'
+        f'justify-content:center">{icon("check", 13)}</div>'
+        f'<div class="{t["cls"]}" style="font-size:14.5px;font-weight:600;'
+        f'color:#EDECF6;flex:1">{n}</div>'
+        f'<div style="font-size:13px;color:rgba(255,255,255,.55);font-weight:600">'
+        f'{w}</div></div>' for n, w in goals)
+    return f"""
+<div style="position:absolute;inset:0;background:#070A1A"></div>
+<div style="position:absolute;left:50%;top:150px;transform:translate(-50%,-50%);
+  width:460px;height:460px;border-radius:230px;
+  background:radial-gradient(circle,rgba(108,203,156,.20),rgba(7,10,26,0) 62%)"></div>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:56px 24px 26px">
+  <div class="col" style="align-items:center;gap:16px">
+    <div style="position:relative;width:112px;height:112px;flex:none">
+      {ring(1.0, 112, 3, "#6FE3A6", "rgba(255,255,255,.08)")}
+      <div style="position:absolute;inset:0;display:flex;align-items:center;
+        justify-content:center">{app_mark(58, "rgba(255,255,255,.82)", "#6FE3A6")}</div>
+    </div>
+    <div class="disp gur" style="font-size:27px;font-weight:700;color:#fff;
+      text-align:center;line-height:1.35">{t["goalsAllDone"]}</div>
+    <div class="row" style="gap:9px;align-items:center">
+      <div style="font-size:12.5px;color:rgba(255,255,255,.5);font-weight:600">
+        Friday, 20 November</div>
+      <div style="width:3px;height:3px;border-radius:2px;
+        background:rgba(255,255,255,.3)"></div>
+      <div class="gur" style="font-size:12.5px;color:rgba(255,255,255,.5);
+        font-weight:600">5 ਮੱਘਰ 558</div>
+    </div>
+  </div>
+  <div style="height:22px"></div>
+  <div style="border-radius:20px;background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.09);padding:6px 16px 8px">{rows}</div>
+  <div class="row" style="gap:9px;justify-content:center;padding-top:16px">
+    <div style="width:17px;height:17px;flex:none">
+      {app_mark(17, "rgba(242,162,78,.85)", "#F2A24E")}</div>
+    <div class="{t['cls']}" style="font-size:12.5px;color:rgba(255,255,255,.55);
+      font-weight:600">{t["hazriWas"]}</div>
+  </div>
+  <div style="flex:1"></div>
+  <div class="row" style="gap:9px;justify-content:center;padding-bottom:16px">
+    <div class="{t['cls']}" style="font-size:13px;color:#6FE3A6;font-weight:700">
+      {t["streak"]}</div>
+    <div style="width:3px;height:3px;border-radius:2px;
+      background:rgba(255,255,255,.3)"></div>
+    <div class="{t['cls']}" style="font-size:13px;color:rgba(255,255,255,.5);
+      font-weight:600">{t["gentle"]}</div>
+  </div>
+  <div class="btn" style="background:#6FE3A6;color:#06331F">
+    {icon("diary", 19)}<div class="{t['cls']}">{t["seeDiary"]}</div></div>
+  <div class="{t['cls']}" style="text-align:center;font-size:14px;
+    color:rgba(255,255,255,.55);font-weight:600;padding-top:16px">{t["done"]}</div>
 </div>
 """
 
@@ -1775,8 +1918,9 @@ def diary_today() -> str:
       background:rgba(255,255,255,.17);display:flex;align-items:center;
       justify-content:center">{app_mark(34, "#fff", "#fff")}</div>
     <div class="col" style="flex:1;gap:2px">
-      <div class="gur" style="font-size:19px;font-weight:600">ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ</div>
-      <div style="font-size:13px;opacity:.9">Marked at 5:52 AM, with Japji Sahib</div>
+      <div class="disp" style="font-size:19px;font-weight:700">
+        {EN["hazriMarked"]}</div>
+      <div style="font-size:13px;opacity:.9">{EN["hazriWith"]}</div>
     </div>
   </div>
   <div class="col" style="gap:4px">
@@ -2046,6 +2190,8 @@ SCREENS = [
     ("57-Diary", "Diary — the month", diary_month),
     ("58-TodayHazri", "Today — hazri marked", today_hazri),
     ("59-TodayNotYet", "Today — hazri not yet", today_not_yet),
+    ("60-TodayPunjabi", "Today — in Punjabi", today_punjabi),
+    ("61-GoalComplete", "All of today's goals are done", goal_complete),
 ]
 
 
