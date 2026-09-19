@@ -1,0 +1,279 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/l10n/gen/app_localizations.dart';
+import '../../../core/theme/hazri_colors.dart';
+import '../../../core/theme/hazri_text.dart';
+import '../../../core/theme/icon_data.dart';
+import '../../../core/widgets/app_icon.dart';
+import '../../../core/widgets/surfaces.dart';
+import '../data/account_repository.dart';
+
+/// Design 32 — the form that joins the sangat.
+///
+/// Tapping Continue is the first network request this app ever makes on this
+/// phone: the anonymous account is created here, not at launch. Nothing above
+/// this screen has touched a server.
+class JoinSangatScreen extends ConsumerStatefulWidget {
+  const JoinSangatScreen({super.key});
+
+  @override
+  ConsumerState<JoinSangatScreen> createState() => _JoinSangatScreenState();
+}
+
+class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
+  final _name = TextEditingController();
+  final _email = TextEditingController();
+  final _phone = TextEditingController();
+  final _city = TextEditingController();
+
+  bool _busy = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    for (final c in [_name, _email, _phone, _city]) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  /// Deliberately loose. A stricter pattern rejects addresses that are
+  /// perfectly valid, and the real check is whether the verification mail
+  /// arrives — which the person finds out in a minute either way.
+  bool _looksLikeEmail(String v) {
+    final at = v.indexOf('@');
+    return at > 0 && v.indexOf('.', at) > at + 1 && !v.contains(' ');
+  }
+
+  Future<void> _join() async {
+    final l = L.of(context);
+    final name = _name.text.trim();
+    final email = _email.text.trim();
+    final city = _city.text.trim();
+
+    String? complaint;
+    if (name.isEmpty) {
+      complaint = l.sangatNeedName;
+    } else if (email.isEmpty) {
+      complaint = l.sangatNeedEmail;
+    } else if (!_looksLikeEmail(email)) {
+      complaint = l.sangatBadEmail;
+    } else if (city.isEmpty) {
+      complaint = l.sangatNeedCity;
+    }
+    if (complaint != null) {
+      setState(() => _error = complaint);
+      return;
+    }
+
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+
+    final outcome = await ref.read(accountRepositoryProvider).join(
+          name: name,
+          email: email,
+          city: city,
+          phone: _phone.text.trim(),
+        );
+    if (!mounted) return;
+
+    switch (outcome) {
+      case JoinedSangat():
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l.sangatJoined)));
+        context.pop();
+      case EmailAlreadyHasAccount():
+        // Screen 53's fork belongs here and is not built yet, so for now the
+        // person is told plainly rather than sent somewhere that does not
+        // exist. Restoring is the next screen after this one.
+        setState(() {
+          _busy = false;
+          _error = l.sangatEmailInUse;
+        });
+      case SangatUnavailable():
+        setState(() {
+          _busy = false;
+          _error = l.sangatUnavailable;
+        });
+      case JoinFailed():
+        setState(() {
+          _busy = false;
+          _error = l.sangatUnavailable;
+        });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = L.of(context);
+
+    return Scaffold(
+      backgroundColor: c.bg,
+      body: SafeArea(
+        child: PhoneWidth(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 32),
+            children: [
+              Row(
+                children: [
+                  CardIconButton(
+                    icon: HazriIconData.chevronLeft,
+                    tooltip: l.actionBack,
+                    onPressed: () => context.pop(),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l.sangatProfileTitle,
+                            style: HazriText.display22.copyWith(color: c.ink)),
+                        Text(l.sangatProfileSub,
+                            style: HazriText.caption.copyWith(color: c.muted)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              _Field(
+                label: l.sangatFieldName,
+                controller: _name,
+                textCapitalization: TextCapitalization.words,
+              ),
+              const SizedBox(height: 14),
+              _Field(
+                label: l.sangatFieldEmail,
+                controller: _email,
+                hint: l.sangatFieldEmailHint,
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 14),
+              _Field(
+                label: l.sangatFieldPhone,
+                controller: _phone,
+                placeholder: l.sangatFieldPhoneHint,
+                optionalLabel: l.sangatOptional,
+                keyboardType: TextInputType.phone,
+              ),
+              const SizedBox(height: 14),
+              _Field(
+                label: l.sangatFieldCity,
+                controller: _city,
+                hint: l.sangatFieldCityHint,
+                textCapitalization: TextCapitalization.words,
+              ),
+              const SizedBox(height: 18),
+              HazriCard(
+                colour: c.card2,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppIcon(HazriIconData.check, size: 18, color: c.sage),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(l.sangatNoPasswordEver,
+                          style: HazriText.caption.copyWith(color: c.ink2)),
+                    ),
+                  ],
+                ),
+              ),
+              if (_error != null) ...[
+                const SizedBox(height: 14),
+                Text(
+                  _error!,
+                  style: HazriText.bodySmall.copyWith(color: c.kesriInk),
+                ),
+              ],
+              const SizedBox(height: 18),
+              PrimaryButton(
+                label: l.sangatContinue,
+                onPressed: _busy ? null : _join,
+              ),
+              const SizedBox(height: 14),
+              Center(
+                child: Text(l.sangatWhatWeStore,
+                    style: HazriText.caption.copyWith(color: c.muted)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Field extends StatelessWidget {
+  const _Field({
+    required this.label,
+    required this.controller,
+    this.hint,
+    this.placeholder,
+    this.optionalLabel,
+    this.keyboardType,
+    this.textCapitalization = TextCapitalization.none,
+  });
+
+  final String label;
+  final TextEditingController controller;
+
+  /// The explanation under the box — why the app is asking at all.
+  final String? hint;
+  final String? placeholder;
+  final String? optionalLabel;
+  final TextInputType? keyboardType;
+  final TextCapitalization textCapitalization;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(label, style: HazriText.captionStrong.copyWith(color: c.ink2)),
+            if (optionalLabel != null) ...[
+              const SizedBox(width: 6),
+              Text(optionalLabel!,
+                  style: HazriText.caption.copyWith(color: c.muted)),
+            ],
+          ],
+        ),
+        const SizedBox(height: 5),
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          textCapitalization: textCapitalization,
+          style: HazriText.body.copyWith(color: c.ink),
+          decoration: InputDecoration(
+            hintText: placeholder,
+            hintStyle: HazriText.body.copyWith(color: c.muted),
+            filled: true,
+            fillColor: c.card,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: c.rule),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: c.kesri, width: 1.5),
+            ),
+          ),
+        ),
+        if (hint != null) ...[
+          const SizedBox(height: 5),
+          Text(hint!, style: HazriText.caption.copyWith(color: c.muted)),
+        ],
+      ],
+    );
+  }
+}

@@ -1244,4 +1244,115 @@ class LEn extends L {
 
   @override
   String get gurpurabSupplementary => 'Cross-check, not in the SGPC list';
+
+  @override
+  String get sangatSheetTitle => 'Join the sangat';
+
+  @override
+  String get sangatSheetBody =>
+      'Hazri works fully without this. This adds the people.';
+
+  @override
+  String get sangatPerkSee => 'See who is reciting';
+
+  @override
+  String get sangatPerkSeeSub => 'Your family, your sangat, the world';
+
+  @override
+  String get sangatPerkGoal => 'Join a shared goal';
+
+  @override
+  String get sangatPerkGoalSub => 'A group\'s paath, counted together';
+
+  @override
+  String get sangatPerkDiary => 'Keep your diary safe';
+
+  @override
+  String get sangatPerkDiarySub => 'It comes back if you change phone';
+
+  @override
+  String get sangatSetUp => 'Set up — takes a couple of seconds';
+
+  @override
+  String get sangatNotNow => 'Not now';
+
+  @override
+  String get sangatNoAds =>
+      'No password · no ads · your paath stays on your phone';
+
+  @override
+  String get sangatBannerTitle => 'Join the sangat';
+
+  @override
+  String get sangatBannerBody => 'See who is reciting with you, worldwide';
+
+  @override
+  String get sangatBannerTime => 'Takes a couple of seconds';
+
+  @override
+  String get sangatBannerCta => 'Set up';
+
+  @override
+  String get sangatProfileTitle => 'Join the sangat';
+
+  @override
+  String get sangatProfileSub => 'So your paath is counted with others';
+
+  @override
+  String get sangatFieldName => 'Your name';
+
+  @override
+  String get sangatFieldEmail => 'Email';
+
+  @override
+  String get sangatFieldEmailHint =>
+      'How your sangat comes back if you change phone. Nobody else in the app ever sees it.';
+
+  @override
+  String get sangatFieldPhone => 'Phone';
+
+  @override
+  String get sangatFieldPhoneHint => 'Add a number';
+
+  @override
+  String get sangatFieldCity => 'City';
+
+  @override
+  String get sangatFieldCityHint =>
+      'Shown as one dot on the Simran globe, and nothing finer.';
+
+  @override
+  String get sangatOptional => 'optional';
+
+  @override
+  String get sangatNoPasswordEver =>
+      'No password to make or remember, and never will be. You are in the sangat as soon as you tap Continue.';
+
+  @override
+  String get sangatContinue => 'Continue';
+
+  @override
+  String get sangatWhatWeStore => 'What we store & why';
+
+  @override
+  String get sangatNeedName => 'Please add your name';
+
+  @override
+  String get sangatNeedEmail => 'Please add an email address';
+
+  @override
+  String get sangatBadEmail => 'That does not look like an email address';
+
+  @override
+  String get sangatNeedCity => 'Please add your city';
+
+  @override
+  String get sangatUnavailable =>
+      'Could not reach the sangat. Your paath is safe on this phone — try again when you have signal.';
+
+  @override
+  String get sangatEmailInUse => 'This email already has a Hazri account';
+
+  @override
+  String get sangatJoined => 'You are in the sangat';
 }

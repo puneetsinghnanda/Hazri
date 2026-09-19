@@ -1240,4 +1240,116 @@ class LHi extends L {
 
   @override
   String get gurpurabSupplementary => 'क्रॉस-चेक, SGPC सूची में नहीं';
+
+  @override
+  String get sangatSheetTitle => 'संगत से जुड़ें';
+
+  @override
+  String get sangatSheetBody =>
+      'हाज़री इसके बिना भी पूरी चलती है। यह संगत जोड़ता है।';
+
+  @override
+  String get sangatPerkSee => 'देखें कौन पाठ कर रहा है';
+
+  @override
+  String get sangatPerkSeeSub => 'आपका परिवार, आपकी संगत, सारा जगत';
+
+  @override
+  String get sangatPerkGoal => 'साझे संकल्प में जुड़ें';
+
+  @override
+  String get sangatPerkGoalSub => 'समूह का पाठ, एक साथ गिना जाता';
+
+  @override
+  String get sangatPerkDiary => 'अपनी डायरी सुरक्षित रखें';
+
+  @override
+  String get sangatPerkDiarySub => 'फ़ोन बदलने पर वापस आ जाती है';
+
+  @override
+  String get sangatSetUp => 'शुरू करें — कुछ सेकंड लगते हैं';
+
+  @override
+  String get sangatNotNow => 'अभी नहीं';
+
+  @override
+  String get sangatNoAds =>
+      'कोई पासवर्ड नहीं · कोई विज्ञापन नहीं · आपका पाठ आपके फ़ोन में रहता है';
+
+  @override
+  String get sangatBannerTitle => 'संगत से जुड़ें';
+
+  @override
+  String get sangatBannerBody =>
+      'देखें आपके साथ दुनिया भर में कौन पाठ कर रहा है';
+
+  @override
+  String get sangatBannerTime => 'कुछ सेकंड लगते हैं';
+
+  @override
+  String get sangatBannerCta => 'शुरू करें';
+
+  @override
+  String get sangatProfileTitle => 'संगत से जुड़ें';
+
+  @override
+  String get sangatProfileSub => 'ताकि आपका पाठ औरों के साथ गिना जाए';
+
+  @override
+  String get sangatFieldName => 'आपका नाम';
+
+  @override
+  String get sangatFieldEmail => 'ईमेल';
+
+  @override
+  String get sangatFieldEmailHint =>
+      'फ़ोन बदलने पर आपकी संगत इसी से वापस आती है। ऐप में और कोई इसे नहीं देखता।';
+
+  @override
+  String get sangatFieldPhone => 'फ़ोन';
+
+  @override
+  String get sangatFieldPhoneHint => 'नंबर जोड़ें';
+
+  @override
+  String get sangatFieldCity => 'शहर';
+
+  @override
+  String get sangatFieldCityHint =>
+      'सिमरन के गोले पर एक बिंदु के रूप में दिखता है, इससे अधिक कुछ नहीं।';
+
+  @override
+  String get sangatOptional => 'वैकल्पिक';
+
+  @override
+  String get sangatNoPasswordEver =>
+      'कोई पासवर्ड बनाना या याद रखना नहीं, और कभी नहीं होगा। जारी रखें दबाते ही आप संगत में हैं।';
+
+  @override
+  String get sangatContinue => 'जारी रखें';
+
+  @override
+  String get sangatWhatWeStore => 'हम क्या रखते हैं और क्यों';
+
+  @override
+  String get sangatNeedName => 'कृपया अपना नाम लिखें';
+
+  @override
+  String get sangatNeedEmail => 'कृपया ईमेल पता लिखें';
+
+  @override
+  String get sangatBadEmail => 'यह ईमेल पते जैसा नहीं लगता';
+
+  @override
+  String get sangatNeedCity => 'कृपया अपना शहर लिखें';
+
+  @override
+  String get sangatUnavailable =>
+      'संगत तक नहीं पहुँच सके। आपका पाठ इस फ़ोन में सुरक्षित है — सिग्नल आने पर फिर कोशिश करें।';
+
+  @override
+  String get sangatEmailInUse => 'इस ईमेल से पहले ही हाज़री खाता है';
+
+  @override
+  String get sangatJoined => 'आप संगत में हैं';
 }

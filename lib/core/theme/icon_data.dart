@@ -44,6 +44,12 @@ abstract final class HazriIconData {
   static const String headphones = '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3.5" y="14" width="4" height="6" rx="1.5"/><rect x="16.5" y="14" width="4" height="6" rx="1.5"/>';
   /// `download` — 24dp outline, stroke 1.8 (design/html)
   static const String download = '<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19.5h14"/>';
+  /// `sangat` — 24dp outline, stroke 1.8 (design/html). Two people, one
+  /// behind the other: the tab, the join banner and every group row.
+  static const String sangat =
+      '<circle cx="9" cy="9" r="3.2"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/>'
+      '<circle cx="17" cy="7.5" r="2.4"/><path d="M15.5 13.2a4.6 4.6 0 0 1 5 4.6"/>';
+
   /// `globe` — 24dp outline, stroke 1.8 (design/html)
   static const String globe = '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.5 5.5 3.5 8.5s-1 5.9-3.5 8.5c-2.5-2.6-3.5-5.5-3.5-8.5s1-5.9 3.5-8.5z"/>';
   /// `eye` — 24dp outline, stroke 1.8 (design/html)

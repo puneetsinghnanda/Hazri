@@ -22,6 +22,8 @@ import '../domain/today_state.dart';
 import 'elder_today.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../goals/domain/goal_progress.dart';
+import '../../sangat/data/account_repository.dart';
+import '../../sangat/ui/join_sangat_sheet.dart';
 import '../../vichar/ui/vichar_card.dart';
 
 /// The Today tab (Design 09/10), or its elder-mode variant (Design 11).
@@ -57,6 +59,7 @@ class TodayScreen extends ConsumerWidget {
               ),
               Text(l.greeting, style: HazriText.display26.copyWith(color: c.ink)),
               const SizedBox(height: 12),
+              const _JoinSangatBanner(),
               const _GoalsCard(),
               const SizedBox(height: 12),
               _CtaButton(cta: ref.watch(todayCtaProvider)),
@@ -67,6 +70,105 @@ class TodayScreen extends ConsumerWidget {
               const SizedBox(height: 12),
               const _GurpurabCard(),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Design 30 — the banner that invites somebody into the sangat.
+///
+/// It shows only while they have not joined, and it is the whole of the
+/// sangat's presence on Today until they do. There is no second nag: tap Not
+/// now on the sheet and this stays as it is, which is the difference between
+/// an invitation and a demand.
+class _JoinSangatBanner extends ConsumerWidget {
+  const _JoinSangatBanner();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (ref.watch(hasJoinedSangatProvider)) return const SizedBox.shrink();
+
+    final c = context.colors;
+    final l = L.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => showJoinSangatSheet(context),
+          borderRadius: BorderRadius.circular(HazriRadius.card),
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(HazriRadius.card),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [c.kesri, const Color(0xFFB8560A)],
+              ),
+            ),
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: .18),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: AppIcon(HazriIconData.sangat,
+                            size: 20, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(l.sangatBannerTitle,
+                              style: HazriText.bodyStrong
+                                  .copyWith(color: Colors.white)),
+                          Text(
+                            l.sangatBannerBody,
+                            style: HazriText.caption.copyWith(
+                                color: Colors.white.withValues(alpha: .9)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    // Expanded, not bare: "Takes a couple of seconds" is
+                    // longer in Punjabi and longer again at a large text
+                    // size, and a bare Text in a Row overflows rather than
+                    // wrapping. The widget tests caught exactly that.
+                    Expanded(
+                      child: Text(
+                        l.sangatBannerTime,
+                        style: HazriText.caption.copyWith(
+                            color: Colors.white.withValues(alpha: .85)),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    HazriChip(
+                      label: l.sangatBannerCta,
+                      background: Colors.white,
+                      foreground: const Color(0xFF9A4F00),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

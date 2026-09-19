@@ -1241,4 +1241,116 @@ class LPa extends L {
 
   @override
   String get gurpurabSupplementary => 'ਪੜਤਾਲ ਲਈ, SGPC ਸੂਚੀ ਵਿੱਚ ਨਹੀਂ';
+
+  @override
+  String get sangatSheetTitle => 'ਸੰਗਤ ਨਾਲ ਜੁੜੋ';
+
+  @override
+  String get sangatSheetBody =>
+      'ਹਾਜ਼ਰੀ ਇਸ ਤੋਂ ਬਿਨਾਂ ਵੀ ਪੂਰੀ ਚੱਲਦੀ ਹੈ। ਇਹ ਸੰਗਤ ਜੋੜਦਾ ਹੈ।';
+
+  @override
+  String get sangatPerkSee => 'ਵੇਖੋ ਕੌਣ ਪਾਠ ਕਰ ਰਿਹਾ ਹੈ';
+
+  @override
+  String get sangatPerkSeeSub => 'ਤੁਹਾਡਾ ਪਰਿਵਾਰ, ਤੁਹਾਡੀ ਸੰਗਤ, ਸਾਰਾ ਜਗਤ';
+
+  @override
+  String get sangatPerkGoal => 'ਸਾਂਝੇ ਸੰਕਲਪ ਵਿੱਚ ਜੁੜੋ';
+
+  @override
+  String get sangatPerkGoalSub => 'ਸਮੂਹ ਦਾ ਪਾਠ, ਇਕੱਠਿਆਂ ਗਿਣਿਆ ਜਾਂਦਾ';
+
+  @override
+  String get sangatPerkDiary => 'ਆਪਣੀ ਡਾਇਰੀ ਸੰਭਾਲੋ';
+
+  @override
+  String get sangatPerkDiarySub => 'ਫ਼ੋਨ ਬਦਲਣ ਉੱਤੇ ਵਾਪਸ ਆ ਜਾਂਦੀ ਹੈ';
+
+  @override
+  String get sangatSetUp => 'ਸ਼ੁਰੂ ਕਰੋ — ਕੁਝ ਸਕਿੰਟ ਲੱਗਦੇ ਹਨ';
+
+  @override
+  String get sangatNotNow => 'ਹੁਣ ਨਹੀਂ';
+
+  @override
+  String get sangatNoAds =>
+      'ਕੋਈ ਪਾਸਵਰਡ ਨਹੀਂ · ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ · ਤੁਹਾਡਾ ਪਾਠ ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦਾ ਹੈ';
+
+  @override
+  String get sangatBannerTitle => 'ਸੰਗਤ ਨਾਲ ਜੁੜੋ';
+
+  @override
+  String get sangatBannerBody =>
+      'ਵੇਖੋ ਤੁਹਾਡੇ ਨਾਲ ਦੁਨੀਆ ਭਰ ਵਿੱਚ ਕੌਣ ਪਾਠ ਕਰ ਰਿਹਾ ਹੈ';
+
+  @override
+  String get sangatBannerTime => 'ਕੁਝ ਸਕਿੰਟ ਲੱਗਦੇ ਹਨ';
+
+  @override
+  String get sangatBannerCta => 'ਸ਼ੁਰੂ ਕਰੋ';
+
+  @override
+  String get sangatProfileTitle => 'ਸੰਗਤ ਨਾਲ ਜੁੜੋ';
+
+  @override
+  String get sangatProfileSub => 'ਤਾਂ ਜੋ ਤੁਹਾਡਾ ਪਾਠ ਹੋਰਾਂ ਨਾਲ ਗਿਣਿਆ ਜਾਵੇ';
+
+  @override
+  String get sangatFieldName => 'ਤੁਹਾਡਾ ਨਾਮ';
+
+  @override
+  String get sangatFieldEmail => 'ਈਮੇਲ';
+
+  @override
+  String get sangatFieldEmailHint =>
+      'ਫ਼ੋਨ ਬਦਲਣ ਉੱਤੇ ਤੁਹਾਡੀ ਸੰਗਤ ਇਸੇ ਨਾਲ ਵਾਪਸ ਆਉਂਦੀ ਹੈ। ਐਪ ਵਿੱਚ ਹੋਰ ਕੋਈ ਇਸਨੂੰ ਨਹੀਂ ਵੇਖਦਾ।';
+
+  @override
+  String get sangatFieldPhone => 'ਫ਼ੋਨ';
+
+  @override
+  String get sangatFieldPhoneHint => 'ਨੰਬਰ ਜੋੜੋ';
+
+  @override
+  String get sangatFieldCity => 'ਸ਼ਹਿਰ';
+
+  @override
+  String get sangatFieldCityHint =>
+      'ਸਿਮਰਨ ਦੇ ਗੋਲੇ ਉੱਤੇ ਇੱਕ ਬਿੰਦੂ ਵਜੋਂ ਦਿਖਦਾ ਹੈ, ਇਸ ਤੋਂ ਵੱਧ ਕੁਝ ਨਹੀਂ।';
+
+  @override
+  String get sangatOptional => 'ਮਰਜ਼ੀ ਨਾਲ';
+
+  @override
+  String get sangatNoPasswordEver =>
+      'ਕੋਈ ਪਾਸਵਰਡ ਬਣਾਉਣਾ ਜਾਂ ਯਾਦ ਰੱਖਣਾ ਨਹੀਂ, ਤੇ ਕਦੇ ਨਹੀਂ ਹੋਵੇਗਾ। ਜਾਰੀ ਰੱਖੋ ਦਬਾਉਂਦੇ ਹੀ ਤੁਸੀਂ ਸੰਗਤ ਵਿੱਚ ਹੋ।';
+
+  @override
+  String get sangatContinue => 'ਜਾਰੀ ਰੱਖੋ';
+
+  @override
+  String get sangatWhatWeStore => 'ਅਸੀਂ ਕੀ ਰੱਖਦੇ ਹਾਂ ਤੇ ਕਿਉਂ';
+
+  @override
+  String get sangatNeedName => 'ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਨਾਮ ਲਿਖੋ';
+
+  @override
+  String get sangatNeedEmail => 'ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਪਤਾ ਲਿਖੋ';
+
+  @override
+  String get sangatBadEmail => 'ਇਹ ਈਮੇਲ ਪਤੇ ਵਰਗਾ ਨਹੀਂ ਲੱਗਦਾ';
+
+  @override
+  String get sangatNeedCity => 'ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਸ਼ਹਿਰ ਲਿਖੋ';
+
+  @override
+  String get sangatUnavailable =>
+      'ਸੰਗਤ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚ ਸਕੇ। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ — ਸਿਗਨਲ ਆਉਣ ਉੱਤੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।';
+
+  @override
+  String get sangatEmailInUse => 'ਇਸ ਈਮੇਲ ਨਾਲ ਪਹਿਲਾਂ ਹੀ ਹਾਜ਼ਰੀ ਖਾਤਾ ਹੈ';
+
+  @override
+  String get sangatJoined => 'ਤੁਸੀਂ ਸੰਗਤ ਵਿੱਚ ਹੋ';
 }

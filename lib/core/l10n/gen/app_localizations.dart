@@ -2300,6 +2300,216 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Cross-check, not in the SGPC list'**
   String get gurpurabSupplementary;
+
+  /// No description provided for @sangatSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the sangat'**
+  String get sangatSheetTitle;
+
+  /// No description provided for @sangatSheetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri works fully without this. This adds the people.'**
+  String get sangatSheetBody;
+
+  /// No description provided for @sangatPerkSee.
+  ///
+  /// In en, this message translates to:
+  /// **'See who is reciting'**
+  String get sangatPerkSee;
+
+  /// No description provided for @sangatPerkSeeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Your family, your sangat, the world'**
+  String get sangatPerkSeeSub;
+
+  /// No description provided for @sangatPerkGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a shared goal'**
+  String get sangatPerkGoal;
+
+  /// No description provided for @sangatPerkGoalSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A group\'s paath, counted together'**
+  String get sangatPerkGoalSub;
+
+  /// No description provided for @sangatPerkDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your diary safe'**
+  String get sangatPerkDiary;
+
+  /// No description provided for @sangatPerkDiarySub.
+  ///
+  /// In en, this message translates to:
+  /// **'It comes back if you change phone'**
+  String get sangatPerkDiarySub;
+
+  /// No description provided for @sangatSetUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up — takes a couple of seconds'**
+  String get sangatSetUp;
+
+  /// No description provided for @sangatNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get sangatNotNow;
+
+  /// No description provided for @sangatNoAds.
+  ///
+  /// In en, this message translates to:
+  /// **'No password · no ads · your paath stays on your phone'**
+  String get sangatNoAds;
+
+  /// No description provided for @sangatBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the sangat'**
+  String get sangatBannerTitle;
+
+  /// No description provided for @sangatBannerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'See who is reciting with you, worldwide'**
+  String get sangatBannerBody;
+
+  /// No description provided for @sangatBannerTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Takes a couple of seconds'**
+  String get sangatBannerTime;
+
+  /// No description provided for @sangatBannerCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up'**
+  String get sangatBannerCta;
+
+  /// No description provided for @sangatProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the sangat'**
+  String get sangatProfileTitle;
+
+  /// No description provided for @sangatProfileSub.
+  ///
+  /// In en, this message translates to:
+  /// **'So your paath is counted with others'**
+  String get sangatProfileSub;
+
+  /// No description provided for @sangatFieldName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get sangatFieldName;
+
+  /// No description provided for @sangatFieldEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get sangatFieldEmail;
+
+  /// No description provided for @sangatFieldEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How your sangat comes back if you change phone. Nobody else in the app ever sees it.'**
+  String get sangatFieldEmailHint;
+
+  /// No description provided for @sangatFieldPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get sangatFieldPhone;
+
+  /// No description provided for @sangatFieldPhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a number'**
+  String get sangatFieldPhoneHint;
+
+  /// No description provided for @sangatFieldCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get sangatFieldCity;
+
+  /// No description provided for @sangatFieldCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown as one dot on the Simran globe, and nothing finer.'**
+  String get sangatFieldCityHint;
+
+  /// No description provided for @sangatOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get sangatOptional;
+
+  /// No description provided for @sangatNoPasswordEver.
+  ///
+  /// In en, this message translates to:
+  /// **'No password to make or remember, and never will be. You are in the sangat as soon as you tap Continue.'**
+  String get sangatNoPasswordEver;
+
+  /// No description provided for @sangatContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get sangatContinue;
+
+  /// No description provided for @sangatWhatWeStore.
+  ///
+  /// In en, this message translates to:
+  /// **'What we store & why'**
+  String get sangatWhatWeStore;
+
+  /// No description provided for @sangatNeedName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add your name'**
+  String get sangatNeedName;
+
+  /// No description provided for @sangatNeedEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add an email address'**
+  String get sangatNeedEmail;
+
+  /// No description provided for @sangatBadEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'That does not look like an email address'**
+  String get sangatBadEmail;
+
+  /// No description provided for @sangatNeedCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add your city'**
+  String get sangatNeedCity;
+
+  /// No description provided for @sangatUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the sangat. Your paath is safe on this phone — try again when you have signal.'**
+  String get sangatUnavailable;
+
+  /// No description provided for @sangatEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This email already has a Hazri account'**
+  String get sangatEmailInUse;
+
+  /// No description provided for @sangatJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'You are in the sangat'**
+  String get sangatJoined;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {
