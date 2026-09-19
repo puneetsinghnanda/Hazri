@@ -1737,4 +1737,80 @@ class LHi extends L {
   @override
   String get diaryHazriNote =>
       'एक पाठ हो या पाँच, या एक बार का सिमरन — हाज़िरी लग जाती है। गिनती वह है जो आपने किया, वह नहीं जो करना था।';
+
+  @override
+  String get restoreTitle => 'मेरा खाता वापस लाएँ';
+
+  @override
+  String get restoreBeenHere => 'आप पहले भी यहाँ आ चुके हैं';
+
+  @override
+  String get restoreThisAccount => 'यही खाता वापस लाएँ';
+
+  @override
+  String get restoreOr => 'या';
+
+  @override
+  String get restoreStartFresh => 'नया खाता शुरू करें';
+
+  @override
+  String get restoreStartFreshSub => 'पुराने में से कुछ साथ नहीं आएगा';
+
+  @override
+  String get restoreNothingSignedOut =>
+      'वापस लाने से कहीं कुछ साइन-आउट नहीं होता। एक ही खाता एक से ज़्यादा फ़ोन पर रह सकता है।';
+
+  @override
+  String get restoreSendLink => 'मुझे लिंक भेजें';
+
+  @override
+  String get restorePasteLabel => 'ईमेल वाला लिंक यहाँ डालें';
+
+  @override
+  String get restorePasteHint =>
+      'इसी फ़ोन पर ईमेल खोलें, पूरा लिंक कॉपी करें और यहाँ डालें।';
+
+  @override
+  String get restoreDone => 'आपका खाता वापस आ गया';
+
+  @override
+  String get restoreDiaryNote =>
+      'डायरी तभी वापस आती है जब सिंक चालू था। सिंक बंद हो तो ग्रुप और संकल्प रहते हैं, और डायरी उसी फ़ोन में रहती है जिसने लिखी थी।';
+
+  @override
+  String get restoreOpenToday => 'आज खोलें';
+
+  @override
+  String get linkProblemTitle => 'वह लिंक काम नहीं किया';
+
+  @override
+  String get linkUsedTitle => 'पहले ही इस्तेमाल हो चुका';
+
+  @override
+  String get linkUsedBody =>
+      'यह लिंक एक फ़ोन को साइन-इन कर चुका है। हर लिंक एक बार चलता है और फिर बंद हो जाता है — इसी वजह से आगे भेजी गई ईमेल अंदर आने का रास्ता नहीं बनती।';
+
+  @override
+  String get linkExpiredTitle => 'बहुत पुराना';
+
+  @override
+  String get linkExpiredBody =>
+      'लिंक एक घंटा चलते हैं। यह अपने आप ख़त्म हो गया — किसी ने इस्तेमाल नहीं किया।';
+
+  @override
+  String get linkWrongTitle => 'यह हमारा लिंक नहीं लगता';
+
+  @override
+  String get linkWrongBody =>
+      'यह वह लिंक नहीं लगता जो हमने भेजा था। पूरा लिंक कॉपी करें, प्रश्नचिह्न के बाद वाला हिस्सा भी।';
+
+  @override
+  String get linkSendAnother => 'नया लिंक भेजें';
+
+  @override
+  String get linkWrongAddressNote =>
+      'अगर इनमें से कोई भी आप नहीं थे, तो पुष्टि से पहले अपनी ईमेल बदलें। लिंक सिर्फ़ खाते वाले पते पर ही जाता है।';
+
+  @override
+  String get verifyConfirmed => 'आपकी ईमेल की पुष्टि हो गई';
 }

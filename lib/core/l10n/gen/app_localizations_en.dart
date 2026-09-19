@@ -1739,4 +1739,80 @@ class LEn extends L {
   @override
   String get diaryHazriNote =>
       'One paath or five, a single sitting of simran — any of them marks the day\'s hazri. The count is what you did, not what you owed.';
+
+  @override
+  String get restoreTitle => 'Bring my account back';
+
+  @override
+  String get restoreBeenHere => 'You have been here before';
+
+  @override
+  String get restoreThisAccount => 'Restore this account';
+
+  @override
+  String get restoreOr => 'or';
+
+  @override
+  String get restoreStartFresh => 'Start a new account';
+
+  @override
+  String get restoreStartFreshSub => 'Nothing from the old one comes with it';
+
+  @override
+  String get restoreNothingSignedOut =>
+      'Restoring signs nothing out. The same account can be on more than one phone at once.';
+
+  @override
+  String get restoreSendLink => 'Send me the link';
+
+  @override
+  String get restorePasteLabel => 'Paste the link from the email';
+
+  @override
+  String get restorePasteHint =>
+      'Open the email on this phone, copy the whole link and paste it here.';
+
+  @override
+  String get restoreDone => 'Your account is back';
+
+  @override
+  String get restoreDiaryNote =>
+      'Your diary comes back only if sync was on. With sync off, your groups and goals are kept and the diary stays on the phone that wrote it.';
+
+  @override
+  String get restoreOpenToday => 'Open Today';
+
+  @override
+  String get linkProblemTitle => 'That link did not work';
+
+  @override
+  String get linkUsedTitle => 'Already used';
+
+  @override
+  String get linkUsedBody =>
+      'This link has signed in a phone already. Every link works once and then stops, which is what keeps a forwarded email from being a way in.';
+
+  @override
+  String get linkExpiredTitle => 'Too old';
+
+  @override
+  String get linkExpiredBody =>
+      'Links last an hour. This one has lapsed on its own — nobody used it.';
+
+  @override
+  String get linkWrongTitle => 'Not a link from us';
+
+  @override
+  String get linkWrongBody =>
+      'That does not look like the link we sent. Copy the whole of it, including everything after the question mark.';
+
+  @override
+  String get linkSendAnother => 'Send a new link';
+
+  @override
+  String get linkWrongAddressNote =>
+      'If neither of those was you, change your email address before you verify. A link is only ever sent to the address on the account.';
+
+  @override
+  String get verifyConfirmed => 'Your email is confirmed';
 }

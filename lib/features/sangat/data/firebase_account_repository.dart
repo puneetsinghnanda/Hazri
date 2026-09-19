@@ -129,6 +129,85 @@ class FirebaseAccountRepository implements AccountRepository {
   }
 
   @override
+  Future<JoinOutcome> continueWithLink({
+    required String email,
+    required String link,
+  }) async {
+    final address = email.trim();
+    if (!_auth.isSignInWithEmailLink(link.trim())) {
+      return const LinkDidNotWork(LinkProblem.wrongAddress);
+    }
+    final credential = EmailAuthProvider.credentialWithLink(
+      email: address,
+      emailLink: link.trim(),
+    );
+    final user = _auth.currentUser;
+    try {
+      if (user != null && user.isAnonymous) {
+        // Verifying: the anonymous account keeps its uid, so every group,
+        // count and diary entry on this phone stays attached to it.
+        final linked = await user.linkWithCredential(credential);
+        return JoinedSangat(await _accountFor(linked.user!, address));
+      }
+      // Restoring on a fresh phone: this signs into the account the address
+      // already has. Nothing is signed out anywhere else -- the same account
+      // can be on two phones at once, which is what design 53 promises.
+      final signedIn = await _auth.signInWithCredential(credential);
+      return JoinedSangat(await _accountFor(signedIn.user!, address));
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'invalid-action-code':
+        case 'invalid-email':
+          return const LinkDidNotWork(LinkProblem.alreadyUsed);
+        case 'expired-action-code':
+          return const LinkDidNotWork(LinkProblem.expired);
+        case 'credential-already-in-use':
+        case 'email-already-in-use':
+          // The address belongs to an account that is not this anonymous
+          // one. Signing in with it is the restore, and it is what the
+          // person asked for by pasting the link.
+          try {
+            final signedIn = await _auth.signInWithCredential(credential);
+            return JoinedSangat(await _accountFor(signedIn.user!, address));
+          } on FirebaseAuthException catch (e2) {
+            return _authOutcome(e2, address);
+          }
+        default:
+          return _authOutcome(e, address);
+      }
+    } on FirebaseException catch (e) {
+      return _firestoreOutcome(e, 'continue with link');
+    }
+  }
+
+  /// The profile behind a user, creating a bare one if this phone has never
+  /// written it. A restored account nearly always has one already.
+  Future<SangatAccount> _accountFor(User user, String email) async {
+    try {
+      final snap = await _db.collection('users').doc(user.uid).get();
+      final data = snap.data();
+      if (data != null) {
+        _current = SangatAccount.fromFirestore(
+          user.uid,
+          data,
+          emailVerified: user.emailVerified,
+        );
+        return _current!;
+      }
+    } on FirebaseException catch (e) {
+      debugPrint('Hazri: reading restored profile failed (${e.code})');
+    }
+    _current = SangatAccount(
+      id: user.uid,
+      name: '',
+      city: '',
+      email: email,
+      emailVerified: user.emailVerified,
+    );
+    return _current!;
+  }
+
+  @override
   Future<void> signOut() async {
     try {
       await _auth.signOut();

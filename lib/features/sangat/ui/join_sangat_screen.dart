@@ -8,6 +8,7 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../../app/router.dart';
 import '../data/account_repository.dart';
 import '../domain/sangat_account.dart';
 import 'sangat_field.dart';
@@ -80,13 +81,18 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(l.sangatJoined)));
         context.pop();
-      case EmailAlreadyHasAccount():
-        // Screen 53's fork belongs here and is not built yet, so for now the
-        // person is told plainly rather than sent somewhere that does not
-        // exist. Restoring is the next screen after this one.
+      case EmailAlreadyHasAccount(email: final existing):
+        // Design 53's fork. Not an error: coming back and starting again are
+        // both legitimate, and the screen that offers them keeps the address
+        // so nobody types it twice.
+        context.push(Routes.restore(email: existing));
+        setState(() => _busy = false);
+      case LinkDidNotWork():
+        // Cannot arrive from a join; the switch is exhaustive so that a new
+        // outcome cannot be forgotten here.
         setState(() {
           _busy = false;
-          _error = l.sangatEmailInUse;
+          _error = l.sangatUnavailable;
         });
       case SangatUnavailable():
         setState(() {

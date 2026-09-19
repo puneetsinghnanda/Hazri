@@ -1737,4 +1737,80 @@ class LPa extends L {
   @override
   String get diaryHazriNote =>
       'ਇੱਕ ਪਾਠ ਹੋਵੇ ਜਾਂ ਪੰਜ, ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ — ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ। ਗਿਣਤੀ ਉਹ ਹੈ ਜੋ ਤੁਸੀਂ ਕੀਤਾ, ਉਹ ਨਹੀਂ ਜੋ ਕਰਨਾ ਸੀ।';
+
+  @override
+  String get restoreTitle => 'ਮੇਰਾ ਖਾਤਾ ਵਾਪਸ ਲਿਆਓ';
+
+  @override
+  String get restoreBeenHere => 'ਤੁਸੀਂ ਪਹਿਲਾਂ ਵੀ ਇੱਥੇ ਆ ਚੁੱਕੇ ਹੋ';
+
+  @override
+  String get restoreThisAccount => 'ਇਹੀ ਖਾਤਾ ਵਾਪਸ ਲਿਆਓ';
+
+  @override
+  String get restoreOr => 'ਜਾਂ';
+
+  @override
+  String get restoreStartFresh => 'ਨਵਾਂ ਖਾਤਾ ਸ਼ੁਰੂ ਕਰੋ';
+
+  @override
+  String get restoreStartFreshSub => 'ਪੁਰਾਣੇ ਵਿੱਚੋਂ ਕੁਝ ਨਾਲ ਨਹੀਂ ਆਵੇਗਾ';
+
+  @override
+  String get restoreNothingSignedOut =>
+      'ਵਾਪਸ ਲਿਆਉਣ ਨਾਲ ਕਿਤੇ ਕੁਝ ਸਾਈਨ-ਆਊਟ ਨਹੀਂ ਹੁੰਦਾ। ਇੱਕੋ ਖਾਤਾ ਇੱਕ ਤੋਂ ਵੱਧ ਫ਼ੋਨਾਂ ਉੱਤੇ ਰਹਿ ਸਕਦਾ ਹੈ।';
+
+  @override
+  String get restoreSendLink => 'ਮੈਨੂੰ ਲਿੰਕ ਭੇਜੋ';
+
+  @override
+  String get restorePasteLabel => 'ਈਮੇਲ ਵਾਲਾ ਲਿੰਕ ਇੱਥੇ ਪਾਓ';
+
+  @override
+  String get restorePasteHint =>
+      'ਇਸੇ ਫ਼ੋਨ ਉੱਤੇ ਈਮੇਲ ਖੋਲ੍ਹੋ, ਪੂਰਾ ਲਿੰਕ ਕਾਪੀ ਕਰੋ ਤੇ ਇੱਥੇ ਪਾਓ।';
+
+  @override
+  String get restoreDone => 'ਤੁਹਾਡਾ ਖਾਤਾ ਵਾਪਸ ਆ ਗਿਆ';
+
+  @override
+  String get restoreDiaryNote =>
+      'ਡਾਇਰੀ ਤਾਂ ਹੀ ਵਾਪਸ ਆਉਂਦੀ ਹੈ ਜੇ ਸਿੰਕ ਚਾਲੂ ਸੀ। ਸਿੰਕ ਬੰਦ ਹੋਵੇ ਤਾਂ ਗਰੁੱਪ ਤੇ ਸੰਕਲਪ ਰਹਿੰਦੇ ਹਨ, ਤੇ ਡਾਇਰੀ ਉਸੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦੀ ਹੈ ਜਿਸ ਨੇ ਲਿਖੀ ਸੀ।';
+
+  @override
+  String get restoreOpenToday => 'ਅੱਜ ਖੋਲ੍ਹੋ';
+
+  @override
+  String get linkProblemTitle => 'ਉਹ ਲਿੰਕ ਕੰਮ ਨਹੀਂ ਕੀਤਾ';
+
+  @override
+  String get linkUsedTitle => 'ਪਹਿਲਾਂ ਹੀ ਵਰਤਿਆ ਜਾ ਚੁੱਕਾ';
+
+  @override
+  String get linkUsedBody =>
+      'ਇਹ ਲਿੰਕ ਇੱਕ ਫ਼ੋਨ ਨੂੰ ਸਾਈਨ-ਇਨ ਕਰ ਚੁੱਕਾ ਹੈ। ਹਰ ਲਿੰਕ ਇੱਕ ਵਾਰ ਚੱਲਦਾ ਹੈ ਤੇ ਫਿਰ ਬੰਦ ਹੋ ਜਾਂਦਾ ਹੈ — ਇਸੇ ਕਰਕੇ ਅੱਗੇ ਭੇਜੀ ਈਮੇਲ ਅੰਦਰ ਆਉਣ ਦਾ ਰਾਹ ਨਹੀਂ ਬਣਦੀ।';
+
+  @override
+  String get linkExpiredTitle => 'ਬਹੁਤ ਪੁਰਾਣਾ';
+
+  @override
+  String get linkExpiredBody =>
+      'ਲਿੰਕ ਇੱਕ ਘੰਟਾ ਚੱਲਦੇ ਹਨ। ਇਹ ਆਪਣੇ ਆਪ ਖ਼ਤਮ ਹੋ ਗਿਆ — ਕਿਸੇ ਨੇ ਵਰਤਿਆ ਨਹੀਂ।';
+
+  @override
+  String get linkWrongTitle => 'ਇਹ ਸਾਡਾ ਲਿੰਕ ਨਹੀਂ ਲੱਗਦਾ';
+
+  @override
+  String get linkWrongBody =>
+      'ਇਹ ਉਹ ਲਿੰਕ ਨਹੀਂ ਲੱਗਦਾ ਜੋ ਅਸੀਂ ਭੇਜਿਆ ਸੀ। ਪੂਰਾ ਲਿੰਕ ਕਾਪੀ ਕਰੋ, ਸਵਾਲੀਆ ਨਿਸ਼ਾਨ ਤੋਂ ਬਾਅਦ ਵਾਲਾ ਹਿੱਸਾ ਵੀ।';
+
+  @override
+  String get linkSendAnother => 'ਨਵਾਂ ਲਿੰਕ ਭੇਜੋ';
+
+  @override
+  String get linkWrongAddressNote =>
+      'ਜੇ ਇਹਨਾਂ ਵਿੱਚੋਂ ਕੋਈ ਵੀ ਤੁਸੀਂ ਨਹੀਂ ਸੀ, ਤਾਂ ਪੁਸ਼ਟੀ ਤੋਂ ਪਹਿਲਾਂ ਆਪਣੀ ਈਮੇਲ ਬਦਲੋ। ਲਿੰਕ ਸਿਰਫ਼ ਖਾਤੇ ਵਾਲੇ ਪਤੇ ਉੱਤੇ ਹੀ ਜਾਂਦਾ ਹੈ।';
+
+  @override
+  String get verifyConfirmed => 'ਤੁਹਾਡੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਗਈ';
 }

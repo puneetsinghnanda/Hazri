@@ -40,7 +40,13 @@ class SangatField extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(label, style: HazriText.captionStrong.copyWith(color: c.ink2)),
+            // Flexible, not bare: "Paste the link from the email" is already
+            // at the edge in English and longer in Punjabi, and a bare Text
+            // beside the optional marker overflows rather than wrapping.
+            Flexible(
+              child: Text(label,
+                  style: HazriText.captionStrong.copyWith(color: c.ink2)),
+            ),
             if (optionalLabel != null) ...[
               const SizedBox(width: 6),
               Flexible(

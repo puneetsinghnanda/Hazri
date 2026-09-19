@@ -3230,6 +3230,144 @@ abstract class L {
   /// In en, this message translates to:
   /// **'One paath or five, a single sitting of simran — any of them marks the day\'s hazri. The count is what you did, not what you owed.'**
   String get diaryHazriNote;
+
+  /// No description provided for @restoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring my account back'**
+  String get restoreTitle;
+
+  /// No description provided for @restoreBeenHere.
+  ///
+  /// In en, this message translates to:
+  /// **'You have been here before'**
+  String get restoreBeenHere;
+
+  /// No description provided for @restoreThisAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore this account'**
+  String get restoreThisAccount;
+
+  /// No description provided for @restoreOr.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get restoreOr;
+
+  /// No description provided for @restoreStartFresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a new account'**
+  String get restoreStartFresh;
+
+  /// No description provided for @restoreStartFreshSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing from the old one comes with it'**
+  String get restoreStartFreshSub;
+
+  /// No description provided for @restoreNothingSignedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring signs nothing out. The same account can be on more than one phone at once.'**
+  String get restoreNothingSignedOut;
+
+  /// No description provided for @restoreSendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send me the link'**
+  String get restoreSendLink;
+
+  /// No description provided for @restorePasteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the link from the email'**
+  String get restorePasteLabel;
+
+  /// No description provided for @restorePasteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the email on this phone, copy the whole link and paste it here.'**
+  String get restorePasteHint;
+
+  /// No description provided for @restoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is back'**
+  String get restoreDone;
+
+  /// No description provided for @restoreDiaryNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diary comes back only if sync was on. With sync off, your groups and goals are kept and the diary stays on the phone that wrote it.'**
+  String get restoreDiaryNote;
+
+  /// No description provided for @restoreOpenToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Today'**
+  String get restoreOpenToday;
+
+  /// No description provided for @linkProblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'That link did not work'**
+  String get linkProblemTitle;
+
+  /// No description provided for @linkUsedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Already used'**
+  String get linkUsedTitle;
+
+  /// No description provided for @linkUsedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This link has signed in a phone already. Every link works once and then stops, which is what keeps a forwarded email from being a way in.'**
+  String get linkUsedBody;
+
+  /// No description provided for @linkExpiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Too old'**
+  String get linkExpiredTitle;
+
+  /// No description provided for @linkExpiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Links last an hour. This one has lapsed on its own — nobody used it.'**
+  String get linkExpiredBody;
+
+  /// No description provided for @linkWrongTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a link from us'**
+  String get linkWrongTitle;
+
+  /// No description provided for @linkWrongBody.
+  ///
+  /// In en, this message translates to:
+  /// **'That does not look like the link we sent. Copy the whole of it, including everything after the question mark.'**
+  String get linkWrongBody;
+
+  /// No description provided for @linkSendAnother.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a new link'**
+  String get linkSendAnother;
+
+  /// No description provided for @linkWrongAddressNote.
+  ///
+  /// In en, this message translates to:
+  /// **'If neither of those was you, change your email address before you verify. A link is only ever sent to the address on the account.'**
+  String get linkWrongAddressNote;
+
+  /// No description provided for @verifyConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is confirmed'**
+  String get verifyConfirmed;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

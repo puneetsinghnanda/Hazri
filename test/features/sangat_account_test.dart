@@ -113,10 +113,16 @@ void _outcomes() {
           SangatUnavailable() => 'offline',
           SangatRefused() => 'refused',
           EmailAlreadyHasAccount() => 'exists',
+          LinkDidNotWork(problem: final p) => 'link:${p.name}',
           JoinFailed() => 'failed',
         };
 
     expect(describe(const SangatRefused('permission-denied')), 'refused');
     expect(describe(const SangatUnavailable()), 'offline');
+    // The three link problems stay apart, because the answer differs: two
+    // mean send another, and the third means sending another will not help.
+    expect(describe(const LinkDidNotWork(LinkProblem.alreadyUsed)), 'link:alreadyUsed');
+    expect(describe(const LinkDidNotWork(LinkProblem.expired)), 'link:expired');
+    expect(describe(const LinkDidNotWork(LinkProblem.wrongAddress)), 'link:wrongAddress');
   });
 }

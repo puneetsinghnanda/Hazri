@@ -72,6 +72,23 @@ class FakeAccountRepository implements AccountRepository {
         SangatAccount(id: 'uid-test', name: '', city: '', email: email));
   }
 
+  final linksTried = <String>[];
+
+  @override
+  Future<JoinOutcome> continueWithLink({
+    required String email,
+    required String link,
+  }) async {
+    linksTried.add(link);
+    final failure = nextOutcome;
+    if (failure != null) return failure;
+    final account = (_account ??
+            SangatAccount(id: 'uid-test', name: '', city: '', email: email))
+        .copyWith(email: email, emailVerified: true);
+    emit(account);
+    return JoinedSangat(account);
+  }
+
   @override
   Future<void> signOut() async {
     signOutCalls++;

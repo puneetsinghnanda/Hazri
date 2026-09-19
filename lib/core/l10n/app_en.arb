@@ -952,5 +952,28 @@
               "type": "String"
           }
       }
-  }
+  },
+  "restoreTitle": "Bring my account back",
+  "restoreBeenHere": "You have been here before",
+  "restoreThisAccount": "Restore this account",
+  "restoreOr": "or",
+  "restoreStartFresh": "Start a new account",
+  "restoreStartFreshSub": "Nothing from the old one comes with it",
+  "restoreNothingSignedOut": "Restoring signs nothing out. The same account can be on more than one phone at once.",
+  "restoreSendLink": "Send me the link",
+  "restorePasteLabel": "Paste the link from the email",
+  "restorePasteHint": "Open the email on this phone, copy the whole link and paste it here.",
+  "restoreDone": "Your account is back",
+  "restoreDiaryNote": "Your diary comes back only if sync was on. With sync off, your groups and goals are kept and the diary stays on the phone that wrote it.",
+  "restoreOpenToday": "Open Today",
+  "linkProblemTitle": "That link did not work",
+  "linkUsedTitle": "Already used",
+  "linkUsedBody": "This link has signed in a phone already. Every link works once and then stops, which is what keeps a forwarded email from being a way in.",
+  "linkExpiredTitle": "Too old",
+  "linkExpiredBody": "Links last an hour. This one has lapsed on its own — nobody used it.",
+  "linkWrongTitle": "Not a link from us",
+  "linkWrongBody": "That does not look like the link we sent. Copy the whole of it, including everything after the question mark.",
+  "linkSendAnother": "Send a new link",
+  "linkWrongAddressNote": "If neither of those was you, change your email address before you verify. A link is only ever sent to the address on the account.",
+  "verifyConfirmed": "Your email is confirmed"
 }

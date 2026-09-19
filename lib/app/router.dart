@@ -12,6 +12,7 @@ import '../features/sangat/ui/group_goal_screen.dart';
 import '../features/sangat/ui/group_invite_screen.dart';
 import '../features/sangat/ui/group_screen.dart';
 import '../features/sangat/ui/join_by_link_screen.dart';
+import '../features/sangat/ui/restore_screen.dart';
 import '../features/sangat/ui/sangat_screen.dart';
 import '../features/sangat/ui/join_sangat_screen.dart';
 import '../features/sangat/ui/verify_email_screen.dart';
@@ -53,6 +54,12 @@ abstract final class Routes {
   /// The account (design 33), and the verification behind it (design 34).
   /// Nothing else in the app links to [verifyEmail]: asking somebody to
   /// confirm an address belongs here and only here.
+  /// Coming back to an account on a new phone (designs 53, 54, 52). The
+  /// address is passed along so somebody who just typed it does not type it
+  /// again.
+  static String restore({String? email}) =>
+      email == null ? '/restore' : '/restore?email=${Uri.encodeComponent(email)}';
+
   static const account = '/account';
   static const verifyEmail = '/account/verify';
 
@@ -146,6 +153,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/sangat/g/:id/invite',
         builder: (_, state) => GroupInviteScreen(groupId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/restore',
+        builder: (_, state) =>
+            RestoreScreen(email: state.uri.queryParameters['email']),
       ),
       GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
       GoRoute(path: Routes.verifyEmail, builder: (_, _) => const VerifyEmailScreen()),

@@ -10,6 +10,7 @@ import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/account_repository.dart';
 import '../domain/sangat_account.dart';
+import 'link_problem.dart';
 import 'sangat_field.dart';
 
 /// Design 34 — confirming the address.
@@ -38,15 +39,58 @@ class VerifyEmailScreen extends ConsumerStatefulWidget {
 class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   final _email = TextEditingController();
 
+  final _link = TextEditingController();
+
   bool _editing = false;
   bool _busy = false;
   bool _sent = false;
+  bool _confirmed = false;
   String? _error;
+  LinkProblem? _problem;
 
   @override
   void dispose() {
     _email.dispose();
+    _link.dispose();
     super.dispose();
+  }
+
+  /// Finishes the job with the link out of the email.
+  ///
+  /// Pasted rather than tapped: tapping needs Android App Links, which need a
+  /// release fingerprint this project does not have. Pasting needs nothing,
+  /// so verification can actually complete today.
+  Future<void> _confirm(SangatAccount? account) async {
+    final l = L.of(context);
+    setState(() {
+      _busy = true;
+      _error = null;
+      _problem = null;
+    });
+
+    final outcome = await ref.read(accountRepositoryProvider).continueWithLink(
+          email: _address(account),
+          link: _link.text,
+        );
+    if (!mounted) return;
+
+    switch (outcome) {
+      case JoinedSangat():
+        setState(() {
+          _busy = false;
+          _confirmed = true;
+        });
+      case LinkDidNotWork(problem: final problem):
+        setState(() {
+          _busy = false;
+          _problem = problem;
+        });
+      default:
+        setState(() {
+          _busy = false;
+          _error = _wordsFor(outcome, l);
+        });
+    }
   }
 
   /// The address the link goes to: what is in the box while it is open,
@@ -101,6 +145,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   /// has decided what the reader is told about it.
   String _wordsFor(JoinOutcome outcome, L l) => switch (outcome) {
         JoinedSangat() => '',
+        LinkDidNotWork() => l.linkProblemTitle,
         EmailAlreadyHasAccount() => l.sangatEmailInUse,
         SangatUnavailable() => l.sangatUnavailable,
         SangatRefused() => l.sangatRefused,
@@ -215,8 +260,34 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               const SizedBox(height: 16),
               PrimaryButton(
                 label: _sent ? l.verifySendAgain : l.verifySend,
+                secondary: _sent,
                 onPressed: _busy ? null : () => _send(account),
               ),
+              if (_sent && !_confirmed) ...[
+                const SizedBox(height: 18),
+                SangatField(
+                  label: l.restorePasteLabel,
+                  controller: _link,
+                  hint: l.restorePasteHint,
+                  keyboardType: TextInputType.url,
+                ),
+                const SizedBox(height: 14),
+                PrimaryButton(
+                  label: l.sangatContinue,
+                  onPressed: _busy ? null : () => _confirm(account),
+                ),
+              ],
+              if (_problem != null) ...[
+                const SizedBox(height: 18),
+                LinkProblemCard(problem: _problem!),
+              ],
+              if (_confirmed) ...[
+                const SizedBox(height: 16),
+                Center(
+                  child: Text(l.verifyConfirmed,
+                      style: HazriText.bodyStrong.copyWith(color: c.sage)),
+                ),
+              ],
               const SizedBox(height: 16),
               HazriCard(
                 colour: c.card2,

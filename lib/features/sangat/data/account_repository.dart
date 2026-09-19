@@ -44,6 +44,27 @@ class SangatRefused extends JoinOutcome {
   final String code;
 }
 
+/// Why a link from an email did not work (design 52).
+enum LinkProblem {
+  /// Every link works once. A forwarded email is not a way in.
+  alreadyUsed,
+
+  /// Firebase's links last an hour. Nobody used this one; it lapsed.
+  expired,
+
+  /// The link was made for a different address than the one typed.
+  wrongAddress,
+}
+
+/// The link did not work, and which of the three reasons it was.
+///
+/// Told apart because the answer differs: two of them mean send another, and
+/// the third means the address is wrong and sending another will not help.
+class LinkDidNotWork extends JoinOutcome {
+  const LinkDidNotWork(this.problem);
+  final LinkProblem problem;
+}
+
 /// Something went wrong that the person can act on. [message] is for the
 /// developer; the screen shows its own words.
 class JoinFailed extends JoinOutcome {
@@ -84,6 +105,16 @@ abstract interface class AccountRepository {
   /// again; asking twice is how somebody fixes a typo.
   Future<JoinOutcome> sendVerificationLink(String email);
 
+  /// Finishes what [sendVerificationLink] started, from the link in the
+  /// email.
+  ///
+  /// The same call does two jobs, because Firebase makes them the same one:
+  /// on a phone with an anonymous account it confirms the address and keeps
+  /// everything already on it, and on a fresh phone it signs into the account
+  /// that address already has. That is the whole of "restore" — there is no
+  /// password to check because there is no password.
+  Future<JoinOutcome> continueWithLink({required String email, required String link});
+
   /// Signs out of this phone. The account itself is untouched and comes back
   /// with the email — which is exactly why verifying it matters.
   Future<void> signOut();
@@ -118,6 +149,13 @@ class NoAccountRepository implements AccountRepository {
 
   @override
   Future<JoinOutcome> sendVerificationLink(String email) async =>
+      const SangatUnavailable();
+
+  @override
+  Future<JoinOutcome> continueWithLink({
+    required String email,
+    required String link,
+  }) async =>
       const SangatUnavailable();
 
   @override
