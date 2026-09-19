@@ -57,3 +57,14 @@ class OfflineBackend implements Backend {
 /// screenshot run gets a working app with no server rather than an error.
 /// `main()` overrides it with the real one.
 final backendProvider = Provider<Backend>((ref) => const OfflineBackend());
+
+/// Where the email verification link lands.
+///
+/// Phase 2 uses the Firebase project's own free host. It is a domain we
+/// control, which is all Android App Links need, so the link opens in the app
+/// rather than bouncing to a browser — the thing that made the 6-digit code
+/// necessary in the first place, and the reason Phase 2 can do without it.
+///
+/// Phase 3 adds the real domain alongside this one. App Links accept several
+/// hosts, so nothing here is replaced.
+const String kVerificationUrl = 'https://hazri-dfcc1.web.app/verify';

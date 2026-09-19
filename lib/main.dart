@@ -14,6 +14,8 @@ import 'core/settings/settings_controller.dart';
 import 'features/audio/data/audio_controller.dart';
 import 'features/audio/data/audio_handler.dart';
 import 'features/reminders/data/reminder_service.dart';
+import 'features/sangat/data/account_repository.dart';
+import 'features/sangat/data/firebase_account_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,12 @@ Future<void> main() async {
         reminderServiceProvider.overrideWithValue(reminders),
         audioHandlerProvider.overrideWithValue(audio),
         backendProvider.overrideWithValue(backend),
+        // Only if the backend actually came up. Where it did not, the default
+        // NoAccountRepository stands and the app is Phase 1's app.
+        if (backend.isUp)
+          accountRepositoryProvider.overrideWithValue(
+            FirebaseAccountRepository(verificationUrl: kVerificationUrl),
+          ),
       ],
       child: const HazriApp(),
     ),
