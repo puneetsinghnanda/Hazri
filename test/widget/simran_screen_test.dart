@@ -36,7 +36,9 @@ void main() {
     // joined the sangat, so the great majority opened Simran and got the
     // Phase 1 screen. This harness has no account at all.
     final l = await pump(tester);
-    expect(find.text(l.simranTurnGlobeShort), findsOneWidget);
+    // The header's second line is the mock-up's kicker; it replaced design
+    // 29's "turn the globe with your hand".
+    expect(find.text(l.simranKicker), findsOneWidget);
     expect(find.text(l.simranGlobeFirst), findsOneWidget);
   });
 

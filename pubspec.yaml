@@ -89,6 +89,16 @@ flutter:
           weight: 600
         - asset: assets/fonts/BalooPaaji2-Bold.ttf
           weight: 700
+    - family: PlayfairDisplay
+      fonts:
+        - asset: assets/fonts/PlayfairDisplay-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/PlayfairDisplay-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/PlayfairDisplay-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PlayfairDisplay-Bold.ttf
+          weight: 700
     - family: NotoSerifGurmukhi
       fonts:
         - asset: assets/fonts/NotoSerifGurmukhi-Regular.ttf

@@ -1006,7 +1006,7 @@ class LHi extends L {
 
   @override
   String get aboutFontsBody =>
-      'मुक्ता, बलू पाजी 2, नोटो सेरिफ़ गुरमुखी और नोटो सेरिफ़ देवनागरी — SIL Open Font License।';
+      'मुक्ता, बलू पाजी 2, प्लेअफ़ेअर डिस्प्ले, नोटो सेरिफ़ गुरमुखी और नोटो सेरिफ़ देवनागरी — SIL Open Font License।';
 
   @override
   String get aboutContact => 'संपर्क';
@@ -2167,4 +2167,31 @@ class LHi extends L {
 
   @override
   String get simranPaused => 'रुका हुआ';
+
+  @override
+  String get simranBrandDaily => 'रोज़ाना ';
+
+  @override
+  String get simranBrandName => 'सिमरन';
+
+  @override
+  String get simranKicker => 'एक साँस · एक दुनिया · एक वाहिगुरु';
+
+  @override
+  String get simranHeadlineOne => 'एक नाम।';
+
+  @override
+  String get simranHeadlineTwoLead => 'रौशन ';
+
+  @override
+  String get simranHeadlineTwoWord => 'दुनिया।';
+
+  @override
+  String get simranVerseOne => 'शांति भीतर लें, चिंता बाहर छोड़ें।';
+
+  @override
+  String get simranVerseTwoLead => 'हर साँस के साथ कहें ';
+
+  @override
+  String get simranVerseTwoWord => 'वाहिगुरु।';
 }

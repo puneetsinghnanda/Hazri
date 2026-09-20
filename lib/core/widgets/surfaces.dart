@@ -118,6 +118,8 @@ class PrimaryButton extends StatelessWidget {
     this.secondary = false,
     this.minHeight,
     this.expanded = true,
+    this.background,
+    this.foreground,
   });
 
   final String label;
@@ -128,11 +130,19 @@ class PrimaryButton extends StatelessWidget {
   final double? minHeight;
   final bool expanded;
 
+  /// Colours for a button that is not on a themed surface.
+  ///
+  /// The Simran screen is a night sky whatever the theme, so its buttons took
+  /// the light theme's indigo primary and looked like they belonged to a
+  /// different app.
+  final Color? background;
+  final Color? foreground;
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final bg = secondary ? c.card2 : c.primary;
-    final fg = secondary ? c.ink : c.onPrimary;
+    final bg = background ?? (secondary ? c.card2 : c.primary);
+    final fg = foreground ?? (secondary ? c.ink : c.onPrimary);
     final shape = BorderRadius.circular(HazriRadius.button);
     final height = minHeight ?? HazriSize.buttonMinHeight;
 

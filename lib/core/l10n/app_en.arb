@@ -628,7 +628,7 @@
   "aboutCalendarSource": "Calendar",
   "aboutCityData": "City data",
   "aboutFonts": "Fonts",
-  "aboutFontsBody": "Mukta, Baloo Paaji 2, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.",
+  "aboutFontsBody": "Mukta, Baloo Paaji 2, Playfair Display, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.",
   "aboutContact": "Contact",
   "aboutNoAudioYet": "The recitation shipped with the app is played from the phone and never streamed.",
   "privacyTitle": "Privacy",
@@ -1160,5 +1160,14 @@
           }
       }
   },
-  "simranPaused": "Paused"
+  "simranPaused": "Paused",
+  "simranBrandDaily": "Daily ",
+  "simranBrandName": "Simran",
+  "simranKicker": "ONE BREATH · ONE WORLD · ONE WAHEGURU",
+  "simranHeadlineOne": "One Name.",
+  "simranHeadlineTwoLead": "A Brighter ",
+  "simranHeadlineTwoWord": "World.",
+  "simranVerseOne": "Breathe in peace, breathe out worry.",
+  "simranVerseTwoLead": "With every breath, say ",
+  "simranVerseTwoWord": "Waheguru."
 }

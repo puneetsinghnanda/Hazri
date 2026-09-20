@@ -1011,7 +1011,7 @@ class LEn extends L {
 
   @override
   String get aboutFontsBody =>
-      'Mukta, Baloo Paaji 2, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.';
+      'Mukta, Baloo Paaji 2, Playfair Display, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.';
 
   @override
   String get aboutContact => 'Contact';
@@ -2174,4 +2174,31 @@ class LEn extends L {
 
   @override
   String get simranPaused => 'Paused';
+
+  @override
+  String get simranBrandDaily => 'Daily ';
+
+  @override
+  String get simranBrandName => 'Simran';
+
+  @override
+  String get simranKicker => 'ONE BREATH · ONE WORLD · ONE WAHEGURU';
+
+  @override
+  String get simranHeadlineOne => 'One Name.';
+
+  @override
+  String get simranHeadlineTwoLead => 'A Brighter ';
+
+  @override
+  String get simranHeadlineTwoWord => 'World.';
+
+  @override
+  String get simranVerseOne => 'Breathe in peace, breathe out worry.';
+
+  @override
+  String get simranVerseTwoLead => 'With every breath, say ';
+
+  @override
+  String get simranVerseTwoWord => 'Waheguru.';
 }

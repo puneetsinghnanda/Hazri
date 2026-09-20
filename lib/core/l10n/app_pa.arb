@@ -295,7 +295,7 @@
   "aboutCalendarSource": "ਕੈਲੰਡਰ",
   "aboutCityData": "ਸ਼ਹਿਰਾਂ ਦਾ ਡਾਟਾ",
   "aboutFonts": "ਫ਼ੌਂਟ",
-  "aboutFontsBody": "ਮੁਕਤਾ, ਬਲੂ ਪਾਜੀ 2, ਨੋਟੋ ਸੇਰਿਫ਼ ਗੁਰਮੁਖੀ ਤੇ ਨੋਟੋ ਸੇਰਿਫ਼ ਦੇਵਨਾਗਰੀ — SIL Open Font License।",
+  "aboutFontsBody": "ਮੁਕਤਾ, ਬਲੂ ਪਾਜੀ 2, ਪਲੇਅਫ਼ੇਅਰ ਡਿਸਪਲੇਅ, ਨੋਟੋ ਸੇਰਿਫ਼ ਗੁਰਮੁਖੀ ਤੇ ਨੋਟੋ ਸੇਰਿਫ਼ ਦੇਵਨਾਗਰੀ — SIL Open Font License।",
   "aboutContact": "ਸੰਪਰਕ",
   "aboutNoAudioYet": "ਐਪ ਨਾਲ ਆਈ ਪਾਠ ਦੀ ਰਿਕਾਰਡਿੰਗ ਫ਼ੋਨ ਤੋਂ ਹੀ ਚੱਲਦੀ ਹੈ, ਕਦੇ ਸਟ੍ਰੀਮ ਨਹੀਂ ਹੁੰਦੀ।",
   "privacyTitle": "ਨਿੱਜਤਾ",
@@ -667,5 +667,14 @@
   "diaryStatDaysInRow": "ਲਗਾਤਾਰ ਦਿਨ",
   "diaryTickAnything": "ਇਸ ਦਿਨ ਜੋ ਵੀ ਪੂਰਾ ਕੀਤਾ, ਨਿਸ਼ਾਨ ਲਾਓ",
   "diaryNotYetAt": "ਅਜੇ ਨਹੀਂ · {time}",
-  "simranPaused": "ਰੁਕਿਆ ਹੋਇਆ"
+  "simranPaused": "ਰੁਕਿਆ ਹੋਇਆ",
+  "simranBrandDaily": "ਰੋਜ਼ਾਨਾ ",
+  "simranBrandName": "ਸਿਮਰਨ",
+  "simranKicker": "ਇੱਕ ਸਾਹ · ਇੱਕ ਦੁਨੀਆ · ਇੱਕ ਵਾਹਿਗੁਰੂ",
+  "simranHeadlineOne": "ਇੱਕ ਨਾਮ।",
+  "simranHeadlineTwoLead": "ਰੌਸ਼ਨ ",
+  "simranHeadlineTwoWord": "ਦੁਨੀਆ।",
+  "simranVerseOne": "ਸ਼ਾਂਤੀ ਅੰਦਰ ਲਵੋ, ਚਿੰਤਾ ਬਾਹਰ ਕੱਢੋ।",
+  "simranVerseTwoLead": "ਹਰ ਸਾਹ ਨਾਲ ਕਹੋ ",
+  "simranVerseTwoWord": "ਵਾਹਿਗੁਰੂ।"
 }

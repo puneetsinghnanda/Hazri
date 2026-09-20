@@ -1007,7 +1007,7 @@ class LPa extends L {
 
   @override
   String get aboutFontsBody =>
-      'ਮੁਕਤਾ, ਬਲੂ ਪਾਜੀ 2, ਨੋਟੋ ਸੇਰਿਫ਼ ਗੁਰਮੁਖੀ ਤੇ ਨੋਟੋ ਸੇਰਿਫ਼ ਦੇਵਨਾਗਰੀ — SIL Open Font License।';
+      'ਮੁਕਤਾ, ਬਲੂ ਪਾਜੀ 2, ਪਲੇਅਫ਼ੇਅਰ ਡਿਸਪਲੇਅ, ਨੋਟੋ ਸੇਰਿਫ਼ ਗੁਰਮੁਖੀ ਤੇ ਨੋਟੋ ਸੇਰਿਫ਼ ਦੇਵਨਾਗਰੀ — SIL Open Font License।';
 
   @override
   String get aboutContact => 'ਸੰਪਰਕ';
@@ -2168,4 +2168,31 @@ class LPa extends L {
 
   @override
   String get simranPaused => 'ਰੁਕਿਆ ਹੋਇਆ';
+
+  @override
+  String get simranBrandDaily => 'ਰੋਜ਼ਾਨਾ ';
+
+  @override
+  String get simranBrandName => 'ਸਿਮਰਨ';
+
+  @override
+  String get simranKicker => 'ਇੱਕ ਸਾਹ · ਇੱਕ ਦੁਨੀਆ · ਇੱਕ ਵਾਹਿਗੁਰੂ';
+
+  @override
+  String get simranHeadlineOne => 'ਇੱਕ ਨਾਮ।';
+
+  @override
+  String get simranHeadlineTwoLead => 'ਰੌਸ਼ਨ ';
+
+  @override
+  String get simranHeadlineTwoWord => 'ਦੁਨੀਆ।';
+
+  @override
+  String get simranVerseOne => 'ਸ਼ਾਂਤੀ ਅੰਦਰ ਲਵੋ, ਚਿੰਤਾ ਬਾਹਰ ਕੱਢੋ।';
+
+  @override
+  String get simranVerseTwoLead => 'ਹਰ ਸਾਹ ਨਾਲ ਕਹੋ ';
+
+  @override
+  String get simranVerseTwoWord => 'ਵਾਹਿਗੁਰੂ।';
 }

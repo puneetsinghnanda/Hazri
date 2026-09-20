@@ -142,10 +142,24 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   screen's name there and the app's name above every screen made Today look
   like it was still starting up. Settings is pushed from that menu and is no
   longer a tab.
-- **The Simran tab is design 29's globe when nothing is running** and the
-  Phase 1 ring while a session is. Design 29 also carries a month total and a
-  country count; neither is stored anywhere and neither is shown, because a
-  number nobody counted is worse than no number.
+- **The Simran tab follows the reader's mock-up of 2026-09-20**, which
+  supersedes design 29 for that screen: the globe, the legend and the two
+  colours are design 29's, and the serif headline, the ੴ rule and the verse
+  are the mock-up's. One screen whether or not a sitting is running -- the
+  countdown takes the presence line's place while one is. Two things design
+  29 has are still not shown: its month total and country count, because
+  neither is stored anywhere and a number nobody counted is worse than no
+  number; and its third legend colour, "in the sangat", because a member's
+  city is on their own private user document and the membership rows carry a
+  name, not a place.
+- **Design 29's "turn the globe with your hand" is gone** with the header it
+  sat in; the mock-up puts the kicker there instead. The gesture is still
+  there and now works in both directions, but nothing on screen says so.
+- **Playfair Display is bundled for the Simran screen only.** It is the one
+  screen set in a serif. The subset is Latin, so Gurmukhi and Devanagari fall
+  through to the Noto serifs -- which means a Punjabi or Hindi headline is
+  set in a different face from an English one, by design rather than by
+  accident.
 
 ### Content and audio
 

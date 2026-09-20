@@ -295,7 +295,7 @@
   "aboutCalendarSource": "कैलेंडर",
   "aboutCityData": "शहरों का डेटा",
   "aboutFonts": "फ़ॉन्ट",
-  "aboutFontsBody": "मुक्ता, बलू पाजी 2, नोटो सेरिफ़ गुरमुखी और नोटो सेरिफ़ देवनागरी — SIL Open Font License।",
+  "aboutFontsBody": "मुक्ता, बलू पाजी 2, प्लेअफ़ेअर डिस्प्ले, नोटो सेरिफ़ गुरमुखी और नोटो सेरिफ़ देवनागरी — SIL Open Font License।",
   "aboutContact": "संपर्क",
   "aboutNoAudioYet": "ऐप के साथ आई पाठ की रिकॉर्डिंग फ़ोन से ही चलती है, कभी स्ट्रीम नहीं होती।",
   "privacyTitle": "निजता",
@@ -667,5 +667,14 @@
   "diaryStatDaysInRow": "लगातार दिन",
   "diaryTickAnything": "इस दिन जो भी पूरा किया, निशान लगाएँ",
   "diaryNotYetAt": "अभी नहीं · {time}",
-  "simranPaused": "रुका हुआ"
+  "simranPaused": "रुका हुआ",
+  "simranBrandDaily": "रोज़ाना ",
+  "simranBrandName": "सिमरन",
+  "simranKicker": "एक साँस · एक दुनिया · एक वाहिगुरु",
+  "simranHeadlineOne": "एक नाम।",
+  "simranHeadlineTwoLead": "रौशन ",
+  "simranHeadlineTwoWord": "दुनिया।",
+  "simranVerseOne": "शांति भीतर लें, चिंता बाहर छोड़ें।",
+  "simranVerseTwoLead": "हर साँस के साथ कहें ",
+  "simranVerseTwoWord": "वाहिगुरु।"
 }

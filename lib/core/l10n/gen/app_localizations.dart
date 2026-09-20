@@ -1872,7 +1872,7 @@ abstract class L {
   /// No description provided for @aboutFontsBody.
   ///
   /// In en, this message translates to:
-  /// **'Mukta, Baloo Paaji 2, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.'**
+  /// **'Mukta, Baloo Paaji 2, Playfair Display, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.'**
   String get aboutFontsBody;
 
   /// No description provided for @aboutContact.
@@ -4004,6 +4004,60 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Paused'**
   String get simranPaused;
+
+  /// No description provided for @simranBrandDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily '**
+  String get simranBrandDaily;
+
+  /// No description provided for @simranBrandName.
+  ///
+  /// In en, this message translates to:
+  /// **'Simran'**
+  String get simranBrandName;
+
+  /// No description provided for @simranKicker.
+  ///
+  /// In en, this message translates to:
+  /// **'ONE BREATH · ONE WORLD · ONE WAHEGURU'**
+  String get simranKicker;
+
+  /// No description provided for @simranHeadlineOne.
+  ///
+  /// In en, this message translates to:
+  /// **'One Name.'**
+  String get simranHeadlineOne;
+
+  /// No description provided for @simranHeadlineTwoLead.
+  ///
+  /// In en, this message translates to:
+  /// **'A Brighter '**
+  String get simranHeadlineTwoLead;
+
+  /// No description provided for @simranHeadlineTwoWord.
+  ///
+  /// In en, this message translates to:
+  /// **'World.'**
+  String get simranHeadlineTwoWord;
+
+  /// No description provided for @simranVerseOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe in peace, breathe out worry.'**
+  String get simranVerseOne;
+
+  /// No description provided for @simranVerseTwoLead.
+  ///
+  /// In en, this message translates to:
+  /// **'With every breath, say '**
+  String get simranVerseTwoLead;
+
+  /// No description provided for @simranVerseTwoWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Waheguru.'**
+  String get simranVerseTwoWord;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {
