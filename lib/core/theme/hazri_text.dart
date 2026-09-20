@@ -180,7 +180,7 @@ abstract final class SimranText {
 
   /// "Daily Simran" in the header.
   static TextStyle get brand =>
-      _serif.copyWith(fontSize: 26, height: 1.1, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 24, height: 1.1, fontWeight: FontWeight.w500);
 
   /// "ONE BREATH · ONE WORLD · ONE WAHEGURU".
   ///
@@ -198,7 +198,7 @@ abstract final class SimranText {
 
   /// "One Name. / A Brighter World."
   static TextStyle get headline =>
-      _serif.copyWith(fontSize: 28, height: 1.2, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 26, height: 1.2, fontWeight: FontWeight.w500);
 
   /// "Breathe in peace, breathe out worry."
   static const TextStyle verse = TextStyle(
