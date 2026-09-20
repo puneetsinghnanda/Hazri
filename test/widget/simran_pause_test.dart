@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,7 +7,9 @@ import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/core/time/clock.dart';
+import 'package:hazri/core/db/content_repository.dart';
 import 'package:hazri/features/simran/data/simran_controller.dart';
+import 'package:hazri/features/simran/domain/simran_track.dart';
 import 'package:hazri/features/simran/ui/simran_screen.dart';
 
 import '../app_harness.dart';
@@ -86,6 +90,43 @@ void main() {
     expect(app.container.read(simranSessionProvider).total,
         const Duration(minutes: 5));
     await endSitting(tester, l);
+  });
+
+  testWidgets('the clock runs while the recitation is still loading',
+      (tester) async {
+    // The reported bug: tap Begin and the countdown sits at its full length
+    // for fifteen or twenty seconds, until you pause and resume. The ticker
+    // was created at the *end* of `start`, after awaiting the track and the
+    // media session; on a real phone that is the whole of that delay.
+    //
+    // A track future that never completes stands in for a slow load.
+    final slow = await TestApp.create(
+      prefs: {'onboarding_done': true},
+      now: DateTime(2026, 9, 20, 6, 30),
+      extra: [
+        simranTrackProvider.overrideWith((ref) => Completer<SimranTrack?>().future),
+      ],
+    );
+    addTearDown(slow.dispose);
+
+    usePhoneFrame(tester);
+    await tester.pumpWidget(slow.wrap(const SimranScreen()));
+    await settle(tester);
+    final l = await L.delegate.load(const Locale('en'));
+
+    await tester.tap(find.text(l.simranBeginMinutes(5)));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
+
+    // The audio has not arrived and never will, and the clock has still
+    // moved off its full length.
+    final session = slow.container.read(simranSessionProvider);
+    expect(session.running, isTrue);
+    expect(session.elapsed, greaterThan(Duration.zero));
+    expect(find.text('5:00'), findsNothing);
+
+    slow.container.read(simranSessionProvider.notifier).finish(completed: false);
+    await settle(tester);
   });
 
   testWidgets('pause holds the clock, and resume carries on from there',

@@ -229,14 +229,27 @@ class _SimranSky extends ConsumerWidget {
                                 alignment: Alignment.center,
                                 clipBehavior: Clip.none,
                                 children: [
-                                  SimranGlobe(presence: presence, size: size),
-                                  if (session.active)
-                                    SimranNaam(
+                                  // Its own layer. Without this the globe
+                                  // was repainted by every tick of the
+                                  // countdown beside it -- five and a half
+                                  // thousand projected points to redraw a
+                                  // digit -- and its own spin dragged the
+                                  // whole screen along with it.
+                                  RepaintBoundary(
+                                    child: SimranGlobe(
+                                      presence: presence,
                                       size: size,
-                                      word: l.simranWaheguru,
-                                      track: track,
-                                      elapsed: session.elapsed,
-                                      running: session.running,
+                                    ),
+                                  ),
+                                  if (session.active)
+                                    RepaintBoundary(
+                                      child: SimranNaam(
+                                        size: size,
+                                        word: l.simranWaheguru,
+                                        track: track,
+                                        elapsed: session.elapsed,
+                                        running: session.running,
+                                      ),
                                     ),
                                 ],
                               ),

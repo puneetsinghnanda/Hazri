@@ -99,12 +99,18 @@ class SimranController extends Notifier<SimranSession> {
       active: true,
     );
     unawaited(WakelockPlus.enable());
+    // Before the audio, not after it. Loading a five-minute recitation and
+    // bringing up the media session takes fifteen or twenty seconds on a
+    // real phone, and the ticker used to be created at the end of all that:
+    // the countdown sat at its full length until somebody paused and
+    // resumed, which created it by another route. The sitting begins when
+    // the person taps, so the clock begins then too.
+    _start();
 
     final track = await ref.read(simranTrackProvider.future);
     if (track != null && state.running) {
       await ref.read(playbackControllerProvider).playSimran(track, title: title);
     }
-    _start();
   }
 
   /// Holds the sitting where it is: the clock stops and so does the

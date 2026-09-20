@@ -55,6 +55,20 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
     duration: const Duration(seconds: 4),
   );
 
+  /// A quarter of a degree, which at this size is under a pixel at the
+  /// equator.
+  ///
+  /// The globe turns once every two minutes, so a frame moves it about a
+  /// twentieth of a degree -- far less than it takes to see. Re-projecting
+  /// five and a half thousand points sixty times a second for that is what
+  /// made the countdown beside it stutter. Rounding the angle means
+  /// `shouldRepaint` says no on most frames and the work happens about a
+  /// dozen times a second instead.
+  static const _rotationStep = 0.25 * math.pi / 180;
+
+  static double _step(double value, double step) =>
+      (value / step).roundToDouble() * step;
+
   /// Where the hand has turned it to, on top of the spin.
   double _dragged = 0;
 
@@ -117,11 +131,16 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
             cities: widget.presence.cities,
             yourCityId: widget.presence.yourCityId,
             outline: outline,
-            rotation: _dragged + (reduceMotion ? 0 : _spin.value * 2 * math.pi),
-            tilt: _tilt,
+            rotation: _step(
+              _dragged + (reduceMotion ? 0 : _spin.value * 2 * math.pi),
+              _rotationStep,
+            ),
+            tilt: _step(_tilt, _rotationStep),
             // Half way through the breath when nothing is animating, so a
             // still frame is never the smallest the halo gets.
-            breath: reduceMotion ? 0.5 : Curves.easeInOut.transform(_pulse.value),
+            breath: reduceMotion
+                ? 0.5
+                : _step(Curves.easeInOut.transform(_pulse.value), 1 / 24),
           ),
         ),
       ),
@@ -250,24 +269,29 @@ class GlobePainter extends CustomPainter {
     );
   }
 
-  /// The light around the globe, in three widening rings.
+  /// The light around the globe.
   ///
-  /// One blurred ring reads as a smudge; three, each wider and fainter than
-  /// the last, read as atmosphere.
+  /// A radial gradient rather than blurred circles. Three `MaskFilter.blur`
+  /// passes at a sigma of ninety, on every frame, cost more than everything
+  /// else on this screen put together; a gradient is one draw with no
+  /// filter and reads the same.
   void _drawGlow(Canvas canvas, Offset centre, double r) {
-    for (final (spread, alpha, blur) in const [
-      (0.30, 0.18, 34.0),
-      (0.14, 0.30, 18.0),
-      (0.05, 0.50, 8.0),
-    ]) {
-      canvas.drawCircle(
-        centre,
-        r * (1 + spread),
-        Paint()
-          ..color = _rim.withValues(alpha: alpha)
-          ..maskFilter = MaskFilter.blur(BlurStyle.normal, r * spread + blur),
-      );
-    }
+    final outer = r * 1.34;
+    canvas.drawCircle(
+      centre,
+      outer,
+      Paint()
+        ..shader = RadialGradient(
+          colors: [
+            _rim.withValues(alpha: 0),
+            _rim.withValues(alpha: 0.30),
+            _rim.withValues(alpha: 0.55),
+            _rim.withValues(alpha: 0.22),
+            _rim.withValues(alpha: 0),
+          ],
+          stops: const [0.52, 0.68, 0.746, 0.85, 1],
+        ).createShader(Rect.fromCircle(center: centre, radius: outer)),
+    );
   }
 
   /// Coastlines and land borders, all of them in one path.
