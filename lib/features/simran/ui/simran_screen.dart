@@ -186,7 +186,9 @@ class _SimranSky extends ConsumerWidget {
                     _gutter(_Headline(kesri: _you)),
                     const SizedBox(height: 8),
                     _gutter(_OnkarRule(glyph: ikOnkar, colour: _you)),
-                    const SizedBox(height: 8),
+                    // Tight to the rule above it: ੴ and the verse are one
+                    // thought, and the gap read as a break between two.
+                    const SizedBox(height: 2),
                     _gutter(Text.rich(
                       TextSpan(
                         children: [
