@@ -117,11 +117,18 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
 
     return GestureDetector(
       // A pan, not a horizontal drag: the globe turns under the hand in both
-      // directions now, and a full turn either way is a drag of about twice
-      // its width.
+      // directions, and a full turn either way is a drag of about twice its
+      // width.
+      //
+      // Both axes *add*. The vertical one used to subtract, which inverted
+      // it: the point under the centre of the disc lands at screen y of
+      // `sin(tilt) * r`, and screen y counts downward, so a positive tilt is
+      // what moves the surface down under a downward finger. Dragging down
+      // sent the earth up instead, and the north pole away rather than
+      // toward you.
       onPanUpdate: (d) => setState(() {
         _dragged += d.delta.dx / widget.size * math.pi;
-        _tilt = (_tilt - d.delta.dy / widget.size * math.pi) % (2 * math.pi);
+        _tilt = (_tilt + d.delta.dy / widget.size * math.pi) % (2 * math.pi);
       }),
       child: AnimatedBuilder(
         animation: Listenable.merge([_spin, _pulse]),

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/content_repository.dart';
@@ -110,6 +112,16 @@ void main() {
     await settle(tester);
   });
 
+  /// What the painter has been told to draw.
+  GlobePainter painterOf(WidgetTester tester) => tester
+      .widget<CustomPaint>(
+        find.descendant(
+          of: find.byType(SimranGlobe),
+          matching: find.byType(CustomPaint),
+        ),
+      )
+      .painter! as GlobePainter;
+
   testWidgets('the globe turns under the hand in both directions',
       (tester) async {
     await pump(tester);
@@ -123,6 +135,29 @@ void main() {
     await tester.drag(globe, const Offset(0, 400));
     await tester.pump();
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('and the earth follows the finger rather than opposing it',
+      (tester) async {
+    await pump(tester);
+    final globe = find.byType(SimranGlobe);
+
+    // The point under the centre of the disc lands at screen y of
+    // `sin(tilt) * r`, and screen y counts downward. So the sine of the tilt
+    // *is* which way that point has moved, and it is the honest thing to
+    // assert: the angle itself is wrapped into 0..2π, where "up" reads as
+    // 5.3 radians rather than as a negative number.
+    await tester.drag(globe, const Offset(0, 120));
+    await tester.pump();
+    expect(math.sin(painterOf(tester).tilt), greaterThan(0),
+        reason: 'dragging down must carry the earth down with it');
+
+    // And back up, past where it started. This was subtracting, so the earth
+    // rolled the wrong way under the hand.
+    await tester.drag(globe, const Offset(0, -240));
+    await tester.pump();
+    expect(math.sin(painterOf(tester).tilt), lessThan(0),
+        reason: 'dragging up must carry it up');
   });
 
   for (final locale in [Locale('en'), Locale('pa'), Locale('hi')]) {
