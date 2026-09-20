@@ -212,9 +212,12 @@ abstract final class SimranText {
   /// The ੴ between the rules.
   ///
   /// The line box has to be taller than the glyph or Gurmukhi is clipped: at
-  /// `height: 1` the ੴ was cut in half by the rule beside it.
+  /// `height: 1` the ੴ was cut in half by the rule beside it. 1.3 is as tight
+  /// as it goes while still clearing the glyph, and most of the space left
+  /// between ੴ and the verse below it is this leading rather than any gap
+  /// the layout adds.
   static TextStyle get onkar =>
-      _serif.copyWith(fontSize: 17, height: 1.6, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 17, height: 1.3, fontWeight: FontWeight.w500);
 
   /// The countdown.
   static const TextStyle countdown = TextStyle(

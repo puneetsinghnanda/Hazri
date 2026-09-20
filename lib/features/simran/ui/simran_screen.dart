@@ -184,11 +184,13 @@ class _SimranSky extends ConsumerWidget {
                     )),
                     const SizedBox(height: 10),
                     _gutter(_Headline(kesri: _you)),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     _gutter(_OnkarRule(glyph: ikOnkar, colour: _you)),
                     // Tight to the rule above it: ੴ and the verse are one
-                    // thought, and the gap read as a break between two.
-                    const SizedBox(height: 2),
+                    // thought, and the gap read as a break between two. The
+                    // remaining space is the leading inside the two line
+                    // boxes, so it stays a little closer below than above.
+                    const SizedBox(height: 0),
                     _gutter(Text.rich(
                       TextSpan(
                         children: [
