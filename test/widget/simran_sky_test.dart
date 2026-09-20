@@ -46,21 +46,30 @@ void main() {
     expect(text, contains(l.simranBrandDaily.trim()));
     expect(text, contains(l.simranBrandName));
     expect(text, contains(l.simranKicker));
-    expect(text, contains(l.simranHeadlineOne));
-    expect(text, contains(l.simranHeadlineTwoWord));
     expect(text, contains(l.simranVerseOne));
     expect(text, contains(l.simranVerseTwoWord));
   });
 
-  testWidgets('the headline and the brand are set in the serif',
+  testWidgets('and not the headline, which the reader took out',
       (tester) async {
     final (_, l) = await pump(tester);
-    final headline = tester.widget<Text>(
+    final text = spans(tester).join('\n');
+    // "One Name. / A Brighter World." is gone and ੴ moved up into its place.
+    // The strings stay in the ARB files -- they are reviewed copy in three
+    // languages and cost nothing to keep -- so this is what stops them
+    // drifting back onto the screen unnoticed.
+    expect(text, isNot(contains(l.simranHeadlineOne)));
+    expect(text, isNot(contains(l.simranHeadlineTwoWord)));
+  });
+
+  testWidgets('the brand is set in the serif', (tester) async {
+    final (_, l) = await pump(tester);
+    final brand = tester.widget<Text>(
       find.byWidgetPredicate((w) =>
           w is Text &&
-          (w.textSpan?.toPlainText() ?? '').contains(l.simranHeadlineOne)),
+          (w.textSpan?.toPlainText() ?? '').contains(l.simranBrandName)),
     );
-    final first = (headline.textSpan! as TextSpan).children!.first as TextSpan;
+    final first = (brand.textSpan! as TextSpan).children!.first as TextSpan;
     expect(first.style!.fontFamily, HazriFonts.serif);
     // Gurmukhi and Devanagari are not in the Latin subset, so they have to
     // fall through to the Noto serifs rather than to the UI face.

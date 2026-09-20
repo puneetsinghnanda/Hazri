@@ -182,9 +182,10 @@ class _SimranSky extends ConsumerWidget {
                       onMenu: () => showMenuSheet(context),
                       onBell: () => context.push(Routes.notifications),
                     )),
-                    const SizedBox(height: 10),
-                    _gutter(_Headline(kesri: _you)),
-                    const SizedBox(height: 4),
+                    // No headline. ੴ and the verse come straight up under
+                    // the header, which is where "One Name. / A Brighter
+                    // World." used to sit.
+                    const SizedBox(height: 12),
                     _gutter(_OnkarRule(glyph: ikOnkar, colour: _you)),
                     // Tight to the rule above it: ੴ and the verse are one
                     // thought, and the gap read as a break between two. The
@@ -411,39 +412,6 @@ class _Header extends StatelessWidget {
           onTap: onBell,
         ),
       ],
-    );
-  }
-}
-
-class _Headline extends StatelessWidget {
-  const _Headline({required this.kesri});
-
-  final Color kesri;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = L.of(context);
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: '${l.simranHeadlineOne}\n${l.simranHeadlineTwoLead}',
-            style: SimranText.headline.copyWith(color: Colors.white),
-          ),
-          TextSpan(
-            text: l.simranHeadlineTwoWord,
-            style: SimranText.headline.copyWith(
-              color: kesri,
-              // The word glows rather than sitting flat, which is what makes
-              // it read as lit by the earth below it.
-              shadows: [
-                Shadow(color: kesri.withValues(alpha: 0.55), blurRadius: 22),
-              ],
-            ),
-          ),
-        ],
-      ),
-      textAlign: TextAlign.center,
     );
   }
 }
