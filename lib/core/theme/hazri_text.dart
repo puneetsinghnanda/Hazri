@@ -198,7 +198,7 @@ abstract final class SimranText {
 
   /// "One Name. / A Brighter World."
   static TextStyle get headline =>
-      _serif.copyWith(fontSize: 22, height: 1.2, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 20, height: 1.2, fontWeight: FontWeight.w500);
 
   /// "Breathe in peace, breathe out worry."
   static const TextStyle verse = TextStyle(
