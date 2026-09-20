@@ -15,10 +15,11 @@ import '../domain/sangat_group.dart';
 
 /// Where an invite points.
 ///
-/// The website is not built yet, so the link is a place that will exist
-/// rather than one that does. What matters now is that the code at the end of
-/// it is the group id, which the join screen accepts typed or pasted — so an
-/// invite works today even though tapping the link does not.
+/// **The website does not exist yet, so the link does not open anything.**
+/// That is why this screen leads with the code rather than the URL: the code
+/// is the group id, the join screen takes it pasted or typed, and it works
+/// today. The link is here so an invite sent now still reads sensibly once
+/// the site is built, and the share message says which half to use.
 const String kInviteBase = 'https://puneetsinghnanda.vercel.app/hazri-app/j';
 
 String inviteLinkFor(String groupId) => '$kInviteBase/$groupId';
@@ -57,6 +58,46 @@ class GroupInviteScreen extends ConsumerWidget {
       subtitle: group?.name,
       children: [
         const SizedBox(height: 6),
+        // The code first, because the code is the part that works.
+        Eyebrow(l.groupInviteCode),
+        const SizedBox(height: 8),
+        HazriCard(
+          colour: c.kesriSoft,
+          onTap: () async {
+            await Clipboard.setData(ClipboardData(text: groupId));
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(l.groupInviteCopied)));
+          },
+          child: Row(
+            children: [
+              Expanded(
+                child: SelectableText(
+                  groupId,
+                  style: HazriText.bodyStrong.copyWith(color: c.kesriInk),
+                ),
+              ),
+              const SizedBox(width: 10),
+              AppIcon(HazriIconData.copy, size: 19, color: c.kesriInk),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(l.groupInviteCodeHow,
+            style: HazriText.caption.copyWith(color: c.muted)),
+        const SizedBox(height: 16),
+        PrimaryButton(
+          label: l.groupInviteShare,
+          icon: HazriIconData.share,
+          // The message carries the code and how to use it, so what lands in
+          // somebody's WhatsApp is something they can act on rather than a
+          // link that goes nowhere yet.
+          onPressed: () => Share.share(
+            l.groupInviteShareText(group?.name ?? l.sangatTitle, groupId),
+            subject: group?.name,
+          ),
+        ),
+        const SizedBox(height: 18),
         Eyebrow(l.groupInviteShareLink),
         const SizedBox(height: 8),
         HazriCard(
@@ -72,22 +113,13 @@ class GroupInviteScreen extends ConsumerWidget {
               Expanded(
                 child: Text(
                   link,
-                  style: HazriText.bodySmall.copyWith(color: c.ink),
+                  style: HazriText.caption.copyWith(color: c.muted),
                   maxLines: 2,
                 ),
               ),
               const SizedBox(width: 10),
-              AppIcon(HazriIconData.copy, size: 19, color: c.muted),
+              AppIcon(HazriIconData.copy, size: 17, color: c.muted),
             ],
-          ),
-        ),
-        const SizedBox(height: 14),
-        PrimaryButton(
-          label: l.groupInviteShare,
-          icon: HazriIconData.share,
-          onPressed: () => Share.share(
-            '${group?.name ?? l.sangatTitle}\n$link',
-            subject: group?.name,
           ),
         ),
         const SizedBox(height: 22),

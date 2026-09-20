@@ -86,16 +86,39 @@ class GroupScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  if (group.youAreAdmin)
-                    CardIconButton(
-                      icon: HazriIconData.sliders,
-                      tooltip: l.groupSetGoalTitle,
-                      size: 38,
-                      iconSize: 18,
-                      onPressed: () => context.push(Routes.groupGoal(groupId)),
-                    ),
                 ],
               ),
+              // A way to set the goal that is a button with words on it.
+              // It used to be a sliders icon in the corner of this row, shown
+              // only to an admin, which is how a group ended up with nothing
+              // to count towards and nobody able to find the screen that
+              // would fix it.
+              if (goal == null) ...[
+                const SizedBox(height: 12),
+                if (group.youAreAdmin)
+                  PrimaryButton(
+                    label: l.groupSetGoalCta,
+                    onPressed: () => context.push(Routes.groupGoal(groupId)),
+                  )
+                else
+                  Text(l.groupNoGoalMember,
+                      style: HazriText.caption.copyWith(color: c.muted)),
+              ] else if (group.youAreAdmin) ...[
+                const SizedBox(height: 10),
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: TextButton(
+                    onPressed: () => context.push(Routes.groupGoal(groupId)),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(0, 32),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(l.groupChangeGoal,
+                        style: HazriText.captionStrong.copyWith(color: c.kesriInk)),
+                  ),
+                ),
+              ],
               if (goal != null) ...[
                 const SizedBox(height: 14),
                 _Bar(
@@ -118,14 +141,21 @@ class GroupScreen extends ConsumerWidget {
         const SizedBox(height: 14),
         Row(
           children: [
-            if (goal != null && !group.countsMinutes)
-              Expanded(
-                child: PrimaryButton(
-                  label: l.groupStartPaath,
-                  onPressed: () => context.push(Routes.reader(goal.slug)),
-                ),
+            Expanded(
+              child: PrimaryButton(
+                label: l.groupStartPaath,
+                icon: HazriIconData.play,
+                // A circle's sitting is on the Simran tab; a bani opens in
+                // the reader. With no goal there is nothing to start, and the
+                // button says so by being unavailable rather than absent.
+                onPressed: goal == null
+                    ? null
+                    : () => group.countsMinutes
+                        ? context.go(Routes.simran)
+                        : context.push(Routes.reader(goal.slug)),
               ),
-            if (goal != null && !group.countsMinutes) const SizedBox(width: 10),
+            ),
+            const SizedBox(width: 10),
             Expanded(
               child: PrimaryButton(
                 label: l.groupLogPaath,
@@ -135,6 +165,16 @@ class GroupScreen extends ConsumerWidget {
             ),
           ],
         ),
+        if (goal != null) ...[
+          const SizedBox(height: 6),
+          Center(
+            child: Text(
+              l.groupStartCounts,
+              textAlign: TextAlign.center,
+              style: HazriText.caption.copyWith(color: c.muted),
+            ),
+          ),
+        ],
         const SizedBox(height: 20),
         Row(
           children: [

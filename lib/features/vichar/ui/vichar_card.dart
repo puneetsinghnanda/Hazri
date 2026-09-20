@@ -88,7 +88,10 @@ class VicharCard extends ConsumerWidget {
                 child: PrimaryButton(
                   label: l.vicharExplore,
                   secondary: true,
-                  onPressed: () => context.push(Routes.vichar),
+                  // Explore means the library, which is what the word was
+                  // always promising. The day's line in full is one tap into
+                  // the card itself.
+                  onPressed: () => context.push(Routes.library),
                 ),
               ),
               const SizedBox(width: 10),

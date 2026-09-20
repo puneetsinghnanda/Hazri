@@ -15,12 +15,19 @@ import '../domain/hazri.dart';
 /// fake clock, which does not advance the real event loop drift needs: the
 /// first event arrived and the `await` inside it never returned. Combining
 /// two independent streams has no such await and is simpler to read besides.
+/// The completions on one day. Public because the diary's day sheet needs
+/// the same rows to say what marked that day and at what time.
+final completionsOnProvider =
+    StreamProvider.family<List<Completion>, DateTime>((ref, day) {
+  return ref.watch(userRepositoryProvider).watchCompletionsOn(day);
+});
+
 final _completionsTodayProvider = StreamProvider<List<Completion>>((ref) {
   final repo = ref.watch(userRepositoryProvider);
   return repo.watchCompletionsOn(ref.watch(clockProvider).today());
 });
 
-final _simranSessionsProvider = StreamProvider<List<SimranSession>>(
+final simranSessionsProvider = StreamProvider<List<SimranSession>>(
   (ref) => ref.watch(userRepositoryProvider).watchSimranSessions(),
 );
 
@@ -32,7 +39,7 @@ final _simranSessionsProvider = StreamProvider<List<SimranSession>>(
 final hazriTodayProvider = Provider<Hazri>((ref) {
   final todayKey = localDateKey(ref.watch(clockProvider).today());
   final completions = ref.watch(_completionsTodayProvider).value ?? const [];
-  final sessions = ref.watch(_simranSessionsProvider).value ?? const [];
+  final sessions = ref.watch(simranSessionsProvider).value ?? const [];
 
   return Hazri.from(
     completions: [

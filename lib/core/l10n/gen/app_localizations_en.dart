@@ -2115,4 +2115,60 @@ class LEn extends L {
   @override
   String get goalSimranLoops =>
       'The recitation is five minutes long and loops with a soft crossfade for anything longer.';
+
+  @override
+  String get groupStartCounts =>
+      'Starting it here counts towards the goal when you finish';
+
+  @override
+  String get groupSetGoalCta => 'Set a shared goal';
+
+  @override
+  String get groupChangeGoal => 'Change the goal';
+
+  @override
+  String get groupNoGoalMember =>
+      'The group\'s admin sets what it recites together';
+
+  @override
+  String get groupNoGoalAdmin =>
+      'Set what the group recites together, and how many';
+
+  @override
+  String get groupInviteCode => 'Or give them this code';
+
+  @override
+  String get groupInviteCodeHow =>
+      'In Hazri: Sangat → Have a link? Join a group → paste the code. The link itself opens the website, which is not built yet.';
+
+  @override
+  String groupInviteShareText(String group, String code) {
+    return 'Join $group on Hazri.\n\nOpen Hazri → Sangat → “Have a link? Join a group”, and paste this code:\n\n$code';
+  }
+
+  @override
+  String get diarySubtitle => 'Every day you marked your hazri';
+
+  @override
+  String get diaryStatHazriDays => 'hazri days';
+
+  @override
+  String get diaryStatGoalsMet => 'goals met';
+
+  @override
+  String get diaryStatPaath => 'paath';
+
+  @override
+  String get diaryStatSimranMinutes => 'simran minutes';
+
+  @override
+  String get diaryStatDaysInRow => 'days in a row';
+
+  @override
+  String get diaryTickAnything => 'Tick anything you completed on this day';
+
+  @override
+  String diaryNotYetAt(String time) {
+    return 'not yet · $time';
+  }
 }

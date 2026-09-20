@@ -115,6 +115,16 @@ class _MenuSheet extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
+                    // Vichar is a section, not a setting, and it had no door
+                    // at all: the only way in was a link at the bottom of the
+                    // day's Vichar screen, which nobody would think to look
+                    // behind. It goes first, above the settings.
+                    _Row(
+                      icon: HazriIconData.sparkle,
+                      label: l.libraryTitle,
+                      onTap: () => go(Routes.library),
+                    ),
+                    Divider(height: 1, color: c.rule),
                     _Row(
                       icon: HazriIconData.bell,
                       label: l.notifTitle,

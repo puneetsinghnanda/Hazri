@@ -2111,4 +2111,58 @@ class LPa extends L {
   @override
   String get goalSimranLoops =>
       'ਪਾਠ ਪੰਜ ਮਿੰਟ ਦਾ ਹੈ ਤੇ ਇਸ ਤੋਂ ਵੱਧ ਲਈ ਹੌਲੀ ਜਿਹੀ ਰਲ਼ਵੀਂ ਆਵਾਜ਼ ਨਾਲ ਦੁਹਰਾਇਆ ਜਾਂਦਾ ਹੈ।';
+
+  @override
+  String get groupStartCounts =>
+      'ਇੱਥੋਂ ਸ਼ੁਰੂ ਕਰੋਗੇ ਤਾਂ ਪੂਰਾ ਹੋਣ ਉੱਤੇ ਸੰਕਲਪ ਵਿੱਚ ਗਿਣਿਆ ਜਾਵੇਗਾ';
+
+  @override
+  String get groupSetGoalCta => 'ਸਾਂਝਾ ਸੰਕਲਪ ਤੈਅ ਕਰੋ';
+
+  @override
+  String get groupChangeGoal => 'ਸੰਕਲਪ ਬਦਲੋ';
+
+  @override
+  String get groupNoGoalMember => 'ਗਰੁੱਪ ਕੀ ਕਰੇਗਾ, ਇਹ ਪ੍ਰਬੰਧਕ ਤੈਅ ਕਰਦਾ ਹੈ';
+
+  @override
+  String get groupNoGoalAdmin => 'ਤੈਅ ਕਰੋ ਕਿ ਗਰੁੱਪ ਰਲ਼ ਕੇ ਕੀ ਕਰੇਗਾ, ਤੇ ਕਿੰਨਾ';
+
+  @override
+  String get groupInviteCode => 'ਜਾਂ ਉਹਨਾਂ ਨੂੰ ਇਹ ਕੋਡ ਦਿਓ';
+
+  @override
+  String get groupInviteCodeHow =>
+      'ਹਾਜ਼ਰੀ ਵਿੱਚ: ਸੰਗਤ → ਲਿੰਕ ਹੈ? ਗਰੁੱਪ ਨਾਲ ਜੁੜੋ → ਕੋਡ ਪਾਓ। ਲਿੰਕ ਆਪ ਵੈੱਬਸਾਈਟ ਖੋਲ੍ਹਦਾ ਹੈ, ਜੋ ਅਜੇ ਬਣੀ ਨਹੀਂ।';
+
+  @override
+  String groupInviteShareText(String group, String code) {
+    return '$group ਨਾਲ ਹਾਜ਼ਰੀ ਉੱਤੇ ਜੁੜੋ।\n\nਹਾਜ਼ਰੀ ਖੋਲ੍ਹੋ → ਸੰਗਤ → “ਲਿੰਕ ਹੈ? ਗਰੁੱਪ ਨਾਲ ਜੁੜੋ”, ਤੇ ਇਹ ਕੋਡ ਪਾਓ:\n\n$code';
+  }
+
+  @override
+  String get diarySubtitle => 'ਹਰ ਉਹ ਦਿਨ ਜਦੋਂ ਤੁਹਾਡੀ ਹਾਜ਼ਰੀ ਲੱਗੀ';
+
+  @override
+  String get diaryStatHazriDays => 'ਹਾਜ਼ਰੀ ਵਾਲੇ ਦਿਨ';
+
+  @override
+  String get diaryStatGoalsMet => 'ਸੰਕਲਪ ਪੂਰੇ';
+
+  @override
+  String get diaryStatPaath => 'ਪਾਠ';
+
+  @override
+  String get diaryStatSimranMinutes => 'ਸਿਮਰਨ ਦੇ ਮਿੰਟ';
+
+  @override
+  String get diaryStatDaysInRow => 'ਲਗਾਤਾਰ ਦਿਨ';
+
+  @override
+  String get diaryTickAnything => 'ਇਸ ਦਿਨ ਜੋ ਵੀ ਪੂਰਾ ਕੀਤਾ, ਨਿਸ਼ਾਨ ਲਾਓ';
+
+  @override
+  String diaryNotYetAt(String time) {
+    return 'ਅਜੇ ਨਹੀਂ · $time';
+  }
 }

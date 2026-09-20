@@ -3902,6 +3902,102 @@ abstract class L {
   /// In en, this message translates to:
   /// **'The recitation is five minutes long and loops with a soft crossfade for anything longer.'**
   String get goalSimranLoops;
+
+  /// No description provided for @groupStartCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting it here counts towards the goal when you finish'**
+  String get groupStartCounts;
+
+  /// No description provided for @groupSetGoalCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a shared goal'**
+  String get groupSetGoalCta;
+
+  /// No description provided for @groupChangeGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the goal'**
+  String get groupChangeGoal;
+
+  /// No description provided for @groupNoGoalMember.
+  ///
+  /// In en, this message translates to:
+  /// **'The group\'s admin sets what it recites together'**
+  String get groupNoGoalMember;
+
+  /// No description provided for @groupNoGoalAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Set what the group recites together, and how many'**
+  String get groupNoGoalAdmin;
+
+  /// No description provided for @groupInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Or give them this code'**
+  String get groupInviteCode;
+
+  /// No description provided for @groupInviteCodeHow.
+  ///
+  /// In en, this message translates to:
+  /// **'In Hazri: Sangat → Have a link? Join a group → paste the code. The link itself opens the website, which is not built yet.'**
+  String get groupInviteCodeHow;
+
+  /// No description provided for @groupInviteShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Join {group} on Hazri.\n\nOpen Hazri → Sangat → “Have a link? Join a group”, and paste this code:\n\n{code}'**
+  String groupInviteShareText(String group, String code);
+
+  /// No description provided for @diarySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day you marked your hazri'**
+  String get diarySubtitle;
+
+  /// No description provided for @diaryStatHazriDays.
+  ///
+  /// In en, this message translates to:
+  /// **'hazri days'**
+  String get diaryStatHazriDays;
+
+  /// No description provided for @diaryStatGoalsMet.
+  ///
+  /// In en, this message translates to:
+  /// **'goals met'**
+  String get diaryStatGoalsMet;
+
+  /// No description provided for @diaryStatPaath.
+  ///
+  /// In en, this message translates to:
+  /// **'paath'**
+  String get diaryStatPaath;
+
+  /// No description provided for @diaryStatSimranMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'simran minutes'**
+  String get diaryStatSimranMinutes;
+
+  /// No description provided for @diaryStatDaysInRow.
+  ///
+  /// In en, this message translates to:
+  /// **'days in a row'**
+  String get diaryStatDaysInRow;
+
+  /// No description provided for @diaryTickAnything.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick anything you completed on this day'**
+  String get diaryTickAnything;
+
+  /// No description provided for @diaryNotYetAt.
+  ///
+  /// In en, this message translates to:
+  /// **'not yet · {time}'**
+  String diaryNotYetAt(String time);
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

@@ -17,6 +17,7 @@ import '../../nitnem/domain/bani.dart';
 import '../domain/streak.dart';
 import '../../../app/menu_sheet.dart';
 import '../../../core/widgets/tab_header.dart';
+import '../../hazri/data/hazri_controller.dart';
 
 /// The month being shown in the diary.
 final diaryMonthProvider = StateProvider<DateTime>((ref) {
@@ -59,19 +60,17 @@ class DiaryScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
             children: [
               TabHeader(
-                title: l.navDiary,
-                subtitle: dates.monthYear(month),
+                title: l.diaryTitle,
+                subtitle: l.diarySubtitle,
                 onMenu: () => showMenuSheet(context),
               ),
               const SizedBox(height: 6),
               Row(
                 children: [
-                  Expanded(
-                    child: Text(
-                      l.diaryTitle,
-                      style: HazriText.display26.copyWith(color: c.ink),
-                    ),
-                  ),
+                  // The screen's name is in the header above; this row is
+                  // only the month picker, and the month is already in the
+                  // middle of it.
+                  const Spacer(),
                   CardIconButton(
                     icon: HazriIconData.chevronLeft,
                     iconSize: 18,
@@ -132,31 +131,35 @@ class _StreakCard extends StatelessWidget {
 
     return HazriCard(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('$days', style: HazriText.display44.copyWith(color: c.kesriInk)),
-              Text(
-                days == 1 ? l.diaryStreakOne : l.diaryStreakDays(days),
-                style: HazriText.caption.copyWith(color: c.muted),
-              ),
-            ],
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: c.kesriSoft,
+              borderRadius: BorderRadius.circular(18),
+            ),
+            alignment: Alignment.center,
+            child: AppIcon(HazriIconData.sunArc, size: 30, color: c.kesriInk),
           ),
-          const SizedBox(width: 18),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // The number is in the sentence rather than beside it. A
+                // 44-point numeral with a caption under it read as a score.
                 Text(
-                  days == 0 ? l.diaryStreakNone : l.diaryGentleStreak,
-                  style: HazriText.bodyStrong.copyWith(color: c.ink),
+                  days == 0
+                      ? l.diaryStreakNone
+                      : (days == 1 ? l.diaryStreakOne : l.diaryStreakDays(days)),
+                  style: HazriText.display22.copyWith(color: c.ink, fontSize: 23),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 1),
                 Text(
-                  l.diaryGrace(streak?.graceLeftThisMonth ?? StreakCalculator.gracePerMonth),
-                  style: HazriText.bodySmall.copyWith(color: c.ink2),
+                  '${l.diaryGentleStreak} · '
+                  '${l.diaryGrace(streak?.graceLeftThisMonth ?? StreakCalculator.gracePerMonth)}',
+                  style: HazriText.caption.copyWith(color: c.muted),
                 ),
               ],
             ),
@@ -359,6 +362,38 @@ class _TickSheet extends ConsumerWidget {
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
     final nitnem = banis.where((b) => b.category == 'nitnem').toList();
     final repo = ref.read(userRepositoryProvider);
+    final calendar = ref.watch(nanakshahiCalendarProvider).value;
+    final nanakshahi = calendar?.dateFor(day.date);
+    final streak = ref.watch(streakProvider).value;
+
+    // What marked the day, and when. Read from the completions rather than
+    // the day summary, which knows that something happened and not what.
+    final completions = ref.watch(completionsOnProvider(day.date)).value ??
+        const <Completion>[];
+    final sessions = (ref.watch(simranSessionsProvider).value ?? const [])
+        .where((x) => x.localDate == localDateKey(day.date) && x.completed)
+        .toList();
+    DateTime? firstAt;
+    String? firstWith;
+    for (final x in completions) {
+      final at = x.completedAt.toLocal();
+      if (firstAt == null || at.isBefore(firstAt)) {
+        firstAt = at;
+        firstWith = banis
+            .where((b) => b.id == x.baniId)
+            .map((b) => b.name(l.localeName))
+            .firstOrNull;
+      }
+    }
+    for (final x in sessions) {
+      final at = x.startedAt.toLocal();
+      if (firstAt == null || at.isBefore(firstAt)) {
+        firstAt = at;
+        firstWith = l.hazriSimran;
+      }
+    }
+    final simranMinutes =
+        (sessions.fold<int>(0, (sum, x) => sum + x.durationS) / 60).round();
 
     return SafeArea(
       top: false,
@@ -384,36 +419,74 @@ class _TickSheet extends ConsumerWidget {
                 dates.longDate(day.date),
                 style: HazriText.display22.copyWith(color: c.ink),
               ),
-              const SizedBox(height: 4),
-              Text(l.diaryTickHint, style: HazriText.bodySmall.copyWith(color: c.muted)),
+              if (nanakshahi != null)
+                Text(nanakshahi.labelWithYear(l.localeName),
+                    style: HazriText.caption.copyWith(color: c.muted)),
               const SizedBox(height: 12),
-              // Design 56. Hazri first, because it is the thing the app is
-              // named after and the thing most days have.
-              HazriCard(
-                colour: day.hazri ? c.sageSoft : c.card2,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              // Design 56's banner. Kesri and filled when the day was marked,
+              // because that is the thing the app is named after; quiet and
+              // grey when it was not, because a day without one is not a
+              // day to be shouted at about.
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+                decoration: BoxDecoration(
+                  color: day.hazri ? c.kesri : c.card2,
+                  borderRadius: BorderRadius.circular(HazriRadius.card),
+                ),
                 child: Row(
                   children: [
-                    AppIcon(
-                      day.hazri ? HazriIconData.check : HazriIconData.sunArc,
-                      size: 19,
-                      color: day.hazri ? c.sage : c.muted,
+                    Container(
+                      width: 42,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        color: day.hazri
+                            ? Colors.white.withValues(alpha: 0.22)
+                            : c.card,
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: AppIcon(
+                        HazriIconData.sunArc,
+                        size: 21,
+                        color: day.hazri ? Colors.white : c.muted,
+                      ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 12),
                     Expanded(
-                      child: Text(
-                        day.hazri ? l.hazriMarked : l.hazriNotYet,
-                        style: HazriText.captionStrong
-                            .copyWith(color: day.hazri ? c.sage : c.ink2),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            day.hazri ? l.hazriMarked : l.hazriNotYet,
+                            style: HazriText.bodyStrong.copyWith(
+                                color: day.hazri ? Colors.white : c.ink),
+                          ),
+                          if (firstAt != null)
+                            Text(
+                              firstWith == null
+                                  ? l.hazriMarkedAt(dates.time(firstAt))
+                                  : l.hazriMarkedAtWith(
+                                      dates.time(firstAt), firstWith),
+                              style: HazriText.caption.copyWith(
+                                color: day.hazri
+                                    ? Colors.white.withValues(alpha: 0.9)
+                                    : c.muted,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               Text(l.diaryWhatYouDid,
                   style: HazriText.eyebrow.copyWith(color: c.muted)),
-              const SizedBox(height: 6),
+              const SizedBox(height: 2),
+              Text(l.diaryTickAnything,
+                  style: HazriText.caption.copyWith(color: c.muted)),
+              const SizedBox(height: 8),
               for (final bani in nitnem)
                 _TickRow(
                   label: bani.name(l.localeName),
@@ -459,6 +532,35 @@ class _TickSheet extends ConsumerWidget {
                   }
                   setState(() {});
                 },
+              ),
+              const SizedBox(height: 14),
+              HazriCard(
+                colour: c.card2,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Row(
+                  children: [
+                    for (final (value, label) in [
+                      ('${day.slots.length}', l.diaryStatPaath),
+                      ('$simranMinutes', l.diaryStatSimranMinutes),
+                      ('${streak?.days ?? 0}', l.diaryStatDaysInRow),
+                    ]) ...[
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(value,
+                                style: HazriText.display22
+                                    .copyWith(color: c.ink, fontSize: 20)),
+                            Text(
+                              label,
+                              textAlign: TextAlign.center,
+                              style: HazriText.caption.copyWith(color: c.muted),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
               const SizedBox(height: 12),
               Text(
@@ -520,30 +622,39 @@ class _MonthStats extends ConsumerWidget {
     final c = context.colors;
     final l = L.of(context);
 
-    final morning = days.where((d) => d.slots.contains(BaniSlotValue.morning)).length;
-    final evening = days.where((d) => d.slots.contains(BaniSlotValue.evening)).length;
-    final bedtime = days.where((d) => d.slots.contains(BaniSlotValue.bedtime)).length;
-    final simran = days.where((d) => d.simran).length;
+    // The same two things the dots count, so the month reads one way.
+    final hazriDays = days.where((d) => d.hazri).length;
+    final goalsMet = days.where((d) => d.goalsMet).length;
 
     final stats = [
-      (morning, l.diaryStatJapji),
-      (evening, l.diaryStatRehras),
-      (bedtime, l.diaryStatSohila),
-      (simran, l.diaryStatSimran),
+      (hazriDays, l.diaryStatHazriDays, c.kesri),
+      (goalsMet, l.diaryStatGoalsMet, c.sage),
     ];
 
     return HazriCard(
       child: Row(
         children: [
-          for (final (value, label) in stats)
+          for (var i = 0; i < stats.length; i++) ...[
+            if (i > 0)
+              Container(width: 1, height: 38, color: c.rule),
             Expanded(
               child: Column(
                 children: [
-                  Text('$value', style: HazriText.display22.copyWith(color: c.ink)),
-                  Text(label, style: HazriText.caption.copyWith(color: c.muted)),
+                  Text(
+                    '${stats[i].$1}',
+                    style: HazriText.display22.copyWith(
+                        color: stats[i].$3, fontSize: 21),
+                  ),
+                  Text(
+                    stats[i].$2,
+                    textAlign: TextAlign.center,
+                    style: HazriText.caption
+                        .copyWith(color: c.muted, fontWeight: FontWeight.w600),
+                  ),
                 ],
               ),
             ),
+          ],
         ],
       ),
     );
