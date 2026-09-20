@@ -180,40 +180,47 @@ abstract final class SimranText {
 
   /// "Daily Simran" in the header.
   static TextStyle get brand =>
-      _serif.copyWith(fontSize: 30, height: 1.1, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 28, height: 1.1, fontWeight: FontWeight.w500);
 
   /// "ONE BREATH · ONE WORLD · ONE WAHEGURU".
+  ///
+  /// Small and tightly tracked so it stays on one line between the two 40 dp
+  /// buttons. It wrapped at 11 px, which put a header three lines deep above
+  /// a screen whose whole point is the globe.
   static const TextStyle kicker = TextStyle(
     fontFamily: HazriFonts.ui,
     fontFamilyFallback: HazriFonts.fallback,
-    fontSize: 11,
+    fontSize: 9.5,
     height: 1.3,
-    letterSpacing: 1.6,
+    letterSpacing: 0.9,
     fontWeight: FontWeight.w500,
   );
 
   /// "One Name. / A Brighter World."
   static TextStyle get headline =>
-      _serif.copyWith(fontSize: 33, height: 1.22, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 30, height: 1.2, fontWeight: FontWeight.w500);
 
   /// "Breathe in peace, breathe out worry."
   static const TextStyle verse = TextStyle(
     fontFamily: HazriFonts.ui,
     fontFamilyFallback: HazriFonts.fallback,
-    fontSize: 15,
-    height: 1.55,
+    fontSize: 13.5,
+    height: 1.5,
     fontWeight: FontWeight.w400,
   );
 
   /// The ੴ between the rules.
+  ///
+  /// The line box has to be taller than the glyph or Gurmukhi is clipped: at
+  /// `height: 1` the ੴ was cut in half by the rule beside it.
   static TextStyle get onkar =>
-      _serif.copyWith(fontSize: 21, height: 1, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 19, height: 1.6, fontWeight: FontWeight.w500);
 
   /// The countdown.
   static const TextStyle countdown = TextStyle(
     fontFamily: HazriFonts.ui,
     fontFamilyFallback: HazriFonts.fallback,
-    fontSize: 38,
+    fontSize: 36,
     height: 1.1,
     fontWeight: FontWeight.w500,
     fontFeatures: [FontFeature.tabularFigures()],
@@ -221,7 +228,16 @@ abstract final class SimranText {
 
   /// The presence headline where the countdown sits when nothing is running.
   static TextStyle get presence =>
-      _serif.copyWith(fontSize: 24, height: 1.25, fontWeight: FontWeight.w500);
+      _serif.copyWith(fontSize: 22, height: 1.25, fontWeight: FontWeight.w500);
+
+  /// ਵਾਹਿਗੁਰੂ, drifting off the globe while a sitting runs.
+  static const TextStyle naam = TextStyle(
+    fontFamily: HazriFonts.gurmukhi,
+    fontFamilyFallback: HazriFonts.fallback,
+    fontSize: 17,
+    height: 1.5,
+    fontWeight: FontWeight.w500,
+  );
 }
 
 abstract final class HazriRadius {

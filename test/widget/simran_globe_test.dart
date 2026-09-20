@@ -103,6 +103,14 @@ void main() {
     expect(find.text(l.simranCitiesToday(3)), findsOneWidget);
   });
 
+  testWidgets('a quiet day is not told it has nought cities', (tester) async {
+    final l = await pump(tester, presence: const SangatPresence(total: 1, yours: 1));
+    // "You are the first here today" followed by "0 cities today" is the
+    // hopeful zero the line above it exists to avoid.
+    expect(find.text(l.simranGlobeFirst), findsOneWidget);
+    expect(find.text(l.simranCitiesToday(0)), findsNothing);
+  });
+
   testWidgets('the globe draws without throwing, spinning or still',
       (tester) async {
     await pump(tester, presence: const SangatPresence(cities: _cities, total: 48, yours: 1));

@@ -19,7 +19,9 @@ import '../../sangat/data/presence_repository.dart';
 import '../../sangat/domain/simran_presence.dart';
 import '../../today/data/today_controller.dart';
 import '../data/simran_controller.dart';
+import '../domain/simran_track.dart';
 import 'simran_globe.dart';
+import 'simran_naam.dart';
 
 /// Daily Simran.
 ///
@@ -63,6 +65,8 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
     final controller = ref.read(simranSessionProvider.notifier);
     final doneToday = ref.watch(simranDoneTodayProvider).value ?? false;
     final presence = ref.watch(globePresenceProvider);
+    // The recitation's own onsets, so ਵਾਹਿਗੁਰੂ appears when it is said.
+    final track = ref.watch(simranTrackProvider).value;
 
     // A simran goal's length wins over the Settings default, so "11 min" on
     // the goal is what the button offers and what the timer counts.
@@ -84,6 +88,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
       minutes: minutes,
       doneToday: doneToday,
       session: session,
+      track: track,
       onBegin: () => controller.start(
         title: l.simranTitle,
         length: Duration(minutes: minutes),
@@ -113,6 +118,7 @@ class _SimranSky extends ConsumerWidget {
     required this.minutes,
     required this.doneToday,
     required this.session,
+    required this.track,
     required this.onBegin,
     required this.onPause,
     required this.onResume,
@@ -123,6 +129,7 @@ class _SimranSky extends ConsumerWidget {
   final int minutes;
   final bool doneToday;
   final SimranSession session;
+  final SimranTrack? track;
   final VoidCallback onBegin;
   final VoidCallback onPause;
   final VoidCallback onResume;
@@ -134,6 +141,10 @@ class _SimranSky extends ConsumerWidget {
   static const _you = Color(0xFFF2A24E);
   static const _here = Color(0xFF3DBE7B);
   static const _others = Color(0xFF6FE3A6);
+
+  /// The side margin every block but the globe keeps.
+  static Widget _gutter(Widget child) =>
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 20), child: child);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -161,19 +172,22 @@ class _SimranSky extends ConsumerWidget {
             bottom: false,
             child: PhoneWidth(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 14),
+                // No side padding on the column: the globe takes the whole
+                // width and each text block gutters itself, so the earth is
+                // as wide as the phone rather than as wide as a paragraph.
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 14),
                 child: Column(
                   children: [
-                    _Header(
+                    _gutter(_Header(
                       onMenu: () => showMenuSheet(context),
                       onBell: () => context.push(Routes.notifications),
-                    ),
-                    const SizedBox(height: 14),
-                    _Headline(kesri: _you),
-                    const SizedBox(height: 12),
-                    _OnkarRule(glyph: ikOnkar, colour: _you),
-                    const SizedBox(height: 12),
-                    Text.rich(
+                    )),
+                    const SizedBox(height: 10),
+                    _gutter(_Headline(kesri: _you)),
+                    const SizedBox(height: 8),
+                    _gutter(_OnkarRule(glyph: ikOnkar, colour: _you)),
+                    const SizedBox(height: 8),
+                    _gutter(Text.rich(
                       TextSpan(
                         children: [
                           TextSpan(
@@ -190,18 +204,46 @@ class _SimranSky extends ConsumerWidget {
                         ],
                       ),
                       textAlign: TextAlign.center,
-                    ),
+                    )),
                     Expanded(
                       child: Center(
                         child: LayoutBuilder(
-                          builder: (context, box) => SimranGlobe(
-                            presence: presence,
-                            size: math.min(box.maxWidth, box.maxHeight),
-                          ),
+                          builder: (context, box) {
+                            // A little taller than the space it is given, so
+                            // the width is what decides the size on a phone
+                            // and the glow bleeds into the gaps above and
+                            // below rather than the earth being shrunk to
+                            // clear them.
+                            final size = math.min(
+                              box.maxWidth,
+                              box.maxHeight * 1.14,
+                            );
+                            return OverflowBox(
+                              maxWidth: size,
+                              maxHeight: size,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                clipBehavior: Clip.none,
+                                children: [
+                                  SimranGlobe(presence: presence, size: size),
+                                  if (session.active)
+                                    SimranNaam(
+                                      size: size,
+                                      word: l.simranWaheguru,
+                                      track: track,
+                                      elapsed: session.elapsed,
+                                      running: session.running,
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
+                    _gutter(Column(
+                      children: [
                     if (active) ...[
                       // The countdown takes the place of the presence line
                       // while a sitting is open: it is the one number that
@@ -220,16 +262,20 @@ class _SimranSky extends ConsumerWidget {
                       ),
                     ] else ...[
                       _Presence(presence: presence, others: _others),
-                      const SizedBox(height: 2),
-                      Text(
-                        // Only what is actually known. A month total and a
-                        // country count are not stored anywhere, and a number
-                        // nobody counted is worse than no number.
-                        l.simranCitiesToday(presence.activeCities.length),
-                        style: HazriText.caption.copyWith(color: white55),
-                      ),
+                      // Only what is actually known, and only when there is
+                      // something to say: "You are the first here today"
+                      // followed by "0 cities today" is the hopeful zero the
+                      // line above it exists to avoid. A month total and a
+                      // country count are not stored anywhere either.
+                      if (presence.activeCities.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          l.simranCitiesToday(presence.activeCities.length),
+                          style: HazriText.caption.copyWith(color: white55),
+                        ),
+                      ],
                     ],
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 13,
@@ -239,7 +285,7 @@ class _SimranSky extends ConsumerWidget {
                         _LegendDot(colour: _here, label: l.simranLegendHere),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
                     // Two controls while a sitting is open, not one. Ending
                     // was the only way out, so a knock at the door cost
                     // somebody the whole sitting; pausing holds the clock and
@@ -283,6 +329,8 @@ class _SimranSky extends ConsumerWidget {
                         foreground: const Color(0xFF1C1206),
                         onPressed: onBegin,
                       ),
+                      ],
+                    )),
                   ],
                 ),
               ),

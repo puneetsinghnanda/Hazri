@@ -152,6 +152,10 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   number; and its third legend colour, "in the sangat", because a member's
   city is on their own private user document and the membership rows carry a
   name, not a place.
+- **ਵਾਹਿਗੁਰੂ drifts off the globe while a sitting runs**, one word for each
+  utterance, taken from `SimranTrack.onsets` — the times the recitation was
+  measured at when the app was built. With no recitation there are no words:
+  a rhythm of its own would be the screen saying something it does not know.
 - **Design 29's "turn the globe with your hand" is gone** with the header it
   sat in; the mock-up puts the kicker there instead. The gesture is still
   there and now works in both directions, but nothing on screen says so.
