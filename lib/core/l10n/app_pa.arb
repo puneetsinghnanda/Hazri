@@ -666,5 +666,6 @@
   "diaryStatSimranMinutes": "ਸਿਮਰਨ ਦੇ ਮਿੰਟ",
   "diaryStatDaysInRow": "ਲਗਾਤਾਰ ਦਿਨ",
   "diaryTickAnything": "ਇਸ ਦਿਨ ਜੋ ਵੀ ਪੂਰਾ ਕੀਤਾ, ਨਿਸ਼ਾਨ ਲਾਓ",
-  "diaryNotYetAt": "ਅਜੇ ਨਹੀਂ · {time}"
+  "diaryNotYetAt": "ਅਜੇ ਨਹੀਂ · {time}",
+  "simranPaused": "ਰੁਕਿਆ ਹੋਇਆ"
 }

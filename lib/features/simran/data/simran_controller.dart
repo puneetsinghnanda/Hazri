@@ -13,26 +13,50 @@ import '../../sangat/data/presence_repository.dart';
 /// A Simran session in progress (PRD 1.13).
 class SimranSession {
   const SimranSession({
-    this.startedAt,
+    this.runningSince,
+    this.banked = Duration.zero,
     this.elapsed = Duration.zero,
+    this.total = Duration.zero,
+    this.active = false,
     this.justCompleted = false,
   });
 
-  /// When the session began, or null when none is running.
+  /// When the current run began, or null while paused.
   ///
-  /// The session is anchored to an instant rather than to a tick count, so
-  /// locking the phone or leaving the app does not lose time.
-  final DateTime? startedAt;
+  /// The running part of a session is anchored to an instant rather than to a
+  /// tick count, so locking the phone or leaving the app does not lose time.
+  final DateTime? runningSince;
 
-  /// How much of it has passed, recomputed from [startedAt] four times a
-  /// second.
+  /// Time from the runs before this one. A pause banks what had passed and
+  /// clears [runningSince]; resuming starts a fresh instant on top of it.
+  final Duration banked;
+
+  /// How much of the sitting has passed, recomputed four times a second.
   final Duration elapsed;
+
+  /// The length chosen for *this* sitting.
+  ///
+  /// Held on the session rather than read from settings each time it is
+  /// wanted: a simran goal of eleven minutes has to survive the whole sitting,
+  /// and reading the five-minute default at the end capped every goal-length
+  /// sitting back to five.
+  final Duration total;
+
+  /// A sitting is open — running or paused.
+  final bool active;
 
   /// Set on the one state that ends a session that ran its full length, so
   /// the screen can say so even though the timer finished without it.
   final bool justCompleted;
 
-  bool get running => startedAt != null;
+  bool get running => active && runningSince != null;
+
+  bool get paused => active && runningSince == null;
+
+  Duration get remaining {
+    final left = total - elapsed;
+    return left.isNegative ? Duration.zero : left;
+  }
 }
 
 final simranSessionProvider =
@@ -49,7 +73,11 @@ class SimranController extends Notifier<SimranSession> {
   Timer? _ticker;
   bool _logged = false;
 
-  Duration get total => Duration(minutes: ref.read(settingsProvider).simranMinutes);
+  /// The length a fresh sitting would be, when nothing has asked for one.
+  ///
+  /// A sitting that is already open carries its own length on the session.
+  Duration get defaultTotal =>
+      Duration(minutes: ref.read(settingsProvider).simranMinutes);
 
   @override
   SimranSession build() {
@@ -57,16 +85,65 @@ class SimranController extends Notifier<SimranSession> {
     return const SimranSession();
   }
 
-  Future<void> start({required String title}) async {
-    if (state.running) return;
+  /// Begins a sitting of [length], or of the length in Settings.
+  ///
+  /// [length] is what makes a simran goal mean anything: the goal carries the
+  /// minutes somebody chose for it, and starting from the goal used to hand
+  /// the screen's five-minute default to the timer regardless.
+  Future<void> start({required String title, Duration? length}) async {
+    if (state.active) return;
     _logged = false;
-    state = SimranSession(startedAt: DateTime.now());
+    state = SimranSession(
+      runningSince: DateTime.now(),
+      total: length ?? defaultTotal,
+      active: true,
+    );
     unawaited(WakelockPlus.enable());
 
     final track = await ref.read(simranTrackProvider.future);
     if (track != null && state.running) {
       await ref.read(playbackControllerProvider).playSimran(track, title: title);
     }
+    _start();
+  }
+
+  /// Holds the sitting where it is: the clock stops and so does the
+  /// recitation.
+  ///
+  /// Ending was the only way out, which made a knock at the door cost
+  /// somebody their sitting. What is banked here is real time already sat,
+  /// and it is what gets logged if they end from a pause rather than resume.
+  void pause() {
+    final since = state.runningSince;
+    if (since == null) return;
+    _ticker?.cancel();
+    _ticker = null;
+    final banked = state.banked + DateTime.now().difference(since);
+    state = SimranSession(
+      banked: banked,
+      elapsed: banked,
+      total: state.total,
+      active: true,
+    );
+    unawaited(ref.read(paathPlayerProvider)?.pause() ?? Future<void>.value());
+    unawaited(WakelockPlus.disable());
+  }
+
+  void resume() {
+    if (!state.paused) return;
+    state = SimranSession(
+      runningSince: DateTime.now(),
+      banked: state.banked,
+      elapsed: state.elapsed,
+      total: state.total,
+      active: true,
+    );
+    unawaited(WakelockPlus.enable());
+    unawaited(ref.read(paathPlayerProvider)?.play() ?? Future<void>.value());
+    _start();
+  }
+
+  void _start() {
     _ticker?.cancel();
     _ticker = Timer.periodic(const Duration(milliseconds: 250), (_) => tick());
   }
@@ -74,14 +151,20 @@ class SimranController extends Notifier<SimranSession> {
   /// Recomputes from the start instant rather than trusting the ticker, so a
   /// session resumed after a lock is at the right place.
   void tick() {
-    final started = state.startedAt;
-    if (started == null) return;
-    final elapsed = DateTime.now().difference(started);
-    if (elapsed >= total) {
+    final since = state.runningSince;
+    if (since == null) return;
+    final elapsed = state.banked + DateTime.now().difference(since);
+    if (elapsed >= state.total) {
       unawaited(finish(completed: true));
       return;
     }
-    state = SimranSession(startedAt: started, elapsed: elapsed);
+    state = SimranSession(
+      runningSince: since,
+      banked: state.banked,
+      elapsed: elapsed,
+      total: state.total,
+      active: true,
+    );
   }
 
   /// Ends the session, logging what was actually sat through.
@@ -93,8 +176,10 @@ class SimranController extends Notifier<SimranSession> {
     _ticker?.cancel();
     _ticker = null;
 
-    final started = state.startedAt;
-    final elapsed = started == null ? Duration.zero : DateTime.now().difference(started);
+    final since = state.runningSince;
+    final total = state.total;
+    final elapsed = state.banked +
+        (since == null ? Duration.zero : DateTime.now().difference(since));
     final capped = elapsed > total ? total : elapsed;
     state = SimranSession(justCompleted: completed);
 

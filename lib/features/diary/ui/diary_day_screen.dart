@@ -16,6 +16,7 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_mark.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../../core/settings/settings_controller.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../hazri/data/hazri_controller.dart';
 import '../../nitnem/domain/bani.dart';
@@ -302,10 +303,16 @@ class _TickCard extends ConsumerWidget {
       ref.invalidate(streakProvider);
     }
 
+    // A sitting ticked by hand says that it happened, not how long it was.
+    // The goal's length is the best guess there is, and a hardcoded five
+    // minutes was wrong for everybody who set a goal of eleven.
+    final tickedLength = ref.watch(simranGoalMinutesProvider) ??
+        ref.watch(settingsProvider).simranMinutes;
+
     Future<void> setSimran(bool value) async {
       if (value) {
         await repo.logSimran(
-          duration: const Duration(minutes: 5),
+          duration: Duration(minutes: tickedLength),
           count: 0,
           completed: true,
           on: day.date,

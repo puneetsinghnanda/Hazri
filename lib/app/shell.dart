@@ -10,6 +10,7 @@ import '../core/theme/icon_data.dart';
 import '../core/widgets/app_icon.dart';
 import '../core/widgets/surfaces.dart';
 import '../features/audio/ui/mini_player.dart';
+import 'router.dart';
 
 /// The five tabs, in branch order.
 ///
@@ -18,6 +19,17 @@ import '../features/audio/ui/mini_player.dart';
 /// it, because a tab bar has five slots and the sangat is something people
 /// open daily while settings is something they open twice.
 enum HomeTab { today, nitnem, simran, sangat, diary }
+
+/// A branch's own route. `shell.currentIndex` is the branch index, which is
+/// `HomeTab.index` — not a position in the visible tab list, which is three
+/// entries long in elder mode.
+String routeForTab(HomeTab tab) => switch (tab) {
+  HomeTab.today => Routes.today,
+  HomeTab.nitnem => Routes.nitnem,
+  HomeTab.simran => Routes.simran,
+  HomeTab.sangat => Routes.sangat,
+  HomeTab.diary => Routes.diary,
+};
 
 /// The bottom-navigation shell.
 ///
@@ -68,7 +80,9 @@ class HomeShell extends ConsumerWidget {
         bottomNavigationBar: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const MiniPlayer(),
+            // The tab on screen, so the strip stands down when what it
+            // would open is already in front of the person.
+            MiniPlayer(currentTab: routeForTab(HomeTab.values[shell.currentIndex])),
             _BottomNav(
               tabs: tabs,
               currentIndex: shell.currentIndex,

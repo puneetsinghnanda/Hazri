@@ -1159,5 +1159,6 @@
               "type": "String"
           }
       }
-  }
+  },
+  "simranPaused": "Paused"
 }

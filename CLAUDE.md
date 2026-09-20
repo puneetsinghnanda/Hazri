@@ -65,6 +65,7 @@ design/                   tokens.json, screens.json, HTML specs, PNG renders
 
 ```bash
 python3 tools/content_pipeline/build_content_db.py   # assets/content/content.db
+python3 tools/geo/build_world_outline.py             # assets/geo/world.bin
 flutter gen-l10n                                      # lib/core/l10n/gen
 dart run build_runner build                           # drift *.g.dart
 ```
@@ -75,6 +76,20 @@ Firebase CLI. Changing the file in git changes nothing in the project, and
 the failure mode is quiet: Firestore answers every write and refuses it,
 which the app reports as though it were offline. Any change to that file is
 only half done until it is published.
+
+## The globe
+
+`assets/geo/world.bin` is the coastlines and land borders design 29 draws,
+built from `tools/geo/countries-110m.json` (npm `world-atlas@2.0.2`, whose
+data is Natural Earth 1:110m — public domain). Both files are in git, so a
+fresh clone rebuilds the asset with no network.
+
+It is stored as TopoJSON **arcs**, not country polygons: an arc shared by two
+countries appears once, so a frontier is one stroke rather than two laid on
+top of each other, and nothing is filled over the sea. The painter holds each
+point's sin and cos rather than its degrees and finishes the projection with
+the angle-addition identity, so a frame of the spin costs no trigonometry at
+all.
 
 ## Audio
 

@@ -3998,6 +3998,12 @@ abstract class L {
   /// In en, this message translates to:
   /// **'not yet · {time}'**
   String diaryNotYetAt(String time);
+
+  /// No description provided for @simranPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get simranPaused;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

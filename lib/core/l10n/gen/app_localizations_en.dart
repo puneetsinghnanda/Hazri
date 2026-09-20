@@ -2171,4 +2171,7 @@ class LEn extends L {
   String diaryNotYetAt(String time) {
     return 'not yet · $time';
   }
+
+  @override
+  String get simranPaused => 'Paused';
 }

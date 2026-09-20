@@ -2165,4 +2165,7 @@ class LPa extends L {
   String diaryNotYetAt(String time) {
     return 'ਅਜੇ ਨਹੀਂ · $time';
   }
+
+  @override
+  String get simranPaused => 'ਰੁਕਿਆ ਹੋਇਆ';
 }

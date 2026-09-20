@@ -11,6 +11,7 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
+import '../../simran/data/simran_controller.dart';
 import '../data/audio_controller.dart';
 
 /// The strip above the bottom nav that says a paath is still going.
@@ -21,7 +22,15 @@ import '../data/audio_controller.dart';
 /// whenever a bani is loaded, paused included, so it is also the way back to
 /// one that was left half-finished.
 class MiniPlayer extends ConsumerWidget {
-  const MiniPlayer({super.key});
+  const MiniPlayer({super.key, this.currentTab});
+
+  /// The route of the tab on screen, so the strip can stand down when what
+  /// it would point at is already in front of the person.
+  ///
+  /// Simran is the case that matters: design 29 carries its own Pause and
+  /// End, and a second pair of controls in a card-coloured strip under a
+  /// night sky was both duplicated and ugly.
+  final String? currentTab;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,6 +43,9 @@ class MiniPlayer extends ConsumerWidget {
         state.processingState == AudioProcessingState.idle) {
       return const SizedBox.shrink();
     }
+
+    final route = item.extras?['route'] as String? ?? Routes.reader(item.id);
+    if (currentTab != null && route == currentTab) return const SizedBox.shrink();
 
     final c = context.colors;
     final l = L.of(context);
@@ -52,10 +64,7 @@ class MiniPlayer extends ConsumerWidget {
         color: c.card,
         child: InkWell(
           // Naam Simran has no reader; the track says where it belongs.
-          onTap: () => _open(
-            context,
-            item.extras?['route'] as String? ?? Routes.reader(item.id),
-          ),
+          onTap: () => _open(context, route),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -79,6 +88,19 @@ class MiniPlayer extends ConsumerWidget {
                       tooltip: playing ? l.actionPause : l.actionResume,
                       elder: elder,
                       onTap: () {
+                        // A simran sitting is a timer as well as a
+                        // recitation. Pausing only the audio here left the
+                        // clock running, so the sitting finished while the
+                        // voice was still stopped.
+                        final simran = ref.read(simranSessionProvider);
+                        if (simran.active && route == Routes.simran) {
+                          final controller =
+                              ref.read(simranSessionProvider.notifier);
+                          simran.paused
+                              ? controller.resume()
+                              : controller.pause();
+                          return;
+                        }
                         final player = ref.read(paathPlayerProvider);
                         playing ? player?.pause() : player?.play();
                       },
@@ -115,7 +137,19 @@ class MiniPlayer extends ConsumerWidget {
                       tooltip: l.actionStop,
                       elder: elder,
                       filled: false,
-                      onTap: () => ref.read(paathPlayerProvider)?.stop(),
+                      onTap: () {
+                        // Closing the strip on a simran ends the sitting and
+                        // logs what was sat, rather than stopping the voice
+                        // and leaving an orphan timer counting down.
+                        if (ref.read(simranSessionProvider).active &&
+                            route == Routes.simran) {
+                          ref
+                              .read(simranSessionProvider.notifier)
+                              .finish(completed: false);
+                          return;
+                        }
+                        ref.read(paathPlayerProvider)?.stop();
+                      },
                     ),
                   ],
                 ),

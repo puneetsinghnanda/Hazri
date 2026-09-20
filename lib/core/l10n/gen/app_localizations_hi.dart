@@ -2164,4 +2164,7 @@ class LHi extends L {
   String diaryNotYetAt(String time) {
     return 'अभी नहीं · $time';
   }
+
+  @override
+  String get simranPaused => 'रुका हुआ';
 }

@@ -666,5 +666,6 @@
   "diaryStatSimranMinutes": "सिमरन के मिनट",
   "diaryStatDaysInRow": "लगातार दिन",
   "diaryTickAnything": "इस दिन जो भी पूरा किया, निशान लगाएँ",
-  "diaryNotYetAt": "अभी नहीं · {time}"
+  "diaryNotYetAt": "अभी नहीं · {time}",
+  "simranPaused": "रुका हुआ"
 }

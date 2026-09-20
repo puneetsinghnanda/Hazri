@@ -6,6 +6,7 @@ import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../goals/data/goals_controller.dart';
 import '../data/simran_controller.dart';
 import '../../sangat/data/presence_repository.dart';
 import '../../sangat/domain/simran_presence.dart';
@@ -56,10 +57,13 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     final settings = ref.watch(settingsProvider);
     final session = ref.watch(simranSessionProvider);
     final controller = ref.read(simranSessionProvider.notifier);
-    final total = controller.total;
-    final remaining = total - session.elapsed;
     final doneToday = ref.watch(simranDoneTodayProvider).value ?? false;
     final presence = ref.watch(globePresenceProvider);
+
+    // A simran goal's length wins over the Settings default, so "11 min" on
+    // the goal is what the button offers and what the timer counts.
+    final minutes =
+        ref.watch(simranGoalMinutesProvider) ?? settings.simranMinutes;
 
     // A session that ran its full length may well have finished while this
     // screen was not on top, so the toast follows the state, not the tap.
@@ -84,12 +88,15 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     // countdown and the button.
     return _Globe(
       presence: presence,
-      minutes: settings.simranMinutes,
+      minutes: minutes,
       doneToday: doneToday,
-      running: session.running,
-      remaining: remaining,
-      total: total,
-      onBegin: () => controller.start(title: l.simranTitle),
+      session: session,
+      onBegin: () => controller.start(
+        title: l.simranTitle,
+        length: Duration(minutes: minutes),
+      ),
+      onPause: controller.pause,
+      onResume: controller.resume,
       onEnd: () => controller.finish(completed: false),
     );
   }
@@ -98,28 +105,28 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
 /// Design 29 — the Simran tab.
 ///
 /// A night sky edge to edge with the earth turning in it, who is sitting, and
-/// one button. While a sitting runs the globe stays exactly where it is and
-/// the button becomes a countdown and End, because the recitation playing is
-/// the reason somebody is looking at this screen.
+/// the one control the moment needs. While a sitting runs the globe stays
+/// exactly where it is and the headline becomes a countdown, because the
+/// recitation playing is the reason somebody is looking at this screen.
 class _Globe extends ConsumerWidget {
   const _Globe({
     required this.presence,
     required this.minutes,
     required this.doneToday,
-    required this.running,
-    required this.remaining,
-    required this.total,
+    required this.session,
     required this.onBegin,
+    required this.onPause,
+    required this.onResume,
     required this.onEnd,
   });
 
   final SangatPresence presence;
   final int minutes;
   final bool doneToday;
-  final bool running;
-  final Duration remaining;
-  final Duration total;
+  final SimranSession session;
   final VoidCallback onBegin;
+  final VoidCallback onPause;
+  final VoidCallback onResume;
   final VoidCallback onEnd;
 
   /// The globe's own palette, which is a night sky on both themes.
@@ -132,6 +139,7 @@ class _Globe extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = L.of(context);
     final white70 = Colors.white.withValues(alpha: 0.66);
+    final active = session.active;
 
     return Scaffold(
       backgroundColor: _sky,
@@ -182,15 +190,21 @@ class _Globe extends ConsumerWidget {
                     ),
                   ),
                 ),
-                if (running) ...[
+                if (active) ...[
                   // The countdown takes the place of the headline while a
-                  // sitting runs: it is the one number that matters then.
+                  // sitting is open: it is the one number that matters then,
+                  // and it stays on screen while paused so the time already
+                  // sat is never in doubt.
                   Text(
-                    HazriDates.duration(remaining),
-                    style: HazriText.display34.copyWith(color: _you),
+                    HazriDates.duration(session.remaining),
+                    style: HazriText.display34.copyWith(
+                      color: session.paused ? white70 : _you,
+                    ),
                   ),
                   Text(
-                    l.simranLeftOf(HazriDates.duration(total)),
+                    session.paused
+                        ? l.simranPaused
+                        : l.simranLeftOf(HazriDates.duration(session.total)),
                     style: HazriText.caption.copyWith(color: white70),
                   ),
                 ] else if (presence.isQuiet)
@@ -219,7 +233,7 @@ class _Globe extends ConsumerWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                if (!running) ...[
+                if (!active) ...[
                   const SizedBox(height: 7),
                   Text(
                     // Only what is actually known. The design also carries a
@@ -240,11 +254,32 @@ class _Globe extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                if (running)
-                  PrimaryButton(
-                    label: l.simranEnd,
-                    secondary: true,
-                    onPressed: onEnd,
+                // Two controls while a sitting is open, not one. Ending was
+                // the only way out, so a knock at the door cost somebody the
+                // whole sitting; pausing holds the clock and the recitation
+                // together and what was already sat is still logged if they
+                // end from there.
+                if (active)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PrimaryButton(
+                          label: session.paused ? l.actionResume : l.actionPause,
+                          icon: session.paused
+                              ? HazriIconData.play
+                              : HazriIconData.pause,
+                          onPressed: session.paused ? onResume : onPause,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: PrimaryButton(
+                          label: l.simranEnd,
+                          secondary: true,
+                          onPressed: onEnd,
+                        ),
+                      ),
+                    ],
                   )
                 else
                   PrimaryButton(
