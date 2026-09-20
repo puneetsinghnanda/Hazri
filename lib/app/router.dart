@@ -16,6 +16,7 @@ import '../features/sangat/ui/restore_screen.dart';
 import '../features/sangat/ui/sangat_screen.dart';
 import '../features/sangat/ui/join_sangat_screen.dart';
 import '../features/sangat/ui/verify_email_screen.dart';
+import '../features/diary/ui/diary_day_screen.dart';
 import '../features/diary/ui/diary_screen.dart';
 import '../features/goals/ui/goals_screen.dart';
 import '../features/gurpurab/ui/gurpurab_screen.dart';
@@ -44,6 +45,13 @@ abstract final class Routes {
   static const nitnem = '/nitnem';
   static const simran = '/simran';
   static const diary = '/diary';
+
+  /// One day in the diary (design 56). Inside the Diary branch, so the bottom
+  /// nav stays put and back goes to the month.
+  static String diaryDay(DateTime date) => '/diary/'
+      '${date.year.toString().padLeft(4, '0')}-'
+      '${date.month.toString().padLeft(2, '0')}-'
+      '${date.day.toString().padLeft(2, '0')}';
   static const settings = '/settings';
   static const vichar = '/vichar';
 
@@ -136,7 +144,25 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [GoRoute(path: Routes.sangat, builder: (_, _) => const SangatScreen())],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: Routes.diary, builder: (_, _) => const DiaryScreen())],
+            routes: [
+              GoRoute(
+                path: Routes.diary,
+                builder: (_, _) => const DiaryScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':date',
+                    builder: (_, state) {
+                      final date =
+                          DateTime.tryParse(state.pathParameters['date'] ?? '');
+                      return date == null
+                          ? const DiaryScreen()
+                          : DiaryDayScreen(
+                              date: DateTime(date.year, date.month, date.day));
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),

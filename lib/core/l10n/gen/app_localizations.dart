@@ -1374,7 +1374,7 @@ abstract class L {
   /// No description provided for @goalsTitle.
   ///
   /// In en, this message translates to:
-  /// **'My paath goals'**
+  /// **'My goals'**
   String get goalsTitle;
 
   /// No description provided for @goalsSubtitle.

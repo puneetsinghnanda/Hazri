@@ -53,6 +53,19 @@ class HazriDates {
         : DateFormat('h:mm a', _intlLocale).format(d);
   }
 
+  /// A "HH:mm" setting read against a given day, or null when it is unset
+  /// or malformed. A reminder is stored as the time somebody chose, not as
+  /// an instant, so it only becomes one against a date.
+  static DateTime? atOnDay(String? hhmm, DateTime day) {
+    if (hhmm == null) return null;
+    final parts = hhmm.split(':');
+    if (parts.length != 2) return null;
+    final h = int.tryParse(parts[0]);
+    final m = int.tryParse(parts[1]);
+    if (h == null || m == null) return null;
+    return DateTime(day.year, day.month, day.day, h, m);
+  }
+
   /// "2:04" or "1:02:04" — an elapsed duration.
   static String duration(Duration d) {
     final h = d.inHours;

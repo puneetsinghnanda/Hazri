@@ -82,9 +82,13 @@ class FirebaseGroupRepository implements GroupRepository {
           .doc(groupId)
           .snapshots()
           .asyncMap((snap) async {
-        final data = snap.data();
-        if (data == null) return null;
-        return _withCounts(SangatGroup.fromFirestore(groupId, data));
+        if (snap.data() == null) return null;
+        // Through `_load`, which reads this person's own membership row.
+        // Without it `youAreAdmin` was always false and `yours` always zero,
+        // so the person who MADE a group was told its admin sets the goal,
+        // and Start the paath sat there greyed out. The list of groups loaded
+        // the same document correctly; only this screen did not.
+        return _load(groupId, uid: _uid);
       }).handleError((Object e) {
         debugPrint('Hazri: group $groupId failed ($e)');
       });

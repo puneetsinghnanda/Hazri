@@ -85,9 +85,19 @@ class _GoalCard extends ConsumerWidget {
     final goal = progress.goal;
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
     final bani = banis.where((b) => b.id == goal.baniId).firstOrNull;
-    if (bani == null) return const SizedBox.shrink();
+    final isSimran = goal.baniId == kSimranGoalId;
+    // Naam Simran has no row in content.db, and this used to return an empty
+    // box for it -- so a simran goal counted on Today and was invisible on
+    // the screen that lists goals. Only a goal for something that is neither
+    // a bani nor simran disappears now, which is a goal that should not
+    // exist.
+    if (bani == null && !isSimran) return const SizedBox.shrink();
+    final name = isSimran ? l.hazriSimran : bani!.name(l.localeName);
 
     final rule = switch (goal.durationType) {
+      // A simran goal is a length, not a count: "11 min" says more than
+      // "once a day" about a sitting.
+      GoalDuration.everyDay when isSimran => l.minutes(goal.minutes ?? 5),
       GoalDuration.everyDay =>
         goal.timesPerDay == 1 ? l.goalRuleOnce : l.goalRuleTimes(goal.timesPerDay),
       GoalDuration.days => l.goalRuleForDays(goal.days ?? 0, goal.timesPerDay),
@@ -105,7 +115,9 @@ class _GoalCard extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: HazriCard(
-        onTap: () => context.push(Routes.reader(bani.slug)),
+        onTap: () => isSimran
+            ? context.go(Routes.simran)
+            : context.push(Routes.reader(bani!.slug)),
         child: Row(
           children: [
             ProgressRing(
@@ -125,13 +137,18 @@ class _GoalCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    bani.name(l.localeName),
+                    name,
                     style: HazriText.bodyStrong.copyWith(color: c.ink),
                   ),
-                  Text(
-                    bani.nativeName,
-                    style: HazriText.gurmukhi(13).copyWith(color: c.muted, height: 1.5),
-                  ),
+                  // The Gurmukhi name under the English one, where there is
+                  // one. Simran's name is not a bani's name and the content
+                  // database does not carry it, so nothing is invented here.
+                  if (bani != null)
+                    Text(
+                      bani.nativeName,
+                      style: HazriText.gurmukhi(13)
+                          .copyWith(color: c.muted, height: 1.5),
+                    ),
                   const SizedBox(height: 4),
                   Text(rule, style: HazriText.caption.copyWith(color: c.ink2)),
                   Text(

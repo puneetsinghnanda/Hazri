@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../core/db/content_db.dart' show BaniSlot;
-import '../../../core/db/content_repository.dart';
-import '../../../core/db/user_db.dart';
+import '../../../app/router.dart';
 import '../../../core/db/user_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
@@ -13,11 +12,9 @@ import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../nitnem/domain/bani.dart';
 import '../domain/streak.dart';
 import '../../../app/menu_sheet.dart';
 import '../../../core/widgets/tab_header.dart';
-import '../../hazri/data/hazri_controller.dart';
 
 /// The month being shown in the diary.
 final diaryMonthProvider = StateProvider<DateTime>((ref) {
@@ -34,6 +31,19 @@ final diaryDaysProvider = FutureProvider<List<DiaryDay>>((ref) {
 final streakProvider = FutureProvider<StreakResult>(
   (ref) => ref.watch(userRepositoryProvider).streak(),
 );
+
+/// One day, for design 56.
+///
+/// Derived from the month it falls in rather than queried on its own, so the
+/// grace day and the goals-met flag are worked out by exactly the code the
+/// grid uses. It is a local SQLite read either way.
+final diaryDayProvider = FutureProvider.family<DiaryDay?, DateTime>((ref, date) async {
+  ref.watch(userRepositoryProvider).watchCompletions();
+  final month = await ref
+      .watch(userRepositoryProvider)
+      .diaryMonth(DateTime(date.year, date.month));
+  return month.where((d) => d.date.day == date.day).firstOrNull;
+});
 
 /// The Nitnem Diary (Design 26).
 ///
@@ -220,7 +230,7 @@ class _MonthGrid extends ConsumerWidget {
                 day: day,
                 isToday: day.date == today,
                 isFuture: day.date.isAfter(today),
-                onTap: () => _showTickSheet(context, ref, day),
+                onTap: () => _openDay(context, ref, day.date),
               );
             },
           ),
@@ -256,24 +266,16 @@ class _MonthGrid extends ConsumerWidget {
     );
   }
 
-  /// Today and the last seven days can be ticked by hand (PRD 1.9).
-  Future<void> _showTickSheet(BuildContext context, WidgetRef ref, DiaryDay day) async {
+  /// Opens design 56 — a pushed screen, not a sheet.
+  ///
+  /// A day older than a week still opens: it is a diary, and a day worth
+  /// looking back at is not a day to be refused with a snackbar. What it
+  /// cannot do is change, and the screen says so rather than a toast saying
+  /// it on the way in (PRD 1.9).
+  void _openDay(BuildContext context, WidgetRef ref, DateTime date) {
     final today = ref.read(clockProvider).today();
-    final age = today.difference(day.date).inDays;
-    final l = L.of(context);
-    if (age < 0 || age > 7) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l.diaryTickTooOld)),
-      );
-      return;
-    }
-    await showModalBottomSheet<void>(
-      context: context,
-      useSafeArea: true,
-      builder: (_) => _TickSheet(day: day),
-    );
-    ref.invalidate(diaryDaysProvider);
-    ref.invalidate(streakProvider);
+    if (date.isAfter(today)) return;
+    context.push(Routes.diaryDay(date));
   }
 }
 
@@ -342,269 +344,6 @@ class _DayCell extends StatelessWidget {
                     ),
                 ],
               ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TickSheet extends ConsumerWidget {
-  const _TickSheet({required this.day});
-
-  final DiaryDay day;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final c = context.colors;
-    final l = L.of(context);
-    final dates = HazriDates.of(context);
-    final banis = ref.watch(banisProvider).value ?? const <Bani>[];
-    final nitnem = banis.where((b) => b.category == 'nitnem').toList();
-    final repo = ref.read(userRepositoryProvider);
-    final calendar = ref.watch(nanakshahiCalendarProvider).value;
-    final nanakshahi = calendar?.dateFor(day.date);
-    final streak = ref.watch(streakProvider).value;
-
-    // What marked the day, and when. Read from the completions rather than
-    // the day summary, which knows that something happened and not what.
-    final completions = ref.watch(completionsOnProvider(day.date)).value ??
-        const <Completion>[];
-    final sessions = (ref.watch(simranSessionsProvider).value ?? const [])
-        .where((x) => x.localDate == localDateKey(day.date) && x.completed)
-        .toList();
-    DateTime? firstAt;
-    String? firstWith;
-    for (final x in completions) {
-      final at = x.completedAt.toLocal();
-      if (firstAt == null || at.isBefore(firstAt)) {
-        firstAt = at;
-        firstWith = banis
-            .where((b) => b.id == x.baniId)
-            .map((b) => b.name(l.localeName))
-            .firstOrNull;
-      }
-    }
-    for (final x in sessions) {
-      final at = x.startedAt.toLocal();
-      if (firstAt == null || at.isBefore(firstAt)) {
-        firstAt = at;
-        firstWith = l.hazriSimran;
-      }
-    }
-    final simranMinutes =
-        (sessions.fold<int>(0, (sum, x) => sum + x.durationS) / 60).round();
-
-    return SafeArea(
-      top: false,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 12, HazriSize.gutter, 20),
-        child: StatefulBuilder(
-          builder: (context, setState) => Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: c.rule,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              Text(
-                dates.longDate(day.date),
-                style: HazriText.display22.copyWith(color: c.ink),
-              ),
-              if (nanakshahi != null)
-                Text(nanakshahi.labelWithYear(l.localeName),
-                    style: HazriText.caption.copyWith(color: c.muted)),
-              const SizedBox(height: 12),
-              // Design 56's banner. Kesri and filled when the day was marked,
-              // because that is the thing the app is named after; quiet and
-              // grey when it was not, because a day without one is not a
-              // day to be shouted at about.
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-                decoration: BoxDecoration(
-                  color: day.hazri ? c.kesri : c.card2,
-                  borderRadius: BorderRadius.circular(HazriRadius.card),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 42,
-                      height: 42,
-                      decoration: BoxDecoration(
-                        color: day.hazri
-                            ? Colors.white.withValues(alpha: 0.22)
-                            : c.card,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: AppIcon(
-                        HazriIconData.sunArc,
-                        size: 21,
-                        color: day.hazri ? Colors.white : c.muted,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            day.hazri ? l.hazriMarked : l.hazriNotYet,
-                            style: HazriText.bodyStrong.copyWith(
-                                color: day.hazri ? Colors.white : c.ink),
-                          ),
-                          if (firstAt != null)
-                            Text(
-                              firstWith == null
-                                  ? l.hazriMarkedAt(dates.time(firstAt))
-                                  : l.hazriMarkedAtWith(
-                                      dates.time(firstAt), firstWith),
-                              style: HazriText.caption.copyWith(
-                                color: day.hazri
-                                    ? Colors.white.withValues(alpha: 0.9)
-                                    : c.muted,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 14),
-              Text(l.diaryWhatYouDid,
-                  style: HazriText.eyebrow.copyWith(color: c.muted)),
-              const SizedBox(height: 2),
-              Text(l.diaryTickAnything,
-                  style: HazriText.caption.copyWith(color: c.muted)),
-              const SizedBox(height: 8),
-              for (final bani in nitnem)
-                _TickRow(
-                  label: bani.name(l.localeName),
-                  checked: day.slots.contains(_slotValue(bani.defaultSlot)),
-                  onChanged: (value) async {
-                    final slot = _slotValue(bani.defaultSlot);
-                    if (value) {
-                      await repo.logCompletion(
-                        baniId: bani.id,
-                        slot: slot,
-                        source: CompletionSource.manual,
-                        on: day.date,
-                      );
-                      // Ticking a bani here counts towards its goals exactly
-                      // as reading or listening to it does.
-                      await repo.creditGoalsFor(bani.id, on: day.date);
-                      day.slots.add(slot);
-                    } else {
-                      await repo.removeCompletion(
-                        baniId: bani.id,
-                        slot: slot,
-                        on: day.date,
-                      );
-                      await repo.removeGoalCreditFor(bani.id, on: day.date);
-                      day.slots.remove(slot);
-                    }
-                    setState(() {});
-                  },
-                ),
-              _TickRow(
-                label: l.simranTitle,
-                checked: day.simran,
-                onChanged: (value) async {
-                  if (value) {
-                    await repo.logSimran(
-                      duration: const Duration(minutes: 5),
-                      count: 0,
-                      completed: true,
-                      on: day.date,
-                    );
-                  } else {
-                    await repo.removeSimranOn(day.date);
-                  }
-                  setState(() {});
-                },
-              ),
-              const SizedBox(height: 14),
-              HazriCard(
-                colour: c.card2,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Row(
-                  children: [
-                    for (final (value, label) in [
-                      ('${day.slots.length}', l.diaryStatPaath),
-                      ('$simranMinutes', l.diaryStatSimranMinutes),
-                      ('${streak?.days ?? 0}', l.diaryStatDaysInRow),
-                    ]) ...[
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(value,
-                                style: HazriText.display22
-                                    .copyWith(color: c.ink, fontSize: 20)),
-                            Text(
-                              label,
-                              textAlign: TextAlign.center,
-                              style: HazriText.caption.copyWith(color: c.muted),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                l.diaryHazriNote,
-                style: HazriText.caption.copyWith(color: c.muted),
-              ),
-              const SizedBox(height: 12),
-              PrimaryButton(
-                label: l.actionDone,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  static BaniSlotValue _slotValue(BaniSlot slot) => switch (slot) {
-    BaniSlot.morning => BaniSlotValue.morning,
-    BaniSlot.evening => BaniSlotValue.evening,
-    BaniSlot.bedtime => BaniSlotValue.bedtime,
-    BaniSlot.none => BaniSlotValue.none,
-  };
-}
-
-class _TickRow extends StatelessWidget {
-  const _TickRow({required this.label, required this.checked, required this.onChanged});
-
-  final String label;
-  final bool checked;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return InkWell(
-      onTap: () => onChanged(!checked),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-          children: [
-            Expanded(child: Text(label, style: HazriText.body.copyWith(color: c.ink))),
-            Checkbox(value: checked, onChanged: (v) => onChanged(v ?? false)),
           ],
         ),
       ),

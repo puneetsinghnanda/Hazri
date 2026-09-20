@@ -76,6 +76,28 @@ class SangatPresence {
   /// What the screen says: everybody but you.
   int get others => (total - yours).clamp(0, total);
 
+  /// The cities somebody actually sat in today.
+  ///
+  /// Your own city is in [cities] even on a morning when nobody has sat in
+  /// it, so that the globe always has your light on it; it is not a city
+  /// today until somebody sits there, so the headline counts these.
+  List<PresenceCity> get activeCities =>
+      cities.where((c) => c.count > 0).toList(growable: false);
+
+  /// Puts the city this person chose in Settings onto the globe and marks it
+  /// as theirs.
+  ///
+  /// It adds nothing to [total] and nothing to [yours]: it is where they are,
+  /// not a claim that they sat. Without it the globe was empty for anybody
+  /// who had not finished a sitting with an account -- which is most people
+  /// most mornings, and everybody who never joins the sangat.
+  SangatPresence withHome(PresenceCity home) => SangatPresence(
+        cities: cities.any((c) => c.id == home.id) ? cities : [...cities, home],
+        total: total,
+        yours: yours,
+        yourCityId: home.id,
+      );
+
   /// Nothing to show yet — a new app, or a quiet hour. The screen says
   /// something true rather than a hopeful zero.
   bool get isQuiet => others <= 0;

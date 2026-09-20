@@ -463,7 +463,7 @@
   "gurpurabFilterAll": "All days",
   "gurpurabFilterGurpurabsOnly": "Gurpurabs only",
   "gurpurabNoneUpcoming": "No events in the next 90 days",
-  "goalsTitle": "My paath goals",
+  "goalsTitle": "My goals",
   "goalsSubtitle": "{done} of {total} done today",
   "@goalsSubtitle": {
     "placeholders": {

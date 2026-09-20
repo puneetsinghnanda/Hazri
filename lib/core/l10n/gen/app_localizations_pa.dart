@@ -723,7 +723,7 @@ class LPa extends L {
   String get gurpurabNoneUpcoming => 'ਅਗਲੇ 90 ਦਿਨਾਂ ਵਿੱਚ ਕੋਈ ਦਿਹਾੜਾ ਨਹੀਂ';
 
   @override
-  String get goalsTitle => 'ਮੇਰੇ ਪਾਠ ਦੇ ਸੰਕਲਪ';
+  String get goalsTitle => 'ਮੇਰੇ ਸੰਕਲਪ';
 
   @override
   String goalsSubtitle(int done, int total) {

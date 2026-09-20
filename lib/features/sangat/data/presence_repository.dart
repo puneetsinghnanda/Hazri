@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/db/content_db.dart';
+import '../../../core/db/content_repository.dart';
+import '../../../core/settings/settings_controller.dart';
 import '../domain/simran_presence.dart';
 import 'account_repository.dart';
 
@@ -49,4 +52,28 @@ final simranPresenceProvider = FutureProvider<SangatPresence>((ref) {
   final account = ref.watch(sangatAccountProvider).value;
   if (account == null) return Future.value(SangatPresence.empty);
   return ref.watch(presenceRepositoryProvider).today();
+});
+
+/// What design 29's globe draws: today's presence with this person's own city
+/// always lit.
+///
+/// The city comes from Settings, which is on the phone and needs no account
+/// and no network, so somebody who never joins the sangat still sees where
+/// they are. It adds nothing to the count -- see [SangatPresence.withHome].
+final globePresenceProvider = Provider<SangatPresence>((ref) {
+  final presence =
+      ref.watch(simranPresenceProvider).value ?? SangatPresence.empty;
+  final id = ref.watch(settingsProvider).cityId;
+  final rows = ref.watch(citiesProvider).value ?? const <CityRow>[];
+  final home = rows.where((c) => c.id == id).firstOrNull;
+  if (home == null) return presence;
+  return presence.withHome(
+    PresenceCity(
+      id: home.id,
+      name: home.nameEn,
+      lat: home.lat,
+      lon: home.lon,
+      count: 0,
+    ),
+  );
 });

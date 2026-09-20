@@ -726,7 +726,7 @@ class LEn extends L {
   String get gurpurabNoneUpcoming => 'No events in the next 90 days';
 
   @override
-  String get goalsTitle => 'My paath goals';
+  String get goalsTitle => 'My goals';
 
   @override
   String goalsSubtitle(int done, int total) {

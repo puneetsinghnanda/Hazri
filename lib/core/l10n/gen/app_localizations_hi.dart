@@ -722,7 +722,7 @@ class LHi extends L {
   String get gurpurabNoneUpcoming => 'अगले 90 दिनों में कोई दिवस नहीं';
 
   @override
-  String get goalsTitle => 'मेरे पाठ के संकल्प';
+  String get goalsTitle => 'मेरे संकल्प';
 
   @override
   String goalsSubtitle(int done, int total) {

@@ -53,6 +53,52 @@ void main() {
     });
   });
 
+  group('your own city', () {
+    const home = PresenceCity(
+      id: 'amritsar',
+      name: 'Amritsar',
+      lat: 31.63,
+      lon: 74.87,
+      count: 0,
+    );
+
+    test('is on the globe before anybody has sat anywhere', () {
+      final lit = SangatPresence.empty.withHome(home);
+      expect(lit.cities.single.id, 'amritsar');
+      expect(lit.yourCityId, 'amritsar');
+    });
+
+    test('adds nothing to the count and nothing to the cities line', () {
+      final lit = SangatPresence.empty.withHome(home);
+      expect(lit.total, 0);
+      expect(lit.others, 0);
+      expect(lit.isQuiet, isTrue);
+      // The headline counts cities somebody sat in. Yours is drawn because
+      // that is where you are, which is not a claim that you sat.
+      expect(lit.activeCities, isEmpty);
+    });
+
+    test('does not double a city that already has somebody in it', () {
+      const busy = SangatPresence(
+        cities: [
+          PresenceCity(
+            id: 'amritsar',
+            name: 'Amritsar',
+            lat: 31.63,
+            lon: 74.87,
+            count: 4,
+          ),
+        ],
+        total: 4,
+      );
+      final lit = busy.withHome(home);
+      expect(lit.cities.length, 1);
+      expect(lit.cities.single.count, 4);
+      expect(lit.activeCities.length, 1);
+      expect(lit.yourCityId, 'amritsar');
+    });
+  });
+
   group('the day key', () {
     test('is the phone\'s own local date, padded', () {
       expect(FirebasePresenceRepository.dayKey(DateTime(2026, 1, 9)), '2026-01-09');

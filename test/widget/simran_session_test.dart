@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/simran/data/simran_controller.dart';
+import 'package:hazri/features/simran/ui/simran_globe.dart';
 import 'package:hazri/features/simran/ui/simran_screen.dart';
 
 import '../app_harness.dart';
-import 'package:hazri/features/simran/ui/anhad_ring.dart';
 
 /// A Simran session belongs to the app, not to one instance of the screen.
 ///
@@ -44,13 +44,10 @@ void main() {
     // The countdown is short of five minutes, and the button is End rather
     // than Begin: the fresh screen found the running session.
     expect(find.text('5:00'), findsNothing);
-    // Design 21's layout, which only exists while something is running: the
-    // wave inside the circle with ਵਾਹਿਗੁਰੂ at its centre.
-    expect(find.byType(AnhadRing), findsOneWidget);
-    expect(
-      find.descendant(of: find.byType(AnhadRing), matching: find.text('ਵਾਹਿਗੁਰੂ')),
-      findsOneWidget,
-    );
+    // Design 29 stays on screen while a sitting runs. It used to be replaced
+    // by the Phase 1 ring the moment somebody tapped Begin, so the redesign
+    // vanished at exactly the moment they were looking at it.
+    expect(find.byType(SimranGlobe), findsOneWidget);
     expect(find.text(l.simranEnd), findsOneWidget);
     expect(find.text(l.simranBeginMinutes(5)), findsNothing);
 
@@ -74,8 +71,9 @@ void main() {
     await settle(tester);
 
     expect(app.container.read(simranSessionProvider).running, isFalse);
-    // And the tab goes back to design 29's globe, offering the next sitting
-    // rather than a countdown reset to five minutes.
+    // And the tab offers the next sitting rather than a countdown reset to
+    // five minutes. The globe never went anywhere.
+    expect(find.byType(SimranGlobe), findsOneWidget);
     expect(find.text(l.simranBeginMinutes(5)), findsOneWidget);
     expect(find.text('5:00'), findsNothing);
   });
