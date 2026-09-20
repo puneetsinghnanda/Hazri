@@ -113,8 +113,7 @@ class _SimranNaamState extends State<SimranNaam>
     if (MediaQuery.disableAnimationsOf(context)) return const SizedBox.shrink();
     return IgnorePointer(
       child: CustomPaint(
-        // Room for a word to leave the globe before it is gone.
-        size: Size.square(widget.size * 1.5),
+        size: Size.square(widget.size),
         painter: _NaamPainter(
           words: List.of(_words),
           now: _now,
@@ -164,11 +163,15 @@ class _NaamPainter extends CustomPainter {
       final opacity = _opacityAt(t);
       if (opacity <= 0.01) continue;
 
-      // Out from the rim, slowing as it goes: eased so a word leaves quickly
-      // and then hangs, rather than sliding at a constant speed.
+      // Outward, slowing as it goes: eased so a word leaves quickly and then
+      // hangs, rather than sliding at a constant speed.
+      //
+      // It stays on the earth rather than leaving it. The globe is as wide as
+      // the phone, so a word that drifted past the rim was cut in half by the
+      // screen edge at three and nine o'clock.
       final eased = 1 - math.pow(1 - t, 2.2).toDouble();
-      final from = radius * (0.74 + 0.10 * w.loudness);
-      final distance = from + radius * (0.42 + 0.10 * w.loudness) * eased;
+      final from = radius * (0.44 + 0.06 * w.loudness);
+      final distance = from + radius * (0.34 + 0.06 * w.loudness) * eased;
       // And a little way round the globe as it rises, so the whole field
       // turns with it.
       final angle = w.angle + 0.22 * eased;
@@ -200,15 +203,18 @@ class _NaamPainter extends CustomPainter {
     }
   }
 
-  /// Up fast, held bright, then away.
+  /// Up fast, held, then away.
   ///
-  /// It holds near full for more than half its life: a word that starts
-  /// fading the moment it appears reads as a smudge, and the point is to be
-  /// able to read it.
+  /// Half opacity at its brightest, which is the reader's own call: the word
+  /// should be legible over the earth without competing with it. It holds
+  /// there for more than half its life, because one that starts fading the
+  /// moment it appears reads as a smudge.
+  static const _peak = 0.5;
+
   static double _opacityAt(double t) {
-    if (t < 0.12) return t / 0.12 * 0.95;
-    if (t < 0.62) return 0.95;
-    return 0.95 * (1 - (t - 0.62) / 0.38);
+    if (t < 0.12) return t / 0.12 * _peak;
+    if (t < 0.62) return _peak;
+    return _peak * (1 - (t - 0.62) / 0.38);
   }
 
   @override
