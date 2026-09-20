@@ -644,5 +644,11 @@
   "readerLoggedInDiary": "ਤੁਹਾਡੀ ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ · {time}",
   "readerThisMarkedHazri": "ਹਾਜ਼ਰੀ ਇਸੇ ਨਾਲ ਲੱਗੀ — ਅੱਜ ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਇਹੀ ਪੂਰਾ ਹੋਇਆ",
   "readerStartAgain": "ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ",
-  "readerNextBani": "ਅਗਲੀ ਬਾਣੀ"
+  "readerNextBani": "ਅਗਲੀ ਬਾਣੀ",
+  "goalsCardTitle": "ਤੁਹਾਡੇ ਸੰਕਲਪ",
+  "goalsDoneOf": "{total} ਵਿੱਚੋਂ {done} ਪੂਰੇ",
+  "goalSimranOrBani": "ਸਿਮਰਨ ਮਿੰਟਾਂ ਵਿੱਚ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ; ਬਾਣੀ ਪਾਠਾਂ ਵਿੱਚ",
+  "goalHowLong": "ਹਰ ਵਾਰ ਕਿੰਨੀ ਦੇਰ",
+  "goalCustomMinutes": "ਆਪਣੀ ਮਰਜ਼ੀ",
+  "goalSimranLoops": "ਪਾਠ ਪੰਜ ਮਿੰਟ ਦਾ ਹੈ ਤੇ ਇਸ ਤੋਂ ਵੱਧ ਲਈ ਹੌਲੀ ਜਿਹੀ ਰਲ਼ਵੀਂ ਆਵਾਜ਼ ਨਾਲ ਦੁਹਰਾਇਆ ਜਾਂਦਾ ਹੈ।"
 }

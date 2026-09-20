@@ -1110,5 +1110,21 @@
               "type": "String"
           }
       }
-  }
+  },
+  "goalsCardTitle": "Your goals",
+  "goalsDoneOf": "{done} of {total} done",
+  "@goalsDoneOf": {
+      "placeholders": {
+          "done": {
+              "type": "int"
+          },
+          "total": {
+              "type": "int"
+          }
+      }
+  },
+  "goalSimranOrBani": "Simran counts in minutes; a bani counts in paath",
+  "goalHowLong": "How long each time",
+  "goalCustomMinutes": "Custom",
+  "goalSimranLoops": "The recitation is five minutes long and loops with a soft crossfade for anything longer."
 }

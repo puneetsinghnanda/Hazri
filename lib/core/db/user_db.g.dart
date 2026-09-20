@@ -1229,6 +1229,17 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _minutesMeta = const VerificationMeta(
+    'minutes',
+  );
+  @override
+  late final GeneratedColumn<int> minutes = GeneratedColumn<int>(
+    'minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _timesPerDayMeta = const VerificationMeta(
     'timesPerDay',
   );
@@ -1331,6 +1342,7 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
   List<GeneratedColumn> get $columns => [
     id,
     baniId,
+    minutes,
     timesPerDay,
     durationType,
     days,
@@ -1365,6 +1377,12 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
       );
     } else if (isInserting) {
       context.missing(_baniIdMeta);
+    }
+    if (data.containsKey('minutes')) {
+      context.handle(
+        _minutesMeta,
+        minutes.isAcceptableOrUnknown(data['minutes']!, _minutesMeta),
+      );
     }
     if (data.containsKey('times_per_day')) {
       context.handle(
@@ -1443,6 +1461,10 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
         DriftSqlType.string,
         data['${effectivePrefix}bani_id'],
       )!,
+      minutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}minutes'],
+      ),
       timesPerDay: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}times_per_day'],
@@ -1498,6 +1520,10 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
 class Goal extends DataClass implements Insertable<Goal> {
   final String id;
   final String baniId;
+
+  /// How many minutes a sitting is, for a Naam Simran goal (design 47).
+  /// Null for a bani, which is counted in paath.
+  final int? minutes;
   final int timesPerDay;
   final GoalDuration durationType;
   final int? days;
@@ -1510,6 +1536,7 @@ class Goal extends DataClass implements Insertable<Goal> {
   const Goal({
     required this.id,
     required this.baniId,
+    this.minutes,
     required this.timesPerDay,
     required this.durationType,
     this.days,
@@ -1525,6 +1552,9 @@ class Goal extends DataClass implements Insertable<Goal> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['bani_id'] = Variable<String>(baniId);
+    if (!nullToAbsent || minutes != null) {
+      map['minutes'] = Variable<int>(minutes);
+    }
     map['times_per_day'] = Variable<int>(timesPerDay);
     {
       map['duration_type'] = Variable<String>(
@@ -1551,6 +1581,9 @@ class Goal extends DataClass implements Insertable<Goal> {
     return GoalsCompanion(
       id: Value(id),
       baniId: Value(baniId),
+      minutes: minutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minutes),
       timesPerDay: Value(timesPerDay),
       durationType: Value(durationType),
       days: days == null && nullToAbsent ? const Value.absent() : Value(days),
@@ -1575,6 +1608,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     return Goal(
       id: serializer.fromJson<String>(json['id']),
       baniId: serializer.fromJson<String>(json['baniId']),
+      minutes: serializer.fromJson<int?>(json['minutes']),
       timesPerDay: serializer.fromJson<int>(json['timesPerDay']),
       durationType: $GoalsTable.$converterdurationType.fromJson(
         serializer.fromJson<String>(json['durationType']),
@@ -1594,6 +1628,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'baniId': serializer.toJson<String>(baniId),
+      'minutes': serializer.toJson<int?>(minutes),
       'timesPerDay': serializer.toJson<int>(timesPerDay),
       'durationType': serializer.toJson<String>(
         $GoalsTable.$converterdurationType.toJson(durationType),
@@ -1611,6 +1646,7 @@ class Goal extends DataClass implements Insertable<Goal> {
   Goal copyWith({
     String? id,
     String? baniId,
+    Value<int?> minutes = const Value.absent(),
     int? timesPerDay,
     GoalDuration? durationType,
     Value<int?> days = const Value.absent(),
@@ -1623,6 +1659,7 @@ class Goal extends DataClass implements Insertable<Goal> {
   }) => Goal(
     id: id ?? this.id,
     baniId: baniId ?? this.baniId,
+    minutes: minutes.present ? minutes.value : this.minutes,
     timesPerDay: timesPerDay ?? this.timesPerDay,
     durationType: durationType ?? this.durationType,
     days: days.present ? days.value : this.days,
@@ -1637,6 +1674,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     return Goal(
       id: data.id.present ? data.id.value : this.id,
       baniId: data.baniId.present ? data.baniId.value : this.baniId,
+      minutes: data.minutes.present ? data.minutes.value : this.minutes,
       timesPerDay: data.timesPerDay.present
           ? data.timesPerDay.value
           : this.timesPerDay,
@@ -1660,6 +1698,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     return (StringBuffer('Goal(')
           ..write('id: $id, ')
           ..write('baniId: $baniId, ')
+          ..write('minutes: $minutes, ')
           ..write('timesPerDay: $timesPerDay, ')
           ..write('durationType: $durationType, ')
           ..write('days: $days, ')
@@ -1677,6 +1716,7 @@ class Goal extends DataClass implements Insertable<Goal> {
   int get hashCode => Object.hash(
     id,
     baniId,
+    minutes,
     timesPerDay,
     durationType,
     days,
@@ -1693,6 +1733,7 @@ class Goal extends DataClass implements Insertable<Goal> {
       (other is Goal &&
           other.id == this.id &&
           other.baniId == this.baniId &&
+          other.minutes == this.minutes &&
           other.timesPerDay == this.timesPerDay &&
           other.durationType == this.durationType &&
           other.days == this.days &&
@@ -1707,6 +1748,7 @@ class Goal extends DataClass implements Insertable<Goal> {
 class GoalsCompanion extends UpdateCompanion<Goal> {
   final Value<String> id;
   final Value<String> baniId;
+  final Value<int?> minutes;
   final Value<int> timesPerDay;
   final Value<GoalDuration> durationType;
   final Value<int?> days;
@@ -1720,6 +1762,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   const GoalsCompanion({
     this.id = const Value.absent(),
     this.baniId = const Value.absent(),
+    this.minutes = const Value.absent(),
     this.timesPerDay = const Value.absent(),
     this.durationType = const Value.absent(),
     this.days = const Value.absent(),
@@ -1734,6 +1777,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   GoalsCompanion.insert({
     required String id,
     required String baniId,
+    this.minutes = const Value.absent(),
     this.timesPerDay = const Value.absent(),
     required GoalDuration durationType,
     this.days = const Value.absent(),
@@ -1753,6 +1797,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   static Insertable<Goal> custom({
     Expression<String>? id,
     Expression<String>? baniId,
+    Expression<int>? minutes,
     Expression<int>? timesPerDay,
     Expression<String>? durationType,
     Expression<int>? days,
@@ -1767,6 +1812,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (baniId != null) 'bani_id': baniId,
+      if (minutes != null) 'minutes': minutes,
       if (timesPerDay != null) 'times_per_day': timesPerDay,
       if (durationType != null) 'duration_type': durationType,
       if (days != null) 'days': days,
@@ -1783,6 +1829,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   GoalsCompanion copyWith({
     Value<String>? id,
     Value<String>? baniId,
+    Value<int?>? minutes,
     Value<int>? timesPerDay,
     Value<GoalDuration>? durationType,
     Value<int?>? days,
@@ -1797,6 +1844,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     return GoalsCompanion(
       id: id ?? this.id,
       baniId: baniId ?? this.baniId,
+      minutes: minutes ?? this.minutes,
       timesPerDay: timesPerDay ?? this.timesPerDay,
       durationType: durationType ?? this.durationType,
       days: days ?? this.days,
@@ -1818,6 +1866,9 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     }
     if (baniId.present) {
       map['bani_id'] = Variable<String>(baniId.value);
+    }
+    if (minutes.present) {
+      map['minutes'] = Variable<int>(minutes.value);
     }
     if (timesPerDay.present) {
       map['times_per_day'] = Variable<int>(timesPerDay.value);
@@ -1859,6 +1910,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     return (StringBuffer('GoalsCompanion(')
           ..write('id: $id, ')
           ..write('baniId: $baniId, ')
+          ..write('minutes: $minutes, ')
           ..write('timesPerDay: $timesPerDay, ')
           ..write('durationType: $durationType, ')
           ..write('days: $days, ')
@@ -3996,6 +4048,7 @@ typedef $$GoalsTableCreateCompanionBuilder =
     GoalsCompanion Function({
       required String id,
       required String baniId,
+      Value<int?> minutes,
       Value<int> timesPerDay,
       required GoalDuration durationType,
       Value<int?> days,
@@ -4011,6 +4064,7 @@ typedef $$GoalsTableUpdateCompanionBuilder =
     GoalsCompanion Function({
       Value<String> id,
       Value<String> baniId,
+      Value<int?> minutes,
       Value<int> timesPerDay,
       Value<GoalDuration> durationType,
       Value<int?> days,
@@ -4038,6 +4092,11 @@ class $$GoalsTableFilterComposer extends Composer<_$UserDb, $GoalsTable> {
 
   ColumnFilters<String> get baniId => $composableBuilder(
     column: $table.baniId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get minutes => $composableBuilder(
+    column: $table.minutes,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4106,6 +4165,11 @@ class $$GoalsTableOrderingComposer extends Composer<_$UserDb, $GoalsTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get minutes => $composableBuilder(
+    column: $table.minutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get timesPerDay => $composableBuilder(
     column: $table.timesPerDay,
     builder: (column) => ColumnOrderings(column),
@@ -4165,6 +4229,9 @@ class $$GoalsTableAnnotationComposer extends Composer<_$UserDb, $GoalsTable> {
 
   GeneratedColumn<String> get baniId =>
       $composableBuilder(column: $table.baniId, builder: (column) => column);
+
+  GeneratedColumn<int> get minutes =>
+      $composableBuilder(column: $table.minutes, builder: (column) => column);
 
   GeneratedColumn<int> get timesPerDay => $composableBuilder(
     column: $table.timesPerDay,
@@ -4231,6 +4298,7 @@ class $$GoalsTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> baniId = const Value.absent(),
+                Value<int?> minutes = const Value.absent(),
                 Value<int> timesPerDay = const Value.absent(),
                 Value<GoalDuration> durationType = const Value.absent(),
                 Value<int?> days = const Value.absent(),
@@ -4244,6 +4312,7 @@ class $$GoalsTableTableManager
               }) => GoalsCompanion(
                 id: id,
                 baniId: baniId,
+                minutes: minutes,
                 timesPerDay: timesPerDay,
                 durationType: durationType,
                 days: days,
@@ -4259,6 +4328,7 @@ class $$GoalsTableTableManager
               ({
                 required String id,
                 required String baniId,
+                Value<int?> minutes = const Value.absent(),
                 Value<int> timesPerDay = const Value.absent(),
                 required GoalDuration durationType,
                 Value<int?> days = const Value.absent(),
@@ -4272,6 +4342,7 @@ class $$GoalsTableTableManager
               }) => GoalsCompanion.insert(
                 id: id,
                 baniId: baniId,
+                minutes: minutes,
                 timesPerDay: timesPerDay,
                 durationType: durationType,
                 days: days,

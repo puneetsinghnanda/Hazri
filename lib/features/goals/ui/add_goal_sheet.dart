@@ -40,8 +40,48 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
   TimeOfDay _time = const TimeOfDay(hour: 19, minute: 30);
   bool _showAllBanis = false;
 
+  /// Minutes a sitting lasts, when the goal is Naam Simran.
+  int _minutes = 11;
+
+  bool get _isSimran => _baniId == kSimranGoalId;
+
   /// The five banis the design offers first, before "More…".
   static const _featured = ['JAPJ', 'CHAU', 'SUKH', 'ANND', 'REHR'];
+
+  /// The lengths design 47 offers, before Custom.
+  static const _lengths = [5, 11, 21, 31];
+
+  /// Design 47's "Custom" length. A plain number, because a sitting is
+  /// however long somebody has, not one of four blessed values.
+  Future<void> _pickMinutes() async {
+    final controller = TextEditingController(text: '$_minutes');
+    final chosen = await showDialog<int>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        title: Text(L.of(dialog).goalHowLong),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialog).pop(),
+            child: Text(L.of(dialog).actionCancel),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.of(dialog).pop(int.tryParse(controller.text.trim())),
+            child: Text(L.of(dialog).actionDone),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    if (chosen != null && chosen > 0 && mounted) {
+      setState(() => _minutes = chosen.clamp(1, 300));
+    }
+  }
 
   Future<void> _save() async {
     final baniId = _baniId;
@@ -53,7 +93,8 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
           GoalsCompanion.insert(
             id: UserRepository.newId(),
             baniId: baniId,
-            timesPerDay: Value(_times),
+            minutes: Value(_isSimran ? _minutes : null),
+            timesPerDay: Value(_isSimran ? 1 : _times),
             durationType: _duration,
             days: Value(_duration == GoalDuration.days ? _days : null),
             untilDate: Value(
@@ -113,12 +154,24 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
             ),
             Text(l.goalsAdd, style: HazriText.display22.copyWith(color: c.ink)),
             const SizedBox(height: 16),
+            Text(l.goalSimranOrBani, style: HazriText.bodySmall.copyWith(color: c.muted)),
+            const SizedBox(height: 14),
             Text(l.goalFieldBani, style: HazriText.bodyStrong.copyWith(color: c.ink)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
+                // Naam Simran first, as design 47 has it. It is the shortest
+                // thing somebody can promise themselves and the likeliest
+                // first goal, so it should not be behind "More…".
+                HazriChip(
+                  label: l.hazriSimran,
+                  background: _isSimran ? c.kesriSoft : c.card2,
+                  foreground: _isSimran ? c.kesriInk : c.ink2,
+                  minHeight: 40,
+                  onTap: () => setState(() => _baniId = kSimranGoalId),
+                ),
                 for (final b in shown)
                   HazriChip(
                     label: b.name(l.localeName),
@@ -136,6 +189,34 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
               ],
             ),
             const SizedBox(height: 18),
+            if (_isSimran) ...[
+              Text(l.goalHowLong, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final m in _lengths)
+                    HazriChip(
+                      label: l.minutes(m),
+                      background: _minutes == m ? c.kesriSoft : c.card2,
+                      foreground: _minutes == m ? c.kesriInk : c.ink2,
+                      minHeight: 40,
+                      onTap: () => setState(() => _minutes = m),
+                    ),
+                  HazriChip(
+                    label: l.goalCustomMinutes,
+                    background: _lengths.contains(_minutes) ? c.card2 : c.kesriSoft,
+                    foreground: _lengths.contains(_minutes) ? c.ink2 : c.kesriInk,
+                    minHeight: 40,
+                    onTap: _pickMinutes,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(l.goalSimranLoops,
+                  style: HazriText.caption.copyWith(color: c.muted)),
+            ] else ...[
             Text(l.goalFieldTimes, style: HazriText.bodyStrong.copyWith(color: c.ink)),
             const SizedBox(height: 8),
             Row(
@@ -166,6 +247,7 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
                   style: HazriText.caption.copyWith(color: c.muted),
                 ),
               ),
+            ],
             const SizedBox(height: 18),
             Text(l.goalFieldDuration, style: HazriText.bodyStrong.copyWith(color: c.ink)),
             const SizedBox(height: 8),

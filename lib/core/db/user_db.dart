@@ -65,9 +65,21 @@ class SimranSessions extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+/// The id a Naam Simran goal carries in [Goals.baniId].
+///
+/// Simran is not a bani and has no row in content.db, so a goal for it needs
+/// an id of its own. A sentinel rather than a second table: everything else
+/// about a goal -- its schedule, its ticks, its length -- is identical, and
+/// two tables would mean two of every query.
+const String kSimranGoalId = 'simran';
+
 class Goals extends Table {
   TextColumn get id => text()();
   TextColumn get baniId => text()();
+
+  /// How many minutes a sitting is, for a Naam Simran goal (design 47).
+  /// Null for a bani, which is counted in paath.
+  IntColumn get minutes => integer().nullable()();
   IntColumn get timesPerDay => integer().withDefault(const Constant(1))();
   TextColumn get durationType => textEnum<GoalDuration>()();
   IntColumn get days => integer().nullable()();
@@ -149,7 +161,7 @@ class UserDb extends _$UserDb {
   UserDb.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -157,6 +169,10 @@ class UserDb extends _$UserDb {
       // 2: the daily Hukamnama gave way to ਅੱਜ ਦਾ ਵਿਚਾਰ, which is bundled
       // content and needs no cache of its own.
       if (from < 2) await customStatement('DROP TABLE IF EXISTS hukamnama_cache');
+      // 3: a goal can now be Naam Simran, which is counted in minutes rather
+      // than paath (design 47). Nullable, so every existing goal is untouched
+      // and still means what it meant.
+      if (from < 3) await m.addColumn(goals, goals.minutes);
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');

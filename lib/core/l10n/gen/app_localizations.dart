@@ -3866,6 +3866,42 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Next bani'**
   String get readerNextBani;
+
+  /// No description provided for @goalsCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your goals'**
+  String get goalsCardTitle;
+
+  /// No description provided for @goalsDoneOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} done'**
+  String goalsDoneOf(int done, int total);
+
+  /// No description provided for @goalSimranOrBani.
+  ///
+  /// In en, this message translates to:
+  /// **'Simran counts in minutes; a bani counts in paath'**
+  String get goalSimranOrBani;
+
+  /// No description provided for @goalHowLong.
+  ///
+  /// In en, this message translates to:
+  /// **'How long each time'**
+  String get goalHowLong;
+
+  /// No description provided for @goalCustomMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get goalCustomMinutes;
+
+  /// No description provided for @goalSimranLoops.
+  ///
+  /// In en, this message translates to:
+  /// **'The recitation is five minutes long and loops with a soft crossfade for anything longer.'**
+  String get goalSimranLoops;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

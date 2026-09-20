@@ -644,5 +644,11 @@
   "readerLoggedInDiary": "आपकी डायरी में दर्ज · {time}",
   "readerThisMarkedHazri": "हाज़िरी इसी से लगी — आज सबसे पहले यही पूरा हुआ",
   "readerStartAgain": "फिर से शुरू करें",
-  "readerNextBani": "अगली बाणी"
+  "readerNextBani": "अगली बाणी",
+  "goalsCardTitle": "आपके संकल्प",
+  "goalsDoneOf": "{total} में से {done} पूरे",
+  "goalSimranOrBani": "सिमरन मिनटों में गिना जाता है; बाणी पाठों में",
+  "goalHowLong": "हर बार कितनी देर",
+  "goalCustomMinutes": "अपनी पसंद",
+  "goalSimranLoops": "पाठ पाँच मिनट का है और इससे ज़्यादा के लिए हल्की मिश्रित आवाज़ के साथ दोहराया जाता है।"
 }

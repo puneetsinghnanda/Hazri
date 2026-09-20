@@ -2093,4 +2093,26 @@ class LEn extends L {
 
   @override
   String get readerNextBani => 'Next bani';
+
+  @override
+  String get goalsCardTitle => 'Your goals';
+
+  @override
+  String goalsDoneOf(int done, int total) {
+    return '$done of $total done';
+  }
+
+  @override
+  String get goalSimranOrBani =>
+      'Simran counts in minutes; a bani counts in paath';
+
+  @override
+  String get goalHowLong => 'How long each time';
+
+  @override
+  String get goalCustomMinutes => 'Custom';
+
+  @override
+  String get goalSimranLoops =>
+      'The recitation is five minutes long and loops with a soft crossfade for anything longer.';
 }

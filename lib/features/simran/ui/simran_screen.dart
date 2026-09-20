@@ -14,7 +14,6 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/simran_controller.dart';
-import '../../sangat/data/account_repository.dart';
 import '../../sangat/data/presence_repository.dart';
 import '../../sangat/domain/simran_presence.dart';
 import 'simran_globe.dart';
@@ -70,7 +69,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     final total = controller.total;
     final remaining = total - session.elapsed;
     final doneToday = ref.watch(simranDoneTodayProvider).value ?? false;
-    final joined = ref.watch(hasJoinedSangatProvider);
     final presence = ref.watch(simranPresenceProvider).value ?? SangatPresence.empty;
 
     // A session that ran its full length may well have finished while this
@@ -88,7 +86,14 @@ class _SimranScreenState extends ConsumerState<SimranScreen> with WidgetsBinding
     // the ring, the countdown and the anhad wave -- because that is what
     // somebody sitting with their eyes half closed needs, and a spinning
     // globe is the opposite of it.
-    if (!session.running && joined) {
+    //
+    // It is shown whether or not somebody joined the sangat. The first
+    // version hid it behind an account, which meant the great majority --
+    // everybody who has not joined -- opened this tab and got the Phase 1
+    // screen, and the redesign may as well not have existed. The globe is
+    // quiet without an account and says so; that is a state, not a reason to
+    // show a different screen.
+    if (!session.running) {
       return _GlobeAtRest(
         presence: presence,
         minutes: settings.simranMinutes,

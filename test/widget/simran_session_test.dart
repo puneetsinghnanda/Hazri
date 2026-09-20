@@ -5,6 +5,7 @@ import 'package:hazri/features/simran/data/simran_controller.dart';
 import 'package:hazri/features/simran/ui/simran_screen.dart';
 
 import '../app_harness.dart';
+import 'package:hazri/features/simran/ui/anhad_ring.dart';
 
 /// A Simran session belongs to the app, not to one instance of the screen.
 ///
@@ -31,7 +32,7 @@ void main() {
     await settle(tester);
     final l = await L.delegate.load(const Locale('en'));
 
-    await tester.tap(find.text(l.simranBegin));
+    await tester.tap(find.text(l.simranBeginMinutes(5)));
     await tester.pump();
     await tester.pump(const Duration(seconds: 40));
     expect(app.container.read(simranSessionProvider).running, isTrue);
@@ -43,8 +44,15 @@ void main() {
     // The countdown is short of five minutes, and the button is End rather
     // than Begin: the fresh screen found the running session.
     expect(find.text('5:00'), findsNothing);
+    // Design 21's layout, which only exists while something is running: the
+    // wave inside the circle with ਵਾਹਿਗੁਰੂ at its centre.
+    expect(find.byType(AnhadRing), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AnhadRing), matching: find.text('ਵਾਹਿਗੁਰੂ')),
+      findsOneWidget,
+    );
     expect(find.text(l.simranEnd), findsOneWidget);
-    expect(find.text(l.simranBegin), findsNothing);
+    expect(find.text(l.simranBeginMinutes(5)), findsNothing);
 
     // And ending it from the second screen ends the one session there is.
     await tester.tap(find.text(l.simranEnd));
@@ -59,13 +67,16 @@ void main() {
     await settle(tester);
     final l = await L.delegate.load(const Locale('en'));
 
-    await tester.tap(find.text(l.simranBegin));
+    await tester.tap(find.text(l.simranBeginMinutes(5)));
     await tester.pump();
     await tester.pump(const Duration(seconds: 30));
     await tester.tap(find.text(l.simranEnd));
     await settle(tester);
 
     expect(app.container.read(simranSessionProvider).running, isFalse);
-    expect(find.text('5:00'), findsOneWidget);
+    // And the tab goes back to design 29's globe, offering the next sitting
+    // rather than a countdown reset to five minutes.
+    expect(find.text(l.simranBeginMinutes(5)), findsOneWidget);
+    expect(find.text('5:00'), findsNothing);
   });
 }

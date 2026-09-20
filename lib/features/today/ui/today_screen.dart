@@ -14,7 +14,6 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
-import '../../../core/widgets/day_arc.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../data/today_controller.dart';
@@ -30,6 +29,8 @@ import '../../goals/domain/goal_progress.dart';
 import '../../sangat/data/account_repository.dart';
 import '../../sangat/ui/join_sangat_sheet.dart';
 import '../../vichar/ui/vichar_card.dart';
+import '../../../core/db/user_db.dart' show kSimranGoalId;
+import '../../../core/widgets/progress_ring.dart';
 
 /// The Today tab (Design 09/10), or its elder-mode variant (Design 11).
 class TodayScreen extends ConsumerWidget {
@@ -82,8 +83,9 @@ class TodayScreen extends ConsumerWidget {
               const HazriBanner(),
               const _GoalsCard(),
               const SizedBox(height: 12),
-              const _Tiles(),
-              const SizedBox(height: 12),
+              // No Simran tile of its own: design 30 has Simran as a row on
+              // the goals card, and the tile was asking the same question in
+              // two places on one screen.
               _CtaButton(cta: ref.watch(todayCtaProvider)),
               const SizedBox(height: 12),
               // Gurpurab above the Vichar, as designs 30 and 58 have it: a
@@ -199,12 +201,15 @@ class _JoinSangatBanner extends ConsumerWidget {
   }
 }
 
-/// The goals card: the day's paath goals on the arc, by the time they are set
-/// for (PRD 1.15).
+/// Design 30's goals card.
 ///
-/// The first thing on Today, because a goal someone set for themselves is a
-/// stronger call than a schedule the app chose. With no goals it asks for one
-/// rather than showing an empty curve.
+/// A count, a ring, and one row per goal. The Phase 1 card drew a semicircular
+/// day arc with the goals hung off it as nodes, which was handsome and asked
+/// the reader to read a clock face to learn a number. This says the number.
+///
+/// Simran is one of the rows rather than a card of its own: a goal is a goal,
+/// and splitting them by whether they are counted in paath or minutes put the
+/// same question in two places on the same screen.
 class _GoalsCard extends ConsumerWidget {
   const _GoalsCard();
 
@@ -241,119 +246,130 @@ class _GoalsCard extends ConsumerWidget {
 
     if (live.isEmpty) return const _NoGoalsCard();
 
-    String nameOf(String baniId) => banis
-        .where((b) => b.id == baniId)
-        .map((b) => b.name(l.localeName))
-        .firstOrNull ?? '';
+    String nameOf(String baniId) => baniId == kSimranGoalId
+        ? l.hazriSimran
+        : (banis
+                .where((b) => b.id == baniId)
+                .map((b) => b.name(l.localeName))
+                .firstOrNull ??
+            '');
 
-    final timed = <(GoalProgress, DateTime)>[];
-    final untimed = <GoalProgress>[];
-    for (final p in live) {
-      final at = _at(p.goal.reminderTime, now);
-      at == null ? untimed.add(p) : timed.add((p, at));
-    }
-    timed.sort((a, b) => a.$2.compareTo(b.$2));
+    // Timed goals in clock order, then the untimed ones. A goal with no time
+    // is not a lesser goal; it simply has nothing to sort by.
+    final sorted = [...live]..sort((a, b) {
+        final at = _at(a.goal.reminderTime, now);
+        final bt = _at(b.goal.reminderTime, now);
+        if (at == null && bt == null) return 0;
+        if (at == null) return 1;
+        if (bt == null) return -1;
+        return at.compareTo(bt);
+      });
 
     final done = live.where((p) => p.isDoneToday).length;
-
-    // The next goal still outstanding is the one the arc calls active.
-    DateTime? activeAt;
-    for (final (p, at) in timed) {
-      if (!p.isDoneToday) {
-        activeAt = at;
-        break;
-      }
+    // Part-done counts: three of five paath is more than nothing, and the
+    // headline ring says so even though the row count does not.
+    var ticks = 0;
+    var target = 0;
+    for (final p in live) {
+      ticks += p.doneToday.clamp(0, p.goal.timesPerDay);
+      target += p.goal.timesPerDay;
     }
+    final fraction = target == 0 ? 0.0 : ticks / target;
 
     return HazriCard(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      onTap: () => context.push(Routes.goals),
+      padding: const EdgeInsets.all(16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (timed.isNotEmpty) ...[
-            LayoutBuilder(
-              builder: (context, constraints) => DayArc(
-                width: constraints.maxWidth.clamp(200.0, 300.0),
-                now: now,
-                windowStart: timed.first.$2.subtract(const Duration(minutes: 30)),
-                windowEnd: timed.last.$2.add(const Duration(minutes: 30)),
-                nodes: [
-                  for (final (p, at) in timed)
-                    DayArcNode(
-                      label: nameOf(p.goal.baniId),
-                      at: at,
-                      state: p.isDoneToday
-                          ? ArcNodeState.done
-                          : (at == activeAt ? ArcNodeState.active : ArcNodeState.todo),
-                    ),
-                ],
-                centre: Column(
-                  mainAxisSize: MainAxisSize.min,
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Eyebrow(l.goalsCardTitle),
                     Text(
-                      l.nOfM(done, live.length),
-                      style: HazriText.display22.copyWith(color: c.ink),
-                    ),
-                    Text(
-                      l.goalsTitle,
-                      style: HazriText.caption.copyWith(color: c.muted),
+                      l.goalsDoneOf(done, live.length),
+                      style: HazriText.display22.copyWith(color: c.ink, fontSize: 20),
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 6),
-            // The times, spelled out under the arc where the nodes are too
-            // small to carry them.
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 12,
-              runSpacing: 4,
-              children: [
-                for (final (p, at) in timed)
-                  Text(
-                    '${nameOf(p.goal.baniId)} · ${dates.timeCompact(at)}',
-                    style: HazriText.captionStrong.copyWith(
-                      color: p.isDoneToday
-                          ? c.sage
-                          : (at == activeAt ? c.kesriInk : c.muted),
-                    ),
-                  ),
-              ],
-            ),
-          ] else
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Text(
-                l.goalsSubtitle(done, live.length),
-                style: HazriText.bodyStrong.copyWith(color: c.ink),
+              ProgressRing(
+                progress: fraction,
+                size: 56,
+                strokeWidth: 7,
+                child: Text(
+                  '${(fraction * 100).round()}%',
+                  style: HazriText.captionStrong.copyWith(color: c.ink),
+                ),
               ),
-            ),
-          // Goals with no time cannot sit on a clock, so they sit under it.
-          if (untimed.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final p in untimed)
-                  HazriChip(
-                    label: '${nameOf(p.goal.baniId)} · '
-                        '${l.nOfM(p.doneToday, p.goal.timesPerDay)}',
-                    background: p.isDoneToday ? c.sageSoft : c.card2,
-                    foreground: p.isDoneToday ? c.sage : c.ink2,
-                  ),
-              ],
+            ],
+          ),
+          const SizedBox(height: 11),
+          Divider(height: 1, color: c.rule),
+          const SizedBox(height: 11),
+          for (var i = 0; i < sorted.length; i++) ...[
+            if (i > 0) const SizedBox(height: 9),
+            _GoalRow(
+              name: nameOf(sorted[i].goal.baniId),
+              progress: sorted[i],
+              at: _at(sorted[i].goal.reminderTime, now),
+              dates: dates,
             ),
           ],
-          const SizedBox(height: 12),
-          PrimaryButton(
-            label: l.settingsPaathGoals,
-            secondary: true,
-            onPressed: () => context.push(Routes.goals),
-          ),
         ],
       ),
+    );
+  }
+}
+
+/// One goal on design 30's card: a small ring, its name, and when or how much.
+class _GoalRow extends StatelessWidget {
+  const _GoalRow({
+    required this.name,
+    required this.progress,
+    required this.at,
+    required this.dates,
+  });
+
+  final String name;
+  final GoalProgress progress;
+  final DateTime? at;
+  final HazriDates dates;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = L.of(context);
+    final target = progress.goal.timesPerDay;
+    final fraction = target == 0 ? 0.0 : (progress.doneToday / target).clamp(0.0, 1.0);
+
+    return Row(
+      children: [
+        ProgressRing(
+          progress: fraction,
+          size: 26,
+          strokeWidth: 4,
+          done: progress.isDoneToday,
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            name,
+            style: HazriText.captionStrong.copyWith(color: c.ink, fontSize: 13.5),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          // The time it is due if it has one, otherwise how many of how many.
+          at != null ? dates.timeCompact(at!) : l.nOfM(progress.doneToday, target),
+          style: HazriText.caption.copyWith(color: c.muted, fontWeight: FontWeight.w600),
+        ),
+      ],
     );
   }
 }
@@ -452,30 +468,6 @@ class _CtaButton extends ConsumerWidget {
   }
 }
 
-class _Tiles extends ConsumerWidget {
-  const _Tiles();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final c = context.colors;
-    final l = L.of(context);
-    final settings = ref.watch(settingsProvider);
-    final simranDone = ref.watch(simranDoneTodayProvider).value ?? false;
-    final simranMinutes = ref.watch(simranMinutesTodayProvider).value ?? 0;
-
-    return _Tile(
-      icon: HazriIconData.simranDots,
-      iconBg: c.sageSoft,
-      iconFg: c.sage,
-      title: l.simranTitle,
-      subtitle: simranDone
-          ? l.simranTileDone
-          : l.simranTileProgress(simranMinutes, settings.simranMinutes),
-      onTap: () => context.go(Routes.simran),
-    );
-  }
-}
-
 /// The Gurpurab calendar, full width on Today (PRD 1.3).
 ///
 /// A card rather than half a row: it has both the next event and today's
@@ -561,64 +553,6 @@ class _GurpurabCard extends ConsumerWidget {
           ),
           const SizedBox(width: 8),
           AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
-        ],
-      ),
-    );
-  }
-}
-
-class _Tile extends StatelessWidget {
-  const _Tile({
-    required this.icon,
-    required this.iconBg,
-    required this.iconFg,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  final String icon;
-  final Color iconBg;
-  final Color iconFg;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return HazriCard(
-      onTap: onTap,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(color: iconBg, borderRadius: BorderRadius.circular(12)),
-            child: Center(child: AppIcon(icon, size: 22, color: iconFg)),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: HazriText.bodyStrong.copyWith(fontSize: 14, color: c.ink),
-                ),
-                Text(
-                  subtitle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: HazriText.caption.copyWith(color: c.ink2, height: 1.3),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

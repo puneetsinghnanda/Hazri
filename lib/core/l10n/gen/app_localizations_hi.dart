@@ -2088,4 +2088,26 @@ class LHi extends L {
 
   @override
   String get readerNextBani => 'अगली बाणी';
+
+  @override
+  String get goalsCardTitle => 'आपके संकल्प';
+
+  @override
+  String goalsDoneOf(int done, int total) {
+    return '$total में से $done पूरे';
+  }
+
+  @override
+  String get goalSimranOrBani =>
+      'सिमरन मिनटों में गिना जाता है; बाणी पाठों में';
+
+  @override
+  String get goalHowLong => 'हर बार कितनी देर';
+
+  @override
+  String get goalCustomMinutes => 'अपनी पसंद';
+
+  @override
+  String get goalSimranLoops =>
+      'पाठ पाँच मिनट का है और इससे ज़्यादा के लिए हल्की मिश्रित आवाज़ के साथ दोहराया जाता है।';
 }

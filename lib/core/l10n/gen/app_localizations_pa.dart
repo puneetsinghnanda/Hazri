@@ -2089,4 +2089,26 @@ class LPa extends L {
 
   @override
   String get readerNextBani => 'ਅਗਲੀ ਬਾਣੀ';
+
+  @override
+  String get goalsCardTitle => 'ਤੁਹਾਡੇ ਸੰਕਲਪ';
+
+  @override
+  String goalsDoneOf(int done, int total) {
+    return '$total ਵਿੱਚੋਂ $done ਪੂਰੇ';
+  }
+
+  @override
+  String get goalSimranOrBani =>
+      'ਸਿਮਰਨ ਮਿੰਟਾਂ ਵਿੱਚ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ; ਬਾਣੀ ਪਾਠਾਂ ਵਿੱਚ';
+
+  @override
+  String get goalHowLong => 'ਹਰ ਵਾਰ ਕਿੰਨੀ ਦੇਰ';
+
+  @override
+  String get goalCustomMinutes => 'ਆਪਣੀ ਮਰਜ਼ੀ';
+
+  @override
+  String get goalSimranLoops =>
+      'ਪਾਠ ਪੰਜ ਮਿੰਟ ਦਾ ਹੈ ਤੇ ਇਸ ਤੋਂ ਵੱਧ ਲਈ ਹੌਲੀ ਜਿਹੀ ਰਲ਼ਵੀਂ ਆਵਾਜ਼ ਨਾਲ ਦੁਹਰਾਇਆ ਜਾਂਦਾ ਹੈ।';
 }

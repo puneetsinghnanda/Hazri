@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/content_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
-import 'package:hazri/core/widgets/progress_ring.dart';
-import 'package:hazri/features/simran/ui/anhad_ring.dart';
 import 'package:hazri/features/simran/ui/simran_screen.dart';
 
 import '../app_harness.dart';
 
-/// Design 21, as it now stands: the countdown under the circle, the standing
-/// wave inside it, and no sound picker.
+/// The Simran tab at rest, which is design 29's globe.
+///
+/// The ring, the countdown and the anhad wave are the *running* screen now,
+/// and they are tested in `simran_session_test.dart`, which knows how to
+/// start a session. They used to be tested here because the resting screen
+/// and the running one were the same screen.
 void main() {
   late TestApp app;
 
@@ -22,31 +24,26 @@ void main() {
 
   tearDown(() => app.dispose());
 
-  Future<void> pump(WidgetTester tester) async {
+  Future<L> pump(WidgetTester tester) async {
     usePhoneFrame(tester);
     await tester.pumpWidget(app.wrap(const SimranScreen()));
     await settle(tester);
+    return L.delegate.load(const Locale('en'));
   }
 
-  testWidgets('the countdown sits below the ring, not inside it', (tester) async {
-    await pump(tester);
-    final l = await L.delegate.load(const Locale('en'));
-
-    final ring = tester.getRect(find.byType(ProgressRing));
-    final clock = tester.getRect(find.text('5:00'));
-    expect(clock.top, greaterThan(ring.bottom),
-        reason: 'the countdown belongs under the circle');
-    expect(find.text(l.simranLeftOf('5:00')), findsOneWidget);
+  testWidgets('the globe is the tab, with or without an account', (tester) async {
+    // The first version of this showed the globe only to somebody who had
+    // joined the sangat, so the great majority opened Simran and got the
+    // Phase 1 screen. This harness has no account at all.
+    final l = await pump(tester);
+    expect(find.text(l.simranTurnGlobeShort), findsOneWidget);
+    expect(find.text(l.simranGlobeFirst), findsOneWidget);
   });
 
-  testWidgets('the wave fills the circle', (tester) async {
-    await pump(tester);
-    expect(find.byType(AnhadRing), findsOneWidget);
-    // ਵਾਹਿਗੁਰੂ stays at the centre of it.
-    expect(
-      find.descendant(of: find.byType(AnhadRing), matching: find.text('ਵਾਹਿਗੁਰੂ')),
-      findsOneWidget,
-    );
+  testWidgets('it offers the sitting, with its length on the button',
+      (tester) async {
+    final l = await pump(tester);
+    expect(find.text(l.simranBeginMinutes(5)), findsOneWidget);
   });
 
   testWidgets('the sound picker is gone', (tester) async {
