@@ -115,7 +115,12 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   flows work today; the intent filter is the Phase 3 change, and the screens
   do not otherwise move.
 - **An invite is a pasted link or the code off the end of it**, for the same
-  reason.
+  reason. **It needs the current `firestore.rules` published to work at all.**
+  The group id *is* the invite, so `get` on a group document is open to
+  anybody signed in who knows the id, and `list` is not -- that split is what
+  lets a newcomer join. Under the older rule, which gated `read` on
+  `isMember`, `join` could not read the group it was about to join and every
+  code was refused.
 - **A listed group cannot be listed from the app.** `listed` is refused by the
   rules on create and pinned on update, so a group made on a phone is always
   private. Asking to be listed writes `listingRequested`, and approving one is
@@ -152,6 +157,15 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   number; and its third legend colour, "in the sangat", because a member's
   city is on their own private user document and the membership rows carry a
   name, not a place.
+- **The globe re-reads presence every 45 seconds while its tab is open**,
+  and after a sitting is marked, and on resume. It used to read once, when
+  the provider was first touched, and never again -- so two people sitting
+  together never saw each other. Your own dot always showed because it is
+  drawn from Settings on the phone, not from the server, which made the bug
+  look like a drawing problem rather than a fetching one.
+- **Two people in the same city are one dot**, sized by the count and lit as
+  yours. The globe knows cities, not people, so there is no second dot to
+  draw; the headline counts them.
 - **ਵਾਹਿਗੁਰੂ drifts off the globe while a sitting runs**, one word for each
   utterance, taken from `SimranTrack.onsets` — the times the recitation was
   measured at when the app was built. With no recitation there are no words:

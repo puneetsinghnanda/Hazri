@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -37,23 +38,46 @@ class SimranScreen extends ConsumerStatefulWidget {
 
 class _SimranScreenState extends ConsumerState<SimranScreen>
     with WidgetsBindingObserver {
+  /// How often the globe asks who else is sitting, while it is on screen.
+  ///
+  /// The presence read used to happen once, when the provider was first
+  /// touched, and never again -- so somebody who began after you had opened
+  /// the tab never appeared, and your own sitting did not either. Your own
+  /// dot was the only one that showed because it is drawn from Settings, on
+  /// the phone, rather than from the server.
+  ///
+  /// A read costs one document per city with somebody in it, plus one
+  /// aggregation, and only runs while this tab is actually in front of
+  /// somebody. Live enough for two people sitting together to see each other.
+  static const _refresh = Duration(seconds: 45);
+
+  Timer? _poll;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _poll = Timer.periodic(_refresh, (_) => _readPresence());
   }
 
   @override
   void dispose() {
+    _poll?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
+  void _readPresence() {
+    if (mounted) ref.invalidate(simranPresenceProvider);
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Recompute from the start instant rather than trusting the ticker.
     if (state == AppLifecycleState.resumed) {
+      // Recompute from the start instant rather than trusting the ticker.
       ref.read(simranSessionProvider.notifier).tick();
+      // And catch up on whoever sat while the phone was in a pocket.
+      _readPresence();
     }
   }
 

@@ -85,10 +85,28 @@ service cloud.firestore {
     }
 
     match /groups/{groupId} {
-      // A listed group is findable by anybody signed in; a private one only
-      // by the people already in it.
-      allow read: if isMember(groupId)
-                  || (signedIn() && resource.data.listed == true);
+      // `get` and `list` are split on purpose, and the split is what makes an
+      // invite work at all.
+      //
+      // A group id is a twenty-character Firestore id that nobody can guess,
+      // and it IS the invite: the link is the id with a prefix, and the code
+      // is the id itself. So knowing the id has to be enough to read the
+      // group -- otherwise joining is impossible. `join` reads the group
+      // before writing a membership row, and with `read` gated on
+      // `isMember` that read was refused for the one person who needs it: a
+      // newcomer holding the code. Every group made in the app is private
+      // (`listed` is forced false on create and pinned on update), so no
+      // invite code could ever work. The app reported it as "something went
+      // wrong at our end", which was true, and here it is.
+      //
+      // `list` stays shut. A query returns groups whose ids the caller does
+      // NOT know, so leaving it open would let anybody walk the whole table
+      // and read every group's name and goal. Only listed groups may be
+      // found that way, and nothing in the app queries this collection
+      // today: `watchMine` reads by id from the account's own `groups`
+      // array.
+      allow get: if signedIn();
+      allow list: if signedIn() && resource.data.listed == true;
       allow create: if signedIn()
                     && request.resource.data.createdBy == request.auth.uid
                     && request.resource.data.listed == false;

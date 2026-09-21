@@ -146,26 +146,44 @@ class UserRepository {
 
   Stream<List<SimranSession>> watchSimranSessions() => _db.select(_db.simranSessions).watch();
 
+  /// Records a sitting, and credits a Naam Simran goal for the same day.
+  ///
+  /// The credit is here rather than at the call sites because there are
+  /// three of them -- the timer finishing, a tick in the Diary, and a restore
+  /// -- and none of them was doing it. A bani credits its goal through
+  /// `creditGoalsFor` on every path it can be completed by; simran had no
+  /// equivalent, so the day was marked as hazri and the goal beside it stayed
+  /// undone. That is the misalignment between the Diary and the goals.
+  ///
+  /// Only a completed sitting counts, which is the same bar hazri and the
+  /// Diary already use: `Hazri.from` and `diaryMonth` both filter on
+  /// `completed`. A sitting ended early marks nothing, anywhere.
   Future<void> logSimran({
     required Duration duration,
     required int count,
     required bool completed,
     DateTime? on,
-  }) =>
-      _db.into(_db.simranSessions).insert(
-            SimranSessionsCompanion.insert(
-              id: newId(),
-              localDate: localDateKey(on ?? _clock.today()),
-              startedAt: DateTime.now().toUtc().subtract(duration),
-              durationS: duration.inSeconds,
-              count: Value(count),
-              completed: Value(completed),
-            ),
-          );
+  }) async {
+    final day = on ?? _clock.today();
+    await _db.into(_db.simranSessions).insert(
+          SimranSessionsCompanion.insert(
+            id: newId(),
+            localDate: localDateKey(day),
+            startedAt: DateTime.now().toUtc().subtract(duration),
+            durationS: duration.inSeconds,
+            count: Value(count),
+            completed: Value(completed),
+          ),
+        );
+    if (completed) await creditGoalsFor(kSimranGoalId, on: day);
+  }
 
-  Future<void> removeSimranOn(DateTime date) {
+  Future<void> removeSimranOn(DateTime date) async {
     final key = localDateKey(date);
-    return (_db.delete(_db.simranSessions)..where((s) => s.localDate.equals(key))).go();
+    await (_db.delete(_db.simranSessions)..where((s) => s.localDate.equals(key)))
+        .go();
+    // And take back what the sitting gave, the way unticking a bani does.
+    await removeGoalCreditFor(kSimranGoalId, on: date);
   }
 
   // ------------------------------------------------------------------- diary

@@ -233,6 +233,86 @@ void main() {
       final days = await repo.diaryMonth(today);
       expect(days.firstWhere((d) => d.date == today).simran, isFalse);
     });
+
+    test('and it credits a Naam Simran goal, like a bani credits its own',
+        () async {
+      // The reported bug: sit the simran, the day is marked as hazri, and
+      // the goal beside it stays undone. A bani credits its goal on every
+      // path it can be finished by; simran credited nothing, anywhere.
+      final id = UserRepository.newId();
+      await repo.saveGoal(
+        GoalsCompanion.insert(
+          id: id,
+          baniId: kSimranGoalId,
+          minutes: const Value(11),
+          timesPerDay: const Value(1),
+          durationType: GoalDuration.everyDay,
+          startDate: localDateKey(today),
+          createdAt: DateTime.now().toUtc(),
+          updatedAt: DateTime.now().toUtc(),
+        ),
+      );
+
+      await repo.logSimran(
+        duration: const Duration(minutes: 11),
+        count: 0,
+        completed: true,
+      );
+
+      final ticks = await repo.goalTicksOn(today);
+      expect(ticks.where((t) => t.goalId == id).length, 1);
+      // And the diary agrees, which is the alignment that was missing.
+      final days = await repo.diaryMonth(today);
+      expect(days.firstWhere((d) => d.date == today).simran, isTrue);
+    });
+
+    test('a sitting ended early credits nothing, the way it marks nothing',
+        () async {
+      final id = UserRepository.newId();
+      await repo.saveGoal(
+        GoalsCompanion.insert(
+          id: id,
+          baniId: kSimranGoalId,
+          timesPerDay: const Value(1),
+          durationType: GoalDuration.everyDay,
+          startDate: localDateKey(today),
+          createdAt: DateTime.now().toUtc(),
+          updatedAt: DateTime.now().toUtc(),
+        ),
+      );
+      await repo.logSimran(
+        duration: const Duration(minutes: 1),
+        count: 0,
+        completed: false,
+      );
+      expect(await repo.goalTicksOn(today), isEmpty);
+    });
+
+    test('and unticking the day in the Diary takes the credit back', () async {
+      final id = UserRepository.newId();
+      await repo.saveGoal(
+        GoalsCompanion.insert(
+          id: id,
+          baniId: kSimranGoalId,
+          timesPerDay: const Value(1),
+          durationType: GoalDuration.everyDay,
+          startDate: localDateKey(today),
+          createdAt: DateTime.now().toUtc(),
+          updatedAt: DateTime.now().toUtc(),
+        ),
+      );
+      await repo.logSimran(
+        duration: const Duration(minutes: 5),
+        count: 0,
+        completed: true,
+      );
+      expect(await repo.goalTicksOn(today), hasLength(1));
+
+      await repo.removeSimranOn(today);
+      expect(await repo.goalTicksOn(today), isEmpty);
+      final days = await repo.diaryMonth(today);
+      expect(days.firstWhere((d) => d.date == today).simran, isFalse);
+    });
   });
 
   group('diary month', () {

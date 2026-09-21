@@ -221,5 +221,7 @@ class SimranController extends Notifier<SimranSession> {
           lat: city.lat,
           lon: city.lon,
         );
+    // And read the globe again, so the sitting just added appears on it.
+    ref.invalidate(simranPresenceProvider);
   }
 }
