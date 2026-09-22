@@ -37,9 +37,23 @@ to every session in this repository.
 5. **All UI strings are localised** in `pa`, `hi` and `en` from day one. No
    hard-coded user-facing strings; `test/core/l10n_test.dart` fails on a
    missing or untranslated key.
-6. **Keep platform-specific code behind interfaces** so the iOS app in Phase 3
-   needs new adapters, not rewrites (`HukamnamaSource`, `ReminderService`).
+6. **Keep platform-specific code behind interfaces** so a second platform
+   would need new adapters, not rewrites (`HukamnamaSource`,
+   `ReminderService`). **iOS is off the roadmap** (PRD §17.2, 2026-09-22);
+   the discipline stays because it is also what makes these parts testable,
+   and the 60-pending reminder cap inherited from iOS stays with it.
 7. Every change ends with `flutter analyze` clean and `flutter test` passing.
+
+## The roadmap
+
+Phase 2 is what this build is. **Phase 3 is six things and nothing else**
+(PRD §3.4): report an issue / feedback, points and badges, Sehaj Path and
+the marker, rate the app, a digital Gurdwara visit, and switching analytics
+collection on. There is no phase after it, and the fifteen-item Phase 3 that
+used to be written down -- the iPhone app, Live Kirtan, widgets, Saakhis,
+kids' mode and the rest -- was removed on 2026-09-22 rather than deferred.
+Two of the six carry open decisions before they can be designed: the badge
+names (D11) and which Sehaj Path is meant (D12).
 
 ## Layout
 

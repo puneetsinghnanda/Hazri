@@ -5,7 +5,7 @@
 | Product | **Ang Sang** (ਅੰਗ ਸੰਗ · अंग संग) — "Your daily Nitnem — always with you" |
 | Owner | Puneet Singh (individual developer) |
 | Document | PRD v1.0 · Phase 1 (Launch) · 11 September 2026 |
-| Platform | **Android first (Phase 1 & 2). iOS in Phase 3** from the same codebase |
+| Platform | **Android only.** iOS is not on the roadmap (removed 2026-09-22, §17.2) |
 | Tech stack | **Flutter** (Dart 3), Material 3 with a custom theme |
 | Audience of this doc | Claude Code (implementer) and the product owner |
 
@@ -37,7 +37,7 @@ Live design canvas (all screens side by side, with notes): https://claude.ai/cod
 3. **Never create, paraphrase, auto-translate or AI-generate Gurbani text, Gurbani audio, meanings or images of the Gurus.** All Gurbani and meanings come only from the content pipeline (§8). Sample text in the designs and `design/data/` is a placeholder. English/Hindi meanings in the designs are placeholder paraphrases.
 4. **No ad SDKs, no third-party tracking or attribution SDKs, no login, ever.** Phase 1 goes further: it makes no network requests at all, `INTERNET` is removed from the merged manifest, and ਅੱਜ ਦਾ ਵਿਚਾਰ is bundled rather than fetched, which is what allows that. **Phase 2 restores `INTERNET`** and adds Firebase; what it may then send is the closed list in §13.1. Three things hold across every phase and are not negotiable: **no password and no sign-in screen**; **no request is needed to read a bani, hear it, see the calendar or write the diary**; and **the sangat is opt-in**, so somebody who never joins it is reading, listening and keeping a diary entirely on their own phone.
 5. **All UI strings are localised** (Punjabi, Hindi, English) from day one. No hard-coded user-facing strings.
-6. **Keep platform-specific code behind interfaces** (§6.4) so the iOS app in Phase 3 needs new adapters, not rewrites.
+6. **Keep platform-specific code behind interfaces** (§6.4) so a second platform would need new adapters, not rewrites. iOS is off the roadmap; the discipline stays, because it is also what makes the platform bits testable.
 7. Work milestone by milestone (§15). Each milestone ends with passing tests, `flutter analyze` clean, and a short changelog.
 8. Copy these rules into the repo's `CLAUDE.md` at M0 so they apply to every session.
 
@@ -115,7 +115,7 @@ Ang Sang is a free, offline-first Nitnem app in Punjabi, Hindi and English. Its 
 
 ### 3.2 Out of scope for Phase 1 (do not build; keep hooks where noted)
 
-Sign-in, sync, any backend; Sangat Paath; Global Naam Simran / Simran Circle; family view; Gurbani Vichar AI; extended banis; invite links; home-screen widgets; Report an error; Ask a question; pronunciation practice; more voices; Chromecast; Live Kirtan; Saakhis; badges; Sehaj Path; daily quotes; any payments. **iOS app** (Phase 3).
+Sign-in, sync, any backend; Sangat Paath; Global Naam Simran / Simran Circle; family view; Gurbani Vichar AI; extended banis; invite links; home-screen widgets; Report an error; Ask a question; pronunciation practice; more voices; Chromecast; Live Kirtan; Saakhis; badges; Sehaj Path; daily quotes; any payments. This is a Phase 1 list: several of these are now on no phase at all (§3.4).
 
 ### 3.3 Roadmap context
 
@@ -123,8 +123,147 @@ Sign-in, sync, any backend; Sangat Paath; Global Naam Simran / Simran Circle; fa
 |---|---|---|
 | **1 · Launch (this PRD)** | Best daily Nitnem app. Free, offline, no login, no own server. **Android only.** | 1.1–1.17 |
 | **2 · Together** | Server added (Firebase; Vercel for extras). Still free. Android only. | 2.1 Optional sign-in & diary sync · 2.2 Sangat Paath · 2.3 Global Naam Simran · 2.4 Family view · 2.5 Simran Circle · 2.6 Gurbani Vichar AI (curated knowledge base only, cites Ang/teeka) · 2.7 Extended banis · 2.8 Invite links on own domain · 2.9 Firebase Analytics and Crashlytics wired in, collection off (§13.1) |
-| **3 · Depth + iOS** | Harder to copy; second platform | 3.1 Recitation check · 3.2 Kids' kantth mode & Gurmukhi letters · 3.3 Gurdwara Connect · 3.4 Wear OS Simran counter (+ Apple Watch after iOS) · 3.5 Home-screen widgets (Android + iOS) · 3.6 Report an error · 3.7 Ask a question · 3.8 Pronunciation practice · 3.9 More voices · 3.10 Cast to TV · 3.11 Live Kirtan (with SGPC written permission) · 3.12 Saakhis (never depicting the Gurus) · 3.13 Badges · 3.14 Sehaj Path marker · 3.15 Daily quotes · **3.16 iOS app (iPhone) from the same Flutter codebase — see §17.2** · 3.17 Analytics collection switched on, with the opt-out working (§13.1) |
-| Later | Earning (after forming a non-profit/company) | Dasvandh, Plus plan, occasion pages, gurdwara plans, sewa sponsorship, Paath marketplace, grants |
+| **3 · Depth** | The reader can answer back, and the app can say where they are. **Android only.** | 3.1 Report an issue / Feedback · 3.2 Points and badges · 3.3 Sehaj Path and marker · 3.4 Rate the app · 3.5 Digital Gurdwara visit · 3.6 Analytics collection switched on, with the opt-out working (§13.1) — see §3.4 |
+
+There is no phase after 3. The iPhone app, and the fifteen-item Phase 3 that
+used to sit here, were taken off the roadmap on 2026-09-22; §3.4 lists what
+went and §17.2 says what is kept from the iOS work.
+
+### 3.4 Phase 3 — in scope (features 3.1–3.6)
+
+**What was removed.** Recitation check, kids' kantth mode and Gurmukhi
+letters, Gurdwara Connect, the Wear OS Simran counter, home-screen widgets,
+Ask a question, pronunciation practice, more voices, Cast to TV, Live Kirtan,
+Saakhis, daily quotes, and the iPhone app. Not deferred — off the roadmap.
+The "Later · Earning" row went with them: Dasvandh, a Plus plan, occasion
+pages, gurdwara plans, sewa sponsorship, a Paath marketplace and grants are
+no longer written down as a plan. Three of the six below are survivors under
+new names: 3.1 was 3.6, 3.2 was 3.13, 3.3 was 3.14.
+
+**3.1 Report an issue / Feedback.** The app has never had a way for a reader
+to say that a line is wrong, and rule 3 is why that is the report that
+matters most: no correction can be typed into Dart, so a fix is a change to
+`content/source/` and a rebuilt `content.db`. The form should carry what a
+correction needs — the bani, the line, what is wrong — and let anything else
+be said in the reader's own words.
+
+This is the **one place free text leaves the phone**, and the privacy screen
+has to say so. §13's "no free text" is a rule about analytics: it stops the
+app reporting what somebody wrote in their diary. A feedback message is the
+opposite — it is sent because the reader typed it and pressed send. It must
+never travel through Analytics, and it carries no identifier beyond what the
+reader chooses to put in it. D10 earmarked this feature; this is it.
+
+**3.2 Points and badges.** Points for using the app, and ten named badges
+earned from them.
+
+*The tension to resolve before a line of this is built.* §12 forbids "you
+broke your streak" copy anywhere and rules out push notifications about
+streaks. Phase 2 went further on purpose: the Diary's 44-point streak numeral
+was taken out because **it read as a score**. A points system is the thing
+those decisions were avoiding, so it ships only inside these four
+constraints, and if any of them is dropped the privacy and tone sections have
+to be rewritten in the same change:
+
+- A badge describes the reader's own abhyaas. It is **never a ranking against
+  other people** — no leaderboard, no position, no "ahead of 80% of the
+  sangat". The sangat already counts what a group does together, honestly and
+  without naming anybody's total.
+- **Nothing is ever taken away.** No decay, no expiry, no losing a badge. A
+  missed day costs nothing; that is the whole reason the streak copy was
+  written the way it was.
+- **No notification about points**, ever.
+- Points are **derived from what is already logged** — paath, simran minutes,
+  diary days — and never become a second source of truth beside the diary.
+  The Phase 2 bug where a sitting was marked and its goal was not is exactly
+  what a parallel tally invites.
+
+*The ten names.* A name that Sikhi confers on a person is not an app's to
+hand out, so **Khalsa, Sant, Brahmgyani, Granthi and Bhai Sahib are excluded
+on purpose** — Khalsa above all, which is initiation and not a level. The
+rest describe what somebody has been doing, which an app can honestly
+observe:
+
+| # | Name | Gurmukhi | What it says |
+|---|---|---|---|
+| 1 | Jigyasu | ਜਿਗਿਆਸੂ | The seeker. First open, first bani read. |
+| 2 | Shardhalu | ਸ਼ਰਧਾਲੂ | Coming back with shardha — the first week kept. |
+| 3 | Abhyasi | ਅਭਿਆਸੀ | One who practises: the habit is forming. |
+| 4 | Nitnemi | ਨਿਤਨੇਮੀ | Keeps the nitnem. The one the app exists for. |
+| 5 | Simrani | ਸਿਮਰਨੀ | Settled in simran — hours of sittings, not minutes. |
+| 6 | Paathi | ਪਾਠੀ | Reads the longer paaths through, Sukhmani included. |
+| 7 | Sevadar | ਸੇਵਾਦਾਰ | Sewa in the sangat: a group kept going, a paath logged for it. |
+| 8 | Gursikh | ਗੁਰਸਿੱਖ | The whole of it held together over months. |
+| 9 | Pracharak | ਪ੍ਰਚਾਰਕ | Brought others: invites accepted, a sangat that grew. |
+| 10 | Gyani | ਗਿਆਨੀ | The long road — the banis read with their meanings, over a year. |
+
+Gyani and Pracharak were asked for by the owner and are the two most likely
+to draw an objection, because both name a real role somebody earns from the
+community rather than from an app. They sit last for that reason, and they
+are the two to put in front of a Sikh reader first. The Gurmukhi spellings
+above want the same native ear as the rest of the Phase 2 strings and are not
+final. See D11.
+
+**3.3 Sehaj Path and marker.** This is two different features wearing one
+name, and which one is meant is a decision, not a detail (D12):
+
+- **The marker only.** The reader is doing a Sehaj Path from a Saroop or at a
+  Gurdwara, and the app remembers where they are: an Ang number, a date, how
+  far to go. It ships no scripture, needs no licence, and is a small feature.
+- **The path in the app.** Reading the Sehaj Path *on the phone* needs the
+  full 1430 Angs of Sri Guru Granth Sahib Ji in `content.db` — roughly a
+  hundred times the text the app ships today, under a licence that D1 has not
+  settled for the nine banis it already has. That is a content programme, not
+  a screen, and it should be costed as one before it is promised.
+
+The marker is the one that can be built on the current content; the app must
+not imply it holds the full Saroop while it holds nine banis.
+
+**3.4 Rate the app.** Google Play's In-App Review API (`in_app_review`).
+Two things to design around rather than discover: Play **rate-limits the
+prompt** and gives the app no way to know whether it was shown or what was
+chosen, so the flow must never depend on the outcome and must never nag; and
+a plain "Rate on Play" row in Settings is needed as well, because the
+in-app sheet cannot be relied on to appear when somebody deliberately asks
+to leave a review. Never ask on the way out of a failure, never gate anything
+behind rating, and never ask a reader who has just used Report an issue.
+
+**3.5 Digital Gurdwara visit.** Asked as a question — *is it possible?* Yes,
+and there are three routes, in rising order of what they cost:
+
+1. **Google Street View where it already exists.** Google holds Street View
+   and photosphere coverage in and around a number of Gurdwaras, including
+   the parikrama at Sri Harmandir Sahib. Embedding it is a Maps API key, a
+   billing account and a view; the imagery costs nothing to make. The limit
+   is that the coverage is Google's: it is only where they went, and it can
+   change without notice.
+2. **The app's own 360° tour.** Capture with a 360 camera, host equirectangular
+   panoramas, render them in a panorama view with hotspots between them. Full
+   control, and it reaches Gurdwaras Google has never been to. It is also the
+   **first thing in this app that needs real hosting** — panoramas are large
+   and Firebase's free tier will not carry them, which collides with "still
+   free, no own server".
+3. **A dollhouse scan** (Matterport and its like). The best result, the
+   highest cost, a per-space licence and a third-party dependency for
+   something the app would then depend on.
+
+What decides this is not the rendering. It is **permission and maryada**:
+filming inside a Gurdwara needs the management committee's consent — SGPC for
+Sri Harmandir Sahib — and photography is restricted or forbidden inside the
+sanctum at many. Rule 3 applies unchanged: no imagery depicting the Gurus,
+and what may be shown of Sri Guru Granth Sahib Ji is the committee's answer
+to give, not the app's to assume. It is also the first feature that does not
+work with the radio off, which §14's offline line has to be amended for.
+
+Recommended shape: start at (1) for the Gurdwaras Google already covers,
+which costs a key and proves whether anybody uses it, and commission (2) only
+for a specific Gurdwara that has said yes in writing.
+
+**3.6 Analytics collection switched on**, with the opt-out working. Unchanged
+from the old 3.17 and specified in §13.1: this is the phase where collection
+goes on, Crashlytics is added, the Settings switch becomes live, and the
+privacy screen names analytics as a fourth category. The table in §13.1 and
+that screen move together or not at all.
 
 ---
 
@@ -146,7 +285,7 @@ Android 15+/16 behaviour to respect: enforced **edge-to-edge** (handle system-ba
 
 | Concern | Choice | Notes |
 |---|---|---|
-| Framework | Flutter (latest stable), Dart 3, null-safe | One codebase for Android now, iOS in Phase 3 |
+| Framework | Flutter (latest stable), Dart 3, null-safe | One codebase, Android only |
 | Architecture | Feature-first, layered (UI → controllers → repositories → data sources) | See §6 |
 | State management | `flutter_riverpod` (+ `riverpod_annotation`/generator) | Testable, no BuildContext in logic |
 | Navigation | `go_router` | Deep links from notifications (`angsang://reader/japji?autoplay=1`) |
@@ -173,7 +312,7 @@ Android 15+/16 behaviour to respect: enforced **edge-to-edge** (handle system-ba
 | Lints | `very_good_analysis` or `flutter_lints` (strict) | |
 | CI (optional) | GitHub Actions: analyze → test → build appbundle | |
 
-**Package policy:** every dependency must support **Android and iOS** (for Phase 3) unless it sits behind a platform interface. No ads SDKs, no attribution/tracking SDKs.
+**Package policy:** prefer a dependency that also supports **iOS** unless it sits behind a platform interface — not because iOS is coming, but because a package that only ever targeted one platform is usually the less maintained one. No ads SDKs, no attribution/tracking SDKs.
 
 ---
 
@@ -252,9 +391,13 @@ test/  integration_test/
 
 Repositories expose `Stream`s (drift `watch()`); Riverpod providers derive UI state. Audio state comes from `AudioHandler.playbackState`/`mediaItem` streams plus a position stream. Time-dependent UI (day arc, "Tomorrow · Gurpurab") uses an injectable `Clock` provider for testability.
 
-### 6.4 Platform interfaces (iOS-ready)
+### 6.4 Platform interfaces
 
-| Interface | Android adapter (Phase 1) | iOS adapter (Phase 3) |
+The second column is kept although iOS is off the roadmap: it is the record
+of which parts of the app are platform-shaped, and the reason each of these
+is an interface rather than a direct call.
+
+| Interface | Android adapter | What a second platform would need |
 |---|---|---|
 | `AssetPackService` | Play Asset Delivery (fast-follow / on-demand) | Apple-hosted Background Assets packs (or first-run download from own storage) |
 | `ExactReminderPermission` | `SCHEDULE_EXACT_ALARM` status + open settings | Always "granted" (not applicable) |
@@ -543,7 +686,7 @@ Tap → Reader for that bani with autoplay if audio is available and the user la
 Offsets are adjustable later (store `offset_min`); Phase 1 UI shows only Auto vs My time.
 
 **Scheduling**
-- Rolling window: schedule occurrences for the next 7 days (total pending ≤ 60 to stay iOS-compatible). Re-plan on: app start, any settings change, daily `workmanager` job (~03:00), `BOOT_COMPLETED`, `TIME_SET`, `TIMEZONE_CHANGED`, `LOCALE_CHANGED`, city change.
+- Rolling window: schedule occurrences for the next 7 days (total pending ≤ 60; the cap is inherited from iOS and kept — §17.2). Re-plan on: app start, any settings change, daily `workmanager` job (~03:00), `BOOT_COMPLETED`, `TIME_SET`, `TIMEZONE_CHANGED`, `LOCALE_CHANGED`, city change.
 - Use exact scheduling (`exactAllowWhileIdle`) when `canScheduleExactAlarms` is true; otherwise inexact and show a small hint in Settings.
 - Channels: "Nitnem reminders" (default importance, sound on), "Daily Simran", "Gurpurab", "Paath goals", "Playback". Users can tune each channel in system settings.
 
@@ -613,7 +756,7 @@ day, bundled, working in airplane mode like the rest of the app.
 - Toggle in Setup 2 and Settings → Display. Applies app-wide: text ≥1.6× (reader minimum 30 sp), touch targets ≥ 64 dp, high-contrast colours, no small chips, no swipe-to-dismiss, bottom nav with **3 tabs** (Today, Nitnem, Settings) and larger labels.
 - Elder Today (Design 11): "Large text on" chip; greeting; date; big primary card "Start Nitnem · from Japji Sahib · 63 min"; card "ਅੱਜ ਦਾ ਵਿਚਾਰ" with the day's line; Amrit Vela status card (big ring, "5 banis · Japji Sahib in progress"); Rehras card with time.
 - Elder mode never hides content (Simran, Diary remain reachable from Today/Settings).
-- Phase 3 hook: "Set up a parent's phone by QR" — not in Phase 1.
+- "Set up a parent's phone by QR" was a Phase 3 hook and is on no phase now.
 
 ### 1.13 Daily Simran — Design 21
 
@@ -733,6 +876,13 @@ a lie to the reader.
 | The Settings opt-out switch | absent | present but inert, and shown as unavailable rather than pretending to work | live, and stops both Analytics and Crashlytics |
 | Advertising ID | absent | absent | absent |
 
+**"No free text" is a rule about analytics, not about the reader.** Phase 3's
+Report an issue (§3.1) sends what somebody typed because they typed it and
+pressed send. It does not travel through Analytics and it is not in the event
+list above; the row in this table is unchanged by it. The privacy screen has
+to name it as its own thing, in the reader's words: a message you chose to
+send us.
+
 **Phase 2 ships the Analytics SDK and sends nothing through it.** Wiring it in
 Phase 2 means the events are defined, the calls sit where they belong and the
 switch already exists; flipping collection on in Phase 3 is then one line and
@@ -814,25 +964,22 @@ Work in order. Each milestone = one or more PRs with tests; demo build at the en
 - Reader and audio are bani-agnostic: extended banis are a content.db update.
 - A `featureFlags` provider (local JSON) to hide unfinished features.
 
-### 17.2 Phase 3 — iOS app (same Flutter codebase)
+### 17.2 iOS — off the roadmap
 
-Decision: **Android only in Phases 1–2; iPhone app ships in Phase 3.** Everything in Phase 1 must stay iOS-portable.
+**Decision, 2026-09-22: the iPhone app is removed from the plan.** Android
+only, with no second platform scheduled. The costed port table that stood
+here — Apple Developer Program, a Mac or Codemagic, TestFlight, Background
+Assets, `UIBackgroundModes`, WidgetKit — is in this file's history
+(`git log -p -- docs/PRD.md`) if it is ever wanted again.
 
-| Area | Android (Phase 1) | iOS work in Phase 3 |
-|---|---|---|
-| Accounts & cost | Play personal account ($25 once) | Apple Developer Program ($99/year); seller name shown on the App Store |
-| Build machine | Any PC | Mac with Xcode, or a cloud build service (e.g., Codemagic) |
-| Testing | Closed test 12 × 14 days | TestFlight; App Store review |
-| Audio packs | Play Asset Delivery | `AssetPackService` iOS adapter: Apple-hosted Background Assets packs (newer iOS) or first-run download from own storage (Phase 2 server); On-Demand Resources as legacy option |
-| Background audio | Foreground service | `UIBackgroundModes: audio`; `audio_service` iOS setup; Now Playing info & remote commands |
-| Reminders | Exact alarm permission + rolling 7-day window | No exact-alarm permission; **max 64 pending local notifications** → scheduler cap of 60 (already built in) |
-| Notification permission | `POST_NOTIFICATIONS` | Provisional/standard authorisation prompt |
-| Backup | Android Auto Backup | iCloud device backup of app documents |
-| Sign-in (from Phase 2) | Google | Must also offer Sign in with Apple or an equivalent privacy-focused login if third-party login is used (App Store guideline 4.8) |
-| Widgets (3.5) | Jetpack Glance/AppWidget | WidgetKit (Swift extension) via `home_widget` |
-| Watch (3.4) | Wear OS Simran counter | Apple Watch Simran counter (watchOS, Swift) |
-| Design | Material 3 custom | Same design; iOS swipe-back, Cupertino date/time pickers where natural, safe-area insets |
-| Store | Play listing | App Store listing in 3 languages, privacy "nutrition label" |
+Two things it left behind are still live and are **not** to be undone:
+
+- **The reminder scheduler caps pending notifications at 60.** That number
+  came from iOS's limit of 64. It costs Android nothing, the rolling 7-day
+  window needs far fewer, and it is already built.
+- **The platform interfaces in §6.4.** They stay because they are what makes
+  the platform-shaped parts of the app testable, which is a reason that does
+  not depend on a second platform ever existing.
 
 ---
 
@@ -848,7 +995,9 @@ Decision: **Android only in Phases 1–2; iPhone app ships in Phase 3.** Everyth
 | D7 | Domain for privacy policy & share links | M10 | — |
 | D8 | Full SGPC 558 (and 559) calendar data | M9 | Sample file only |
 | D9 | Paathi display name/credit | M10 | "[Paathi name]" placeholder |
-| D10 | Report an error | — | Phase 3 (confirmed by owner) |
+| D10 | Report an error | — | Phase 3 (confirmed by owner) — now 3.1, with Feedback |
+| D11 | **The ten badge names** (§3.2) — whether Gyani and Pracharak are names an app may hand out, and the Gurmukhi and Devanagari spellings of all ten | Before 3.2 is built | Ask a Sikh reader before the screen is designed, not after |
+| D12 | **Which Sehaj Path** (§3.3) — the marker alone, or the full 1430 Angs in the app | Before 3.3 is scoped | The marker. The full text is a content programme gated on D1 |
 
 ---
 
