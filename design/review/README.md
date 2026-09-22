@@ -26,3 +26,11 @@ mapping as `files`. To open it from disk instead, copy the 44 files:
 The screen list, the grouping and the one-line note under each screen live in
 the `SECTIONS` constant at the top of the script. A screen added to
 `design/html/` is not on the review page until it is added there.
+
+## Phase 3
+
+`phase3-review.html` is the same page for the Phase 3 set, screens 62 to 84,
+which `tools/design/phase3_screens.py` draws into `design/html/` (light and
+dark). Re-run that script after changing a screen, then republish the page
+with the 46 files mapped as `screens/<id>.<light|dark>.html`. Its comments
+live in the Phase 3 artifact's own database, apart from Phase 2's.
