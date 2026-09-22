@@ -361,7 +361,7 @@ Each feature lists design references, behaviour and acceptance criteria (AC). "D
 ### 1.1 Splash and intro — Design 01–04
 
 **Behaviour**
-- System splash (Android 12 SplashScreen API): app mark on `#0C0F24`. Then the branded splash (Design 01) for ≤1.5 s **on first launch only**; later launches go straight to Today.
+- System splash (Android 12 SplashScreen API): app mark on `#0C0F24`. **The branded splash (Design 01) is out for now** at the reader's request (2026-09-22): every launch goes straight to Today, and a first launch is redirected from there to Intro 1. Design 01 stays in `design/screens/` as the record of what it was.
 - Three intro pages in a `PageView` (swipe or **Next**; last page **Get started**):
   1. *Your Nitnem, always with you*: day arc mock, chips "Works offline · No login · No ads on Gurbani".
   2. *Read along as the paath is recited*: highlighted line mock, "Phone locked — paath keeps playing".

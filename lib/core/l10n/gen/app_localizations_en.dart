@@ -1062,6 +1062,16 @@ class LEn extends L {
   String get notifSimranBody => 'Five quiet minutes of Waheguru Simran.';
 
   @override
+  String get notifSimranEndTitle => 'Simran complete';
+
+  @override
+  String get notifSimranEndBody =>
+      'Your sitting has run its length. It is logged in your Diary.';
+
+  @override
+  String get simranSangatUnreachable => 'Could not reach the sangat just now';
+
+  @override
   String get notifGurpurabTitle => 'Tomorrow is a Gurpurab';
 
   @override
@@ -1123,7 +1133,7 @@ class LEn extends L {
 
   @override
   String get audioIncludedSub =>
-      'Japji Sahib plays offline, with the text following along.';
+      'Every bani plays offline, with the text following along.';
 
   @override
   String get settingsAudioOnPhone => 'Saved on this phone';
@@ -1655,6 +1665,16 @@ class LEn extends L {
   String get groupInviteCopied => 'Link copied';
 
   @override
+  String get groupCodeCopied => 'Code copied';
+
+  @override
+  String get sangatAlreadyJoined => 'Already joined? Bring my account back';
+
+  @override
+  String get privacyExportNote =>
+      'Your diary, goals and reading position are not here because they are not held anywhere but this phone, unless you switched Diary sync on.';
+
+  @override
   String get groupInviteRemove => 'Remove';
 
   @override
@@ -1729,9 +1749,6 @@ class LEn extends L {
 
   @override
   String get diaryGoalsDot => 'Goals';
-
-  @override
-  String get diaryWhatYouDid => 'What you completed';
 
   @override
   String get diaryNotYet => 'not yet';
@@ -1824,6 +1841,10 @@ class LEn extends L {
 
   @override
   String get privacyPhoneDiary => 'Your diary and streaks';
+
+  @override
+  String get privacyPhoneDiarySynced =>
+      'Your streaks; your diary also syncs to your account';
 
   @override
   String get privacyPhoneProgress => 'Reading position and goals';
@@ -2114,7 +2135,7 @@ class LEn extends L {
 
   @override
   String get goalSimranLoops =>
-      'The recitation is five minutes long and loops with a soft crossfade for anything longer.';
+      'The recitation is five minutes long and starts again from the top for anything longer.';
 
   @override
   String get groupStartCounts =>
@@ -2156,21 +2177,22 @@ class LEn extends L {
   String get diaryStatGoalsMet => 'goals met';
 
   @override
-  String get diaryStatPaath => 'paath';
-
-  @override
-  String get diaryStatSimranMinutes => 'simran minutes';
-
-  @override
   String get diaryStatDaysInRow => 'days in a row';
-
-  @override
-  String get diaryTickAnything => 'Tick anything you completed on this day';
 
   @override
   String diaryNotYetAt(String time) {
     return 'not yet · $time';
   }
+
+  @override
+  String get diaryHazriAndGoals => 'Hazri and goals';
+
+  @override
+  String get diaryTickGoals =>
+      'Any paath or sitting of simran marks the hazri. Tick a goal you completed on this day, or mark the hazri yourself for a paath read elsewhere.';
+
+  @override
+  String get diaryNoGoalsThatDay => 'No goals were set on this day';
 
   @override
   String get simranPaused => 'Paused';

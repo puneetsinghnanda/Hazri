@@ -339,6 +339,24 @@ class UserRepository {
             ),
           );
 
+  /// Takes back the newest tick on one goal for a day, whoever added it.
+  ///
+  /// The diary's day screen lets somebody tick a goal and untick it again,
+  /// and the untick has to undo exactly the tick before it -- not the last
+  /// automatic credit for the bani, which is what [removeGoalCreditFor] is
+  /// for and which would leave a hand-added tick standing.
+  Future<void> untickGoal(String goalId, {DateTime? on}) async {
+    final key = localDateKey(on ?? _clock.today());
+    final newest = await (_db.select(_db.goalTicks)
+          ..where((t) => t.goalId.equals(goalId) & t.localDate.equals(key))
+          ..orderBy([(t) => OrderingTerm(expression: t.at, mode: OrderingMode.desc)])
+          ..limit(1))
+        .getSingleOrNull();
+    if (newest != null) {
+      await (_db.delete(_db.goalTicks)..where((t) => t.id.equals(newest.id))).go();
+    }
+  }
+
   /// Adds a tick to every active goal for [baniId] that has not met its daily
   /// target yet (PRD 1.15).
   Future<void> creditGoalsFor(String baniId, {DateTime? on}) async {

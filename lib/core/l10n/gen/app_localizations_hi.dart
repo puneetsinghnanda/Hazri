@@ -1057,6 +1057,16 @@ class LHi extends L {
   String get notifSimranBody => 'वाहिगुरू सिमरन के पाँच शांत मिनट।';
 
   @override
+  String get notifSimranEndTitle => 'सिमरन पूरा हुआ';
+
+  @override
+  String get notifSimranEndBody =>
+      'आपका सिमरन अपना समय पूरा कर चुका है। डायरी में लिख लिया गया है।';
+
+  @override
+  String get simranSangatUnreachable => 'संगत तक अभी पहुँच नहीं हो सकी';
+
+  @override
   String get notifGurpurabTitle => 'कल गुरपुरब है';
 
   @override
@@ -1118,7 +1128,7 @@ class LHi extends L {
 
   @override
   String get audioIncludedSub =>
-      'जपु जी साहिब बिना इंटरनेट चलता है, और लिखाई साथ-साथ चलती है।';
+      'हर बाणी बिना इंटरनेट चलती है, और लिखाई साथ-साथ चलती है।';
 
   @override
   String get settingsAudioOnPhone => 'इसी फ़ोन में सहेजी है';
@@ -1653,6 +1663,16 @@ class LHi extends L {
   String get groupInviteCopied => 'लिंक कॉपी हो गया';
 
   @override
+  String get groupCodeCopied => 'कोड कॉपी हो गया';
+
+  @override
+  String get sangatAlreadyJoined => 'पहले से जुड़े हैं? मेरा खाता वापस लाएँ';
+
+  @override
+  String get privacyExportNote =>
+      'आपकी डायरी, संकल्प और पढ़ने की जगह यहाँ नहीं हैं, क्योंकि ये इस फ़ोन के बाहर कहीं नहीं रखे जाते — जब तक आपने डायरी सिंक चालू न किया हो।';
+
+  @override
   String get groupInviteRemove => 'हटाएँ';
 
   @override
@@ -1727,9 +1747,6 @@ class LHi extends L {
 
   @override
   String get diaryGoalsDot => 'संकल्प';
-
-  @override
-  String get diaryWhatYouDid => 'जो आपने पूरा किया';
 
   @override
   String get diaryNotYet => 'अभी नहीं';
@@ -1822,6 +1839,10 @@ class LHi extends L {
 
   @override
   String get privacyPhoneDiary => 'आपकी डायरी और निरंतरता';
+
+  @override
+  String get privacyPhoneDiarySynced =>
+      'आपकी निरंतरता; डायरी आपके खाते से भी सिंक होती है';
 
   @override
   String get privacyPhoneProgress => 'पढ़ने की जगह और संकल्प';
@@ -2109,7 +2130,7 @@ class LHi extends L {
 
   @override
   String get goalSimranLoops =>
-      'पाठ पाँच मिनट का है और इससे ज़्यादा के लिए हल्की मिश्रित आवाज़ के साथ दोहराया जाता है।';
+      'पाठ पाँच मिनट का है और इससे ज़्यादा के लिए फिर शुरू से चलता है।';
 
   @override
   String get groupStartCounts =>
@@ -2149,21 +2170,22 @@ class LHi extends L {
   String get diaryStatGoalsMet => 'संकल्प पूरे';
 
   @override
-  String get diaryStatPaath => 'पाठ';
-
-  @override
-  String get diaryStatSimranMinutes => 'सिमरन के मिनट';
-
-  @override
   String get diaryStatDaysInRow => 'लगातार दिन';
-
-  @override
-  String get diaryTickAnything => 'इस दिन जो भी पूरा किया, निशान लगाएँ';
 
   @override
   String diaryNotYetAt(String time) {
     return 'अभी नहीं · $time';
   }
+
+  @override
+  String get diaryHazriAndGoals => 'हाज़िरी और संकल्प';
+
+  @override
+  String get diaryTickGoals =>
+      'कोई भी पाठ या एक बार का सिमरन हाज़िरी लगा देता है। इस दिन जो संकल्प पूरा किया उस पर निशान लगाएँ, या कहीं और किए पाठ के लिए हाज़िरी स्वयं लगाएँ।';
+
+  @override
+  String get diaryNoGoalsThatDay => 'इस दिन कोई संकल्प नहीं था';
 
   @override
   String get simranPaused => 'रुका हुआ';

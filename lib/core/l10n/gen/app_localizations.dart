@@ -1959,6 +1959,24 @@ abstract class L {
   /// **'Five quiet minutes of Waheguru Simran.'**
   String get notifSimranBody;
 
+  /// No description provided for @notifSimranEndTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Simran complete'**
+  String get notifSimranEndTitle;
+
+  /// No description provided for @notifSimranEndBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your sitting has run its length. It is logged in your Diary.'**
+  String get notifSimranEndBody;
+
+  /// No description provided for @simranSangatUnreachable.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the sangat just now'**
+  String get simranSangatUnreachable;
+
   /// No description provided for @notifGurpurabTitle.
   ///
   /// In en, this message translates to:
@@ -2070,7 +2088,7 @@ abstract class L {
   /// No description provided for @audioIncludedSub.
   ///
   /// In en, this message translates to:
-  /// **'Japji Sahib plays offline, with the text following along.'**
+  /// **'Every bani plays offline, with the text following along.'**
   String get audioIncludedSub;
 
   /// No description provided for @settingsAudioOnPhone.
@@ -3075,6 +3093,24 @@ abstract class L {
   /// **'Link copied'**
   String get groupInviteCopied;
 
+  /// No description provided for @groupCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied'**
+  String get groupCodeCopied;
+
+  /// No description provided for @sangatAlreadyJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Already joined? Bring my account back'**
+  String get sangatAlreadyJoined;
+
+  /// No description provided for @privacyExportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diary, goals and reading position are not here because they are not held anywhere but this phone, unless you switched Diary sync on.'**
+  String get privacyExportNote;
+
   /// No description provided for @groupInviteRemove.
   ///
   /// In en, this message translates to:
@@ -3212,12 +3248,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Goals'**
   String get diaryGoalsDot;
-
-  /// No description provided for @diaryWhatYouDid.
-  ///
-  /// In en, this message translates to:
-  /// **'What you completed'**
-  String get diaryWhatYouDid;
 
   /// No description provided for @diaryNotYet.
   ///
@@ -3386,6 +3416,12 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Your diary and streaks'**
   String get privacyPhoneDiary;
+
+  /// No description provided for @privacyPhoneDiarySynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Your streaks; your diary also syncs to your account'**
+  String get privacyPhoneDiarySynced;
 
   /// No description provided for @privacyPhoneProgress.
   ///
@@ -3900,7 +3936,7 @@ abstract class L {
   /// No description provided for @goalSimranLoops.
   ///
   /// In en, this message translates to:
-  /// **'The recitation is five minutes long and loops with a soft crossfade for anything longer.'**
+  /// **'The recitation is five minutes long and starts again from the top for anything longer.'**
   String get goalSimranLoops;
 
   /// No description provided for @groupStartCounts.
@@ -3969,35 +4005,35 @@ abstract class L {
   /// **'goals met'**
   String get diaryStatGoalsMet;
 
-  /// No description provided for @diaryStatPaath.
-  ///
-  /// In en, this message translates to:
-  /// **'paath'**
-  String get diaryStatPaath;
-
-  /// No description provided for @diaryStatSimranMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'simran minutes'**
-  String get diaryStatSimranMinutes;
-
   /// No description provided for @diaryStatDaysInRow.
   ///
   /// In en, this message translates to:
   /// **'days in a row'**
   String get diaryStatDaysInRow;
 
-  /// No description provided for @diaryTickAnything.
-  ///
-  /// In en, this message translates to:
-  /// **'Tick anything you completed on this day'**
-  String get diaryTickAnything;
-
   /// No description provided for @diaryNotYetAt.
   ///
   /// In en, this message translates to:
   /// **'not yet · {time}'**
   String diaryNotYetAt(String time);
+
+  /// No description provided for @diaryHazriAndGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri and goals'**
+  String get diaryHazriAndGoals;
+
+  /// No description provided for @diaryTickGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Any paath or sitting of simran marks the hazri. Tick a goal you completed on this day, or mark the hazri yourself for a paath read elsewhere.'**
+  String get diaryTickGoals;
+
+  /// No description provided for @diaryNoGoalsThatDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No goals were set on this day'**
+  String get diaryNoGoalsThatDay;
 
   /// No description provided for @simranPaused.
   ///

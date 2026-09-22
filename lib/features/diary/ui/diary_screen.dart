@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
+import '../../../core/db/user_db.dart';
 import '../../../core/db/user_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
@@ -22,15 +23,38 @@ final diaryMonthProvider = StateProvider<DateTime>((ref) {
   return DateTime(today.year, today.month);
 });
 
+/// Every completion, every sitting and every goal tick, as streams.
+///
+/// These exist to be watched by the providers below, so that the month grid
+/// and the streak are rebuilt when any of the three tables changes. They used
+/// to call `watchCompletions()` and drop the stream on the floor, which
+/// watched nothing: a sitting finished on the Simran tab did not reach the
+/// Diary until something else happened to invalidate it.
+final _completionsProvider = StreamProvider<List<Completion>>(
+  (ref) => ref.watch(userRepositoryProvider).watchCompletions(),
+);
+final _simranSessionsProvider = StreamProvider<List<SimranSession>>(
+  (ref) => ref.watch(userRepositoryProvider).watchSimranSessions(),
+);
+final _goalTicksProvider = StreamProvider<List<GoalTick>>(
+  (ref) => ref.watch(userRepositoryProvider).watchGoalTicks(),
+);
+
+void _watchWrites(Ref ref) {
+  ref.watch(_completionsProvider);
+  ref.watch(_simranSessionsProvider);
+  ref.watch(_goalTicksProvider);
+}
+
 final diaryDaysProvider = FutureProvider<List<DiaryDay>>((ref) {
-  // Rebuild whenever a completion or Simran session is written.
-  ref.watch(userRepositoryProvider).watchCompletions();
+  _watchWrites(ref);
   return ref.watch(userRepositoryProvider).diaryMonth(ref.watch(diaryMonthProvider));
 });
 
-final streakProvider = FutureProvider<StreakResult>(
-  (ref) => ref.watch(userRepositoryProvider).streak(),
-);
+final streakProvider = FutureProvider<StreakResult>((ref) {
+  _watchWrites(ref);
+  return ref.watch(userRepositoryProvider).streak();
+});
 
 /// One day, for design 56.
 ///
@@ -38,7 +62,7 @@ final streakProvider = FutureProvider<StreakResult>(
 /// grace day and the goals-met flag are worked out by exactly the code the
 /// grid uses. It is a local SQLite read either way.
 final diaryDayProvider = FutureProvider.family<DiaryDay?, DateTime>((ref, date) async {
-  ref.watch(userRepositoryProvider).watchCompletions();
+  _watchWrites(ref);
   final month = await ref
       .watch(userRepositoryProvider)
       .diaryMonth(DateTime(date.year, date.month));

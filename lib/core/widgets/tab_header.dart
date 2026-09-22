@@ -31,8 +31,13 @@ class TabHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
+    // No side padding of its own. Every tab that carries this header lays it
+    // out inside a ListView that already keeps the gutter, and the header
+    // used to add the gutter again: the menu button and the tab's name sat
+    // 40 dp in while the cards under them sat at 20, which is not where
+    // design 30 puts them. The 22 dp above is design 30's own top padding.
     return Padding(
-      padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 14, HazriSize.gutter, 6),
+      padding: const EdgeInsets.only(top: 22, bottom: 6),
       child: Row(
         children: [
           CardIconButton(
@@ -41,6 +46,7 @@ class TabHeader extends StatelessWidget {
             onPressed: onMenu,
             size: 40,
             iconSize: 20,
+            radius: 13,
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -49,7 +55,8 @@ class TabHeader extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: HazriText.display22.copyWith(color: c.ink, fontSize: 24),
+                  style: HazriText.display22
+                      .copyWith(color: c.ink, fontSize: 24, height: 1.15),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

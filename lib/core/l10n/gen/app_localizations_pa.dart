@@ -1058,6 +1058,16 @@ class LPa extends L {
   String get notifSimranBody => 'ਵਾਹਿਗੁਰੂ ਸਿਮਰਨ ਦੇ ਪੰਜ ਸ਼ਾਂਤ ਮਿੰਟ।';
 
   @override
+  String get notifSimranEndTitle => 'ਸਿਮਰਨ ਪੂਰਾ ਹੋਇਆ';
+
+  @override
+  String get notifSimranEndBody =>
+      'ਤੁਹਾਡਾ ਸਿਮਰਨ ਆਪਣਾ ਸਮਾਂ ਪੂਰਾ ਕਰ ਚੁੱਕਾ ਹੈ। ਡਾਇਰੀ ਵਿੱਚ ਲਿਖ ਲਿਆ ਗਿਆ ਹੈ।';
+
+  @override
+  String get simranSangatUnreachable => 'ਸੰਗਤ ਤੱਕ ਹੁਣੇ ਪਹੁੰਚ ਨਹੀਂ ਹੋ ਸਕੀ';
+
+  @override
   String get notifGurpurabTitle => 'ਕੱਲ੍ਹ ਗੁਰਪੁਰਬ ਹੈ';
 
   @override
@@ -1119,7 +1129,7 @@ class LPa extends L {
 
   @override
   String get audioIncludedSub =>
-      'ਜਪੁ ਜੀ ਸਾਹਿਬ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦਾ ਹੈ, ਅਤੇ ਲਿਖਤ ਨਾਲ-ਨਾਲ ਚੱਲਦੀ ਹੈ।';
+      'ਹਰ ਬਾਣੀ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀ ਹੈ, ਅਤੇ ਲਿਖਤ ਨਾਲ-ਨਾਲ ਚੱਲਦੀ ਹੈ।';
 
   @override
   String get settingsAudioOnPhone => 'ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲੀ ਹੈ';
@@ -1653,6 +1663,16 @@ class LPa extends L {
   String get groupInviteCopied => 'ਲਿੰਕ ਕਾਪੀ ਹੋ ਗਿਆ';
 
   @override
+  String get groupCodeCopied => 'ਕੋਡ ਕਾਪੀ ਹੋ ਗਿਆ';
+
+  @override
+  String get sangatAlreadyJoined => 'ਪਹਿਲਾਂ ਹੀ ਸ਼ਾਮਲ ਹੋ? ਮੇਰਾ ਖਾਤਾ ਵਾਪਸ ਲਿਆਓ';
+
+  @override
+  String get privacyExportNote =>
+      'ਤੁਹਾਡੀ ਡਾਇਰੀ, ਸੰਕਲਪ ਤੇ ਪੜ੍ਹਨ ਦੀ ਥਾਂ ਇੱਥੇ ਨਹੀਂ ਹਨ, ਕਿਉਂਕਿ ਇਹ ਇਸ ਫ਼ੋਨ ਤੋਂ ਬਾਹਰ ਕਿਤੇ ਨਹੀਂ ਰੱਖੇ ਜਾਂਦੇ — ਜਦ ਤੱਕ ਤੁਸੀਂ ਡਾਇਰੀ ਸਿੰਕ ਚਾਲੂ ਨਾ ਕੀਤਾ ਹੋਵੇ।';
+
+  @override
   String get groupInviteRemove => 'ਹਟਾਓ';
 
   @override
@@ -1727,9 +1747,6 @@ class LPa extends L {
 
   @override
   String get diaryGoalsDot => 'ਸੰਕਲਪ';
-
-  @override
-  String get diaryWhatYouDid => 'ਜੋ ਤੁਸੀਂ ਪੂਰਾ ਕੀਤਾ';
 
   @override
   String get diaryNotYet => 'ਅਜੇ ਨਹੀਂ';
@@ -1822,6 +1839,10 @@ class LPa extends L {
 
   @override
   String get privacyPhoneDiary => 'ਤੁਹਾਡੀ ਡਾਇਰੀ ਤੇ ਲਗਾਤਾਰਤਾ';
+
+  @override
+  String get privacyPhoneDiarySynced =>
+      'ਤੁਹਾਡੀ ਲਗਾਤਾਰਤਾ; ਡਾਇਰੀ ਤੁਹਾਡੇ ਖਾਤੇ ਨਾਲ ਵੀ ਸਿੰਕ ਹੁੰਦੀ ਹੈ';
 
   @override
   String get privacyPhoneProgress => 'ਪੜ੍ਹਨ ਦੀ ਥਾਂ ਤੇ ਸੰਕਲਪ';
@@ -2110,7 +2131,7 @@ class LPa extends L {
 
   @override
   String get goalSimranLoops =>
-      'ਪਾਠ ਪੰਜ ਮਿੰਟ ਦਾ ਹੈ ਤੇ ਇਸ ਤੋਂ ਵੱਧ ਲਈ ਹੌਲੀ ਜਿਹੀ ਰਲ਼ਵੀਂ ਆਵਾਜ਼ ਨਾਲ ਦੁਹਰਾਇਆ ਜਾਂਦਾ ਹੈ।';
+      'ਪਾਠ ਪੰਜ ਮਿੰਟ ਦਾ ਹੈ ਤੇ ਇਸ ਤੋਂ ਵੱਧ ਲਈ ਮੁੜ ਸ਼ੁਰੂ ਤੋਂ ਚੱਲਦਾ ਹੈ।';
 
   @override
   String get groupStartCounts =>
@@ -2150,21 +2171,22 @@ class LPa extends L {
   String get diaryStatGoalsMet => 'ਸੰਕਲਪ ਪੂਰੇ';
 
   @override
-  String get diaryStatPaath => 'ਪਾਠ';
-
-  @override
-  String get diaryStatSimranMinutes => 'ਸਿਮਰਨ ਦੇ ਮਿੰਟ';
-
-  @override
   String get diaryStatDaysInRow => 'ਲਗਾਤਾਰ ਦਿਨ';
-
-  @override
-  String get diaryTickAnything => 'ਇਸ ਦਿਨ ਜੋ ਵੀ ਪੂਰਾ ਕੀਤਾ, ਨਿਸ਼ਾਨ ਲਾਓ';
 
   @override
   String diaryNotYetAt(String time) {
     return 'ਅਜੇ ਨਹੀਂ · $time';
   }
+
+  @override
+  String get diaryHazriAndGoals => 'ਹਾਜ਼ਰੀ ਅਤੇ ਸੰਕਲਪ';
+
+  @override
+  String get diaryTickGoals =>
+      'ਕੋਈ ਵੀ ਪਾਠ ਜਾਂ ਇੱਕ ਵਾਰ ਦਾ ਸਿਮਰਨ ਹਾਜ਼ਰੀ ਲਾ ਦਿੰਦਾ ਹੈ। ਇਸ ਦਿਨ ਜੋ ਸੰਕਲਪ ਪੂਰਾ ਕੀਤਾ ਉਸ ਤੇ ਨਿਸ਼ਾਨ ਲਾਓ, ਜਾਂ ਕਿਤੇ ਹੋਰ ਕੀਤੇ ਪਾਠ ਲਈ ਹਾਜ਼ਰੀ ਆਪ ਲਾਓ।';
+
+  @override
+  String get diaryNoGoalsThatDay => 'ਇਸ ਦਿਨ ਕੋਈ ਸੰਕਲਪ ਨਹੀਂ ਸੀ';
 
   @override
   String get simranPaused => 'ਰੁਕਿਆ ਹੋਇਆ';

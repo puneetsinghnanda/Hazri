@@ -26,7 +26,6 @@ import '../features/vichar/ui/vichar_screen.dart';
 import '../features/nitnem/ui/nitnem_screen.dart';
 import '../features/onboarding/ui/intro_screen.dart';
 import '../features/onboarding/ui/setup_screen.dart';
-import '../features/onboarding/ui/splash_screen.dart';
 import '../features/reader/ui/reader_screen.dart';
 import '../features/reminders/data/reminder_service.dart';
 import '../features/reminders/ui/battery_help_screen.dart';
@@ -39,7 +38,6 @@ import 'shell.dart';
 
 /// Named routes, so no screen has to spell a path out by hand.
 abstract final class Routes {
-  static const splash = '/';
   static const intro = '/intro';
   static const today = '/today';
   static const nitnem = '/nitnem';
@@ -119,9 +117,13 @@ final _rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
     navigatorKey: _rootKey,
-    initialLocation: Routes.splash,
+    // Straight to Today. There is no branded splash any more: the reader
+    // asked for it to go, and the Android 12 system splash -- the app mark on
+    // the launch colour, drawn by the platform before Flutter has a frame --
+    // is all that shows while the app starts. The redirect below sends a
+    // first launch to the intro instead.
+    initialLocation: Routes.today,
     routes: [
-      GoRoute(path: Routes.splash, builder: (_, _) => const SplashScreen()),
       GoRoute(path: Routes.intro, builder: (_, _) => const IntroScreen()),
       GoRoute(
         path: '/setup/:step',
@@ -217,7 +219,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       final settings = ref.read(settingsProvider);
       final loc = state.matchedLocation;
       final inOnboarding = loc == Routes.intro || loc.startsWith('/setup');
-      if (loc == Routes.splash) return null;
       if (!settings.onboardingDone && !inOnboarding) return Routes.intro;
       if (settings.onboardingDone && inOnboarding) return Routes.today;
       return null;

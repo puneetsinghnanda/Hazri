@@ -73,6 +73,16 @@ class SimranSessions extends Table {
 /// two tables would mean two of every query.
 const String kSimranGoalId = 'simran';
 
+/// The `baniId` of a completion that marks the day's hazri by hand.
+///
+/// The diary's day screen lists the hazri and the goals, not every nitnem
+/// bani, so somebody who read a paath away from the phone -- at the gurdwara,
+/// from a gutka -- needs a way to say the day happened without naming a bani
+/// the app has no record of. This is that: a completion like any other for
+/// the streak and the diary's first dot, with no bani behind it, so the
+/// banner says "Marked at 6:12 AM" and nothing about what with.
+const String kHazriMarkId = 'hazri';
+
 class Goals extends Table {
   TextColumn get id => text()();
   TextColumn get baniId => text()();
