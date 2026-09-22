@@ -231,6 +231,14 @@ class FirebaseAccountRepository implements AccountRepository {
             .doc(user.uid)
             .delete();
       }
+      // The synced diary, if sync was ever on. Firestore does not delete a
+      // subcollection with its parent, so without this every day design 49
+      // uploaded stayed on the server after "delete everything".
+      final diary =
+          await _db.collection('users').doc(user.uid).collection('diary').get();
+      for (final day in diary.docs) {
+        await day.reference.delete();
+      }
       await _db.collection('users').doc(user.uid).delete();
     } on FirebaseException catch (e) {
       return _firestoreOutcome(e, 'delete account');

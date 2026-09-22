@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/l10n/gen/app_localizations.dart';
+import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
@@ -49,7 +50,12 @@ class PrivacyScreen extends ConsumerWidget {
         const SizedBox(height: 6),
 
         _Section(title: l.privacyOnPhoneOnly, icon: HazriIconData.lock, items: [
-          l.privacyPhoneDiary,
+          // True as written while sync is off, which is the default. With it
+          // on, the diary's dates do go to the account (PRD §13.1), and this
+          // screen is not allowed to say otherwise.
+          ref.watch(settingsProvider.select((s) => s.diarySync))
+              ? l.privacyPhoneDiarySynced
+              : l.privacyPhoneDiary,
           l.privacyPhoneProgress,
           l.privacyPhoneContent,
         ]),
@@ -127,6 +133,7 @@ class PrivacyScreen extends ConsumerWidget {
     WidgetRef ref,
     SangatAccount account,
   ) async {
+    final l = L.of(context);
     final groups = ref.read(myGroupsProvider).value ?? const [];
     final data = {
       'account': {
@@ -146,8 +153,7 @@ class PrivacyScreen extends ConsumerWidget {
             'youAreAdmin': g.youAreAdmin,
           },
       ],
-      'note': 'Your diary, goals and reading position are not here because '
-          'they are not held anywhere but this phone.',
+      'note': l.privacyExportNote,
     };
 
     final dir = await getTemporaryDirectory();

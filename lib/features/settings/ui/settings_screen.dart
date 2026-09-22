@@ -299,6 +299,15 @@ class SettingsScreen extends ConsumerWidget {
                     subtitle: l.settingsBackupSub,
                     value: l.on,
                   ),
+                  // Design 49 was reachable from the account screen alone,
+                  // which somebody who has not joined cannot open. The row
+                  // is here for everybody; the screen itself says what it
+                  // needs.
+                  SettingsRow(
+                    title: l.syncTitle,
+                    subtitle: s.diarySync ? l.on : l.off,
+                    onTap: () => context.push(Routes.sync),
+                  ),
                 ],
               ),
 

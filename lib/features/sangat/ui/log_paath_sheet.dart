@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
-import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../../core/widgets/stepper_button.dart';
 import '../data/group_repository.dart';
 import '../domain/sangat_group.dart';
 
@@ -102,13 +102,11 @@ class _LogPaathSheetState extends ConsumerState<_LogPaathSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CardIconButton(
-                  icon: HazriIconData.close,
-                  tooltip: l.actionRemove,
-                  onPressed: _amount <= step
-                      ? null
-                      : () => setState(() => _amount -= step),
-                ),
+                StepperButton(
+                label: '−',
+                tooltip: l.actionRemove,
+                onTap: _amount <= step ? null : () => setState(() => _amount -= step),
+              ),
                 SizedBox(
                   width: 130,
                   child: Column(
@@ -119,11 +117,11 @@ class _LogPaathSheetState extends ConsumerState<_LogPaathSheet> {
                     ],
                   ),
                 ),
-                CardIconButton(
-                  icon: HazriIconData.sparkle,
-                  tooltip: l.actionShowMore,
-                  onPressed: () => setState(() => _amount += step),
-                ),
+                StepperButton(
+                label: '+',
+                tooltip: l.actionShowMore,
+                onTap: () => setState(() => _amount += step),
+              ),
               ],
             ),
             const SizedBox(height: 20),

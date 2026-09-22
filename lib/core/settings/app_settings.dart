@@ -29,6 +29,7 @@ class AppSettings {
     this.exactAlarmAsked = false,
     this.analyticsEnabled = false,
     this.diarySync = false,
+    this.sangatDeclined = false,
     this.syncWifiOnly = true,
   });
 
@@ -56,6 +57,14 @@ class AppSettings {
   /// Phase 1 works without it. What it buys is the diary coming back on a new
   /// phone, and nothing else.
   final bool diarySync;
+
+  /// "Not now" was tapped on the join sheet at least once.
+  ///
+  /// Once it has, Today stops carrying the invitation and carries the hazri
+  /// card instead: the sangat is opt-in (rule 4), and somebody who declined
+  /// it must still see the thing the app is named after. The account card in
+  /// the menu and the Sangat tab remain the ways in.
+  final bool sangatDeclined;
 
   /// **On by default**, because somebody's mobile data is theirs. A diary is
   /// small, but "small" is not a promise anybody made them.
@@ -85,6 +94,7 @@ class AppSettings {
     bool? exactAlarmAsked,
     bool? analyticsEnabled,
     bool? diarySync,
+    bool? sangatDeclined,
     bool? syncWifiOnly,
   }) {
     return AppSettings(
@@ -107,6 +117,7 @@ class AppSettings {
       exactAlarmAsked: exactAlarmAsked ?? this.exactAlarmAsked,
       analyticsEnabled: analyticsEnabled ?? this.analyticsEnabled,
       diarySync: diarySync ?? this.diarySync,
+      sangatDeclined: sangatDeclined ?? this.sangatDeclined,
       syncWifiOnly: syncWifiOnly ?? this.syncWifiOnly,
     );
   }

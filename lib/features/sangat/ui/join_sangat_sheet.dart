@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
+import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
@@ -22,11 +24,11 @@ Future<void> showJoinSangatSheet(BuildContext context) => showModalBottomSheet(
       builder: (_) => const _JoinSangatSheet(),
     );
 
-class _JoinSangatSheet extends StatelessWidget {
+class _JoinSangatSheet extends ConsumerWidget {
   const _JoinSangatSheet();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
 
@@ -92,7 +94,13 @@ class _JoinSangatSheet extends StatelessWidget {
             label: l.sangatNotNow,
             secondary: true,
             minHeight: 48,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              // Remembered, so Today can stop asking and show the hazri card
+              // in the banner's place. Nothing else changes: the menu's
+              // account card and the Sangat tab still open the door.
+              ref.read(settingsProvider.notifier).setSangatDeclined(true);
+              Navigator.of(context).pop();
+            },
           ),
           const SizedBox(height: 14),
           Text(

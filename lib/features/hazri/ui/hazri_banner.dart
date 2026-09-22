@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
+import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
@@ -19,15 +20,19 @@ import '../domain/hazri.dart';
 /// **one** sitting of simran; it is not the goal, and a day with one bani
 /// read is a day somebody was present, whatever else was on the list.
 ///
-/// It appears only once the sangat setup is done, which is the reader's own
-/// constraint: before that, Today already carries the join banner, and two
-/// banners stacked is two things shouting at somebody who came to read.
+/// It appears once the join banner has gone -- the sangat set up, or Not now
+/// tapped once -- which is the reader's own constraint: before that, Today
+/// already carries the join banner, and two banners stacked is two things
+/// shouting at somebody who came to read. It does not wait for an account,
+/// because the sangat is opt-in and hazri is not.
 class HazriBanner extends ConsumerWidget {
   const HazriBanner({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (!ref.watch(hasJoinedSangatProvider)) return const SizedBox.shrink();
+    final joined = ref.watch(hasJoinedSangatProvider);
+    final declined = ref.watch(settingsProvider.select((s) => s.sangatDeclined));
+    if (!joined && !declined) return const SizedBox.shrink();
 
     final c = context.colors;
     final l = L.of(context);

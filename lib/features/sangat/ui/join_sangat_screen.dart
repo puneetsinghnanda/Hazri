@@ -209,6 +209,23 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
                 child: Text(l.sangatWhatWeStore,
                     style: HazriText.caption.copyWith(color: c.muted)),
               ),
+              const SizedBox(height: 6),
+              // Designs 53 and 54 were only reachable when joining tripped
+              // over an address that already had an account, and joining
+              // never looks the address up, so a second phone had no way
+              // back to its sangat. This is that way.
+              Center(
+                child: TextButton(
+                  onPressed: () => context.push(Routes.restore()),
+                  child: Text(
+                    l.sangatAlreadyJoined,
+                    style: HazriText.bodySmall.copyWith(
+                      color: c.kesriInk,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

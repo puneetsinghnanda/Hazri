@@ -10,6 +10,7 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
+import '../../../core/widgets/stepper_button.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../reminders/ui/time_wheel.dart';
@@ -221,7 +222,7 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
             const SizedBox(height: 8),
             Row(
               children: [
-                _StepperButton(
+                StepperButton(
                   label: '−',
                   onTap: _times > 1 ? () => setState(() => _times--) : null,
                 ),
@@ -233,7 +234,7 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
                     ),
                   ),
                 ),
-                _StepperButton(
+                StepperButton(
                   label: '+',
                   onTap: _times < 21 ? () => setState(() => _times++) : null,
                 ),
@@ -319,38 +320,6 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
               onPressed: _baniId == null ? null : _save,
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StepperButton extends StatelessWidget {
-  const _StepperButton({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(HazriRadius.chip),
-      child: Container(
-        width: 52,
-        height: 52,
-        decoration: BoxDecoration(
-          color: c.card2,
-          borderRadius: BorderRadius.circular(HazriRadius.chip),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: HazriText.display22.copyWith(
-              color: onTap == null ? c.muted : c.ink,
-            ),
-          ),
         ),
       ),
     );

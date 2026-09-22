@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
+import 'package:hazri/core/settings/settings_controller.dart';
 import 'package:hazri/features/sangat/data/account_repository.dart';
 import 'package:hazri/features/sangat/domain/sangat_account.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
@@ -55,6 +56,23 @@ void main() {
     final l = await pump(tester, signedIn: _account);
     expect(find.text(l.sangatBannerTitle), findsNothing);
     expect(find.text(l.hazriNotYet), findsOneWidget);
+  });
+
+  testWidgets('Not now on the sheet also hands the slot to the hazri card',
+      (tester) async {
+    // The sangat is opt-in (rule 4). Somebody who declines it once must still
+    // see the thing the app is named after, and must not be asked again on
+    // every open of Today. The menu's account card is still the way in.
+    final l = await pump(tester);
+    await tester.tap(find.text(l.sangatBannerTitle));
+    await settle(tester);
+    expect(find.text(l.sangatNotNow), findsOneWidget);
+    await tester.tap(find.text(l.sangatNotNow));
+    await settle(tester);
+
+    expect(find.text(l.sangatBannerTitle), findsNothing);
+    expect(find.text(l.hazriNotYet), findsOneWidget);
+    expect(app.container.read(settingsProvider).sangatDeclined, isTrue);
   });
 
   testWidgets('a day with nothing done says "not yet", never "missed"',

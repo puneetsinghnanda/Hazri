@@ -170,6 +170,57 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   without also rewriting the privacy screen; the two are one promise.
 - **Around a hundred and fifty Punjabi and Hindi UI strings added in Phase 2
   are mine** and want a native ear before release.
+- **There is no branded splash.** The reader asked for it to go (2026-09-22);
+  the router opens on Today and redirects a first launch to the intro. The
+  Android 12 system splash -- the app mark on the launch colour, drawn by the
+  platform before Flutter has a frame -- is all that shows, and cannot be
+  removed. Design 01 stays in `design/screens/` as the record.
+- **The diary's day is the hazri and the goals, nothing else.** It used to
+  list every nitnem bani with a tick, which made it a checklist of seven
+  paaths nobody had set. Now the first row is the hazri -- lit by any paath
+  or sitting, and tickable by hand for a paath read away from the phone,
+  which is stored as a completion with `kHazriMarkId` and no bani behind it
+  -- and the rows under it are the goals that were running that day. A goal
+  ticked there records the paath (which marks the hazri) and ticks that one
+  goal; unticking takes both back. The day's stats are goals met and days in
+  a row.
+- **The tab header keeps no gutter of its own.** Every tab lays it out inside
+  a ListView that already has one, and it used to add the gutter again, so
+  the menu button sat 40 dp in while the cards sat at 20. Design 30 is 20.
+- **A simran sitting rings a notification when its time is up**, scheduled
+  at Begin and cancelled at Pause and End (PRD 1.13's fallback). With the
+  recitation playing the media session keeps the process alive and the
+  ticker ends the sitting itself; with the phone locked and no voice, the
+  bell is the only thing that says the time is up. `replaceSchedule` drops it
+  with everything else, so a re-plan mid-sitting loses the bell -- accepted.
+- **The simran recitation loops** for a sitting longer than its five
+  minutes (`PaathTrack.loop`), which is what the goal sheet had promised and
+  the player had not done. The drifting ਵਾਹਿਗੁਰੂ follows the player's own
+  playhead while the simran track is loaded, not the sitting's clock, which
+  ran fifteen or twenty seconds ahead of the voice on a real phone.
+- **The presence line says "could not reach the sangat" on a failed read**
+  (`SangatPresence.unreachable`) rather than "you are the first here
+  today"; the poll runs only while the Simran tab is the one in front and
+  the app is resumed. Others' dots are design 29's green, the one the
+  legend names.
+- **PRD 1.13's tap-to-count, sound picker and Today tile are gone**, with
+  the 2026-09-20 mock-up. `simran_session.count` is always 0. Someone with
+  no Naam Simran goal has no Simran entry on Today at all; the tab is the
+  way in.
+- **Simran's length has no Settings row.** `simranMinutes` is read but
+  nothing writes it; a Naam Simran goal is how a sitting gets a length other
+  than five minutes. Either add the row or delete the setting.
+- **A sitting does not survive the process dying.** The session is in
+  memory; with no recitation there is no foreground service, and a frozen
+  process loses the elapsed time. Persisting `runningSince` is the fix.
+- **After "Not now" on the join sheet, Today shows the hazri card** in the
+  join banner's place (`sangatDeclined`). The account card in the menu and
+  the Sangat tab remain the ways into the sangat. Before this, somebody who
+  declined never saw the thing the app is named after.
+- **Restore (designs 53, 54) is reached from a line on the join screen**,
+  "Already joined? Bring my account back". Joining never looks the address
+  up, so the other route to it -- an address that already has an account --
+  could not happen from a join.
 - **There is no brand bar.** Every tab draws its own header -- the menu
   button, the tab's name, a line under it -- because the designs put the
   screen's name there and the app's name above every screen made Today look

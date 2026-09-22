@@ -10,6 +10,7 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../../core/widgets/stepper_button.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/group_repository.dart';
 import '../domain/sangat_group.dart';
@@ -148,11 +149,10 @@ class _GroupGoalScreenState extends ConsumerState<GroupGoalScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CardIconButton(
-                icon: HazriIconData.close,
+              StepperButton(
+                label: '−',
                 tooltip: l.actionRemove,
-                onPressed:
-                    _target <= step ? null : () => setState(() => _target -= step),
+                onTap: _target <= step ? null : () => setState(() => _target -= step),
               ),
               SizedBox(
                 width: 140,
@@ -164,10 +164,10 @@ class _GroupGoalScreenState extends ConsumerState<GroupGoalScreen> {
                   ],
                 ),
               ),
-              CardIconButton(
-                icon: HazriIconData.sparkle,
+              StepperButton(
+                label: '+',
                 tooltip: l.actionShowMore,
-                onPressed: () => setState(() => _target += step),
+                onTap: () => setState(() => _target += step),
               ),
             ],
           ),

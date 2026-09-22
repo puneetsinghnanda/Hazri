@@ -32,6 +32,7 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kExactAlarmAsked = 'exact_alarm_asked';
   static const _kAnalytics = 'analytics_enabled';
   static const _kDiarySync = 'diary_sync';
+  static const _kSangatDeclined = 'sangat_declined';
   static const _kSyncWifiOnly = 'sync_wifi_only';
 
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
@@ -70,6 +71,7 @@ class SettingsController extends Notifier<AppSettings> {
       exactAlarmAsked: p.getBool(_kExactAlarmAsked) ?? base.exactAlarmAsked,
       analyticsEnabled: p.getBool(_kAnalytics) ?? base.analyticsEnabled,
       diarySync: p.getBool(_kDiarySync) ?? base.diarySync,
+      sangatDeclined: p.getBool(_kSangatDeclined) ?? base.sangatDeclined,
       syncWifiOnly: p.getBool(_kSyncWifiOnly) ?? base.syncWifiOnly,
     );
   }
@@ -183,6 +185,11 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setDiarySync(bool v) async {
     await _prefs.setBool(_kDiarySync, v);
     state = state.copyWith(diarySync: v);
+  }
+
+  Future<void> setSangatDeclined(bool v) async {
+    await _prefs.setBool(_kSangatDeclined, v);
+    state = state.copyWith(sangatDeclined: v);
   }
 
   Future<void> setSyncWifiOnly(bool v) async {

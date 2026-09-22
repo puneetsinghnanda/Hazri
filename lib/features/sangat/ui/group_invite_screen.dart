@@ -67,7 +67,7 @@ class GroupInviteScreen extends ConsumerWidget {
             await Clipboard.setData(ClipboardData(text: groupId));
             if (!context.mounted) return;
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(l.groupInviteCopied)));
+                .showSnackBar(SnackBar(content: Text(l.groupCodeCopied)));
           },
           child: Row(
             children: [

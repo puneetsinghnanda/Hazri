@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/menu_sheet.dart';
 import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show BaniSlot;
 import '../../../core/l10n/gen/app_localizations.dart';
@@ -13,6 +14,7 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../../core/widgets/tab_header.dart';
 import '../../../core/db/content_repository.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../reminders/data/reminders_controller.dart';
@@ -47,8 +49,18 @@ class ElderTodayScreen extends ConsumerWidget {
         bottom: false,
         child: PhoneWidth(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 16, HazriSize.gutter, 20),
+            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
             children: [
+              // The same header as the other tabs, menu button included.
+              // Elder mode has three tabs and Settings is not one of them, so
+              // without this the menu -- settings, notifications, the
+              // account, privacy, about -- had no door at all in elder mode.
+              TabHeader(
+                title: l.navToday,
+                subtitle: dates.longDate(now),
+                onMenu: () => showMenuSheet(context),
+              ),
+              const SizedBox(height: 6),
               Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: HazriChip(

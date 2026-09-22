@@ -38,18 +38,10 @@ class TodayScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (ref.watch(settingsProvider.select((s) => s.elderMode))) {
-      return const ElderTodayScreen();
-    }
-
-    final c = context.colors;
-    final l = L.of(context);
-    final dates = HazriDates.of(context);
-    final now = ref.watch(clockProvider).now();
-
     // Design 61, on the day the last goal is ticked and once on that day.
     // It follows the state rather than the tap, because the tick can happen
-    // in the reader or the diary rather than here.
+    // in the reader or the diary rather than here. Registered before the
+    // elder-mode branch, which used to return first and so never saw it.
     ref.listen(goalsAllDoneTodayProvider, (was, isNow) {
       if (!isNow || (was ?? false)) return;
       final cue = ref.read(goalCompleteCueProvider);
@@ -60,6 +52,15 @@ class TodayScreen extends ConsumerWidget {
         if (context.mounted) showGoalCompleteSheet(context);
       });
     });
+
+    if (ref.watch(settingsProvider.select((s) => s.elderMode))) {
+      return const ElderTodayScreen();
+    }
+
+    final c = context.colors;
+    final l = L.of(context);
+    final dates = HazriDates.of(context);
+    final now = ref.watch(clockProvider).now();
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -104,16 +105,20 @@ class TodayScreen extends ConsumerWidget {
 
 /// Design 30 — the banner that invites somebody into the sangat.
 ///
-/// It shows only while they have not joined, and it is the whole of the
-/// sangat's presence on Today until they do. There is no second nag: tap Not
-/// now on the sheet and this stays as it is, which is the difference between
-/// an invitation and a demand.
+/// It shows only while they have neither joined nor said Not now, and it is
+/// the whole of the sangat's presence on Today until then. Tap Not now on the
+/// sheet and it goes, and the hazri card takes its place: the invitation was
+/// made once, which is the difference between an invitation and a demand,
+/// and somebody who declined still has the thing the app is named after.
 class _JoinSangatBanner extends ConsumerWidget {
   const _JoinSangatBanner();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (ref.watch(hasJoinedSangatProvider)) return const SizedBox.shrink();
+    if (ref.watch(hasJoinedSangatProvider) ||
+        ref.watch(settingsProvider.select((s) => s.sangatDeclined))) {
+      return const SizedBox.shrink();
+    }
 
     final c = context.colors;
     final l = L.of(context);
