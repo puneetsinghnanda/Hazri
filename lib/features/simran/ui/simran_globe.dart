@@ -190,8 +190,11 @@ class GlobePainter extends CustomPainter {
   static const _grid = Color(0xFF2F4E96);
   static const _coast = Color(0xFF8FD4FF);
   static const _rim = Color(0xFF7FC4FF);
-  static const _light = Color(0xFFE8F4F8);
-  static const _halo = Color(0xFF6FC3D3);
+  /// Design 29's "here today" green, the same one the legend names. The
+  /// dots used to be near-white with a cyan halo, so the legend described a
+  /// colour that never appeared on the globe.
+  static const _light = Color(0xFF3DBE7B);
+  static const _halo = Color(0xFF3DBE7B);
   static const _you = Color(0xFFF2A24E);
 
   /// Parallels every 30°, meridians every 30°, as points rather than as the

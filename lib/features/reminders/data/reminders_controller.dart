@@ -118,8 +118,11 @@ class ReminderScheduler {
     final reminders = await repo.reminders();
     final l = await L.delegate.load(_ref.read(settingsProvider).locale);
 
-    // A slot already finished today does not need reminding about.
+    // A slot already finished today does not need reminding about, and nor
+    // does a sitting of simran already sat.
     final completions = await repo.completionsOn(clock.today());
+    final todayKey = localDateKey(clock.today());
+    final sessions = await repo.watchSimranSessions().first;
     final completed = <String>{
       for (final c in completions)
         if (c.slot == BaniSlotValue.morning)
@@ -128,6 +131,8 @@ class ReminderScheduler {
           ReminderIds.evening
         else if (c.slot == BaniSlotValue.bedtime)
           ReminderIds.bedtime,
+      if (sessions.any((s) => s.localDate == todayKey && s.completed))
+        ReminderIds.simran,
     };
 
     final occurrences = ReminderPlanner.plan(

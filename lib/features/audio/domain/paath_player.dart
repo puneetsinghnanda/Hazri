@@ -11,6 +11,7 @@ class PaathTrack {
     required this.assetPath,
     required this.duration,
     required this.route,
+    this.loop = false,
   });
 
   final String baniId;
@@ -25,6 +26,13 @@ class PaathTrack {
   /// Where the mini player goes when tapped. Usually the reader for this bani,
   /// but Naam Simran has no reader and belongs on its own screen.
   final String route;
+
+  /// Start again from the top when the end is reached.
+  ///
+  /// Only the simran recitation asks for this: it is five minutes long and a
+  /// sitting can be eleven or thirty-one, and a paath that looped would be a
+  /// paath read twice.
+  final bool loop;
 }
 
 /// The commands the app issues to whatever is playing the paath.

@@ -193,7 +193,15 @@ class PlaybackController {
   /// It goes through the same player as a paath, so starting Simran stops
   /// whatever was being recited and the lock-screen controls follow the
   /// session rather than a bani that is no longer playing.
-  Future<bool> playSimran(SimranTrack track, {required String title}) async {
+  ///
+  /// [nativeTitle] is the word on the lock screen, passed in from the screen
+  /// so it comes from the ARB files like every other string (rule 5) rather
+  /// than being typed here.
+  Future<bool> playSimran(
+    SimranTrack track, {
+    required String title,
+    required String nativeTitle,
+  }) async {
     final player = _ref.read(paathPlayerProvider);
     if (player == null) return false;
     _askForLockScreen();
@@ -202,10 +210,12 @@ class PlaybackController {
         baniId: track.id,
         slug: track.id,
         title: title,
-        nativeTitle: 'ਵਾਹਿਗੁਰੂ',
+        nativeTitle: nativeTitle,
         assetPath: track.assetPath,
         duration: track.duration,
         route: Routes.simran,
+        // The recitation is five minutes; the sitting may not be.
+        loop: true,
       ),
     ]);
     // Always at the pace it was recited: speed belongs to the reader, and a

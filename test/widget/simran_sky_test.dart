@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/content_repository.dart';
+import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/core/theme/hazri_text.dart';
 import 'package:hazri/core/widgets/surfaces.dart';
@@ -92,6 +93,23 @@ void main() {
       find.widgetWithText(PrimaryButton, l.simranBeginMinutes(5)),
     );
     expect(button.background, kesri);
+  });
+
+  testWidgets('"Done today" is said above the button, not as its label',
+      (tester) async {
+    // The label used to become "Done today ✓" on a button that still began
+    // a sitting when tapped, so a status line started a second sitting.
+    final (app, l) = await pump(tester);
+    await app.container.read(userRepositoryProvider).logSimran(
+          duration: const Duration(minutes: 5),
+          count: 0,
+          completed: true,
+        );
+    await settle(tester);
+    expect(find.text(l.simranTileDone), findsOneWidget);
+    expect(find.widgetWithText(PrimaryButton, l.simranTileDone), findsNothing);
+    expect(find.widgetWithText(PrimaryButton, l.simranBeginMinutes(5)),
+        findsOneWidget);
   });
 
   testWidgets('Pause is kesri too, and End stands back', (tester) async {

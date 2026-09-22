@@ -47,10 +47,12 @@ class FirebasePresenceRepository implements PresenceRepository {
     if (_auth.currentUser == null) return SangatPresence.empty;
     var total = 0;
     var cities = <PresenceCity>[];
+    var failed = false;
     try {
       final counted = await _today.aggregate(sum('count')).get();
       total = (counted.getSum('count') ?? 0).toInt();
     } on FirebaseException catch (e) {
+      failed = true;
       debugPrint('Hazri: presence total failed (${e.code})');
     }
     try {
@@ -63,11 +65,13 @@ class FirebasePresenceRepository implements PresenceRepository {
           .whereType<PresenceCity>()
           .toList();
     } on FirebaseException catch (e) {
+      failed = true;
       debugPrint('Hazri: presence cities failed (${e.code})');
     }
     return SangatPresence(
       cities: cities,
       total: total,
+      unreachable: failed,
       yours: _markedToday ? 1 : 0,
       yourCityId: _markedToday ? _markedCity : null,
     );

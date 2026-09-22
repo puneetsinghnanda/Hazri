@@ -15,6 +15,7 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../audio/data/audio_controller.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../sangat/data/presence_repository.dart';
 import '../../sangat/domain/simran_presence.dart';
@@ -53,11 +54,29 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
 
   Timer? _poll;
 
+  /// Whether the app is in front of somebody at all.
+  bool _resumed = true;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _poll = Timer.periodic(_refresh, (_) => _readPresence());
+    _poll = Timer.periodic(_refresh, (_) => _pollPresence());
+  }
+
+  /// The periodic read, gated on this tab actually being visible.
+  ///
+  /// The shell is an indexed stack, so once this tab has been opened its
+  /// screen stays built behind the others for the life of the app, and the
+  /// timer with it. Without the gate every 45 seconds cost a Firestore
+  /// aggregation plus a document per city, on every tab, whether or not the
+  /// globe was anywhere on screen. TickerMode is false for an offstage
+  /// branch, which is how the tab knows it is not the one in front.
+  void _pollPresence() {
+    if (!mounted || !_resumed || !TickerMode.getValuesNotifier(context).value.enabled) {
+      return;
+    }
+    _readPresence();
   }
 
   @override
@@ -73,6 +92,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    _resumed = state == AppLifecycleState.resumed;
     if (state == AppLifecycleState.resumed) {
       // Recompute from the start instant rather than trusting the ticker.
       ref.read(simranSessionProvider.notifier).tick();
@@ -91,6 +111,17 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
     final presence = ref.watch(globePresenceProvider);
     // The recitation's own onsets, so ਵਾਹਿਗੁਰੂ appears when it is said.
     final track = ref.watch(simranTrackProvider).value;
+    // Where the voice actually is. The clock starts the moment the person
+    // taps, and the recitation comes in fifteen or twenty seconds later on a
+    // real phone once the media session is up; a word fed from the clock ran
+    // that far ahead of the voice for the whole sitting. While the simran
+    // track is the one loaded, the player's own playhead drives the words,
+    // and it wraps with the loop so a long sitting keeps its words too.
+    final player = ref.watch(paathPlayerProvider);
+    final playhead = ref.watch(positionProvider).value;
+    final voiceAt = track != null && player?.currentSlug == track.id
+        ? (playhead ?? Duration.zero)
+        : session.elapsed;
 
     // A simran goal's length wins over the Settings default, so "11 min" on
     // the goal is what the button offers and what the timer counts.
@@ -113,8 +144,10 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
       doneToday: doneToday,
       session: session,
       track: track,
+      voiceAt: voiceAt,
       onBegin: () => controller.start(
         title: l.simranTitle,
+        nativeTitle: l.simranWaheguru,
         length: Duration(minutes: minutes),
       ),
       onPause: controller.pause,
@@ -143,6 +176,7 @@ class _SimranSky extends ConsumerWidget {
     required this.doneToday,
     required this.session,
     required this.track,
+    required this.voiceAt,
     required this.onBegin,
     required this.onPause,
     required this.onResume,
@@ -154,6 +188,9 @@ class _SimranSky extends ConsumerWidget {
   final bool doneToday;
   final SimranSession session;
   final SimranTrack? track;
+
+  /// How far into the recitation the voice is, for the drifting words.
+  final Duration voiceAt;
   final VoidCallback onBegin;
   final VoidCallback onPause;
   final VoidCallback onResume;
@@ -272,7 +309,7 @@ class _SimranSky extends ConsumerWidget {
                                         size: size,
                                         word: l.simranWaheguru,
                                         track: track,
-                                        elapsed: session.elapsed,
+                                        elapsed: voiceAt,
                                         running: session.running,
                                       ),
                                     ),
@@ -360,17 +397,28 @@ class _SimranSky extends ConsumerWidget {
                           ),
                         ],
                       )
-                    else
+                    else ...[
+                      // Said above the button rather than on it. "Done today"
+                      // as the label of a live Begin button read as a status
+                      // line and started a second sitting when tapped.
+                      if (doneToday)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            l.simranTileDone,
+                            textAlign: TextAlign.center,
+                            style: HazriText.captionStrong.copyWith(color: _others),
+                          ),
+                        ),
                       PrimaryButton(
-                        label: doneToday
-                            ? l.simranTileDone
-                            : l.simranBeginMinutes(minutes),
+                        label: l.simranBeginMinutes(minutes),
                         // Kesri, not the theme's primary. On a night sky the
                         // light theme's indigo read as a different app.
                         background: _you,
                         foreground: const Color(0xFF1C1206),
                         onPressed: onBegin,
                       ),
+                    ],
                       ],
                     )),
                   ],
@@ -503,6 +551,18 @@ class _Presence extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = L.of(context);
+    // A read that failed is not a quiet morning. Rules not published, no
+    // signal, a refused query: none of them is "you are the first", and
+    // saying so over a globe that may be covered in dots was the lie
+    // CLAUDE.md warns about.
+    if (presence.unreachable) {
+      return Text(
+        l.simranSangatUnreachable,
+        textAlign: TextAlign.center,
+        style: SimranText.presence
+            .copyWith(color: Colors.white.withValues(alpha: 0.7)),
+      );
+    }
     if (presence.isQuiet) {
       return Text(
         l.simranGlobeFirst,

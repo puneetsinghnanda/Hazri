@@ -69,11 +69,10 @@ class _SimranNaamState extends State<SimranNaam>
   @override
   void didUpdateWidget(SimranNaam old) {
     super.didUpdateWidget(old);
-    // A new sitting, or one wound back: start from silence.
-    if (widget.elapsed < old.elapsed) {
-      _fed = 0;
-      _words.clear();
-    }
+    // A new sitting, one wound back, or the recitation starting over on its
+    // loop: count utterances from the top again. What is in the air fades on
+    // its own rather than vanishing.
+    if (widget.elapsed < old.elapsed) _fed = 0;
   }
 
   @override
@@ -87,6 +86,9 @@ class _SimranNaamState extends State<SimranNaam>
     final track = widget.track;
     if (track != null && widget.running) {
       final due = track.onsetsBefore(widget.elapsed);
+      // The recitation loops for a sitting longer than it is, so the count
+      // of utterances falls back to zero when the voice starts over.
+      if (due < _fed) _fed = 0;
       // Cap the catch-up. Coming back from a locked screen must not throw two
       // minutes of utterances into the air at once.
       for (var i = math.max(_fed, due - 3); i < due; i++) {
@@ -103,6 +105,10 @@ class _SimranNaamState extends State<SimranNaam>
       _fed = due;
     }
     _words.removeWhere((w) => _now - w.born > _life);
+    // Nothing in the air and nothing being said: leave the frame alone rather
+    // than repaint a screen-wide canvas of nothing sixty times a second for
+    // the length of a pause.
+    if (_words.isEmpty && !(track != null && widget.running)) return;
     if (mounted) setState(() {});
   }
 

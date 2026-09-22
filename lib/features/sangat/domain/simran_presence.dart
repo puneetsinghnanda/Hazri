@@ -58,9 +58,17 @@ class SangatPresence {
     this.total = 0,
     this.yours = 0,
     this.yourCityId,
+    this.unreachable = false,
   });
 
   final List<PresenceCity> cities;
+
+  /// A read failed -- refused, offline, or half of it missing.
+  ///
+  /// Kept apart from an empty result on purpose: a total of zero because the
+  /// query was refused is not a quiet morning, and the screen must not say
+  /// "you are the first here today" over it (CLAUDE.md, Phase 2).
+  final bool unreachable;
 
   /// Everybody, including this person.
   final int total;
@@ -96,6 +104,7 @@ class SangatPresence {
         total: total,
         yours: yours,
         yourCityId: home.id,
+        unreachable: unreachable,
       );
 
   /// Nothing to show yet — a new app, or a quiet hour. The screen says

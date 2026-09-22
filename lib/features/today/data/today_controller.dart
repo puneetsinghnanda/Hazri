@@ -62,21 +62,11 @@ final todayCtaProvider = Provider<TodayCta?>((ref) {
 final simranDoneTodayProvider = StreamProvider<bool>((ref) async* {
   final repo = ref.watch(userRepositoryProvider);
   final clock = ref.watch(clockProvider);
-  final todayKey = localDateKey(clock.today());
   await for (final sessions in repo.watchSimranSessions()) {
+    // Asked on every emission rather than once when the stream was made, so
+    // an app left open across midnight stops calling yesterday's sitting
+    // today's.
+    final todayKey = localDateKey(clock.today());
     yield sessions.any((s) => s.localDate == todayKey && s.completed);
-  }
-});
-
-/// Minutes of Simran logged today (completed or not), for the Today tile.
-final simranMinutesTodayProvider = StreamProvider<int>((ref) async* {
-  final repo = ref.watch(userRepositoryProvider);
-  final clock = ref.watch(clockProvider);
-  final todayKey = localDateKey(clock.today());
-  await for (final sessions in repo.watchSimranSessions()) {
-    final seconds = sessions
-        .where((s) => s.localDate == todayKey)
-        .fold<int>(0, (sum, s) => sum + s.durationS);
-    yield (seconds / 60).floor();
   }
 });

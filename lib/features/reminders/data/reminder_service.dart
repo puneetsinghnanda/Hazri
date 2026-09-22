@@ -26,6 +26,10 @@ enum ReminderChannel {
   final String id;
 }
 
+/// The id of the simran end bell. Below every id `notificationIdFor` can
+/// produce, which start at 2.
+const int kSimranEndNotificationId = 1;
+
 /// One notification to post at one instant.
 @immutable
 class ScheduledNotification {
@@ -159,6 +163,23 @@ class ReminderService {
     } on Exception catch (e) {
       debugPrint('Hazri: could not schedule reminder ${n.id}: $e');
     }
+  }
+
+  /// Posts one notification at one instant, outside the rolling schedule.
+  ///
+  /// The simran end bell. It is not part of the plan `replaceSchedule`
+  /// writes, so a re-plan while a sitting is open -- a completion logged, a
+  /// city changed -- drops it with everything else; the sitting's own ticker
+  /// still ends the sitting, so what is lost is the bell in the one case the
+  /// process was frozen as well. Rare enough to accept and say here.
+  Future<void> scheduleOnce(ScheduledNotification n) async {
+    if (!_ready) return;
+    await _schedule(n, exact: await canScheduleExact());
+  }
+
+  Future<void> cancel(int id) async {
+    if (!_ready) return;
+    await _plugin.cancel(id);
   }
 
   Future<void> cancelAll() => _plugin.cancelAll();

@@ -6,8 +6,11 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_repository.dart';
+import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../audio/data/audio_controller.dart';
+import '../../reminders/data/reminder_service.dart';
+import '../../reminders/data/reminders_controller.dart';
 import '../../sangat/data/presence_repository.dart';
 
 /// A Simran session in progress (PRD 1.13).
@@ -90,15 +93,28 @@ class SimranController extends Notifier<SimranSession> {
   /// [length] is what makes a simran goal mean anything: the goal carries the
   /// minutes somebody chose for it, and starting from the goal used to hand
   /// the screen's five-minute default to the timer regardless.
-  Future<void> start({required String title, Duration? length}) async {
+  ///
+  /// [nativeTitle] is ਵਾਹਿਗੁਰੂ in the reader's script, for the lock screen.
+  Future<void> start({
+    required String title,
+    required String nativeTitle,
+    Duration? length,
+  }) async {
     if (state.active) return;
     _logged = false;
+    final since = DateTime.now();
     state = SimranSession(
-      runningSince: DateTime.now(),
+      runningSince: since,
       total: length ?? defaultTotal,
       active: true,
     );
     unawaited(WakelockPlus.enable());
+    // The end bell, as a notification (PRD 1.13). With the recitation playing
+    // the media session keeps the process alive and the ticker below ends the
+    // sitting itself; with the phone locked and no voice, Android may freeze
+    // the process, and this is then the only thing that says the time is up.
+    // Cancelled when the sitting ends or pauses from inside the app.
+    unawaited(_scheduleEndBell(since.add(state.total)));
     // Before the audio, not after it. Loading a five-minute recitation and
     // bringing up the media session takes fifteen or twenty seconds on a
     // real phone, and the ticker used to be created at the end of all that:
@@ -109,9 +125,29 @@ class SimranController extends Notifier<SimranSession> {
 
     final track = await ref.read(simranTrackProvider.future);
     if (track != null && state.running) {
-      await ref.read(playbackControllerProvider).playSimran(track, title: title);
+      await ref
+          .read(playbackControllerProvider)
+          .playSimran(track, title: title, nativeTitle: nativeTitle);
     }
   }
+
+  Future<void> _scheduleEndBell(DateTime at) async {
+    final l = await L.delegate.load(ref.read(settingsProvider).locale);
+    await ref.read(reminderServiceProvider).scheduleOnce(
+          ScheduledNotification(
+            id: kSimranEndNotificationId,
+            at: at,
+            title: l.notifSimranEndTitle,
+            body: l.notifSimranEndBody,
+            channel: ReminderChannel.simran,
+            channelName: l.notifChannelSimran,
+            payload: '/simran',
+          ),
+        );
+  }
+
+  Future<void> _cancelEndBell() =>
+      ref.read(reminderServiceProvider).cancel(kSimranEndNotificationId);
 
   /// Holds the sitting where it is: the clock stops and so does the
   /// recitation.
@@ -133,18 +169,22 @@ class SimranController extends Notifier<SimranSession> {
     );
     unawaited(ref.read(paathPlayerProvider)?.pause() ?? Future<void>.value());
     unawaited(WakelockPlus.disable());
+    // A paused sitting has no end to ring for until it resumes.
+    unawaited(_cancelEndBell());
   }
 
   void resume() {
     if (!state.paused) return;
+    final since = DateTime.now();
     state = SimranSession(
-      runningSince: DateTime.now(),
+      runningSince: since,
       banked: state.banked,
       elapsed: state.elapsed,
       total: state.total,
       active: true,
     );
     unawaited(WakelockPlus.enable());
+    unawaited(_scheduleEndBell(since.add(state.total - state.banked)));
     unawaited(ref.read(paathPlayerProvider)?.play() ?? Future<void>.value());
     _start();
   }
@@ -177,7 +217,9 @@ class SimranController extends Notifier<SimranSession> {
   ///
   /// Returns true when it ran to the end, which is the screen's cue to say so.
   Future<bool> finish({required bool completed}) async {
-    if (_logged) return false;
+    // Nothing open, nothing to log. Without this a stray call would write a
+    // zero-length sitting and, marked completed, credit the goal for it.
+    if (!state.active || _logged) return false;
     _logged = true;
     _ticker?.cancel();
     _ticker = null;
@@ -189,19 +231,30 @@ class SimranController extends Notifier<SimranSession> {
     final capped = elapsed > total ? total : elapsed;
     state = SimranSession(justCompleted: completed);
 
-    await ref.read(userRepositoryProvider).logSimran(
-          duration: capped,
-          count: 0,
-          completed: completed,
-        );
-    await ref.read(paathPlayerProvider)?.stop();
-    // The globe counts sittings that happened, not screens that were opened,
-    // so this is here and not in `start`. It is also the only thing simran
-    // sends anywhere, and only for somebody who joined the sangat: the
-    // repository is the no-op one for everybody else.
-    if (completed) unawaited(_markOnTheGlobe());
-    if (completed) await HapticFeedback.mediumImpact();
-    await WakelockPlus.disable();
+    try {
+      await ref.read(userRepositoryProvider).logSimran(
+            duration: capped,
+            count: 0,
+            completed: completed,
+          );
+    } finally {
+      // Whatever happened to the write, the voice stops, the screen may sleep
+      // and the bell is called off: a sitting that has ended must not go on
+      // sounding like one that has not.
+      unawaited(_cancelEndBell());
+      await ref.read(paathPlayerProvider)?.stop();
+      await WakelockPlus.disable();
+    }
+    if (completed) {
+      // The globe counts sittings that happened, not screens that were
+      // opened, so this is here and not in `start`. It is also the only thing
+      // simran sends anywhere, and only for somebody who joined the sangat:
+      // the repository is the no-op one for everybody else.
+      unawaited(_markOnTheGlobe());
+      // Today's Daily Simran reminder is for a sitting not yet sat.
+      unawaited(ref.read(reminderSchedulerProvider).reschedule());
+      await HapticFeedback.mediumImpact();
+    }
     return completed;
   }
 

@@ -250,6 +250,12 @@ class HazriAudioHandler extends BaseAudioHandler
       initialIndex: startIndex,
       initialPosition: at ?? Duration.zero,
     );
+    // A looping queue is only ever the one simran track. A sitting longer
+    // than the recitation used to run out of voice at five minutes and sit
+    // in silence for the rest, while the goal sheet promised it would loop.
+    await _player.setLoopMode(
+      tracks.length == 1 && tracks.single.loop ? LoopMode.one : LoopMode.off,
+    );
     if (tracks.isNotEmpty) mediaItem.add(_mediaItemFor(tracks[startIndex]));
   }
 
