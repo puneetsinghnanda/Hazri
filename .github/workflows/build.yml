@@ -32,6 +32,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    # contents: write is for the release the APK is published to on a
+    # hand-started run (below). Everything else only reads.
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -107,8 +111,33 @@ jobs:
         run: |
           echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
+      - name: Publish the APK as a pre-release
+        # Releases are not counted against the Actions artifact quota, which
+        # the artifact step below has hit more than once -- a green build and
+        # no APK, refused for six to twelve hours after the last delete. One
+        # rolling pre-release per branch, replaced on every hand-started run,
+        # so the number of APKs alive at once is the number of branches being
+        # tested and no more.
+        if: always() && github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: apk-${{ github.ref_name }}
+          SHA: ${{ steps.name.outputs.sha }}
+        run: |
+          gh release delete "$TAG" --yes --cleanup-tag || true
+          gh release create "$TAG" \
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Test APK · ${GITHUB_REF_NAME} · ${SHA}" \
+            --notes "Debug-signed arm64 test build of ${GITHUB_REF_NAME} at ${SHA}. Replaced on the next hand-started run of this branch."
+
       - uses: actions/upload-artifact@v4
         if: always() && github.event_name == 'workflow_dispatch'
+        # The release above is the copy that is meant to be there; this one is
+        # a convenience on the run page, and the storage quota refusing it is
+        # not a failed build.
+        continue-on-error: true
         with:
           name: hazri-apk-${{ steps.name.outputs.sha }}
           path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk

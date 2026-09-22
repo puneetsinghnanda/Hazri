@@ -5,9 +5,11 @@ APK when the run was started by hand**. To install the app on a phone:
 
 1. Open the **Actions** tab, pick **Build** in the sidebar, then **Run
    workflow** and choose your branch.
-2. When it finishes, download the `hazri-apk-<sha>` artifact at the bottom of
-   the run page.
-3. Unzip it and copy `app-arm64-v8a-release.apk` to the phone.
+2. When it finishes, open **Releases**: the run publishes a pre-release
+   tagged `apk-<branch>` with `app-arm64-v8a-release.apk` attached, replacing
+   the previous one for that branch. The same file is also attached to the
+   run page as the `hazri-apk-<sha>` artifact, when the quota below allows.
+3. Copy `app-arm64-v8a-release.apk` to the phone.
 4. On the phone, open the file and allow installing from that source when
    prompted.
 
@@ -19,10 +21,11 @@ storage quota has been hit*, which reads like a broken build and is not one.
 For the same reason an artifact is kept for **three days**, not thirty; ask for
 another run if you need it after that.
 
-If a hand-started run does fail on the quota, delete some of the older
-`hazri-apk-*` artifacts from their run pages — but note that GitHub only
-recalculates the usage figure **every 6–12 hours**, so a build attempted right
-after deleting can still be refused.
+The release is why the quota no longer matters for getting a build: release
+assets are not counted against it. If the artifact step is refused, the run
+still passes and the release still has the APK. Deleting old `hazri-apk-*`
+artifacts is still worth doing, but GitHub only recalculates the usage figure
+**every 6–12 hours**, so the artifact copy can stay refused for a while after.
 
 The APK is signed with the standard Android debug key, which is fine for
 testing and cannot be uploaded to Google Play. A Play build uses Play App

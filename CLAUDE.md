@@ -89,7 +89,10 @@ against git.
 every push, **but only a run started by hand keeps it** (Actions -> Build ->
 Run workflow). A push still compiles the Android app, which is what catches a
 Gradle or manifest break no widget test can see; it simply does not store the
-95 MiB. Artifacts are kept three days.
+95 MiB. A hand-started run publishes the APK to a **pre-release tagged
+`apk-<branch>`**, replaced on the next run of that branch, because releases
+are not counted against the artifact quota below; it also attaches the same
+file to the run as an artifact, kept three days, when the quota allows.
 
 That is a storage limit, not a preference. The allowance on this plan is
 500 MB and one APK is about 95 MiB, so five fill it -- and then every run
