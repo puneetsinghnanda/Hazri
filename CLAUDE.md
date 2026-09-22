@@ -77,6 +77,33 @@ the failure mode is quiet: Firestore answers every write and refuses it,
 which the app reports as though it were offline. Any change to that file is
 only half done until it is published.
 
+**The committed file is the live one as of 2026-09-22** -- the `get`/`list`
+split that lets a newcomer read the group their invite code names. If you
+change it, say in the PR description that it still has to be published, and
+do not treat a sangat bug as a code bug until you have checked the console
+against git.
+
+## Builds
+
+`.github/workflows/build.yml` analyzes, tests and builds the release APK on
+every push, **but only a run started by hand keeps it** (Actions -> Build ->
+Run workflow). A push still compiles the Android app, which is what catches a
+Gradle or manifest break no widget test can see; it simply does not store the
+95 MiB. Artifacts are kept three days.
+
+That is a storage limit, not a preference. The allowance on this plan is
+500 MB and one APK is about 95 MiB, so five fill it -- and then every run
+fails at the last step with *Artifact storage quota has been hit*, which
+looks exactly like a broken build and is not one. GitHub also recalculates
+the usage figure only **every 6-12 hours**, so deleting artifacts does not
+free space immediately. `.github/workflows/README.md` is the reader-facing
+version.
+
+`[skip ci]` skips a run, and GitHub matches it **anywhere in the commit
+message**, body included -- which has already cost one build that was meant
+to happen. Put it in the subject when you mean it and nowhere at all when
+you do not.
+
 ## The globe
 
 `assets/geo/world.bin` is the coastlines and land borders design 29 draws,
@@ -108,19 +135,20 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   See "Regenerating" above. Every group write and the globe depend on the
   current file being live in the console; until it is, writes are refused and
   the app says so (`SangatRefused`), which is not the same as being offline
-  and must never be reported as though it were.
+  and must never be reported as though it were. The file in git went live on
+  2026-09-22, so the gap is the next change to it, not this one.
 - **A verification or restore link is pasted, not tapped.** Android App Links
   need an `assetlinks.json` carrying the release signing fingerprint, and
   there is no keystore yet (Phase 3). Pasting the link needs nothing, so both
   flows work today; the intent filter is the Phase 3 change, and the screens
   do not otherwise move.
 - **An invite is a pasted link or the code off the end of it**, for the same
-  reason. **It needs the current `firestore.rules` published to work at all.**
-  The group id *is* the invite, so `get` on a group document is open to
-  anybody signed in who knows the id, and `list` is not -- that split is what
-  lets a newcomer join. Under the older rule, which gated `read` on
-  `isMember`, `join` could not read the group it was about to join and every
-  code was refused.
+  reason. The group id *is* the invite, so `get` on a group document is open
+  to anybody signed in who knows the id, and `list` is not -- that split is
+  what lets a newcomer join, and it went live on 2026-09-22. Under the older
+  rule, which gated `read` on `isMember`, `join` could not read the group it
+  was about to join and every code was refused with "something went wrong at
+  our end". If that message comes back, check the console before the Dart.
 - **A listed group cannot be listed from the app.** `listed` is refused by the
   rules on create and pinned on update, so a group made on a phone is always
   private. Asking to be listed writes `listingRequested`, and approving one is
@@ -149,9 +177,14 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   longer a tab.
 - **The Simran tab follows the reader's mock-up of 2026-09-20**, which
   supersedes design 29 for that screen: the globe, the legend and the two
-  colours are design 29's, and the serif headline, the ੴ rule and the verse
-  are the mock-up's. One screen whether or not a sitting is running -- the
-  countdown takes the presence line's place while one is. Two things design
+  colours are design 29's, and the serif wordmark, the ੴ rule and the verse
+  are the mock-up's. **That mock-up is not in the repository** -- it was a
+  screenshot in the session it was built in, so this paragraph and the
+  screen itself are the only record of it. Its headline, "One Name. / A
+  Brighter World.", was taken out afterwards to give the globe the room;
+  `simranHeadline*` is still in the ARB files, unused, and a test holds that
+  it stays off the screen. One screen whether or not a sitting is running --
+  the countdown takes the presence line's place while one is. Two things design
   29 has are still not shown: its month total and country count, because
   neither is stored anywhere and a number nobody counted is worse than no
   number; and its third legend colour, "in the sangat", because a member's
@@ -163,6 +196,12 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   together never saw each other. Your own dot always showed because it is
   drawn from Settings on the phone, not from the server, which made the bug
   look like a drawing problem rather than a fetching one.
+- **A simran sitting credits its goal from inside the repository**, in
+  `logSimran` and `removeSimranOn`, not at the three call sites that reach
+  them -- the timer finishing, a tick in the Diary, a sync restore. Each of
+  those used to have to remember, and none of them did, so a day was marked
+  as hazri while the goal beside it stayed undone. A bani still credits at
+  its call sites; if a fourth simran path appears, it inherits this one.
 - **Two people in the same city are one dot**, sized by the count and lit as
   yours. The globe knows cities, not people, so there is no second dot to
   draw; the headline counts them.
