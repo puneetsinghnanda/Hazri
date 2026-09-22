@@ -1,7 +1,13 @@
 name: Build
 
-# Analyze, test and build the Android APK. The APK is uploaded as a workflow
-# artifact so a tester can install it straight from the run page.
+# Analyze, test and build the Android APK.
+#
+# The APK is only kept when the run was asked for by hand (Actions -> Build ->
+# Run workflow). Every push still builds it, because a build that only compiles
+# on demand stops catching the things a widget test cannot; it is the 95 MiB
+# upload that is deliberate. Storage on this plan is 500 MB, which is five of
+# these, so a month of pushes filled it and then every run failed at the last
+# step with "Artifact storage quota has been hit" -- a green build and no APK.
 on:
   push:
     branches: ['**']
@@ -94,18 +100,22 @@ jobs:
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 
       - name: Name the artifact
-        if: always()
+        # always(), so an APK that built is still kept when a later check fails
+        # -- that is the build you most want to put on a phone and look at.
+        if: always() && github.event_name == 'workflow_dispatch'
         id: name
         run: |
           echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch'
         with:
           name: hazri-apk-${{ steps.name.outputs.sha }}
           path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
           if-no-files-found: error
-          retention-days: 30
+          # Three days, not thirty. An APK is installed the day it is asked for;
+          # thirty days meant a month of them alive at once.
+          retention-days: 3
 
       - name: Report the APK size
         run: ls -lh build/app/outputs/flutter-apk/*.apk

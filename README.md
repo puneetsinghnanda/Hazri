@@ -45,7 +45,8 @@ system in [`design/`](design).
 
 ## Getting a test APK
 
-Every push builds one. See
+Every push builds one, but only a run you start by hand keeps it — Actions ->
+Build -> Run workflow. See
 [`.github/workflows/README.md`](.github/workflows/README.md).
 
 ## Building locally
