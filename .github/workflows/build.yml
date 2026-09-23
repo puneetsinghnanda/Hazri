@@ -4,10 +4,17 @@ name: Build
 #
 # The APK is only kept when the run was asked for by hand (Actions -> Build ->
 # Run workflow). Every push still builds it, because a build that only compiles
-# on demand stops catching the things a widget test cannot; it is the 95 MiB
-# upload that is deliberate. Storage on this plan is 500 MB, which is five of
-# these, so a month of pushes filled it and then every run failed at the last
-# step with "Artifact storage quota has been hit" -- a green build and no APK.
+# on demand stops catching the things a widget test cannot; it is keeping the
+# 95 MiB that is deliberate.
+#
+# It is kept as a **pre-release**, not as an artifact. The artifact store on
+# this plan is 500 MB, which is five of these, and its usage figure is
+# account-wide and recalculated only every 6-12 hours -- so a run could build
+# and check a perfectly good APK and still be refused at the last step with
+# "Artifact storage quota has been hit", which reads like a broken build and
+# is not one. It did, three times. Release assets are not counted against that
+# quota at all, so one rolling pre-release per branch, apk-<branch>, replaced
+# on the next hand-started run of that branch.
 on:
   push:
     branches: ['**']
@@ -32,6 +39,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    # contents: write is for the release the APK is published to. Nothing else
+    # in this workflow writes to the repository.
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -107,7 +118,30 @@ jobs:
         run: |
           echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
+      - name: Publish the APK as a pre-release
+        # This is the copy that is meant to be there, because a release asset
+        # does not touch the artifact quota. One tag per branch, deleted and
+        # remade each run, so the number of APKs alive at once is the number of
+        # branches being tested and no more.
+        if: always() && github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: apk-${{ github.ref_name }}
+          SHA: ${{ steps.name.outputs.sha }}
+        run: |
+          gh release delete "$TAG" --yes --cleanup-tag || true
+          gh release create "$TAG" \
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Test APK - ${GITHUB_REF_NAME} - ${SHA}" \
+            --notes "Debug-signed arm64 test build of ${GITHUB_REF_NAME} at ${SHA}. Replaced on the next hand-started run of this branch."
+
       - uses: actions/upload-artifact@v4
+        # A convenience on the run page, nothing more. The release above is the
+        # copy that matters, so the quota refusing this one must not fail the
+        # run -- which is exactly what it did, three times, on a green build.
+        continue-on-error: true
         if: always() && github.event_name == 'workflow_dispatch'
         with:
           name: hazri-apk-${{ steps.name.outputs.sha }}
@@ -118,4 +152,5 @@ jobs:
           retention-days: 3
 
       - name: Report the APK size
+        if: always()
         run: ls -lh build/app/outputs/flutter-apk/*.apk

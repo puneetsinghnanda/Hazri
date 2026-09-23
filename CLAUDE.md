@@ -120,16 +120,21 @@ against git.
 `.github/workflows/build.yml` analyzes, tests and builds the release APK on
 every push, **but only a run started by hand keeps it** (Actions -> Build ->
 Run workflow). A push still compiles the Android app, which is what catches a
-Gradle or manifest break no widget test can see; it simply does not store the
-95 MiB. Artifacts are kept three days.
+Gradle or manifest break no widget test can see; it simply does not keep the
+95 MiB.
 
-That is a storage limit, not a preference. The allowance on this plan is
-500 MB and one APK is about 95 MiB, so five fill it -- and then every run
-fails at the last step with *Artifact storage quota has been hit*, which
-looks exactly like a broken build and is not one. GitHub also recalculates
-the usage figure only **every 6-12 hours**, so deleting artifacts does not
-free space immediately. `.github/workflows/README.md` is the reader-facing
-version.
+**The kept copy is a pre-release, not an artifact** -- one rolling tag per
+branch, `apk-<branch>`, replaced on the next hand-started run. That is not a
+preference. The artifact store on this plan is 500 MB, the usage figure is
+**account-wide rather than per repository**, and GitHub recalculates it only
+every 6-12 hours -- so a run can build and check a perfectly good APK and
+still be refused at the last step with *Artifact storage quota has been hit*,
+which reads like a broken build and is not one. It did that three times,
+including once when this repository held a single 94 MiB artifact, which is
+how we learnt the figure is not local. **Release assets do not count against
+that quota.** The artifact upload is still there as a convenience and is
+marked `continue-on-error`, so it can no longer fail a run.
+`.github/workflows/README.md` is the reader-facing version.
 
 `[skip ci]` skips a run, and GitHub matches it **anywhere in the commit
 message**, body included -- which has already cost one build that was meant
