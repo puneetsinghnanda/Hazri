@@ -39,9 +39,10 @@ system in [`design/`](design).
   the merged manifest. The screen, the 30-day cache and the share card are
   built and wired; adding a permitted provider is one class (PRD §18, D4).
 - **Calendar coverage.** The Nanakshahi Sangrand dates are derived from the
-  supplied SGPC sample and cover **17 Aug – 15 Dec 2026**. Outside that range
-  the app says the calendar has not shipped that far rather than computing a
-  date it cannot vouch for (PRD §18, D8).
+  supplied SGPC source and cover **all of Nanakshahi 558 — 14 March 2026 to
+  13 March 2027**. Outside that range the app says the calendar has not
+  shipped that far rather than computing a date it cannot vouch for; 559 has
+  to be added before March 2027 (PRD §18, D8).
 
 ## Getting a test APK
 

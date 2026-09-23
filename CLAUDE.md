@@ -46,14 +46,27 @@ to every session in this repository.
 
 ## The roadmap
 
-Phase 2 is what this build is. **Phase 3 is six things and nothing else**
+Phase 2 is what this build is. **Phase 3 is seven things and nothing else**
 (PRD §3.4): report an issue / feedback, points and badges, Sehaj Path and
-the marker, rate the app, a digital Gurdwara visit, and switching analytics
-collection on. There is no phase after it, and the fifteen-item Phase 3 that
-used to be written down -- the iPhone app, Live Kirtan, widgets, Saakhis,
-kids' mode and the rest -- was removed on 2026-09-22 rather than deferred.
-Two of the six carry open decisions before they can be designed: the badge
-names (D11) and which Sehaj Path is meant (D12).
+the marker, rate the app, a digital Gurdwara visit, switching analytics
+collection on, and notifications. There is no phase after it, and the
+fifteen-item Phase 3 that used to be written down -- the iPhone app, Live
+Kirtan, widgets, Saakhis, kids' mode and the rest -- was removed on
+2026-09-22 rather than deferred.
+
+Four of the seven are blocked on a decision, not on code: the badge names
+(D11), which Sehaj Path is meant (D12), what sends a push at all (D13), and
+whether a points system may score Gurbani when §0 says it may not (D14, a
+blocker on 3.2).
+
+**Notifications are mostly already here.** Five local reminder kinds ship
+today -- `amritVela`, `evening`, `bedtime`, `simran`, `gurpurab` -- so the
+daily reminder, the per-goal reminder and the Gurpurab alert are built, not
+missing. Only two things anybody has asked for genuinely need a push: being
+added to a sangat, and the group's daily digest. **Nothing can be pushed
+until D13 is answered**, because FCM needs a sender and Spark has no Cloud
+Functions. And every notification that must reach everybody has to stay
+local: somebody who never joins the sangat has no account and no token.
 
 ## Layout
 
@@ -315,5 +328,15 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   bundled lines from Sri Guru Granth Sahib Ji, one a day by date, shareable as
   text or as an image. It needs no network, which is what the Hukamnama did
   need. The dataset carries no Ang numbers and the app does not invent one.
-- **The Nanakshahi calendar covers 17 Aug - 15 Dec 2026 only**, derived from
-  the supplied SGPC sample. Dates outside it report that rather than guessing.
+- **The Nanakshahi calendar covers the whole of Nanakshahi 558**, 14 Mar 2026
+  to 13 Mar 2027, built from `content/source/calendar-558.json` and
+  `gurpurab-558.json`. 147 events across 12 kinds, 52 of them flagged
+  `default_remind`. Dates outside the year report that rather than guessing,
+  and 559 has to be added before March 2027. (This file and the README both
+  used to say "17 Aug - 15 Dec 2026", which was an early sample and has been
+  wrong for a while.)
+- **Ten of the 147 event names have Punjabi and none has Hindi.** The names
+  live in `content.db`, not in the ARB files, so `l10n_test` cannot see the
+  gap and does not fail on it. Anything that shows an event name to a reader
+  -- PRD §3.7's Sikhi-event notification above all -- needs those names
+  first, or it says an English sentence to somebody who chose Punjabi.

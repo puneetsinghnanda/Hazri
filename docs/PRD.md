@@ -123,13 +123,13 @@ Sign-in, sync, any backend; Sangat Paath; Global Naam Simran / Simran Circle; fa
 |---|---|---|
 | **1 · Launch (this PRD)** | Best daily Nitnem app. Free, offline, no login, no own server. **Android only.** | 1.1–1.17 |
 | **2 · Together** | Server added (Firebase; Vercel for extras). Still free. Android only. | 2.1 Optional sign-in & diary sync · 2.2 Sangat Paath · 2.3 Global Naam Simran · 2.4 Family view · 2.5 Simran Circle · 2.6 Gurbani Vichar AI (curated knowledge base only, cites Ang/teeka) · 2.7 Extended banis · 2.8 Invite links on own domain · 2.9 Firebase Analytics and Crashlytics wired in, collection off (§13.1) |
-| **3 · Depth** | The reader can answer back, and the app can say where they are. **Android only.** | 3.1 Report an issue / Feedback · 3.2 Points and badges · 3.3 Sehaj Path and marker · 3.4 Rate the app · 3.5 Digital Gurdwara visit · 3.6 Analytics collection switched on, with the opt-out working (§13.1) — see §3.4 |
+| **3 · Depth** | The reader can answer back, and the app can say where they are. **Android only.** | 3.1 Report an issue / Feedback · 3.2 Points and badges · 3.3 Sehaj Path and marker · 3.4 Rate the app · 3.5 Digital Gurdwara visit · 3.6 Analytics collection switched on, with the opt-out working (§13.1) · 3.7 Notifications, local and pushed — see §3.4 |
 
 There is no phase after 3. The iPhone app, and the fifteen-item Phase 3 that
 used to sit here, were taken off the roadmap on 2026-09-22; §3.4 lists what
 went and §17.2 says what is kept from the iOS work.
 
-### 3.4 Phase 3 — in scope (features 3.1–3.6)
+### 3.4 Phase 3 — in scope (features 3.1–3.7)
 
 **What was removed.** Recitation check, kids' kantth mode and Gurmukhi
 letters, Gurdwara Connect, the Wear OS Simran counter, home-screen widgets,
@@ -172,11 +172,24 @@ to be rewritten in the same change:
 - **Nothing is ever taken away.** No decay, no expiry, no losing a badge. A
   missed day costs nothing; that is the whole reason the streak copy was
   written the way it was.
-- **No notification about points**, ever.
+- **No notification about points**, ever. A *badge* is the one exception and
+  it is deliberate: ten of them in a lifetime is a rare thing to mark, and it
+  is marked once, quietly, and never repeated (§3.7, `badge`). Points,
+  totals, positions and anything resembling a streak stay silent.
 - Points are **derived from what is already logged** — paath, simran minutes,
   diary days — and never become a second source of truth beside the diary.
   The Phase 2 bug where a sitting was marked and its goal was not is exactly
   what a parallel tally invites.
+
+*The unresolved conflict.* §0's first design principle says, in these words:
+**"No points or XP for Gurbani."** A points system fed by reading Gurbani is
+the thing that sentence was written to prevent, and no wording in this
+section repeals it. Two honest ways out, and the owner picks: either points
+come only from what is *not* Gurbani — simran minutes, sewa in a sangat,
+keeping a diary, bringing somebody in — and reading a bani is never scored;
+or §0 is amended in the same commit that builds 3.2, so the document does
+not say two things at once. **Do not build 3.2 while §0 still reads as it
+does.**
 
 *The ten names.* A name that Sikhi confers on a person is not an app's to
 hand out, so **Khalsa, Sant, Brahmgyani, Granthi and Bhai Sahib are excluded
@@ -264,6 +277,112 @@ from the old 3.17 and specified in §13.1: this is the phase where collection
 goes on, Crashlytics is added, the Settings switch becomes live, and the
 privacy screen names analytics as a fourth category. The table in §13.1 and
 that screen move together or not at all.
+
+**3.7 Notifications, local and pushed.**
+
+*What already exists, and needs no Firebase.* Five reminder kinds are built
+and shipping: `amritVela`, `evening`, `bedtime`, `simran` and `gurpurab`,
+across four channels (Nitnem reminders, Daily Simran, Gurpurab, Paath goals),
+scheduled on the phone by `flutter_local_notifications` on a rolling 7-day
+window capped at 60 pending (§1.10). Items 1, 2 and 3 of the owner's list are
+therefore **already in the app**; what they need is finishing, not inventing.
+
+*The one distinction that decides the whole feature.* A notification is
+**local** if the phone already knows everything needed to decide when it
+fires, and **pushed** if the reason for it happened somewhere else. Only two
+of the eight asked for are genuinely pushed. That matters because rule 4 says
+the sangat is opt-in: somebody who never joins has no account, no token, and
+can receive no push at all — so every notification that must reach *everyone*
+has to be local, by construction.
+
+| # | Notification | Local or push | State |
+|---|---|---|---|
+| 1 | Daily morning reminder | local | **built** (`amritVela`) |
+| 2 | One per goal | local | **built** (Paath goals channel); per-goal times exist in the goal model |
+| 3 | Gurpurab | local | **built**, both the eve and the morning |
+| 4 | Sikhi event | local | **data is already there** — 147 events across 12 kinds in `calendar_event`, 52 flagged `default_remind`. Nothing notifies them |
+| 5 | You were added to a sangat | **push** | not built. Needs a sender |
+| 6 | The day's sangat goal, consolidated | **push** | not built. Needs a sender and a schedule |
+| 7 | Your goals for the day are done | local | not built — and see below |
+| 8 | A badge earned | local | not built; gated on 3.2 and D11 |
+
+*7 is the one to reconsider.* The person is holding the phone at the moment
+their last goal completes — they tapped the thing that completed it. A
+notification tells them what the screen in their hand already says. Ship it
+as the in-app moment it is, and if it stays a notification, make it **off by
+default** and fire it only when the completion arrived from another device
+through sync.
+
+*What is missing from the list.* Ordered by what they cost:
+
+- **Sangrand** — the Nanakshahi month turning. Twelve of them a year, already
+  in `calendar_event`, and the one date in the year a Nanakshahi app should
+  not be silent about. Local.
+- **Somebody joined your group** — the mirror of 5, for the admin who sent
+  the invite and cannot otherwise tell. Push.
+- **A group goal is nearly over, and a group goal is reached** — `endsAt`
+  exists on the goal and nothing looks at it. Two notifications, both push,
+  and the second is the only genuinely happy one in the list.
+- **A paath logged toward a group goal.** Tempting and wrong as its own
+  notification: in a family of six it is six a day. **It belongs inside 6's
+  daily digest**, and that is the reason 6 is a digest.
+- **A new Vichar entry published** — the library is empty today and nothing
+  will tell anybody when it stops being empty. Push, and the only marketing-
+  shaped notification here, so it is off unless asked for.
+- **"The line you reported has been corrected"** — closes the loop on 3.1.
+  Rare, entirely welcome, and the reason somebody reports a second error.
+  Push, to the reporter alone.
+- **You left a bani part-read** — "Japji Sahib, you stopped at pauri 21",
+  later the same day, once. Local, and the most likely of these to be
+  genuinely useful.
+- **The Sehaj Path marker has not moved in a week** (3.3, if D12 picks the
+  marker). Local, gentle, and off by default.
+
+*Rules that bind every one of them.* These are not preferences:
+
+- **§0 stands: "Gurbani in notifications is limited to bani names."** No line
+  of Gurbani in a notification body, no ਅੱਜ ਦਾ ਵਿਚਾਰ in a push. The Vichar is
+  read in the app.
+- **No streak notifications** (§12, unchanged) and no notification that
+  somebody missed, lost or is behind. Nothing is ever framed as a loss.
+- **Nothing names another person's shortfall.** A digest says what the group
+  did together; it never reports that one member did nothing. A family group
+  makes this a household matter, not a product decision.
+- **Silence windows:** nothing at night beyond the reminders the person set
+  themselves, nothing while a simran sitting is running, nothing while the
+  reader is open.
+- **A daily cap** on everything except the reminders the person configured.
+  Two is a reasonable starting number.
+- **Every category has its own switch**, and every pushed category is off
+  until somebody joins the sangat, because until then there is nobody to
+  push to.
+
+*What it takes to send a push at all.* FCM does not send by itself — some
+server has to call it, and **Firebase Spark has no Cloud Functions**. So 5
+and 6, and every pushed item above, need one of:
+
+1. **A scheduled job on Vercel** (already named in the Phase 2 row as "Vercel
+   for extras") holding a service-account key and calling the Firebase Admin
+   SDK. A daily cron covers 6; an HTTP endpoint the app calls covers 5.
+2. **Blaze plus Cloud Functions**, which the owner has ruled out.
+
+That choice is D13, and it is the first thing in this project that needs a
+**secret held off the phone**: a service-account JSON, which `.gitignore`
+already refuses and which must never enter this repository.
+
+*Tokens are personal data, and the privacy screen has to say so.* An FCM
+registration token identifies a device. It is written to the user's own
+document, it is rotated by the SDK, it must be **deleted when the account is
+deleted** — the "Delete my account and data" button already exists and must
+take the token with it — and it must be removed, not merely ignored, when
+somebody turns every pushed category off. §13.1 carries the row.
+
+*A gap worth knowing before item 4 is built.* Of the 147 calendar events,
+**10 have Punjabi names and none has Hindi**. Event names live in
+`content.db`, not in the ARB files, so `l10n_test` cannot catch this and does
+not. A Punjabi notification that says "Shaheedi Purab – Sri Guru Arjan Dev
+Ji" in English is the feature failing quietly, so the names are content work
+that comes before the notification, not after it.
 
 ---
 
@@ -869,11 +988,12 @@ a lie to the reader.
 | | Phase 1 | Phase 2 | Phase 3 |
 |---|---|---|---|
 | `INTERNET` in the merged manifest | removed | **restored** | present |
-| Firebase SDKs in the build | none | Core, Auth, Firestore, **Analytics** | the same, plus Crashlytics |
+| Firebase SDKs in the build | none | Core, Auth, Firestore, **Analytics** | the same, plus Crashlytics and **Messaging** (§3.7) |
 | Analytics collection | n/a | **off** — `setAnalyticsCollectionEnabled(false)` at start-up, before any event can be recorded | **on**, defaulting to on, with the opt-out working |
 | Crashlytics | n/a | not added | on, same opt-out |
 | Events leaving the phone | none at all | none from Analytics; only the sangat, the account and diary sync, and only for somebody who joined | the §13 event list, no PII, no free text |
 | The Settings opt-out switch | absent | present but inert, and shown as unavailable rather than pretending to work | live, and stops both Analytics and Crashlytics |
+| A push token | n/a | none — no Messaging SDK | **an FCM registration token per device**, on the user's own document, only for somebody who joined the sangat. Deleted with the account, and removed when every pushed category is switched off |
 | Advertising ID | absent | absent | absent |
 
 **"No free text" is a rule about analytics, not about the reader.** Phase 3's
@@ -993,11 +1113,13 @@ Two things it left behind are still live and are **not** to be undone:
 | D5 | Bani versions beyond SGPC (Taksal/AKJ) | M2 | SGPC only |
 | D6 | Analytics consent for EEA/UK users | M10 | Opt-out toggle; ask on first launch if device region is EEA/UK |
 | D7 | Domain for privacy policy & share links | M10 | — |
-| D8 | Full SGPC 558 (and 559) calendar data | M9 | Sample file only |
+| D8 | ~~Full SGPC 558 calendar data~~ — **done**: `calendar_event` holds the full Nanakshahi year 558, 14 Mar 2026 – 13 Mar 2027, 147 events. 559 is still outstanding, as are the Punjabi and Hindi event names (10 of 147 have Punjabi, none has Hindi) | 559 before Mar 2027; the names before §3.7 item 4 | Roll forward a year at a time from the SGPC source |
 | D9 | Paathi display name/credit | M10 | "[Paathi name]" placeholder |
 | D10 | Report an error | — | Phase 3 (confirmed by owner) — now 3.1, with Feedback |
 | D11 | **The ten badge names** (§3.2) — whether Gyani and Pracharak are names an app may hand out, and the Gurmukhi and Devanagari spellings of all ten | Before 3.2 is built | Ask a Sikh reader before the screen is designed, not after |
 | D12 | **Which Sehaj Path** (§3.3) — the marker alone, or the full 1430 Angs in the app | Before 3.3 is scoped | The marker. The full text is a content programme gated on D1 |
+| D13 | **What sends a push** (§3.7) — a scheduled Vercel job holding a service-account key, or Blaze and Cloud Functions | Before 3.7 items 5 and 6 | Vercel. Blaze is ruled out, and Spark has no Functions, so without this nothing can be pushed at all |
+| D14 | **Points and Gurbani** (§3.2) — whether §0's "No points or XP for Gurbani" is honoured by scoring only non-Gurbani activity, or amended | Before 3.2 is built (blocker) | Honour it: score simran, sewa and diary days, never a bani read |
 
 ---
 
