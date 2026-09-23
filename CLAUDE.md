@@ -54,6 +54,17 @@ fifteen-item Phase 3 that used to be written down -- the iPhone app, Live
 Kirtan, widgets, Saakhis, kids' mode and the rest -- was removed on
 2026-09-22 rather than deferred.
 
+**The 23-screen Phase 3 design set is superseded — do not merge it.**
+`claude/eloquent-edison-qsjll0` carries 46 files, `design/html/62-*` to
+`84-*`, plus `tools/design/phase3_screens.py` that draws them. They were
+drawn on 2026-09-22 for the *old* Phase 3, so most of them are screens for
+features that no longer exist anywhere on the roadmap -- the recitation
+check, pronunciation practice, the kids' letters, saakhis, cast, live
+kirtan, widgets, the watch, the iPhone. Nothing on this branch references
+them and nothing should. Anything reconciling the two branches takes the
+Phase 2 fixes and leaves that set behind; a design set for the seven items
+in §3.4 would be a new one.
+
 Four of the seven are blocked on a decision, not on code: the badge names
 (D11), which Sehaj Path is meant (D12), what sends a push at all (D13), and
 whether a points system may score Gurbani when §0 says it may not (D14, a
