@@ -126,12 +126,24 @@ abstract final class ReminderPlanner {
   ///
   /// [completedToday] names the reminders whose slot is already done, so those
   /// are suppressed for today only (PRD 1.10).
+  ///
+  /// [gurpurabDates] are the days that actually carry an event worth
+  /// reminding about. The Gurpurab reminder is the one reminder that is not
+  /// due daily: it fires on the *eve* of one of these days and on no other
+  /// night. Passing nothing therefore schedules no Gurpurab reminder at all,
+  /// which is the right answer for a calendar that has run out of year --
+  /// silence rather than a nightly claim that tomorrow is a Gurpurab.
   static List<ReminderOccurrence> plan({
     required List<Reminder> reminders,
     required DateTime from,
     required SunLocation at,
     Set<String> completedToday = const {},
+    Set<DateTime> gurpurabDates = const {},
   }) {
+    final eves = {
+      for (final d in gurpurabDates)
+        DateTime(d.year, d.month, d.day).subtract(const Duration(days: 1)),
+    };
     final out = <ReminderOccurrence>[];
     final today = DateTime(from.year, from.month, from.day);
 
@@ -139,6 +151,7 @@ abstract final class ReminderPlanner {
       final date = today.add(Duration(days: d));
       for (final r in reminders) {
         if (d == 0 && completedToday.contains(r.id)) continue;
+        if (r.id == ReminderIds.gurpurab && !eves.contains(date)) continue;
         final time = timeOn(r, date, at);
         if (time == null || !time.isAfter(from)) continue;
         out.add(ReminderOccurrence(

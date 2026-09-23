@@ -8,6 +8,7 @@ import '../../../core/db/user_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../../core/time/clock.dart';
+import '../../gurpurab/domain/calendar_display.dart';
 import '../domain/reminder_plan.dart';
 import 'reminder_service.dart';
 
@@ -115,6 +116,12 @@ class ReminderScheduler {
     final repo = _ref.read(userRepositoryProvider);
     final clock = _ref.read(clockProvider);
     final at = await _ref.read(sunLocationProvider.future);
+
+    // Seed here rather than relying on somebody having opened a screen that
+    // lists reminders. `remindersProvider` used to be the only thing that
+    // seeded, so on a phone where that screen was never opened this read came
+    // back empty and the app scheduled nothing, silently, for ever.
+    await _seedDefaults(repo);
     final reminders = await repo.reminders();
     final l = await L.delegate.load(_ref.read(settingsProvider).locale);
 
@@ -130,11 +137,13 @@ class ReminderScheduler {
           ReminderIds.bedtime,
     };
 
+    final events = await _remindedEvents();
     final occurrences = ReminderPlanner.plan(
       reminders: reminders,
       from: clock.now(),
       at: at,
       completedToday: completed,
+      gurpurabDates: events.keys.toSet(),
     );
 
     final content = _ref.read(contentRepositoryProvider);
@@ -147,9 +156,38 @@ class ReminderScheduler {
 
     final notifications = <ScheduledNotification>[
       for (final o in occurrences)
-        _describe(l, o, bySlot: bySlot, sunriseLabel: sunrise, banis: banis),
+        _describe(l, o,
+            bySlot: bySlot,
+            sunriseLabel: sunrise,
+            banis: banis,
+            events: events),
     ];
     await service.replaceSchedule(notifications);
+  }
+
+  /// The days that carry an event the reader has asked to be reminded about,
+  /// mapped to the name to put in the notification.
+  ///
+  /// `default_remind` is the calendar's own judgement -- 52 of its 147 events
+  /// -- and a per-event switch in the app overrides it either way. Where two
+  /// events share a day the first one named wins, because a notification has
+  /// room for one.
+  Future<Map<DateTime, String>> _remindedEvents() async {
+    final l10n = _ref.read(settingsProvider).locale.languageCode;
+    final rows = await _ref.read(contentRepositoryProvider).calendarEvents();
+    final overrides = await _ref.read(userRepositoryProvider).eventOverrides();
+
+    final out = <DateTime, String>{};
+    for (final e in rows) {
+      if (!(overrides[e.id] ?? e.defaultRemind)) continue;
+      final date = DateTime.tryParse(e.date);
+      if (date == null) continue;
+      out.putIfAbsent(
+        DateTime(date.year, date.month, date.day),
+        () => e.nameFor(l10n),
+      );
+    }
+    return out;
   }
 
   ScheduledNotification _describe(
@@ -158,6 +196,7 @@ class ReminderScheduler {
     required Map<BaniSlot, List<String>> bySlot,
     required DateTime? sunriseLabel,
     required List<dynamic> banis,
+    required Map<DateTime, String> events,
   }) {
     final hhmm = '${o.at.hour.toString().padLeft(2, '0')}:'
         '${o.at.minute.toString().padLeft(2, '0')}';
@@ -205,11 +244,16 @@ class ReminderScheduler {
           payload: '/simran',
         );
       case ReminderIds.gurpurab:
+        // The occurrence is the eve, so the day being named is the next one.
+        // The planner only emits these for days that are in `events`, so the
+        // fallback is unreachable rather than a guess about the calendar.
+        final day = DateTime(o.at.year, o.at.month, o.at.day)
+            .add(const Duration(days: 1));
         return ScheduledNotification(
           id: o.notificationId,
           at: o.at,
           title: l.notifGurpurabTitle,
-          body: l.gurpurabTitle,
+          body: events[day] ?? l.gurpurabTitle,
           channel: ReminderChannel.gurpurab,
           channelName: l.notifChannelGurpurab,
           payload: '/gurpurab',

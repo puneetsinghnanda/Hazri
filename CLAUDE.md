@@ -59,14 +59,19 @@ Four of the seven are blocked on a decision, not on code: the badge names
 whether a points system may score Gurbani when §0 says it may not (D14, a
 blocker on 3.2).
 
-**Notifications are mostly already here.** Five local reminder kinds ship
-today -- `amritVela`, `evening`, `bedtime`, `simran`, `gurpurab` -- so the
-daily reminder, the per-goal reminder and the Gurpurab alert are built, not
-missing. Only two things anybody has asked for genuinely need a push: being
-added to a sangat, and the group's daily digest. **Nothing can be pushed
-until D13 is answered**, because FCM needs a sender and Spark has no Cloud
-Functions. And every notification that must reach everybody has to stay
-local: somebody who never joins the sangat has no account and no token.
+**Notifications are mostly already here, and two of them were broken.** Five
+local reminder kinds ship -- `amritVela`, `evening`, `bedtime`, `simran`,
+`gurpurab` -- so the daily reminder and the Gurpurab alert are built. The
+per-goal reminder is **not**: `ReminderIds.goal()` and its channel exist, but
+nothing ever writes a reminder row for a goal, so none is ever planned. See
+the two bugs under "Known gaps" below before believing any claim that a
+notification works.
+
+Only two things anybody has asked for genuinely need a push: being added to a
+sangat, and the group's daily digest. **Nothing can be pushed until D13 is
+answered**, because FCM needs a sender and Spark has no Cloud Functions. And
+every notification that must reach everybody has to stay local: somebody who
+never joins the sangat has no account and no token.
 
 ## Layout
 
@@ -176,6 +181,23 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   rule, which gated `read` on `isMember`, `join` could not read the group it
   was about to join and every code was refused with "something went wrong at
   our end". If that message comes back, check the console before the Dart.
+- **Reminders are seeded by the scheduler, not by a screen.** Until
+  2026-09-23 the five default rows were written as a side effect of *watching*
+  `remindersProvider`, and `ReminderScheduler.reschedule()` reads the table
+  directly -- so on any phone where no screen listing reminders had been
+  opened, including every phone that upgraded with onboarding already done,
+  the read came back empty and **nothing was ever scheduled, silently**. The
+  seeding now happens inside `reschedule()`. Do not move it back out: the
+  planner had good unit tests throughout and they could not see this, because
+  what was wrong sat either side of the pure function.
+- **The Gurpurab reminder is conditional on the calendar**, and used to fire
+  every single night at 20:00 saying "Tomorrow is a Gurpurab" with the body
+  "Gurpurab calendar" -- on the six nights in seven when it was not, and with
+  no event named. `ReminderPlanner.plan` now takes `gurpurabDates` and emits
+  an occurrence only on the eve of a day the calendar flags (`default_remind`,
+  or the reader's own per-event override), and the body is that event's name.
+  An empty set means silence, which is the right answer when the calendar has
+  run out of year rather than a nightly guess.
 - **A listed group cannot be listed from the app.** `listed` is refused by the
   rules on create and pinned on update, so a group made on a phone is always
   private. Asking to be listed writes `listingRequested`, and approving one is

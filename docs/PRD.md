@@ -298,8 +298,8 @@ has to be local, by construction.
 | # | Notification | Local or push | State |
 |---|---|---|---|
 | 1 | Daily morning reminder | local | **built** (`amritVela`) |
-| 2 | One per goal | local | **built** (Paath goals channel); per-goal times exist in the goal model |
-| 3 | Gurpurab | local | **built**, both the eve and the morning |
+| 2 | One per goal | local | **not built.** `ReminderIds.goal()` and the channel exist; nothing ever creates a reminder row for a goal, so none is ever planned |
+| 3 | Gurpurab | local | **built**, and was wrong until 2026-09-23: it fired every night claiming tomorrow was a Gurpurab. It now fires on the eve of a day the calendar flags, and names it |
 | 4 | Sikhi event | local | **data is already there** — 147 events across 12 kinds in `calendar_event`, 52 flagged `default_remind`. Nothing notifies them |
 | 5 | You were added to a sangat | **push** | not built. Needs a sender |
 | 6 | The day's sangat goal, consolidated | **push** | not built. Needs a sender and a schedule |

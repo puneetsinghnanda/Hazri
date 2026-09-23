@@ -138,6 +138,34 @@ void main() {
       expect(plan.first.at.day, 13);
     });
 
+    test('the Gurpurab reminder stays silent when no day carries an event', () {
+      // The bug this holds: a fixed 20:00 reminder used to fire every single
+      // night saying "Tomorrow is a Gurpurab", on six nights out of seven when
+      // it was not.
+      final plan = ReminderPlanner.plan(
+        reminders: [
+          reminder(ReminderIds.gurpurab, mode: ReminderMode.fixed, time: '20:00'),
+        ],
+        from: from,
+        at: delhi,
+      );
+      expect(plan, isEmpty);
+    });
+
+    test('and fires on the eve of one, and on no other night', () {
+      final plan = ReminderPlanner.plan(
+        reminders: [
+          reminder(ReminderIds.gurpurab, mode: ReminderMode.fixed, time: '20:00'),
+        ],
+        from: from,
+        at: delhi,
+        gurpurabDates: {DateTime(2026, 9, 15), DateTime(2026, 9, 30)},
+      );
+      // The 30th is outside the seven-day window; the 15th is not.
+      expect(plan.length, 1);
+      expect(plan.single.at, DateTime(2026, 9, 14, 20, 0));
+    });
+
     test('notification ids are stable per reminder per day, and distinct', () {
       final a = ReminderPlanner.notificationIdFor('slot:evening', DateTime(2026, 9, 12));
       final b = ReminderPlanner.notificationIdFor('slot:evening', DateTime(2026, 9, 12));
