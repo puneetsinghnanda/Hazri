@@ -86,6 +86,17 @@ class Goals extends Table {
   TextColumn get untilDate => text().nullable()();
   TextColumn get startDate => text()();
   TextColumn get reminderTime => text().nullable()();
+
+  /// The last day this goal asked anything of, when somebody stopped it early.
+  ///
+  /// Stopping a goal archives it rather than deleting it, because the diary is
+  /// a record of days that happened: a goal kept from the 1st to the 22nd and
+  /// then stopped leaves those twenty-two days exactly as they were, met or
+  /// missed. Deleting the row took its ticks with it and rewrote the month.
+  TextColumn get endedOn => text().nullable()();
+
+  /// Whether it still appears in the live list. An archived goal is inactive
+  /// and carries [endedOn]; the two move together.
   BoolColumn get active => boolean().withDefault(const Constant(true))();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
@@ -161,7 +172,7 @@ class UserDb extends _$UserDb {
   UserDb.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -173,6 +184,11 @@ class UserDb extends _$UserDb {
       // than paath (design 47). Nullable, so every existing goal is untouched
       // and still means what it meant.
       if (from < 3) await m.addColumn(goals, goals.minutes);
+      // 4: stopping a goal archives it instead of deleting it, so the days it
+      // covered keep their marks (scenario 4). Null on every existing goal,
+      // which is right: none of them was stopped early, they either still run
+      // or ran out on their own.
+      if (from < 4) await m.addColumn(goals, goals.endedOn);
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');

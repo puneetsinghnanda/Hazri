@@ -38,18 +38,13 @@ class TodayScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (ref.watch(settingsProvider.select((s) => s.elderMode))) {
-      return const ElderTodayScreen();
-    }
-
-    final c = context.colors;
-    final l = L.of(context);
-    final dates = HazriDates.of(context);
-    final now = ref.watch(clockProvider).now();
-
     // Design 61, on the day the last goal is ticked and once on that day.
     // It follows the state rather than the tap, because the tick can happen
     // in the reader or the diary rather than here.
+    //
+    // Registered **before** the elder-mode return, not after it. It used to
+    // sit below, so an elder-mode phone never subscribed and the sheet that
+    // marks a finished day never appeared on it at all.
     ref.listen(goalsAllDoneTodayProvider, (was, isNow) {
       if (!isNow || (was ?? false)) return;
       final cue = ref.read(goalCompleteCueProvider);
@@ -60,6 +55,15 @@ class TodayScreen extends ConsumerWidget {
         if (context.mounted) showGoalCompleteSheet(context);
       });
     });
+
+    if (ref.watch(settingsProvider.select((s) => s.elderMode))) {
+      return const ElderTodayScreen();
+    }
+
+    final c = context.colors;
+    final l = L.of(context);
+    final dates = HazriDates.of(context);
+    final now = ref.watch(clockProvider).now();
 
     return Scaffold(
       backgroundColor: c.bg,

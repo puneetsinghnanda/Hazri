@@ -17,8 +17,13 @@ const _account = SangatAccount(
   email: 'harjit@example.com',
 );
 
-/// Designs 58 and 59 on Today, and the reader's rule that there are never
-/// two banners at once.
+/// Designs 58 and 59 on Today.
+///
+/// The hazri banner used to be hidden until somebody joined the sangat, so
+/// that Today never carried two banners at once. That cost more than it
+/// saved: the sangat is opt-in (rule 4), so the majority who never join saw
+/// no hazri marker at all -- the one thing the app is named after. It is
+/// shown to everybody now, and the join banner is the one that goes away.
 void main() {
   late TestApp app;
 
@@ -41,17 +46,16 @@ void main() {
     return L.delegate.load(locale);
   }
 
-  testWidgets('before setup there is one banner, and it is the join one',
+  testWidgets('somebody who never joins the sangat still sees their hazri',
       (tester) async {
+    // This is the whole point of the change. Hazri is on this phone: it needs
+    // no account, no network and nobody else, and hiding it behind the sangat
+    // hid it from most people who will ever use the app.
     final l = await pump(tester);
-    expect(find.text(l.sangatBannerTitle), findsOneWidget);
-    // The reader's constraint, in a test: no hazri banner until setup is done,
-    // or Today carries two banners shouting at somebody who came to read.
-    expect(find.text(l.hazriNotYet), findsNothing);
-    expect(find.text(l.hazriMarked), findsNothing);
+    expect(find.text(l.hazriNotYet), findsOneWidget);
   });
 
-  testWidgets('after setup the hazri banner replaces it', (tester) async {
+  testWidgets('and so does somebody who has', (tester) async {
     final l = await pump(tester, signedIn: _account);
     expect(find.text(l.sangatBannerTitle), findsNothing);
     expect(find.text(l.hazriNotYet), findsOneWidget);

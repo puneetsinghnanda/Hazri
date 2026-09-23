@@ -8,6 +8,8 @@ import '../../../core/db/user_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../../core/time/clock.dart';
+import '../../goals/data/goals_controller.dart';
+import '../../goals/domain/goal_progress.dart';
 import '../../gurpurab/domain/calendar_display.dart';
 import '../domain/reminder_plan.dart';
 import 'reminder_service.dart';
@@ -122,7 +124,7 @@ class ReminderScheduler {
     // seeded, so on a phone where that screen was never opened this read came
     // back empty and the app scheduled nothing, silently, for ever.
     await _seedDefaults(repo);
-    final reminders = await repo.reminders();
+    final reminders = [...await repo.reminders(), ...await _goalReminders(repo)];
     final l = await L.delegate.load(_ref.read(settingsProvider).locale);
 
     // A slot already finished today does not need reminding about.
@@ -153,6 +155,8 @@ class ReminderScheduler {
       bySlot.putIfAbsent(b.defaultSlot, () => []).add(b.name(l.localeName));
     }
     final sunrise = ReminderPlanner.amritVelaFor(clock.today(), at);
+    final summary = _ref.read(goalsSummaryProvider);
+    final goalsDone = (summary.doneToday, summary.total);
 
     final notifications = <ScheduledNotification>[
       for (final o in occurrences)
@@ -160,9 +164,36 @@ class ReminderScheduler {
             bySlot: bySlot,
             sunriseLabel: sunrise,
             banis: banis,
-            events: events),
+            events: events,
+            goalsDone: goalsDone),
     ];
     await service.replaceSchedule(notifications);
+  }
+
+  /// One reminder per goal that carries a time, built in memory.
+  ///
+  /// `Goals.reminderTime` was shown on the Goals screen, on Today's card and
+  /// on the Diary's day screen, and scheduled nowhere: a goal set for 6:40 PM
+  /// said 6:40 PM in three places and never notified. These rows are derived
+  /// rather than stored, so adding, retiming or stopping a goal changes the
+  /// schedule at the next re-plan with nothing to keep in step.
+  Future<List<Reminder>> _goalReminders(UserRepository repo) async {
+    final today = _ref.read(clockProvider).today();
+    final goals = await repo.activeGoals();
+    final now = DateTime.now().toUtc();
+    return [
+      for (final g in goals)
+        if (g.reminderTime != null && GoalCalculator.appliesOn(g, today))
+          Reminder(
+            id: ReminderIds.goal(g.id),
+            targetType: ReminderTarget.goal,
+            targetId: g.id,
+            mode: ReminderMode.fixed,
+            timeHhmm: g.reminderTime,
+            daysMask: 0x7F,
+            updatedAt: now,
+          ),
+    ];
   }
 
   /// The days that carry an event the reader has asked to be reminded about,
@@ -197,6 +228,7 @@ class ReminderScheduler {
     required DateTime? sunriseLabel,
     required List<dynamic> banis,
     required Map<DateTime, String> events,
+    required (int, int) goalsDone,
   }) {
     final hhmm = '${o.at.hour.toString().padLeft(2, '0')}:'
         '${o.at.minute.toString().padLeft(2, '0')}';
@@ -259,11 +291,14 @@ class ReminderScheduler {
           payload: '/gurpurab',
         );
       default:
+        // A goal reminder. `goalsDone` is filled in by reschedule() before the
+        // notification is described, so the body says where the day stands
+        // rather than a hardcoded nought.
         return ScheduledNotification(
           id: o.notificationId,
           at: o.at,
           title: l.goalsTitle,
-          body: l.notifGoalBody(0, 1),
+          body: l.notifGoalBody(goalsDone.$1, goalsDone.$2),
           channel: ReminderChannel.goals,
           channelName: l.notifChannelGoals,
           payload: '/goals',

@@ -236,8 +236,9 @@ class _MonthGrid extends ConsumerWidget {
           ),
           const SizedBox(height: 10),
           // A Wrap rather than a Row: the names are much longer in Punjabi
-          // and Hindi than in English. Two entries now, matching the two dots
-          // in each cell.
+          // and Hindi than in English. The goals entry appears only if some
+          // day this month actually had a goal, so the legend explains the
+          // dots that are on screen rather than one that is not.
           Wrap(
             alignment: WrapAlignment.center,
             spacing: 12,
@@ -245,7 +246,7 @@ class _MonthGrid extends ConsumerWidget {
             children: [
               for (final (label, colour) in [
                 (l.diaryHazriDot, c.kesri),
-                (l.diaryGoalsDot, c.sage),
+                if (days.any((d) => d.hasGoals)) (l.diaryGoalsDot, c.sage),
               ])
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -295,13 +296,14 @@ class _DayCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    // Two dots, not three slots. The reader asked for exactly this: one for
-    // hazri -- did somebody turn up at all -- and one for whether the day's
-    // goals were met. They are different achievements, and on most days the
-    // first is lit and the second is not, which is the honest picture.
+    // One dot for hazri -- did somebody turn up at all -- and a second only
+    // on a day that actually had goals. A day before anybody set one, or
+    // after the last one ran out, is not a day anybody failed, and a grey
+    // second dot on it says the opposite. So: one dot means nothing was
+    // asked, two mean something was, lit or not.
     final dots = [
       (day.hazri, c.kesri),
-      (day.goalsMet, c.sage),
+      if (day.hasGoals) (day.goalsMet, c.sage),
     ];
 
     return InkWell(

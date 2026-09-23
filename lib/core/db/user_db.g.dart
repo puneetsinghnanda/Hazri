@@ -1303,6 +1303,17 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _endedOnMeta = const VerificationMeta(
+    'endedOn',
+  );
+  @override
+  late final GeneratedColumn<String> endedOn = GeneratedColumn<String>(
+    'ended_on',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _activeMeta = const VerificationMeta('active');
   @override
   late final GeneratedColumn<bool> active = GeneratedColumn<bool>(
@@ -1349,6 +1360,7 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     untilDate,
     startDate,
     reminderTime,
+    endedOn,
     active,
     createdAt,
     updatedAt,
@@ -1422,6 +1434,12 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
         ),
       );
     }
+    if (data.containsKey('ended_on')) {
+      context.handle(
+        _endedOnMeta,
+        endedOn.isAcceptableOrUnknown(data['ended_on']!, _endedOnMeta),
+      );
+    }
     if (data.containsKey('active')) {
       context.handle(
         _activeMeta,
@@ -1491,6 +1509,10 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
         DriftSqlType.string,
         data['${effectivePrefix}reminder_time'],
       ),
+      endedOn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ended_on'],
+      ),
       active: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}active'],
@@ -1530,6 +1552,17 @@ class Goal extends DataClass implements Insertable<Goal> {
   final String? untilDate;
   final String startDate;
   final String? reminderTime;
+
+  /// The last day this goal asked anything of, when somebody stopped it early.
+  ///
+  /// Stopping a goal archives it rather than deleting it, because the diary is
+  /// a record of days that happened: a goal kept from the 1st to the 22nd and
+  /// then stopped leaves those twenty-two days exactly as they were, met or
+  /// missed. Deleting the row took its ticks with it and rewrote the month.
+  final String? endedOn;
+
+  /// Whether it still appears in the live list. An archived goal is inactive
+  /// and carries [endedOn]; the two move together.
   final bool active;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -1543,6 +1576,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     this.untilDate,
     required this.startDate,
     this.reminderTime,
+    this.endedOn,
     required this.active,
     required this.createdAt,
     required this.updatedAt,
@@ -1571,6 +1605,9 @@ class Goal extends DataClass implements Insertable<Goal> {
     if (!nullToAbsent || reminderTime != null) {
       map['reminder_time'] = Variable<String>(reminderTime);
     }
+    if (!nullToAbsent || endedOn != null) {
+      map['ended_on'] = Variable<String>(endedOn);
+    }
     map['active'] = Variable<bool>(active);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -1594,6 +1631,9 @@ class Goal extends DataClass implements Insertable<Goal> {
       reminderTime: reminderTime == null && nullToAbsent
           ? const Value.absent()
           : Value(reminderTime),
+      endedOn: endedOn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endedOn),
       active: Value(active),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
@@ -1617,6 +1657,7 @@ class Goal extends DataClass implements Insertable<Goal> {
       untilDate: serializer.fromJson<String?>(json['untilDate']),
       startDate: serializer.fromJson<String>(json['startDate']),
       reminderTime: serializer.fromJson<String?>(json['reminderTime']),
+      endedOn: serializer.fromJson<String?>(json['endedOn']),
       active: serializer.fromJson<bool>(json['active']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -1637,6 +1678,7 @@ class Goal extends DataClass implements Insertable<Goal> {
       'untilDate': serializer.toJson<String?>(untilDate),
       'startDate': serializer.toJson<String>(startDate),
       'reminderTime': serializer.toJson<String?>(reminderTime),
+      'endedOn': serializer.toJson<String?>(endedOn),
       'active': serializer.toJson<bool>(active),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -1653,6 +1695,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     Value<String?> untilDate = const Value.absent(),
     String? startDate,
     Value<String?> reminderTime = const Value.absent(),
+    Value<String?> endedOn = const Value.absent(),
     bool? active,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -1666,6 +1709,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     untilDate: untilDate.present ? untilDate.value : this.untilDate,
     startDate: startDate ?? this.startDate,
     reminderTime: reminderTime.present ? reminderTime.value : this.reminderTime,
+    endedOn: endedOn.present ? endedOn.value : this.endedOn,
     active: active ?? this.active,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -1687,6 +1731,7 @@ class Goal extends DataClass implements Insertable<Goal> {
       reminderTime: data.reminderTime.present
           ? data.reminderTime.value
           : this.reminderTime,
+      endedOn: data.endedOn.present ? data.endedOn.value : this.endedOn,
       active: data.active.present ? data.active.value : this.active,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -1705,6 +1750,7 @@ class Goal extends DataClass implements Insertable<Goal> {
           ..write('untilDate: $untilDate, ')
           ..write('startDate: $startDate, ')
           ..write('reminderTime: $reminderTime, ')
+          ..write('endedOn: $endedOn, ')
           ..write('active: $active, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -1723,6 +1769,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     untilDate,
     startDate,
     reminderTime,
+    endedOn,
     active,
     createdAt,
     updatedAt,
@@ -1740,6 +1787,7 @@ class Goal extends DataClass implements Insertable<Goal> {
           other.untilDate == this.untilDate &&
           other.startDate == this.startDate &&
           other.reminderTime == this.reminderTime &&
+          other.endedOn == this.endedOn &&
           other.active == this.active &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -1755,6 +1803,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   final Value<String?> untilDate;
   final Value<String> startDate;
   final Value<String?> reminderTime;
+  final Value<String?> endedOn;
   final Value<bool> active;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -1769,6 +1818,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     this.untilDate = const Value.absent(),
     this.startDate = const Value.absent(),
     this.reminderTime = const Value.absent(),
+    this.endedOn = const Value.absent(),
     this.active = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -1784,6 +1834,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     this.untilDate = const Value.absent(),
     required String startDate,
     this.reminderTime = const Value.absent(),
+    this.endedOn = const Value.absent(),
     this.active = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -1804,6 +1855,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     Expression<String>? untilDate,
     Expression<String>? startDate,
     Expression<String>? reminderTime,
+    Expression<String>? endedOn,
     Expression<bool>? active,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -1819,6 +1871,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
       if (untilDate != null) 'until_date': untilDate,
       if (startDate != null) 'start_date': startDate,
       if (reminderTime != null) 'reminder_time': reminderTime,
+      if (endedOn != null) 'ended_on': endedOn,
       if (active != null) 'active': active,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -1836,6 +1889,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     Value<String?>? untilDate,
     Value<String>? startDate,
     Value<String?>? reminderTime,
+    Value<String?>? endedOn,
     Value<bool>? active,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
@@ -1851,6 +1905,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
       untilDate: untilDate ?? this.untilDate,
       startDate: startDate ?? this.startDate,
       reminderTime: reminderTime ?? this.reminderTime,
+      endedOn: endedOn ?? this.endedOn,
       active: active ?? this.active,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -1890,6 +1945,9 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     if (reminderTime.present) {
       map['reminder_time'] = Variable<String>(reminderTime.value);
     }
+    if (endedOn.present) {
+      map['ended_on'] = Variable<String>(endedOn.value);
+    }
     if (active.present) {
       map['active'] = Variable<bool>(active.value);
     }
@@ -1917,6 +1975,7 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
           ..write('untilDate: $untilDate, ')
           ..write('startDate: $startDate, ')
           ..write('reminderTime: $reminderTime, ')
+          ..write('endedOn: $endedOn, ')
           ..write('active: $active, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -4055,6 +4114,7 @@ typedef $$GoalsTableCreateCompanionBuilder =
       Value<String?> untilDate,
       required String startDate,
       Value<String?> reminderTime,
+      Value<String?> endedOn,
       Value<bool> active,
       required DateTime createdAt,
       required DateTime updatedAt,
@@ -4071,6 +4131,7 @@ typedef $$GoalsTableUpdateCompanionBuilder =
       Value<String?> untilDate,
       Value<String> startDate,
       Value<String?> reminderTime,
+      Value<String?> endedOn,
       Value<bool> active,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
@@ -4128,6 +4189,11 @@ class $$GoalsTableFilterComposer extends Composer<_$UserDb, $GoalsTable> {
 
   ColumnFilters<String> get reminderTime => $composableBuilder(
     column: $table.reminderTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endedOn => $composableBuilder(
+    column: $table.endedOn,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4200,6 +4266,11 @@ class $$GoalsTableOrderingComposer extends Composer<_$UserDb, $GoalsTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get endedOn => $composableBuilder(
+    column: $table.endedOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get active => $composableBuilder(
     column: $table.active,
     builder: (column) => ColumnOrderings(column),
@@ -4258,6 +4329,9 @@ class $$GoalsTableAnnotationComposer extends Composer<_$UserDb, $GoalsTable> {
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get endedOn =>
+      $composableBuilder(column: $table.endedOn, builder: (column) => column);
+
   GeneratedColumn<bool> get active =>
       $composableBuilder(column: $table.active, builder: (column) => column);
 
@@ -4305,6 +4379,7 @@ class $$GoalsTableTableManager
                 Value<String?> untilDate = const Value.absent(),
                 Value<String> startDate = const Value.absent(),
                 Value<String?> reminderTime = const Value.absent(),
+                Value<String?> endedOn = const Value.absent(),
                 Value<bool> active = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
@@ -4319,6 +4394,7 @@ class $$GoalsTableTableManager
                 untilDate: untilDate,
                 startDate: startDate,
                 reminderTime: reminderTime,
+                endedOn: endedOn,
                 active: active,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -4335,6 +4411,7 @@ class $$GoalsTableTableManager
                 Value<String?> untilDate = const Value.absent(),
                 required String startDate,
                 Value<String?> reminderTime = const Value.absent(),
+                Value<String?> endedOn = const Value.absent(),
                 Value<bool> active = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
@@ -4349,6 +4426,7 @@ class $$GoalsTableTableManager
                 untilDate: untilDate,
                 startDate: startDate,
                 reminderTime: reminderTime,
+                endedOn: endedOn,
                 active: active,
                 createdAt: createdAt,
                 updatedAt: updatedAt,

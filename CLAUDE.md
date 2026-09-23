@@ -261,6 +261,42 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   together never saw each other. Your own dot always showed because it is
   drawn from Settings on the phone, not from the server, which made the bug
   look like a drawing problem rather than a fetching one.
+- **One rule decides whether a day's goals were met**, and it is
+  `GoalCalculator.outcomeOn` / `appliesOn` in
+  `lib/features/goals/domain/goal_progress.dart`. Today's card, the diary's
+  month grid and the diary's day screen all call it. They used to answer the
+  same question three ways: the grid counted a goal met on **one** tick,
+  ignoring `timesPerDay`, so a goal of three paath lit its green dot after the
+  first while Today still said nought of one; and it judged every goal that
+  had ever started against every later day, so a goal that ended a fortnight
+  ago darkened every day since and could never light again. Do not re-derive
+  this anywhere.
+- **A goal covers a window of days, and outside it the goal is absent rather
+  than unmet.** The window runs from `startDate` to the earliest of: its
+  length in days, its `untilDate`, and `endedOn`. That distinction is what
+  the diary's dots are built on -- **one dot on a day with no goals, two on a
+  day that had them** -- because a grey second dot on a day nobody set a goal
+  says somebody failed, and they did not.
+- **Stopping a goal archives it; it does not delete it.** `archiveGoal` sets
+  `endedOn` and `active: false` and keeps every tick, so a goal kept from the
+  1st to the 22nd leaves those twenty-two days exactly as they were.
+  `deleteGoal` used to remove the row and its ticks and rewrite the month;
+  it is now `forgetGoal`, for a goal set by mistake, and nothing in the UI
+  calls it except the explicit Delete. Starting a stopped goal again inserts
+  a **new row from today** rather than reopening the old one, because one row
+  carries one stretch of days and reopening it would pull the whole gap back
+  into scope.
+- **The hazri banner is shown to everybody.** It used to return an empty box
+  unless `hasJoinedSangat`, so the one thing the app is named after was
+  invisible to the majority who never join -- against rule 4, which says the
+  sangat is opt-in. The cost is that Today can carry the join banner and the
+  hazri banner at once until the join banner is dismissed; the "Not now"
+  memory that fixes that proprly lives on `claude/eloquent-edison-qsjll0`.
+- **A goal's `reminderTime` is scheduled**, as a reminder row built in memory
+  by `_goalReminders` rather than stored. It was displayed in three places and
+  scheduled in none, so a goal set for 6:40 PM said 6:40 PM everywhere and
+  never notified. Derived rather than stored so that adding, retiming or
+  stopping a goal needs nothing kept in step.
 - **A simran sitting credits its goal from inside the repository**, in
   `logSimran` and `removeSimranOn`, not at the three call sites that reach
   them -- the timer finishing, a tick in the Diary, a sync restore. Each of

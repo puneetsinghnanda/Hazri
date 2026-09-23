@@ -15,6 +15,7 @@ import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../../core/db/content_repository.dart';
 import '../../nitnem/domain/bani.dart';
+import '../../hazri/ui/hazri_banner.dart';
 import '../../reminders/data/reminders_controller.dart';
 import '../data/today_controller.dart';
 import '../domain/today_state.dart';
@@ -66,6 +67,9 @@ class ElderTodayScreen extends ConsumerWidget {
                 style: HazriText.body.copyWith(fontSize: 18, color: c.muted),
               ),
               const SizedBox(height: 20),
+              // The thing the app is named after, which elder mode did not
+              // show at all -- not behind a setting, simply absent.
+              const HazriBanner(),
               if (cta != null && cta.bani != null)
                 HazriCard(
                   colour: c.primary,

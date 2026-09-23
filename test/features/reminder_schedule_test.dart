@@ -1,4 +1,8 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hazri/core/db/user_db.dart';
+import 'package:hazri/core/db/user_repository.dart';
+import 'package:hazri/core/time/clock.dart';
 import 'package:hazri/features/reminders/data/reminder_service.dart';
 import 'package:hazri/features/reminders/data/reminders_controller.dart';
 
@@ -58,6 +62,58 @@ void main() {
       expect(n.body.trim(), isNotEmpty);
       expect(n.payload, '/gurpurab');
     }
+  });
+
+  test('a goal with a time gets a reminder at it', () async {
+    // `Goals.reminderTime` was shown on the Goals screen, on Today's card and
+    // on the Diary's day screen, and scheduled nowhere -- so a goal set for
+    // 18:40 said 18:40 in three places and never notified.
+    final app = await cold();
+    await app.container.read(userRepositoryProvider).saveGoal(
+          GoalsCompanion.insert(
+            id: UserRepository.newId(),
+            baniId: 'japji-sahib',
+            durationType: GoalDuration.everyDay,
+            startDate: localDateKey(app.container.read(clockProvider).today()),
+            reminderTime: const Value('18:40'),
+            createdAt: DateTime.now().toUtc(),
+            updatedAt: DateTime.now().toUtc(),
+          ),
+        );
+
+    await app.container.read(reminderSchedulerProvider).reschedule();
+
+    final goalNights = app.reminders.scheduled
+        .where((n) => n.channel == ReminderChannel.goals)
+        .toList();
+    expect(goalNights, isNotEmpty);
+    expect(goalNights.every((n) => n.at.hour == 18 && n.at.minute == 40), isTrue);
+    expect(goalNights.first.payload, '/goals');
+  });
+
+  test('and a goal that has been stopped gets none', () async {
+    final app = await cold();
+    final repo = app.container.read(userRepositoryProvider);
+    final id = UserRepository.newId();
+    await repo.saveGoal(
+      GoalsCompanion.insert(
+        id: id,
+        baniId: 'japji-sahib',
+        durationType: GoalDuration.everyDay,
+        startDate: localDateKey(app.container.read(clockProvider).today()),
+        reminderTime: const Value('18:40'),
+        createdAt: DateTime.now().toUtc(),
+        updatedAt: DateTime.now().toUtc(),
+      ),
+    );
+    await repo.archiveGoal(id);
+
+    await app.container.read(reminderSchedulerProvider).reschedule();
+
+    expect(
+      app.reminders.scheduled.where((n) => n.channel == ReminderChannel.goals),
+      isEmpty,
+    );
   });
 
   test('nothing is scheduled when the phone refuses notifications', () async {

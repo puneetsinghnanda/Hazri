@@ -204,10 +204,63 @@ void main() {
       expect(progress.isDoneToday, isTrue);
     });
 
-    test('deleting a goal takes its ticks with it', () async {
+    test('stopping a goal keeps the days it covered', () async {
+      // The reader's scenario 4: a goal kept from the 1st to the 22nd and then
+      // stopped leaves those days exactly as they were. Deleting the row used
+      // to take its ticks with it and rewrite the month.
       final id = await addGoal();
       await repo.tickGoal(id);
-      await repo.deleteGoal(id);
+      await repo.archiveGoal(id);
+
+      expect(await repo.activeGoals(), isEmpty, reason: 'it stops asking');
+      expect(await repo.goalTicksOn(today), hasLength(1), reason: 'the day stands');
+    });
+
+    test('the diary month agrees with the goals card, target for target',
+        () async {
+      // A goal of three is met at three. The month grid used to call it met on
+      // the first tick, so the green dot and Today's card disagreed all day.
+      final id = await addGoal(times: 3);
+      await repo.tickGoal(id);
+
+      var day = (await repo.diaryMonth(today)).firstWhere((d) => d.date == today);
+      expect(day.hasGoals, isTrue, reason: 'the day had a goal, so two dots');
+      expect(day.goalsMet, isFalse, reason: 'one of three is not met');
+
+      await repo.tickGoal(id);
+      await repo.tickGoal(id);
+      day = (await repo.diaryMonth(today)).firstWhere((d) => d.date == today);
+      expect(day.goalsMet, isTrue);
+    });
+
+    test('a day before the goal existed has no second dot', () async {
+      await addGoal();
+      final before = (await repo.diaryMonth(today))
+          .firstWhere((d) => d.date == DateTime(2026, 9, 1));
+      expect(before.hasGoals, isFalse);
+      expect(before.goalsMet, isFalse);
+    });
+
+    test('a stopped goal leaves its days alone and stops asking', () async {
+      // Scenario 4, through the database rather than the calculator.
+      final id = await addGoal();
+      await repo.tickGoal(id);
+      await repo.archiveGoal(id);
+
+      final month = await repo.diaryMonth(today);
+      final stoppedOn = month.firstWhere((d) => d.date == today);
+      expect(stoppedOn.hasGoals, isTrue, reason: 'the day it was stopped counts');
+      expect(stoppedOn.goalsMet, isTrue, reason: 'and it was met');
+
+      final after =
+          month.firstWhere((d) => d.date == DateTime(2026, 9, 13));
+      expect(after.hasGoals, isFalse, reason: 'it asks nothing of tomorrow');
+    });
+
+    test('forgetting a goal really does take its ticks with it', () async {
+      final id = await addGoal();
+      await repo.tickGoal(id);
+      await repo.forgetGoal(id);
       expect(await repo.activeGoals(), isEmpty);
       expect(await repo.goalTicksOn(today), isEmpty);
     });

@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/diary/domain/streak.dart';
+import '../../features/goals/domain/goal_progress.dart';
 import '../time/clock.dart';
 import 'user_db.dart';
 
@@ -23,7 +24,7 @@ class DiaryDay {
     required this.slots,
     required this.isGrace,
     required this.simran,
-    this.goalsMet = false,
+    this.goals = GoalDay.none,
   });
 
   final DateTime date;
@@ -31,9 +32,20 @@ class DiaryDay {
   final bool isGrace;
   final bool simran;
 
-  /// Every goal that was active that day was met on it. The diary's second
-  /// dot, and the one that is often dark on a day the first one is lit.
-  final bool goalsMet;
+  /// What the day's goals came to: how many it asked for, how many were met.
+  ///
+  /// The count matters as much as the verdict. A day with no goals is not a
+  /// day anybody failed, so the diary draws one dot on it rather than a grey
+  /// second one — the difference between "nothing was asked" and "something
+  /// was asked and missed".
+  final GoalDay goals;
+
+  /// Whether the day had goals at all. The diary's second dot exists only
+  /// when this is true.
+  bool get hasGoals => goals.hasGoals;
+
+  /// Every goal the day asked for was met on it. The second dot, lit.
+  bool get goalsMet => goals.allMet;
 
   bool get isNitnemDay => slots.isNotEmpty;
 
@@ -207,18 +219,20 @@ class UserRepository {
     final grace = await (_db.select(_db.graceDays)
           ..where((g) => g.monthKey.equals(monthKey(first))))
         .get();
-    // Goals are per-day and a goal made later does not retroactively fail the
-    // days before it, so a day counts as met when every goal that had started
-    // by then was ticked on it.
+    // Every goal, archived ones included: a goal kept for three weeks and then
+    // stopped still describes those three weeks, and deleting it used to erase
+    // them. `GoalCalculator.appliesOn` decides which days each one covers.
     final goals = await _db.select(_db.goals).get();
     final ticks = await (_db.select(_db.goalTicks)
           ..where((t) =>
               t.localDate.isBiggerOrEqualValue(from) &
               t.localDate.isSmallerOrEqualValue(to)))
         .get();
-    final ticksByDay = <String, Set<String>>{};
+    // Counted, not collected: a goal of three paath a day is met at three.
+    final ticksByDay = <String, Map<String, int>>{};
     for (final t in ticks) {
-      ticksByDay.putIfAbsent(t.localDate, () => {}).add(t.goalId);
+      final day = ticksByDay.putIfAbsent(t.localDate, () => {});
+      day[t.goalId] = (day[t.goalId] ?? 0) + 1;
     }
 
     final bySlot = <String, Set<BaniSlotValue>>{};
@@ -233,17 +247,16 @@ class UserRepository {
         () {
           final date = DateTime(month.year, month.month, d);
           final key = localDateKey(date);
-          final running = goals
-              .where((g) => g.startDate.compareTo(key) <= 0)
-              .map((g) => g.id)
-              .toSet();
-          final tickedThatDay = ticksByDay[key] ?? const <String>{};
           return DiaryDay(
             date: date,
             slots: bySlot[key] ?? const {},
             isGrace: graceDays.contains(key),
             simran: simranDays.contains(key),
-            goalsMet: running.isNotEmpty && running.difference(tickedThatDay).isEmpty,
+            goals: GoalCalculator.outcomeOn(
+              goals: goals,
+              ticks: ticksByDay[key] ?? const {},
+              day: date,
+            ),
           );
         }(),
     ];
@@ -281,7 +294,32 @@ class UserRepository {
   Future<void> saveGoal(GoalsCompanion goal) =>
       _db.into(_db.goals).insertOnConflictUpdate(goal);
 
-  Future<void> deleteGoal(String id) async {
+  /// Stops a goal without erasing the days it covered.
+  ///
+  /// It is archived, not deleted: `endedOn` is set to the last day it asked
+  /// anything of, `active` goes false so it leaves the live list, and every
+  /// tick stays. Deleting the row took its ticks with it, so a goal kept from
+  /// the 1st to the 22nd and then stopped rewrote all twenty-two days as
+  /// though nobody had ever set it.
+  ///
+  /// [on] is the last day it counts for, today by default. A goal stopped
+  /// today is still owed today's paath.
+  Future<void> archiveGoal(String id, {DateTime? on}) async {
+    final last = localDateKey(on ?? _clock.today());
+    await (_db.update(_db.goals)..where((g) => g.id.equals(id))).write(
+      GoalsCompanion(
+        endedOn: Value(last),
+        active: const Value(false),
+        updatedAt: Value(DateTime.now().toUtc()),
+      ),
+    );
+  }
+
+  /// Erases a goal and everything it ever recorded.
+  ///
+  /// Only for a goal created by mistake, where there is no history worth
+  /// keeping. Stopping one somebody actually kept is [archiveGoal].
+  Future<void> forgetGoal(String id) async {
     await (_db.delete(_db.goalTicks)..where((t) => t.goalId.equals(id))).go();
     await (_db.delete(_db.goals)..where((g) => g.id.equals(id))).go();
   }

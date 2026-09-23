@@ -204,28 +204,41 @@ class _GoalMenu extends ConsumerWidget {
       icon: AppIcon(HazriIconData.dots, size: 18, color: context.colors.muted),
       onSelected: (value) async {
         switch (value) {
+          // Stopping a goal ends it, it does not hide it: the days it covered
+          // keep their marks and it stops asking for new ones from tomorrow.
           case 'pause':
+            await repo.archiveGoal(goal.id);
+          // Starting again is a new run, not the old one reopened. One goal
+          // row carries one stretch of days, so re-opening this one would
+          // pull the whole gap back into scope and darken every day of it.
+          // A second row leaves the first exactly as it was.
+          case 'resume':
             await repo.saveGoal(
-              GoalsCompanion(
-                id: Value(goal.id),
-                baniId: Value(goal.baniId),
+              GoalsCompanion.insert(
+                id: UserRepository.newId(),
+                baniId: goal.baniId,
+                minutes: Value(goal.minutes),
                 timesPerDay: Value(goal.timesPerDay),
-                durationType: Value(goal.durationType),
+                durationType: goal.durationType,
                 days: Value(goal.days),
                 untilDate: Value(goal.untilDate),
-                startDate: Value(goal.startDate),
+                startDate: localDateKey(ref.read(clockProvider).today()),
                 reminderTime: Value(goal.reminderTime),
-                active: Value(!goal.active),
-                createdAt: Value(goal.createdAt),
-                updatedAt: Value(DateTime.now().toUtc()),
+                createdAt: DateTime.now().toUtc(),
+                updatedAt: DateTime.now().toUtc(),
               ),
             );
+          // Only for a goal set by mistake: this one really does erase its
+          // ticks, and with them the days it lit in the Diary.
           case 'delete':
-            await repo.deleteGoal(goal.id);
+            await repo.forgetGoal(goal.id);
         }
       },
       itemBuilder: (context) => [
-        PopupMenuItem(value: 'pause', child: Text(goal.active ? l.goalPause : l.actionResume)),
+        if (goal.active)
+          PopupMenuItem(value: 'pause', child: Text(l.goalPause))
+        else
+          PopupMenuItem(value: 'resume', child: Text(l.actionResume)),
         PopupMenuItem(value: 'delete', child: Text(l.actionDelete)),
       ],
     );

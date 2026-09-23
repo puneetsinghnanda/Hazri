@@ -93,6 +93,14 @@ class DiaryDayScreen extends ConsumerWidget {
               const SizedBox(height: 14),
               if (day != null) ...[
                 _HazriBanner(day: day),
+                // Only on a day that had goals. The reader asked that opening
+                // a day say whether they were met, which the screen did not
+                // say anywhere -- it knew the times a goal was due and not
+                // whether it was kept.
+                if (day.hasGoals) ...[
+                  const SizedBox(height: 10),
+                  _GoalsLine(day: day),
+                ],
                 const SizedBox(height: 14),
                 Eyebrow(l.diaryWhatYouDid),
                 const SizedBox(height: 4),
@@ -135,6 +143,52 @@ class DiaryDayScreen extends ConsumerWidget {
 /// Design 56's banner: kesri and filled when the day was marked, quiet and
 /// grey when it was not, because a day without one is not a day to be shouted
 /// at about.
+/// Whether the day's goals were met, on a day that had any.
+///
+/// Hazri and goals are two different things and this screen now shows both:
+/// the banner above says somebody turned up, this says whether they finished
+/// the list. On most days the first is true and this is not, which is the
+/// honest picture rather than a failure.
+class _GoalsLine extends StatelessWidget {
+  const _GoalsLine({required this.day});
+
+  final DiaryDay day;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = L.of(context);
+    final met = day.goalsMet;
+
+    return HazriCard(
+      colour: met ? c.sageSoft : null,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: met ? c.sage : c.rule,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            l.diaryGoalsDot,
+            style: HazriText.body.copyWith(color: c.ink, fontWeight: FontWeight.w600),
+          ),
+          const Spacer(),
+          Text(
+            l.goalsDoneOf(day.goals.met, day.goals.inScope),
+            style: HazriText.caption.copyWith(color: met ? c.sage : c.muted),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _HazriBanner extends ConsumerWidget {
   const _HazriBanner({required this.day});
 

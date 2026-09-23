@@ -9,7 +9,6 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../sangat/data/account_repository.dart';
 import '../data/hazri_controller.dart';
 import '../domain/hazri.dart';
 
@@ -19,16 +18,16 @@ import '../domain/hazri.dart';
 /// **one** sitting of simran; it is not the goal, and a day with one bani
 /// read is a day somebody was present, whatever else was on the list.
 ///
-/// It appears only once the sangat setup is done, which is the reader's own
-/// constraint: before that, Today already carries the join banner, and two
-/// banners stacked is two things shouting at somebody who came to read.
+/// It is shown to everybody. It used to be behind `hasJoinedSangat`, to keep
+/// it from stacking under the join banner -- which meant the one thing the
+/// app is named after was invisible to everybody who had not joined the
+/// sangat, and rule 4 says the sangat is opt-in. Somebody who never joins
+/// reads, listens, keeps a diary and marks their hazri, and now sees it.
 class HazriBanner extends ConsumerWidget {
   const HazriBanner({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (!ref.watch(hasJoinedSangatProvider)) return const SizedBox.shrink();
-
     final c = context.colors;
     final l = L.of(context);
     final hazri = ref.watch(hazriTodayProvider);
