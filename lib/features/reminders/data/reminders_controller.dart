@@ -110,7 +110,19 @@ class ReminderScheduler {
   /// changes (PRD 1.10).
   Future<void> reschedule() async {
     final service = _ref.read(reminderServiceProvider);
+    // Ask, rather than give up quietly. On Android 13+ POST_NOTIFICATIONS is
+    // denied until somebody grants it, and the only place that ever asked was
+    // setup step 3 -- so a phone that upgraded with onboarding already done
+    // was never asked, this read came back false, everything was cancelled and
+    // the app went silent for good. Requesting is cheap: Android shows the
+    // dialog only while it has no recorded answer, and returns false having
+    // shown nothing once there is one.
     if (!await service.notificationsAllowed()) {
+      await service.requestNotificationPermission();
+    }
+    if (!await service.notificationsAllowed()) {
+      // Still refused. Nothing can be scheduled, and the notifications screen
+      // says so rather than listing reminders that cannot arrive.
       await service.cancelAll();
       return;
     }

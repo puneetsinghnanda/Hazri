@@ -206,6 +206,16 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   seeding now happens inside `reschedule()`. Do not move it back out: the
   planner had good unit tests throughout and they could not see this, because
   what was wrong sat either side of the pure function.
+- **Nothing asked for POST_NOTIFICATIONS except setup step 3**, which is why
+  a phone that upgraded with onboarding already done never received a single
+  notification. Android 13+ denies it until granted; `reschedule()` read
+  `areNotificationsEnabled()`, got false, cancelled everything and returned
+  silently, at every app start, for ever. It now **asks** first -- the plugin
+  shows the dialog only while Android has no recorded answer -- and the
+  notifications screen carries a card saying reminders cannot arrive, with a
+  button that asks and then falls through to the app's notification settings.
+  `notificationsAllowedProvider` was dead code written for exactly this and
+  wired to nothing; it is used now.
 - **The Gurpurab reminder is conditional on the calendar**, and used to fire
   every single night at 20:00 saying "Tomorrow is a Gurpurab" with the body
   "Gurpurab calendar" -- on the six nights in seven when it was not, and with

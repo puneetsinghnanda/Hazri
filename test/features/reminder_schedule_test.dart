@@ -124,4 +124,21 @@ void main() {
 
     expect(app.reminders.scheduled, isEmpty);
   });
+
+  test('but it asks before giving up', () async {
+    // The bug behind "I have not received a single notification": on Android
+    // 13+ POST_NOTIFICATIONS is denied until granted, the only place that ever
+    // asked was setup step 3, and a phone that upgraded with onboarding
+    // already done was never asked. reschedule() read false, cancelled
+    // everything and said nothing, at every start, for ever.
+    final app = await cold();
+    app.reminders.notificationsGranted = false;
+    app.reminders.grantOnRequest = true;
+
+    await app.container.read(reminderSchedulerProvider).reschedule();
+
+    expect(app.reminders.permissionRequests, 1);
+    expect(app.reminders.scheduled, isNotEmpty,
+        reason: 'granted on the ask, so the day gets its reminders');
+  });
 }

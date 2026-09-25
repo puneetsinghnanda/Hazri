@@ -89,11 +89,21 @@ class FakeReminderService extends ReminderService {
   bool notificationsGranted = true;
   bool exactAlarmsGranted = true;
 
+  /// Whether the system dialog would be answered yes. Android shows it only
+  /// while it has no recorded answer, so a fake that always refuses cannot
+  /// tell "asked and refused" from "never asked".
+  bool grantOnRequest = false;
+  int permissionRequests = 0;
+
   @override
   Future<void> init() async {}
 
   @override
-  Future<bool> requestNotificationPermission() async => notificationsGranted;
+  Future<bool> requestNotificationPermission() async {
+    permissionRequests++;
+    if (grantOnRequest) notificationsGranted = true;
+    return notificationsGranted;
+  }
 
   @override
   Future<bool> notificationsAllowed() async => notificationsGranted;
