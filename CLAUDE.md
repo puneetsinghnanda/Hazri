@@ -206,6 +206,19 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   seeding now happens inside `reschedule()`. Do not move it back out: the
   planner had good unit tests throughout and they could not see this, because
   what was wrong sat either side of the pure function.
+- **`ScheduledNotificationReceiver` must be declared in the manifest, and was
+  not.** That is why no reminder ever arrived, and it had nothing to do with
+  the Dart. `flutter_local_notifications` declares **no receivers** in its own
+  manifest -- permissions and nothing else -- so the app must declare both of
+  them; the plugin's README says it is "so that the plugin can actually show
+  the scheduled notification(s)". Hazri declared the boot receiver and not
+  this one, so every alarm fired into a component that did not exist.
+  `zonedSchedule` threw nothing, the notifications sat in
+  `pendingNotificationRequests()` looking perfectly healthy, and **four rounds
+  of fixes to the scheduling code went out before anybody read the XML**.
+  `test/android/manifest_test.dart` holds both receivers now. No widget test
+  can see this: the fake service never touches the platform and `flutter test`
+  never merges a manifest, so the file is the only place to check.
 - **Nothing asked for POST_NOTIFICATIONS except setup step 3**, which is why
   a phone that upgraded with onboarding already done never received a single
   notification. Android 13+ denies it until granted; `reschedule()` read
@@ -215,7 +228,9 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   notifications screen carries a card saying reminders cannot arrive, with a
   button that asks and then falls through to the app's notification settings.
   `notificationsAllowedProvider` was dead code written for exactly this and
-  wired to nothing; it is used now.
+  wired to nothing; it is used now. This was real but it was **not** the reason
+  the reader saw nothing -- their permission had been granted all along. See
+  the receiver above.
 - **The Gurpurab reminder is conditional on the calendar**, and used to fire
   every single night at 20:00 saying "Tomorrow is a Gurpurab" with the body
   "Gurpurab calendar" -- on the six nights in seven when it was not, and with
