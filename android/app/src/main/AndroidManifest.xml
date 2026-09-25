@@ -81,13 +81,13 @@
         </receiver>
 
         <!-- THE receiver that posts a scheduled reminder when its alarm fires.
-             flutter_local_notifications declares no receivers of its own -- its
-             manifest carries permissions and nothing else -- so without this
+             flutter_local_notifications declares no receivers of its own; its
+             manifest carries permissions and nothing else, so without this
              line the alarm goes off, the broadcast finds no component, and
-             nothing is ever shown. `zonedSchedule` does not throw and the
-             notification sits in `pendingNotificationRequests()` looking
+             nothing is ever shown. zonedSchedule does not throw and the
+             notification sits in pendingNotificationRequests() looking
              perfectly scheduled, which is why four rounds of fixes to the
-             scheduling code changed nothing at all. Do not remove it; nothing
+             scheduling code changed nothing at all. Do not remove it: nothing
              in Dart can see that it is gone. -->
         <receiver
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"

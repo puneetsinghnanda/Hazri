@@ -147,6 +147,21 @@ that quota.** The artifact upload is still there as a convenience and is
 marked `continue-on-error`, so it can no longer fail a run.
 `.github/workflows/README.md` is the reader-facing version.
 
+**A failed build must not destroy the release.** The publish step used to
+`gh release delete --cleanup-tag` and then create -- so a build that produced
+no APK deleted the working one somebody was still installing from, and failed
+on the way to replacing it. It now checks the APK exists before touching
+anything, and uses `gh release upload --clobber` on a release it creates or
+edits rather than deletes, so there is never a window with no APK.
+
+**A double hyphen inside an XML comment makes AndroidManifest.xml
+unparseable**, and the only thing that notices is
+`:app:processReleaseMainManifest`, three minutes into a Gradle run, saying
+"Error parsing AndroidManifest.xml" with no line number.
+`test/android/manifest_test.dart` catches it in a second. That test was
+verified by breaking the file on purpose and watching it fail -- a guard
+nobody has seen fail is not a guard.
+
 `[skip ci]` skips a run, and GitHub matches it **anywhere in the commit
 message**, body included -- which has already cost one build that was meant
 to happen. Put it in the subject when you mean it and nowhere at all when

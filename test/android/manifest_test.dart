@@ -20,6 +20,34 @@ void main() {
   final manifest =
       File('android/app/src/main/AndroidManifest.xml').readAsStringSync();
 
+  test('it is XML the manifest merger can parse', () {
+    // A double hyphen inside a comment is illegal XML, and the only thing that
+    // notices is `:app:processReleaseMainManifest` -- three minutes into a
+    // Gradle run, with "Error parsing AndroidManifest.xml" and no line number.
+    // Writing a comment with an em-dash habit in it cost exactly one build.
+    final comments = RegExp(r'<!--(.*?)-->', dotAll: true)
+        .allMatches(manifest)
+        .map((m) => m.group(1)!);
+    expect(comments, isNotEmpty, reason: 'the regex should find the comments');
+    for (final body in comments) {
+      expect(
+        body,
+        isNot(contains('--')),
+        reason: 'a comment containing "--" makes the whole file unparseable',
+      );
+    }
+
+    // And nothing else obviously malformed: every tag opened is closed.
+    expect(
+      RegExp('<manifest').allMatches(manifest).length,
+      RegExp('</manifest>').allMatches(manifest).length,
+    );
+    expect(
+      RegExp('<application').allMatches(manifest).length,
+      RegExp('</application>').allMatches(manifest).length,
+    );
+  });
+
   group('flutter_local_notifications receivers', () {
     test('the one that shows a scheduled notification is declared', () {
       expect(
