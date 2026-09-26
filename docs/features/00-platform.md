@@ -84,17 +84,32 @@ rather than incrementing blind.
 The `(default)` database is Firestore Native, single-region, created
 2026-09-19. Its location is permanent, so it picks the region and not us.
 
-**Verify before writing the first triggered Function:** `asia-south2` is a
-newer region and not every product is in every region. Cloud Run Functions
-*and* Eventarc both have to be available there, because a Firestore trigger
-goes through Eventarc and the trigger must match the database's location. If
-they are not:
+**Verified 2026-09-26, and the answer is a problem.** `asia-south2` has
+Eventarc, Cloud Run and Cloud Functions — but **not the Firestore event
+provider**:
 
-- Scheduled and callable Functions move to `asia-south1` (Mumbai) at the cost
-  of a few milliseconds per Firestore call. No design change.
-- **Firestore-triggered Functions are the real constraint.** `onMemberWrite`
-  would have to become a callable the app invokes, or a scheduled reconcile.
-  Both work. Knowing which costs nothing now and a rewrite later.
+```
+$ gcloud eventarc providers list --location=asia-south2
+cloudaudit, workflows, clouddeploy, datastream, redis,
+metastore, cloudfunctions, gkebackup, eventarc        <- no firestore
+
+$ gcloud eventarc providers list --location=asia-south1 | grep firestore
+firestore.googleapis.com                              <- present
+```
+
+A Firestore trigger must live in the same location as the database, so with
+the database in `asia-south2` **no Firestore-triggered Function can exist at
+all**. This is a regional gap, not a project misconfiguration, and the docs do
+not make it obvious: Eventarc "being available" in a region is not the same as
+the Firestore provider being available there.
+
+The options, and their shape:
+
+| | Approach | Cost |
+|---|---|---|
+| **A** | **Move the database to `asia-south1`** | A migration, trivial today with a handful of test rows and worse every week. Every Function in this file then works as written |
+| B | Keep `asia-south2`, replace triggers with a **scheduled reconcile** | Totals lag by the schedule interval; a periodic read of every active group. Legitimate permanently |
+| C | Keep `asia-south2`, use **callables** | Lowest latency, but a client that dies mid-write leaves a stale counter, so B is needed as a backstop anyway |
 
 **FN6 — every Function has an emulator test, including being run twice.**
 
@@ -219,7 +234,8 @@ fixes went out on reasoning alone and not one of them could have worked.
 | # | Decision | Status |
 |---|---|---|
 | P1 | Spend cap | **Closed.** ₹2,000/month, alerts at 50/90/100% |
-| P2 | Functions region | **Closed: `asia-south2` (Delhi)**, following the Firestore database. Outstanding: confirm Cloud Run Functions and Eventarc are both available there before the first Firestore-triggered Function |
+| P2 | Functions region | Follows the database. **Reopened by the finding above:** `asia-south2` has no Firestore event provider, so the database's location now decides whether triggered Functions are possible at all. See P7 |
+| P7 | **Firestore triggers are impossible in `asia-south2`** | **Open, and time-sensitive.** Recommendation: move the database to `asia-south1` while it holds only test data. A database's location is permanent, so this means export, delete, recreate, import, republish the rules, and re-enable PITR and backups. Every week of real use makes it harder |
 | P3 | Emulator in CI | Yes. Rules are security, and untested rules shipped the invite bug |
 | P4 | Disable Gemini and Vertex APIs | **Closed 2026-09-26.** Both disabled |
 | P5 | Does diary sync default on? | **Open, deferred to the implementation discussion.** The owner wants sync; what is undecided is whether it is on by default, which is a rule-4 question (the sangat is opt-in) and a trust question (the diary is the most personal thing in the app). Settle it in `09-diary.md` before the sync work starts |
