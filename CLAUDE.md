@@ -151,11 +151,21 @@ the failure mode is quiet: Firestore answers every write and refuses it,
 which the app reports as though it were offline. Any change to that file is
 only half done until it is published.
 
-**The committed file is the live one as of 2026-09-22** -- the `get`/`list`
-split that lets a newcomer read the group their invite code names. If you
-change it, say in the PR description that it still has to be published, and
-do not treat a sangat bug as a code bug until you have checked the console
-against git.
+**The committed file is the live one as of 2026-09-26**, republished onto the
+new `asia-south1` database. If you change it, say in the PR description that
+it still has to be published, and do not treat a sangat bug as a code bug
+until you have checked the console against git.
+
+**The Firestore database was recreated in `asia-south1` (Mumbai) on
+2026-09-26**, having been in `asia-south2` (Delhi). `asia-south2` has
+Eventarc, Cloud Run and Cloud Functions but **not the Firestore event
+provider**, so no Firestore-triggered Function could exist there at all --
+and a trigger has to sit in the same location as the database. It held only
+test data, so it was deleted and remade rather than designed around.
+`docs/features/00-platform.md` has the detail, including that the `(default)`
+id is not reusable for about five minutes after a delete. Nothing in the app
+changed: `google-services.json` does not encode the region and the SDK finds
+it.
 
 ## Builds
 
