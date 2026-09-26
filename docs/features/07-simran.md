@@ -45,8 +45,9 @@ different things, and the gap is the single biggest problem with this feature:
    account, and your own dot is drawn from Settings on the phone. So the screen
    looks identical whether the fetch worked or never happened.
 4. **The count can be inflated.** The rules pin an update to exactly +1, but
-   nothing stops somebody calling it repeatedly. Spark had no Function to fix
-   that. Blaze does.
+   nothing stops somebody calling it repeatedly. **A Cloud Function reconciles
+   it** (§0.1): the client increments its own city, the Function is the
+   authority on what the number actually is.
 5. **Design 29's month total and country count are not shown**, because nothing
    counts them.
 6. **A sitting is lost if the process dies.** `runningSince` is in memory.

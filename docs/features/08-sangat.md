@@ -31,9 +31,11 @@ That split is what lets a newcomer read the group they are about to join — the
 older rule gated `read` on `isMember`, so every code was refused.
 
 **Counting.** `count()` and `sum()` aggregation queries give the member count
-and the group total. **No counter field**, deliberately: every member can write
-the group document, so every member could lie about a stored count, and Spark
-had no Function to keep an honest one.
+and the group total today. **No client-written counter field**, deliberately:
+every member can write the group document, so a stored count is a count any
+member could forge. The honest version is a **Cloud Function maintaining it**
+(§0.1, `onMemberWrite`), which is what K9 below specifies and what the move to
+Blaze unlocked.
 
 **Listed groups.** `listed` is refused on create and pinned on update, so a
 group made in the app is always private. Asking to be listed writes
