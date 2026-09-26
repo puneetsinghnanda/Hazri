@@ -60,14 +60,14 @@ sangat with other people, and to get your diary back on a new phone.
    keystore.
 5. **No account deletion from inside the sangat flow** — only from privacy,
    which is three menus deep.
-6. **Nothing is deployed at `https://hazri-dfcc1.web.app/verify`.** There is no
-   `firebase.json` and no `.firebaserc` in the repository, so unless somebody
-   published a page by hand, the link in every verification email lands on
-   Firebase Hosting's default 404. The link still *works* — the whole URL out
-   of the address bar is what the app wants — but nothing anywhere tells
-   anybody that, so the ordinary outcome of tapping the link is a dead end.
-   This is the single largest cause of "restore does not work" and it is one
-   static page away from fixed. See §1.7.
+6. **The pages exist in `public/`; they still have to be deployed.**
+   `firebase.json`, `.firebaserc` and the pages landed on 2026-09-26, so
+   `firebase deploy --only hosting` is all that is left — but until somebody
+   runs it, the link in every verification email lands on Firebase Hosting's
+   default 404. The link still *works* (the whole URL out of the address bar
+   is what the app wants) and nothing tells anybody that, so the ordinary
+   outcome of tapping it is a dead end. **Like `firestore.rules`, this is
+   published by hand and no workflow does it.** See §1.7.
 7. **Three different failures are reported as one.** `continueWithLink` maps
    `invalid-action-code` *and* `invalid-email` to `LinkProblem.alreadyUsed`,
    and `isSignInWithEmailLink == false` to `LinkProblem.wrongAddress`. A link
@@ -271,12 +271,17 @@ What it takes, all in the console, all free:
    the template and picks one from `FirebaseAuth.instance.setLanguageCode()`;
    the app should set that from `AppSettings` at start-up. Check which locales
    the console actually offers before promising Punjabi. (B24)
-4. **Deploy one static page at `/verify`.** This is the missing piece and the
-   one that matters most (B19). It needs no framework and no build: a page
-   that says, in the three languages, "copy the whole address out of your
-   browser's address bar and paste it into Hazri", with a copy button. Add
-   `firebase.json` and `.firebaserc` to the repository and `firebase deploy
-   --only hosting`. Hosting's free tier covers this several times over.
+4. **Deploy the pages in `public/`.** Written on 2026-09-26; `firebase deploy
+   --only hosting` is the whole of what is left (B19). `/verify` reads the
+   address it was opened with: when it carries an `oobCode` it shows the
+   whole URL with a copy button and where to paste it, and when it does not
+   it sends the reader back to the email, which is the only honest answer.
+   `/j/<groupId>` does the same for an invite code, using the same
+   last-path-segment rule as `groupIdFromInvite`, so both sides are forgiving
+   in the same way. All three languages, no fonts fetched, no framework.
+   Hosting's free tier (360 MB/day) covers this many times over, and
+   **Hosting bandwidth is not Firestore reads** — these pages cost nothing on
+   the meter that bills.
 
 **Limits to accept:** the sender domain cannot be changed, the mail says
 `firebaseapp.com`, deliverability is Google's rather than ours, and there is a
@@ -303,11 +308,23 @@ domain once and both problems close together.
 
 ### Option 2b — the link on our own domain
 
-Hosting custom domain plus `authDomain`, so the link reads
-`https://hazri.app/verify?...`. Same prerequisite (a domain), and it changes
-`kVerificationUrl`. Worth doing at the same moment as 2 and as Phase 3's App
-Links — the same domain, deployed once, closes B19, the sender, the tappable
-link and `assetlinks.json` together.
+A custom domain **on Firebase Hosting**, passed as
+`ActionCodeSettings.linkDomain`.
+
+This one is not a free choice. Firebase Dynamic Links shut down on
+2025-08-25, and [Firebase's migration guide][fdl] says email links are now
+minted on a Firebase Hosting domain — the auto-provisioned default, or a
+custom Hosting domain. **A link on a host Firebase Hosting does not serve
+cannot be minted at all**, so putting `public/` anywhere else would mean two
+hosts, two deploys, and `assetlinks.json` on the one the links do not use.
+That is what closes the question of a second hosting provider: it was
+considered on 2026-09-26 and ruled out on this, not on price.
+
+Worth doing at the same moment as option 2 and Phase 3's App Links — one
+domain, deployed once, closes the sender, the tappable link and
+`assetlinks.json` together.
+
+[fdl]: https://firebase.google.com/docs/auth/android/email-link-migration
 
 ### Option 3 — mint the link ourselves and send it ourselves
 
@@ -342,7 +359,7 @@ give an address, and it is the only recovery that works with the radio off.
 
 | When | Do |
 |---|---|
-| Now, Phase 2 | Option 1, including step 4 — deploy the `/verify` page, and confirm B17 and B18 in the console. Fix the three error mappings (A13). Say A14 out loud on the restore screen |
+| Now, Phase 2 | Option 1, including step 4 — run `firebase deploy --only hosting`, and confirm B17 and B18 in the console. Fix the three error mappings (A13). Say A14 out loud on the restore screen |
 | With the Phase 3 keystore | Buy the domain once: it serves `assetlinks.json` (tappable links), `/verify`, and SPF/DKIM for option 2's sender |
 | Phase 3 | Option 3, so the mail is in the reader's language and `getUserByEmail` can close B1 and A10. Option 4 beside it |
 
@@ -370,10 +387,10 @@ give an address, and it is the only recovery that works with the radio off.
 | A-1 | Recovery beyond email — a recovery code shown once, or a QR handover phone-to-phone | Add a **recovery code** at A3: one line, copyable, works offline, no email server involved |
 | A-2 | Whether an account is offered again later to somebody who tapped Later | Yes, once, after they have been in a group a week |
 | A-3 | Tappable links need the Phase 3 keystore. Bring the keystore forward? | Yes — it also unblocks Play testing, and pasting links is the single worst moment in the app |
-| A-4 | Which sender: Firebase's `firebaseapp.com`, or our own domain (§1.7 option 2) | Firebase's, until a domain is bought for `assetlinks.json`. Then both move together |
+| A-4 | Which sender: Firebase's `firebaseapp.com`, or our own domain (§1.7 option 2) | **Closed 2026-09-26: Firebase's**, until a domain is bought for `assetlinks.json`; then both move together. When a sender is bought it is a transactional service (Brevo, or Zoho's ZeptoMail), **never a mailbox's SMTP** — Zoho Mail's own limits page caps external sending at 50–500/hour on reputation and says bulk sending is "not permitted under business usage policy", so one throttle would take out the inbox and the sending together |
 | A-5 | B6/A11 — carry the orphaned document's contents onto the restored account, or say it is being dropped | Say it is being dropped. Merging two profiles is a lot of machinery for a few minutes of one phone's work, and a wrong merge is worse than an honest sentence |
 | A-6 | Does restore promise anything about the diary when sync is off (A14, Y-4)? | No, and it says so before the link is sent. This is settled by Y-4 in `09-diary.md`; it must not be answered twice |
-| A-7 | `kInviteBase` is still a Vercel path that serves nothing. Move it to the same host as `/verify`? | Yes — one host, one deploy, one domain later. It is a one-line change plus the same static page |
+| A-7 | `kInviteBase` is still a Vercel path that serves nothing. Move it to the same host as `/verify`? | **Closed 2026-09-26: yes.** Both now derive from `kSiteBase` in `lib/core/backend/backend.dart`, and a test holds that they share a host. Vercel is out of the project entirely |
 
 ## 1.10 Acceptance
 

@@ -58,13 +58,23 @@ class OfflineBackend implements Backend {
 /// `main()` overrides it with the real one.
 final backendProvider = Provider<Backend>((ref) => const OfflineBackend());
 
+/// The one host the app's links point at.
+///
+/// Firebase Hosting, served from `public/` in this repository and deployed
+/// with `firebase deploy --only hosting`. It is the project's own free
+/// `<project>.web.app` domain, which costs nothing and is a domain we
+/// control -- the two things a link host has to be.
+///
+/// It has to be Firebase Hosting rather than anywhere else. Since Dynamic
+/// Links shut down on 2025-08-25, Firebase Auth mints its email links on a
+/// Firebase Hosting domain and nothing else, so hosting these pages beside
+/// them keeps one host, one deploy and one `assetlinks.json` to serve when
+/// Phase 3's keystore makes the links tappable.
+///
+/// A real domain in Phase 3 is added *alongside* this, not instead of it:
+/// App Links accept several hosts, and a link already sitting in somebody's
+/// inbox must not stop working.
+const String kSiteBase = 'https://hazri-dfcc1.web.app';
+
 /// Where the email verification link lands.
-///
-/// Phase 2 uses the Firebase project's own free host. It is a domain we
-/// control, which is all Android App Links need, so the link opens in the app
-/// rather than bouncing to a browser — the thing that made the 6-digit code
-/// necessary in the first place, and the reason Phase 2 can do without it.
-///
-/// Phase 3 adds the real domain alongside this one. App Links accept several
-/// hosts, so nothing here is replaced.
-const String kVerificationUrl = 'https://hazri-dfcc1.web.app/verify';
+const String kVerificationUrl = '$kSiteBase/verify';

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Confirm your email — Hazri</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <a class="mark" href="/">Hazri</a>
+  <div class="langs">
+    <button type="button" data-set="pa" aria-pressed="false">ਪੰਜਾਬੀ</button>
+    <button type="button" data-set="hi" aria-pressed="false">हिंदी</button>
+    <button type="button" data-set="en" aria-pressed="true">English</button>
+  </div>
+</header>
+
+<!-- Shown when the address carries the code. The whole address is what the
+     app wants, so the button copies location.href rather than any part of it. -->
+<section id="has-code" hidden>
+
+  <div data-lang="pa">
+    <h1>ਬੱਸ ਇੱਕ ਕਦਮ ਬਾਕੀ ਹੈ</h1>
+    <p class="lede">ਹੇਠਾਂ ਦਿੱਤਾ ਪੂਰਾ ਪਤਾ ਕਾਪੀ ਕਰੋ ਅਤੇ ਹਜ਼ਰੀ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।</p>
+  </div>
+  <div data-lang="hi">
+    <h1>बस एक कदम बाकी है</h1>
+    <p class="lede">नीचे दिया पूरा पता कॉपी करें और हज़री में पेस्ट करें।</p>
+  </div>
+  <div data-lang="en">
+    <h1>One step left</h1>
+    <p class="lede">Copy the whole address below and paste it into Hazri.</p>
+  </div>
+
+  <div class="card">
+    <code class="code" id="link">&nbsp;</code>
+    <button type="button" id="copy">
+      <span data-lang="pa">ਪਤਾ ਕਾਪੀ ਕਰੋ</span>
+      <span data-lang="hi">पता कॉपी करें</span>
+      <span data-lang="en">Copy the address</span>
+    </button>
+  </div>
+
+  <div data-lang="pa">
+    <h2>ਫਿਰ ਹਜ਼ਰੀ ਵਿੱਚ</h2>
+    <ol>
+      <li>ਹਜ਼ਰੀ ਖੋਲ੍ਹੋ।</li>
+      <li>ਸੈਟਿੰਗਾਂ &rarr; ਖਾਤਾ &rarr; ਈਮੇਲ ਪੱਕੀ ਕਰੋ।</li>
+      <li>ਲਿੰਕ ਵਾਲੇ ਖ਼ਾਨੇ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।</li>
+    </ol>
+  </div>
+  <div data-lang="hi">
+    <h2>फिर हज़री में</h2>
+    <ol>
+      <li>हज़री खोलें।</li>
+      <li>सेटिंग्स &rarr; खाता &rarr; ईमेल की पुष्टि करें।</li>
+      <li>लिंक वाले खाने में पेस्ट करें।</li>
+    </ol>
+  </div>
+  <div data-lang="en">
+    <h2>Then, in Hazri</h2>
+    <ol>
+      <li>Open Hazri.</li>
+      <li>Settings &rarr; Account &rarr; Confirm your email.</li>
+      <li>Paste it into the box that asks for the link.</li>
+    </ol>
+  </div>
+
+</section>
+
+<!-- Shown when it does not: somebody opened /verify directly, or the code was
+     dropped on the way here. Sending them back to the email is the only
+     honest answer; the link in the mail is the thing that carries the code. -->
+<section id="no-code" hidden>
+
+  <div data-lang="pa">
+    <h1>ਲਿੰਕ ਈਮੇਲ ਵਿੱਚੋਂ ਹੀ ਚਾਹੀਦਾ ਹੈ</h1>
+    <p class="lede">ਇਸ ਪਤੇ ਵਿੱਚ ਕੋਡ ਨਹੀਂ ਹੈ, ਇਸ ਲਈ ਇਹ ਖਾਤਾ ਪੱਕਾ ਨਹੀਂ ਕਰ ਸਕਦਾ।</p>
+    <ol>
+      <li>ਹਜ਼ਰੀ ਵੱਲੋਂ ਆਈ ਈਮੇਲ ਦੁਬਾਰਾ ਖੋਲ੍ਹੋ।</li>
+      <li>ਲਿੰਕ ਨੂੰ ਦਬਾ ਕੇ ਰੱਖੋ ਅਤੇ <em>ਲਿੰਕ ਦਾ ਪਤਾ ਕਾਪੀ ਕਰੋ</em> ਚੁਣੋ।</li>
+      <li>ਹਜ਼ਰੀ ਵਿੱਚ ਸੈਟਿੰਗਾਂ &rarr; ਖਾਤਾ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।</li>
+    </ol>
+  </div>
+  <div data-lang="hi">
+    <h1>लिंक ईमेल से ही चाहिए</h1>
+    <p class="lede">इस पते में कोड नहीं है, इसलिए यह खाते की पुष्टि नहीं कर सकता।</p>
+    <ol>
+      <li>हज़री से आया ईमेल फिर से खोलें।</li>
+      <li>लिंक को दबाकर रखें और <em>लिंक का पता कॉपी करें</em> चुनें।</li>
+      <li>हज़री में सेटिंग्स &rarr; खाता में पेस्ट करें।</li>
+    </ol>
+  </div>
+  <div data-lang="en">
+    <h1>The link has to come from the email</h1>
+    <p class="lede">This address carries no code, so it cannot confirm an account.</p>
+    <ol>
+      <li>Open the email from Hazri again.</li>
+      <li>Press and hold the link, then choose <em>Copy link address</em>.</li>
+      <li>Paste it into Hazri, under Settings &rarr; Account.</li>
+    </ol>
+  </div>
+
+</section>
+
+<p class="note">
+  <span data-lang="pa">ਲਿੰਕ ਇੱਕ ਵਾਰ ਹੀ ਚੱਲਦਾ ਹੈ ਅਤੇ ਕੁਝ ਸਮੇਂ ਬਾਅਦ ਖ਼ਤਮ ਹੋ ਜਾਂਦਾ ਹੈ। ਜੇ ਇਹ ਨਾ ਚੱਲੇ, ਹਜ਼ਰੀ ਵਿੱਚੋਂ ਨਵਾਂ ਮੰਗਵਾਓ।</span>
+  <span data-lang="hi">लिंक एक ही बार चलता है और कुछ समय बाद खत्म हो जाता है। अगर यह न चले, हज़री से नया मँगवाएँ।</span>
+  <span data-lang="en">The link works once and expires after a while. If it does not work, ask Hazri for a new one.</span>
+</p>
+
+<footer>
+  <span data-lang="pa">ਹਜ਼ਰੀ ਤੁਹਾਡੀ ਪੋਥੀ, ਟੀਚੇ ਅਤੇ ਹਜ਼ਰੀ ਫ਼ੋਨ ਉੱਤੇ ਹੀ ਰੱਖਦੀ ਹੈ।</span>
+  <span data-lang="hi">हज़री आपकी डायरी, लक्ष्य और हाज़री फ़ोन पर ही रखती है।</span>
+  <span data-lang="en">Hazri keeps your diary, goals and attendance on your phone.</span>
+</footer>
+
+</main>
+
+<script src="/lang.js"></script>
+<script>
+(function () {
+  var href = location.href;
+  // The code can arrive as a query parameter or inside the fragment,
+  // depending on how the mail client handed the link over. Looking for the
+  // word anywhere is deliberately loose: a false positive shows a copy box
+  // that does not work, a false negative sends somebody back to an email
+  // they already left.
+  var hasCode = /oobCode=/.test(href);
+
+  document.getElementById('has-code').hidden = !hasCode;
+  document.getElementById('no-code').hidden = hasCode;
+
+  if (!hasCode) return;
+
+  document.getElementById('link').textContent = href;
+
+  var button = document.getElementById('copy');
+  var labels = button.querySelectorAll('[data-lang]');
+  var said = {
+    pa: 'ਕਾਪੀ ਹੋ ਗਿਆ',
+    hi: 'कॉपी हो गया',
+    en: 'Copied'
+  };
+
+  button.addEventListener('click', function () {
+    var done = function () {
+      labels.forEach(function (el) {
+        var was = el.textContent;
+        el.textContent = said[el.getAttribute('data-lang')];
+        setTimeout(function () { el.textContent = was; }, 2000);
+      });
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(href).then(done, select);
+    } else {
+      select();
+    }
+  });
+
+  // Clipboard access is refused over plain http and in some in-app browsers.
+  // Selecting the text is not as good, but it means the button always does
+  // something rather than failing silently.
+  function select() {
+    var node = document.getElementById('link');
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+})();
+</script>
+</body>
+</html>

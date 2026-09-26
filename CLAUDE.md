@@ -133,6 +133,7 @@ lib/
 tools/content_pipeline/   builds assets/content/content.db
 content/source/           the reviewed source files the pipeline reads
 design/                   tokens.json, screens.json, HTML specs, PNG renders
+public/                   Firebase Hosting: /verify and /j/<groupId>
 ```
 
 ## Regenerating
@@ -143,6 +144,20 @@ python3 tools/geo/build_world_outline.py             # assets/geo/world.bin
 flutter gen-l10n                                      # lib/core/l10n/gen
 dart run build_runner build                           # drift *.g.dart
 ```
+
+**Neither is the website.** `public/` is Firebase Hosting — `/verify`, where
+an email verification link lands, and `/j/<groupId>`, where an invite does.
+It goes live with `firebase deploy --only hosting` and **no workflow runs
+that**, so a change to those pages changes nothing until somebody deploys by
+hand. Both URLs come from `kSiteBase` in `lib/core/backend/backend.dart`; a
+test holds that they share a host, because they were once on two and one of
+them served nothing.
+
+It has to be Firebase Hosting rather than anywhere cheaper: since Dynamic
+Links shut down on 2025-08-25, Firebase Auth mints its email links on a
+Firebase Hosting domain and nothing else. Hosting bandwidth is also not the
+meter that bills — that is Firestore reads — so a static page costs nothing
+that matters.
 
 **`firestore.rules` is not deployed by any of these.** It is published by
 hand, in the Firebase console under Firestore Database -> Rules, or with the

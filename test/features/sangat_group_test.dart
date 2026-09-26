@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hazri/core/backend/backend.dart';
 import 'package:hazri/features/sangat/data/group_repository.dart';
 import 'package:hazri/features/sangat/domain/sangat_group.dart';
 import 'package:hazri/features/sangat/ui/group_invite_screen.dart';
@@ -120,9 +121,18 @@ void main() {
     test('a whole pasted link gives the group id', () {
       expect(
         groupIdFromInvite(
-            'https://puneetsinghnanda.vercel.app/hazri-app/j/abc123'),
+            'https://hazri-dfcc1.web.app/j/abc123'),
         'abc123',
       );
+    });
+
+    test('the invite and the verification link share one host', () {
+      // They were on two different hosts once, one of which served nothing.
+      // Both now come from kSiteBase, so a change to the host cannot move
+      // one and leave the other behind.
+      expect(kInviteBase, startsWith(kSiteBase));
+      expect(kVerificationUrl, startsWith(kSiteBase));
+      expect(kInviteBase, isNot(contains('vercel')));
     });
 
     test('a bare code is a link too', () {

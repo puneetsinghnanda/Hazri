@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../core/backend/backend.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
@@ -15,12 +16,12 @@ import '../domain/sangat_group.dart';
 
 /// Where an invite points.
 ///
-/// **The website does not exist yet, so the link does not open anything.**
-/// That is why this screen leads with the code rather than the URL: the code
-/// is the group id, the join screen takes it pasted or typed, and it works
-/// today. The link is here so an invite sent now still reads sensibly once
-/// the site is built, and the share message says which half to use.
-const String kInviteBase = 'https://puneetsinghnanda.vercel.app/hazri-app/j';
+/// The page at the other end (`public/j/index.html`) shows the code and a
+/// button to copy it; it cannot open the app until Phase 3's keystore makes
+/// the link tappable. That is why this screen still leads with the code
+/// rather than the URL: the code is the group id, the join screen takes it
+/// pasted or typed, and it needs no website at all.
+const String kInviteBase = '$kSiteBase/j';
 
 String inviteLinkFor(String groupId) => '$kInviteBase/$groupId';
 

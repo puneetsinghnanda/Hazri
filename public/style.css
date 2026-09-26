@@ -1,0 +1,175 @@
+/* The three pages Hazri needs on the web. Colours are design/tokens.json.
+   No fonts are fetched: Gurmukhi and Devanagari come from the phone, which
+   is also what makes these pages work on a slow connection. */
+
+:root {
+  --bg: #F4F3F8;
+  --card: #FFFFFF;
+  --card2: #ECEBF3;
+  --ink: #1B1D3A;
+  --ink2: #4D5070;
+  --muted: #85879F;
+  --rule: #E1E1EA;
+  --primary: #262C63;
+  --on-primary: #FFFFFF;
+  --kesri: #D9730D;
+  --kesri-soft: #FBE8D2;
+  --kesri-ink: #9A4F00;
+  --sage: #2E7A57;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0C0F24;
+    --card: #161A37;
+    --card2: #1F2447;
+    --ink: #EDECF6;
+    --ink2: #B9BAD3;
+    --muted: #8084A6;
+    --rule: #2A2F55;
+    --primary: #F2A24E;
+    --on-primary: #1C1206;
+    --kesri: #F2A24E;
+    --kesri-soft: #3A2A1A;
+    --kesri-ink: #FFC27E;
+    --sage: #6CCB9C;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 16px 64px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+main {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.mark {
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: 1.05rem;
+  margin: 28px 0 8px;
+}
+
+p { margin: 0 0 14px; color: var(--ink2); }
+
+.lede { color: var(--ink); }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.code {
+  display: block;
+  width: 100%;
+  background: var(--card2);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 0 0 14px;
+  font: 500 15px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--ink);
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+.id {
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+  text-align: center;
+  word-break: normal;
+}
+
+button {
+  appearance: none;
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font: 600 16px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+button:active { opacity: 0.85; }
+button:focus-visible { outline: 3px solid var(--kesri); outline-offset: 2px; }
+
+ol { margin: 0 0 4px; padding-left: 1.25rem; color: var(--ink2); }
+li { margin-bottom: 8px; }
+
+.note {
+  background: var(--kesri-soft);
+  color: var(--kesri-ink);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 0.94rem;
+}
+
+.langs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.langs button {
+  width: auto;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  font-weight: 550;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+}
+
+.langs button[aria-pressed="true"] {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--ink2);
+}
+
+footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.ok { color: var(--sage); font-weight: 600; }
+
+/* With no JavaScript every language stays visible, which is wrong-looking
+   but never wrong. The script hides the two the reader did not pick. */
+[data-lang][hidden] { display: none; }

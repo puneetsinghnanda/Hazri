@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Join a sangat — Hazri</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <a class="mark" href="/">Hazri</a>
+  <div class="langs">
+    <button type="button" data-set="pa" aria-pressed="false">ਪੰਜਾਬੀ</button>
+    <button type="button" data-set="hi" aria-pressed="false">हिंदी</button>
+    <button type="button" data-set="en" aria-pressed="true">English</button>
+  </div>
+</header>
+
+<section id="has-id" hidden>
+
+  <div data-lang="pa">
+    <h1>ਤੁਹਾਨੂੰ ਇੱਕ ਸੰਗਤ ਵਿੱਚ ਸੱਦਿਆ ਗਿਆ ਹੈ</h1>
+    <p class="lede">ਇਹ ਕੋਡ ਹਜ਼ਰੀ ਵਿੱਚ ਪਾਓ।</p>
+  </div>
+  <div data-lang="hi">
+    <h1>आपको एक संगत में बुलाया गया है</h1>
+    <p class="lede">यह कोड हज़री में डालें।</p>
+  </div>
+  <div data-lang="en">
+    <h1>You have been invited to a sangat</h1>
+    <p class="lede">Put this code into Hazri.</p>
+  </div>
+
+  <div class="card">
+    <code class="code id" id="group">&nbsp;</code>
+    <button type="button" id="copy">
+      <span data-lang="pa">ਕੋਡ ਕਾਪੀ ਕਰੋ</span>
+      <span data-lang="hi">कोड कॉपी करें</span>
+      <span data-lang="en">Copy the code</span>
+    </button>
+  </div>
+
+  <div data-lang="pa">
+    <h2>ਹਜ਼ਰੀ ਵਿੱਚ</h2>
+    <ol>
+      <li>ਹਜ਼ਰੀ ਖੋਲ੍ਹੋ।</li>
+      <li>ਸੰਗਤ &rarr; ਸੰਗਤ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ।</li>
+      <li>ਕੋਡ ਪੇਸਟ ਕਰੋ।</li>
+    </ol>
+  </div>
+  <div data-lang="hi">
+    <h2>हज़री में</h2>
+    <ol>
+      <li>हज़री खोलें।</li>
+      <li>संगत &rarr; संगत में शामिल हों।</li>
+      <li>कोड पेस्ट करें।</li>
+    </ol>
+  </div>
+  <div data-lang="en">
+    <h2>In Hazri</h2>
+    <ol>
+      <li>Open Hazri.</li>
+      <li>Sangat &rarr; Join a sangat.</li>
+      <li>Paste the code.</li>
+    </ol>
+  </div>
+
+</section>
+
+<section id="no-id" hidden>
+  <div data-lang="pa">
+    <h1>ਇਸ ਸੱਦੇ ਵਿੱਚ ਕੋਈ ਕੋਡ ਨਹੀਂ</h1>
+    <p class="lede">ਜਿਸ ਨੇ ਸੱਦਿਆ ਹੈ, ਉਸ ਤੋਂ ਪੂਰਾ ਲਿੰਕ ਜਾਂ ਕੋਡ ਦੁਬਾਰਾ ਮੰਗੋ।</p>
+  </div>
+  <div data-lang="hi">
+    <h1>इस निमंत्रण में कोई कोड नहीं</h1>
+    <p class="lede">जिसने बुलाया है, उनसे पूरा लिंक या कोड फिर से माँगें।</p>
+  </div>
+  <div data-lang="en">
+    <h1>This invite carries no code</h1>
+    <p class="lede">Ask whoever invited you for the whole link, or the code off the end of it.</p>
+  </div>
+</section>
+
+<p class="note">
+  <span data-lang="pa">ਸੰਗਤ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣਾ ਤੁਹਾਡੀ ਮਰਜ਼ੀ ਹੈ। ਬਾਣੀ ਪੜ੍ਹਨ, ਸੁਣਨ ਅਤੇ ਪੋਥੀ ਲਿਖਣ ਲਈ ਕਿਸੇ ਖਾਤੇ ਦੀ ਲੋੜ ਨਹੀਂ।</span>
+  <span data-lang="hi">संगत में शामिल होना आपकी मर्ज़ी है। बाणी पढ़ने, सुनने और डायरी लिखने के लिए किसी खाते की ज़रूरत नहीं।</span>
+  <span data-lang="en">Joining a sangat is your choice. Reading, listening and keeping a diary need no account at all.</span>
+</p>
+
+<footer>
+  <span data-lang="pa">ਹਜ਼ਰੀ ਤੁਹਾਡੀ ਪੋਥੀ, ਟੀਚੇ ਅਤੇ ਹਜ਼ਰੀ ਫ਼ੋਨ ਉੱਤੇ ਹੀ ਰੱਖਦੀ ਹੈ।</span>
+  <span data-lang="hi">हज़री आपकी डायरी, लक्ष्य और हाज़री फ़ोन पर ही रखती है।</span>
+  <span data-lang="en">Hazri keeps your diary, goals and attendance on your phone.</span>
+</footer>
+
+</main>
+
+<script src="/lang.js"></script>
+<script>
+(function () {
+  // The same rule the app uses (groupIdFromInvite): the last non-empty path
+  // segment, with any query or fragment a messaging app bolted on removed.
+  // Both sides being forgiving in the same way is what stops an invite that
+  // reads fine on a phone being refused by the app.
+  var parts = location.pathname.split('/').filter(function (p) { return p !== ''; });
+  var id = parts.length > 1 ? parts[parts.length - 1] : '';
+
+  document.getElementById('has-id').hidden = !id;
+  document.getElementById('no-id').hidden = !!id;
+
+  if (!id) return;
+
+  document.getElementById('group').textContent = id;
+
+  var button = document.getElementById('copy');
+  var labels = button.querySelectorAll('[data-lang]');
+  var said = { pa: 'ਕਾਪੀ ਹੋ ਗਿਆ', hi: 'कॉपी हो गया', en: 'Copied' };
+
+  button.addEventListener('click', function () {
+    var done = function () {
+      labels.forEach(function (el) {
+        var was = el.textContent;
+        el.textContent = said[el.getAttribute('data-lang')];
+        setTimeout(function () { el.textContent = was; }, 2000);
+      });
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(id).then(done, select);
+    } else {
+      select();
+    }
+  });
+
+  function select() {
+    var node = document.getElementById('group');
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+})();
+</script>
+</body>
+</html>
