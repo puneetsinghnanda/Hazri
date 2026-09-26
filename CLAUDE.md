@@ -153,6 +153,12 @@ hand. Both URLs come from `kSiteBase` in `lib/core/backend/backend.dart`; a
 test holds that they share a host, because they were once on two and one of
 them served nothing.
 
+**`hazri.me` is registered and connected to nothing** (2026-09-26). It is a
+Phase 3 asset: it is added *alongside* `hazri-dfcc1.web.app`, never instead,
+because a verification link already sitting in an inbox has to keep working.
+`docs/features/01-accounts.md` §1.7 lists the seven steps, of which the app
+is the last one.
+
 It has to be Firebase Hosting rather than anywhere cheaper: since Dynamic
 Links shut down on 2025-08-25, Firebase Auth mints its email links on a
 Firebase Hosting domain and nothing else. Hosting bandwidth is also not the

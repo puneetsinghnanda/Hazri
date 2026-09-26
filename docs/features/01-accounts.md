@@ -326,6 +326,36 @@ domain, deployed once, closes the sender, the tappable link and
 
 [fdl]: https://firebase.google.com/docs/auth/android/email-link-migration
 
+### What connecting `hazri.me` will take
+
+Registered 2026-09-26 and **not connected to anything**. Nothing in the app
+refers to it and nothing should until Phase 3, because a link already in
+somebody's inbox has to keep working: the domain is added *alongside*
+`hazri-dfcc1.web.app`, never instead of it.
+
+When it goes live:
+
+1. **Firebase Hosting** — add the domain, take the A/AAAA records it gives.
+   The certificate is issued after DNS propagates, which can take a day.
+2. **Authentication → Settings → Authorized domains** — add it there too.
+   Hosting and Auth are separate lists, and missing the second is
+   `unauthorized-continue-uri` (B18).
+3. **`ActionCodeSettings.linkDomain`** — only then does the email link itself
+   move onto the domain. Until it is set, links stay on the default host
+   whatever the website says.
+4. **One `v=spf1` TXT record** carrying both the mailbox's include and the
+   sender's. Two SPF records is a `permerror` and quietly breaks
+   deliverability. DKIM is fine as separate records, one selector each.
+5. **`assetlinks.json`** at `/.well-known/`, served over HTTPS with no
+   redirect, carrying the release keystore's SHA-256. This is what makes the
+   link tappable, and it is blocked on the keystore, not the domain (A-3).
+6. **An HSTS header in `firebase.json`.** `.me` is not on the HSTS preload
+   list, unlike `.app` — `hazri-dfcc1.web.app` gets that for free and
+   `hazri.me` will not, so the header has to be set by hand.
+7. `kSiteBase` in `lib/core/backend/backend.dart`, last: one constant, and
+   the test that holds the two URLs on one host catches anything left
+   behind.
+
 ### Option 3 — mint the link ourselves and send it ourselves
 
 A callable Function calls `admin.auth().generateSignInWithEmailLink()` and
@@ -360,7 +390,7 @@ give an address, and it is the only recovery that works with the radio off.
 | When | Do |
 |---|---|
 | Now, Phase 2 | Option 1, including step 4 — run `firebase deploy --only hosting`, and confirm B17 and B18 in the console. Fix the three error mappings (A13). Say A14 out loud on the restore screen |
-| With the Phase 3 keystore | Buy the domain once: it serves `assetlinks.json` (tappable links), `/verify`, and SPF/DKIM for option 2's sender |
+| With the Phase 3 keystore | **`hazri.me` is registered (2026-09-26).** Connect it then, once: it serves `assetlinks.json` (tappable links), `/verify`, and SPF/DKIM for option 2's sender |
 | Phase 3 | Option 3, so the mail is in the reader's language and `getUserByEmail` can close B1 and A10. Option 4 beside it |
 
 ---
