@@ -125,6 +125,7 @@ banis by name. No comparison to other people, ever.
 |---|---|---|
 | Y-1 | The 7-day edit window | Keep it and say why on the screen: a diary you can rewrite at will is not a record |
 | Y-2 | Conflict resolution for two-phone sync | Merge per slot, union of completions. Never last-writer-wins on a whole day |
+| Y-4 | **Does diary sync default on?** (platform P5) | Open, and to be settled before the sync work starts. The owner wants sync; the question is the default. Against on-by-default: rule 4 makes the sangat opt-in, the diary is the most personal thing in the app, and switching it on silently would be the privacy screen and the behaviour disagreeing. For on-by-default: losing a phone is when people discover they wanted it, and an off switch nobody found is not a real choice. A third option: ask once, plainly, the first time there is a diary worth keeping — say a week of entries — rather than at setup when it means nothing |
 | Y-3 | Export the diary | Yes, as JSON, from the diary rather than the privacy screen — the privacy export is about what *we* hold, and the diary is not that |
 
 ## 9.8 Acceptance

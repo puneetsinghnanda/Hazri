@@ -52,11 +52,13 @@ pauses. **The cap is the last line, not the first.**
 that is the right trade. After launch it is not, and it becomes an alert plus
 a phone call instead.
 
-**Gemini API and Vertex AI are to be disabled** (APIs & Services → Enabled
-APIs). Nothing in this repository references either — no Gemini, no Vertex, no
-`generativelanguage`, no `aiplatform`. They are the two most expensive things
-that could possibly run on this project, and disabling them removes the whole
-category rather than alerting after the fact.
+**Gemini API and Vertex AI are disabled** (2026-09-26). Nothing in this
+repository references either — no Gemini, no Vertex, no `generativelanguage`,
+no `aiplatform`. They were the two most expensive things that could possibly
+have run on this project, and disabling them removes the whole category rather
+than alerting after the fact. **Do not re-enable either without a decision
+recorded here**; two of the four generated spend caps now guard services that
+cannot run.
 
 ### The Functions contract — the real first line of defence
 
@@ -211,7 +213,7 @@ fixes went out on reasoning alone and not one of them could have worked.
 |---|---|---|
 | P1 | Spend cap | **Closed.** ₹2,000/month, alerts at 50/90/100% |
 | P2 | Functions region | **Closed: `asia-south2` (Delhi)**, following the Firestore database. Outstanding: confirm Cloud Run Functions and Eventarc are both available there before the first Firestore-triggered Function |
-| P6 | Firestore scheduled backups, currently **disabled** | Enable them. It is a backup of a backup -- the diary's truth is `user.db` on the phone -- but it covers the one case that actually hurts: a phone lost *and* something going wrong server-side. Negligible cost at this data size |
 | P3 | Emulator in CI | Yes. Rules are security, and untested rules shipped the invite bug |
-| P4 | Disable Gemini and Vertex APIs | **Do it.** Unused, and the most expensive possible accident |
-| P5 | Does diary sync default on? | No. Opt-in, like the rest of the sangat |
+| P4 | Disable Gemini and Vertex APIs | **Closed 2026-09-26.** Both disabled |
+| P5 | Does diary sync default on? | **Open, deferred to the implementation discussion.** The owner wants sync; what is undecided is whether it is on by default, which is a rule-4 question (the sangat is opt-in) and a trust question (the diary is the most personal thing in the app). Settle it in `09-diary.md` before the sync work starts |
+| P6 | Firestore scheduled backups | **Daily, longest retention offered.** Also consider Point-in-Time Recovery while the Functions are being written: backups protect against losing the database, PITR protects against *us* corrupting it, which is the likelier disaster. A restore creates a **new** database — it cannot be done in place |
