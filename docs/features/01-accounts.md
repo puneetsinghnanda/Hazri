@@ -22,10 +22,24 @@ sangat with other people, and to get your diary back on a new phone.
   week) wrongly gated the hazri banner.
 - **Screens:** `join_sangat_screen`/`_sheet` (the invitation), `account_screen`
   (name, city, show-my-name), `verify_email_screen`, `restore_screen`.
-- **Verification** is an emailed link. `kVerificationUrl` points at a Vercel
-  path; the link is **pasted, not tapped**, because Android App Links need an
-  `assetlinks.json` with a release signing fingerprint and there is no keystore
-  yet.
+- **Verification** is an emailed link, and the mail is sent by **Firebase
+  Auth itself** -- `sendSignInLinkToEmail`, from
+  `noreply@hazri-dfcc1.firebaseapp.com`, through Google's own mailer. There is
+  no SMTP server, no email provider and no Function in the path today, and
+  nothing to pay for. `kVerificationUrl` is
+  `https://hazri-dfcc1.web.app/verify` (`lib/core/backend/backend.dart`) --
+  Firebase Hosting, **not** Vercel; only the group invite base
+  (`kInviteBase`) is still a Vercel path.
+- **Verifying and restoring are the same call.** `continueWithLink` links the
+  credential onto the anonymous user when one is signed in (same uid, so
+  every group and diary row stays attached) and signs into the existing
+  account when one is not. That is why one screen does both.
+- **`emailVerified` is read off the auth user, never off Firestore**, so a
+  phone cannot mark itself verified by writing a document. §1.8's "a Function
+  sets `verified`" is therefore already solved, better, and costs nothing.
+- The link is **pasted, not tapped**, because Android App Links need an
+  `assetlinks.json` with a release signing fingerprint and there is no
+  keystore yet.
 - **Deletion** (privacy screen) removes memberships first, then the profile
   row, then the auth user — in that order, because a membership left behind is
   a name in somebody else's group with no account behind it.
@@ -46,6 +60,24 @@ sangat with other people, and to get your diary back on a new phone.
    keystore.
 5. **No account deletion from inside the sangat flow** — only from privacy,
    which is three menus deep.
+6. **Nothing is deployed at `https://hazri-dfcc1.web.app/verify`.** There is no
+   `firebase.json` and no `.firebaserc` in the repository, so unless somebody
+   published a page by hand, the link in every verification email lands on
+   Firebase Hosting's default 404. The link still *works* — the whole URL out
+   of the address bar is what the app wants — but nothing anywhere tells
+   anybody that, so the ordinary outcome of tapping the link is a dead end.
+   This is the single largest cause of "restore does not work" and it is one
+   static page away from fixed. See §1.7.
+7. **Three different failures are reported as one.** `continueWithLink` maps
+   `invalid-action-code` *and* `invalid-email` to `LinkProblem.alreadyUsed`,
+   and `isSignInWithEmailLink == false` to `LinkProblem.wrongAddress`. A link
+   truncated by a mail client, a link already used, and an address that does
+   not match the one the link was minted for are three different things to do
+   next, and the reader is told the same thing for all of them.
+8. **`too-many-requests` is reported as `SangatUnavailable`**, which reads as
+   "check your internet". It means the opposite: the network is fine and
+   Firebase is throttling us. Somebody who has asked for the link three times
+   because it has not arrived is then sent to look at their wifi.
 
 ## 1.4 The behaviour
 
@@ -79,6 +111,42 @@ user. The diary **on the phone is untouched** and the screen says so.
 **A8.** Leaving the sangat entirely is not the same as deleting: memberships go
 and the account stays, so rejoining does not orphan anything.
 
+**A9.** **An email that has been typed is not an email that has been
+verified**, and the app must never conflate the two. Until the link has been
+followed, the address is a string in Firestore that Firebase Auth has never
+heard of, and it will recover nothing. Every surface that shows the address
+shows its state beside it, and A5's promise is only ever made about a verified
+one.
+
+**A10.** **Restore never silently creates a second account.** Asking to
+restore an address that no account has must say so. It must not sign the
+person into a new, empty account that happens to carry the right email — which
+is exactly what Firebase does by default, and what the app does today.
+
+**A11.** **Setting up again on a phone that already had an account strands the
+first one.** When `continueWithLink` falls through to `signInWithCredential`
+because the address is already in use, the anonymous uid this phone just made
+is abandoned along with its `users/{uid}` document. The app must either move
+that document's contents onto the restored account or say plainly that the few
+minutes' work on this phone is being dropped. Writing an orphan and saying
+nothing is not one of the options.
+
+**A12.** **The address can be changed while signed in, and that is the only
+moment it can be.** An address nobody can reach any more is unrecoverable, so
+changing it must be reachable from Settings and must re-verify.
+
+**A13.** **A link that fails says which of the three things went wrong**:
+expired or already used, the address does not match the link, or the link is
+not a Hazri link at all (usually truncated by a mail client). Rate limiting is
+its own message and is never dressed as being offline.
+
+**A14.** **Restore brings back the account, not the phone.** Name, city,
+verified address and group memberships come back. The diary comes back only if
+diary sync was on (Y-4). Goals, ticks, bani progress, reminders and simran
+history live in `user.db` and do not come back at all. The restore screen says
+this **before** the link is sent, not after, because somebody who expects
+their diary and gets an empty one will read a correct restore as a failure.
+
 ## 1.5 Scenarios
 
 **Success**
@@ -104,25 +172,210 @@ and the account stays, so rejoining does not orphan anything.
 | The link is pasted with a trailing space or `?from=whatsapp` | They paste it | Parsed anyway (the parser is deliberately forgiving) |
 | Auth delete succeeds, profile delete failed | Deletion | The account is unreachable either way; the screen does not claim a clean delete |
 | Two phones, same verified email | Both write the diary | Last-writer-wins per day, and the day is merged not replaced. Never silently drop a day |
+| An address nobody has an account for | They ask to restore it | "We have no account for that address." **Not** a new empty account with their name absent |
+| A link mangled by the mail client | They paste part of it | "That does not look like a Hazri link — copy the whole address, including everything after the question mark" |
+| The same link pasted twice | The second paste | "That link has already been used" and a button to send another — not "wrong address" |
+| Four link requests in a minute | The fifth | "Too many attempts, wait a few minutes." **Never** "check your internet" |
+| A verified account, diary sync off, new phone | They restore | Groups and name come back; the screen said beforehand that the diary would not, and says again that it did not |
+| An account set up again on a reinstall, then verified | The link is followed | They land on the original account; what was done on this phone since the reinstall is either carried over or plainly said to be dropped |
 
-## 1.6 Backend
+## 1.6 Why a restore fails
+
+The boundary conditions, grouped by where the failure actually is. Each one is
+a thing that can happen **after** somebody has completed setup and believes
+they are safe.
+
+### The email was never really bound to the account
+
+These are the dangerous ones, because setup looks finished and is not.
+
+| # | What happened | What the person sees today |
+|---|---|---|
+| B1 | The address was saved but the link was never followed | Firestore has the address; Firebase Auth has never heard of it. Restore mints a **brand new account** with a new uid, `_accountFor` finds no document and fabricates a blank one. It looks like it worked and everything is gone |
+| B2 | A typo — `gmial.com`, a missing letter | Same as B1, plus the link is now sitting in a stranger's inbox, and following it would hand them an account |
+| B3 | Verified at the time, unreachable now — a work address after leaving the job, a college address, an ISP address | Nothing in the app can help. The only cure was changing it while still signed in (A12), and that moment has passed |
+| B4 | `emailVerified` is cached on the local `User` object | The account screen can say "not verified" about an address that is, or the reverse, until something calls `user.reload()` |
+
+**B1 is the default outcome, not an edge case.** `sendSignInLinkToEmail`
+creates an account for any address it is given; it is a sign-in method, not a
+lookup. And the app cannot check first: `fetchSignInMethodsForEmail` returns an
+empty list for every address once **Email Enumeration Protection** is on,
+which is Firebase's default for projects of this vintage. So "do you have an
+account for this address?" cannot be answered on the client at all — it needs
+a Function calling `admin.auth().getUserByEmail`, or the flow has to stop
+promising an answer it does not have. This is what A10 costs.
+
+### The uid is lost or the link lands somewhere else
+
+| # | What happened | Consequence |
+|---|---|---|
+| B5 | Uninstall with no verified email | The anonymous uid goes with the install. Android auto-backup does not reliably carry the Firebase Auth token. Unrecoverable, full stop |
+| B6 | Reinstalled, set up again instead of restoring, then verified | `linkWithCredential` throws `credential-already-in-use`, the code falls through to `signInWithCredential` and lands on the original account — correct — but the second anonymous uid and its `users/{uid}` document are orphaned, with whatever was done in between. See A11 |
+| B7 | `deleteEverything()` deleted the profile and then `user.delete()` failed (Firebase requires a recent sign-in) | The document is gone, the auth user survives, the address stays taken. A later restore signs into a uid with **no profile** and gets a blank account, and the same address cannot be used to start again cleanly |
+| B8 | The auth user was disabled or deleted in the console | `user-disabled` / `user-not-found`, currently falling through to `JoinFailed` → "unavailable" |
+
+### The link itself
+
+| # | What happened | Firebase says | Today's message |
+|---|---|---|---|
+| B9 | The link expired | `expired-action-code` | Correct — "expired", with a resend |
+| B10 | The link was already used (people tap first, nothing happens, then paste) | `invalid-action-code` | "Already used" — correct, by accident: it shares a branch with B11 |
+| B11 | The address typed on the restore screen is not the one the link was minted for | `invalid-email` | Also "already used". **Wrong**, and the person resends for ever |
+| B12 | The mail client wrapped or rewrote the URL (Outlook Safe Links, Gmail line-wrapping, a corporate rewriter) | `isSignInWithEmailLink` is false | "Wrong address". **Wrong** — nothing is wrong with the address |
+| B13 | The mail did not arrive: spam, Promotions, a corporate filter, a provider that distrusts `firebaseapp.com` | nothing at all | Silence, then repeated attempts, then B14 |
+| B14 | Too many attempts from this device or to this address | `too-many-requests` | `SangatUnavailable` — "check your internet", which is the opposite of true |
+| B15 | The project's daily quota on Firebase's built-in mailer is spent | send fails | Every restore in the project fails until the next day, and nothing distinguishes it |
+| B16 | Device clock badly wrong | code validation fails | Generic failure |
+
+### Configuration, not code
+
+These fail identically for everybody and are invisible in git.
+
+| # | What must be true | If it is not |
+|---|---|---|
+| B17 | Email/Password is enabled **and its Email link (passwordless) sub-toggle is on**, in Authentication → Sign-in method | `operation-not-allowed` on every send, project-wide. Nothing in this repository records whether it is on |
+| B18 | The continue URL's host is in Authentication → Settings → Authorized domains (`hazri-dfcc1.web.app` and `.firebaseapp.com` are there by default) | `unauthorized-continue-uri`, currently reported as "unavailable" |
+| B19 | Something is deployed at `https://hazri-dfcc1.web.app/verify` | Firebase's 404. The link still works if the whole URL is copied out of the address bar, and nothing tells anybody that. **This is the state today** — §1.3.6 |
+| B20 | `firestore.rules` is published | Auth succeeds and the profile read is refused → `SangatRefused`. The restore "failed" for a reason that is not in Auth at all |
+| B21 | There is a network, and it is not a captive portal | `network-request-failed` → "unavailable", which is right |
+
+### It worked, and it still looks like it failed
+
+| # | | |
+|---|---|---|
+| B22 | Diary sync was off (Y-4 is still open) | The account comes back with an empty diary. Correct behaviour, experienced as data loss — hence A14 |
+| B23 | Goals, ticks, bani progress, reminders, simran history are in `user.db` | They never come back, on any setting. Only the diary is even a candidate |
+| B24 | The verification email is in English | Somebody using Punjabi or Hindi gets the one thing the app says to them outside the app in a language they did not choose. Rule 5 stops at the app's edge today. See §1.7 |
+
+---
+
+## 1.7 Sending the email — what it takes
+
+Nothing is being paid for or configured today: `sendSignInLinkToEmail` uses
+Firebase Auth's own mailer. The question is whether that stays true.
+
+### Option 1 — Firebase's built-in mailer (what is in the code now)
+
+Sender `noreply@hazri-dfcc1.firebaseapp.com`. No SMTP, no provider, no domain,
+no Function, no cost.
+
+What it takes, all in the console, all free:
+
+1. **Authentication → Sign-in method → Email/Password → enable, and enable
+   the Email link (passwordless sign-in) sub-toggle.** (B17. Verify this
+   rather than assume it — a send has never been proved to work end to end.)
+2. **Authentication → Settings → Authorized domains** — confirm
+   `hazri-dfcc1.web.app` is listed. (B18)
+3. **Authentication → Templates → Email address sign-in** — set the sender
+   name, the reply-to and the wording. Firebase offers per-locale versions of
+   the template and picks one from `FirebaseAuth.instance.setLanguageCode()`;
+   the app should set that from `AppSettings` at start-up. Check which locales
+   the console actually offers before promising Punjabi. (B24)
+4. **Deploy one static page at `/verify`.** This is the missing piece and the
+   one that matters most (B19). It needs no framework and no build: a page
+   that says, in the three languages, "copy the whole address out of your
+   browser's address bar and paste it into Hazri", with a copy button. Add
+   `firebase.json` and `.firebaserc` to the repository and `firebase deploy
+   --only hosting`. Hosting's free tier covers this several times over.
+
+**Limits to accept:** the sender domain cannot be changed, the mail says
+`firebaseapp.com`, deliverability is Google's rather than ours, and there is a
+per-project daily quota that Firebase does not publish as a number (B15).
+
+**Verdict: this is the right answer for Phase 2**, and step 4 is the whole
+difference between restore working and restore not working.
+
+### Option 2 — custom SMTP inside Firebase Auth
+
+Authentication → Templates → the SMTP settings behind the pencil. Supply a
+host, port, username, password and a From address, and Firebase keeps sending
+the mail but from us. Needs a domain, a mailbox or an ESP's SMTP credentials,
+and SPF + DKIM records on the domain. Costs the domain and whatever the ESP
+charges — free tiers at Resend, Mailgun, Brevo and SES all cover a project
+this size.
+
+Buys: the mail comes from `hazri.app`, deliverability we can see and fix, and
+the project quota stops applying. Changes no Dart at all.
+
+**Only worth it once a domain exists.** It is also half of Phase 3's App
+Links, which need a domain serving `assetlinks.json` anyway — so buy the
+domain once and both problems close together.
+
+### Option 2b — the link on our own domain
+
+Hosting custom domain plus `authDomain`, so the link reads
+`https://hazri.app/verify?...`. Same prerequisite (a domain), and it changes
+`kVerificationUrl`. Worth doing at the same moment as 2 and as Phase 3's App
+Links — the same domain, deployed once, closes B19, the sender, the tappable
+link and `assetlinks.json` together.
+
+### Option 3 — mint the link ourselves and send it ourselves
+
+A callable Function calls `admin.auth().generateSignInWithEmailLink()` and
+hands the URL to an ESP's API. Or the same thing without writing the sending
+half: the **Trigger Email from Firestore** extension watches a collection and
+sends what is written to it — in which case the rules must refuse every client
+write to that collection, or anybody signed in can send mail as us.
+
+Buys the things options 1 and 2 cannot: the mail in the reader's own language
+including Punjabi whatever the console offers, our own template, bounce and
+complaint handling, and — the real one — the Function can call
+`getUserByEmail` first, which is the only way to answer A10 and stop B1.
+
+Costs one Function invocation per send (nothing, at this scale, inside the
+₹2,000 cap) plus the ESP, and it is the only option with code to maintain.
+
+**Verdict: Phase 3**, and it arrives naturally with the `approveListing` and
+digest Functions rather than on its own.
+
+### Option 4 — a recovery code instead of, or beside, email (decision A-1)
+
+A code shown once at setup, exchanged for a custom token by a Function.
+No mailbox, no deliverability, no B9–B15 at all — and a new secret for
+somebody to lose. It answers none of B1's problem by itself, because a code
+nobody wrote down is a code nobody has.
+
+**Verdict: beside, not instead.** It is the answer for somebody who will not
+give an address, and it is the only recovery that works with the radio off.
+
+### The recommendation
+
+| When | Do |
+|---|---|
+| Now, Phase 2 | Option 1, including step 4 — deploy the `/verify` page, and confirm B17 and B18 in the console. Fix the three error mappings (A13). Say A14 out loud on the restore screen |
+| With the Phase 3 keystore | Buy the domain once: it serves `assetlinks.json` (tappable links), `/verify`, and SPF/DKIM for option 2's sender |
+| Phase 3 | Option 3, so the mail is in the reader's language and `getUserByEmail` can close B1 and A10. Option 4 beside it |
+
+---
+
+## 1.8 Backend
 
 - `users/{uid}`: name, city, email, verified, createdAt. The client may not
   write `role`, `verified` or `groupTotal` — already enforced.
-- **New:** `verified` is set by a Function after the link is followed, not by
-  the client. A client that can write `verified` can claim anyone's email.
+- `verified` is **not** a Firestore field the app trusts. `emailVerified` is
+  read off the Firebase Auth user, which no client can write, so this is
+  already stronger than a Function setting a field. Anything written into
+  `users/{uid}` about verification is a mirror for other people to read, never
+  the thing the app checks.
+- **New (Phase 3):** a `lookupAccountByEmail` callable, because
+  `getUserByEmail` is the only way a client can be told "no account for that
+  address" (A10, B1) with Email Enumeration Protection on.
 - **New:** a Function on auth-user delete cleans up anything the client could
   not reach, so a half-finished deletion finishes itself.
 
-## 1.7 Open decisions
+## 1.9 Open decisions
 
 | # | Decision | Default |
 |---|---|---|
 | A-1 | Recovery beyond email — a recovery code shown once, or a QR handover phone-to-phone | Add a **recovery code** at A3: one line, copyable, works offline, no email server involved |
 | A-2 | Whether an account is offered again later to somebody who tapped Later | Yes, once, after they have been in a group a week |
 | A-3 | Tappable links need the Phase 3 keystore. Bring the keystore forward? | Yes — it also unblocks Play testing, and pasting links is the single worst moment in the app |
+| A-4 | Which sender: Firebase's `firebaseapp.com`, or our own domain (§1.7 option 2) | Firebase's, until a domain is bought for `assetlinks.json`. Then both move together |
+| A-5 | B6/A11 — carry the orphaned document's contents onto the restored account, or say it is being dropped | Say it is being dropped. Merging two profiles is a lot of machinery for a few minutes of one phone's work, and a wrong merge is worse than an honest sentence |
+| A-6 | Does restore promise anything about the diary when sync is off (A14, Y-4)? | No, and it says so before the link is sent. This is settled by Y-4 in `09-diary.md`; it must not be answered twice |
+| A-7 | `kInviteBase` is still a Vercel path that serves nothing. Move it to the same host as `/verify`? | Yes — one host, one deploy, one domain later. It is a one-line change plus the same static page |
 
-## 1.8 Acceptance
+## 1.10 Acceptance
 
 - Widget test: every tab is fully usable with `accountRepository` returning
   null, and nothing on screen asks for an account.
@@ -131,3 +384,19 @@ and the account stays, so rejoining does not orphan anything.
 - Rules test: a non-member cannot read a group's member list.
 - Integration test: delete removes memberships before the profile.
 - Device check: restore onto a second phone with a verified email.
+- Device check: restore an address **no account has**, and be told so rather
+  than landed in a blank account (A10, B1). This is the one that is wrong
+  today, so it is the one that must be seen to fail before it is fixed.
+- Device check: the link out of a real inbox, tapped, on a phone — the page at
+  `/verify` must exist and must say what to do (B19).
+- Unit test: each of `expired-action-code`, `invalid-action-code`,
+  `invalid-email`, a non-Hazri string and `too-many-requests` produces its own
+  message (A13, B10-B14). Five errors, five messages, asserted separately.
+- Unit test: `sendVerificationLink` on `unauthorized-continue-uri` and
+  `operation-not-allowed` does not say "check your internet" (B17, B18).
+- Widget test: the restore screen states what does and does not come back
+  **before** the link is sent (A14).
+- Console check, written down with a date: email link sign-in is enabled, the
+  authorized domains include the continue URL's host, and the template's
+  sender and wording have been read (B17, B18). None of this is visible in
+  git, so a note in the PR description is the only record there is.
