@@ -78,10 +78,21 @@ before writing.
 counter must be safe to run twice on the same event; recompute from source
 rather than incrementing blind.
 
-**FN5 — same region as Firestore.** Cross-region calls add latency and egress
-for nothing. **Check the existing Firestore location before choosing** — a
-Firestore database's location is permanent once set, so the database decides
-the region, not the other way round.
+**FN5 — same region as Firestore, which is `asia-south2` (Delhi).**
+The `(default)` database is Firestore Native, single-region, created
+2026-09-19. Its location is permanent, so it picks the region and not us.
+
+**Verify before writing the first triggered Function:** `asia-south2` is a
+newer region and not every product is in every region. Cloud Run Functions
+*and* Eventarc both have to be available there, because a Firestore trigger
+goes through Eventarc and the trigger must match the database's location. If
+they are not:
+
+- Scheduled and callable Functions move to `asia-south1` (Mumbai) at the cost
+  of a few milliseconds per Firestore call. No design change.
+- **Firestore-triggered Functions are the real constraint.** `onMemberWrite`
+  would have to become a callable the app invokes, or a scheduled reconcile.
+  Both work. Knowing which costs nothing now and a rewrite later.
 
 **FN6 — every Function has an emulator test, including being run twice.**
 
@@ -199,7 +210,8 @@ fixes went out on reasoning alone and not one of them could have worked.
 | # | Decision | Status |
 |---|---|---|
 | P1 | Spend cap | **Closed.** ₹2,000/month, alerts at 50/90/100% |
-| P2 | Functions region | **Follows the Firestore location**, which is permanent. Check the console before the first deploy |
+| P2 | Functions region | **Closed: `asia-south2` (Delhi)**, following the Firestore database. Outstanding: confirm Cloud Run Functions and Eventarc are both available there before the first Firestore-triggered Function |
+| P6 | Firestore scheduled backups, currently **disabled** | Enable them. It is a backup of a backup -- the diary's truth is `user.db` on the phone -- but it covers the one case that actually hurts: a phone lost *and* something going wrong server-side. Negligible cost at this data size |
 | P3 | Emulator in CI | Yes. Rules are security, and untested rules shipped the invite bug |
 | P4 | Disable Gemini and Vertex APIs | **Do it.** Unused, and the most expensive possible accident |
 | P5 | Does diary sync default on? | No. Opt-in, like the rest of the sangat |
