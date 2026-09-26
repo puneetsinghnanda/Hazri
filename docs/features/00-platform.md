@@ -140,6 +140,13 @@ feedback/{id}                    §3.1; write-only to the reader, read to owner
 parent, so deleting an account must explicitly remove `diary`, `tokens` and
 every membership row. A Function finishes what the client could not reach.
 
+**What the backups actually cover.** Point-in-time recovery and the daily
+backups protect *Firestore*: accounts, groups, memberships, presence and the
+Vichar library. They do **not** protect the diary in the general case, because
+the diary's truth is `user.db` on the phone and Firestore holds a copy only
+for somebody who turned sync on. Do not let this be mistaken for the diary
+being safe; the phone's own backup is what covers that, and P5 is still open.
+
 ## 0.3 The cost model is the data model
 
 Firestore bills per document read. Every design choice below exists for that
@@ -216,4 +223,4 @@ fixes went out on reasoning alone and not one of them could have worked.
 | P3 | Emulator in CI | Yes. Rules are security, and untested rules shipped the invite bug |
 | P4 | Disable Gemini and Vertex APIs | **Closed 2026-09-26.** Both disabled |
 | P5 | Does diary sync default on? | **Open, deferred to the implementation discussion.** The owner wants sync; what is undecided is whether it is on by default, which is a rule-4 question (the sangat is opt-in) and a trust question (the diary is the most personal thing in the app). Settle it in `09-diary.md` before the sync work starts |
-| P6 | Firestore scheduled backups | **Daily, longest retention offered.** Also consider Point-in-Time Recovery while the Functions are being written: backups protect against losing the database, PITR protects against *us* corrupting it, which is the likelier disaster. A restore creates a **new** database — it cannot be done in place |
+| P6 | Firestore backups | **Closed 2026-09-26.** Point-in-time recovery on, 7-day retention (Firestore's maximum); daily scheduled backups retained 90 days. PITR's earliest version time is the moment it was enabled, so the window fills out over the following week. A restore creates a **new** database — it cannot be done in place |
