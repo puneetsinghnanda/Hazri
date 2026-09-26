@@ -65,10 +65,10 @@ them and nothing should. Anything reconciling the two branches takes the
 Phase 2 fixes and leaves that set behind; a design set for the seven items
 in §3.4 would be a new one.
 
-Four of the seven are blocked on a decision, not on code: the badge names
-(D11), which Sehaj Path is meant (D12), what sends a push at all (D13), and
-whether a points system may score Gurbani when §0 says it may not (D14, a
-blocker on 3.2).
+Three of the seven are blocked on a decision, not on code: the badge names
+(D11), which Sehaj Path is meant (D12), and whether a points system may score
+Gurbani when §0 says it may not (D14, a blocker on 3.2). **D13 is closed:**
+the backend is Blaze with Cloud Functions.
 
 **Notifications are mostly already here, and two of them were broken.** Five
 local reminder kinds ship -- `amritVela`, `evening`, `bedtime`, `simran`,
@@ -79,9 +79,9 @@ the two bugs under "Known gaps" below before believing any claim that a
 notification works.
 
 Only two things anybody has asked for genuinely need a push: being added to a
-sangat, and the group's daily digest. **Nothing can be pushed until D13 is
-answered**, because FCM needs a sender and Spark has no Cloud Functions. And
-every notification that must reach everybody has to stay local: somebody who
+sangat, and the group's daily digest. **Both are now buildable** -- the
+project is on Blaze and a Cloud Function is the sender. Every notification
+that must reach *everybody* still has to stay local, because somebody who
 never joins the sangat has no account and no token.
 
 ## The feature specifications
@@ -99,12 +99,21 @@ a test can cite, and success *and* failure scenarios written as given/when/then
 so they become tests with no translation step. A rule nobody can write a
 scenario for is not a rule yet.
 
-`docs/features/00-platform.md` holds what they share: **the backend is moving
-to Blaze with Cloud Functions** (decided 2026-09-26, which supersedes every
-"Spark has no Cloud Functions" note below), the three data stores and which is
-the source of truth for what, and the testing rules that came out of how this
-went wrong -- above all: **test at the seam the bug lives at**, and **a guard
-nobody has seen fail is not a guard**.
+`docs/features/00-platform.md` holds what they share: **the backend is Blaze
+with Cloud Functions and is live** (`hazri-dfcc1`, spend cap ₹2,000/month --
+this supersedes every "Spark has no Cloud Functions" note below), the
+Firestore collections, **the cost model, which is the data model** (reads are
+what bills, so Today, Nitnem, Diary and the reader cost zero and the globe is
+one document per city per day), the Functions contract (`maxInstances: 10`,
+`minInstances: 0`, never write to your own trigger, idempotent always), and
+the testing rules that came out of how this went wrong -- above all: **test at
+the seam the bug lives at**, and **a guard nobody has seen fail is not a
+guard**.
+
+Two cost facts worth knowing before touching the backend: **Firestore cannot
+be spend-capped** -- it is not a cappable service, and it is the largest cost
+driver -- and **costs record up to 24 hours late**, so the cap lags reality by
+a day. `maxInstances` is the real protection; the cap is the last line.
 
 ## Layout
 
@@ -280,15 +289,19 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   rules on create and pinned on update, so a group made on a phone is always
   private. Asking to be listed writes `listingRequested`, and approving one is
   a console edit -- `docs/group-listing.md` is the procedure. There is no
-  admin screen and no notification either way yet.
-- **The sangat's numbers are counted, never stored.** `count()` and `sum()`
-  aggregation queries give the member count, the group total and the globe's
-  headline. Do not add a counter field to a group document: every member can
-  write that document, so every member could lie about it, and Spark has no
-  Cloud Function to keep an honest one.
-- **Group and global notifications cannot be sent.** They need a push from a
-  server and Phase 2 has none. Screen 50 shows them switched off and
-  unavailable rather than pretending.
+  admin screen and no notification either way yet. On Blaze this becomes an
+  `approveListing` callable rather than a console edit.
+- **The sangat's numbers are counted on read, and are moving to being
+  maintained.** `count()` and `sum()` aggregation queries give the member
+  count, the group total and the globe's headline today. **Do not let a client
+  write a counter field** -- every member can write the group document, so a
+  client-written total is a total any member could forge. Now that the project
+  is on Blaze the honest version is a Cloud Function maintaining it, which is
+  what `docs/features/00-platform.md` specifies.
+- **Group and global notifications are not built yet**, though they are no
+  longer impossible: the project is on Blaze and a Cloud Function can send
+  them. Screen 50 still shows them switched off and unavailable, and must keep
+  saying so until the Functions are actually deployed.
 - **The Vichar library is empty until entries are published.** Nothing in it
   is written in Dart -- see `docs/vichar-content.md` for the document shape.
   This is rule 3 applied past Gurbani to everything the app says about Sikhi.

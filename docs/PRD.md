@@ -357,18 +357,19 @@ through sync.
   until somebody joins the sangat, because until then there is nobody to
   push to.
 
-*What it takes to send a push at all.* FCM does not send by itself — some
-server has to call it, and **Firebase Spark has no Cloud Functions**. So 5
-and 6, and every pushed item above, need one of:
+*What sends a push.* FCM does not send by itself, some server has to call it,
+and **that is now a Cloud Function.** The project moved to Blaze on
+2026-09-26 with a ₹2,000/month spend cap, which closes D13. The alternative
+considered — a scheduled Vercel job holding a service-account key — is
+dropped, and with it the only thing in this project that would have needed a
+**secret held off the phone**. A Function runs with the project's own
+credentials and there is no service-account JSON to keep anywhere.
 
-1. **A scheduled job on Vercel** (already named in the Phase 2 row as "Vercel
-   for extras") holding a service-account key and calling the Firebase Admin
-   SDK. A daily cron covers 6; an HTTP endpoint the app calls covers 5.
-2. **Blaze plus Cloud Functions**, which the owner has ruled out.
-
-That choice is D13, and it is the first thing in this project that needs a
-**secret held off the phone**: a service-account JSON, which `.gitignore`
-already refuses and which must never enter this repository.
+`docs/features/00-platform.md` holds the Functions contract that every one of
+these obeys: `maxInstances: 10`, `minInstances: 0`, never write to your own
+trigger, idempotent always, and an emulator test that includes running it
+twice. Those matter more than the spend cap, because costs record up to
+24 hours late and a cap therefore lags a runaway by a day.
 
 *Tokens are personal data, and the privacy screen has to say so.* An FCM
 registration token identifies a device. It is written to the user's own
@@ -1118,7 +1119,7 @@ Two things it left behind are still live and are **not** to be undone:
 | D10 | Report an error | — | Phase 3 (confirmed by owner) — now 3.1, with Feedback |
 | D11 | **The ten badge names** (§3.2) — whether Gyani and Pracharak are names an app may hand out, and the Gurmukhi and Devanagari spellings of all ten | Before 3.2 is built | Ask a Sikh reader before the screen is designed, not after |
 | D12 | **Which Sehaj Path** (§3.3) — the marker alone, or the full 1430 Angs in the app | Before 3.3 is scoped | The marker. The full text is a content programme gated on D1 |
-| D13 | **What sends a push** (§3.7) — a scheduled Vercel job holding a service-account key, or Blaze and Cloud Functions | Before 3.7 items 5 and 6 | Vercel. Blaze is ruled out, and Spark has no Functions, so without this nothing can be pushed at all |
+| D13 | ~~What sends a push (§3.7)~~ — **closed 2026-09-26: Blaze with Cloud Functions**, live on `hazri-dfcc1` with a ₹2,000/month spend cap. The Vercel alternative is dropped, and with it the service-account key it needed off-device | — | — |
 | D14 | **Points and Gurbani** (§3.2) — whether §0's "No points or XP for Gurbani" is honoured by scoring only non-Gurbani activity, or amended | Before 3.2 is built (blocker) | Honour it: score simran, sewa and diary days, never a bani read |
 
 ---
