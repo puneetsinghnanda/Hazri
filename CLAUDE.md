@@ -84,6 +84,28 @@ answered**, because FCM needs a sender and Spark has no Cloud Functions. And
 every notification that must reach everybody has to stay local: somebody who
 never joins the sangat has no account and no token.
 
+## The feature specifications
+
+`docs/features/` is the behaviour spec, one file per feature, written
+2026-09-26 after a fortnight in which every defect turned out to be a
+**specification** failure showing up as a code failure: three screens each
+deciding "were the goals met" differently, hazri hidden behind the sangat
+because nobody had written down that it is local, a Gurpurab reminder firing
+nightly because nobody had written down what should make it fire.
+
+**Read the file for a feature before changing it, and change the file in the
+same commit when the behaviour changes.** Each one carries numbered rules that
+a test can cite, and success *and* failure scenarios written as given/when/then
+so they become tests with no translation step. A rule nobody can write a
+scenario for is not a rule yet.
+
+`docs/features/00-platform.md` holds what they share: **the backend is moving
+to Blaze with Cloud Functions** (decided 2026-09-26, which supersedes every
+"Spark has no Cloud Functions" note below), the three data stores and which is
+the source of truth for what, and the testing rules that came out of how this
+went wrong -- above all: **test at the seam the bug lives at**, and **a guard
+nobody has seen fail is not a guard**.
+
 ## Layout
 
 ```
