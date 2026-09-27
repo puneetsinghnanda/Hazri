@@ -35,22 +35,49 @@ class FirebaseAccountRepository implements AccountRepository {
   SangatAccount? get current => _current;
 
   @override
-  Stream<SangatAccount?> watch() =>
-      _auth.authStateChanges().asyncExpand((user) {
-        if (user == null) {
+  Stream<SangatAccount?> watch() => _auth
+          // `userChanges()`, not `authStateChanges()`.
+          //
+          // This was authStateChanges, and the plugin is explicit about what
+          // that misses: it "notifies about changes to the user's sign-in
+          // state (such as sign-in or sign-out)", while userChanges
+          // "provides events on all user changes, such as when credentials
+          // are linked". Confirming an email links a credential. It is not a
+          // sign-in.
+          //
+          // So the stream never fired, the `user` captured in the closure
+          // below kept the `emailVerified: false` it was born with, and every
+          // Firestore snapshot after that was mapped with the stale value.
+          // The verify screen said confirmed, because it had the fresh user
+          // handed back by the call; the account screen said Not verified,
+          // because it reads this. Two sources for one fact, and one of them
+          // could not be updated.
+          .userChanges()
+          // userChanges is a superset of idTokenChanges, so it also fires on
+          // every hourly token refresh. Without this, each one would tear
+          // down and rebuild the Firestore listener below and pay for the
+          // document again -- reads are what bills (00-platform.md), so the
+          // stream is only allowed to restart when something it actually
+          // reports has changed.
+          .map((user) => user == null
+              ? null
+              : (uid: user.uid, verified: user.emailVerified))
+          .distinct()
+          .asyncExpand((who) {
+        if (who == null) {
           _current = null;
           return Stream<SangatAccount?>.value(null);
         }
-        return _db.collection('users').doc(user.uid).snapshots().map((snap) {
+        return _db.collection('users').doc(who.uid).snapshots().map((snap) {
           final data = snap.data();
           if (data == null) return null;
           // `emailVerified` lives on the auth user, not in Firestore, so a
           // phone cannot mark itself verified by writing a document. The rules
           // refuse the field too; this is the belt to that pair of braces.
           _current = SangatAccount.fromFirestore(
-            user.uid,
+            who.uid,
             data,
-            emailVerified: user.emailVerified,
+            emailVerified: who.verified,
           );
           return _current;
         });
@@ -180,14 +207,25 @@ class FirebaseAccountRepository implements AccountRepository {
   /// The profile behind a user, creating a bare one if this phone has never
   /// written it. A restored account nearly always has one already.
   Future<SangatAccount> _accountFor(User user, String email) async {
+    // Freshen before reading. linkWithCredential hands back an updated user,
+    // but a reload costs one call and removes any question about which copy
+    // of `emailVerified` this is -- and getting that wrong is invisible
+    // until somebody looks at a second screen.
+    try {
+      await user.reload();
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Hazri: reloading the user failed (${e.code})');
+    }
+    final fresh = _auth.currentUser ?? user;
+
     try {
       final snap = await _db.collection('users').doc(user.uid).get();
       final data = snap.data();
       if (data != null) {
         _current = SangatAccount.fromFirestore(
-          user.uid,
+          fresh.uid,
           data,
-          emailVerified: user.emailVerified,
+          emailVerified: fresh.emailVerified,
         );
         return _current!;
       }
@@ -195,11 +233,11 @@ class FirebaseAccountRepository implements AccountRepository {
       debugPrint('Hazri: reading restored profile failed (${e.code})');
     }
     _current = SangatAccount(
-      id: user.uid,
+      id: fresh.uid,
       name: '',
       city: '',
       email: email,
-      emailVerified: user.emailVerified,
+      emailVerified: fresh.emailVerified,
     );
     return _current!;
   }

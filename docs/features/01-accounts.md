@@ -156,6 +156,22 @@ expired or already used, the address does not match the link, or the link is
 not a Hazri link at all (usually truncated by a mail client). Rate limiting is
 its own message and is never dressed as being offline.
 
+**A18.** **Verified is one fact with one source, and that source is the
+auth user.** `emailVerified` is read from Firebase Auth, never from
+Firestore, so no phone can mark itself verified by writing a document — and
+it must be read from a stream that fires when a credential is **linked**,
+because confirming an email is a link and not a sign-in. Every screen shows
+the same answer or the app is lying on one of them.
+
+Broken until 2026-09-27: the account was watched on `authStateChanges()`,
+which notifies only about sign-in and sign-out. The `User` captured in it
+kept `emailVerified: false` for the life of the app, so the verify screen
+said confirmed (it held the fresh user the call returned) and the account
+screen said Not verified one tap later. `userChanges()` is the stream that
+reports a link, and `test/features/account_stream_test.dart` holds it — a
+source test, because a fake repository reports whatever it is told and
+agrees with every screen while the real one disagrees with itself.
+
 **A16.** **A tapped link finishes the job; a pasted one still works.**
 Android hands the link to the app, `IncomingLink` reads it, the router sends
 it to the screen that can use it, and the screen completes without asking
