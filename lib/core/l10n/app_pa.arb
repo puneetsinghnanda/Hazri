@@ -425,6 +425,14 @@
   },
   "accountTitle": "ਤੁਹਾਡਾ ਖਾਤਾ",
   "accountEmail": "ਈਮੇਲ",
+  "accountOpenedWith": "ਖੁੱਲ੍ਹਿਆ: {route}",
+  "@accountOpenedWith": {
+    "placeholders": {
+      "route": {
+        "type": "String"
+      }
+    }
+  },
   "accountPhone": "ਫ਼ੋਨ",
   "accountCity": "ਸ਼ਹਿਰ",
   "accountNotAdded": "ਨਹੀਂ ਜੋੜਿਆ",

@@ -135,6 +135,30 @@ void main() {
     });
   });
 
+  group('one instance, not four', () {
+    // Tapping a verification link once produced four Hazri tasks in the
+    // recents switcher, and the instance holding the reader's state was
+    // never the one the link was delivered to.
+    //
+    // An empty taskAffinity means the activity belongs to no task, so every
+    // launch from another app with FLAG_ACTIVITY_NEW_TASK -- which is how a
+    // mail client opens a link -- starts a fresh one. singleTop only dedupes
+    // within a task, so it never got a chance to.
+    final xml = File('android/app/src/main/AndroidManifest.xml')
+        .readAsStringSync();
+
+    test('the launcher activity is singleTask', () {
+      expect(xml, contains('android:launchMode="singleTask"'),
+          reason: 'singleTop is not enough: an externally launched link '
+              'lands in a new task, where there is nothing to be on top of');
+    });
+
+    test('there is no empty task affinity', () {
+      expect(xml, isNot(contains('android:taskAffinity=""')),
+          reason: 'no affinity means every external launch makes a task');
+    });
+  });
+
   group('App Links, so a verification link can be tapped', () {
     // Four things have to agree before Android will open the app on a link:
     // this filter, assetlinks.json on the host, the certificate the APK was

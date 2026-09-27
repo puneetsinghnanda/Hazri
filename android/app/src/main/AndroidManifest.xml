@@ -33,11 +33,25 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/full_backup_content"
         android:enableOnBackInvokedCallback="true">
+        <!-- singleTask, and no empty taskAffinity.
+             Both matter for a tapped link, and the pair of them is why
+             tapping one produced four Hazris in the recents switcher.
+
+             An empty android:taskAffinity means the activity belongs to no
+             task at all, so every launch from another app with
+             FLAG_ACTIVITY_NEW_TASK, which is how Gmail opens a link, starts
+             a fresh task. singleTop only ever dedupes within one task, so it
+             never applied: each tap built another instance, and the instance
+             holding the reader's state was never the one handed the link.
+
+             singleTask keeps one instance for the whole system. A link
+             tapped while the app is running brings that instance forward
+             and arrives through onNewIntent, which Flutter passes to the
+             router. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:taskAffinity=""
+            android:launchMode="singleTask"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"

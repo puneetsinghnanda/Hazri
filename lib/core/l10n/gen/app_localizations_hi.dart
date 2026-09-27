@@ -1377,6 +1377,11 @@ class LHi extends L {
   String get accountEmail => 'ईमेल';
 
   @override
+  String accountOpenedWith(String route) {
+    return 'खुला: $route';
+  }
+
+  @override
   String get accountPhone => 'फ़ोन';
 
   @override

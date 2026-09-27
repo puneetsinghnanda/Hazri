@@ -795,6 +795,14 @@
   },
   "accountTitle": "Your account",
   "accountEmail": "Email",
+  "accountOpenedWith": "Opened with: {route}",
+  "@accountOpenedWith": {
+    "placeholders": {
+      "route": {
+        "type": "String"
+      }
+    }
+  },
   "accountPhone": "Phone",
   "accountCity": "City",
   "accountNotAdded": "Not added",

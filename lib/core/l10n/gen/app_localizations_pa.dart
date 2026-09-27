@@ -1378,6 +1378,11 @@ class LPa extends L {
   String get accountEmail => 'ਈਮੇਲ';
 
   @override
+  String accountOpenedWith(String route) {
+    return 'ਖੁੱਲ੍ਹਿਆ: $route';
+  }
+
+  @override
   String get accountPhone => 'ਫ਼ੋਨ';
 
   @override

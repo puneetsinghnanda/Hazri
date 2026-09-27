@@ -1380,6 +1380,11 @@ class LEn extends L {
   String get accountEmail => 'Email';
 
   @override
+  String accountOpenedWith(String route) {
+    return 'Opened with: $route';
+  }
+
+  @override
   String get accountPhone => 'Phone';
 
   @override

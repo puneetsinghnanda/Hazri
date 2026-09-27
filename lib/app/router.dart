@@ -6,6 +6,7 @@ import '../core/settings/settings_controller.dart';
 import '../features/about/ui/about_screen.dart';
 import '../features/about/ui/licences_screen.dart';
 import '../features/about/ui/privacy_screen.dart';
+import '../features/sangat/data/link_diagnostics.dart';
 import '../features/sangat/domain/incoming_link.dart';
 import '../features/sangat/ui/account_screen.dart';
 import '../features/sangat/ui/create_group_screen.dart';
@@ -229,6 +230,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       // matters most is somebody restoring on a new phone, and that phone has
       // not been set up -- so a gate that sends every unfinished install to
       // the intro would swallow exactly the link it was opened for.
+      // Recorded before anything acts on it, so the record survives a
+      // redirect that goes wrong as well as one that goes right.
+      ref.read(linkDiagnosticsProvider).recordFirst(state.uri.toString());
+
       final incoming = IncomingLink.from(state.uri);
       switch (incoming) {
         case SignInLink(url: final url):

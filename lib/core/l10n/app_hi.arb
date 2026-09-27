@@ -425,6 +425,14 @@
   },
   "accountTitle": "आपका खाता",
   "accountEmail": "ईमेल",
+  "accountOpenedWith": "खुला: {route}",
+  "@accountOpenedWith": {
+    "placeholders": {
+      "route": {
+        "type": "String"
+      }
+    }
+  },
   "accountPhone": "फ़ोन",
   "accountCity": "शहर",
   "accountNotAdded": "नहीं जोड़ा",

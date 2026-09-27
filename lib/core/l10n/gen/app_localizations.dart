@@ -2547,6 +2547,12 @@ abstract class L {
   /// **'Email'**
   String get accountEmail;
 
+  /// No description provided for @accountOpenedWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Opened with: {route}'**
+  String accountOpenedWith(String route);
+
   /// No description provided for @accountPhone.
   ///
   /// In en, this message translates to:

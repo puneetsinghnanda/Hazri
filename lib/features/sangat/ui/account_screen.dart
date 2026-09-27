@@ -10,6 +10,7 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
+import '../data/link_diagnostics.dart';
 import '../data/account_repository.dart';
 import '../domain/sangat_account.dart';
 
@@ -93,6 +94,28 @@ class AccountScreen extends ConsumerWidget {
         ),
       ),
       const SizedBox(height: 13),
+      // What the app was last opened with.
+      //
+      // Here because a tapped link crosses four systems before any Dart
+      // runs, and when it fails there is nothing on screen to tell a link
+      // that never arrived from a link that arrived and was mishandled. A
+      // route beginning `/today` means Android never handed it over; one
+      // carrying an oobCode means it did, and the fault is ours. Three
+      // rounds went out guessing at that.
+      //
+      // A route, never its contents: no address, no code, and it goes
+      // nowhere off the phone.
+      Builder(builder: (context) {
+        final opened = ref.read(linkDiagnosticsProvider).lastOpenedWith;
+        if (opened == null) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Text(
+            l.accountOpenedWith(opened),
+            style: HazriText.caption.copyWith(color: c.muted),
+          ),
+        );
+      }),
       HazriCard(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
