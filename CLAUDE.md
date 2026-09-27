@@ -220,6 +220,27 @@ on the way to replacing it. It now checks the APK exists before touching
 anything, and uses `gh release upload --clobber` on a release it creates or
 edits rather than deletes, so there is never a window with no APK.
 
+**Every CI build is signed with a different key, and nothing in the
+repository fixes that.** `build.gradle.kts` signs the release build with
+`signingConfigs.getByName("debug")`, and the workflow does nothing about a
+keystore — so on each fresh GitHub runner the Android Gradle Plugin finds no
+`~/.android/debug.keystore`, generates one with a fresh key pair, and throws
+it away when the runner is destroyed. Three consequences, found 2026-09-27:
+
+* **There is no "the" debug SHA-256 to register with Firebase.** Registering
+  one is meaningless because the next build has another. Android App Links
+  and `assetlinks.json` are therefore not merely waiting on a release
+  keystore — they cannot work at all until *some* stable key signs the APK.
+* **A new APK will not install over an old one.** Android refuses a package
+  whose signature changed, so every build needs an uninstall first — and an
+  uninstall takes `user.db` with it: the diary, the goals, every tick, and
+  the anonymous account that cannot be recovered without a verified email.
+  Anybody testing across builds has been starting again each time without
+  necessarily realising why.
+* **Phase 3's keystore decision (A-3) is really a Phase 2 one.** The fix is
+  one keystore, kept out of git, held as a GitHub secret and used by the
+  workflow.
+
 **A double hyphen inside an XML comment makes AndroidManifest.xml
 unparseable**, and the only thing that notices is
 `:app:processReleaseMainManifest`, three minutes into a Gradle run, saying
