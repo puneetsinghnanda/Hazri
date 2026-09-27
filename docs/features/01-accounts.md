@@ -134,9 +134,35 @@ false on an account whose credential was linked.
 
 ### 1.4.2 The rules that make disagreement impossible
 
-**R1. One source.** The Firebase Auth user decides the state. Firestore
-holds name, city, the address to display and the group list — **never** the
-state. A phone cannot write itself into Recoverable.
+**R1. One source: the `users/{uid}` document.** The whole account — name,
+city, address, groups **and the state** — is one document on the server, and
+every screen reads that one document. The device never derives account state
+from anything it holds locally.
+
+Corrected 2026-09-27 after the reader asked why the state was not stored. My
+earlier answer was that `firestore.rules` let a client write its own
+document, so a `verified` field would be one any phone could set to true and
+fake recovery with. That risk is real and it is also the only objection —
+and it is answered by R1a rather than by keeping the state off the server.
+Reading it off the SDK's local auth object was the thing that let two screens
+disagree, so the objection was being solved in the most expensive possible
+way.
+
+**R1a. Only the server writes the state.** `firestore.rules` refuse
+`verified`, `email`, `providers` and `role` from every client, so a phone
+writing to its own document cannot touch them. A Cloud Function is the only
+writer: it reads the auth user **server side** with `admin.auth().getUser()`
+and projects the truth into the document. The device can trigger it and can
+never dictate it.
+
+What the device still does, because it cannot not: hold a session token, and
+call `linkWithCredential` — that *is* Firebase Auth, and it runs on the
+phone by construction. What it no longer does is **decide**. It performs the
+act; the server records what the act achieved; the app reads the record.
+
+**R1b. Offline, the document reads from Firestore's own cache.** The last
+state the server sent, which is the right answer when there is no network,
+and it costs no read.
 
 **R2. One mapper.** A single pure function turns `(User?, Map?)` into the
 account. It is the only place an account is constructed, it takes no other
@@ -544,18 +570,35 @@ went the other way.
 
 | # | Change | Why |
 |---|---|---|
-| 1 | One sealed `AccountState` — `NoAccount`, `LocalAccount`, `RecoverableAccount` | R1: a value, not a handful of booleans that can disagree |
-| 2 | One pure mapper `accountFrom(User?, Map?)`, the only constructor | R2. Tested directly against each real user shape, no fake in the way |
+| 0 | **`syncAccount` Cloud Function**: reads the auth user with `admin.auth().getUser(uid)` and writes `state`, `email`, `providers` into `users/{uid}` | R1a. The only writer of those fields. Called after any act that can change them; idempotent, so calling it twice is free |
+| 0a | `firestore.rules`: refuse `state`, `verified`, `email`, `providers`, `role` on every client write | R1a. Without this the field is a lie any phone can tell. **Published by hand** |
+| 1 | One sealed `AccountState` — `NoAccount`, `LocalAccount`, `RecoverableAccount`, read from the document | R1: a value, not a handful of booleans that can disagree |
+| 2 | One pure mapper `accountFrom(Map?)` — one input now, the document | R2. Tested directly against each shape the server writes, no fake in the way |
 | 3 | Delete `_confirmed` and every screen-held flag; screens render the state | R3. This alone closes the class |
 | 4 | Operations return what happened, with the Firebase code; never a claim about state | R4 |
 | 5 | Every mutation reloads and re-publishes before returning | R5 |
-| 6 | `userChanges()` stays; assert it | R6, already done |
+| 6 | `userChanges()` stays, but only to know **which uid** to read; the state comes from the document | R6, and it stops being load-bearing |
 | 7 | A state line the reader can read out: state, providers, last outcome | R7, half done |
 | 8 | The fork when an address is taken (A11) | Not built; today it silently signs in |
 | 9 | `lookupAccountByEmail` Cloud Function, or stop implying we know (A17) | **D-A1 below.** This is B1 |
 
 Nothing here needs new screens. Items 1 to 7 are a rewrite of one
 repository, one model and two screens, and every one of them removes code.
+
+### What R1 costs
+
+Nothing measurable, which is worth stating because reads are what bills
+(`00-platform.md`).
+
+| | |
+|---|---|
+| Reading the state | **Zero extra.** The account screen already reads `users/{uid}`; the state rides in the document it was fetching anyway |
+| Writing the state | One Function invocation and one write per verification — once in the life of an account, not per launch |
+| Offline | Firestore's cache answers from the last state the server sent. No read, no network, and honest about being the last thing known |
+
+The version this replaces was cheaper only in the sense that it did no work
+at all: it read a boolean the SDK happened to be holding, which is how the
+app came to hold two answers at once.
 
 ## 1.8 Backend
 
@@ -582,7 +625,7 @@ repository, one model and two screens, and every one of them removes code.
 | A-4 | Which sender: Firebase's `firebaseapp.com`, or our own domain (§1.7 option 2) | **Closed 2026-09-26: Firebase's**, until a domain is bought for `assetlinks.json`; then both move together. When a sender is bought it is a transactional service (Brevo, or Zoho's ZeptoMail), **never a mailbox's SMTP** — Zoho Mail's own limits page caps external sending at 50–500/hour on reputation and says bulk sending is "not permitted under business usage policy", so one throttle would take out the inbox and the sending together |
 | A-5 | B6/A11 — carry the orphaned document's contents onto the restored account, or say it is being dropped | Say it is being dropped. Merging two profiles is a lot of machinery for a few minutes of one phone's work, and a wrong merge is worse than an honest sentence |
 | A-6 | Does restore promise anything about the diary when sync is off (A14, Y-4)? | No, and it says so before the link is sent. This is settled by Y-4 in `09-diary.md`; it must not be answered twice |
-| D-A1 | An address that already has an account: answer it with a Cloud Function (`getUserByEmail`), or stop implying the app can tell? | **Needs a decision.** Client-side is impossible — Email Enumeration Protection returns nothing for every address. Without the Function, B1 stays the ordinary path and somebody who believes recovery is set up finds out on the day they lose the phone. With it, one callable, one read, and the honest answer |
+| D-A1 | An address that already has an account: answer it with a Cloud Function, or stop implying the app can tell? | **Closed 2026-09-27: the Function.** Once `syncAccount` exists the objection to Functions is gone, and `getUserByEmail` is the same admin SDK call from the same deployment. Client-side remains impossible — Email Enumeration Protection returns nothing for every address — and without it B1 stays the ordinary path |
 | A-7 | `kInviteBase` is still a Vercel path that serves nothing. Move it to the same host as `/verify`? | **Closed 2026-09-26: yes.** Both now derive from `kSiteBase` in `lib/core/backend/backend.dart`, and a test holds that they share a host. Vercel is out of the project entirely |
 
 ## 1.10 Acceptance
