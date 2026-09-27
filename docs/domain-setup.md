@@ -146,6 +146,63 @@ comes after step 1.
 
 ---
 
+## The console click-path, as of 2026-09-27
+
+Console labels drift. If a name below does not match what is on screen, the
+*shape* of the flow is what to follow: verify ownership with a TXT record,
+then point A records at Firebase, then add the same domain to Auth's own
+separate list.
+
+### Before anything: deploy
+
+**Hosting has to have been deployed once before a custom domain can be
+added**, because the domain attaches to a site and the site is created by the
+first deploy.
+
+```bash
+npm i -g firebase-tools
+firebase login
+firebase deploy --only hosting
+```
+
+Then open `https://hazri-dfcc1.web.app/verify` and check it is the page from
+`public/verify/` and not a 404.
+
+### Adding the domain
+
+1. Firebase console → project `hazri-dfcc1` → **Build → Hosting**.
+   **Not App Hosting.** That is the newer product for server-rendered
+   frameworks, it is billed differently, and it is not what `public/` is.
+2. On the site's row, **Add custom domain**.
+3. Enter `hazri.me`. Firebase offers to also serve or redirect
+   `www.hazri.me` — take the redirect unless there is a reason not to, so
+   there is one canonical host.
+4. Firebase shows a **TXT record** to prove the domain is yours. Add it at
+   the registrar on `@`, wait, then **Verify**.
+5. Once verified, Firebase shows the **A records** (usually two IPv4
+   addresses). Add both at the registrar on `@`.
+6. The status moves through *Pending verification* → *Needs setup* →
+   *Pending* → **Connected**. The certificate is issued after propagation
+   and the whole thing can take 24 hours. *Needs setup* that persists for a
+   few hours is almost always propagation, not a mistake.
+
+### Adding it to Auth
+
+Separate list, separate part of the console, nothing links them.
+
+7. Firebase console → **Authentication → Settings → Authorized domains** →
+   **Add domain** → `hazri.me`.
+
+Skipping this is `unauthorized-continue-uri`, which the app currently
+reports as "check your internet" (B18, A13).
+
+### What has and has not changed after this
+
+`hazri.me` now serves the same `public/` as `hazri-dfcc1.web.app`, and the
+app still points at `hazri-dfcc1.web.app`. The email link still comes from
+the default host. That is correct: moving it is `linkDomain`, which waits
+for the keystore.
+
 ## Checking it
 
 ```bash
