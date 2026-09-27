@@ -2703,6 +2703,18 @@ abstract class L {
   /// **'Do this later'**
   String get verifyLater;
 
+  /// No description provided for @verifyDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is confirmed'**
+  String get verifyDoneTitle;
+
+  /// No description provided for @verifyDoneBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This address can bring your account back on a new phone.'**
+  String get verifyDoneBody;
+
   /// No description provided for @sangatTitle.
   ///
   /// In en, this message translates to:

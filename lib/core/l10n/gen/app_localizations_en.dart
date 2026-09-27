@@ -1467,6 +1467,13 @@ class LEn extends L {
   String get verifyLater => 'Do this later';
 
   @override
+  String get verifyDoneTitle => 'Your email is confirmed';
+
+  @override
+  String get verifyDoneBody =>
+      'This address can bring your account back on a new phone.';
+
+  @override
   String get sangatTitle => 'Sangat';
 
   @override

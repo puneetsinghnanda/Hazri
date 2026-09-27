@@ -1465,6 +1465,12 @@ class LHi extends L {
   String get verifyLater => 'यह बाद में करें';
 
   @override
+  String get verifyDoneTitle => 'आपकी ईमेल पक्की हो गई';
+
+  @override
+  String get verifyDoneBody => 'नए फ़ोन पर यही पता आपका खाता वापस ला सकता है।';
+
+  @override
   String get sangatTitle => 'संगत';
 
   @override

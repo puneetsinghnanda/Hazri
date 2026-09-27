@@ -1465,6 +1465,13 @@ class LPa extends L {
   String get verifyLater => 'ਇਹ ਬਾਅਦ ਵਿੱਚ ਕਰੋ';
 
   @override
+  String get verifyDoneTitle => 'ਤੁਹਾਡੀ ਈਮੇਲ ਪੱਕੀ ਹੋ ਗਈ';
+
+  @override
+  String get verifyDoneBody =>
+      'ਨਵੇਂ ਫ਼ੋਨ ਉੱਤੇ ਇਹੀ ਪਤਾ ਤੁਹਾਡਾ ਖਾਤਾ ਵਾਪਸ ਲਿਆ ਸਕਦਾ ਹੈ।';
+
+  @override
   String get sangatTitle => 'ਸੰਗਤ';
 
   @override

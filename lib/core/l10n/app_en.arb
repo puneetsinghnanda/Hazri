@@ -828,6 +828,8 @@
   "verifyChangeIt": "Change it and we will send a new link",
   "verifyUntilThen": "Until this is done your groups and goals live on this phone only, and cannot be brought back if you change phone.",
   "verifyLater": "Do this later",
+  "verifyDoneTitle": "Your email is confirmed",
+  "verifyDoneBody": "This address can bring your account back on a new phone.",
   "@verifySentTo": {
     "placeholders": {
       "email": {

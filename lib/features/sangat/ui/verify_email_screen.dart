@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/router.dart';
+
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
@@ -87,8 +89,9 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       // Firebase wants back alongside it.
       final account = ref.read(sangatAccountProvider).value;
       final remembered = ref.read(pendingVerificationProvider).address ?? '';
-      final address =
-          remembered.isNotEmpty ? remembered : (account?.email ?? '').trim();
+      final address = remembered.isNotEmpty
+          ? remembered
+          : (account?.email ?? '').trim();
 
       if (address.isEmpty) {
         // A link, and nothing to pair it with -- a second phone that never
@@ -122,7 +125,9 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       _problem = null;
     });
 
-    final outcome = await ref.read(accountRepositoryProvider).continueWithLink(
+    final outcome = await ref
+        .read(accountRepositoryProvider)
+        .continueWithLink(
           email: address ?? _address(account),
           link: _link.text,
         );
@@ -211,6 +216,20 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     });
   }
 
+  /// Leaves the screen, whichever way it was arrived at.
+  ///
+  /// A tapped link lands here by a router redirect, so there is nothing
+  /// underneath to pop back to: the back button did nothing, the system back
+  /// gesture did nothing, and the only way out anybody found was killing the
+  /// app. Popping is right when this was pushed from the account screen and
+  /// wrong when it was not, so ask rather than assume.
+  void _leave() {
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go(Routes.account);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,160 +238,217 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     final account = ref.watch(sangatAccountProvider).value;
     final address = _address(account);
 
-    return Scaffold(
-      backgroundColor: c.bg,
-      body: SafeArea(
-        child: PhoneWidth(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(20, 14, 20, 32),
-            children: [
-              Row(
-                children: [
-                  CardIconButton(
-                    icon: HazriIconData.chevronLeft,
-                    tooltip: l.actionBack,
-                    onPressed: () => context.pop(),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(l.verifyTitle,
-                        style: HazriText.display22.copyWith(color: c.ink)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 22),
-              Center(
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration:
-                      BoxDecoration(color: c.kesriSoft, shape: BoxShape.circle),
-                  alignment: Alignment.center,
-                  child: AppIcon(HazriIconData.mail, size: 38, color: c.kesriInk),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                _sent ? l.verifyCheckInbox : l.accountVerifyTitle,
-                textAlign: TextAlign.center,
-                style: HazriText.display22.copyWith(color: c.ink),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _sent && address.isNotEmpty
-                    ? l.verifySentTo(address)
-                    : l.accountVerifyBody,
-                textAlign: TextAlign.center,
-                style: HazriText.body.copyWith(color: c.ink2),
-              ),
-              const SizedBox(height: 18),
-              if (_editing)
-                SangatField(
-                  label: l.sangatFieldEmail,
-                  controller: _email,
-                  autofocus: true,
-                  keyboardType: TextInputType.emailAddress,
-                )
-              else
-                HazriCard(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-                  onTap: () {
-                    setState(() {
-                      _email.text = account?.email ?? '';
-                      _editing = true;
-                      _error = null;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      AppIcon(HazriIconData.mail, size: 19, color: c.teal),
-                      const SizedBox(width: 11),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(l.verifyWrongAddress,
-                                style: HazriText.captionStrong.copyWith(color: c.ink)),
-                            Text(
-                              address.isEmpty
-                                  ? l.verifyChangeIt
-                                  : '$address — ${l.verifyChangeIt}',
-                              style: HazriText.caption.copyWith(color: c.muted),
-                            ),
-                          ],
-                        ),
-                      ),
-                      AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
-                    ],
-                  ),
-                ),
-              if (_error != null) ...[
-                const SizedBox(height: 14),
-                Text(_error!, style: HazriText.bodySmall.copyWith(color: c.kesriInk)),
-              ],
-              if (_sent && _error == null) ...[
-                const SizedBox(height: 14),
-                Center(
-                  child: Text(l.verifySent,
-                      style: HazriText.bodySmall.copyWith(color: c.sage)),
-                ),
-              ],
-              const SizedBox(height: 16),
-              PrimaryButton(
-                label: _sent ? l.verifySendAgain : l.verifySend,
-                secondary: _sent,
-                onPressed: _busy ? null : () => _send(account),
-              ),
-              if (_sent && !_confirmed) ...[
-                const SizedBox(height: 18),
-                SangatField(
-                  label: l.restorePasteLabel,
-                  controller: _link,
-                  hint: l.restorePasteHint,
-                  keyboardType: TextInputType.url,
-                ),
-                const SizedBox(height: 14),
-                PrimaryButton(
-                  label: l.sangatContinue,
-                  onPressed: _busy ? null : () => _confirm(account),
-                ),
-              ],
-              if (_problem != null) ...[
-                const SizedBox(height: 18),
-                LinkProblemCard(problem: _problem!),
-              ],
-              if (_confirmed) ...[
-                const SizedBox(height: 16),
-                Center(
-                  child: Text(l.verifyConfirmed,
-                      style: HazriText.bodyStrong.copyWith(color: c.sage)),
-                ),
-              ],
-              const SizedBox(height: 16),
-              HazriCard(
-                colour: c.card2,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    // Confirmed is confirmed, whether it happened a moment ago on this screen
+    // or on another phone entirely.
+    final done = _confirmed || (account?.emailVerified ?? false);
+
+    return PopScope(
+      canPop: context.canPop(),
+      // Fires when there was nothing to pop. Without it, Android's back
+      // gesture on a screen reached by a redirect does nothing at all.
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) context.go(Routes.account);
+      },
+      child: Scaffold(
+        backgroundColor: c.bg,
+        body: SafeArea(
+          child: PhoneWidth(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 14, 20, 32),
+              children: [
+                Row(
                   children: [
-                    AppIcon(HazriIconData.alert, size: 18, color: c.kesriInk),
+                    CardIconButton(
+                      icon: HazriIconData.chevronLeft,
+                      tooltip: l.actionBack,
+                      onPressed: _leave,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: Text(l.verifyUntilThen,
-                          style: HazriText.caption.copyWith(color: c.ink2)),
+                      child: Text(
+                        l.verifyTitle,
+                        style: HazriText.display22.copyWith(color: c.ink),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: TextButton(
-                  onPressed: () => context.pop(),
-                  child: Text(l.verifyLater,
-                      style: HazriText.captionStrong.copyWith(color: c.muted)),
+                const SizedBox(height: 22),
+                Center(
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: c.kesriSoft,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: AppIcon(
+                      HazriIconData.mail,
+                      size: 38,
+                      color: c.kesriInk,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                Text(
+                  done
+                      ? l.verifyDoneTitle
+                      : (_sent ? l.verifyCheckInbox : l.accountVerifyTitle),
+                  textAlign: TextAlign.center,
+                  style: HazriText.display22.copyWith(color: c.ink),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  done
+                      ? l.verifyDoneBody
+                      : (_sent && address.isNotEmpty
+                            ? l.verifySentTo(address)
+                            : l.accountVerifyBody),
+                  textAlign: TextAlign.center,
+                  style: HazriText.body.copyWith(color: c.ink2),
+                ),
+                const SizedBox(height: 18),
+                // Everything from here to the way out is about getting an
+                // address confirmed. Once it is, none of it has anything left
+                // to say -- and a screen that announces success while still
+                // offering to send the link, and still warning that nothing is
+                // recoverable, is telling somebody two opposite things at once.
+                if (!done) ...[
+                  if (_editing)
+                    SangatField(
+                      label: l.sangatFieldEmail,
+                      controller: _email,
+                      autofocus: true,
+                      keyboardType: TextInputType.emailAddress,
+                    )
+                  else
+                    HazriCard(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 13,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _email.text = account?.email ?? '';
+                          _editing = true;
+                          _error = null;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          AppIcon(HazriIconData.mail, size: 19, color: c.teal),
+                          const SizedBox(width: 11),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l.verifyWrongAddress,
+                                  style: HazriText.captionStrong.copyWith(
+                                    color: c.ink,
+                                  ),
+                                ),
+                                Text(
+                                  address.isEmpty
+                                      ? l.verifyChangeIt
+                                      : '$address — ${l.verifyChangeIt}',
+                                  style: HazriText.caption.copyWith(
+                                    color: c.muted,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          AppIcon(
+                            HazriIconData.chevronRight,
+                            size: 18,
+                            color: c.muted,
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (_error != null) ...[
+                    const SizedBox(height: 14),
+                    Text(
+                      _error!,
+                      style: HazriText.bodySmall.copyWith(color: c.kesriInk),
+                    ),
+                  ],
+                  if (_sent && _error == null) ...[
+                    const SizedBox(height: 14),
+                    Center(
+                      child: Text(
+                        l.verifySent,
+                        style: HazriText.bodySmall.copyWith(color: c.sage),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  PrimaryButton(
+                    label: _sent ? l.verifySendAgain : l.verifySend,
+                    secondary: _sent,
+                    onPressed: _busy ? null : () => _send(account),
+                  ),
+                  if (_sent) ...[
+                    const SizedBox(height: 18),
+                    SangatField(
+                      label: l.restorePasteLabel,
+                      controller: _link,
+                      hint: l.restorePasteHint,
+                      keyboardType: TextInputType.url,
+                    ),
+                    const SizedBox(height: 14),
+                    PrimaryButton(
+                      label: l.sangatContinue,
+                      onPressed: _busy ? null : () => _confirm(account),
+                    ),
+                  ],
+                  if (_problem != null) ...[
+                    const SizedBox(height: 18),
+                    LinkProblemCard(problem: _problem!),
+                  ],
+                  const SizedBox(height: 16),
+                  HazriCard(
+                    colour: c.card2,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 12,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppIcon(
+                          HazriIconData.alert,
+                          size: 18,
+                          color: c.kesriInk,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            l.verifyUntilThen,
+                            style: HazriText.caption.copyWith(color: c.ink2),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: TextButton(
+                      onPressed: _leave,
+                      child: Text(
+                        l.verifyLater,
+                        style: HazriText.captionStrong.copyWith(color: c.muted),
+                      ),
+                    ),
+                  ),
+                ],
+                if (done) ...[
+                  const SizedBox(height: 24),
+                  PrimaryButton(label: l.actionDone, onPressed: _leave),
+                ],
+              ],
+            ),
           ),
         ),
       ),

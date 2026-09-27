@@ -105,4 +105,43 @@ void main() {
     await pump(tester, arrivedWith: null);
     expect(repo.linksTried, isEmpty);
   });
+
+  group('once it is confirmed, the screen stops asking', () {
+    // A reader saw "Your email is confirmed" sitting above a Send the link
+    // button and a warning that nothing was recoverable until this was done.
+    // Three statements, two of them false, all on screen together. The
+    // widget tests could not see it because none of them looked at the
+    // screen after success -- they asserted the call was made and stopped.
+
+    testWidgets('nothing is left that says the job is unfinished',
+        (tester) async {
+      final l = await pump(tester);
+      await settle(tester);
+
+      expect(find.text(l.verifyDoneTitle), findsOneWidget);
+
+      for (final gone in <String>[
+        l.verifySend,
+        l.verifySendAgain,
+        l.verifyUntilThen,
+        l.verifyWrongAddress,
+        l.accountVerifyBody,
+        l.restorePasteLabel,
+      ]) {
+        expect(find.text(gone), findsNothing,
+            reason: 'still on screen after success: "$gone"');
+      }
+    });
+
+    testWidgets('and there is a way out', (tester) async {
+      // Reached by a redirect from a tapped link, so there is nothing to pop
+      // back to. Before this the back button did nothing, the system back
+      // gesture did nothing, and the only way out anybody found was killing
+      // the app.
+      final l = await pump(tester);
+      await settle(tester);
+
+      expect(find.text(l.actionDone), findsOneWidget);
+    });
+  });
 }
