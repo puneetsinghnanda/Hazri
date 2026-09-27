@@ -95,151 +95,166 @@ sangat with other people, and to get your diary back on a new phone.
    used to be told at the exact moment they had asked three times because
    the mail had not arrived.
 
-## 1.4 The behaviour
+## 1.4 The model
+
+Rewritten 2026-09-27, after a day in which the app told one reader that their
+email was confirmed and, one tap later, that it was not.
+
+That was not a bug that escaped a test. It was a design in which **three
+different things were all called "verified"** and each screen was free to
+pick one:
+
+| Called "verified" | Set by | Lives | Who read it |
+|---|---|---|---|
+| `_confirmed` | a repository call returning success | one screen's memory | the verify screen |
+| `user.emailVerified` | Firebase's own bookkeeping | the auth token | the account screen |
+| a linked `password` provider | `linkWithCredential` | Firebase, server side | nothing, until today |
+
+Three answers to one question. Whichever one was fixed, another was still
+wrong, and every fix looked right in isolation. **Patching cannot repair
+this. The disagreement has to become impossible.**
+
+### 1.4.1 Three states, and nothing else
+
+An account is in exactly one of these. Not a set of booleans — one value.
+
+| State | What it means | What a reader can do |
+|---|---|---|
+| **None** | No auth user | Read, listen, keep a diary. Everything except the sangat |
+| **Local** | An anonymous auth user | All of the above, plus the sangat, **on this phone only**. Lose the phone and it is gone |
+| **Recoverable** | An auth user with an email credential linked | All of the above, and a link sent to that address brings it back on any phone |
+
+**A15 (was A18).** *Recoverable* means **an email credential is linked to
+this uid** — not that Firebase set `emailVerified`. Linking is what makes
+`signInWithCredential` on a new phone return *this* account instead of
+minting an empty one, so linking is the thing the promise in A5 rests on.
+The link cannot be followed without receiving the mail, so following it is
+the proof. `emailVerified` is separate bookkeeping and was observed staying
+false on an account whose credential was linked.
+
+### 1.4.2 The rules that make disagreement impossible
+
+**R1. One source.** The Firebase Auth user decides the state. Firestore
+holds name, city, the address to display and the group list — **never** the
+state. A phone cannot write itself into Recoverable.
+
+**R2. One mapper.** A single pure function turns `(User?, Map?)` into the
+account. It is the only place an account is constructed, it takes no other
+inputs, and it is tested directly against each shape a real user takes.
+
+**R3. No screen may hold verification state.** No `_confirmed`, no local
+boolean, nothing a widget sets on itself. A screen renders the state it is
+given. This is the rule that would have prevented every instance of this
+bug, and it is the one the old design broke first.
+
+**R4. An operation reports; it does not assert.** `continueWithLink` returns
+what happened — linked, signed in, refused, and with which code. It never
+returns "you are now verified". The state changes because the user changed,
+and the stream says so.
+
+**R5. Every mutation refreshes before it returns.** After linking, signing
+in or deleting, reload the user and let the stream re-publish. An operation
+that succeeds while the app still shows the old state is a bug in the
+operation, not in the screen.
+
+**R6. One stream, and it fires on a link.** `userChanges()`, because
+`authStateChanges()` does not report a linked credential — the plugin is
+explicit about this and the difference cost an evening.
+
+**R7. The state is visible.** The app can say what it currently believes and
+why: the state, the providers, and the outcome of the last operation. Not a
+debug bolt-on — the thing that turns "it did nothing" into a sentence. Three
+rounds were spent guessing at facts a single line on screen settles.
+
+### 1.4.3 The transitions, end to end
+
+Every way the state can change, and nothing else may change it.
+
+| From | Event | Call | To |
+|---|---|---|---|
+| None | Taps **Join the sangat**, confirms | `signInAnonymously` then write the profile | Local |
+| Local | Follows a link for an unused address | `linkWithCredential` | **Recoverable**, same uid, everything kept |
+| Local | Follows a link for an address that already has an account | refused: `credential-already-in-use` | Local — and the reader is **asked**, see A11. Never silently switched |
+| None | Follows a link on a new phone | `signInWithCredential` | Recoverable, the original uid |
+| Local or Recoverable | Deletes | memberships, profile, then the auth user | None |
+| Recoverable | Changes the address | re-verify; stays Recoverable on the old one until the new link is followed | Recoverable |
+
+Two of those rows are not built: the fork when the address is taken (A11),
+and changing a verified address (A12).
+
+### 1.4.4 Before the link is sent
+
+**A16.** **Typed is not verified**, and no surface may imply otherwise. An
+address sitting on the profile in state Local is a string; it recovers
+nothing. Every place the address appears shows the state beside it.
+
+**A17.** **The app should know whether an address already has an account —
+and cannot ask.** `fetchSignInMethodsForEmail` returns nothing for every
+address once Email Enumeration Protection is on, which is Firebase's default.
+So either a Cloud Function answers it with `getUserByEmail`, or the app
+stops implying it knows. **Open: D-A1.** Until one of those, entering an
+address that already has an account looks identical to entering a new one,
+which is B1 — the worst failure in this document.
+
+**A18.** The address a link was sent to is written down **before** it is
+sent, because a phone that is restoring has no account to read it from.
+
+### 1.4.5 What this deletes
+
+Not additions — removals. The design is smaller than what it replaces.
+
+- `_confirmed` on the verify screen, and every other screen-held flag
+- the `done = _confirmed || account.emailVerified` disjunction, which was two
+  sources being OR'd together and calling it agreement
+- any read of `user.emailVerified` outside the one mapper
+- the idea that an operation's return value describes the world
+
+### 1.4.6 What stays from before
 
 **A1.** The app never asks who somebody is before letting them read. No
-account is created at first run, at setup, or on opening any tab except
-Sangat.
+account at first run, at setup, or on any tab except Sangat.
 
-**A2.** An anonymous account is created at exactly one moment: the person taps
-**Join the sangat** (or opens an invite link) and confirms. Nowhere else.
+**A2.** An anonymous account is created at exactly one moment: the person
+taps **Join the sangat** and confirms.
 
-**A3.** At the moment the account is created, and not before, the app explains
-in one screen: this has no password; it lives on this phone; to keep it if the
-phone is lost, add an email. It offers **Add an email now** and **Later**.
-Later is a real answer and is remembered.
+**A3.** At that moment, and not before, one screen explains: this has no
+password, it lives on this phone, add an email to keep it. **Later** is a
+real answer and is remembered.
 
-**A4.** An email, once verified, is the only recovery key. It is stored on the
-user document, never shown to other members, and is not a login — it proves
-you are the same person, it does not let you sign in.
+**A4.** An email, once linked, is the only recovery key. It is never shown to
+other members and it is not a login.
 
-**A5.** **Recovery is possible on a new phone if and only if an email was
-verified.** The app must say that, at A3 and in Settings, in those terms.
-Anything softer is a promise it cannot keep.
+**A5.** **Recovery works if and only if the state is Recoverable**, and the
+app says so in those terms.
 
-**A6.** A member's display name is theirs to set, may be blank, and when blank
-they appear as "a member" everywhere — not as their uid, not as "Anonymous".
+**A6.** A display name may be blank, and a blank one reads as "a member" —
+never a uid, never "Anonymous".
 
-**A7.** Deleting the account deletes: memberships (first), the synced diary,
-the presence contributions that can be attributed, the profile, then the auth
-user. The diary **on the phone is untouched** and the screen says so.
+**A7.** Deleting removes memberships first, then the synced diary and
+attributable presence, then the profile, then the auth user. **The diary on
+the phone is untouched** and the screen says so.
 
-**A8.** Leaving the sangat entirely is not the same as deleting: memberships go
-and the account stays, so rejoining does not orphan anything.
+**A8.** Leaving the sangat is not deleting: memberships go, the account
+stays.
 
-**A9.** **An email that has been typed is not an email that has been
-verified**, and the app must never conflate the two. Until the link has been
-followed, the address is a string in Firestore that Firebase Auth has never
-heard of, and it will recover nothing. Every surface that shows the address
-shows its state beside it, and A5's promise is only ever made about a verified
-one.
+**A11.** An address that already has an account is a **fork the reader
+chooses**, not something the app does to them. Signing into it abandons
+whatever this phone has done since setup; that has to be said, not
+discovered.
 
-**A10.** **Restore never silently creates a second account.** Asking to
-restore an address that no account has must say so. It must not sign the
-person into a new, empty account that happens to carry the right email — which
-is exactly what Firebase does by default, and what the app does today.
+**A12.** The address can be changed only while signed in, and changing it
+re-verifies. An address nobody can reach any more is unrecoverable and there
+is no way back from it.
 
-**A11.** **Setting up again on a phone that already had an account strands the
-first one.** When `continueWithLink` falls through to `signInWithCredential`
-because the address is already in use, the anonymous uid this phone just made
-is abandoned along with its `users/{uid}` document. The app must either move
-that document's contents onto the restored account or say plainly that the few
-minutes' work on this phone is being dropped. Writing an orphan and saying
-nothing is not one of the options.
+**A13.** A failed link says which thing failed — expired, already used,
+minted for a different address, or not one of ours — and a throttle is never
+dressed as being offline.
 
-**A12.** **The address can be changed while signed in, and that is the only
-moment it can be.** An address nobody can reach any more is unrecoverable, so
-changing it must be reachable from Settings and must re-verify.
+**A14.** Restore brings back the account, not the phone: name, city, address
+and memberships. The diary only if sync was on; goals, ticks, bani progress,
+reminders and simran history never. The restore screen says so **before** the
+link is sent.
 
-**A13.** **A link that fails says which of the three things went wrong**:
-expired or already used, the address does not match the link, or the link is
-not a Hazri link at all (usually truncated by a mail client). Rate limiting is
-its own message and is never dressed as being offline.
-
-**A18.** **Verified means the email credential is linked, not that Firebase
-set a flag.**
-
-What A5 promises is recovery: that on a new phone, signing in with a link
-for that address returns *this* account rather than minting an empty one.
-That is true exactly when an email credential is linked to this uid, which
-is precisely what following the link accomplishes — and the link cannot be
-followed without receiving the mail, so the link is the proof.
-
-`user.emailVerified` is Firebase's separate bookkeeping and **was observed
-staying false on a phone where the credential had been linked**, so the
-account screen called an account unrecoverable that was in fact recoverable.
-One rule, `_recoverable`, now answers it: the flag *or* a linked `password`
-provider carrying an address. Nothing below that helper reads the raw flag,
-and `test/features/recoverable_test.dart` holds that line.
-
-The deeper fault was two screens measuring different things. The verify
-screen said confirmed because the **call had succeeded**; the account screen
-read the flag. Neither was the fact the app promises.
-
-**A18a.** **Verified has one source, and that source is the auth user.** `emailVerified` is read from Firebase Auth, never from
-Firestore, so no phone can mark itself verified by writing a document — and
-it must be read from a stream that fires when a credential is **linked**,
-because confirming an email is a link and not a sign-in. Every screen shows
-the same answer or the app is lying on one of them.
-
-Broken until 2026-09-27: the account was watched on `authStateChanges()`,
-which notifies only about sign-in and sign-out. The `User` captured in it
-kept `emailVerified: false` for the life of the app, so the verify screen
-said confirmed (it held the fresh user the call returned) and the account
-screen said Not verified one tap later. `userChanges()` is the stream that
-reports a link, and `test/features/account_stream_test.dart` holds it — a
-source test, because a fake repository reports whatever it is told and
-agrees with every screen while the real one disagrees with itself.
-
-**A16.** **A tapped link finishes the job; a pasted one still works.**
-Android hands the link to the app, `IncomingLink` reads it, the router sends
-it to the screen that can use it, and the screen completes without asking
-anybody to copy anything. The paste box stays for a link opened on a desktop,
-mangled by a mail client, or arriving on a phone whose manufacturer
-mishandles App Link verification — removing it would trade one dead end for
-another.
-
-Four things have to agree or the link silently opens a browser instead: the
-`autoVerify` intent-filter, `assetlinks.json` on the host, the certificate
-the installed APK was signed with, and that file actually being deployed.
-Three are held by tests. The deploy is a hand-run and cannot be.
-
-**A17.** **The address a link was sent to is written down before it is
-sent.** `signInWithEmailLink` needs the address back alongside the link, and
-a phone that is *restoring* has no account to read it from — that being the
-point of restoring. Written before the send rather than after, so a crash
-between the two still leaves the link in the inbox usable, and forgotten the
-moment it is used so the next link is never tried against a stale address.
-
-**A15.** **The Email/Password provider is enabled, and that is not a
-choice.** Firebase's email link is a *mode* of that provider rather than a
-provider of its own: the console's two switches move together, so
-`sendSignInLinkToEmail` cannot work unless the provider is on. Until
-2026-09-27 the project had **only Anonymous**, so every attempt to verify an
-address failed with `operation-not-allowed` and the app reported it as
-though the phone had no signal.
-
-The consequence is worth stating plainly rather than glossing. Rule 4's *no
-password, ever* used to be guaranteed twice — the app never asked for one,
-and the project had nothing that could accept one. **The second guarantee is
-gone.** What remains true, and is what the rule actually promises a reader:
-no Hazri account has a password, because the app only ever builds an
-email-link credential; there is no sign-in screen; and nothing in `lib/`
-calls a password API. The residual is that somebody holding the API key out
-of the APK could create a password account of their own in the project —
-which is no more than they can already do with `signInAnonymously`, and
-`firestore.rules` governs what such an account may touch either way.
-
-Because the promise now lives entirely in source, it is tested there:
-`test/features/no_password_test.dart` fails if any password API appears in
-`lib/`, and has been watched failing.
-
-**A14.** **Restore brings back the account, not the phone.** Name, city,
-verified address and group memberships come back. The diary comes back only if
-diary sync was on (Y-4). Goals, ticks, bani progress, reminders and simran
-history live in `user.db` and do not come back at all. The restore screen says
-this **before** the link is sent, not after, because somebody who expects
-their diary and gets an empty one will read a correct restore as a failure.
 
 ## 1.5 Scenarios
 
@@ -521,6 +536,27 @@ worth doing and does not solve this.
 
 ---
 
+## 1.7a What has to change in the code
+
+The design above is smaller than what it replaces, so this is mostly
+deletion. Written down before any of it is done, because every round so far
+went the other way.
+
+| # | Change | Why |
+|---|---|---|
+| 1 | One sealed `AccountState` — `NoAccount`, `LocalAccount`, `RecoverableAccount` | R1: a value, not a handful of booleans that can disagree |
+| 2 | One pure mapper `accountFrom(User?, Map?)`, the only constructor | R2. Tested directly against each real user shape, no fake in the way |
+| 3 | Delete `_confirmed` and every screen-held flag; screens render the state | R3. This alone closes the class |
+| 4 | Operations return what happened, with the Firebase code; never a claim about state | R4 |
+| 5 | Every mutation reloads and re-publishes before returning | R5 |
+| 6 | `userChanges()` stays; assert it | R6, already done |
+| 7 | A state line the reader can read out: state, providers, last outcome | R7, half done |
+| 8 | The fork when an address is taken (A11) | Not built; today it silently signs in |
+| 9 | `lookupAccountByEmail` Cloud Function, or stop implying we know (A17) | **D-A1 below.** This is B1 |
+
+Nothing here needs new screens. Items 1 to 7 are a rewrite of one
+repository, one model and two screens, and every one of them removes code.
+
 ## 1.8 Backend
 
 - `users/{uid}`: name, city, email, verified, createdAt. The client may not
@@ -546,6 +582,7 @@ worth doing and does not solve this.
 | A-4 | Which sender: Firebase's `firebaseapp.com`, or our own domain (§1.7 option 2) | **Closed 2026-09-26: Firebase's**, until a domain is bought for `assetlinks.json`; then both move together. When a sender is bought it is a transactional service (Brevo, or Zoho's ZeptoMail), **never a mailbox's SMTP** — Zoho Mail's own limits page caps external sending at 50–500/hour on reputation and says bulk sending is "not permitted under business usage policy", so one throttle would take out the inbox and the sending together |
 | A-5 | B6/A11 — carry the orphaned document's contents onto the restored account, or say it is being dropped | Say it is being dropped. Merging two profiles is a lot of machinery for a few minutes of one phone's work, and a wrong merge is worse than an honest sentence |
 | A-6 | Does restore promise anything about the diary when sync is off (A14, Y-4)? | No, and it says so before the link is sent. This is settled by Y-4 in `09-diary.md`; it must not be answered twice |
+| D-A1 | An address that already has an account: answer it with a Cloud Function (`getUserByEmail`), or stop implying the app can tell? | **Needs a decision.** Client-side is impossible — Email Enumeration Protection returns nothing for every address. Without the Function, B1 stays the ordinary path and somebody who believes recovery is set up finds out on the day they lose the phone. With it, one callable, one read, and the honest answer |
 | A-7 | `kInviteBase` is still a Vercel path that serves nothing. Move it to the same host as `/verify`? | **Closed 2026-09-26: yes.** Both now derive from `kSiteBase` in `lib/core/backend/backend.dart`, and a test holds that they share a host. Vercel is out of the project entirely |
 
 ## 1.10 Acceptance
