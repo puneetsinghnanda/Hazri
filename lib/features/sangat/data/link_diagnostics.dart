@@ -28,10 +28,22 @@ class LinkDiagnostics {
   final SharedPreferences _prefs;
   bool _recordedThisRun = false;
 
-  /// The first route of this app start, and only the first — later
-  /// navigation is the reader moving around, which is not the question.
-  void recordFirst(String route) {
-    if (_recordedThisRun) return;
+  /// Records a route worth remembering.
+  ///
+  /// The first version recorded only the first route of each app start,
+  /// which turned out to report the wrong thing entirely: the activity is
+  /// `singleTask`, so a tapped link arrives at an app that is **already
+  /// running**, and the first route of that run is whatever the launcher
+  /// icon opened. A reader checking after a failed tap saw `Opened with: /`,
+  /// which is true and useless.
+  ///
+  /// So a route that came from outside the app always wins, however late it
+  /// arrives -- those are the ones with a scheme, because Android hands over
+  /// a whole URL -- and the first route of the run is kept only until one
+  /// does.
+  void record(String route) {
+    final external = route.startsWith('http') || route.contains('://');
+    if (!external && _recordedThisRun) return;
     _recordedThisRun = true;
     _prefs.setString(_key, route);
   }

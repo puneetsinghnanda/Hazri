@@ -232,7 +232,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       // the intro would swallow exactly the link it was opened for.
       // Recorded before anything acts on it, so the record survives a
       // redirect that goes wrong as well as one that goes right.
-      ref.read(linkDiagnosticsProvider).recordFirst(state.uri.toString());
+      ref.read(linkDiagnosticsProvider).record(state.uri.toString());
 
       final incoming = IncomingLink.from(state.uri);
       switch (incoming) {
