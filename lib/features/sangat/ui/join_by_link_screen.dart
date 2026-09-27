@@ -19,7 +19,13 @@ import 'sangat_field.dart';
 /// have yet, so a link that cannot be tapped is still a link that can be
 /// pasted — and the code at the end of it is all this needs.
 class JoinByLinkScreen extends ConsumerStatefulWidget {
-  const JoinByLinkScreen({super.key});
+  const JoinByLinkScreen({super.key, this.arrivedWith});
+
+  /// A group id the app was *opened* with, from a tapped invite. The box is
+  /// filled in so the reader can see what they are joining, and left for them
+  /// to confirm rather than joining a sangat the instant a link is tapped --
+  /// joining is a thing you agree to, not a thing that happens to you.
+  final String? arrivedWith;
 
   @override
   ConsumerState<JoinByLinkScreen> createState() => _JoinByLinkScreenState();
@@ -29,6 +35,13 @@ class _JoinByLinkScreenState extends ConsumerState<JoinByLinkScreen> {
   final _link = TextEditingController();
   bool _busy = false;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    final code = widget.arrivedWith;
+    if (code != null && code.isNotEmpty) _link.text = code;
+  }
 
   @override
   void dispose() {

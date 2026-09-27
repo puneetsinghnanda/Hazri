@@ -51,6 +51,13 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- Without this Flutter never hands an incoming link to the
+                 router, so the App Link below would open the app on its
+                 usual first screen and drop the link it was opened for. -->
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
             <!-- Deep links from reminder notifications, e.g.
                  hazri://reader/japji-sahib?autoplay=1 -->
             <intent-filter>
@@ -58,6 +65,35 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="hazri" />
+            </intent-filter>
+
+            <!-- Android App Links: what lets a verification link be tapped
+                 rather than copied out of a browser's address bar.
+
+                 autoVerify makes Android fetch
+                 https://<host>/.well-known/assetlinks.json at install time
+                 and check it names this package and the certificate the
+                 installed APK was signed with. All three have to agree, and
+                 any disagreement fails in silence: the link opens a browser,
+                 exactly as it did before, with nothing said anywhere.
+
+                 Both hosts, because they are one Firebase Hosting site under
+                 two names and a Firebase sign-in link has arrived on each of
+                 them at different times. One deploy serves assetlinks.json
+                 on both.
+
+                 No path restriction on purpose. Firebase moved its sign-in
+                 links off Dynamic Links onto a Hosting domain in August 2025
+                 and the path changed with it, so anything keyed to a path is
+                 a thing that breaks quietly the next time. IncomingLink
+                 reads the URL and decides; a link that is neither a sign-in
+                 nor an invite simply opens the app. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="hazri-dfcc1.web.app" />
+                <data android:scheme="https" android:host="hazri-dfcc1.firebaseapp.com" />
             </intent-filter>
         </activity>
 

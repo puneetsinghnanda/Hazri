@@ -314,11 +314,22 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   completed end to end for the first time on 2026-09-27**, once the provider
   was on: mail sent by Firebase's own mailer, delivered, link followed,
   address confirmed.
-- **A verification or restore link is pasted, not tapped.** Android App Links
-  need an `assetlinks.json` carrying the release signing fingerprint, and
-  there is no keystore yet (Phase 3). Pasting the link needs nothing, so both
-  flows work today; the intent filter is the Phase 3 change, and the screens
-  do not otherwise move.
+- **A verification or restore link is tapped now, and can still be pasted.**
+  Built 2026-09-27 once there was a keystore to name. Four things have to
+  agree or Android silently opens a browser instead, and **all four fail in
+  exactly the same invisible way**: the `autoVerify` intent-filter, both
+  hosts declared (`web.app` and `firebaseapp.com` are one Hosting site under
+  two names), the SHA-256 in `public/.well-known/assetlinks.json` matching
+  the key CI signs with, and that file being **deployed**. Three are held by
+  tests; the deploy is a hand-run and cannot be.
+  `firebase.json` once carried Hosting's default `"**/.*"` ignore rule, which
+  reads as "no dotfiles" and quietly excluded `.well-known` — the deploy
+  succeeded, the file was never uploaded, and the only symptom was Google's
+  digitalassetlinks endpoint answering with no statements.
+  `test/android/firebase_hosting_test.dart` holds that now.
+  The link is read by `IncomingLink`, which keys on the `oobCode` and **not**
+  on the path: Firebase moved these links off Dynamic Links onto a Hosting
+  domain in August 2025 and the path went with them.
 - **An invite is a pasted link or the code off the end of it**, for the same
   reason. The group id *is* the invite, so `get` on a group document is open
   to anybody signed in who knows the id, and `list` is not -- that split is

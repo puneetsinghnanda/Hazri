@@ -6,6 +6,7 @@ import '../core/settings/settings_controller.dart';
 import '../features/about/ui/about_screen.dart';
 import '../features/about/ui/licences_screen.dart';
 import '../features/about/ui/privacy_screen.dart';
+import '../features/sangat/domain/incoming_link.dart';
 import '../features/sangat/ui/account_screen.dart';
 import '../features/sangat/ui/create_group_screen.dart';
 import '../features/sangat/ui/group_goal_screen.dart';
@@ -189,7 +190,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),
       GoRoute(path: Routes.sangatJoin, builder: (_, _) => const JoinSangatScreen()),
       GoRoute(path: Routes.createGroup, builder: (_, _) => const CreateGroupScreen()),
-      GoRoute(path: Routes.joinByLink, builder: (_, _) => const JoinByLinkScreen()),
+      GoRoute(
+        path: Routes.joinByLink,
+        builder: (_, state) =>
+            JoinByLinkScreen(arrivedWith: state.uri.queryParameters['code']),
+      ),
       GoRoute(
         path: '/sangat/g/:id',
         builder: (_, state) => GroupScreen(groupId: state.pathParameters['id']!),
@@ -208,12 +213,32 @@ final routerProvider = Provider<GoRouter>((ref) {
             RestoreScreen(email: state.uri.queryParameters['email']),
       ),
       GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
-      GoRoute(path: Routes.verifyEmail, builder: (_, _) => const VerifyEmailScreen()),
+      GoRoute(
+        path: Routes.verifyEmail,
+        builder: (_, state) =>
+            VerifyEmailScreen(arrivedWith: state.uri.queryParameters['link']),
+      ),
       GoRoute(path: Routes.licences, builder: (_, _) => const LicencesScreen()),
       GoRoute(path: Routes.notifications, builder: (_, _) => const NotificationsScreen()),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
     ],
     redirect: (context, state) {
+      // A link Android handed us, before anything else decides where to go.
+      //
+      // Before the onboarding gate on purpose. The one moment a tapped link
+      // matters most is somebody restoring on a new phone, and that phone has
+      // not been set up -- so a gate that sends every unfinished install to
+      // the intro would swallow exactly the link it was opened for.
+      final incoming = IncomingLink.from(state.uri);
+      switch (incoming) {
+        case SignInLink(url: final url):
+          return '${Routes.verifyEmail}?link=${Uri.encodeQueryComponent(url)}';
+        case InviteLink(groupId: final id):
+          return '${Routes.joinByLink}?code=${Uri.encodeQueryComponent(id)}';
+        case NotOurLink():
+          break;
+      }
+
       final settings = ref.read(settingsProvider);
       final loc = state.matchedLocation;
       final inOnboarding = loc == Routes.intro || loc.startsWith('/setup');

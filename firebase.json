@@ -1,7 +1,10 @@
 {
   "hosting": {
     "public": "public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/node_modules/**"
+    ],
     "cleanUrls": true,
     "trailingSlash": false,
     "rewrites": [
@@ -14,13 +17,19 @@
       {
         "source": "**/*.html",
         "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, must-revalidate"
+          }
         ]
       },
       {
         "source": "/.well-known/assetlinks.json",
         "headers": [
-          { "key": "Content-Type", "value": "application/json" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
         ]
       }
     ]

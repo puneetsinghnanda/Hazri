@@ -9,6 +9,7 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/account_repository.dart';
+import '../data/pending_verification.dart';
 import '../domain/sangat_account.dart';
 import 'join_outcome_words.dart';
 import 'link_problem.dart';
@@ -31,7 +32,19 @@ import 'sangat_field.dart';
 ///   somebody be able to correct a typo at exactly this moment rather than
 ///   go back and start again.
 class VerifyEmailScreen extends ConsumerStatefulWidget {
-  const VerifyEmailScreen({super.key});
+  const VerifyEmailScreen({super.key, this.arrivedWith});
+
+  /// A sign-in link the app was *opened* with, rather than one somebody
+  /// typed. The router puts it here when Android hands over a tapped link
+  /// (`IncomingLink`), and the screen finishes the job on its own — nobody
+  /// copies a URL, which is the whole point of the exercise.
+  ///
+  /// Nullable because this screen is still reachable by hand, and the paste
+  /// box stays for a link that arrived on a desktop, in a mail client that
+  /// mangles the tap, or on a phone whose manufacturer mishandles App Link
+  /// verification. Removing the manual path would trade one dead end for
+  /// another.
+  final String? arrivedWith;
 
   @override
   ConsumerState<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
@@ -48,6 +61,20 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   bool _confirmed = false;
   String? _error;
   LinkProblem? _problem;
+
+  @override
+  void initState() {
+    super.initState();
+    final link = widget.arrivedWith;
+    if (link == null || link.isEmpty) return;
+    // Tapped, not typed. Fill the box so the reader can see what is being
+    // used, then finish without asking -- after the first frame, because the
+    // account this needs is read from a provider.
+    _link.text = link;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _confirm(ref.read(sangatAccountProvider).value);
+    });
+  }
 
   @override
   void dispose() {
@@ -77,6 +104,10 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
 
     switch (outcome) {
       case JoinedSangat():
+        // Used, so no longer pending. Leaving it behind would mean the next
+        // link tried against a stale address.
+        await ref.read(pendingVerificationProvider).forget();
+        if (!mounted) return;
         setState(() {
           _busy = false;
           _confirmed = true;
@@ -95,9 +126,18 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   }
 
   /// The address the link goes to: what is in the box while it is open,
-  /// otherwise what the account already holds.
-  String _address(SangatAccount? account) =>
-      _editing ? _email.text.trim() : (account?.email ?? '').trim();
+  /// otherwise what the account already holds -- and failing both, the
+  /// address written down just before the link was sent.
+  ///
+  /// That last fallback is what makes a tapped link work at all on a phone
+  /// with no account yet: Firebase wants the address back alongside the
+  /// link, and there is nothing to read it from.
+  String _address(SangatAccount? account) {
+    if (_editing) return _email.text.trim();
+    final onAccount = (account?.email ?? '').trim();
+    if (onAccount.isNotEmpty) return onAccount;
+    return (ref.read(pendingVerificationProvider).address ?? '').trim();
+  }
 
   Future<void> _send(SangatAccount? account) async {
     final l = L.of(context);
@@ -130,6 +170,10 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
         return;
       }
     }
+
+    // Written down before the send, not after: if the app is killed between
+    // the two, the link in the inbox still has an address to pair with.
+    await ref.read(pendingVerificationProvider).remember(email);
 
     final outcome = await repo.sendVerificationLink(email);
     if (!mounted) return;

@@ -156,6 +156,26 @@ expired or already used, the address does not match the link, or the link is
 not a Hazri link at all (usually truncated by a mail client). Rate limiting is
 its own message and is never dressed as being offline.
 
+**A16.** **A tapped link finishes the job; a pasted one still works.**
+Android hands the link to the app, `IncomingLink` reads it, the router sends
+it to the screen that can use it, and the screen completes without asking
+anybody to copy anything. The paste box stays for a link opened on a desktop,
+mangled by a mail client, or arriving on a phone whose manufacturer
+mishandles App Link verification — removing it would trade one dead end for
+another.
+
+Four things have to agree or the link silently opens a browser instead: the
+`autoVerify` intent-filter, `assetlinks.json` on the host, the certificate
+the installed APK was signed with, and that file actually being deployed.
+Three are held by tests. The deploy is a hand-run and cannot be.
+
+**A17.** **The address a link was sent to is written down before it is
+sent.** `signInWithEmailLink` needs the address back alongside the link, and
+a phone that is *restoring* has no account to read it from — that being the
+point of restoring. Written before the send rather than after, so a crash
+between the two still leaves the link in the inbox usable, and forgotten the
+moment it is used so the next link is never tried against a stale address.
+
 **A15.** **The Email/Password provider is enabled, and that is not a
 choice.** Firebase's email link is a *mode* of that provider rather than a
 provider of its own: the console's two switches move together, so

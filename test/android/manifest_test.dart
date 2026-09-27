@@ -134,4 +134,51 @@ void main() {
       expect(offences, isEmpty, reason: 'a credential file is in git: $offences');
     });
   });
+
+  group('App Links, so a verification link can be tapped', () {
+    // Four things have to agree before Android will open the app on a link:
+    // this filter, assetlinks.json on the host, the certificate the APK was
+    // signed with, and the file actually being deployed. Any disagreement
+    // fails in complete silence -- the link opens a browser, exactly as it
+    // did before, with nothing said anywhere. Three of the four are checked
+    // by tests; the deploy is a hand-run and cannot be.
+
+    final xml = File('android/app/src/main/AndroidManifest.xml')
+        .readAsStringSync();
+
+    test('the filter is there and verifies itself', () {
+      expect(xml, contains('android:autoVerify="true"'),
+          reason: 'without autoVerify Android never fetches assetlinks.json, '
+              'so the link is never associated with this app');
+    });
+
+    test('both Firebase hosts are declared', () {
+      // One Hosting site under two names. A Firebase sign-in link has
+      // arrived on each of them at different points in this project, and
+      // declaring only one leaves the other opening a browser.
+      for (final host in [
+        'hazri-dfcc1.web.app',
+        'hazri-dfcc1.firebaseapp.com',
+      ]) {
+        expect(xml, contains('android:host="$host"'), reason: 'missing $host');
+      }
+    });
+
+    test('Flutter is told to hand the link to the router', () {
+      // Without this the intent arrives, the app opens on its usual first
+      // screen, and the link it was opened for is dropped.
+      expect(xml, contains('flutter_deeplinking_enabled'));
+    });
+
+    test('the filter is not narrowed to a path', () {
+      // Firebase moved its sign-in links from Dynamic Links onto a Hosting
+      // domain in August 2025 and the path changed with it. Anything keyed
+      // to a path is a thing that breaks quietly the next time they move it,
+      // so IncomingLink reads the URL instead.
+      final start = xml.indexOf('android:autoVerify="true"');
+      final filter = xml.substring(start, xml.indexOf('</intent-filter>', start));
+      expect(filter, isNot(contains('android:path')),
+          reason: 'no pathPrefix, pathPattern or path on the App Link filter');
+    });
+  });
 }
