@@ -156,11 +156,24 @@ jobs:
         # is the one that has to be in public/.well-known/assetlinks.json, and
         # a mismatch there fails App Link verification silently -- the link
         # just opens a browser and nobody is told why.
+        #
+        # Written twice. The first version globbed
+        # "$ANDROID_HOME"/build-tools/*/apksigner, which matches every
+        # build-tools version the runner has: the first path became the
+        # command and the rest became its arguments, so it answered
+        # "Unsupported command" -- and `|| true` swallowed that, leaving a
+        # green step that printed nothing. A step that cannot fail cannot
+        # report. Pick one binary, the newest, and let a failure be a failure.
         run: |
           set -euo pipefail
-          "$ANDROID_HOME"/build-tools/*/apksigner verify --print-certs \
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          echo "Using $APKSIGNER"
+          "$APKSIGNER" verify --print-certs \
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
-            | grep -i 'SHA-256 digest' || true
+            | tee /tmp/certs.txt
+          # No `|| true`: no fingerprint means assetlinks.json cannot be
+          # written, which is worth failing the build over.
+          grep -i 'SHA-256 digest' /tmp/certs.txt
 
       - name: The media notification's icons survived the build
         # A missing small icon makes startForeground() throw, which loses the
@@ -200,7 +213,7 @@ jobs:
             echo "No APK was built, so the existing release is left alone."
             exit 1
           fi
-          NOTES="Debug-signed arm64 test build of ${GITHUB_REF_NAME} at ${SHA}. Replaced on the next hand-started run of this branch."
+          NOTES="Release-signed arm64 test build of ${GITHUB_REF_NAME} at ${SHA}. Replaced on the next hand-started run of this branch. Signed with the project keystore since 2026-09-27, so this installs over the previous one; anything older than that needs an uninstall first."
           TITLE="Test APK - ${GITHUB_REF_NAME} - ${SHA}"
           # Create it if it is not there, otherwise retarget the one that is.
           # No delete: `upload --clobber` replaces the asset in place, so the
