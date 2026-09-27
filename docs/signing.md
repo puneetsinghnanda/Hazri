@@ -32,6 +32,19 @@ keytool -genkeypair -v \
   -storetype PKCS12
 ```
 
+**If you run this in Cloud Shell**, the file lands in the Cloud Shell home
+directory and you have to bring it down yourself:
+
+```bash
+cloudshell download hazri-release.jks
+```
+
+Cloud Shell's home persists between sessions, which makes it look like a
+safe place to leave it. It is not: **Google deletes the home directory after
+120 days of inactivity.** Four months of not opening Cloud Shell and the one
+irreplaceable file in this project is gone. Download it, back it up, and
+treat what stays there as a copy rather than the copy.
+
 **`keytool` writes the file into whatever directory you run it from**, so
 run it somewhere deliberate. The repository root is fine — the root
 `.gitignore` refuses `*.jks`, `*.keystore` and `key.properties` anywhere in
@@ -58,7 +71,11 @@ password goes somewhere separate from the file.
 GitHub secrets hold text, so the keystore travels as base64.
 
 ```bash
-# macOS / Linux
+# Cloud Shell / Linux
+base64 -w0 hazri-release.jks > hazri-release.jks.base64
+# and then: cloudshell download hazri-release.jks.base64
+
+# macOS
 base64 -i hazri-release.jks | tr -d '\n' > hazri-release.jks.base64
 
 # Windows PowerShell
@@ -66,7 +83,7 @@ base64 -i hazri-release.jks | tr -d '\n' > hazri-release.jks.base64
   Set-Content hazri-release.jks.base64 -NoNewline
 ```
 
-The `tr -d '\n'` matters: some `base64` builds wrap at 76 columns, and a
+The `-w0` and the `tr -d '\n'` do the same job, and it matters: some `base64` builds wrap at 76 columns, and a
 wrapped value pasted into a secret decodes to something that is not a
 keystore. The workflow runs `keytool -list` on the decoded file for exactly
 this reason, so a bad paste fails in one line instead of four screens of
