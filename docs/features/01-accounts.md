@@ -156,18 +156,28 @@ expired or already used, the address does not match the link, or the link is
 not a Hazri link at all (usually truncated by a mail client). Rate limiting is
 its own message and is never dressed as being offline.
 
-**A15.** **The project enables the email link and not the password.** The
-Email/Password provider carries two independent switches in the console.
-*Email link (passwordless sign-in)* must be on, because it is what
-`sendSignInLinkToEmail` needs. *Email/Password* must stay **off**: rule 4
-says no password and no sign-in screen ever, and leaving it off means the
-project cannot accept a password at all, rather than the app merely
-declining to ask for one. A rule the app cannot enforce, so it is written
-here and checked in the console.
+**A15.** **The Email/Password provider is enabled, and that is not a
+choice.** Firebase's email link is a *mode* of that provider rather than a
+provider of its own: the console's two switches move together, so
+`sendSignInLinkToEmail` cannot work unless the provider is on. Until
+2026-09-27 the project had **only Anonymous**, so every attempt to verify an
+address failed with `operation-not-allowed` and the app reported it as
+though the phone had no signal.
 
-Until 2026-09-27 neither was on — the project had only Anonymous — so every
-attempt to verify an address failed with `operation-not-allowed`, and the
-app reported it as though the phone had no signal.
+The consequence is worth stating plainly rather than glossing. Rule 4's *no
+password, ever* used to be guaranteed twice — the app never asked for one,
+and the project had nothing that could accept one. **The second guarantee is
+gone.** What remains true, and is what the rule actually promises a reader:
+no Hazri account has a password, because the app only ever builds an
+email-link credential; there is no sign-in screen; and nothing in `lib/`
+calls a password API. The residual is that somebody holding the API key out
+of the APK could create a password account of their own in the project —
+which is no more than they can already do with `signInAnonymously`, and
+`firestore.rules` governs what such an account may touch either way.
+
+Because the promise now lives entirely in source, it is tested there:
+`test/features/no_password_test.dart` fails if any password API appears in
+`lib/`, and has been watched failing.
 
 **A14.** **Restore brings back the account, not the phone.** Name, city,
 verified address and group memberships come back. The diary comes back only if
