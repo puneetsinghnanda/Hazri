@@ -1363,6 +1363,15 @@ class LPa extends L {
       'ਗੜਬੜ ਸਾਡੇ ਪਾਸੇ ਹੈ, ਤੁਹਾਡੇ ਪਾਸੇ ਨਹੀਂ। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ।';
 
   @override
+  String get sangatBusy =>
+      'ਬਹੁਤ ਵਾਰ ਕੋਸ਼ਿਸ਼ ਹੋ ਗਈ। ਕੁਝ ਮਿੰਟ ਰੁਕ ਕੇ ਨਵਾਂ ਲਿੰਕ ਮੰਗੋ — ਤੁਹਾਡਾ ਸਿਗਨਲ ਠੀਕ ਹੈ।';
+
+  @override
+  String sangatFailed(String code) {
+    return 'ਸਾਡੇ ਪਾਸੇ ਕੁਝ ਗੜਬੜ ਹੋ ਗਈ ($code)। ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਸੁਰੱਖਿਅਤ ਹੈ।';
+  }
+
+  @override
   String get accountTitle => 'ਤੁਹਾਡਾ ਖਾਤਾ';
 
   @override
@@ -1803,6 +1812,13 @@ class LPa extends L {
   @override
   String get linkWrongBody =>
       'ਇਹ ਉਹ ਲਿੰਕ ਨਹੀਂ ਲੱਗਦਾ ਜੋ ਅਸੀਂ ਭੇਜਿਆ ਸੀ। ਪੂਰਾ ਲਿੰਕ ਕਾਪੀ ਕਰੋ, ਸਵਾਲੀਆ ਨਿਸ਼ਾਨ ਤੋਂ ਬਾਅਦ ਵਾਲਾ ਹਿੱਸਾ ਵੀ।';
+
+  @override
+  String get linkMismatchTitle => 'ਕਿਸੇ ਹੋਰ ਪਤੇ ਲਈ ਬਣਿਆ';
+
+  @override
+  String get linkMismatchBody =>
+      'ਇਹ ਲਿੰਕ ਸਾਡਾ ਹੀ ਹੈ ਅਤੇ ਹਾਲੇ ਚੱਲਦਾ ਹੈ, ਪਰ ਇਹ ਉੱਪਰ ਲਿਖੇ ਪਤੇ ਤੋਂ ਵੱਖਰੇ ਪਤੇ ਉੱਤੇ ਭੇਜਿਆ ਗਿਆ ਸੀ। ਪਤਾ ਠੀਕ ਕਰੋ, ਜਾਂ ਉਸੇ ਪਤੇ ਉੱਤੇ ਆਇਆ ਲਿੰਕ ਪੇਸਟ ਕਰੋ — ਨਵਾਂ ਲਿੰਕ ਮੰਗਣ ਨਾਲ ਕੁਝ ਨਹੀਂ ਬਣੇਗਾ।';
 
   @override
   String get linkSendAnother => 'ਨਵਾਂ ਲਿੰਕ ਭੇਜੋ';

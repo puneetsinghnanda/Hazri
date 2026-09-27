@@ -67,16 +67,33 @@ sangat with other people, and to get your diary back on a new phone.
    answers correctly in all three languages. **Like `firestore.rules`, it is
    published by hand and no workflow does it**, so the next change to those
    pages is only half done until somebody deploys again.
-7. **Three different failures are reported as one.** `continueWithLink` maps
-   `invalid-action-code` *and* `invalid-email` to `LinkProblem.alreadyUsed`,
-   and `isSignInWithEmailLink == false` to `LinkProblem.wrongAddress`. A link
-   truncated by a mail client, a link already used, and an address that does
-   not match the one the link was minted for are three different things to do
-   next, and the reader is told the same thing for all of them.
-8. **`too-many-requests` is reported as `SangatUnavailable`**, which reads as
-   "check your internet". It means the opposite: the network is fine and
-   Firebase is throttling us. Somebody who has asked for the link three times
-   because it has not arrived is then sent to look at their wifi.
+7. ~~Three different failures are reported as one.~~ **Closed 2026-09-27**,
+   after it cost an afternoon: the first real verification attempt on a phone
+   answered "Could not reach the sangat — try again when you have signal"
+   with perfect signal, and the cause was a console setting. Every unmapped
+   auth code fell into `JoinFailed`, which two of the three screens rendered
+   with `sangatUnavailable`, and the Firebase code that named the cause was
+   discarded on the way.
+
+   The decision is now `outcomeForAuthCode`, a pure function on the code
+   alone; `wordsForOutcome` is one mapping shared by all three screens
+   instead of three copies that had already drifted; project
+   misconfiguration (`operation-not-allowed`, `unauthorized-continue-uri`,
+   `invalid-cert-hash` and the rest) is `SangatRefused`, and an unmapped code
+   reaches the reader **carrying its code** so the next unknown failure is
+   not as blind as this one.
+
+   One correction to what this file said before: `LinkProblem.wrongAddress`
+   was never mis-worded. Its copy already reads "Not a link from us — copy
+   the whole of it". Only the enum's *name* was misleading. The real
+   collapse was `invalid-email` sharing a branch with `invalid-action-code`,
+   which told somebody whose address did not match that the link was already
+   used; that is now `LinkProblem.addressMismatch`.
+8. ~~`too-many-requests` is reported as `SangatUnavailable`.~~ **Closed
+   2026-09-27.** It is `SangatBusy` now: "too many attempts, wait a few
+   minutes — your signal is fine", which is the opposite of what the reader
+   used to be told at the exact moment they had asked three times because
+   the mail had not arrived.
 
 ## 1.4 The behaviour
 
@@ -441,11 +458,16 @@ give an address, and it is the only recovery that works with the radio off.
   2026-09-27:** `/verify` is deployed and its no-code branch was seen in a
   browser. The branch that matters — a real link, carrying a real `oobCode` —
   has not been walked yet, and it is the one that proves B17 and B18 too.
-- Unit test: each of `expired-action-code`, `invalid-action-code`,
-  `invalid-email`, a non-Hazri string and `too-many-requests` produces its own
-  message (A13, B10-B14). Five errors, five messages, asserted separately.
-- Unit test: `sendVerificationLink` on `unauthorized-continue-uri` and
-  `operation-not-allowed` does not say "check your internet" (B17, B18).
+- ~~Unit test: each failure produces its own message.~~ **Done 2026-09-27**,
+  `test/features/join_outcome_words_test.dart`. Not as "the mapping returns
+  the right enum", which is a tautology — the rule it holds is **two causes
+  never produce the same sentence**, checked across all three languages,
+  which is the property that was actually violated. `l10n_test` cannot see
+  this: it checks that keys exist, not that their values differ.
+  **Both halves were watched failing** before being restored — collapsing
+  `JoinFailed` back into `sangatUnavailable` fails it four times, printing
+  the sentence the phone showed; pointing `invalid-email` back at
+  `alreadyUsed` fails the link half.
 - Widget test: the restore screen states what does and does not come back
   **before** the link is sent (A14).
 - Console check, written down with a date: email link sign-in is enabled, the

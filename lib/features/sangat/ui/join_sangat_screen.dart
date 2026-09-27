@@ -107,10 +107,15 @@ class _JoinSangatScreenState extends ConsumerState<JoinSangatScreen> {
           _busy = false;
           _error = l.sangatRefused;
         });
-      case JoinFailed():
+      case SangatBusy():
         setState(() {
           _busy = false;
-          _error = l.sangatUnavailable;
+          _error = l.sangatBusy;
+        });
+      case JoinFailed(message: final code):
+        setState(() {
+          _busy = false;
+          _error = l.sangatFailed(code);
         });
     }
   }

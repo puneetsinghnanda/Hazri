@@ -784,6 +784,15 @@
   "sangatEmailInUse": "This email already has a Hazri account",
   "sangatJoined": "You are in the sangat",
   "sangatRefused": "Something is wrong at our end, not yours. Your paath is safe on this phone.",
+  "sangatBusy": "Too many attempts. Wait a few minutes and ask for another link — your signal is fine.",
+  "sangatFailed": "Something went wrong at our end ({code}). Your paath is safe on this phone.",
+  "@sangatFailed": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
   "accountTitle": "Your account",
   "accountEmail": "Email",
   "accountPhone": "Phone",
@@ -837,24 +846,24 @@
   "unitPaath": "paath",
   "unitMinutes": "minutes",
   "@groupMembers": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
+    }
   },
   "@groupProgress": {
-      "placeholders": {
-          "done": {
-              "type": "String"
-          },
-          "target": {
-              "type": "String"
-          },
-          "unit": {
-              "type": "String"
-          }
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
       }
+    }
   },
   "groupGone": "That group is no longer there",
   "groupCreateTitle": "Create a group",
@@ -917,11 +926,11 @@
   "simranGlobeFirst": "You are the first here today",
   "simranGlobeTurn": "Turn the globe with your hand",
   "@simranOthersHere": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
+    }
   },
   "hazriMarked": "Today's hazri is marked",
   "hazriNotYet": "Today's hazri is not marked yet",
@@ -937,21 +946,21 @@
   "diaryNotYet": "not yet",
   "diaryHazriNote": "One paath or five, a single sitting of simran — any of them marks the day's hazri. The count is what you did, not what you owed.",
   "@hazriMarkedAtWith": {
-      "placeholders": {
-          "time": {
-              "type": "String"
-          },
-          "what": {
-              "type": "String"
-          }
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "what": {
+        "type": "String"
       }
+    }
   },
   "@hazriMarkedAt": {
-      "placeholders": {
-          "time": {
-              "type": "String"
-          }
+    "placeholders": {
+      "time": {
+        "type": "String"
       }
+    }
   },
   "restoreTitle": "Bring my account back",
   "restoreBeenHere": "You have been here before",
@@ -973,6 +982,8 @@
   "linkExpiredBody": "Links last an hour. This one has lapsed on its own — nobody used it.",
   "linkWrongTitle": "Not a link from us",
   "linkWrongBody": "That does not look like the link we sent. Copy the whole of it, including everything after the question mark.",
+  "linkMismatchTitle": "Made for a different address",
+  "linkMismatchBody": "This link is ours and it still works, but it was sent to a different address than the one above. Correct the address, or paste the link that went to it — a new link will not help.",
   "linkSendAnother": "Send a new link",
   "linkWrongAddressNote": "If neither of those was you, change your email address before you verify. A link is only ever sent to the address on the account.",
   "verifyConfirmed": "Your email is confirmed",
@@ -1018,21 +1029,21 @@
   "libraryCorrections": "Fetched from the website. If something here is wrong, it is corrected once there and every phone sees the correction.",
   "libraryOpen": "Open",
   "@libraryMinutes": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
+    }
   },
   "@libraryResults": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          },
-          "query": {
-              "type": "String"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "query": {
+        "type": "String"
       }
+    }
   },
   "syncTitle": "Sync",
   "syncSubtitle": "What happens, and when",
@@ -1052,11 +1063,11 @@
   "syncNow": "Sync now",
   "syncNeedsAccount": "Join the sangat first — there is nowhere to sync to without an account.",
   "@syncStateSending": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
+    }
   },
   "notifTitle": "Notifications",
   "notifOwnPractice": "Your own practice",
@@ -1080,48 +1091,48 @@
   "simranBeginMinutes": "Begin Simran · {count} min",
   "simranTurnGlobeShort": "Turn the globe with your hand",
   "@simranYouAndOthers": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
+    }
   },
   "@simranCitiesToday": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
+    }
   },
   "@simranBeginMinutes": {
-      "placeholders": {
-          "count": {
-              "type": "int"
-          }
+    "placeholders": {
+      "count": {
+        "type": "int"
       }
+    }
   },
   "readerLoggedInDiary": "Logged in your diary · {time}",
   "readerThisMarkedHazri": "This is what marked it — the first thing finished today",
   "readerStartAgain": "Start again",
   "readerNextBani": "Next bani",
   "@readerLoggedInDiary": {
-      "placeholders": {
-          "time": {
-              "type": "String"
-          }
+    "placeholders": {
+      "time": {
+        "type": "String"
       }
+    }
   },
   "goalsCardTitle": "Your goals",
   "goalsDoneOf": "{done} of {total} done",
   "@goalsDoneOf": {
-      "placeholders": {
-          "done": {
-              "type": "int"
-          },
-          "total": {
-              "type": "int"
-          }
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
       }
+    }
   },
   "goalSimranOrBani": "Simran counts in minutes; a bani counts in paath",
   "goalHowLong": "How long each time",
@@ -1136,14 +1147,14 @@
   "groupInviteCodeHow": "In Hazri: Sangat → Have a link? Join a group → paste the code. The link itself opens the website, which is not built yet.",
   "groupInviteShareText": "Join {group} on Hazri.\n\nOpen Hazri → Sangat → “Have a link? Join a group”, and paste this code:\n\n{code}",
   "@groupInviteShareText": {
-      "placeholders": {
-          "group": {
-              "type": "String"
-          },
-          "code": {
-              "type": "String"
-          }
+    "placeholders": {
+      "group": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
       }
+    }
   },
   "diarySubtitle": "Every day you marked your hazri",
   "diaryStatHazriDays": "hazri days",
@@ -1154,11 +1165,11 @@
   "diaryTickAnything": "Tick anything you completed on this day",
   "diaryNotYetAt": "not yet · {time}",
   "@diaryNotYetAt": {
-      "placeholders": {
-          "time": {
-              "type": "String"
-          }
+    "placeholders": {
+      "time": {
+        "type": "String"
       }
+    }
   },
   "simranPaused": "Paused",
   "simranBrandDaily": "Daily ",

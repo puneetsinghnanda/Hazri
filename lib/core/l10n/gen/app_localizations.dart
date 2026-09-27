@@ -2523,6 +2523,18 @@ abstract class L {
   /// **'Something is wrong at our end, not yours. Your paath is safe on this phone.'**
   String get sangatRefused;
 
+  /// No description provided for @sangatBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Wait a few minutes and ask for another link — your signal is fine.'**
+  String get sangatBusy;
+
+  /// No description provided for @sangatFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong at our end ({code}). Your paath is safe on this phone.'**
+  String sangatFailed(String code);
+
   /// No description provided for @accountTitle.
   ///
   /// In en, this message translates to:
@@ -3350,6 +3362,18 @@ abstract class L {
   /// In en, this message translates to:
   /// **'That does not look like the link we sent. Copy the whole of it, including everything after the question mark.'**
   String get linkWrongBody;
+
+  /// No description provided for @linkMismatchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Made for a different address'**
+  String get linkMismatchTitle;
+
+  /// No description provided for @linkMismatchBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This link is ours and it still works, but it was sent to a different address than the one above. Correct the address, or paste the link that went to it — a new link will not help.'**
+  String get linkMismatchBody;
 
   /// No description provided for @linkSendAnother.
   ///

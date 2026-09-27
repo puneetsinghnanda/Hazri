@@ -114,15 +114,22 @@ void _outcomes() {
           SangatRefused() => 'refused',
           EmailAlreadyHasAccount() => 'exists',
           LinkDidNotWork(problem: final p) => 'link:${p.name}',
+          SangatBusy() => 'busy',
           JoinFailed() => 'failed',
         };
 
     expect(describe(const SangatRefused('permission-denied')), 'refused');
     expect(describe(const SangatUnavailable()), 'offline');
-    // The three link problems stay apart, because the answer differs: two
-    // mean send another, and the third means sending another will not help.
+    expect(describe(const SangatBusy()), 'busy');
+    // The four link problems stay apart, because the answer differs: two
+    // mean send another, and two mean sending another will not help.
     expect(describe(const LinkDidNotWork(LinkProblem.alreadyUsed)), 'link:alreadyUsed');
     expect(describe(const LinkDidNotWork(LinkProblem.expired)), 'link:expired');
     expect(describe(const LinkDidNotWork(LinkProblem.wrongAddress)), 'link:wrongAddress');
+    expect(
+      describe(const LinkDidNotWork(LinkProblem.addressMismatch)),
+      'link:addressMismatch',
+    );
   });
+
 }

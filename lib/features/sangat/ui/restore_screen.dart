@@ -13,6 +13,7 @@ import '../../settings/ui/screen_scaffold.dart';
 import '../data/account_repository.dart';
 import '../domain/sangat_account.dart';
 import '../../sync/data/diary_sync.dart';
+import 'join_outcome_words.dart';
 import 'link_problem.dart';
 import 'sangat_field.dart';
 
@@ -75,7 +76,7 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
     setState(() {
       _busy = false;
       _sent = outcome is JoinedSangat;
-      _error = outcome is JoinedSangat ? null : _words(outcome, l);
+      _error = outcome is JoinedSangat ? null : wordsForOutcome(outcome, l);
     });
   }
 
@@ -113,19 +114,11 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
       default:
         setState(() {
           _busy = false;
-          _error = _words(outcome, l);
+          _error = wordsForOutcome(outcome, l);
         });
     }
   }
 
-  String _words(JoinOutcome outcome, L l) => switch (outcome) {
-        JoinedSangat() => '',
-        LinkDidNotWork() => l.linkProblemTitle,
-        EmailAlreadyHasAccount() => l.sangatEmailInUse,
-        SangatUnavailable() => l.sangatUnavailable,
-        SangatRefused() => l.sangatRefused,
-        JoinFailed() => l.sangatUnavailable,
-      };
 
   @override
   Widget build(BuildContext context) {

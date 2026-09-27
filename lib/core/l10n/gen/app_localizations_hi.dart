@@ -1362,6 +1362,15 @@ class LHi extends L {
       'गड़बड़ हमारी तरफ़ है, आपकी तरफ़ नहीं। आपका पाठ इस फ़ोन में सुरक्षित है।';
 
   @override
+  String get sangatBusy =>
+      'बहुत बार कोशिश हो गई। कुछ मिनट रुककर नया लिंक माँगें — आपका सिग्नल ठीक है।';
+
+  @override
+  String sangatFailed(String code) {
+    return 'हमारी तरफ़ कुछ गड़बड़ हो गई ($code)। आपका पाठ इस फ़ोन पर सुरक्षित है।';
+  }
+
+  @override
   String get accountTitle => 'आपका खाता';
 
   @override
@@ -1803,6 +1812,13 @@ class LHi extends L {
   @override
   String get linkWrongBody =>
       'यह वह लिंक नहीं लगता जो हमने भेजा था। पूरा लिंक कॉपी करें, प्रश्नचिह्न के बाद वाला हिस्सा भी।';
+
+  @override
+  String get linkMismatchTitle => 'किसी और पते के लिए बना';
+
+  @override
+  String get linkMismatchBody =>
+      'यह लिंक हमारा ही है और अब भी चलता है, पर यह ऊपर लिखे पते से अलग पते पर भेजा गया था। पता ठीक करें, या उसी पते पर आया लिंक पेस्ट करें — नया लिंक माँगने से कुछ नहीं होगा।';
 
   @override
   String get linkSendAnother => 'नया लिंक भेजें';

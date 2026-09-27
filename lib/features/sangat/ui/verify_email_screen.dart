@@ -10,6 +10,7 @@ import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/account_repository.dart';
 import '../domain/sangat_account.dart';
+import 'join_outcome_words.dart';
 import 'link_problem.dart';
 import 'sangat_field.dart';
 
@@ -88,7 +89,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       default:
         setState(() {
           _busy = false;
-          _error = _wordsFor(outcome, l);
+          _error = wordsForOutcome(outcome, l);
         });
     }
   }
@@ -124,7 +125,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       if (saved is! JoinedSangat) {
         setState(() {
           _busy = false;
-          _error = _wordsFor(saved, l);
+          _error = wordsForOutcome(saved, l);
         });
         return;
       }
@@ -136,21 +137,10 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       _busy = false;
       _editing = false;
       _sent = outcome is JoinedSangat;
-      _error = outcome is JoinedSangat ? null : _wordsFor(outcome, l);
+      _error = outcome is JoinedSangat ? null : wordsForOutcome(outcome, l);
     });
   }
 
-  /// What to put on screen for an outcome that is not success. The switch is
-  /// exhaustive on purpose: a new outcome should not compile until somebody
-  /// has decided what the reader is told about it.
-  String _wordsFor(JoinOutcome outcome, L l) => switch (outcome) {
-        JoinedSangat() => '',
-        LinkDidNotWork() => l.linkProblemTitle,
-        EmailAlreadyHasAccount() => l.sangatEmailInUse,
-        SangatUnavailable() => l.sangatUnavailable,
-        SangatRefused() => l.sangatRefused,
-        JoinFailed() => l.sangatUnavailable,
-      };
 
   @override
   Widget build(BuildContext context) {

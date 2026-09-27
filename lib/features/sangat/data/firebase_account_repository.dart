@@ -155,12 +155,9 @@ class FirebaseAccountRepository implements AccountRepository {
       final signedIn = await _auth.signInWithCredential(credential);
       return JoinedSangat(await _accountFor(signedIn.user!, address));
     } on FirebaseAuthException catch (e) {
+      final problem = linkProblemForAuthCode(e.code);
+      if (problem != null) return LinkDidNotWork(problem);
       switch (e.code) {
-        case 'invalid-action-code':
-        case 'invalid-email':
-          return const LinkDidNotWork(LinkProblem.alreadyUsed);
-        case 'expired-action-code':
-          return const LinkDidNotWork(LinkProblem.expired);
         case 'credential-already-in-use':
         case 'email-already-in-use':
           // The address belongs to an account that is not this anonymous
@@ -285,20 +282,24 @@ class FirebaseAccountRepository implements AccountRepository {
   }
 
   /// Turns an auth error into something a screen can say out loud.
+  ///
+  /// The decision itself is [outcomeForAuthCode], a pure function on the
+  /// code alone, so it can be tested without Firebase. All this adds is the
+  /// log line, which is the only place a console misconfiguration is ever
+  /// written down.
   JoinOutcome _authOutcome(FirebaseAuthException e, String email) {
-    switch (e.code) {
-      // The address already belongs to somebody — screen 53's fork, not a
-      // failure.
-      case 'email-already-in-use':
-      case 'credential-already-in-use':
-      case 'account-exists-with-different-credential':
-        return EmailAlreadyHasAccount(email.trim());
-      case 'network-request-failed':
-      case 'too-many-requests':
-        return const SangatUnavailable();
+    final outcome = outcomeForAuthCode(e.code, email: email);
+    switch (outcome) {
+      case SangatRefused():
+        debugPrint('Hazri: auth REFUSED by project configuration (${e.code}). '
+            'This is a console setting, not the network.');
+      case JoinFailed():
+        debugPrint('Hazri: unmapped auth error (${e.code}) — if this is a '
+            'code somebody can act on, give it a case in '
+            'outcomeForAuthCode.');
       default:
-        debugPrint('Hazri: auth error (${e.code})');
-        return JoinFailed(e.code);
+        break;
     }
+    return outcome;
   }
 }

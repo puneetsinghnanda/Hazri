@@ -24,11 +24,7 @@ class LinkProblemCard extends StatelessWidget {
     final c = context.colors;
     final l = L.of(context);
 
-    final (title, body) = switch (problem) {
-      LinkProblem.alreadyUsed => (l.linkUsedTitle, l.linkUsedBody),
-      LinkProblem.expired => (l.linkExpiredTitle, l.linkExpiredBody),
-      LinkProblem.wrongAddress => (l.linkWrongTitle, l.linkWrongBody),
-    };
+    final (title, body) = wordsForLinkProblem(problem, l);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,3 +61,18 @@ class LinkProblemCard extends StatelessWidget {
     );
   }
 }
+
+/// What a link problem says, as a title and a body.
+///
+/// Out here rather than inside `build` so a test can assert the four stay
+/// apart. They must: two of them mean send another link and two mean that
+/// sending another will not help, so a shared sentence is a reader stuck in
+/// a loop. `invalid-email` and `invalid-action-code` shared one until
+/// 2026-09-27.
+(String, String) wordsForLinkProblem(LinkProblem problem, L l) =>
+    switch (problem) {
+      LinkProblem.alreadyUsed => (l.linkUsedTitle, l.linkUsedBody),
+      LinkProblem.expired => (l.linkExpiredTitle, l.linkExpiredBody),
+      LinkProblem.wrongAddress => (l.linkWrongTitle, l.linkWrongBody),
+      LinkProblem.addressMismatch => (l.linkMismatchTitle, l.linkMismatchBody),
+    };

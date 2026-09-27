@@ -44,6 +44,91 @@ class SangatRefused extends JoinOutcome {
   final String code;
 }
 
+/// Which outcome a Firebase Auth error code becomes.
+///
+/// A pure function, deliberately, and deliberately not a method on the
+/// repository: **this is the seam the bug lived at.** Every unmapped code
+/// used to fall through to one bucket that a screen then rendered as "could
+/// not reach the sangat" — a sentence about the reader's wifi. The first
+/// person to verify an address on a real phone got exactly that, with
+/// perfect signal, and the code that would have named the cause was thrown
+/// away on the way.
+///
+/// Taking a `String` rather than a `FirebaseAuthException` is what lets a
+/// test name a real code and assert what the reader is told, without
+/// Firebase, a device or a widget tree in the way.
+JoinOutcome outcomeForAuthCode(String code, {String email = ''}) {
+  switch (code) {
+    // The address already belongs to somebody — screen 53's fork, not a
+    // failure.
+    case 'email-already-in-use':
+    case 'credential-already-in-use':
+    case 'account-exists-with-different-credential':
+      return EmailAlreadyHasAccount(email.trim());
+
+    // Genuinely could not get there. The only one of these that is about
+    // the reader's circumstances at all.
+    case 'network-request-failed':
+    case 'timeout':
+      return const SangatUnavailable();
+
+    // Reached it, and it said slow down.
+    case 'too-many-requests':
+      return const SangatBusy();
+
+    // Reached it, and it said no because of how the *project* is set up.
+    // Each of these is a console setting that is invisible in git, so
+    // [SangatRefused]'s words — wrong at our end, not yours — are the true
+    // ones, and the code has to survive to the screen or nobody can tell
+    // which setting it was.
+    //
+    //   operation-not-allowed      email link sign-in is switched off
+    //   unauthorized-continue-uri  the continue URL's host is not authorised
+    //   unauthorized-domain        same, by its other name
+    //   invalid-continue-uri       kVerificationUrl is malformed
+    //   missing-android-pkg-name   the package is not on the project
+    //   invalid-cert-hash          no signing fingerprint is registered
+    case 'operation-not-allowed':
+    case 'unauthorized-continue-uri':
+    case 'unauthorized-domain':
+    case 'invalid-continue-uri':
+    case 'missing-android-pkg-name':
+    case 'invalid-cert-hash':
+      return SangatRefused(code);
+
+    // The account is gone or switched off at the console.
+    case 'user-disabled':
+    case 'user-not-found':
+      return SangatRefused(code);
+
+    default:
+      return JoinFailed(code);
+  }
+}
+
+/// Which link problem a Firebase Auth error code becomes, or null when the
+/// code is not about the link at all.
+LinkProblem? linkProblemForAuthCode(String code) => switch (code) {
+      'invalid-action-code' => LinkProblem.alreadyUsed,
+      'expired-action-code' => LinkProblem.expired,
+      // The link is ours and still good; it was minted for a different
+      // address. A new link changes nothing, so sharing a branch with
+      // `invalid-action-code` is what kept people pressing send.
+      'invalid-email' => LinkProblem.addressMismatch,
+      _ => null,
+    };
+
+/// Firebase is throttling us: too many links asked for, too fast.
+///
+/// Its own fault code is `too-many-requests`, and it used to be reported as
+/// [SangatUnavailable] — which sends somebody whose signal is perfect off to
+/// look at their wifi, at the exact moment they have asked three times
+/// because the mail has not arrived. The network is fine; waiting is the
+/// answer.
+class SangatBusy extends JoinOutcome {
+  const SangatBusy();
+}
+
 /// Why a link from an email did not work (design 52).
 enum LinkProblem {
   /// Every link works once. A forwarded email is not a way in.
@@ -52,8 +137,15 @@ enum LinkProblem {
   /// Firebase's links last an hour. Nobody used this one; it lapsed.
   expired,
 
-  /// The link was made for a different address than the one typed.
+  /// What was pasted is not one of our links at all — usually a mail client
+  /// that wrapped or rewrote the URL, so only part of it came across.
   wrongAddress,
+
+  /// The link is ours and it is good, but it was minted for a different
+  /// address than the one in the box. Sending another will not help until
+  /// the address matches; Firebase calls this `invalid-email`, and reporting
+  /// it as [alreadyUsed] left people asking for link after link.
+  addressMismatch,
 }
 
 /// The link did not work, and which of the three reasons it was.

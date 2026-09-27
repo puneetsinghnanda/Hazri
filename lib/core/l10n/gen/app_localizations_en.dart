@@ -1365,6 +1365,15 @@ class LEn extends L {
       'Something is wrong at our end, not yours. Your paath is safe on this phone.';
 
   @override
+  String get sangatBusy =>
+      'Too many attempts. Wait a few minutes and ask for another link — your signal is fine.';
+
+  @override
+  String sangatFailed(String code) {
+    return 'Something went wrong at our end ($code). Your paath is safe on this phone.';
+  }
+
+  @override
   String get accountTitle => 'Your account';
 
   @override
@@ -1805,6 +1814,13 @@ class LEn extends L {
   @override
   String get linkWrongBody =>
       'That does not look like the link we sent. Copy the whole of it, including everything after the question mark.';
+
+  @override
+  String get linkMismatchTitle => 'Made for a different address';
+
+  @override
+  String get linkMismatchBody =>
+      'This link is ours and it still works, but it was sent to a different address than the one above. Correct the address, or paste the link that went to it — a new link will not help.';
 
   @override
   String get linkSendAnother => 'Send a new link';
