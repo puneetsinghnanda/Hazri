@@ -156,8 +156,10 @@ them served nothing.
 **`hazri.me` is registered and connected to nothing** (2026-09-26). It is a
 Phase 3 asset: it is added *alongside* `hazri-dfcc1.web.app`, never instead,
 because a verification link already sitting in an inbox has to keep working.
-`docs/features/01-accounts.md` §1.7 lists the seven steps, of which the app
-is the last one.
+`docs/domain-setup.md` is the record set and the order to add it in; the DNS
+is worth doing early (certificates and mail propagation each take up to a
+day) and the app change is not. `docs/features/01-accounts.md` §1.7 lists the
+seven steps, of which the app is the last one.
 
 It has to be Firebase Hosting rather than anywhere cheaper: since Dynamic
 Links shut down on 2025-08-25, Firebase Auth mints its email links on a

@@ -328,6 +328,9 @@ domain, deployed once, closes the sender, the tappable link and
 
 ### What connecting `hazri.me` will take
 
+**`docs/domain-setup.md` is the record set, the order, and the four things
+that go wrong.** This is the summary.
+
 Registered 2026-09-26 and **not connected to anything**. Nothing in the app
 refers to it and nothing should until Phase 3, because a link already in
 somebody's inbox has to keep working: the domain is added *alongside*
