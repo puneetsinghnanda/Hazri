@@ -156,6 +156,19 @@ expired or already used, the address does not match the link, or the link is
 not a Hazri link at all (usually truncated by a mail client). Rate limiting is
 its own message and is never dressed as being offline.
 
+**A15.** **The project enables the email link and not the password.** The
+Email/Password provider carries two independent switches in the console.
+*Email link (passwordless sign-in)* must be on, because it is what
+`sendSignInLinkToEmail` needs. *Email/Password* must stay **off**: rule 4
+says no password and no sign-in screen ever, and leaving it off means the
+project cannot accept a password at all, rather than the app merely
+declining to ask for one. A rule the app cannot enforce, so it is written
+here and checked in the console.
+
+Until 2026-09-27 neither was on — the project had only Anonymous — so every
+attempt to verify an address failed with `operation-not-allowed`, and the
+app reported it as though the phone had no signal.
+
 **A14.** **Restore brings back the account, not the phone.** Name, city,
 verified address and group memberships come back. The diary comes back only if
 diary sync was on (Y-4). Goals, ticks, bani progress, reminders and simran
@@ -249,7 +262,7 @@ These fail identically for everybody and are invisible in git.
 
 | # | What must be true | If it is not |
 |---|---|---|
-| B17 | Email/Password is enabled **and its Email link (passwordless) sub-toggle is on**, in Authentication → Sign-in method | `operation-not-allowed` on every send, project-wide. Nothing in this repository records whether it is on |
+| B17 | The Email/Password provider exists **with its Email link (passwordless) toggle on and its password toggle off** | `operation-not-allowed` on every send, project-wide. **This was the real cause, found 2026-09-27:** the project had only Anonymous enabled and the provider had never been added, so no verification mail had ever been sendable. See A15 |
 | B18 | The continue URL's host is in Authentication → Settings → Authorized domains (`hazri-dfcc1.web.app` and `.firebaseapp.com` are there by default) | `unauthorized-continue-uri`, currently reported as "unavailable" |
 | B19 | Something is deployed at `https://hazri-dfcc1.web.app/verify` | Firebase's *Site Not Found*. The link still works if the whole URL is copied out of the address bar, and nothing tells anybody that. **Was the state until 2026-09-27**; the pages are live now, and the failure returns the moment a change to `public/` is committed and not deployed |
 | B20 | `firestore.rules` is published | Auth succeeds and the profile read is refused → `SangatRefused`. The restore "failed" for a reason that is not in Auth at all |

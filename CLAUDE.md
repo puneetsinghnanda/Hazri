@@ -266,6 +266,15 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   the app says so (`SangatRefused`), which is not the same as being offline
   and must never be reported as though it were. The file in git went live on
   2026-09-22, so the gap is the next change to it, not this one.
+- **Auth's sign-in providers are a console setting, and the wrong one is a
+  rule-4 breach.** *Email link (passwordless sign-in)* must be **on** and
+  *Email/Password* must be **off** — the provider panel has two switches and
+  only the first is Hazri's. Rule 4 says no password and no sign-in screen
+  ever, and leaving the second off means the project cannot take a password
+  at all. Until 2026-09-27 the project had **only Anonymous** enabled, so
+  `sendSignInLinkToEmail` failed with `operation-not-allowed` every time and
+  no verification mail had ever been sendable. Nothing in git can see this;
+  `docs/features/01-accounts.md` A15 is the record.
 - **A verification or restore link is pasted, not tapped.** Android App Links
   need an `assetlinks.json` carrying the release signing fingerprint, and
   there is no keystore yet (Phase 3). Pasting the link needs nothing, so both
