@@ -167,6 +167,14 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
           onPressed: _busy ? null : _send,
         ),
         if (_sent) ...[
+          const SizedBox(height: 14),
+          // Restore used to go straight from the button to the paste box,
+          // saying nothing about where the link had gone. Firebase's own
+          // mailer sends from noreply@<project>.firebaseapp.com, a domain
+          // shared by every Firebase project on earth, and the first mail
+          // this project ever sent landed in spam -- so somebody staring at
+          // an empty inbox has no idea the mail is two taps away.
+          Text(l.verifySent, style: HazriText.caption.copyWith(color: c.ink2)),
           const SizedBox(height: 18),
           SangatField(
             label: l.restorePasteLabel,

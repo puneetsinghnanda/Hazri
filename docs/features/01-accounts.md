@@ -261,7 +261,7 @@ promising an answer it does not have. This is what A10 costs.
 | B10 | The link was already used (people tap first, nothing happens, then paste) | `invalid-action-code` | "Already used" — correct, by accident: it shares a branch with B11 |
 | B11 | The address typed on the restore screen is not the one the link was minted for | `invalid-email` | Also "already used". **Wrong**, and the person resends for ever |
 | B12 | The mail client wrapped or rewrote the URL (Outlook Safe Links, Gmail line-wrapping, a corporate rewriter) | `isSignInWithEmailLink` is false | "Wrong address". **Wrong** — nothing is wrong with the address |
-| B13 | The mail did not arrive: spam, Promotions, a corporate filter, a provider that distrusts `firebaseapp.com` | nothing at all | Silence, then repeated attempts, then B14 |
+| B13 | The mail did not arrive: spam, Promotions, a corporate filter, a provider that distrusts `firebaseapp.com` | nothing at all | **Observed 2026-09-27: the first mail this project ever sent went to spam.** Both screens now say to look there. That is a mitigation, not a fix — see below |
 | B14 | Too many attempts from this device or to this address | `too-many-requests` | `SangatUnavailable` — "check your internet", which is the opposite of true |
 | B15 | The project's daily quota on Firebase's built-in mailer is spent | send fails | Every restore in the project fails until the next day, and nothing distinguishes it |
 | B16 | Device clock badly wrong | code validation fails | Generic failure |
@@ -427,11 +427,40 @@ nobody wrote down is a code nobody has.
 **Verdict: beside, not instead.** It is the answer for somebody who will not
 give an address, and it is the only recovery that works with the radio off.
 
+### Spam is what makes B1 the ordinary case
+
+The very first verification mail this project sent landed in the spam folder.
+That is not surprising — `noreply@hazri-dfcc1.firebaseapp.com` is a domain
+shared by every Firebase project in the world, with no reputation of its own
+and nothing tying it to Hazri — but it changes how serious B1 is.
+
+Follow the chain. Somebody types their address, is told a link is on its
+way, never sees it, and gives up. Their address is now saved on the user
+document and **not verified**. They believe recovery is set up. It is not,
+and the day they lose the phone they will restore that address, Firebase
+will mint a fresh empty account for it, and the app will report success
+(B1, A10).
+
+So spam delivery does not merely annoy: **it makes the worst failure in this
+document the default path rather than an edge case.** Two consequences:
+
+* **A9 is load-bearing, not tidy-minded.** Every surface showing the address
+  must show whether it is verified, and A5's promise must only ever be made
+  about a verified one.
+* **§1.7 option 2 moves from "once a domain exists" to "before launch".**
+  A sender on a domain we control, with SPF, DKIM and DMARC aligned, is the
+  only real fix. `hazri.me` exists; what it needs is the mailbox and the
+  records in `docs/domain-setup.md`.
+
+Telling people to check their spam folder, which both screens now do, is
+worth doing and does not solve this.
+
 ### The recommendation
 
 | When | Do |
 |---|---|
-| Now, Phase 2 | Option 1, including step 4 — run `firebase deploy --only hosting`, and confirm B17 and B18 in the console. Fix the three error mappings (A13). Say A14 out loud on the restore screen |
+| ~~Now, Phase 2~~ | **Done 2026-09-27.** Hosting deployed, B17 found and fixed (only Anonymous was enabled), B18 confirmed, the error mappings split (A13). Still to do from this row: say A14 out loud on the restore screen |
+| Next, and sooner than planned | Option 2. Spam delivery makes B1 the ordinary case, so a sender on `hazri.me` with SPF, DKIM and DMARC is a before-launch item rather than a nicety |
 | With the Phase 3 keystore | **`hazri.me` is registered (2026-09-26).** Connect it then, once: it serves `assetlinks.json` (tappable links), `/verify`, and SPF/DKIM for option 2's sender |
 | Phase 3 | Option 3, so the mail is in the reader's language and `getUserByEmail` can close B1 and A10. Option 4 beside it |
 

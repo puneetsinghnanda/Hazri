@@ -2670,7 +2670,7 @@ abstract class L {
   /// No description provided for @verifySent.
   ///
   /// In en, this message translates to:
-  /// **'Sent. It can take a minute to arrive.'**
+  /// **'Sent. It can take a minute to arrive — look in your spam folder if it does not.'**
   String get verifySent;
 
   /// No description provided for @verifyWrongAddress.

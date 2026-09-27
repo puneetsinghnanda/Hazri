@@ -1445,7 +1445,8 @@ class LEn extends L {
   String get verifySendAgain => 'Send it again';
 
   @override
-  String get verifySent => 'Sent. It can take a minute to arrive.';
+  String get verifySent =>
+      'Sent. It can take a minute to arrive — look in your spam folder if it does not.';
 
   @override
   String get verifyWrongAddress => 'Wrong address?';

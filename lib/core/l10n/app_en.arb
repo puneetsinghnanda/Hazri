@@ -815,7 +815,7 @@
   "verifySentTo": "We sent a link to {email}. Tap it and this phone is confirmed.",
   "verifySend": "Send the link",
   "verifySendAgain": "Send it again",
-  "verifySent": "Sent. It can take a minute to arrive.",
+  "verifySent": "Sent. It can take a minute to arrive — look in your spam folder if it does not.",
   "verifyWrongAddress": "Wrong address?",
   "verifyChangeIt": "Change it and we will send a new link",
   "verifyUntilThen": "Until this is done your groups and goals live on this phone only, and cannot be brought back if you change phone.",

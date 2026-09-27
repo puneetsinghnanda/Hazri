@@ -1443,7 +1443,8 @@ class LHi extends L {
   String get verifySendAgain => 'दोबारा भेजें';
 
   @override
-  String get verifySent => 'भेज दिया। पहुँचने में एक मिनट लग सकता है।';
+  String get verifySent =>
+      'भेज दिया। आने में एक मिनट लग सकता है — न मिले तो स्पैम फ़ोल्डर देखें।';
 
   @override
   String get verifyWrongAddress => 'ग़लत पता?';

@@ -1443,7 +1443,8 @@ class LPa extends L {
   String get verifySendAgain => 'ਦੁਬਾਰਾ ਭੇਜੋ';
 
   @override
-  String get verifySent => 'ਭੇਜ ਦਿੱਤਾ। ਪਹੁੰਚਣ ਵਿੱਚ ਇੱਕ ਮਿੰਟ ਲੱਗ ਸਕਦਾ ਹੈ।';
+  String get verifySent =>
+      'ਭੇਜ ਦਿੱਤਾ। ਆਉਣ ਵਿੱਚ ਇੱਕ ਮਿੰਟ ਲੱਗ ਸਕਦਾ ਹੈ — ਨਾ ਮਿਲੇ ਤਾਂ ਸਪੈਮ ਫੋਲਡਰ ਵੇਖੋ।';
 
   @override
   String get verifyWrongAddress => 'ਗ਼ਲਤ ਪਤਾ?';
