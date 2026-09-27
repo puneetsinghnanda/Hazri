@@ -25,14 +25,14 @@ sealed class IncomingLink {
   /// already checked it against `assetlinks.json` before the app was opened
   /// at all, and a link pasted by hand has no host to check.
   factory IncomingLink.from(Uri uri) {
-    // Some mail clients and some redirects move the query onto the fragment.
-    final params = <String, String>{
-      ...uri.queryParameters,
-      if (uri.fragment.contains('=')) ...Uri.splitQueryString(uri.fragment),
-    };
+    final params = _paramsOf(uri);
 
     final code = params['oobCode'];
     if (code != null && code.isNotEmpty) {
+      // The whole URL as Android handed it over, wrapper and all. The SDK
+      // minted this shape and knows how to unwrap it; rebuilding it from the
+      // inner URL would be us guessing at a format that has already changed
+      // once.
       return SignInLink(uri.toString(), mode: params['mode']);
     }
 
@@ -45,6 +45,39 @@ sealed class IncomingLink {
     }
 
     return const NotOurLink();
+  }
+
+  /// Every parameter this URL carries, including the ones nested inside it.
+  ///
+  /// Firebase's Hosting-based sign-in link is **a link wrapping a link**:
+  ///
+  /// ```
+  /// https://<host>/__/auth/links?link=https%3A%2F%2F<host>%2F__%2Fauth%2F
+  ///   action%3FapiKey%3D…%26mode%3DsignIn%26oobCode%3D…%26continueUrl%3D…
+  /// ```
+  ///
+  /// so `oobCode` is not a parameter of the URL at all — it is a parameter of
+  /// a URL sitting percent-encoded inside the `link` parameter. Reading only
+  /// the outer query finds nothing, decides the link is not ours, and the
+  /// router then has no route for `/__/auth/links` and shows its error page.
+  /// That is precisely what a reader saw: *GoException: no routes for
+  /// location*, on a link that was perfectly good.
+  ///
+  /// One level of unwrapping, outer winning over inner, and the fragment
+  /// folded in for the mail clients that move a query across.
+  static Map<String, String> _paramsOf(Uri uri) {
+    final nested = <String, String>{};
+    final inner = uri.queryParameters['link'];
+    if (inner != null && inner.isNotEmpty) {
+      final parsed = Uri.tryParse(inner);
+      if (parsed != null) nested.addAll(parsed.queryParameters);
+    }
+
+    return <String, String>{
+      ...nested,
+      ...uri.queryParameters,
+      if (uri.fragment.contains('=')) ...Uri.splitQueryString(uri.fragment),
+    };
   }
 }
 

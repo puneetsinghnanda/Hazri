@@ -49,6 +49,42 @@ void main() {
     });
   });
 
+  group('the real one, copied out of a phone', () {
+    // Taken verbatim from a screenshot on 2026-09-27, after the app answered
+    // "GoException: no routes for location" on a link that was perfectly
+    // good. It is the shape nothing here anticipated: **a link wrapping a
+    // link**. oobCode is not a parameter of this URL at all, it is a
+    // parameter of a URL percent-encoded inside its `link` parameter, so
+    // reading the outer query found nothing and the router had no route for
+    // /__/auth/links.
+    //
+    // Kept whole and ugly on purpose. Tidying it into something shorter
+    // would be testing a link Firebase does not send.
+    const real =
+        'https://hazri-dfcc1.firebaseapp.com/__/auth/links'
+        '?link=https://hazri-dfcc1.firebaseapp.com/__/auth/action'
+        '%3FapiKey%3DAIzaSyCMxMrahs9HUN7-lFBx5T9r51AzPsDUhHg'
+        '%26mode%3DsignIn'
+        '%26oobCode%3DS1oVLt4aQCirFGJZdakVCUFpVMAmDz5DD3q9yWimeoQAAAGg40WL_A'
+        '%26continueUrl%3Dhttps://hazri-dfcc1.web.app/verify'
+        '%26lang%3Den';
+
+    test('is recognised as a sign-in link', () {
+      expect(read(real), isA<SignInLink>());
+    });
+
+    test('and is handed on whole, wrapper and all', () {
+      // The SDK minted this shape and knows how to unwrap it. Rebuilding it
+      // from the inner URL would be guessing at a format that has already
+      // changed once this year.
+      expect((read(real) as SignInLink).url, real);
+    });
+
+    test('the mode is read from inside the wrapper too', () {
+      expect((read(real) as SignInLink).mode, 'signIn');
+    });
+  });
+
   group('an invite', () {
     test('is the last segment after /j', () {
       final link = read('https://hazri-dfcc1.web.app/j/abc123');

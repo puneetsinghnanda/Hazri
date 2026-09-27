@@ -241,7 +241,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         case InviteLink(groupId: final id):
           return '${Routes.joinByLink}?code=${Uri.encodeQueryComponent(id)}';
         case NotOurLink():
-          break;
+          // An https link on one of our hosts that is neither: the privacy
+          // page, the site root, a link whose query was stripped in transit.
+          // The intent-filter deliberately claims the whole host, so all of
+          // them arrive here, and go_router has no route for any of their
+          // paths -- it would answer with "no routes for location" and the
+          // raw URL, which is what a reader saw once already.
+          //
+          // Opening the app is the only sensible answer. The reader tapped a
+          // Hazri link and got Hazri.
+          if (state.uri.hasScheme && state.uri.scheme.startsWith('http')) {
+            return Routes.today;
+          }
       }
 
       final settings = ref.read(settingsProvider);
