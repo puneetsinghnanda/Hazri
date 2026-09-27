@@ -11,6 +11,7 @@ import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/account_repository.dart';
+import '../data/pending_verification.dart';
 import '../domain/sangat_account.dart';
 import '../../sync/data/diary_sync.dart';
 import 'join_outcome_words.dart';
@@ -70,6 +71,12 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
       _error = null;
       _problem = null;
     });
+
+    // Written down before the link goes out, exactly as the verify screen
+    // does. This is the path where it matters most: restoring happens on a
+    // phone with no account, so when the link comes back there is nothing
+    // else on the device that knows which address it was minted for.
+    await ref.read(pendingVerificationProvider).remember(email);
 
     final outcome = await ref.read(accountRepositoryProvider).sendVerificationLink(email);
     if (!mounted) return;

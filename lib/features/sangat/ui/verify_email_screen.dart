@@ -72,7 +72,33 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     // account this needs is read from a provider.
     _link.text = link;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _confirm(ref.read(sangatAccountProvider).value);
+      if (!mounted) return;
+
+      // The remembered address first, and the account's only after.
+      //
+      // Not a preference -- a race. Opening from a tapped link is a cold
+      // start, and `sangatAccountProvider` is fed by Firebase's auth stream,
+      // which has usually not emitted yet one frame in. Reading the account
+      // here would hand `continueWithLink` an empty address about as often
+      // as not, and the failure would look like a bad link.
+      //
+      // The remembered address is also the more correct of the two: it is by
+      // definition the one this link was minted for, which is precisely what
+      // Firebase wants back alongside it.
+      final account = ref.read(sangatAccountProvider).value;
+      final remembered = ref.read(pendingVerificationProvider).address ?? '';
+      final address =
+          remembered.isNotEmpty ? remembered : (account?.email ?? '').trim();
+
+      if (address.isEmpty) {
+        // A link, and nothing to pair it with -- a second phone that never
+        // asked for this one. Ask for the address rather than firing a call
+        // that can only fail and then blaming the link for it.
+        setState(() => _editing = true);
+        return;
+      }
+
+      _confirm(account, address: address);
     });
   }
 
@@ -88,7 +114,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   /// Pasted rather than tapped: tapping needs Android App Links, which need a
   /// release fingerprint this project does not have. Pasting needs nothing,
   /// so verification can actually complete today.
-  Future<void> _confirm(SangatAccount? account) async {
+  Future<void> _confirm(SangatAccount? account, {String? address}) async {
     final l = L.of(context);
     setState(() {
       _busy = true;
@@ -97,7 +123,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     });
 
     final outcome = await ref.read(accountRepositoryProvider).continueWithLink(
-          email: _address(account),
+          email: address ?? _address(account),
           link: _link.text,
         );
     if (!mounted) return;
