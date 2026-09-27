@@ -17,8 +17,13 @@ class FirebaseAccountRepository implements AccountRepository {
     FirebaseAuth? auth,
     FirebaseFirestore? firestore,
     required this.verificationUrl,
+    this.onAuthState,
   })  : _auth = auth ?? FirebaseAuth.instance,
         _db = firestore ?? FirebaseFirestore.instance;
+
+  /// Somewhere to write what the auth user actually looks like, so a reader
+  /// can be asked rather than guessed at. Nothing depends on it.
+  final void Function(String)? onAuthState;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
@@ -30,6 +35,48 @@ class FirebaseAccountRepository implements AccountRepository {
   final String verificationUrl;
 
   SangatAccount? _current;
+
+  /// Whether this account can be brought back on another phone.
+  ///
+  /// **Not `user.emailVerified` alone**, and that distinction cost an
+  /// evening. What makes recovery work is that an email credential is
+  /// *linked to this uid*: `signInWithCredential` with a link for that
+  /// address then returns this account rather than minting a new one. That
+  /// is exactly what following the link accomplishes, and it is true the
+  /// moment `linkWithCredential` succeeds.
+  ///
+  /// Firebase's own `emailVerified` is separate bookkeeping and was observed
+  /// staying false on a phone where the link had been followed and the
+  /// credential linked — so the account screen said Not verified about an
+  /// account that was, in the only sense this app promises, recoverable.
+  ///
+  /// The link is the proof: it cannot be followed without receiving the
+  /// mail. Either signal being true is enough; neither being true means
+  /// there is nothing to recover with.
+  static bool _recoverable(User user) =>
+      user.emailVerified ||
+      user.providerData.any((p) =>
+          p.providerId == 'password' && (p.email ?? '').isNotEmpty);
+
+  /// A one-line reading of the auth user, for the diagnostics line on the
+  /// account screen. Ids and booleans, never the address itself.
+  void _report(User? user) {
+    if (onAuthState == null) return;
+    if (user == null) {
+      onAuthState!('signed out');
+      return;
+    }
+    final providers = user.providerData.map((p) => p.providerId).join(',');
+    onAuthState!(
+      'anon=${user.isAnonymous} verified=${user.emailVerified} '
+      'hasEmail=${(user.email ?? '').isNotEmpty} '
+      'providers=[$providers] recoverable=${_recoverable(user)}',
+    );
+  }
+  // END VERIFIED HELPERS. Below this line nothing reads emailVerified off a
+  // user directly -- it goes through _recoverable, or two screens end up
+  // answering the same question differently, which is what happened.
+  // recoverable_test.dart holds the line.
 
   @override
   SangatAccount? get current => _current;
@@ -59,9 +106,12 @@ class FirebaseAccountRepository implements AccountRepository {
           // document again -- reads are what bills (00-platform.md), so the
           // stream is only allowed to restart when something it actually
           // reports has changed.
-          .map((user) => user == null
-              ? null
-              : (uid: user.uid, verified: user.emailVerified))
+          .map((user) {
+            _report(user);
+            return user == null
+                ? null
+                : (uid: user.uid, verified: _recoverable(user));
+          })
           .distinct()
           .asyncExpand((who) {
         if (who == null) {
@@ -225,7 +275,7 @@ class FirebaseAccountRepository implements AccountRepository {
         _current = SangatAccount.fromFirestore(
           fresh.uid,
           data,
-          emailVerified: fresh.emailVerified,
+          emailVerified: _recoverable(fresh),
         );
         return _current!;
       }
@@ -237,7 +287,7 @@ class FirebaseAccountRepository implements AccountRepository {
       name: '',
       city: '',
       email: email,
-      emailVerified: fresh.emailVerified,
+      emailVerified: _recoverable(fresh),
     );
     return _current!;
   }

@@ -156,8 +156,27 @@ expired or already used, the address does not match the link, or the link is
 not a Hazri link at all (usually truncated by a mail client). Rate limiting is
 its own message and is never dressed as being offline.
 
-**A18.** **Verified is one fact with one source, and that source is the
-auth user.** `emailVerified` is read from Firebase Auth, never from
+**A18.** **Verified means the email credential is linked, not that Firebase
+set a flag.**
+
+What A5 promises is recovery: that on a new phone, signing in with a link
+for that address returns *this* account rather than minting an empty one.
+That is true exactly when an email credential is linked to this uid, which
+is precisely what following the link accomplishes — and the link cannot be
+followed without receiving the mail, so the link is the proof.
+
+`user.emailVerified` is Firebase's separate bookkeeping and **was observed
+staying false on a phone where the credential had been linked**, so the
+account screen called an account unrecoverable that was in fact recoverable.
+One rule, `_recoverable`, now answers it: the flag *or* a linked `password`
+provider carrying an address. Nothing below that helper reads the raw flag,
+and `test/features/recoverable_test.dart` holds that line.
+
+The deeper fault was two screens measuring different things. The verify
+screen said confirmed because the **call had succeeded**; the account screen
+read the flag. Neither was the fact the app promises.
+
+**A18a.** **Verified has one source, and that source is the auth user.** `emailVerified` is read from Firebase Auth, never from
 Firestore, so no phone can mark itself verified by writing a document — and
 it must be read from a stream that fires when a credential is **linked**,
 because confirming an email is a link and not a sign-in. Every screen shows

@@ -14,6 +14,7 @@ import 'core/settings/settings_controller.dart';
 import 'features/audio/data/audio_controller.dart';
 import 'features/audio/data/audio_handler.dart';
 import 'features/reminders/data/reminder_service.dart';
+import 'features/sangat/data/link_diagnostics.dart';
 import 'features/sangat/data/account_repository.dart';
 import 'features/library/data/firebase_library_repository.dart';
 import 'features/library/data/library_repository.dart';
@@ -67,7 +68,10 @@ Future<void> main() async {
         // NoAccountRepository stands and the app is Phase 1's app.
         if (backend.isUp)
           accountRepositoryProvider.overrideWithValue(
-            FirebaseAccountRepository(verificationUrl: kVerificationUrl),
+            FirebaseAccountRepository(
+              verificationUrl: kVerificationUrl,
+              onAuthState: LinkDiagnostics(prefs).recordAuth,
+            ),
           ),
         if (backend.isUp)
           groupRepositoryProvider.overrideWithValue(FirebaseGroupRepository()),

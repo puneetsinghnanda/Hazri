@@ -50,6 +50,18 @@ class LinkDiagnostics {
 
   /// What the last app start began with, or null before there has been one.
   String? get lastOpenedWith => _prefs.getString(_key);
+
+  static const _authKey = 'last_auth_state';
+
+  /// What the Firebase auth user actually looks like: ids and booleans, never
+  /// the address. Written whenever the account stream sees a user.
+  ///
+  /// Here because "it says verified on one screen and not on the next" took
+  /// three rounds to pin down, and every round was me reasoning about which
+  /// of two booleans Firebase sets rather than reading one off the phone.
+  void recordAuth(String summary) => _prefs.setString(_authKey, summary);
+
+  String? get lastAuthState => _prefs.getString(_authKey);
 }
 
 final linkDiagnosticsProvider = Provider<LinkDiagnostics>(

@@ -106,13 +106,29 @@ class AccountScreen extends ConsumerWidget {
       // A route, never its contents: no address, no code, and it goes
       // nowhere off the phone.
       Builder(builder: (context) {
+        // Nothing at all until there is something to say. An always-present
+        // block is two lines of raw URL on a screen a reader looks at, and
+        // it pushed the sign-out button out of reach of its own test, which
+        // is the layout telling the truth about the clutter.
+        //
+        // Scaffolding, not furniture: it comes out once the link flow has
+        // been stable for a while.
         final opened = ref.read(linkDiagnosticsProvider).lastOpenedWith;
         if (opened == null) return const SizedBox.shrink();
+        final auth = ref.read(linkDiagnosticsProvider).lastAuthState;
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: Text(
-            l.accountOpenedWith(opened),
-            style: HazriText.caption.copyWith(color: c.muted),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l.accountOpenedWith(opened),
+                style: HazriText.caption.copyWith(color: c.muted),
+              ),
+              if (auth != null)
+                Text(auth,
+                    style: HazriText.caption.copyWith(color: c.muted)),
+            ],
           ),
         );
       }),
