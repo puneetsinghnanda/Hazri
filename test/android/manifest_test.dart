@@ -86,4 +86,52 @@ void main() {
       expect(manifest, contains('tools:node="remove"'));
     });
   });
+
+  group('the signing key is not in the repository', () {
+    // The release keystore is the one file in this project that cannot be
+    // replaced. Lose it and the app can never be updated under the same
+    // identity again; leak it and anybody can sign a package that Android
+    // and `assetlinks.json` will both accept as Hazri.
+    //
+    // android/.gitignore refuses key.properties, *.jks and *.keystore, but a
+    // `git add -f` or a path it does not cover would get past it silently,
+    // and the commit that does it will not look like the one that mattered.
+    // So this asks git what is actually tracked rather than trusting the
+    // ignore file.
+
+    List<String> tracked() {
+      final result = Process.runSync('git', ['ls-files']);
+      expect(result.exitCode, 0, reason: 'git ls-files failed');
+      return (result.stdout as String)
+          .split('\n')
+          .where((line) => line.isNotEmpty)
+          .toList();
+    }
+
+    test('no keystore is committed', () {
+      final offences = tracked()
+          .where((f) =>
+              f.endsWith('.jks') ||
+              f.endsWith('.keystore') ||
+              f.endsWith('key.properties'))
+          .toList();
+
+      expect(offences, isEmpty,
+          reason: 'a signing key or its passwords are in git: $offences. '
+              'Remove it, then treat the key as compromised and make a new '
+              'one -- history keeps it even after the file goes.');
+    });
+
+    test('no service account is committed either', () {
+      // Same class of mistake, different file. A service-account key is
+      // admin access to the whole Firebase project.
+      final offences = tracked()
+          .where((f) =>
+              f.contains('service-account') ||
+              RegExp(r'(^|/)\.env(\.|$)').hasMatch(f))
+          .toList();
+
+      expect(offences, isEmpty, reason: 'a credential file is in git: $offences');
+    });
+  });
 }

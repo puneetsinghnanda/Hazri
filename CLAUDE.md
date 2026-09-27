@@ -220,26 +220,38 @@ on the way to replacing it. It now checks the APK exists before touching
 anything, and uses `gh release upload --clobber` on a release it creates or
 edits rather than deletes, so there is never a window with no APK.
 
-**Every CI build is signed with a different key, and nothing in the
-repository fixes that.** `build.gradle.kts` signs the release build with
-`signingConfigs.getByName("debug")`, and the workflow does nothing about a
-keystore — so on each fresh GitHub runner the Android Gradle Plugin finds no
-`~/.android/debug.keystore`, generates one with a fresh key pair, and throws
-it away when the runner is destroyed. Three consequences, found 2026-09-27:
+**The release APK is signed with one key, from four GitHub secrets**, and
+falls back to a throwaway one when they are absent. Until 2026-09-27 there
+was no fallback and no key: `build.gradle.kts` always used the debug config
+and the workflow kept no keystore, so each fresh runner found no
+`~/.android/debug.keystore`, the Android Gradle Plugin generated one with a
+new key pair, and it died with the runner. Every build was signed
+differently, which meant a new APK could not install over an old one
+(Android refuses a package whose signature changed), so every build cost an
+uninstall — and an uninstall takes `user.db` with it: the diary, the goals,
+every tick, and an anonymous account with no recovery. It also made App
+Links impossible, because `assetlinks.json` names one SHA-256 and there was
+never one to name.
 
-* **There is no "the" debug SHA-256 to register with Firebase.** Registering
-  one is meaningless because the next build has another. Android App Links
-  and `assetlinks.json` are therefore not merely waiting on a release
-  keystore — they cannot work at all until *some* stable key signs the APK.
-* **A new APK will not install over an old one.** Android refuses a package
-  whose signature changed, so every build needs an uninstall first — and an
-  uninstall takes `user.db` with it: the diary, the goals, every tick, and
-  the anonymous account that cannot be recovered without a verified email.
-  Anybody testing across builds has been starting again each time without
-  necessarily realising why.
-* **Phase 3's keystore decision (A-3) is really a Phase 2 one.** The fix is
-  one keystore, kept out of git, held as a GitHub secret and used by the
-  workflow.
+The secrets are `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
+`ANDROID_KEY_ALIAS` and `ANDROID_KEY_PASSWORD`. `docs/signing.md` is how to
+make the key and set them. The workflow decodes the keystore into
+`RUNNER_TEMP`, never the checkout, writes `android/key.properties`, and
+prints which certificate actually signed the APK — read out of the APK
+rather than assumed, because that SHA-256 is the one `assetlinks.json` has
+to carry and a mismatch fails App Link verification in silence.
+
+**Without the secrets the build still works**, on a fork or a fresh clone,
+signed with a throwaway key and a warning in the log. It will not install
+over a release-signed build.
+
+**The keystore is the one file in this project that cannot be replaced.**
+Lose it and the app can never be updated under the same identity; leak it
+and anybody can sign a package Android and `assetlinks.json` both accept as
+Hazri. `android/.gitignore` refuses it, and `test/android/manifest_test.dart`
+asks git what is actually tracked rather than trusting that — a `git add -f`
+would get past the ignore file and the commit would not look like the one
+that mattered. Watched failing.
 
 **A double hyphen inside an XML comment makes AndroidManifest.xml
 unparseable**, and the only thing that notices is

@@ -1,8 +1,25 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
+}
+
+// The release signing key, when there is one.
+//
+// `android/key.properties` is never in git (see `android/.gitignore`); CI
+// writes it from secrets, and a developer signing locally writes their own.
+// When it is absent the build falls back to the debug key, so a fork, a pull
+// request from one, and a fresh clone all still compile — which is most of
+// what a push build is for.
+val keystorePropertiesFile = rootProject.file("key.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        FileInputStream(keystorePropertiesFile).use { load(it) }
+    }
 }
 
 android {
@@ -30,12 +47,37 @@ android {
         resourceConfigurations += setOf("en", "pa", "hi")
     }
 
+    if (keystorePropertiesFile.exists()) {
+        signingConfigs {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // The test build is signed with the debug key so it installs
-            // straight from a download. A release to Play uses Play App
-            // Signing with an upload key kept outside the repository.
-            signingConfig = signingConfigs.getByName("debug")
+            // One key, or a throwaway one.
+            //
+            // Until 2026-09-27 this was always `debug`, and the workflow kept
+            // no keystore — so each CI runner found no ~/.android/debug.keystore,
+            // the Android Gradle Plugin generated one with a fresh key pair,
+            // and threw it away. Every build was signed differently, which
+            // meant a new APK could not install over an old one (Android
+            // refuses a package whose signature changed) and an uninstall
+            // took `user.db` with it: the diary, the goals, the anonymous
+            // account. It also made Android App Links impossible, because
+            // `assetlinks.json` names one SHA-256 and there was never one to
+            // name.
+            //
+            // The fallback stays for forks and fresh clones: they compile and
+            // catch a Gradle or manifest break, they simply will not install
+            // over a properly signed build.
+            signingConfig =
+                signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
             isMinifyEnabled = true
             // Resource shrinking is OFF, and must stay off. audio_service
             // resolves every icon it puts in the media notification by name at

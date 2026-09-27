@@ -30,6 +30,10 @@ concurrency:
 
 env:
   FLUTTER_VERSION: '3.47.4'
+  # Whether this run can sign properly. A fork has no access to the secret,
+  # and `secrets` cannot be read in a step's `if`, so it is resolved here into
+  # a plain string the steps can test.
+  HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
   # No resident daemon: this runner builds once and is destroyed. A daemon
   # holds a JVM open for a next build that never comes, on a machine with
   # 7 GB to share.
@@ -96,10 +100,67 @@ jobs:
         # there is a number in the log rather than a guess.
         run: free -h && df -h /
 
-      - name: Build debug-signed release APK (arm64)
+      - name: Unpack the release signing key
+        # Without this every run was signed with a throwaway debug key the
+        # Android Gradle Plugin generated on the runner and discarded with it.
+        # A new APK then refused to install over an old one -- Android rejects
+        # a package whose signature changed -- so every build cost an
+        # uninstall, and an uninstall takes user.db with it: the diary, the
+        # goals, the anonymous account. It also made App Links impossible,
+        # since assetlinks.json has to name one SHA-256.
+        #
+        # The keystore is written to RUNNER_TEMP, never into the checkout, so
+        # it cannot be picked up by anything that globs the working tree.
+        if: env.HAS_KEYSTORE == 'true'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/hazri-release.jks"
+          # A truncated or mis-pasted secret decodes to something that is not
+          # a keystore, and Gradle's complaint about it is four screens of
+          # Java. Fail here instead, where the cause is one line.
+          keytool -list -keystore "$RUNNER_TEMP/hazri-release.jks" \
+            -storepass "$STORE_PASSWORD" > /dev/null
+          {
+            echo "storeFile=$RUNNER_TEMP/hazri-release.jks"
+            echo "storePassword=$STORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > android/key.properties
+
+      - name: Say which key this build is signed with
+        # So a build that quietly fell back to a throwaway key is visible in
+        # the log rather than three days later on a phone that will not take
+        # the update.
+        run: |
+          if [ "$HAS_KEYSTORE" = 'true' ]; then
+            echo "Signed with the release key. This APK installs over a previous one."
+          else
+            echo "::warning::No ANDROID_KEYSTORE_BASE64 secret, so this APK is"\
+                 "signed with a throwaway debug key. It compiles and it runs,"\
+                 "but it will not install over a release-signed build and its"\
+                 "SHA-256 is not the one in assetlinks.json."
+          fi
+
+      - name: Build the release APK (arm64)
         # Split per ABI: a phone only needs its own slice, and arm64-v8a covers
         # every Android device sold in the last several years.
         run: flutter build apk --release --split-per-abi --target-platform android-arm64
+
+      - name: Which certificate actually signed it
+        # Read out of the APK rather than assumed from the inputs. This SHA-256
+        # is the one that has to be in public/.well-known/assetlinks.json, and
+        # a mismatch there fails App Link verification silently -- the link
+        # just opens a browser and nobody is told why.
+        run: |
+          set -euo pipefail
+          "$ANDROID_HOME"/build-tools/*/apksigner verify --print-certs \
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
+            | grep -i 'SHA-256 digest' || true
 
       - name: The media notification's icons survived the build
         # A missing small icon makes startForeground() throw, which loses the
