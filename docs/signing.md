@@ -32,6 +32,12 @@ keytool -genkeypair -v \
   -storetype PKCS12
 ```
 
+**`keytool` writes the file into whatever directory you run it from**, so
+run it somewhere deliberate. The repository root is fine — the root
+`.gitignore` refuses `*.jks`, `*.keystore` and `key.properties` anywhere in
+the tree — but somewhere outside the repository is better, because a file
+that is never in the working tree cannot be committed by a mistake.
+
 It asks for a password twice and then for a name and organisation. The
 name fields go into the certificate and are visible to anybody who inspects
 a signed APK; they are not checked by anyone, so put something true and
@@ -42,7 +48,10 @@ no benefit.
 `-validity 10000` is about 27 years. Play requires a certificate that
 outlives the app; a short one is a cliff nobody sees coming.
 
-**Back the file up now**, before going further.
+**Back the file up now**, before going further. Somewhere that is not only
+this laptop: a password manager's file attachment, an encrypted archive in
+your own cloud storage, a USB stick in a drawer. Two of those, ideally. The
+password goes somewhere separate from the file.
 
 ## 2. Turn it into a secret
 

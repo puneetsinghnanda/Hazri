@@ -58,8 +58,23 @@ app.*.map.json
 tools/timing_tool/*.html
 !tools/timing_tool/page.html
 
-# Phase 2 secrets. `android/.gitignore` already covers the keystore and
-# key.properties; these are the ones it does not. The first commit after a
+# The signing keystore, anywhere in the tree.
+#
+# `android/.gitignore` also lists these, but a .gitignore only governs its own
+# directory downwards — and `keytool` writes the keystore into whatever
+# directory it was run from, which for anybody following docs/signing.md is
+# the repository root. So the file most likely to be created is the one
+# android/.gitignore cannot see. Checked by running `git check-ignore` against
+# a root-level .jks and finding it was not ignored.
+#
+# Losing this file means the app can never be updated under the same identity
+# again; leaking it means anybody can sign a package Android, Play and
+# assetlinks.json all accept as Hazri.
+*.jks
+*.keystore
+key.properties
+
+# Phase 2 secrets. These are the ones neither of the above covers. The first commit after a
 # Firebase project or an email sender is created is where they leak, and an
 # API key in history is a spam relay somebody else owns.
 #
