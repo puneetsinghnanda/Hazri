@@ -273,7 +273,7 @@ These fail identically for everybody and are invisible in git.
 | # | What must be true | If it is not |
 |---|---|---|
 | B17 | The Email/Password provider exists **with its Email link (passwordless) toggle on and its password toggle off** | `operation-not-allowed` on every send, project-wide. **This was the real cause, found 2026-09-27:** the project had only Anonymous enabled and the provider had never been added, so no verification mail had ever been sendable. See A15 |
-| B18 | The continue URL's host is in Authentication → Settings → Authorized domains (`hazri-dfcc1.web.app` and `.firebaseapp.com` are there by default) | `unauthorized-continue-uri`, currently reported as "unavailable" |
+| B18 | The continue URL's host is in Authentication → Settings → Authorized domains (`hazri-dfcc1.web.app` and `.firebaseapp.com` are there by default) | `unauthorized-continue-uri`. **Confirmed working 2026-09-27** — a link sent, delivered and followed end to end, so the default authorisation is in force. It becomes live again the moment the continue URL moves to `hazri.me` |
 | B19 | Something is deployed at `https://hazri-dfcc1.web.app/verify` | Firebase's *Site Not Found*. The link still works if the whole URL is copied out of the address bar, and nothing tells anybody that. **Was the state until 2026-09-27**; the pages are live now, and the failure returns the moment a change to `public/` is committed and not deployed |
 | B20 | `firestore.rules` is published | Auth succeeds and the profile read is refused → `SangatRefused`. The restore "failed" for a reason that is not in Auth at all |
 | B21 | There is a network, and it is not a captive portal | `network-request-failed` → "unavailable", which is right |
@@ -476,11 +476,13 @@ give an address, and it is the only recovery that works with the radio off.
 - Device check: restore an address **no account has**, and be told so rather
   than landed in a blank account (A10, B1). This is the one that is wrong
   today, so it is the one that must be seen to fail before it is fixed.
-- Device check: the link out of a real inbox, tapped, on a phone — the page
-  at `/verify` must exist and must say what to do (B19). **Half done
-  2026-09-27:** `/verify` is deployed and its no-code branch was seen in a
-  browser. The branch that matters — a real link, carrying a real `oobCode` —
-  has not been walked yet, and it is the one that proves B17 and B18 too.
+- ~~Device check: the link out of a real inbox, on a phone.~~ **Done
+  2026-09-27, and it was the first verification this project has ever
+  completed.** Send, deliver, follow the link, `continueWithLink`, and the
+  account screen saying the address is confirmed. It proves B17 (the
+  provider), B18 (the authorised domain), that Firebase's own mailer reaches
+  a real inbox, and that `linkWithCredential` keeps the anonymous uid rather
+  than minting a new one.
 - ~~Unit test: each failure produces its own message.~~ **Done 2026-09-27**,
   `test/features/join_outcome_words_test.dart`. Not as "the mapping returns
   the right enum", which is a tautology — the rule it holds is **two causes

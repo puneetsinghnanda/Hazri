@@ -298,7 +298,10 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   is now true once. No account has a password, there is no sign-in screen,
   and nothing in `lib/` calls a password API —
   `test/features/no_password_test.dart` fails if one appears, and has been
-  watched failing. `docs/features/01-accounts.md` A15 has the detail.
+  watched failing. `docs/features/01-accounts.md` A15 has the detail. **A verification
+  completed end to end for the first time on 2026-09-27**, once the provider
+  was on: mail sent by Firebase's own mailer, delivered, link followed,
+  address confirmed.
 - **A verification or restore link is pasted, not tapped.** Android App Links
   need an `assetlinks.json` carrying the release signing fingerprint, and
   there is no keystore yet (Phase 3). Pasting the link needs nothing, so both
