@@ -149,7 +149,9 @@ dart run build_runner build                           # drift *.g.dart
 an email verification link lands, and `/j/<groupId>`, where an invite does.
 It goes live with `firebase deploy --only hosting` and **no workflow runs
 that**, so a change to those pages changes nothing until somebody deploys by
-hand. Both URLs come from `kSiteBase` in `lib/core/backend/backend.dart`; a
+hand. **First deployed 2026-09-27**, before which the site had never been
+deployed at all and answered Firebase's *Site Not Found* — which is where
+every verification link the app had ever sent had been landing. Both URLs come from `kSiteBase` in `lib/core/backend/backend.dart`; a
 test holds that they share a host, because they were once on two and one of
 them served nothing.
 

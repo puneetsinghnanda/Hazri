@@ -60,14 +60,13 @@ sangat with other people, and to get your diary back on a new phone.
    keystore.
 5. **No account deletion from inside the sangat flow** — only from privacy,
    which is three menus deep.
-6. **The pages exist in `public/`; they still have to be deployed.**
-   `firebase.json`, `.firebaserc` and the pages landed on 2026-09-26, so
-   `firebase deploy --only hosting` is all that is left — but until somebody
-   runs it, the link in every verification email lands on Firebase Hosting's
-   default 404. The link still *works* (the whole URL out of the address bar
-   is what the app wants) and nothing tells anybody that, so the ordinary
-   outcome of tapping it is a dead end. **Like `firestore.rules`, this is
-   published by hand and no workflow does it.** See §1.7.
+6. ~~Nothing is deployed at `/verify`.~~ **Closed 2026-09-27.** Until that
+   morning `https://hazri-dfcc1.web.app` had never been deployed at all — it
+   answered Firebase's *Site Not Found* — so every verification link the app
+   had ever sent landed on a dead end. `public/` is live now and `/verify`
+   answers correctly in all three languages. **Like `firestore.rules`, it is
+   published by hand and no workflow does it**, so the next change to those
+   pages is only half done until somebody deploys again.
 7. **Three different failures are reported as one.** `continueWithLink` maps
    `invalid-action-code` *and* `invalid-email` to `LinkProblem.alreadyUsed`,
    and `isSignInWithEmailLink == false` to `LinkProblem.wrongAddress`. A link
@@ -235,7 +234,7 @@ These fail identically for everybody and are invisible in git.
 |---|---|---|
 | B17 | Email/Password is enabled **and its Email link (passwordless) sub-toggle is on**, in Authentication → Sign-in method | `operation-not-allowed` on every send, project-wide. Nothing in this repository records whether it is on |
 | B18 | The continue URL's host is in Authentication → Settings → Authorized domains (`hazri-dfcc1.web.app` and `.firebaseapp.com` are there by default) | `unauthorized-continue-uri`, currently reported as "unavailable" |
-| B19 | Something is deployed at `https://hazri-dfcc1.web.app/verify` | Firebase's 404. The link still works if the whole URL is copied out of the address bar, and nothing tells anybody that. **This is the state today** — §1.3.6 |
+| B19 | Something is deployed at `https://hazri-dfcc1.web.app/verify` | Firebase's *Site Not Found*. The link still works if the whole URL is copied out of the address bar, and nothing tells anybody that. **Was the state until 2026-09-27**; the pages are live now, and the failure returns the moment a change to `public/` is committed and not deployed |
 | B20 | `firestore.rules` is published | Auth succeeds and the profile read is refused → `SangatRefused`. The restore "failed" for a reason that is not in Auth at all |
 | B21 | There is a network, and it is not a captive portal | `network-request-failed` → "unavailable", which is right |
 
@@ -437,8 +436,11 @@ give an address, and it is the only recovery that works with the radio off.
 - Device check: restore an address **no account has**, and be told so rather
   than landed in a blank account (A10, B1). This is the one that is wrong
   today, so it is the one that must be seen to fail before it is fixed.
-- Device check: the link out of a real inbox, tapped, on a phone — the page at
-  `/verify` must exist and must say what to do (B19).
+- Device check: the link out of a real inbox, tapped, on a phone — the page
+  at `/verify` must exist and must say what to do (B19). **Half done
+  2026-09-27:** `/verify` is deployed and its no-code branch was seen in a
+  browser. The branch that matters — a real link, carrying a real `oobCode` —
+  has not been walked yet, and it is the one that proves B17 and B18 too.
 - Unit test: each of `expired-action-code`, `invalid-action-code`,
   `invalid-email`, a non-Hazri string and `too-many-requests` produces its own
   message (A13, B10-B14). Five errors, five messages, asserted separately.
