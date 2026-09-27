@@ -33,7 +33,23 @@ verify there is nothing to gain and a link on an unverified host to churn.
 
 ## The records
 
-All at the registrar, in one zone.
+All at the registrar, in one zone — but they are **two independent tracks**,
+and only one of them needs anything bought.
+
+| Track | Steps | Needs | When |
+|---|---|---|---|
+| **Pages** | 3, 4 | the domain, which exists | Can be done today |
+| **Mail** | 1, 2, 5 | a Zoho Mail account, which does not exist yet | Whenever the mailbox is bought |
+
+Neither blocks the other and the records do not collide, so the numbering
+below is the order *within* a track, not a queue to work through.
+
+**No mailbox is needed for anything the app does.** Firebase sends the
+verification mail itself, from `noreply@hazri-dfcc1.firebaseapp.com`
+(`01-accounts.md` §1.7 option 1). A mailbox on the domain is wanted for the
+Play Store developer contact, which is public and required at publish, the
+`Reply-To` on that mail, and the Phase 3 feedback address. So it is a
+before-the-Play-Store item, not a now item.
 
 ### 1. The mailbox — Zoho Mail
 
