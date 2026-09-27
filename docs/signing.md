@@ -144,3 +144,43 @@ keyPassword=…
 
 Gradle picks it up when it exists and falls back to the debug key when it
 does not, which is why a fresh clone still builds.
+
+---
+
+## The fingerprint, and where it goes
+
+`public/.well-known/assetlinks.json` carries it, and
+`test/android/assetlinks_test.dart` checks the shape — a truncated paste is
+still valid JSON and still looks plausible, and **every way of getting this
+file wrong fails in silence**: the link opens a browser exactly as it did
+before, with no error on the phone and no warning at build time.
+
+The current key, made 2026-09-27, valid to 2054:
+
+```
+SHA-256  B3:1B:43:F5:73:9A:8F:DA:DB:E8:20:16:5A:55:8B:5B:83:02:6F:4C:62:D6:0F:83:37:66:E2:8C:AA:FF:D2:F8
+SHA-1    AA:79:E1:30:15:EB:64:6A:0F:5F:2C:03:6C:B3:82:BF:2A:68:84:CA
+```
+
+A fingerprint is safe to write down and safe to publish — `assetlinks.json`
+is served to the whole internet by design. It is the keystore and its
+password that are not.
+
+**`assetlinks.json` changes nothing until it is deployed**, by hand:
+
+```bash
+firebase deploy --only hosting
+```
+
+Then check that Google can read it, which is what Android actually does:
+
+```
+https://digitalassetlinks.googleapis.com/v1/statements:list
+  ?source.web.site=https://hazri-dfcc1.web.app
+  &relation=delegate_permission/common.handle_all_urls
+```
+
+A `statements` array naming `app.hazri` means the web half is done. Links
+still will not open the app until the manifest declares a matching
+intent-filter and the app knows what to do with the link it receives — see
+`docs/features/01-accounts.md` A-3.

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.hazri",
+      "sha256_cert_fingerprints": [
+        "B3:1B:43:F5:73:9A:8F:DA:DB:E8:20:16:5A:55:8B:5B:83:02:6F:4C:62:D6:0F:83:37:66:E2:8C:AA:FF:D2:F8"
+      ]
+    }
+  }
+]
