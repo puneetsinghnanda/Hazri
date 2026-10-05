@@ -3,6 +3,12 @@
 **There is no login, and there will not be one.** Rule 4, reaffirmed
 2026-09-26. No password, no sign-in screen, ever.
 
+**§1.11 supersedes §1.4 to §1.10.** A PRD supplied on 2026-10-05 replaces the
+account design rather than amending it, and §1.11 is the record of what was
+decided. Read it first; the sections above are kept because the boundary
+conditions in §1.6 and the sending options in §1.7 are still the research the
+rewrite rests on.
+
 ---
 
 ## 1.1 Purpose
@@ -663,3 +669,117 @@ app came to hold two answers at once.
   authorized domains include the continue URL's host, and the template's
   sender and wording have been read (B17, B18). None of this is visible in
   git, so a note in the PR description is the only record there is.
+
+---
+
+## 1.11 The rewrite — decisions taken 2026-10-05
+
+A PRD (*Profile Setup, Email Verification, Profile Restore*) was supplied on
+2026-10-05 as a Word document. **It replaces the design in §1.4 to §1.10
+rather than amending it**: the existing account code comes out and is built
+again from that PRD. The document itself is not in this repository — only the
+decisions below are written down, so this section is the record.
+
+Where this section and anything above it disagree, **this section wins**.
+
+### 1.11.1 Scope
+
+| # | Decision |
+|---|---|
+| W1 | The PRD is a **replacement**. Existing account code is removed, not adapted, and rebuilt from the PRD. Unit tests cover the positive **and** the negative path of each rule. |
+| W2 | **The sangat comes out entirely** — all code and all logic. A separate PRD will define how it works. |
+| W3 | **No existing data is kept.** Firestore holds test documents only; nothing is migrated. |
+| W4 | Follow the PRD and nothing else. Do not carry forward the old design's decisions. |
+| W5 | **Localisation is required** (`pa`, `hi`, `en`, per rule 5). An updated PRD will carry the strings. |
+| W6 | Sending: **Brevo or similar**, to be configured. |
+| W7 | Cost model as the PRD states it: accepted. |
+
+### 1.11.2 What the sangat's removal takes with it
+
+Settled 2026-10-05, question by question:
+
+| Part | Decision |
+|---|---|
+| **Diary sync** (`lib/features/sync/`, 498 lines) | **Stays.** It does not come out with the sangat. |
+| **The globe and presence** (Simran tab) | **Comes out.** Separate logic to follow. |
+| **The Vichar library** | **Moves behind the new API.** No direct client read survives. |
+| **PRD §13.1 and the privacy screen** | **Will change.** The two are one promise and are rewritten together. |
+| **Today's banners** (join banner, hazri banner) | Separate logic to follow. |
+
+What this touches outside `lib/features/sangat/` (28 files, 5,352 lines):
+`lib/main.dart`, `lib/app/menu_sheet.dart`,
+`features/today/ui/today_screen.dart`,
+`features/simran/data/simran_controller.dart`,
+`features/settings/ui/settings_screen.dart`,
+`features/sync/ui/sync_screen.dart`,
+`features/about/ui/privacy_screen.dart`, and fifteen test files.
+
+### 1.11.3 Phone numbers
+
+| # | Decision |
+|---|---|
+| P1 | **No validation**, for now. No regex, no `libphonenumber`, no country metadata in the APK. The PRD's `PHONE_REGEX = ^[6-9][0-9]{9}$` is dropped. |
+| P2 | **Any country code is accepted.** The `+91` prefix is not hard-coded anywhere — not in the field, not in what is stored. |
+| P3 | **Stored normalised.** One spelling reaches the server: every character that is not a digit is removed, and a leading `+` is kept if the reader typed one. |
+
+P1 and P3 pull against each other and it is worth being honest about where:
+with no validation there is no country to infer, so `9876543210` and
+`+919876543210` normalise to two different strings and are two different
+accounts. Normalising is still worth doing — it collapses spaces, dashes and
+brackets, which is where the same number typed twice usually differs — but
+**the phone number is not a reliable key for finding an account** until a
+country code is required. Anything that looks up an account by phone has to
+treat a miss as "no account found", never as proof there isn't one.
+
+### 1.11.4 Android
+
+| # | Decision |
+|---|---|
+| A-1 | `android:taskAffinity` keeps its **default** value (the package name). The attribute is **never set to the empty string**. An empty affinity is what put four Hazri icons in the recents switcher: it means the activity belongs to no task, so every tap of a mail link starts a new one and `launchMode="singleTask"` has nothing to match against. |
+
+The PRD's §7.3 specifies `launchMode="singleTask"` and is silent on
+`taskAffinity`, which reads as though `launchMode` were the whole story. It
+is not. A-1 is the missing line.
+
+### 1.11.5 Deliberately untouched
+
+| Area | Decision |
+|---|---|
+| **Firebase Analytics** | **Do not touch it.** `firebase_analytics: ^12.6.0` stays in `pubspec.yaml`, collection stays off, the inert Settings switch stays. A separate feature document will cover it. |
+| **Which parts of the app may require the network** | To be decided later. Until then, **follow the PRD**. |
+
+### 1.11.6 Still open
+
+These have no answer yet and will block the matching piece of work, not the
+whole rewrite:
+
+1. **go_router or Navigator 1.0.** The PRD's flows read as imperative
+   `Navigator.push`; the app is 33 `GoRoute`s on a
+   `StatefulShellRoute.indexedStack`, and the incoming-link handling lives in
+   go_router's top-level `redirect` — which is what lets a restore link reach
+   the right screen on a phone that has never been set up. Default if nothing
+   is said: **keep go_router**, and treat the PRD's diagrams as flow rather
+   than as API.
+2. **`minSdk` 23 (PRD) or 24 (the app today).** Default: **stay on 24** and
+   correct the PRD.
+3. **`{{SHA256_DEBUG}}` in the PRD's `assetlinks.json` cannot be filled.** CI
+   keeps no debug keystore, so the Android Gradle Plugin mints a throwaway
+   key on each runner and there is no stable debug fingerprint to publish.
+   Default: **publish the release fingerprint only**; a debug install gets no
+   App Link and a tapped link opens a browser.
+4. **`android:allowBackup="false"`**, which the PRD asks for. It switches off
+   Android's own backup of `user.db` — the diary, the goals and every tick —
+   so an uninstall or a new phone loses them with no recovery, given the PRD
+   also excludes diary data from restore. Default: **leave backup enabled**
+   until this is confirmed, because the alternative is the same data loss the
+   signing key was fixed to prevent.
+5. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the
+   build on a missing or untranslated key, so English-only keys cannot be
+   committed without relaxing that test. Default: **wait for the updated
+   PRD** rather than relax it.
+6. **Brevo credentials.** Default: write the sender against Brevo's API with
+   the key read from Secret Manager, so switching it on is configuration
+   rather than code.
+7. **Whether the sangat PRD lands before this is built.** If `users/{uid}`
+   later grows group membership, knowing the shape now saves reshaping the
+   document twice.
