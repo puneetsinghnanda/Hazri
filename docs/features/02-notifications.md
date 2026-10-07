@@ -66,7 +66,7 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 - **AV1.** 04:00 every day, for everybody.
 - **AV2.** The message is the rotation of 5.1 for that weekday.
 - **AV3.** Tap or "Open {bani}" opens the reader on the first goal bani in scope that day, else Japji Sahib. "Start Nitnem" opens Nitnem. `{bani}` is that bani's name.
-- **AV4.** The expanded notification may carry the app's sunrise-arc picture with `{city}` and `{sunrise}` (from `SolarService`); the text alone is complete without it.
+- **AV4.** With a profile, the expanded notification may carry the app's sunrise-arc picture with `{city}` (the profile city) and `{sunrise}` (from `SolarService`). Without a profile there is no city and no picture (`03-first-run.md` CY3). The text alone is complete without it.
 
 ### 4.2 Goal bani
 
@@ -114,7 +114,7 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 
 ## 5. Messages
 
-`{name}` is the profile name; `{city}` and `{sunrise}` come from the city and `SolarService`; `{bani}`, `{event}` from `content.db`; `{weekday}` is the day's name in the app's language; numbers are formatted for the language. The example values on the review page (Harpreet, New Delhi, 06:22, 312, 12) are not part of the text.
+`{name}` is the profile name; `{city}` is the profile city and `{sunrise}` comes from it through `SolarService`; `{bani}`, `{event}` from `content.db`; `{weekday}` is the day's name in the app's language; numbers are formatted for the language. The example values on the review page (Harpreet, New Delhi, 06:22, 312, 12) are not part of the text.
 
 ### 5.1 Amrit Vela (04:00)
 

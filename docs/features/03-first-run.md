@@ -117,10 +117,12 @@ notification sheet of F5. None of them blocks reading.
 
 ## 3.6 The city
 
-Two things are called the city, and they are kept apart:
+There is one city, the profile city (owner, 2026-10-07, F-4).
 
-- **The profile city** (`cityId`) places the person on the globe. It is chosen in Profile Setup and changed only through Edit profile (`07-simran.md` AT5).
-- **The Settings city** computes sunrise for the Amrit Vela notification's picture (`02-notifications.md` AV4) and the date line. It is never asked in setup. Until it is set it is the profile city when there is a profile, else New Delhi, and Settings says which (F-4).
+- **CY1.** The city is the profile's `cityId`, chosen in Profile Setup and changed only through Edit profile (`07-simran.md` AT5). It is never asked in setup.
+- **CY2.** It places the person on the globe and gives the sunrise in the Amrit Vela notification (`02-notifications.md` AV4).
+- **CY3. Without a profile there is no city.** Nothing guesses one and nothing defaults to New Delhi: the Amrit Vela notification goes without the sunrise picture, and the Monday message falls back as `02-notifications.md` CM1 says.
+- **CY4.** The separate city in Settings is removed.
 
 ## 3.7 Scenarios
 
@@ -143,14 +145,15 @@ Two things are called the city, and they are kept apart:
 | F-o | Killed during setup | Reopening | Resumes; a half-finished setup never leaves the app unusable |
 | F-p | `content.db` fails to open | First run | A real error naming the problem, not a blank screen |
 | F-q | Upgrade from a build with `onboardingDone` | First open | Not re-onboarded; the notification sheet once if permission is not granted |
-| F-r | No profile, Settings city never set | Amrit Vela picture | Sunrise for New Delhi, and Settings says so |
+| F-r | No profile | 04:00 Amrit Vela | The text only, no sunrise picture and no city |
+| F-s | Profile in Amritsar | 04:00 Amrit Vela | The picture with Amritsar's sunrise |
 
 ## 3.8 Migration
 
 Existing installs have `onboardingDone: true` and never see the new flow. The
 in-context asks apply to them too: it is how somebody who upgraded finally gets
-asked for notification permission, the hole that cost four rounds. An install
-that already has a Settings city keeps it.
+asked for notification permission, the hole that cost four rounds. A city
+already saved in Settings is dropped; the profile city takes over (CY4).
 
 ## 3.9 Open decisions
 
@@ -159,14 +162,14 @@ that already has a Settings city keeps it.
 | F-1 | Does Welcome survive, or go straight to Language? | **Default:** keep it; it is the only place the app introduces itself |
 | F-2 | Elder mode offered, or detected from the system font scale? | **Default:** offered, and pre-selected when the font scale is 1.3 or more. Never forced |
 | F-3 | Audio pack on Wi-Fi automatically? | **Default:** asked once at first play, then remembered. Never 80 MB unasked |
-| F-4 | The Settings city: keep it, or always use the profile city? | **Open.** Default: keep it (3.6), following the profile city until set |
+| F-4 | The Settings city: keep it, or always use the profile city? | **Decided 2026-10-07:** the profile city only; without a profile, no city (3.6) |
 | F-5 | Notification permission: first-Today sheet, or the system dialog at app start as the code does now? | **Open.** Default: the sheet (F5), because Amrit Vela and the Hazri nudge are on by default and the earlier rule, "ask when a reminder is switched on", no longer has a moment to happen in |
 
 ## 3.10 What changed on 2026-10-07
 
 | Before | Now | Source |
 | --- | --- | --- |
-| City asked when an Auto reminder time is set | No Auto times; profile city in Profile Setup, Settings city defaults | `07-simran.md`, 3.6 |
+| City asked when an Auto reminder time is set; a separate Settings city | One city, the profile's; none without a profile | 3.6, F-4 |
 | Notification permission asked when a reminder is switched on | Reminders are on by default; a sheet on the first Today | `02-notifications.md` CM7, F-5 |
 | Exact alarms asked after the first late reminder | Never asked; a note on the Notifications screen | `02-notifications.md` DP2 |
 | The Sangat as a Today card | Its own tab; invites wait for setup | `08-sangat.md` IV6 |
