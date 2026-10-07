@@ -2,8 +2,7 @@
 
 Rewritten 2026-10-07 with Puneet Singh Nanda. It replaces the earlier version
 of this file entirely, and with it the old sangat code (`01-accounts.md`
-§13.3 W2). One decision is still open (13, SG-1); every other one was taken
-by the owner on 2026-10-07.
+§13.3 W2). Every decision in it was taken by the owner on 2026-10-07.
 
 ## 0. Implementation directive (mandatory, read first)
 
@@ -22,7 +21,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 | Req # | Requirement (owner, 2026-10-07) | Where |
 | --- | --- | --- |
-| K1 | Four built-in groups: Amrit Vela Sangat, Simran Sangat, Daily Nitnem Sangat, Sukhmani Sahib Sangat | 4.1 |
+| K1 | Three built-in groups: Amrit Vela Sangat, Simran Sangat, Sukhmani Sahib Sangat | 4.1 |
 | K2 | People join and leave built-in groups themselves | 4.1, 7 |
 | K3 | Built-in groups are configured in an admin website, not in the app | 4.1, `11-admin.md` |
 | K4 | Creating a custom group needs a profile; joining one does not | 4.2, 4.3 |
@@ -71,7 +70,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 ### 4.1 Built-in groups
 
-- **BI1.** The four built-in groups at launch are Amrit Vela Sangat, Simran Sangat, Daily Nitnem Sangat and Sukhmani Sahib Sangat. Their names are set in `en`, `pa` and `hi` in the admin website (Punjabi: ਅੰਮ੍ਰਿਤ ਵੇਲਾ ਸੰਗਤ, ਸਿਮਰਨ ਸੰਗਤ, ਰੋਜ਼ਾਨਾ ਨਿਤਨੇਮ ਸੰਗਤ, ਸੁਖਮਨੀ ਸਾਹਿਬ ਸੰਗਤ; Hindi: अमृत वेला संगत, सिमरन संगत, दैनिक नितनेम संगत, सुखमनी साहिब संगत; to be confirmed by the owner).
+- **BI1.** The three built-in groups at launch are Amrit Vela Sangat (ਅੰਮ੍ਰਿਤ ਵੇਲਾ ਸੰਗਤ, अमृत वेला संगत), Simran Sangat (ਸਿਮਰਨ ਸੰਗਤ, सिमरन संगत) and Sukhmani Sahib Sangat (ਸੁਖਮਨੀ ਸਾਹਿਬ ਸੰਗਤ, सुखमनी साहिब संगत). Their names are set in the admin website. More can be added there later.
 - **BI2.** Nobody is a member until they join. Every user sees the list of built-in groups with Join or Leave, with or without a profile.
 - **BI3.** Each has one goal at a time, set in the admin website: a bani or Naam Simran with minutes, a target, and a length in days.
 - **BI4. Reset.** When the target is met, or when the end day passes unmet, the next group day a new goal starts with the same bani or minutes, target and length. The finished goal stays as history, with its total and every member's contribution.
@@ -114,7 +113,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 ### 4.5 Counting
 
-- **CT1. What counts.** For a `BANI` goal, every completion of that bani (`04-goals.md` §5.4). For a `SIMRAN` goal, every sitting of at least the goal's minutes (`04-goals.md` §5.5), counting as one. **(SG-1)**
+- **CT1. What counts.** For a `BANI` goal, every completion of that bani (`04-goals.md` §5.4). For a `SIMRAN` goal, every sitting of at least the goal's minutes (`04-goals.md` §5.5), counting as one (SG-1).
 - **CT2. When.** A contribution counts when its group day falls between the goal's start and end day, on or after the day the member joined, while the member is a member and the group is active.
 - **CT3. Every group.** One paath counts once in every group the member belongs to whose goal it matches (owner, 2026-10-07).
 - **CT4. Diary cap.** Completions and sittings added with the Diary "+" (`source` = `DIARY`) count at most `DIARY_DAILY_CAP` per member per group per group day; the rest are accepted and ignored for the group. The Diary itself is not capped (owner, 2026-10-07).
@@ -127,7 +126,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 ### 4.6 What members see
 
 - **VS1. My groups:** active groups first, then inactive ones under `sangatEndedHeading`. Each shows name, goal, total of target, percentage and days left.
-- **VS2. Built-in groups:** the four, with member count and Join or Leave.
+- **VS2. Built-in groups:** every active built-in group, with member count and Join or Leave.
 - **VS3. A group:** name; goal (bani or Naam Simran with minutes, target, start and end); total, percentage, today's total, days left or "Ended on {date}"; member count; and the member list.
 - **VS4. The member list** shows at most 50 members: those with a profile first, alphabetically by name, then "Sangat member" rows. Each row shows the name and that member's contribution to the goal. After 50, one line reads `sangatMoreMembers` ("450 more members"). No further loading.
 - **VS5.** Nobody is shown a position, a rank, or who has not contributed.
@@ -394,8 +393,8 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 
 | # | Question | Decision |
 | --- | --- | --- |
-| SG-1 | Does a Simran goal count sittings of at least M minutes (1,000 sittings of 11 min), or total minutes (10,000 minutes)? | **Open.** Written as sittings, matching personal goals; total minutes would change CT1, the goal form and the summary string |
-| SG-2 | Built-in group names in Punjabi and Hindi | Proposed in BI1; the owner to confirm |
+| SG-1 | Does a Simran goal count sittings or total minutes? | **Decided 2026-10-07:** sittings of at least the goal's minutes (CT1) |
+| SG-2 | Built-in groups and their names | **Decided 2026-10-07:** three, named as in BI1; Daily Nitnem Sangat removed |
 | — | Every other rule | Decided by the owner on 2026-10-07 |
 
 ## 14. Out of scope
