@@ -15,6 +15,7 @@ behaviour has to survive.
 | 7 | Simran and the globe | [`07-simran.md`](07-simran.md) |
 | 8 | Sangat: groups, roles, invites | [`08-sangat.md`](08-sangat.md) |
 | 9 | Diary | [`09-diary.md`](09-diary.md) |
+| 10 | Weekly backup and restore | [`10-backup.md`](10-backup.md) |
 
 `00-platform.md` holds what they all share: the backend, the data model, and
 the testing rule that comes out of how this went wrong.

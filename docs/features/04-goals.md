@@ -299,20 +299,20 @@ Old rows may overlap for the same bani. GI1 applies only to new writes, and `ver
 
 This feature sends nothing to the cloud. Until a sync feature ships, **uninstalling the app or clearing its data loses every goal, completion and dot**. Once it ships, a profile restore brings goals and diary entries back as of the last weekly sync (`01-accounts.md` §13 D8).
 
-A weekly phone-to-cloud sync is planned as its own feature document. The schema above is ready for it without another migration:
+A weekly phone-to-cloud backup is specified in `10-backup.md`, and the paths below are its. The schema above is ready for it without another migration:
 
-- Every row has a UUID `id`, which becomes the Firestore document ID.
+- Every row has a UUID `id`, which identifies it inside the backup documents.
 - Every row has `updatedAt`, so a sync can send only rows changed since the last run.
 - Undo is a soft delete (`deletedAt`), so it can be sent like any other change.
 
 The intended Firestore shape follows the Profile PRD's rules: documents under the owning profile, and written only by the `api` Cloud Function.
 
-| Local table | Firestore path (future) |
+| Local table | Firestore path (`10-backup.md` §5) |
 | --- | --- |
-| `goals` | `profiles/{profileId}/goals/{id}` |
-| `goalItems` | `profiles/{profileId}/goalItems/{id}` |
-| `completions` | `profiles/{profileId}/completions/{id}` |
-| `simranSessions` | `profiles/{profileId}/simranSessions/{id}` |
+| `goals` | `profiles/{profileId}/backupGoals/{goalId}` |
+| `goalItems` | Inside its goal's `backupGoals` document |
+| `completions` | `profiles/{profileId}/backupWeeks/{weekId}` |
+| `simranSessions` | `profiles/{profileId}/backupWeeks/{weekId}` |
 
 The owner has amended Profile PRD §12 so that restore brings these tables back (`01-accounts.md` §13 D8 and 13.2).
 

@@ -1065,11 +1065,11 @@ Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7 was decided o
 
 Goals and diary entries live on the phone (`docs/features/04-goals.md` §5) and reach the cloud only through the planned weekly sync. A restore can bring back only what was synced before the old phone was lost, so:
 
-- The weekly sync writes `goals`, `goalItems`, `completions` and `simranSessions` under `profiles/{profileId}/` through the `api` Cloud Function (04-goals §6).
-- After `200 PROFILE_RESTORED` (§6.5) the app downloads those rows and writes them into `user.db`.
-- The existing diary sync (`lib/features/sync/`, 13.4) writes Firestore directly, which §10.1's deny-all rules forbid. It moves behind the `api` function as part of that sync.
+- The weekly backup (`10-backup.md`) writes `goals`, `goalItems`, `completions` and `simranSessions` under `profiles/{profileId}/` through the `api` Cloud Function.
+- After `200 PROFILE_RESTORED` (§6.5) the app offers to download those rows and merge them into `user.db` (`10-backup.md` §4.3 and §8.3).
+- The existing diary sync (`lib/features/sync/`, 13.4) writes Firestore directly, which §10.1's deny-all rules forbid. The weekly backup replaces it.
 - Anything done after the last weekly sync is not restored. The restore screen must say so rather than imply a complete copy.
-- The sync and the download are specified in their own feature document. Until it exists, a restore returns only the profile.
+- The backup and the download are specified in `10-backup.md`. Until it is built, a restore returns only the profile.
 
 ### 13.3 Scope of the rewrite
 
@@ -1089,7 +1089,7 @@ Settled 2026-10-05, question by question:
 
 | Part | Decision |
 |---|---|
-| **Diary sync** (`lib/features/sync/`, 498 lines) | **Stays.** It does not come out with the sangat. |
+| **Diary sync** (`lib/features/sync/`, 498 lines) | **Stays** with the sangat's removal, and is then replaced by the weekly backup (`10-backup.md`). |
 | **The globe and presence** (Simran tab) | **Comes out.** Separate logic to follow. |
 | **The Vichar library** | **Moves behind the new API.** No direct client read survives. |
 | **`docs/PRD.md` §13.1 and the privacy screen** | **Will change.** The two are one promise and are rewritten together. |
@@ -1141,4 +1141,4 @@ A-1 it has no task to match against, and the affinity is the missing line.
 1. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the build on a missing or untranslated key, so English-only keys cannot be committed without relaxing that test. Default: wait for the translations rather than relax it.
 2. **Brevo credentials** (W6). Default: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
 3. **Whether the sangat PRD lands before this is built.** If `users/{uid}` later grows group membership, knowing the shape now saves reshaping the document twice.
-4. **The sync feature document** that D8 depends on (13.2).
+4. **The open decisions of the weekly backup** that D8 depends on (`10-backup.md` §11).
