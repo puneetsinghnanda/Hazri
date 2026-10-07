@@ -5,13 +5,13 @@ writes `users/{uid}/diary/{day}` directly from the phone
 (`lib/features/sync/`), and it is what `01-accounts.md` §13 D8 (restore brings
 back goals and diary entries) and `04-goals.md` §6 depend on.
 
-Decisions marked **(default)** in Section 11 have not been confirmed by the
+Decisions in Section 11 not marked **Decided** have not been confirmed by the
 owner yet. Per §0.3, stop and ask before building a part that rests on one.
 
 ## 0. Implementation directive (mandatory, read first)
 
 1. **No inference.** Every behaviour, field, endpoint, status code and limit comes from this document.
-2. **The phone is the primary copy.** Everything keeps working with no network and no backup. The backup is a copy kept on the server for one purpose: getting the data back after the app's data is cleared or the phone is replaced.
+2. **The phone is the primary copy.** Goals and diary entries are stored on the phone, and everything keeps working with no network and no backup. The server copy exists for one purpose only: a restore, after the app's data is cleared or the phone is replaced. Nothing else reads it (owner, 2026-10-07).
 3. **Stop on ambiguity.** If anything required is missing or contradictory, stop and ask the developer.
 4. **Server access follows the Profile PRD.** The app never reads or writes Firestore directly. Everything goes through the `api` Cloud Function under `/api/v1`, authenticated with the anonymous ID token (`01-accounts.md` §6.0), and the Firestore rules deny all client access (§10.1 there).
 5. **Strings are localised** in `pa`, `hi` and `en` (CLAUDE.md rule 5). English source text is in 8.4.
@@ -338,8 +338,8 @@ After `200 PROFILE_RESTORED` (`01-accounts.md` §8.9), the Link Result screen ad
 | B-1 | "Sunday 12 midnight": the night between Saturday and Sunday, phone local time? | Yes, plus up to 60 minutes of jitter |
 | B-2 | A "Back up now" button as well as the weekly run? | Yes (BK3) |
 | B-3 | Back up only when a profile exists? | Yes (BK4). Without one there is no way to restore. |
-| B-4 | Wi-Fi only, as the current diary sync's setting allows? | Any network. A weekly backup is a few kilobytes; the setting is removed. |
-| B-5 | Sangat data stays with the sangat feature rather than being copied here? | Yes (3.2) |
+| B-4 | Wi-Fi only, as the current diary sync's setting allows? | **Decided 2026-10-07: any network.** The Wi-Fi-only setting is removed. |
+| B-5 | What does the backup hold? | **Decided 2026-10-07:** goals and diary entries only, which live on the phone; the server copy exists only for a restore. Profile and sangat data are not copied (3.2). |
 | B-6 | Should reminders, settings or grace days be backed up? | No |
 | B-7 | Two active goals at restore | Keep the phone's; store the server's as completed (RS5) |
 | B-8 | How long are backups kept? | Indefinitely, while the profile exists |
