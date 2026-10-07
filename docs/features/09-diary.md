@@ -1,137 +1,135 @@
 # 9. Diary
 
+Updated 2026-10-07 to agree with the specifications written that day:
+`04-goals.md` (the dots, the day screen, editing), `10-backup.md` (backup and
+restore replace diary sync) and `08-sangat.md` (Diary edits count toward
+groups). Where this file and those disagree, they win. Section 9.9 lists what
+changed.
+
 ---
 
 ## 9.1 Purpose
 
-A record of days that happened — what was read, what was sat, whether hazri was
-marked and whether the goals were met. Not a scoreboard, and never a reproach.
+A record of days that happened: what was read, what was sat, whether hazri was
+marked and whether the goal was met. Not a scoreboard, and never a reproach.
 
 ## 9.2 What exists today
 
-**The month** (`/diary`, design 57) — a header, a streak card, a grid of days
-and the month's stats. Each day cell carries the date and **dots**:
+**The month** (`/diary`, design 57): a header, a streak card, a grid of days
+and the month's stats. **The day** (`/diary/<date>`, design 56): the
+Nanakshahi date, the hazri banner, the goal line, rows for each bani and
+simran, and the day's stats. **The streak**: consecutive nitnem days ending
+today or yesterday, with two grace days per calendar month granted
+automatically. The month is read by `diaryMonth`.
 
-- Dot one, kesri: **hazri** — one paath or one sitting. Always drawn.
-- Dot two, sage: **goals met** — drawn **only on a day that had goals**,
-  as of this week.
+The code still follows the earlier model (one completion per bani per slot per
+day, goal ticks, `GoalCalculator`). `04-goals.md` §10.2 lists what changes.
 
-A grace day shows a label instead. Future days are dimmed and not tappable.
+## 9.3 The behaviour
 
-**The day** (`/diary/<date>`, design 56, a pushed screen since this week) — the
-Nanakshahi date, the hazri banner saying what marked the day and at what time,
-the goals line (new this week), tick rows for each bani and simran, the day's
-stats, and the note.
+**D1. A record, not a judgement.** No red, no crosses, no "missed". An unlit
+dot is an unlit dot.
 
-**Editing** — today and up to 7 days back can be ticked and unticked by hand.
-Older days open read-only and say so on the screen rather than refusing entry.
+**D2. The dots are `04-goals.md` §4.7.** The first dot is hazri (orange when
+marked, grey when not). The second dot appears only on a day that had a goal
+item in scope: green when the goal was met, grey when not. Future days and days
+before the first recorded day (`04-goals.md` DV3) have no dots. The legend
+shows the goal entry only when some day that month had a goal (`04-goals.md`
+§7.4).
 
-**The streak** — consecutive nitnem days ending today or yesterday, with **two
-grace days per calendar month** granted automatically. Grace days never go
-negative and never trigger a warning. No "you broke your streak" copy exists
-anywhere, by rule.
+**D3. Hazri and the goal are separate**, and the two dots say so. Green never
+appears without orange (`04-goals.md` DV1).
 
-**The data** — `DiaryDay {date, slots, isGrace, simran, goals}` from
-`diaryMonth`, which reads completions, simran sessions, grace days, goals and
-ticks for the month and calls `GoalCalculator.outcomeOn` per day.
+**D4. One rule.** Both dots come from `verdictOn` (`04-goals.md` §4.6), the
+same function Today and the Goals screen use. Nothing here re-derives them.
 
-## 9.3 Wrong or missing
+**D5. The day screen is `04-goals.md` §7.5**: the hazri line; the goal block
+when the day had a goal; every bani completed that day with its count, times
+and source (Read, Listened, Marked in Diary, Restored, Carried over); simran
+sittings with minutes and "stopped early"; and + and − for each bani and
+Naam Simran.
 
-1. **The stats row is thin.** Paath count, simran minutes and the streak. It
-   does not say which banis, or how the month compares to the last.
-2. **The note is per day and barely surfaced** — no search, no list, nothing
-   that makes a diary feel like a diary somebody keeps.
-3. **The 7-day edit window is arbitrary and unexplained.** Why not 14?
-4. **`isNitnemDay` counts slot-`none` banis and the streak does not** — §6's
-   B3 decides it; the diary must follow the same rule.
-5. **Sync is per day, last-writer-wins**, and a genuine two-phone conflict
-   silently picks one.
-6. **No month-to-month view**, no year, no export of the diary itself — the
-   privacy export deliberately excludes it because it never leaves the phone.
+**D6. Editing: today and the 7 days before it**, then read-only, and the screen
+says which before anybody tries (`04-goals.md` §3 `DIARY_EDIT_WINDOW_DAYS`).
+"+" adds one completion (or one sitting); "−" undoes the newest one, whatever
+its source (`04-goals.md` CR3, CR4). The Diary itself has no daily cap.
 
-## 9.4 The behaviour
+**D7. Edits reach the sangat.** A "+" or "−" for a bani or simran that a group
+of the person's counts is added to the Sangat outbox. Toward a group, at most
+3 Diary additions per member per group per day count (`08-sangat.md` CT4,
+CT5); the Diary still shows every one.
 
-**D1 — the diary is a record, not a judgement.** No red, no crosses, no
-"missed". An unlit dot is an unlit dot.
+**D8. Grace days are silent.** Granted automatically, two a month, never
+announced, never a prompt, never something to spend deliberately. Unchanged.
 
-**D2 — dots:** one on a day with no goals, two on a day that had them. A grey
-second dot on a day nobody set a goal says somebody failed, and they did not.
-The legend shows the goals entry only if some day that month had goals.
+**D9. The streak counts nitnem.** A bani of slot `none` (Ardas, Sukhmani Sahib)
+marks hazri and does not extend the nitnem streak (`06-nitnem.md` B3).
 
-**D3 — hazri and goals are independent**, and the two dots say so. Most days
-the first is lit and the second is not; that is the honest picture, not a
-failure.
+**D10. Everything works offline.** The Diary reads and writes only `user.db`.
 
-**D4 — the day screen answers three questions**: was hazri marked and by what,
-were the goals met, and what exactly was done. It currently answers all three
-as of this week.
+**D11. Backup and restore are `10-backup.md`.** Completions and sittings are
+backed up weekly with a profile. A restore adds what the phone lacks and never
+changes what it has (RS3, RS4). There is no diary sync switch and no per-day
+sync any more.
 
-**D5 — the past is editable for 7 days**, then read-only, and the screen says
-which it is before the reader tries.
+## 9.4 Scenarios
 
-**D6 — grace days are silent.** Granted automatically, two a month, never
-announced, never a prompt, never something to spend deliberately.
+| # | Given | When | Then |
+| --- | --- | --- | --- |
+| Y-a | Japji read on a day | Opening the month | Orange first dot |
+| Y-b | A day with simran only (5 min or more) | — | Orange; hazri needs no paath |
+| Y-c | A day with no goal item in scope | — | One dot |
+| Y-d | A goal of two items, one met | — | Orange and a grey second dot |
+| Y-e | Both met | — | Orange and green |
+| Y-f | A month with no goals at all | Opening it | One dot per day and no goal entry in the legend |
+| Y-g | Japji read twice on a day | Opening that day | "Japji Sahib ×2" with both times |
+| Y-h | Three days back | + Rehras | Logged on that date; that day's verdict recomputed |
+| Y-i | Thirty days back | Tapping it | Opens read-only and says so |
+| Y-j | One missed day, grace left | — | A grace label; the streak continues; nothing is said |
+| Y-k | Sukhmani Sahib only | — | Hazri marked; nitnem streak unchanged |
+| Y-l | Member of a Japji group | + Japji five times today | Diary shows 5; the group counts 3 |
+| Y-m | A future day | Tapping it | Not tappable, dimmed |
+| Y-n | Days before the first recorded day | — | No dots |
+| Y-o | A goal stopped on the 22nd | Looking at the month | 1st–22nd unchanged; from the 23rd one dot |
+| Y-p | App data cleared, profile and data restored | Opening the month | Every backed-up day as before; anything after the last backup missing |
+| Y-q | The device time zone changes | — | Days keep their stored local date; none merges into its neighbour |
+| Y-r | `user.db` migration fails | Opening | A real error; the diary must never be silently lost |
+| Y-s | Ten years of history | Opening a month | Only that month is read |
 
-**D7 — everything in the diary works with the radio off.** Sync is a backup,
-not the source.
+## 9.5 Proposed additions (not in scope yet)
 
-**D8 — one rule for goals**, `GoalCalculator.outcomeOn`, shared with Today and
-the day screen. Never re-derived.
+- **A year view:** twelve rows of dots.
+- **A month summary:** days marked, days the goal was met, simran minutes, banis by name. No comparison with anybody.
 
-## 9.5 Scenarios
+## 9.6 Open decisions
 
-**Success**
+| # | Decision | Status |
+| --- | --- | --- |
+| Y-1 | The 7-day edit window | **Decided:** 7 days (`04-goals.md` §3) |
+| Y-2 | Two-phone sync conflicts | **Decided:** no two-phone sync. One phone owns the profile at a time; restore merges row by row (`10-backup.md`) |
+| Y-3 | Export the diary as a file | **Open.** Default: not built now |
+| Y-4 | Does diary sync default on? | **Decided:** the weekly backup runs whenever a profile exists; there is no switch (`10-backup.md` B-3) |
 
-| Given | When | Then |
-|---|---|---|
-| A day with Japji read | Opening the month | Kesri dot lit on that day |
-| A day with simran only | — | Kesri dot lit; hazri does not need a paath |
-| A day with no goals | — | **One** dot |
-| A day with 2 goals, 1 met | — | Two dots, the second unlit |
-| A day with 2 goals, both met | — | Two dots, both lit |
-| A month with no goals at all | Opening it | One dot per day and no goals entry in the legend |
-| Tapping a day | — | The day screen, with hazri, the goal outcome and the tick rows |
-| A day 3 days back | Ticking Rehras | Logged on that date; goals for that date credited |
-| A day 30 days back | Tapping it | Opens read-only and says so |
-| One missed day, grace left | — | A grace label; the streak continues; nothing is said about it |
-| Sukhmani only | — | Hazri lit, diary dot lit, nitnem streak unchanged (B3) |
+## 9.7 Acceptance
 
-**Failure**
+- A test per row of 9.4.
+- One test feeding Today, the Goals screen, the Diary grid and the day screen the same rows, and checking they agree (`04-goals.md` §9).
+- A test that a month with no goals renders one dot per day and no legend entry.
+- A test that the Diary renders fully with no profile and no network.
 
-| Given | When | Then |
-|---|---|---|
-| A future day | Tapping it | Not tappable, dimmed |
-| The month is the install month | Days before install | No dots, no goals, and not counted as failures |
-| A goal existed and was deleted with `forgetGoal` | — | Those days lose their second dot — the data is gone. This is why stopping archives instead |
-| Two phones edit the same day | Sync | Merged per slot, not replaced wholesale. A tick on one phone and a different tick on the other must both survive |
-| The device timezone changes | — | Days are keyed by local date string; a day never merges into its neighbour |
-| `user.db` migration fails | Opening | A real error; the diary is the one thing that must never be silently lost |
-| 10 years of history | Opening the month | Only that month is read; the query is bounded already |
+## 9.8 Out of scope
 
-## 9.6 Proposed additions
+- A free-text note per day. `user.db` has no note, and the earlier version of this file was wrong to describe one.
+- Search, export and the proposals in 9.5 until they are decided.
 
-**A year view** — twelve rows of dots. Cheap, and the first thing that makes
-somebody feel they have kept something up.
+## 9.9 What changed on 2026-10-07
 
-**Notes brought forward** — a list of days that have notes, searchable. A
-diary nobody can re-read is a log.
-
-**An honest month summary** — days marked, days with goals met, simran minutes,
-banis by name. No comparison to other people, ever.
-
-## 9.7 Open decisions
-
-| # | Decision | Default |
-|---|---|---|
-| Y-1 | The 7-day edit window | Keep it and say why on the screen: a diary you can rewrite at will is not a record |
-| Y-2 | Conflict resolution for two-phone sync | Merge per slot, union of completions. Never last-writer-wins on a whole day |
-| Y-4 | **Does diary sync default on?** (platform P5) | Open, and to be settled before the sync work starts. The owner wants sync; the question is the default. Against on-by-default: rule 4 makes the sangat opt-in, the diary is the most personal thing in the app, and switching it on silently would be the privacy screen and the behaviour disagreeing. For on-by-default: losing a phone is when people discover they wanted it, and an off switch nobody found is not a real choice. A third option: ask once, plainly, the first time there is a diary worth keeping — say a week of entries — rather than at setup when it means nothing |
-| Y-3 | Export the diary | Yes, as JSON, from the diary rather than the privacy screen — the privacy export is about what *we* hold, and the diary is not that |
-
-## 9.8 Acceptance
-
-- A test per row of §9.5.
-- A test that the month grid and Today agree for every goal shape.
-- A test that a month with no goals renders one dot per day and no legend
-  entry.
-- A test that the diary renders fully with no account and no network.
+| Before | Now | Source |
+| --- | --- | --- |
+| Dots from `GoalCalculator.outcomeOn` | From `verdictOn` | `04-goals.md` §4.6 |
+| Tick rows, one completion per bani per slot per day | + and − with counts; every paath a row | `04-goals.md` CR3, CR5 |
+| "Days before install have no dots" | Days before the first recorded day | `04-goals.md` DV3 |
+| `forgetGoal` could erase a goal's days | No hard delete; removing keeps history | `04-goals.md` GI7 |
+| Per-day diary sync, last writer wins | Weekly backup; restore merges row by row | `10-backup.md` |
+| A per-day note | None exists | 9.8 |
+| Diary edits only local | Also counted toward groups, at most 3 a day per group | `08-sangat.md` CT4 |

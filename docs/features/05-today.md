@@ -1,5 +1,11 @@
 # 5. Today — the home screen
 
+Updated 2026-10-07 to agree with the specifications written that day:
+`01-accounts.md` (the greeting and the profile banner, §8.4), `04-goals.md`
+(the Set Goal card, the goal widget and `verdictOn`, §7.1), `07-simran.md`
+(attendance) and `08-sangat.md` (the Sangat lives in its own tab). Where this
+file and those disagree, they win. Section 5.10 lists what changed.
+
 ---
 
 ## 5.1 Purpose
@@ -11,100 +17,156 @@ next?** Everything else on the screen is secondary to that.
 
 Top to bottom (`today_screen.dart`):
 
-1. `TabHeader` — menu button, "Today", the date (Gregorian + Nanakshahi).
-2. `HazriBanner` — designs 58/59. Kesri gradient when marked, saying what
+1. `TabHeader`: menu button, "Today", the date (Gregorian and Nanakshahi).
+2. `HazriBanner` (designs 58/59): kesri gradient when marked, saying what
    marked it and at what time; a quiet card saying "not marked yet" otherwise.
-   **As of this week it is shown to everybody**, not only sangat members.
-3. `_GoalsCard` — design 30. "n of m done today", a ring with the fraction
-   across all targets, and one row per goal with its time or count. Falls back
-   to `_NoGoalsCard` when there are none.
-4. The Vichar card — ਅੱਜ ਦਾ ਵਿਚਾਰ, the day's line, share and Explore.
-5. The Nitnem call to action — Start or Continue, naming the bani and its
-   minutes, deep-linking into the reader at the saved line.
+   Shown to everybody.
+3. `_GoalsCard` (design 30): "n of m done today" across all goals, with a
+   ring; `_NoGoalsCard` when there are none.
+4. The Vichar card: ਅੱਜ ਦਾ ਵਿਚਾਰ, the day's line, share and Explore.
+5. The Nitnem call to action: Start or Continue, naming the bani and its
+   minutes, opening the reader at the saved line.
 6. The Gurpurab card when one is near.
-7. The join-the-sangat banner, until joined.
+7. The join-the-sangat banner, until joined or dismissed.
 
-`ElderTodayScreen` is a separate widget for elder mode with a bigger CTA, and
-it now carries the hazri banner and the goal-complete listener too.
+`ElderTodayScreen` is a separate widget for elder mode.
 
-## 5.3 Wrong or missing
+What is wrong with it: there is no greeting and no way to a profile; the goals
+card counts goals, not goal items, and uses `GoalCalculator`; the join banner
+stacks on the hazri banner; elder mode is a fork that has drifted twice; the
+call to action does not know about goals.
 
-1. **Two banners can stack.** Hazri and the join invitation both show until the
-   sangat banner is dismissed. The "Not now" memory that fixes this exists on
-   `claude/eloquent-edison-qsjll0` and is not on this branch.
-2. **Elder Today is a fork, not a mode.** It duplicates layout and has already
-   drifted twice — it had no hazri banner and no completion sheet. Every change
-   to Today must be made twice, and one of them gets forgotten.
-3. **The day arc is gone** and the PRD (1.3) still describes it.
-4. **The CTA does not know about goals.** It offers the next nitnem bani even
-   when the outstanding thing is a simran goal.
-5. **Nothing shows the streak** on Today, though the diary computes one.
+## 5.3 Order of the screen
+
+| # | Element | Shown when | Source |
+| --- | --- | --- | --- |
+| 1 | `TabHeader`: menu, "Today", the date, and a person icon opening `/profile` | Always | T8 |
+| 2 | Greeting: `Welcome, {name}` in `ProfileLoaded`, else `Welcome` | Always | `01-accounts.md` §8.4 |
+| 3 | `ProfileBanner`: "Set up your profile" | Only in `ProfileNone` or `ProfileUnavailable`. Not dismissible | `01-accounts.md` §8.4 |
+| 4 | Hazri banner | Always | T1 |
+| 5 | Set Goal card, or the goal widget | Always, one or the other | `04-goals.md` §7.1 |
+| 6 | Call to action | When `content.db` has a bani to offer | T4 |
+| 7 | Vichar card | When the dataset has a line for the date | T6 |
+| 8 | Gurpurab card | When one is near | unchanged |
+
+There is no join-the-sangat banner. The Sangat is reached from its tab and the
+menu (`08-sangat.md` §8.1).
 
 ## 5.4 The behaviour
 
-**T1 — hazri is the first thing, always.** Above everything but the header. It
-needs no account, no network and no goal. It is never hidden.
+**T1. Hazri is the first card, always.** Only the header, the greeting and,
+when there is no profile, the profile banner sit above it. It reads only
+`hazri(today)` (`04-goals.md` HZ1–HZ4: any completion, or a sitting of 300
+seconds or more). It needs no profile, no network and no goal, and it is never
+hidden.
 
-**T2 — one banner at a time.** Priority: hazri always shows; the join
-invitation shows only if not joined **and** not dismissed. Dismissal is
-remembered for ever and the sangat stays reachable from its tab and the menu.
+**T2. One banner of each kind, none stacking.** The profile banner shows only
+without a profile and goes the moment one exists. The join-the-sangat banner is
+removed, so hazri never shares the top of the screen with an invitation.
 
-**T3 — the goals card is the second thing**, and shows the shared rule from §4
-and nothing of its own.
+**T3. The goal card is `04-goals.md` §7.1 and nothing of its own.** No goal
+ever: the Set Goal card with `goalSetCardSubtitleFirst`. Last goal completed:
+the same card with `goalSetCardSubtitleAgain`. An active goal: the goal widget,
+`itemsMet` of `itemsInScope` from `verdictOn(today)` with a ring, and one row
+per in-scope item ("1 of 3" for a bani; minutes and a tick for simran). Tapping
+the header opens Goals; tapping a row opens the reader or the Simran menu.
 
-**T4 — the CTA names the single most useful next action**, in this order:
-an unfinished paath in progress → the current slot's first unread bani → an
-unmet goal (bani or simran) → the next slot's bani. It says what it is and how
-long it takes.
+**T4. The call to action names the single most useful next thing**, in this
+order:
 
-**T5 — elder mode is a mode, not a screen.** One widget tree, elder mode
-changing sizes, spacing and which of the secondary cards appear. The fork goes.
+1. a paath in progress (opened and not completed today) → Continue, at the saved line;
+2. the first goal item in scope today that is not yet met, in the goal's order → its bani, or the Simran menu with the item's minutes;
+3. the current slot's first bani not completed today;
+4. the next slot's first bani.
 
-**T6 — every card is tappable to the thing it describes**, and no card is a
-dead end.
+It says what it is and how long it takes. Which item is "not yet met" comes
+from `verdictOn`, never from a count of its own.
 
-**T7 — Today works entirely offline.** Nothing on it may wait on a network
-call. Sangat numbers, when shown, come from cache and are marked stale rather
-than spinning.
+**T5. Elder mode is a mode, not a screen.** One widget tree; elder mode changes
+sizes, spacing and which of the secondary cards (7, 8) appear. The fork goes.
+
+**T6. Every card opens the thing it describes**, and no card is a dead end. A
+card with no data (no Vichar line for the date, no bani for the slot) is
+omitted, never shown blank and never filled with an invented line.
+
+**T7. Today works entirely offline.** Nothing on it waits on a network call.
+The greeting comes from the profile cache (`01-accounts.md` §8.2), so the name
+shows offline. The attendance call (`07-simran.md` AT1) runs at start and
+resume, fire and forget, and Today never waits on it. Nothing on Today shows a
+Sangat number.
+
+**T8. The profile is one tap away.** The person icon in the header opens
+`/profile` (`01-accounts.md` §8.4, §8.7); without a profile that screen offers
+Set up profile.
+
+**T9. The goal-complete sheet appears once a day**, when today's `goalState`
+becomes `MET`, from wherever the last item was met, and never for a backfilled
+past day (`04-goals.md` CE1).
+
+**T10. Midnight rolls Today over** with the app open: hazri resets, the date
+changes, items re-scope and the CTA is recomputed. The day is the device's
+local date (`04-goals.md` §2).
 
 ## 5.5 Scenarios
 
-**Success**
-
-| Given | When | Then |
-|---|---|---|
-| Nothing done today | Opening Today | "Not marked yet", never "missed". The CTA offers the slot's first bani |
-| Japji read at 05:10 | Opening Today | Hazri marked, saying Japji and 5:10 AM |
-| A simran sitting done, no paath | Opening Today | Hazri marked, saying Daily Simran |
-| Japji half read | Opening Today | "Continue Japji Sahib", opening at the saved line |
-| No goals | Opening Today | The card invites setting one; no "0 of 0" |
-| 1 of 3 goals met | Opening Today | "1 of 3 done" and a third of the ring |
-| All goals met | The last tick, from anywhere | The card updates and the completion sheet appears once |
-| Elder mode on | Opening Today | Same content, bigger; hazri and the sheet both present |
-| Aeroplane mode | Opening Today | Everything but sangat numbers; nothing spins |
-
-**Failure**
-
-| Given | When | Then |
-|---|---|---|
-| Not joined, banner not dismissed | Opening Today | Hazri **and** the invitation. Hazri is on top |
-| Not joined, banner dismissed | Opening Today | Hazri only. The invitation never returns |
-| Midnight passes with the app open | — | Today rolls over: hazri resets, the date changes, goals re-scope |
-| The device clock jumps a day | — | The app follows the device's local date. It does not try to be cleverer |
-| `content.db` has no bani for the slot | — | The CTA is hidden, not broken, and the rest of the screen stands |
-| The Vichar dataset has no line for the date | — | The card is omitted. No blank card, no invented line |
+| # | Given | When | Then |
+| --- | --- | --- | --- |
+| T-a | Fresh install, setup done, online | Opening Today | `Welcome`; profile banner; hazri "not marked yet"; Set Goal card (first); CTA offers the slot's first bani |
+| T-b | Profile saved as Harpreet | Back on Today | `Welcome, Harpreet`; the profile banner has gone |
+| T-c | Profile exists, aeroplane mode, cold start | Opening Today | `Welcome, Harpreet` from the cache; no banner; nothing spins |
+| T-d | No cache, never online since install | Opening Today | `Welcome`; profile banner (`ProfileUnavailable`); the rest of the screen complete |
+| T-e | Japji read at 05:10 | Opening Today | Hazri marked, saying Japji Sahib and 5:10 AM |
+| T-f | A 5-minute sitting, no paath | Opening Today | Hazri marked, saying Naam Simran |
+| T-g | A 4-minute sitting only | Opening Today | Not marked yet |
+| T-h | Goal Japji ×3 and Simran 11 min; Japji read once | Opening Today | Widget "0 of 2", rows "1 of 3" and "11 min"; CTA offers Japji Sahib |
+| T-i | Same goal, Japji ×3 done | Opening Today | "1 of 2"; CTA offers the Simran menu with 11 min |
+| T-j | Both met by the last sitting | The sitting ends | "2 of 2"; the sheet once; reading again shows no second sheet |
+| T-k | Last goal completed yesterday | Opening Today | Set Goal card with `goalSetCardSubtitleAgain` |
+| T-l | Rehras half read | Opening Today | CTA "Continue Rehras Sahib" at the saved line, ahead of any goal item |
+| T-m | Elder mode on | Opening Today | Same content and order, larger; hazri, the goal card and the sheet all present |
+| T-n | The app open across midnight | — | Hazri resets, date changes, items re-scope |
+| T-o | The device clock jumps a day | — | Follows the device's local date; nothing cleverer |
+| T-p | `content.db` has no bani for the slot | — | CTA hidden; the rest stands |
+| T-q | No Vichar line for the date | — | The card is omitted |
+| T-r | Member of a Sangat group | Opening Today | No Sangat banner or number on Today |
+| T-s | Person icon tapped, no profile | — | Profile screen with Set up profile |
 
 ## 5.6 Open decisions
 
-| # | Decision | Default |
-|---|---|---|
-| T-1 | Does the day arc come back, or does the PRD change? | The PRD changes. The goals card answered the same question with a number instead of a clock face |
-| T-2 | Streak on Today? | A quiet line under hazri, never a score, and never mentioned when it breaks |
-| T-3 | Merging elder mode into one tree — now or later? | Now. It has drifted twice in a fortnight |
+| # | Decision | Status |
+| --- | --- | --- |
+| T-1 | Does the day arc come back? | **Default:** no. The goal widget answers the same question with a number |
+| T-2 | Streak on Today? | **Open.** Default: not shown. If added, a quiet line under hazri, never a score, never mentioned when it breaks |
+| T-3 | Merge elder mode into one tree now or later? | **Default:** now, with this rework |
+| T-4 | `01-accounts.md` §8.4 has an app bar titled "Hazri"; the app has no brand bar (CLAUDE.md) | **Default:** keep the tab header titled "Today" and put the person icon in it (T8). The greeting and banner are as §8.4 says |
+| T-5 | CTA order puts an unmet goal item before the slot's bani (T4) | **Default:** as written, because the goal is what the person chose |
 
 ## 5.7 Acceptance
 
-- Widget tests for every row of §5.5, in all three languages.
-- A test that Today renders fully with the account repository returning null.
-- A test that Today makes **no** network call on build.
+- Widget tests for every row of 5.5, in all three languages.
+- A test that Today renders fully in `ProfileNone`, `ProfileUnavailable` and `ProfileLoaded(isStale: true)`.
+- A test that Today makes **no** network call on build and that a hanging attendance call changes nothing on screen.
+- One test feeding Today, the Goals screen and the Diary the same rows and checking they agree (`04-goals.md` §9).
 - Golden renders at 390×844, light and dark, normal and elder.
+
+## 5.8 Out of scope
+
+- Sangat numbers or banners on Today.
+- A streak until T-2 is decided.
+
+## 5.9 Dependencies
+
+Greeting and banner: `01-accounts.md`. Hazri, goals, the sheet: `04-goals.md`.
+CTA: `06-nitnem.md`. Attendance: `07-simran.md`.
+
+## 5.10 What changed on 2026-10-07
+
+| Before | Now | Source |
+| --- | --- | --- |
+| No greeting, no route to a profile | `Welcome, {name}`, the profile banner and a person icon | `01-accounts.md` §8.4 |
+| Goals card counts goals, "n of m done" | Goal widget counts items in scope via `verdictOn` | `04-goals.md` §7.1 |
+| `_NoGoalsCard` | Set Goal card, two subtitles, not dismissible | `04-goals.md` GL1 |
+| Join-the-sangat banner, dismissible | Removed; the Sangat is its own tab | `08-sangat.md` §8.1 |
+| CTA: slot bani before goals | Paath in progress, then unmet goal item, then slot bani | T4, T-5 |
+| Sangat numbers from cache, marked stale | No Sangat number on Today | T7 |
+| Simran marks hazri | Only a sitting of 300 s or more | `04-goals.md` HZ1, HZ3 |

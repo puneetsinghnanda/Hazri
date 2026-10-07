@@ -1,14 +1,19 @@
 # 3. First run: splash, intro, setup
 
-Reworked as one flow. Decided 2026-09-26.
+Reworked as one flow on 2026-09-26. Updated 2026-10-07 to agree with the
+specifications written that day: `01-accounts.md` (the profile is created from
+Today, never in setup), `02-notifications.md` (reminders are on by default),
+`07-simran.md` (the city comes from the profile) and `08-sangat.md` (invites
+can arrive before setup). Where this file and those disagree, they win.
+Section 3.10 lists what changed.
 
 ---
 
 ## 3.1 Purpose
 
 Get somebody from tapping the icon to reading a bani with as little between
-them and it as possible — while collecting the two things the app genuinely
-cannot work without, and nothing else.
+them and it as possible, while collecting the things the app genuinely cannot
+work without, and nothing else.
 
 ## 3.2 What exists today
 
@@ -22,128 +27,147 @@ Android system splash (SplashScreen API, app mark on #0C0F24)
   -> Today
 ```
 
-`splash_screen.dart` reads `onboardingDone`: if true it goes straight to Today
-with no delay; if false it waits 1500 ms then goes to the intro. The router
-redirects anyone not onboarded back to the intro, and anyone onboarded away
-from it. Audio downloads start in the background (PRD 1.2).
+`splash_screen.dart` reads `onboardingDone`: true goes straight to Today, false
+waits 1500 ms and goes to the intro. The router redirects anyone not onboarded
+to the intro and anyone onboarded away from it.
 
-## 3.3 Wrong or missing
+What is wrong with it: two splashes; everything asked up front, before a line
+of Gurbani has been seen; the city asked before it means anything; permissions
+asked before the reader knows what they are for; no skip; and nothing asked
+again later.
 
-1. **Two splashes.** The system one and then a branded one. The second is a
-   1.5-second wall in front of somebody who came to read.
-2. **Everything is asked up front.** Language, script, text size, elder mode,
-   city, reminder times and two permissions — before a single line of Gurbani
-   has been seen. The person has no context for any of it.
-3. **The city is asked before it means anything.** It exists to compute sunrise
-   for Amrit Vela. Asked at setup it is a form field; asked when setting an
-   Amrit Vela reminder it is obvious.
-4. **Permissions are asked at their worst moment** — before the reader knows
-   what a reminder is for. A refusal here is permanent and, until this week,
-   silent.
-5. **No skip.** Every step must be walked through.
-6. **Nothing is asked again later.** Tap Later once and it is Settings or
-   nothing.
+## 3.3 The flow
+
+```
+Android system splash
+  -> Welcome      (first run only)
+  -> Language
+  -> How you read
+  -> Today        (profile banner, Set Goal card; 3.5)
+  -> Join screen  (only if an invite arrived; F7)
+```
+
+Nothing else is part of setup. No profile, no city, no reminder, no
+permission, no Sangat.
 
 ## 3.4 The behaviour
 
-### F1. One splash, not two
+**F1. One splash, not two.** The branded splash hold is deleted. The Android
+system splash covers the launch and shows the app mark; Flutter's first frame
+follows it. `Routes.splash` stops being a screen and becomes a redirect made
+before the first frame: onboarding done → Today; not done → Welcome. Nothing
+is ever held in front of anybody for a fixed time.
 
-Delete the branded splash hold entirely. The Android system splash covers the
-launch; Flutter's first frame follows it. `Routes.splash` stops being a screen
-and becomes a redirect decision made before the first frame:
+**F2. Three questions, then the app.**
 
-- onboarding done → Today
-- not done → Welcome
+- **Welcome:** one screen, the app mark and three lines saying what hazri means and what the app is for. One button, **Begin**. No carousel, no dots, no swipe.
+- **Language:** ਪੰਜਾਬੀ / हिन्दी / English. Applies the moment it is tapped, which is also the demonstration.
+- **How you read:** script and text size, shown against a real line of Gurbani from `content.db`. Elder mode is offered here as one obvious option ("Larger text and simpler screens").
 
-Nothing is held in front of anybody for a fixed time, ever. **The app mark
-still shows** — on the system splash, which is what that API is for.
+Then Today. That is the whole of setup, and it needs no network.
 
-### F2. Three questions, then the app
+**F3. The profile is never part of setup.** Today shows the greeting `Welcome`
+and the non-dismissible profile banner until a profile exists (`01-accounts.md`
+§8.4). Profile Setup is reached from that banner, the person icon on Today, the
+globe's banner (`07-simran.md` NP3) and Create in the Sangat (`08-sangat.md`
+CG1). Somebody reinstalling restores their profile from Profile Setup by email
+link, and is then offered the data restore (`10-backup.md` §8.3).
 
-Only what the app cannot start without:
+**F4. The anonymous sign-in never blocks setup.** It starts at launch
+(`01-accounts.md` §8.3) and runs alongside setup. Offline, setup completes and
+Today shows `ProfileUnavailable`'s banner.
 
-**Welcome** — one screen. What hazri means and what the app is for, in three
-lines and the app mark. One button: **Begin**. No carousel, no dots, no swipe.
-
-**Language** — ਪੰਜਾਬੀ / हिन्दी / English. Applies immediately as it is tapped,
-which is also the demonstration.
-
-**How you read** — script and text size, shown against a real line of Gurbani
-so the choice is visible rather than abstract. Elder mode is offered here as
-**one** obvious option ("Larger text and simpler screens"), not buried.
-
-Then Today. That is the whole of setup.
-
-### F3. Everything else is asked in context, once, when it first matters
+**F5. Everything else is asked in context, once, when it first matters:**
 
 | Asked | When |
-|---|---|
-| The city | The first time an Auto reminder time is set, or the first time Today shows a sunrise. Never as a form field |
-| Notification permission | The first time a reminder is switched on — not before |
-| Exact alarms | Only if they set a reminder and only after the first one lands late. Never up front |
-| Audio download | The first time they press play, with the size |
-| The sangat | Never during setup. It is opt-in and it is a Today card they can ignore for ever |
+| --- | --- |
+| Name, email, city | In Profile Setup, when the person chooses to make a profile (F3). The city is picked from the app's list (`01-accounts.md` §13 D9) |
+| Notification permission | A short sheet on the first Today after setup explains the 04:00 Amrit Vela reminder, with **Allow** (the system dialog) and **Not now** (F6, F-5) |
+| Exact alarms | Never asked. The Notifications screen notes that without them a reminder may arrive some minutes late (`02-notifications.md` DP2) |
+| Audio download | The first time play is pressed, with its size (F-3) |
+| The Sangat | Never during setup. It is its own tab |
 
-### F4. Nothing is asked twice, and "Later" is a real answer
+**F6. Nothing is asked twice, and "Not now" is a real answer.** Each ask is
+recorded. The notification permission is offered at most twice by the app:
+the first-Today sheet, and once more when a goal item with a reminder time is
+saved. After that only the Notifications screen card offers it
+(`02-notifications.md` DP3). Reminders are planned whatever the answer; without
+permission the Notifications screen says they cannot arrive.
 
-Each ask is recorded. A refused ask is offered again only when the person does
-the thing it is for, and never more than twice in total.
+**F7. An invite that arrives before setup waits for it.** An App Link
+`/j/<code>` opened before onboarding, or a `sangat_code` from the install
+referrer (read once on first launch, `08-sangat.md` IV6), is held and opens the
+Join screen with the code filled when setup completes. Setup itself is never
+interrupted by it. A verification or restore link opened before onboarding is
+held the same way and handled when setup completes.
 
-### F5. Setup is resumable and skippable
+**F8. Setup is resumable and skippable.** Backgrounding mid-setup returns to
+the same step with what was chosen kept. **Skip** on How you read is allowed:
+Gurmukhi at the standard size, and Settings has all of it.
 
-Backgrounding mid-setup returns to the same step. **Skip** on the reading
-screen is allowed; the defaults are Gurmukhi at the standard size, and
-Settings has all of it.
+**F9. The reader reaches Gurbani in under 30 seconds.** The acceptance bar for
+the whole flow, and it is measurable.
 
-### F6. The reader reaches Gurbani in under 30 seconds
+## 3.5 After setup
 
-This is the acceptance bar for the whole flow, and it is measurable.
+The first Today (`05-today.md`) carries `Welcome`, the profile banner, the
+hazri banner "not marked yet", the Set Goal card with
+`goalSetCardSubtitleFirst` (`04-goals.md` GL1), the call to action and the
+notification sheet of F5. None of them blocks reading.
 
-## 3.5 Scenarios
+## 3.6 The city
 
-**Success**
+Two things are called the city, and they are kept apart:
 
-| Given | When | Then |
-|---|---|---|
-| A fresh install | Tapping the icon | System splash, then Welcome. No 1.5s hold, no second splash |
-| At Welcome | Begin, pick Punjabi, pick script, Done | On Today, in Punjabi, in under 30 seconds |
-| At the language step | Tapping हिन्दी | The step itself redraws in Hindi immediately |
-| Setup done | Reopening the app | Straight to Today. No splash, no intro |
-| Setup skipped at the reading step | — | Gurmukhi, standard size, Today. Settings still has everything |
-| Backgrounded mid-setup | Reopening | The same step, with what was chosen kept |
-| Never set a reminder | Ever | Never asked for notification permission. The app is silent and complete |
-| Sets an Amrit Vela reminder | Choosing Auto | *Then* asked for a city, with a reason |
+- **The profile city** (`cityId`) places the person on the globe. It is chosen in Profile Setup and changed only through Edit profile (`07-simran.md` AT5).
+- **The Settings city** computes sunrise for the Amrit Vela notification's picture (`02-notifications.md` AV4) and the date line. It is never asked in setup. Until it is set it is the profile city when there is a profile, else New Delhi, and Settings says which (F-4).
 
-**Failure**
+## 3.7 Scenarios
 
-| Given | When | Then |
-|---|---|---|
-| Notification permission refused at F3 | — | The reminder is saved and shown as unable to arrive, with a way back. Setup is never blocked |
-| Location/city cannot be determined | Auto chosen | Falls back to the chosen city, then to New Delhi, and says which |
-| Elder mode on | The whole flow | Every step is legible at 1.6× with 64dp targets. Elder mode is tested through setup, not only after it |
-| The app is killed during setup | Reopening | Resumes; a half-finished setup never leaves the app unusable |
-| `content.db` fails to open | First run | A real error naming the problem, not a blank screen or a spinner |
-| Upgrading from a build that had onboarding | First open | Not re-onboarded. `onboardingDone` is honoured and the new asks happen in context |
+| # | Given | When | Then |
+| --- | --- | --- | --- |
+| F-a | A fresh install | Tapping the icon | System splash, then Welcome. No 1.5 s hold, no second splash |
+| F-b | At Welcome | Begin, Punjabi, a script, Done | On Today, in Punjabi, in under 30 seconds |
+| F-c | At Language | Tapping हिन्दी | The step redraws in Hindi immediately |
+| F-d | Setup done | Reopening | Straight to Today |
+| F-e | Skip at How you read | — | Gurmukhi, standard size, Today |
+| F-f | Backgrounded mid-setup | Reopening | The same step, choices kept |
+| F-g | Setup done, offline | First Today | `Welcome`, profile banner, Set Goal card; no spinner |
+| F-h | First Today | — | The notification sheet once; Allow shows the system dialog |
+| F-i | "Not now" on the sheet | Later saving a goal item with a reminder time | Offered once more; after that only the Notifications screen card |
+| F-j | Permission refused | Opening Notifications | The card; reminders shown as unable to arrive; nothing pretends |
+| F-k | Recipient opens `/j/AB12-CD34`, installs from Play | First launch | Setup runs uninterrupted, then the Join screen with the code filled |
+| F-l | Hazri installed, not onboarded | Tapping an invite App Link | Welcome; after setup, the Join screen with the code |
+| F-m | Reinstall, profile existed | Profile banner → Profile Setup → restore by email | Profile restored; data restore offered (`10-backup.md` §8.3) |
+| F-n | Elder mode on | The whole flow | Every step legible at 1.6× with 64 dp targets |
+| F-o | Killed during setup | Reopening | Resumes; a half-finished setup never leaves the app unusable |
+| F-p | `content.db` fails to open | First run | A real error naming the problem, not a blank screen |
+| F-q | Upgrade from a build with `onboardingDone` | First open | Not re-onboarded; the notification sheet once if permission is not granted |
+| F-r | No profile, Settings city never set | Amrit Vela picture | Sunrise for New Delhi, and Settings says so |
 
-## 3.6 Migration
+## 3.8 Migration
 
-Existing installs have `onboardingDone: true` and must never see the new flow.
-The in-context asks (F3) apply to them too, which is a **feature**: it is how
-somebody who upgraded finally gets asked for notification permission — the
-exact hole that cost four rounds.
+Existing installs have `onboardingDone: true` and never see the new flow. The
+in-context asks apply to them too: it is how somebody who upgraded finally gets
+asked for notification permission, the hole that cost four rounds. An install
+that already has a Settings city keeps it.
 
-## 3.7 Open decisions
+## 3.9 Open decisions
 
-| # | Decision | Default |
-|---|---|---|
-| F-1 | Does Welcome survive at all, or go straight to language? | Keep it. One screen that says what hazri means is the app introducing itself, and it is the only place that ever does |
-| F-2 | Elder mode on the reading screen, or detected from the system font scale? | Offer it, **and** pre-select it when the system font scale is ≥1.3. Never force it |
-| F-3 | Does the audio pack download on wifi automatically? | Ask once at first play, then remember. Never download 80 MB unasked |
+| # | Decision | Status |
+| --- | --- | --- |
+| F-1 | Does Welcome survive, or go straight to Language? | **Default:** keep it; it is the only place the app introduces itself |
+| F-2 | Elder mode offered, or detected from the system font scale? | **Default:** offered, and pre-selected when the font scale is 1.3 or more. Never forced |
+| F-3 | Audio pack on Wi-Fi automatically? | **Default:** asked once at first play, then remembered. Never 80 MB unasked |
+| F-4 | The Settings city: keep it, or always use the profile city? | **Open.** Default: keep it (3.6), following the profile city until set |
+| F-5 | Notification permission: first-Today sheet, or the system dialog at app start as the code does now? | **Open.** Default: the sheet (F5), because Amrit Vela and the Hazri nudge are on by default and the earlier rule, "ask when a reminder is switched on", no longer has a moment to happen in |
 
-## 3.8 Acceptance
+## 3.10 What changed on 2026-10-07
 
-- A test that walks install → reading a bani and asserts the step count.
-- A test that no permission is requested anywhere in setup.
-- A test that an existing install with `onboardingDone` never sees Welcome.
-- Golden renders of every step in all three languages and in elder mode.
-- Device: time the run. Under 30 seconds or it is not done.
+| Before | Now | Source |
+| --- | --- | --- |
+| City asked when an Auto reminder time is set | No Auto times; profile city in Profile Setup, Settings city defaults | `07-simran.md`, 3.6 |
+| Notification permission asked when a reminder is switched on | Reminders are on by default; a sheet on the first Today | `02-notifications.md` CM7, F-5 |
+| Exact alarms asked after the first late reminder | Never asked; a note on the Notifications screen | `02-notifications.md` DP2 |
+| The Sangat as a Today card | Its own tab; invites wait for setup | `08-sangat.md` IV6 |
+| No profile anywhere | Profile from Today's banner, never in setup | `01-accounts.md` §8.4 |
