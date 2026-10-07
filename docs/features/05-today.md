@@ -40,10 +40,10 @@ call to action does not know about goals.
 
 | # | Element | Shown when | Source |
 | --- | --- | --- | --- |
-| 1 | `TabHeader`: menu, "Today", the date, and a person icon opening `/profile` | Always | T8 |
-| 2 | Greeting: `Welcome, {name}` in `ProfileLoaded`, else `Welcome` | Always | `01-accounts.md` §8.4 |
-| 3 | `ProfileBanner`: "Set up your profile" | Only in `ProfileNone` or `ProfileUnavailable`. Not dismissible | `01-accounts.md` §8.4 |
-| 4 | Hazri banner | Always | T1 |
+| 1 | App bar: menu, the Hazri mark and name, a person icon opening `/profile`; under them the greeting (`Welcome, {name}` in `ProfileLoaded`, else `Welcome`) and the date | Always | T11, T8, `01-accounts.md` §8.4 |
+| 2 | `ProfileBanner`: "Set up your profile" | Only in `ProfileNone` or `ProfileUnavailable`. Not dismissible | `01-accounts.md` §8.4 |
+| 3 | Hazri banner | Always | T1 |
+| 4 | Streak card | When the Nitnem streak is 2 days or more | T12 |
 | 5 | Set Goal card, or the goal widget | Always, one or the other | `04-goals.md` §7.1 |
 | 6 | Call to action | When `content.db` has a bani to offer | T4 |
 | 7 | Vichar card | When the dataset has a line for the date | T6 |
@@ -54,8 +54,8 @@ menu (`08-sangat.md` §8.1).
 
 ## 5.4 The behaviour
 
-**T1. Hazri is the first card, always.** Only the header, the greeting and,
-when there is no profile, the profile banner sit above it. It reads only
+**T1. Hazri is the first card, always.** Only the app bar and, when there is
+no profile, the profile banner sit above it. It reads only
 `hazri(today)` (`04-goals.md` HZ1–HZ4: any completion, or a sitting of 300
 seconds or more). It needs no profile, no network and no goal, and it is never
 hidden.
@@ -104,8 +104,28 @@ becomes `MET`, from wherever the last item was met, and never for a backfilled
 past day (`04-goals.md` CE1).
 
 **T10. Midnight rolls Today over** with the app open: hazri resets, the date
-changes, items re-scope and the CTA is recomputed. The day is the device's
-local date (`04-goals.md` §2).
+changes, items re-scope, the streak card's week moves on and the CTA is
+recomputed. The day is the device's local date (`04-goals.md` §2).
+
+**T11. The app bar** (owner, 2026-10-07: canvas option D). Today only; every
+other tab keeps its own tab header.
+
+- A band across the top, `primary` (Neela `#262C63`) in light and `card2` in dark, with bottom corners of radius 28 dp and white text.
+- First row: the menu button (44 dp, white at 12% behind it), the sunrise mark and `appBarTitle` ("Hazri") in Baloo Paaji 2 at 22 sp, and the round person button (44 dp) on the right (T8).
+- Second row: the greeting at 24 sp and, under it, the date (Gregorian and Nanakshahi) at 13 sp in white at 78%.
+- The first card below overlaps the band by 32 dp: the profile banner when it is shown, else the hazri banner.
+- In elder mode the band keeps its layout and the type grows with the rest of the screen.
+
+**T12. The streak card** (owner, 2026-10-07: canvas option Streak 3). Under the
+hazri banner, a card with the number of days (`todayStreakDays`, e.g. "12") over
+`todayStreakCaption` ("days of Nitnem in a row"), and a strip of the last seven
+days: a weekday initial over a dot, saffron for a day that counts toward the
+streak and unlit otherwise, today's dot ringed. Tapping it opens the Diary.
+
+- The number is `current` from `nitnemStreak(today)` (`09-diary.md` D12), the same function the Diary uses.
+- The card is shown only when `current` is 2 or more. Below that it is not shown at all: no "0 days", no "1 day", and nothing said when a streak ends.
+- A grace day keeps the count going and its dot is unlit, saying nothing (`09-diary.md` D8).
+- Today's dot lights the moment today's Nitnem is done; until then the count is the streak through yesterday.
 
 ## 5.5 Scenarios
 
@@ -130,15 +150,20 @@ local date (`04-goals.md` §2).
 | T-q | No Vichar line for the date | — | The card is omitted |
 | T-r | Member of a Sangat group | Opening Today | No Sangat banner or number on Today |
 | T-s | Person icon tapped, no profile | — | Profile screen with Set up profile |
+| T-t | Nitnem done each of the last 12 days, today included | Opening Today | Streak card "12", seven saffron dots, today ringed |
+| T-u | Streak of 11 through yesterday, nothing yet today | Opening Today | "11"; six saffron dots and today's unlit and ringed; reading Japji lights it and shows "12" |
+| T-v | No Nitnem yesterday or today | Opening Today | No streak card; nothing said |
+| T-w | No profile | Opening Today | App bar with `Welcome`; the profile banner overlaps the band; the hazri banner below it |
+| T-x | Diary tab opened | — | Its own tab header, no app bar |
 
 ## 5.6 Open decisions
 
 | # | Decision | Status |
 | --- | --- | --- |
 | T-1 | Does the day arc come back? | **Default:** no. The goal widget answers the same question with a number |
-| T-2 | Streak on Today? | **Decided 2026-10-07:** shown on Today and in the Diary; never a score, never mentioned when it breaks. **Open:** which design (canvas options Streak 1–4, Diary 1–3) |
+| T-2 | Streak on Today? | **Decided 2026-10-07:** yes, as the week-strip card (T12); in the Diary as the two-number card (`09-diary.md` D12) |
 | T-3 | Merge elder mode into one tree now or later? | **Default:** now, with this rework |
-| T-4 | `01-accounts.md` §8.4 has an app bar titled "Hazri"; the app has no brand bar (CLAUDE.md) | **Decided 2026-10-07:** the app bar is required, titled Hazri, with the person icon (T8). **Open:** which design (canvas options A–D), and whether other tabs carry it |
+| T-4 | `01-accounts.md` §8.4 has an app bar titled "Hazri"; the app has no brand bar (CLAUDE.md) | **Decided 2026-10-07:** the navy app bar of T11, on Today only. CLAUDE.md's "no brand bar" now describes the other tabs |
 | T-5 | CTA order puts an unmet goal item before the slot's bani (T4) | **Decided 2026-10-07:** as written, because the goal is what the person chose |
 
 ## 5.7 Acceptance
@@ -148,6 +173,17 @@ local date (`04-goals.md` §2).
 - A test that Today makes **no** network call on build and that a hanging attendance call changes nothing on screen.
 - One test feeding Today, the Goals screen and the Diary the same rows and checking they agree (`04-goals.md` §9).
 - Golden renders at 390×844, light and dark, normal and elder.
+
+## 5.7a Strings
+
+| Key | English |
+| --- | --- |
+| `appBarTitle` | Hazri |
+| `todayStreakDays` | {count} (the number alone, formatted for the language) |
+| `todayStreakCaption` | days of Nitnem in a row |
+
+Punjabi and Hindi are drafted with the implementation and verified by the
+owner (`01-accounts.md` §13.9).
 
 ## 5.8 Out of scope
 
@@ -169,3 +205,5 @@ CTA: `06-nitnem.md`. Attendance: `07-simran.md`.
 | CTA: slot bani before goals | Paath in progress, then unmet goal item, then slot bani | T4, T-5 |
 | Sangat numbers from cache, marked stale | No Sangat number on Today | T7 |
 | Simran marks hazri | Only a sitting of 300 s or more | `04-goals.md` HZ1, HZ3 |
+| Tab header "Today" | Navy Hazri app bar with the greeting, Today only | T11 |
+| No streak on Today | Week-strip streak card from 2 days | T12 |

@@ -72,6 +72,16 @@ backed up weekly with a profile. A restore adds what the phone lacks and never
 changes what it has (RS3, RS4). There is no diary sync switch and no per-day
 sync any more.
 
+**D12. The streak card** (owner, 2026-10-07: canvas option Diary 2). One
+function, `nitnemStreak(day)`, returns `current` (consecutive Nitnem days
+ending on `day`, or on the day before when `day` has none yet, with grace
+days counted as they are now, D8) and `longest` (the longest such run in the history on the
+phone). Today's card (`05-today.md` T12) and this one both call it.
+
+- The card has two halves divided by a rule: `current` over `diaryStreakNow` ("days in a row now") in saffron, and `longest` over `diaryStreakLongest` ("your longest").
+- When `current` is under 2, only the `longest` half is shown. When `longest` is under 2 as well, the card is not shown. Nothing ever says a streak ended.
+- `longest` is computed on the phone from `user.db`; nothing is stored or sent for it, and a restore that adds older days can raise it.
+
 ## 9.4 Scenarios
 
 | # | Given | When | Then |
@@ -95,6 +105,9 @@ sync any more.
 | Y-q | The device time zone changes | — | Days keep their stored local date; none merges into its neighbour |
 | Y-r | `user.db` migration fails | Opening | A real error; the diary must never be silently lost |
 | Y-s | Ten years of history | Opening a month | Only that month is read |
+| Y-t | Current run 12, longest 30 | Opening the Diary | "12 days in a row now" and "30 your longest" |
+| Y-u | No Nitnem yesterday or today, longest 30 | Opening the Diary | Only "30 your longest" |
+| Y-v | A new install | Opening the Diary | No streak card |
 
 ## 9.5 Proposed additions (not in scope yet)
 
@@ -133,3 +146,4 @@ sync any more.
 | Per-day diary sync, last writer wins | Weekly backup; restore merges row by row | `10-backup.md` |
 | A per-day note | None exists | 9.8 |
 | Diary edits only local | Also counted toward groups, at most 3 a day per group | `08-sangat.md` CT4 |
+| Streak card: one number, a line about grace days used | Two numbers, now and longest; grace days never mentioned | D12, D8 |
