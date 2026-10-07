@@ -8,10 +8,10 @@ amended passage carries a note pointing to **Section 13**, which records every
 amendment (D1–D8), the other decisions taken alongside the PRD, and what is
 still open. Where Section 13 and the PRD text disagree, Section 13 wins.
 
-The earlier version of this file, including the research on sending options
-and boundary conditions that `CLAUDE.md`, `docs/domain-setup.md` and
-`docs/signing.md` cite by section number, is in git history: see this file as
-of commit `cc1c967`.
+The earlier version of this file is in git history (`git show cc1c967:docs/features/01-accounts.md`). It
+holds the research on sending options, the custom-domain rollout and the
+boundary conditions of the old Firebase email-link design, which `CLAUDE.md`,
+`docs/domain-setup.md` and `docs/signing.md` still cite by its section numbers.
 
 ---
 
@@ -541,7 +541,7 @@ This link expires in 1 hour. If you did not request this, ignore this email and 
 </intent-filter>
 ```
 
-The main activity keeps android:launchMode="singleTask" and the default taskAffinity. The \<application\> tag keeps android:allowBackup="true". *(Amended, §13 D5 and D7. D7 is still to be confirmed.)*
+The main activity keeps android:launchMode="singleTask" and the default taskAffinity. The \<application\> tag keeps android:allowBackup="true". *(Amended, §13 D5 and D7.)*
 
 ### 7.4 Browser fallback page (hosting/public/verify/index.html)
 
@@ -1048,7 +1048,7 @@ Anything not listed in Sections 1–11 is out of scope. Specifically:
 
 ### 13.1 Amendments to the PRD
 
-Decided by the owner on 2026-10-05 and confirmed on 2026-10-07. Each one is applied in the PRD text above where it says *(Amended)*.
+Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7 was decided on 2026-10-07. Each one is applied in the PRD text above where it says *(Amended)*.
 
 | # | Topic | PRD said | Decision |
 |---|---|---|---|
@@ -1058,7 +1058,7 @@ Decided by the owner on 2026-10-05 and confirmed on 2026-10-07. Each one is appl
 | D4 | minSdk | 23 | **24**, as the app is today |
 | D5 | Android backup | `allowBackup="false"` | **Leave backup on** (`allowBackup="true"`). Switching it off loses `user.db` (diary, goals, every tick) on uninstall or a new phone. |
 | D6 | App Link fingerprints | Debug, upload and Play signing SHA-256 | **Release fingerprint only.** CI keeps no debug keystore, so there is no stable debug fingerprint; a debug install gets no App Link and a tapped link opens a browser. |
-| D7 | Launch mode | `singleTop` | **Still to be confirmed by the owner.** The app ships `singleTask`, held by `test/android/manifest_test.dart`, so that a tapped mail link returns to the running app instead of stacking a new copy. Until confirmed, keep `singleTask` and the default `taskAffinity` (13.6). |
+| D7 | Launch mode | `singleTop` | **Keep `singleTask`** (decided 2026-10-07), as the app ships it and `test/android/manifest_test.dart` holds it, with the default `taskAffinity` (13.6). A tapped mail link then returns to the running app instead of stacking a new copy on top of it. |
 | D8 | Restore | Profile only; no non-profile data (§12) | **Restore brings back goals and diary entries** (completions and simran sittings) as well as the profile. |
 
 ### 13.2 What D8 needs
@@ -1126,10 +1126,8 @@ treat a miss as "no account found", never as proof there isn't one.
 |---|---|
 | A-1 | `android:taskAffinity` keeps its **default** value (the package name). The attribute is **never set to the empty string**. An empty affinity is what put four Hazri icons in the recents switcher: it means the activity belongs to no task, so every tap of a mail link starts a new one and `launchMode="singleTask"` has nothing to match against. |
 
-A-1 was written against a revision of the PRD whose §7.3 said
-`launchMode="singleTask"`; the revision in this file says `singleTop`, which
-is D7. Whichever launch mode is confirmed, A-1 stands: `launchMode` is not the
-whole story, and the affinity is the missing line.
+`launchMode="singleTask"` (D7) is not the whole story on its own: without
+A-1 it has no task to match against, and the affinity is the missing line.
 
 ### 13.7 Deliberately untouched
 
@@ -1140,8 +1138,7 @@ whole story, and the affinity is the missing line.
 
 ### 13.8 Still open
 
-1. **D7, the launch mode.** See 13.1.
-2. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the build on a missing or untranslated key, so English-only keys cannot be committed without relaxing that test. Default: wait for the translations rather than relax it.
-3. **Brevo credentials** (W6). Default: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
-4. **Whether the sangat PRD lands before this is built.** If `users/{uid}` later grows group membership, knowing the shape now saves reshaping the document twice.
-5. **The sync feature document** that D8 depends on (13.2).
+1. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the build on a missing or untranslated key, so English-only keys cannot be committed without relaxing that test. Default: wait for the translations rather than relax it.
+2. **Brevo credentials** (W6). Default: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
+3. **Whether the sangat PRD lands before this is built.** If `users/{uid}` later grows group membership, knowing the shape now saves reshaping the document twice.
+4. **The sync feature document** that D8 depends on (13.2).

@@ -9,7 +9,8 @@ below is a value to copy. It is the *shape*, the order, and the four things
 that go wrong.
 
 Nothing here changes the app. `kSiteBase` stays on `hazri-dfcc1.web.app`
-until Phase 3 (`docs/features/01-accounts.md` §1.7, step 7), because a
+until Phase 3 (§1.7 step 7 of the earlier accounts spec,
+`git show cc1c967:docs/features/01-accounts.md`), because a
 verification link already sitting in somebody's inbox has to keep working.
 
 ---
@@ -46,7 +47,9 @@ below is the order *within* a track, not a queue to work through.
 
 **No mailbox is needed for anything the app does.** Firebase sends the
 verification mail itself, from `noreply@hazri-dfcc1.firebaseapp.com`
-(`01-accounts.md` §1.7 option 1). A mailbox on the domain is wanted for the
+(§1.7 option 1 of the earlier accounts spec). Once the profile spec
+(`docs/features/01-accounts.md`) is built, the app sends its own mail through
+the Trigger Email extension (its §3.1 and §13 W6) instead. A mailbox on the domain is wanted for the
 Play Store developer contact, which is public and required at publish, the
 `Reply-To` on that mail, and the Phase 3 feedback address. So it is a
 before-the-Play-Store item, not a now item.
@@ -93,7 +96,8 @@ add `hazri.me`.
 
 **Hosting and Auth keep separate lists.** A domain added to the first and not
 the second is `unauthorized-continue-uri`, which the app currently reports as
-"check your internet" (`01-accounts.md` B18, A13).
+"check your internet" (B18 and A13 of the earlier accounts spec,
+`git show cc1c967:docs/features/01-accounts.md`).
 
 ### 5. DMARC — after the mailbox works
 

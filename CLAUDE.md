@@ -160,8 +160,9 @@ Phase 3 asset: it is added *alongside* `hazri-dfcc1.web.app`, never instead,
 because a verification link already sitting in an inbox has to keep working.
 `docs/domain-setup.md` is the record set and the order to add it in; the DNS
 is worth doing early (certificates and mail propagation each take up to a
-day) and the app change is not. `docs/features/01-accounts.md` §1.7 lists the
-seven steps, of which the app is the last one.
+day) and the app change is not. §1.7 of the earlier accounts spec
+(`git show cc1c967:docs/features/01-accounts.md`) lists the seven steps, of which the app
+is the last one.
 
 It has to be Firebase Hosting rather than anywhere cheaper: since Dynamic
 Links shut down on 2025-08-25, Firebase Auth mints its email links on a
@@ -310,7 +311,9 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
   is now true once. No account has a password, there is no sign-in screen,
   and nothing in `lib/` calls a password API —
   `test/features/no_password_test.dart` fails if one appears, and has been
-  watched failing. `docs/features/01-accounts.md` A15 has the detail. **A verification
+  watched failing. A15 of the earlier accounts spec (`git show cc1c967:docs/features/01-accounts.md`)
+  has the detail. The new profile spec (`docs/features/01-accounts.md` §3.1) sends
+  its own links and needs only the Anonymous provider, so this changes when it is built. **A verification
   completed end to end for the first time on 2026-09-27**, once the provider
   was on: mail sent by Firebase's own mailer, delivered, link followed,
   address confirmed.

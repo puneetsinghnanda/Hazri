@@ -183,4 +183,5 @@ https://digitalassetlinks.googleapis.com/v1/statements:list
 A `statements` array naming `app.hazri` means the web half is done. Links
 still will not open the app until the manifest declares a matching
 intent-filter and the app knows what to do with the link it receives — see
-`docs/features/01-accounts.md` A-3.
+A-3 of the earlier accounts spec (`git show cc1c967:docs/features/01-accounts.md`) and
+§7.2–7.3 and §13 D6–D7 of the current one (`docs/features/01-accounts.md`).
