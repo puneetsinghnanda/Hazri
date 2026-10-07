@@ -297,7 +297,7 @@ Old rows may overlap for the same bani. GI1 applies only to new writes, and `ver
 
 ## 6. Cloud sync readiness (not built here)
 
-This feature sends nothing to the cloud. Until a sync feature ships, **uninstalling the app or clearing its data loses every goal, completion and dot**, and a restored profile (Profile PRD R2) brings none of them back. That matches Profile PRD §12.
+This feature sends nothing to the cloud. Until a sync feature ships, **uninstalling the app or clearing its data loses every goal, completion and dot**. Once it ships, a profile restore brings goals and diary entries back as of the last weekly sync (`01-accounts.md` §13 D8).
 
 A weekly phone-to-cloud sync is planned as its own feature document. The schema above is ready for it without another migration:
 
@@ -314,7 +314,7 @@ The intended Firestore shape follows the Profile PRD's rules: documents under th
 | `completions` | `profiles/{profileId}/completions/{id}` |
 | `simranSessions` | `profiles/{profileId}/simranSessions/{id}` |
 
-That sync document must also amend Profile PRD §12, which today forbids syncing non-profile data during restore.
+The owner has amended Profile PRD §12 so that restore brings these tables back (`01-accounts.md` §13 D8 and 13.2).
 
 ## 7. App behaviour by screen
 

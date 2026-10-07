@@ -1,14 +1,12 @@
 # 1. User profile: setup, email verification, restore
 
-This file replaces the earlier accounts specification. Its body (from the next
-heading down to Section 12) is the owner's PRD, *Feature Document: User Profile — Hazri
-(Nitnem app)*, dated 28 Sep 2026, converted from the Word document word for
-word. Do not edit it here without changing the source document.
-
-**Appendix A** keeps the decisions recorded on 2026-10-05, after this PRD was
-supplied. Where it disagrees with the PRD, the conflict is listed in A.0 and
-waits for the owner's ruling; per the PRD's own §0.5, stop and ask rather than
-pick.
+This file replaces the earlier accounts specification. Sections 0 to 12 are
+the owner's PRD, *Feature Document: User Profile — Hazri (Nitnem app)*, dated
+28 Sep 2026, converted from the Word document word for word, **with the
+owner's amendments of 2026-10-05 and 2026-10-07 applied in place**. Each
+amended passage carries a note pointing to **Section 13**, which records every
+amendment (D1–D8), the other decisions taken alongside the PRD, and what is
+still open. Where Section 13 and the PRD text disagree, Section 13 wins.
 
 The earlier version of this file, including the research on sending options
 and boundary conditions that `CLAUDE.md`, `docs/domain-setup.md` and
@@ -25,7 +23,7 @@ This document is the single source of truth. The implementing AI (Claude Code) m
 
 1.  **No inference.** Every behaviour, field, endpoint, status code, UI string, validation rule, timeout and file path must come from this document. Do not add, rename, merge or "improve" anything.
 
-2.  **No extra features.** Do not add login, profile editing (other than the email change in 6.6), profile deletion, analytics, localization, iOS support, theming, or any feature not listed. Section 12 lists what is out of scope.
+2.  **No extra features.** Do not add login, profile editing (other than the email change in 6.6), profile deletion, analytics, iOS support, theming, or any feature not listed. Section 12 lists what is out of scope. *(Amended: localisation is required, §13 D1.)*
 
 3.  **Exact strings.** UI copy, email text, error codes and JSON keys must be used character-for-character as written.
 
@@ -138,13 +136,13 @@ User taps link in email -> Android opens app via App Link -> app calls POST /api
 
 ### 3.2 App stack
 
-- Flutter (stable channel), Android only, minSdkVersion 23.
+- Flutter (stable channel), Android only, minSdkVersion 24. *(Amended, §13 D4.)*
 
 - Packages: firebase_core, firebase_auth, http, shared_preferences, app_links, flutter_riverpod.
 
 - State management: Riverpod Notifier / NotifierProvider only.
 
-- Navigation: Flutter Navigator (1.0) with named routes and a global GlobalKey\<NavigatorState\> navigatorKey (needed for deep-link navigation).
+- Navigation: the app's existing go_router. *(Amended, §13 D3: the PRD's Navigator 1.0 calls below are read as their go_router equivalents.)*
 
 - Firebase configured with FlutterFire CLI (flutterfire configure), producing lib/firebase_options.dart.
 
@@ -163,7 +161,7 @@ profileId = Firestore auto-generated ID.
 | name                     | string    | no       | Normalized per Section 5                      |
 | email                    | string    | no       | Trimmed, as entered (case kept)               |
 | emailNormalized          | string    | no       | Trimmed + lowercased                          |
-| phone                    | string    | yes      | +91 + 10 digits, or null                      |
+| phone                    | string    | yes      | Normalised per Section 5 (§13 D2), or null    |
 | city                     | string    | no       | Normalized per Section 5                      |
 | emailVerified            | boolean   | no       | false on create                               |
 | emailVerifiedAt          | timestamp | yes      | null until verified                           |
@@ -259,7 +257,7 @@ The same rules run in the app (lib/validation/validators.dart) and on the server
 |-------|----------|--------------------------------------------------|------------------------------------------------------|--------------------------------------------------------------------------------------------|
 | Name  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your name · Invalid: Name must be 2–50 letters (spaces, . ' - allowed) |
 | Email | Yes      | Trim (store); trim + lowercase (emailNormalized) | ≤ 254 characters and matches EMAIL_REGEX             | Empty: Please enter your email · Invalid: Please enter a valid email address               |
-| Phone | No       | Trim; empty string → null                        | null, or matches PHONE_REGEX; stored as +91 + digits | Invalid: Enter a valid 10-digit mobile number                                              |
+| Phone | No       | Remove every character that is not a digit, keeping a leading + if typed; empty → null | Always valid (§13 D2) | none |
 | City  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your city · Invalid: City must be 2–50 letters (spaces, . ' - allowed) |
 
 Regular expressions (Dart: RegExp(pattern, unicode: true); TypeScript: new RegExp(pattern, "u")):
@@ -267,16 +265,17 @@ Regular expressions (Dart: RegExp(pattern, unicode: true); TypeScript: new RegEx
 ```text
 NAME_REGEX = ^[\p{L}\p{M}][\p{L}\p{M} .'\-]{1,49}$
 EMAIL_REGEX = ^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$
-PHONE_REGEX = ^[6-9][0-9]{9}$
 ```
+
+*(Amended: `PHONE_REGEX` is removed. The phone number is not validated and any country code is accepted, §13 D2.)*
 
 Rules:
 
 - NAME_REGEX accepts Gurmukhi, Devanagari and Latin letters (Unicode letters and combining marks).
 
-- The phone field accepts only the 10 digits; the +91 prefix is fixed UI text, not typed. Client uses FilteringTextInputFormatter.digitsOnly and LengthLimitingTextInputFormatter(10).
+- The phone field is free text with the phone keyboard. There is no +91 prefix and no length limit. *(Amended, §13 D2.)*
 
-- The server receives phone as the 10 digits (or empty/absent) and stores +91 + digits.
+- The server receives the phone as typed (or empty/absent) and stores it normalised as in the table above. *(Amended, §13 D2.)*
 
 - Length checks count Unicode code points after normalization.
 
@@ -522,11 +521,13 @@ This link expires in 1 hour. If you did not request this, ignore this email and 
 "target": {
 "namespace": "android_app",
 "package_name": "{{ANDROID_PACKAGE_NAME}}",
-"sha256_cert_fingerprints": ["{{SHA256_DEBUG}}", "{{SHA256_UPLOAD}}", "{{SHA256_PLAY_SIGNING}}"]
+"sha256_cert_fingerprints": ["<release signing SHA-256>"]
 }
 }
 ]
 ```
+
+*(Amended: only the release signing fingerprint is published, §13 D6.)*
 
 ### 7.3 Android intent filter (inside the main \<activity\> of AndroidManifest.xml)
 
@@ -540,7 +541,7 @@ This link expires in 1 hour. If you did not request this, ignore this email and 
 </intent-filter>
 ```
 
-The main activity keeps android:launchMode="singleTop". The \<application\> tag sets android:allowBackup="false" so a restored device backup cannot bring back a stale cache.
+The main activity keeps android:launchMode="singleTask" and the default taskAffinity. The \<application\> tag keeps android:allowBackup="true". *(Amended, §13 D5 and D7. D7 is still to be confirmed.)*
 
 ### 7.4 Browser fallback page (hosting/public/verify/index.html)
 
@@ -666,7 +667,7 @@ App bar title Set up profile. One Form with four TextFormFields in this order:
 |-------|------------------|----------------------------|----------------------------------------|
 | Name  | Name \*          | text, capitalization words | —                                      |
 | Email | Email \*         | emailAddress               | autocorrect off                        |
-| Phone | Phone (optional) | phone                      | prefixText: "+91 ", digitsOnly, max 10 |
+| Phone | Phone (optional) | phone                      | No prefix, no formatter, no limit (§13 D2) |
 | City  | City \*          | text, capitalization words | —                                      |
 
 Full-width button Save Profile. autovalidateMode is disabled until the first submit, then onUserInteraction.
@@ -840,7 +841,7 @@ Every row below must behave exactly as stated; each is already implied by Sectio
 | C4  | Name/City length exactly 2 or 50                                     | Accepted                                                                   |
 | C5  | Name Harpreet Kaur                                                   | Stored as Harpreet Kaur                                                    |
 | C6  | Name in Gurmukhi (e.g. ਹਰਪ੍ਰੀਤ)                                       | Accepted                                                                   |
-| C7  | Phone starting with 0–5, or not 10 digits                            | Inline error Enter a valid 10-digit mobile number                          |
+| C7  | Phone in any format, with or without a country code (§13 D2)         | Accepted; stored normalised                                                |
 | C8  | Email exists with different case / spaces                            | 409 EMAIL_EXISTS (comparison uses emailNormalized)                         |
 | C9  | Two installs submit the same new email at once                       | Transaction: one gets 201, the other 409 EMAIL_EXISTS                      |
 | C10 | Same install submits twice (double tap or retry after lost response) | Second call → 409 PROFILE_ALREADY_EXISTS → app refreshes and opens Profile |
@@ -945,9 +946,9 @@ The ignore list must not contain \*\*/.\*, otherwise .well-known/assetlinks.json
 
 ### 10.3 Android build settings
 
-- android/app/build.gradle(.kts): minSdk = 23; applicationId = "{{ANDROID_PACKAGE_NAME}}".
+- android/app/build.gradle(.kts): minSdk = 24; applicationId = "{{ANDROID_PACKAGE_NAME}}". *(Amended, §13 D4.)*
 
-- AndroidManifest.xml: \<uses-permission android:name="android.permission.INTERNET" /\>, android:allowBackup="false", plus Section 7.3.
+- AndroidManifest.xml: \<uses-permission android:name="android.permission.INTERNET" /\>, android:allowBackup="true", plus Section 7.3. *(Amended, §13 D5.)*
 
 ### 10.4 Deployment steps (developer, in this order)
 
@@ -1033,9 +1034,9 @@ Anything not listed in Sections 1–11 is out of scope. Specifically:
 
 - iOS, web or desktop builds.
 
-- Nitnem content, audio, progress tracking, or syncing any non-profile data during restore.
+- Nitnem content, audio, or progress tracking. *(Amended: restore brings back goals and diary entries, §13 D8.)*
 
-- Push notifications, analytics, crash reporting, App Check, localization, dark-mode work, custom theming.
+- Push notifications, analytics, crash reporting, App Check, dark-mode work, custom theming. *(Amended: localisation is in scope, §13 D1.)*
 
 - An admin panel or any other UI for the database.
 
@@ -1043,23 +1044,34 @@ Anything not listed in Sections 1–11 is out of scope. Specifically:
 
 ---
 
-## Appendix A. Decisions recorded 2026-10-05
+## 13. Amendments and decisions
 
-Carried over unchanged from the earlier version of this file (§1.11), where
-they were written down after the PRD was supplied.
+### 13.1 Amendments to the PRD
 
-### A.0 Conflicts with the PRD above, awaiting the owner's ruling
+Decided by the owner on 2026-10-05 and confirmed on 2026-10-07. Each one is applied in the PRD text above where it says *(Amended)*.
 
-| # | PRD says | Appendix A says |
-|---|---|---|
-| C1 | §0.2 and §12: no localisation | W5: localisation in `pa`, `hi`, `en` is required (CLAUDE.md rule 5) |
-| C2 | §5: phone is 10 digits matching `PHONE_REGEX`, stored as `+91` + digits | P1–P3: no validation, any country code, stored normalised |
-| C3 | §7.3: main activity keeps `launchMode="singleTop"` | A-1 discusses `launchMode="singleTask"`, so it was written against a different revision of the PRD |
-| C4 | §3.2: Navigator 1.0; minSdk 23; §7.3: `allowBackup="false"`; §7.2: `{{SHA256_DEBUG}}` | A.6 items 1–4 default to go_router, minSdk 24, backup left on, and release fingerprint only |
-| C5 | §12: no syncing of non-profile data during restore | A.2: diary sync stays, and it brings the diary back on a new phone |
+| # | Topic | PRD said | Decision |
+|---|---|---|---|
+| D1 | Localisation | Out of scope (§0.2, §12) | **Required**: every user-facing string in `pa`, `hi` and `en` (CLAUDE.md rule 5). The PRD's English strings are the `en` source text, used character for character; `pa` and `hi` are added in the ARB files. |
+| D2 | Phone number | 10 digits matching `PHONE_REGEX`, stored as `+91` + digits | **No validation and no fixed country code.** Stored normalised: every character that is not a digit is removed, and a leading `+` is kept if typed. |
+| D3 | Navigation | Navigator 1.0, named routes, global `navigatorKey` | **Keep go_router.** `pushNamed`, `pushReplacementNamed` and `pushNamedAndRemoveUntil('/', …)` mean go_router's `push`, `pushReplacement` and `go('/')`. Incoming links go through go_router's top-level `redirect`, which is what lets a restore link reach the right screen on a phone that has never been set up. |
+| D4 | minSdk | 23 | **24**, as the app is today |
+| D5 | Android backup | `allowBackup="false"` | **Leave backup on** (`allowBackup="true"`). Switching it off loses `user.db` (diary, goals, every tick) on uninstall or a new phone. |
+| D6 | App Link fingerprints | Debug, upload and Play signing SHA-256 | **Release fingerprint only.** CI keeps no debug keystore, so there is no stable debug fingerprint; a debug install gets no App Link and a tapped link opens a browser. |
+| D7 | Launch mode | `singleTop` | **Still to be confirmed by the owner.** The app ships `singleTask`, held by `test/android/manifest_test.dart`, so that a tapped mail link returns to the running app instead of stacking a new copy. Until confirmed, keep `singleTask` and the default `taskAffinity` (13.6). |
+| D8 | Restore | Profile only; no non-profile data (§12) | **Restore brings back goals and diary entries** (completions and simran sittings) as well as the profile. |
 
+### 13.2 What D8 needs
 
-### A.1 Scope
+Goals and diary entries live on the phone (`docs/features/04-goals.md` §5) and reach the cloud only through the planned weekly sync. A restore can bring back only what was synced before the old phone was lost, so:
+
+- The weekly sync writes `goals`, `goalItems`, `completions` and `simranSessions` under `profiles/{profileId}/` through the `api` Cloud Function (04-goals §6).
+- After `200 PROFILE_RESTORED` (§6.5) the app downloads those rows and writes them into `user.db`.
+- The existing diary sync (`lib/features/sync/`, 13.4) writes Firestore directly, which §10.1's deny-all rules forbid. It moves behind the `api` function as part of that sync.
+- Anything done after the last weekly sync is not restored. The restore screen must say so rather than imply a complete copy.
+- The sync and the download are specified in their own feature document. Until it exists, a restore returns only the profile.
+
+### 13.3 Scope of the rewrite
 
 | # | Decision |
 |---|---|
@@ -1071,7 +1083,7 @@ they were written down after the PRD was supplied.
 | W6 | Sending: **Brevo or similar**, to be configured. |
 | W7 | Cost model as the PRD states it: accepted. |
 
-### A.2 What the sangat's removal takes with it
+### 13.4 What the sangat's removal takes with it
 
 Settled 2026-10-05, question by question:
 
@@ -1080,7 +1092,7 @@ Settled 2026-10-05, question by question:
 | **Diary sync** (`lib/features/sync/`, 498 lines) | **Stays.** It does not come out with the sangat. |
 | **The globe and presence** (Simran tab) | **Comes out.** Separate logic to follow. |
 | **The Vichar library** | **Moves behind the new API.** No direct client read survives. |
-| **PRD §13.1 and the privacy screen** | **Will change.** The two are one promise and are rewritten together. |
+| **`docs/PRD.md` §13.1 and the privacy screen** | **Will change.** The two are one promise and are rewritten together. |
 | **Today's banners** (join banner, hazri banner) | Separate logic to follow. |
 
 What this touches outside `lib/features/sangat/` (28 files, 5,352 lines):
@@ -1091,7 +1103,7 @@ What this touches outside `lib/features/sangat/` (28 files, 5,352 lines):
 `features/sync/ui/sync_screen.dart`,
 `features/about/ui/privacy_screen.dart`, and fifteen test files.
 
-### A.3 Phone numbers
+### 13.5 Phone numbers
 
 | # | Decision |
 |---|---|
@@ -1108,55 +1120,28 @@ brackets, which is where the same number typed twice usually differs — but
 country code is required. Anything that looks up an account by phone has to
 treat a miss as "no account found", never as proof there isn't one.
 
-### A.4 Android
+### 13.6 Android
 
 | # | Decision |
 |---|---|
 | A-1 | `android:taskAffinity` keeps its **default** value (the package name). The attribute is **never set to the empty string**. An empty affinity is what put four Hazri icons in the recents switcher: it means the activity belongs to no task, so every tap of a mail link starts a new one and `launchMode="singleTask"` has nothing to match against. |
 
-The PRD's §7.3 specifies `launchMode="singleTask"` and is silent on
-`taskAffinity`, which reads as though `launchMode` were the whole story. It
-is not. A-1 is the missing line.
+A-1 was written against a revision of the PRD whose §7.3 said
+`launchMode="singleTask"`; the revision in this file says `singleTop`, which
+is D7. Whichever launch mode is confirmed, A-1 stands: `launchMode` is not the
+whole story, and the affinity is the missing line.
 
-### A.5 Deliberately untouched
+### 13.7 Deliberately untouched
 
 | Area | Decision |
 |---|---|
 | **Firebase Analytics** | **Do not touch it.** `firebase_analytics: ^12.6.0` stays in `pubspec.yaml`, collection stays off, the inert Settings switch stays. A separate feature document will cover it. |
 | **Which parts of the app may require the network** | To be decided later. Until then, **follow the PRD**. |
 
-### A.6 Still open
+### 13.8 Still open
 
-These have no answer yet and will block the matching piece of work, not the
-whole rewrite:
-
-1. **go_router or Navigator 1.0.** The PRD's flows read as imperative
-   `Navigator.push`; the app is 33 `GoRoute`s on a
-   `StatefulShellRoute.indexedStack`, and the incoming-link handling lives in
-   go_router's top-level `redirect` — which is what lets a restore link reach
-   the right screen on a phone that has never been set up. Default if nothing
-   is said: **keep go_router**, and treat the PRD's diagrams as flow rather
-   than as API.
-2. **`minSdk` 23 (PRD) or 24 (the app today).** Default: **stay on 24** and
-   correct the PRD.
-3. **`{{SHA256_DEBUG}}` in the PRD's `assetlinks.json` cannot be filled.** CI
-   keeps no debug keystore, so the Android Gradle Plugin mints a throwaway
-   key on each runner and there is no stable debug fingerprint to publish.
-   Default: **publish the release fingerprint only**; a debug install gets no
-   App Link and a tapped link opens a browser.
-4. **`android:allowBackup="false"`**, which the PRD asks for. It switches off
-   Android's own backup of `user.db` — the diary, the goals and every tick —
-   so an uninstall or a new phone loses them with no recovery, given the PRD
-   also excludes diary data from restore. Default: **leave backup enabled**
-   until this is confirmed, because the alternative is the same data loss the
-   signing key was fixed to prevent.
-5. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the
-   build on a missing or untranslated key, so English-only keys cannot be
-   committed without relaxing that test. Default: **wait for the updated
-   PRD** rather than relax it.
-6. **Brevo credentials.** Default: write the sender against Brevo's API with
-   the key read from Secret Manager, so switching it on is configuration
-   rather than code.
-7. **Whether the sangat PRD lands before this is built.** If `users/{uid}`
-   later grows group membership, knowing the shape now saves reshaping the
-   document twice.
+1. **D7, the launch mode.** See 13.1.
+2. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the build on a missing or untranslated key, so English-only keys cannot be committed without relaxing that test. Default: wait for the translations rather than relax it.
+3. **Brevo credentials** (W6). Default: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
+4. **Whether the sangat PRD lands before this is built.** If `users/{uid}` later grows group membership, knowing the shape now saves reshaping the document twice.
+5. **The sync feature document** that D8 depends on (13.2).
