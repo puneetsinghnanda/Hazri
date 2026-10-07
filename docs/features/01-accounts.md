@@ -1,688 +1,1065 @@
-# 1. Accounts, joining and restoring
+# 1. User profile: setup, email verification, restore
 
-**There is no login, and there will not be one.** Rule 4, reaffirmed
-2026-09-26. No password, no sign-in screen, ever.
+This file replaces the earlier accounts specification. Its body (from the next
+heading down to Section 12) is the owner's PRD, *Feature Document: User Profile — Hazri
+(Nitnem app)*, dated 28 Sep 2026, converted from the Word document word for
+word. Do not edit it here without changing the source document.
 
-**§1.11 supersedes §1.4 to §1.10.** A PRD supplied on 2026-10-05 replaces the
-account design rather than amending it, and §1.11 is the record of what was
-decided. Read it first; the sections above are kept because the boundary
-conditions in §1.6 and the sending options in §1.7 are still the research the
-rewrite rests on.
+**Appendix A** keeps the decisions recorded on 2026-10-05, after this PRD was
+supplied. Where it disagrees with the PRD, the conflict is listed in A.0 and
+waits for the owner's ruling; per the PRD's own §0.5, stop and ask rather than
+pick.
+
+The earlier version of this file, including the research on sending options
+and boundary conditions that `CLAUDE.md`, `docs/domain-setup.md` and
+`docs/signing.md` cite by section number, is in git history: see this file as
+of commit `cc1c967`.
 
 ---
 
-## 1.1 Purpose
-
-Somebody can read every bani, hear every recitation, keep a diary and mark
-their hazri **without an account, without a network, and without ever being
-asked who they are**. An account exists for exactly two reasons: to be in a
-sangat with other people, and to get your diary back on a new phone.
-
-## 1.2 What exists today
-
-- **Anonymous Firebase Auth.** `FirebaseAccountRepository` signs in
-  anonymously the first time somebody joins; there is no credential and no
-  screen asking for one.
-- `sangatAccountProvider` holds the account or null; `hasJoinedSangatProvider`
-  is `account != null`. That boolean gates the Sangat tab and (until this
-  week) wrongly gated the hazri banner.
-- **Screens:** `join_sangat_screen`/`_sheet` (the invitation), `account_screen`
-  (name, city, show-my-name), `verify_email_screen`, `restore_screen`.
-- **Verification** is an emailed link, and the mail is sent by **Firebase
-  Auth itself** -- `sendSignInLinkToEmail`, from
-  `noreply@hazri-dfcc1.firebaseapp.com`, through Google's own mailer. There is
-  no SMTP server, no email provider and no Function in the path today, and
-  nothing to pay for. `kVerificationUrl` is
-  `https://hazri-dfcc1.web.app/verify` (`lib/core/backend/backend.dart`) --
-  Firebase Hosting, **not** Vercel; only the group invite base
-  (`kInviteBase`) is still a Vercel path.
-- **Verifying and restoring are the same call.** `continueWithLink` links the
-  credential onto the anonymous user when one is signed in (same uid, so
-  every group and diary row stays attached) and signs into the existing
-  account when one is not. That is why one screen does both.
-- **`emailVerified` is read off the auth user, never off Firestore**, so a
-  phone cannot mark itself verified by writing a document. §1.8's "a Function
-  sets `verified`" is therefore already solved, better, and costs nothing.
-- The link is **pasted, not tapped**, because Android App Links need an
-  `assetlinks.json` with a release signing fingerprint and there is no
-  keystore yet.
-- **Deletion** (privacy screen) removes memberships first, then the profile
-  row, then the auth user — in that order, because a membership left behind is
-  a name in somebody else's group with no account behind it.
-- **Export** writes the account and memberships as indented JSON to the share
-  sheet, and says in the file that the diary and goals are not in it.
-
-## 1.3 Wrong or missing
-
-1. **An anonymous account is one uninstall from gone.** Firebase anonymous auth
-   is tied to the app install. Reinstall and you are a different person: your
-   group memberships are unreachable and your synced diary is orphaned. The
-   email link is the only recovery and **nothing tells anybody to set it up**.
-2. **Nothing explains what the account is.** There is no screen that says "this
-   is anonymous, here is what it costs you, here is how to not lose it".
-3. **Restore is unreachable except by a link somebody already has.** If you
-   never verified an email, there is no path at all.
-4. **A pasted link is a bad experience** and will stay so until Phase 3's
-   keystore.
-5. **No account deletion from inside the sangat flow** — only from privacy,
-   which is three menus deep.
-6. ~~Nothing is deployed at `/verify`.~~ **Closed 2026-09-27.** Until that
-   morning `https://hazri-dfcc1.web.app` had never been deployed at all — it
-   answered Firebase's *Site Not Found* — so every verification link the app
-   had ever sent landed on a dead end. `public/` is live now and `/verify`
-   answers correctly in all three languages. **Like `firestore.rules`, it is
-   published by hand and no workflow does it**, so the next change to those
-   pages is only half done until somebody deploys again.
-7. ~~Three different failures are reported as one.~~ **Closed 2026-09-27**,
-   after it cost an afternoon: the first real verification attempt on a phone
-   answered "Could not reach the sangat — try again when you have signal"
-   with perfect signal, and the cause was a console setting. Every unmapped
-   auth code fell into `JoinFailed`, which two of the three screens rendered
-   with `sangatUnavailable`, and the Firebase code that named the cause was
-   discarded on the way.
-
-   The decision is now `outcomeForAuthCode`, a pure function on the code
-   alone; `wordsForOutcome` is one mapping shared by all three screens
-   instead of three copies that had already drifted; project
-   misconfiguration (`operation-not-allowed`, `unauthorized-continue-uri`,
-   `invalid-cert-hash` and the rest) is `SangatRefused`, and an unmapped code
-   reaches the reader **carrying its code** so the next unknown failure is
-   not as blind as this one.
-
-   One correction to what this file said before: `LinkProblem.wrongAddress`
-   was never mis-worded. Its copy already reads "Not a link from us — copy
-   the whole of it". Only the enum's *name* was misleading. The real
-   collapse was `invalid-email` sharing a branch with `invalid-action-code`,
-   which told somebody whose address did not match that the link was already
-   used; that is now `LinkProblem.addressMismatch`.
-8. ~~`too-many-requests` is reported as `SangatUnavailable`.~~ **Closed
-   2026-09-27.** It is `SangatBusy` now: "too many attempts, wait a few
-   minutes — your signal is fine", which is the opposite of what the reader
-   used to be told at the exact moment they had asked three times because
-   the mail had not arrived.
-
-## 1.4 The model
-
-Rewritten 2026-09-27, after a day in which the app told one reader that their
-email was confirmed and, one tap later, that it was not.
-
-That was not a bug that escaped a test. It was a design in which **three
-different things were all called "verified"** and each screen was free to
-pick one:
-
-| Called "verified" | Set by | Lives | Who read it |
-|---|---|---|---|
-| `_confirmed` | a repository call returning success | one screen's memory | the verify screen |
-| `user.emailVerified` | Firebase's own bookkeeping | the auth token | the account screen |
-| a linked `password` provider | `linkWithCredential` | Firebase, server side | nothing, until today |
-
-Three answers to one question. Whichever one was fixed, another was still
-wrong, and every fix looked right in isolation. **Patching cannot repair
-this. The disagreement has to become impossible.**
-
-### 1.4.1 Three states, and nothing else
-
-An account is in exactly one of these. Not a set of booleans — one value.
-
-| State | What it means | What a reader can do |
-|---|---|---|
-| **None** | No auth user | Read, listen, keep a diary. Everything except the sangat |
-| **Local** | An anonymous auth user | All of the above, plus the sangat, **on this phone only**. Lose the phone and it is gone |
-| **Recoverable** | An auth user with an email credential linked | All of the above, and a link sent to that address brings it back on any phone |
-
-**A15 (was A18).** *Recoverable* means **an email credential is linked to
-this uid** — not that Firebase set `emailVerified`. Linking is what makes
-`signInWithCredential` on a new phone return *this* account instead of
-minting an empty one, so linking is the thing the promise in A5 rests on.
-The link cannot be followed without receiving the mail, so following it is
-the proof. `emailVerified` is separate bookkeeping and was observed staying
-false on an account whose credential was linked.
-
-### 1.4.2 The rules that make disagreement impossible
-
-**R1. One source: the `users/{uid}` document.** The whole account — name,
-city, address, groups **and the state** — is one document on the server, and
-every screen reads that one document. The device never derives account state
-from anything it holds locally.
-
-Corrected 2026-09-27 after the reader asked why the state was not stored. My
-earlier answer was that `firestore.rules` let a client write its own
-document, so a `verified` field would be one any phone could set to true and
-fake recovery with. That risk is real and it is also the only objection —
-and it is answered by R1a rather than by keeping the state off the server.
-Reading it off the SDK's local auth object was the thing that let two screens
-disagree, so the objection was being solved in the most expensive possible
-way.
-
-**R1a. Only the server writes the state.** `firestore.rules` refuse
-`verified`, `email`, `providers` and `role` from every client, so a phone
-writing to its own document cannot touch them. A Cloud Function is the only
-writer: it reads the auth user **server side** with `admin.auth().getUser()`
-and projects the truth into the document. The device can trigger it and can
-never dictate it.
-
-What the device still does, because it cannot not: hold a session token, and
-call `linkWithCredential` — that *is* Firebase Auth, and it runs on the
-phone by construction. What it no longer does is **decide**. It performs the
-act; the server records what the act achieved; the app reads the record.
-
-**R1b. Offline, the document reads from Firestore's own cache.** The last
-state the server sent, which is the right answer when there is no network,
-and it costs no read.
-
-**R2. One mapper.** A single pure function turns `(User?, Map?)` into the
-account. It is the only place an account is constructed, it takes no other
-inputs, and it is tested directly against each shape a real user takes.
-
-**R3. No screen may hold verification state.** No `_confirmed`, no local
-boolean, nothing a widget sets on itself. A screen renders the state it is
-given. This is the rule that would have prevented every instance of this
-bug, and it is the one the old design broke first.
-
-**R4. An operation reports; it does not assert.** `continueWithLink` returns
-what happened — linked, signed in, refused, and with which code. It never
-returns "you are now verified". The state changes because the user changed,
-and the stream says so.
-
-**R5. Every mutation refreshes before it returns.** After linking, signing
-in or deleting, reload the user and let the stream re-publish. An operation
-that succeeds while the app still shows the old state is a bug in the
-operation, not in the screen.
-
-**R6. One stream, and it fires on a link.** `userChanges()`, because
-`authStateChanges()` does not report a linked credential — the plugin is
-explicit about this and the difference cost an evening.
-
-**R7. The state is visible.** The app can say what it currently believes and
-why: the state, the providers, and the outcome of the last operation. Not a
-debug bolt-on — the thing that turns "it did nothing" into a sentence. Three
-rounds were spent guessing at facts a single line on screen settles.
-
-### 1.4.3 The transitions, end to end
-
-Every way the state can change, and nothing else may change it.
-
-| From | Event | Call | To |
-|---|---|---|---|
-| None | Taps **Join the sangat**, confirms | `signInAnonymously` then write the profile | Local |
-| Local | Follows a link for an unused address | `linkWithCredential` | **Recoverable**, same uid, everything kept |
-| Local | Follows a link for an address that already has an account | refused: `credential-already-in-use` | Local — and the reader is **asked**, see A11. Never silently switched |
-| None | Follows a link on a new phone | `signInWithCredential` | Recoverable, the original uid |
-| Local or Recoverable | Deletes | memberships, profile, then the auth user | None |
-| Recoverable | Changes the address | re-verify; stays Recoverable on the old one until the new link is followed | Recoverable |
-
-Two of those rows are not built: the fork when the address is taken (A11),
-and changing a verified address (A12).
-
-### 1.4.4 Before the link is sent
-
-**A16.** **Typed is not verified**, and no surface may imply otherwise. An
-address sitting on the profile in state Local is a string; it recovers
-nothing. Every place the address appears shows the state beside it.
-
-**A17.** **The app should know whether an address already has an account —
-and cannot ask.** `fetchSignInMethodsForEmail` returns nothing for every
-address once Email Enumeration Protection is on, which is Firebase's default.
-So either a Cloud Function answers it with `getUserByEmail`, or the app
-stops implying it knows. **Open: D-A1.** Until one of those, entering an
-address that already has an account looks identical to entering a new one,
-which is B1 — the worst failure in this document.
-
-**A18.** The address a link was sent to is written down **before** it is
-sent, because a phone that is restoring has no account to read it from.
-
-### 1.4.5 What this deletes
-
-Not additions — removals. The design is smaller than what it replaces.
-
-- `_confirmed` on the verify screen, and every other screen-held flag
-- the `done = _confirmed || account.emailVerified` disjunction, which was two
-  sources being OR'd together and calling it agreement
-- any read of `user.emailVerified` outside the one mapper
-- the idea that an operation's return value describes the world
-
-### 1.4.6 What stays from before
-
-**A1.** The app never asks who somebody is before letting them read. No
-account at first run, at setup, or on any tab except Sangat.
-
-**A2.** An anonymous account is created at exactly one moment: the person
-taps **Join the sangat** and confirms.
-
-**A3.** At that moment, and not before, one screen explains: this has no
-password, it lives on this phone, add an email to keep it. **Later** is a
-real answer and is remembered.
-
-**A4.** An email, once linked, is the only recovery key. It is never shown to
-other members and it is not a login.
-
-**A5.** **Recovery works if and only if the state is Recoverable**, and the
-app says so in those terms.
-
-**A6.** A display name may be blank, and a blank one reads as "a member" —
-never a uid, never "Anonymous".
-
-**A7.** Deleting removes memberships first, then the synced diary and
-attributable presence, then the profile, then the auth user. **The diary on
-the phone is untouched** and the screen says so.
-
-**A8.** Leaving the sangat is not deleting: memberships go, the account
-stays.
-
-**A11.** An address that already has an account is a **fork the reader
-chooses**, not something the app does to them. Signing into it abandons
-whatever this phone has done since setup; that has to be said, not
-discovered.
-
-**A12.** The address can be changed only while signed in, and changing it
-re-verifies. An address nobody can reach any more is unrecoverable and there
-is no way back from it.
-
-**A13.** A failed link says which thing failed — expired, already used,
-minted for a different address, or not one of ours — and a throttle is never
-dressed as being offline.
-
-**A14.** Restore brings back the account, not the phone: name, city, address
-and memberships. The diary only if sync was on; goals, ticks, bani progress,
-reminders and simran history never. The restore screen says so **before** the
-link is sent.
-
-
-## 1.5 Scenarios
-
-**Success**
-
-| Given | When | Then |
-|---|---|---|
-| A fresh install, no account | The reader opens Today, Nitnem, Simran, Diary | Everything works; nothing asks for an account; the hazri banner shows |
-| No account | They tap Join the sangat and confirm | An anonymous account is created, A3's explainer is shown once |
-| An account, no email | They add an email and tap the link | The account is marked verified; Settings shows the email |
-| A verified account, new phone | They enter the same email and confirm | Groups and synced diary come back; the local diary is merged, not replaced |
-| An account | They rename themselves to blank | Every group shows them as "a member" |
-| An account in two groups | They delete the account | Both memberships go, then the profile, then the auth user |
-
-**Failure — each of these must have a specific message, never a generic error**
-
-| Given | When | Then |
-|---|---|---|
-| No network | They tap Join | "This needs the internet. Everything else works without it." No half-created account |
-| Firestore rules not published | Any sangat write | `SangatRefused` — "something is wrong at our end, not yours". **Never** reported as offline |
-| An unverified account, phone lost | They install on a new phone | Honest: the old account cannot be recovered. Offered a fresh start, with the local diary intact |
-| An email already used by another account | They try to verify it | Refused, with what to do next — not a silent failure |
-| The verification link is expired | They paste it | "This link has expired" and a button to send another |
-| The link is pasted with a trailing space or `?from=whatsapp` | They paste it | Parsed anyway (the parser is deliberately forgiving) |
-| Auth delete succeeds, profile delete failed | Deletion | The account is unreachable either way; the screen does not claim a clean delete |
-| Two phones, same verified email | Both write the diary | Last-writer-wins per day, and the day is merged not replaced. Never silently drop a day |
-| An address nobody has an account for | They ask to restore it | "We have no account for that address." **Not** a new empty account with their name absent |
-| A link mangled by the mail client | They paste part of it | "That does not look like a Hazri link — copy the whole address, including everything after the question mark" |
-| The same link pasted twice | The second paste | "That link has already been used" and a button to send another — not "wrong address" |
-| Four link requests in a minute | The fifth | "Too many attempts, wait a few minutes." **Never** "check your internet" |
-| A verified account, diary sync off, new phone | They restore | Groups and name come back; the screen said beforehand that the diary would not, and says again that it did not |
-| An account set up again on a reinstall, then verified | The link is followed | They land on the original account; what was done on this phone since the reinstall is either carried over or plainly said to be dropped |
-
-## 1.6 Why a restore fails
-
-The boundary conditions, grouped by where the failure actually is. Each one is
-a thing that can happen **after** somebody has completed setup and believes
-they are safe.
-
-### The email was never really bound to the account
-
-These are the dangerous ones, because setup looks finished and is not.
-
-| # | What happened | What the person sees today |
-|---|---|---|
-| B1 | The address was saved but the link was never followed | Firestore has the address; Firebase Auth has never heard of it. Restore mints a **brand new account** with a new uid, `_accountFor` finds no document and fabricates a blank one. It looks like it worked and everything is gone |
-| B2 | A typo — `gmial.com`, a missing letter | Same as B1, plus the link is now sitting in a stranger's inbox, and following it would hand them an account |
-| B3 | Verified at the time, unreachable now — a work address after leaving the job, a college address, an ISP address | Nothing in the app can help. The only cure was changing it while still signed in (A12), and that moment has passed |
-| B4 | `emailVerified` is cached on the local `User` object | The account screen can say "not verified" about an address that is, or the reverse, until something calls `user.reload()` |
-
-**B1 is the default outcome, not an edge case.** `sendSignInLinkToEmail`
-creates an account for any address it is given; it is a sign-in method, not a
-lookup. And the app cannot check first: `fetchSignInMethodsForEmail` returns an
-empty list for every address once **Email Enumeration Protection** is on,
-which is Firebase's default for projects of this vintage. So "do you have an
-account for this address?" cannot be answered on the client at all — it needs
-a Function calling `admin.auth().getUserByEmail`, or the flow has to stop
-promising an answer it does not have. This is what A10 costs.
-
-### The uid is lost or the link lands somewhere else
-
-| # | What happened | Consequence |
-|---|---|---|
-| B5 | Uninstall with no verified email | The anonymous uid goes with the install. Android auto-backup does not reliably carry the Firebase Auth token. Unrecoverable, full stop |
-| B6 | Reinstalled, set up again instead of restoring, then verified | `linkWithCredential` throws `credential-already-in-use`, the code falls through to `signInWithCredential` and lands on the original account — correct — but the second anonymous uid and its `users/{uid}` document are orphaned, with whatever was done in between. See A11 |
-| B7 | `deleteEverything()` deleted the profile and then `user.delete()` failed (Firebase requires a recent sign-in) | The document is gone, the auth user survives, the address stays taken. A later restore signs into a uid with **no profile** and gets a blank account, and the same address cannot be used to start again cleanly |
-| B8 | The auth user was disabled or deleted in the console | `user-disabled` / `user-not-found`, currently falling through to `JoinFailed` → "unavailable" |
-
-### The link itself
-
-| # | What happened | Firebase says | Today's message |
-|---|---|---|---|
-| B9 | The link expired | `expired-action-code` | Correct — "expired", with a resend |
-| B10 | The link was already used (people tap first, nothing happens, then paste) | `invalid-action-code` | "Already used" — correct, by accident: it shares a branch with B11 |
-| B11 | The address typed on the restore screen is not the one the link was minted for | `invalid-email` | Also "already used". **Wrong**, and the person resends for ever |
-| B12 | The mail client wrapped or rewrote the URL (Outlook Safe Links, Gmail line-wrapping, a corporate rewriter) | `isSignInWithEmailLink` is false | "Wrong address". **Wrong** — nothing is wrong with the address |
-| B13 | The mail did not arrive: spam, Promotions, a corporate filter, a provider that distrusts `firebaseapp.com` | nothing at all | **Observed 2026-09-27: the first mail this project ever sent went to spam.** Both screens now say to look there. That is a mitigation, not a fix — see below |
-| B14 | Too many attempts from this device or to this address | `too-many-requests` | `SangatUnavailable` — "check your internet", which is the opposite of true |
-| B15 | The project's daily quota on Firebase's built-in mailer is spent | send fails | Every restore in the project fails until the next day, and nothing distinguishes it |
-| B16 | Device clock badly wrong | code validation fails | Generic failure |
-
-### Configuration, not code
-
-These fail identically for everybody and are invisible in git.
-
-| # | What must be true | If it is not |
-|---|---|---|
-| B17 | The Email/Password provider exists **with its Email link (passwordless) toggle on and its password toggle off** | `operation-not-allowed` on every send, project-wide. **This was the real cause, found 2026-09-27:** the project had only Anonymous enabled and the provider had never been added, so no verification mail had ever been sendable. See A15 |
-| B18 | The continue URL's host is in Authentication → Settings → Authorized domains (`hazri-dfcc1.web.app` and `.firebaseapp.com` are there by default) | `unauthorized-continue-uri`. **Confirmed working 2026-09-27** — a link sent, delivered and followed end to end, so the default authorisation is in force. It becomes live again the moment the continue URL moves to `hazri.me` |
-| B19 | Something is deployed at `https://hazri-dfcc1.web.app/verify` | Firebase's *Site Not Found*. The link still works if the whole URL is copied out of the address bar, and nothing tells anybody that. **Was the state until 2026-09-27**; the pages are live now, and the failure returns the moment a change to `public/` is committed and not deployed |
-| B20 | `firestore.rules` is published | Auth succeeds and the profile read is refused → `SangatRefused`. The restore "failed" for a reason that is not in Auth at all |
-| B21 | There is a network, and it is not a captive portal | `network-request-failed` → "unavailable", which is right |
-
-### It worked, and it still looks like it failed
-
-| # | | |
-|---|---|---|
-| B22 | Diary sync was off (Y-4 is still open) | The account comes back with an empty diary. Correct behaviour, experienced as data loss — hence A14 |
-| B23 | Goals, ticks, bani progress, reminders, simran history are in `user.db` | They never come back, on any setting. Only the diary is even a candidate |
-| B24 | The verification email is in English | Somebody using Punjabi or Hindi gets the one thing the app says to them outside the app in a language they did not choose. Rule 5 stops at the app's edge today. See §1.7 |
+Sep 28, 2026 · @Puneet Singh Nanda
+
+## 0. Implementation directive (mandatory, read first)
+
+This document is the single source of truth. The implementing AI (Claude Code) must build exactly what is written here and nothing else.
+
+1.  **No inference.** Every behaviour, field, endpoint, status code, UI string, validation rule, timeout and file path must come from this document. Do not add, rename, merge or "improve" anything.
+
+2.  **No extra features.** Do not add login, profile editing (other than the email change in 6.6), profile deletion, analytics, localization, iOS support, theming, or any feature not listed. Section 12 lists what is out of scope.
+
+3.  **Exact strings.** UI copy, email text, error codes and JSON keys must be used character-for-character as written.
+
+4.  **Placeholders stay placeholders.** Values in Section 2 written as {{LIKE_THIS}} must not be invented. Put them in the two config files named in Section 2 and leave the placeholder text in place if no value is provided.
+
+5.  **Stop on ambiguity.** If anything required to proceed is missing, contradictory or unclear, stop and ask the developer. Do not guess, do not pick a "reasonable default".
+
+6.  **Package versions.** Add packages with flutter pub add \<name\> / npm install \<name\> (latest stable at implementation time). Use only the APIs of those packages that this document names.
+
+7.  **Existing Nitnem features.** This document covers only the user profile feature. Do not modify, remove or restyle existing Nitnem content screens. If the project has no home screen yet, create the one described in Section 8 with an empty area reserved for Nitnem content.
+
+8.  **Done means tested.** Implementation is complete only when every item in Section 11 passes.
+
+## 1. Overview and requirement traceability
+
+The Android Flutter app lets a user create an optional profile without logging in, optionally verify their email through a link, and restore an existing profile on a new install by proving ownership of the email.
+
+Identity model: every install is silently signed in with **Firebase Anonymous Authentication**. The anonymous uid identifies the device install. A profile is owned by exactly one uid at a time. The user never sees a login screen.
+
+| Req \# | Requirement (summary)                                                       | Where implemented                           |
+|--------|-----------------------------------------------------------------------------|---------------------------------------------|
+| 1      | Install from Play Store, no login, banner on home to set up profile         | 8.3 Startup, 8.4 Home screen                |
+| 2      | Form: Name, Email, Phone, City; Name/Email/City mandatory                   | 5 Validation, 8.5 Profile Setup screen      |
+| 3      | Submit stores in Firestore; optionally ask to confirm email                 | 6.2 POST /profile, 8.6 Profile Saved dialog |
+| 4      | Confirm email sends link; clicking link sets emailVerified = true           | 6.3, 6.5, 7 Email & deep links              |
+| 5      | Link opens app page saying email verified, only after DB write succeeds     | 8.9 Link Result screen                      |
+| 6      | Profile screen calls GET API for verification status                        | 6.1 GET /profile, 8.7 Profile screen        |
+| 7      | If no profile, show option to set it up                                     | 8.4, 8.7                                    |
+| 8      | Email already exists: tell user, confirm email, restore data                | 6.2 (409), 6.4, 6.5, 8.8                    |
+| 9      | Name on home screen from backend or cache                                   | 8.2 Cache, 8.3 Startup, 8.4                 |
+| 10     | User can change the email while it is not yet verified (e.g. typed wrongly) | 6.6, 8.7, 8.9, 8.11, 9.6                    |
+
+Fixed decisions: backend is Firebase Cloud Functions + Firestore; platform is Android only; profile restore happens only after the user clicks a link sent to that email.
+
+## 2. Configuration values (developer supplies)
+
+All environment-specific values live in exactly two files: lib/config/app_config.dart (Flutter) and functions/src/config.ts (backend). No other file may hard-code these values.
+
+| Placeholder              | Meaning                                       | Used in                                         |
+|--------------------------|-----------------------------------------------|-------------------------------------------------|
+| {{FIREBASE_PROJECT_ID}}  | Firebase project ID                           | Both config files, firebase.json, manifest host |
+| {{ANDROID_PACKAGE_NAME}} | Android applicationId, e.g. com.example.hazri | assetlinks.json, fallback page                  |
+| APP_DISPLAY_NAME         | Supplied: Hazri (app bar title and emails)    | functions config                                |
+| {{SHA256_DEBUG}}         | SHA-256 of debug signing cert                 | assetlinks.json                                 |
+| {{SHA256_UPLOAD}}        | SHA-256 of upload key                         | assetlinks.json                                 |
+| {{SHA256_PLAY_SIGNING}}  | SHA-256 from Play Console → App integrity     | assetlinks.json                                 |
+| {{SMTP_CONNECTION_URI}}  | SMTP URI for the Trigger Email extension      | Extension install only                          |
+| {{EMAIL_FROM}}           | Sender address, e.g. no-reply@yourdomain      | Extension install only                          |
+
+Derived constants (compute from the placeholders, do not change):
+
+- HOSTING_ORIGIN = https://{{FIREBASE_PROJECT_ID}}.web.app
+
+- API_BASE_URL = HOSTING_ORIGIN + "/api/v1"
+
+- VERIFY_LINK_BASE = HOSTING_ORIGIN + "/verify"
+
+- FUNCTIONS_REGION = asia-south1
+
+Fixed business constants (put in both config files where used):
+
+| Constant                       | Value                                     |
+|--------------------------------|-------------------------------------------|
+| VERIFY_EMAIL_TOKEN_TTL_SECONDS | 86400 (24 hours)                          |
+| RESTORE_TOKEN_TTL_SECONDS      | 3600 (1 hour)                             |
+| EMAIL_COOLDOWN_SECONDS         | 60                                        |
+| EMAIL_MAX_PER_WINDOW           | 5                                         |
+| EMAIL_WINDOW_SECONDS           | 86400 (24 hours, rolling from first send) |
+| HTTP_TIMEOUT_SECONDS (app)     | 15                                        |
+
+## 3. Architecture and tech stack
+
+The app never reads or writes Firestore directly. All data access goes through one HTTPS Cloud Function (api) that uses the Admin SDK; Firestore security rules deny all client access.
+
+```text
+[Flutter Android app]
+| Firebase Anonymous Auth -> ID token
+| HTTPS Authorization: Bearer <ID token>
+v
+[Firebase Hosting https://{{FIREBASE_PROJECT_ID}}.web.app]
+|-- /api/** -> rewrite -> Cloud Function "api" (asia-south1, Express)
+|-- /verify -> static fallback page (verify/index.html)
+|-- /.well-known/assetlinks.json -> Android App Links verification
+v
+[Cloud Function "api"] --Admin SDK--> [Firestore (asia-south1)]
+|-- writes docs to "mail" collection
+v
+[Trigger Email extension] --SMTP--> user inbox
+
+User taps link in email -> Android opens app via App Link -> app calls POST /api/v1/tokens/verify
+```
+
+### 3.1 Backend stack
+
+- Firebase Cloud Functions 2nd gen, Node.js 20, TypeScript.
+
+- Packages: firebase-functions, firebase-admin, express.
+
+- One exported function: export const api = onRequest({ region: "asia-south1" }, app); where app is the Express app.
+
+- Express routes are mounted with the full /api/v1 prefix (Hosting forwards the full path).
+
+- Firestore in Native mode, location asia-south1.
+
+- Firebase Authentication with only the **Anonymous** provider enabled.
+
+- Email delivery: official Firebase Extension **Trigger Email from Firestore** (firebase/firestore-send-email), collection name mail, configured with {{SMTP_CONNECTION_URI}} and {{EMAIL_FROM}}.
+
+- Firebase Hosting serves the API rewrite, the fallback page and assetlinks.json.
+
+### 3.2 App stack
+
+- Flutter (stable channel), Android only, minSdkVersion 23.
+
+- Packages: firebase_core, firebase_auth, http, shared_preferences, app_links, flutter_riverpod.
+
+- State management: Riverpod Notifier / NotifierProvider only.
+
+- Navigation: Flutter Navigator (1.0) with named routes and a global GlobalKey\<NavigatorState\> navigatorKey (needed for deep-link navigation).
+
+- Firebase configured with FlutterFire CLI (flutterfire configure), producing lib/firebase_options.dart.
+
+## 4. Firestore DB schema
+
+Five collections. Only the Cloud Function writes them. All timestamps are Firestore Timestamp; createdAt/updatedAt use FieldValue.serverTimestamp(), expiry comparisons use Timestamp.now() inside the function.
+
+### 4.1 profiles/{profileId}
+
+profileId = Firestore auto-generated ID.
+
+| Field                    | Type      | Nullable | Rule                                          |
+|--------------------------|-----------|----------|-----------------------------------------------|
+| profileId                | string    | no       | Same as document ID                           |
+| ownerUid                 | string    | no       | Anonymous uid that currently owns the profile |
+| name                     | string    | no       | Normalized per Section 5                      |
+| email                    | string    | no       | Trimmed, as entered (case kept)               |
+| emailNormalized          | string    | no       | Trimmed + lowercased                          |
+| phone                    | string    | yes      | +91 + 10 digits, or null                      |
+| city                     | string    | no       | Normalized per Section 5                      |
+| emailVerified            | boolean   | no       | false on create                               |
+| emailVerifiedAt          | timestamp | yes      | null until verified                           |
+| createdAt                | timestamp | no       | Server timestamp                              |
+| updatedAt                | timestamp | no       | Server timestamp on every write               |
+| restoredAt               | timestamp | yes      | null; set on each successful restore          |
+| emailQuota.lastSentAt    | timestamp | yes      | Last verification or restore email queued     |
+| emailQuota.windowStartAt | timestamp | yes      | Start of current 24 h window                  |
+| emailQuota.countInWindow | number    | no       | 0 on create                                   |
+
+### 4.2 emailIndex/{emailHash}
+
+Guarantees one profile per email. emailHash = lowercase hex SHA-256 of emailNormalized.
+
+| Field     | Type      | Rule                         |
+|-----------|-----------|------------------------------|
+| profileId | string    | Profile that owns this email |
+| createdAt | timestamp | Server timestamp             |
+
+### 4.3 owners/{uid}
+
+Guarantees one profile per install. Document ID = anonymous uid.
+
+| Field     | Type      | Rule                      |
+|-----------|-----------|---------------------------|
+| profileId | string    | Profile owned by this uid |
+| createdAt | timestamp | Server timestamp          |
+
+### 4.4 verificationTokens/{tokenHash}
+
+tokenHash = lowercase hex SHA-256 of the raw token. The raw token is never stored.
+
+| Field           | Type      | Rule                                  |
+|-----------------|-----------|---------------------------------------|
+| tokenHash       | string    | Same as document ID                   |
+| profileId       | string    | Target profile                        |
+| purpose         | string    | VERIFY_EMAIL or RESTORE_PROFILE       |
+| requestingUid   | string    | uid that requested the email          |
+| emailNormalized | string    | Email the link was sent to            |
+| status          | string    | ACTIVE, USED or SUPERSEDED            |
+| createdAt       | timestamp | Server timestamp                      |
+| expiresAt       | timestamp | now + TTL for the purpose (Section 2) |
+| usedAt          | timestamp | null until used                       |
+| usedByUid       | string    | null until used                       |
+
+A token is **expired** when Timestamp.now() \>= expiresAt. Status is not changed to express expiry.
+
+### 4.5 mail/{autoId}
+
+Format required by the Trigger Email extension. The function only creates these documents.
+
+| Field           | Type   | Rule                      |
+|-----------------|--------|---------------------------|
+| to              | string | profile.email (as stored) |
+| message.subject | string | From Section 7.1          |
+| message.text    | string | From Section 7.1          |
+| message.html    | string | From Section 7.1          |
+
+The extension adds a delivery field itself. The app never reads mail.
+
+### 4.6 Indexes (firestore.indexes.json)
+
+```json
+{
+"indexes": [
+{
+"collectionGroup": "verificationTokens",
+"queryScope": "COLLECTION",
+"fields": [
+{ "fieldPath": "profileId", "order": "ASCENDING" },
+{ "fieldPath": "purpose", "order": "ASCENDING" },
+{ "fieldPath": "status", "order": "ASCENDING" }
+]
+},
+{
+"collectionGroup": "verificationTokens",
+"queryScope": "COLLECTION",
+"fields": [
+{ "fieldPath": "profileId", "order": "ASCENDING" },
+{ "fieldPath": "status", "order": "ASCENDING" }
+]
+}
+],
+"fieldOverrides": []
+}
+```
+
+## 5. Field validation and normalization
+
+The same rules run in the app (lib/validation/validators.dart) and on the server (functions/src/validation.ts). The server is authoritative. Normalize first, then validate the normalized value.
+
+| Field | Required | Normalize                                        | Valid when                                           | Error message (exact)                                                                      |
+|-------|----------|--------------------------------------------------|------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| Name  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your name · Invalid: Name must be 2–50 letters (spaces, . ' - allowed) |
+| Email | Yes      | Trim (store); trim + lowercase (emailNormalized) | ≤ 254 characters and matches EMAIL_REGEX             | Empty: Please enter your email · Invalid: Please enter a valid email address               |
+| Phone | No       | Trim; empty string → null                        | null, or matches PHONE_REGEX; stored as +91 + digits | Invalid: Enter a valid 10-digit mobile number                                              |
+| City  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your city · Invalid: City must be 2–50 letters (spaces, . ' - allowed) |
+
+Regular expressions (Dart: RegExp(pattern, unicode: true); TypeScript: new RegExp(pattern, "u")):
+
+```text
+NAME_REGEX = ^[\p{L}\p{M}][\p{L}\p{M} .'\-]{1,49}$
+EMAIL_REGEX = ^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$
+PHONE_REGEX = ^[6-9][0-9]{9}$
+```
+
+Rules:
+
+- NAME_REGEX accepts Gurmukhi, Devanagari and Latin letters (Unicode letters and combining marks).
+
+- The phone field accepts only the 10 digits; the +91 prefix is fixed UI text, not typed. Client uses FilteringTextInputFormatter.digitsOnly and LengthLimitingTextInputFormatter(10).
+
+- The server receives phone as the 10 digits (or empty/absent) and stores +91 + digits.
+
+- Length checks count Unicode code points after normalization.
+
+- Unknown JSON fields in request bodies are ignored.
+
+## 6. Backend REST API
+
+Six endpoints under API_BASE_URL (https://{{FIREBASE_PROJECT_ID}}.web.app/api/v1). All request and response bodies are JSON (Content-Type: application/json).
+
+### 6.0 Common rules
+
+**Authentication middleware (all endpoints):** read header Authorization: Bearer \<idToken\>; verify with admin.auth().verifyIdToken(idToken); set callerUid = decoded.uid. Missing or invalid → 401 UNAUTHENTICATED.
+
+**Error body (every non-2xx):**
+
+```json
+{ "error": { "code": "ERROR_CODE", "message": "Human readable text", "fields": { "name": "..." }, "retryAfterSeconds": 42, "purpose": "VERIFY_EMAIL" } }
+```
+
+fields only for VALIDATION_ERROR; retryAfterSeconds only for RATE_LIMITED; purpose only for token errors. Omit keys that do not apply.
+
+**Profile DTO (returned wherever profile appears):**
+
+```json
+{ "profileId": "abc", "name": "Harpreet Kaur", "email": "Harpreet@Example.com", "phone": "+919876543210", "city": "Amritsar", "emailVerified": false, "createdAt": "2026-09-28T10:00:00.000Z" }
+```
+
+phone may be null. Never return ownerUid, emailNormalized, emailQuota or token data.
+
+**Unexpected exceptions:** log with logger.error, respond 500 INTERNAL with message Something went wrong.
+
+**Email quota check** (used by 6.3 and 6.4, evaluated inside the transaction on the target profile's emailQuota, now = Timestamp.now()):
+
+1.  If lastSentAt != null and now - lastSentAt \< 60 s → 429 RATE_LIMITED, retryAfterSeconds = 60 - elapsed (rounded up).
+
+2.  If windowStartAt == null or now - windowStartAt \>= 86400 s → the new window starts: windowStartAt = now, countInWindow = 1.
+
+3.  Else if countInWindow \>= 5 → 429 RATE_LIMITED, retryAfterSeconds = 86400 - (now - windowStartAt) (rounded up).
+
+4.  Else countInWindow = countInWindow + 1.
+
+5.  Always set lastSentAt = now when the send proceeds.
+
+**Token creation** (used by 6.3 and 6.4): rawToken = crypto.randomBytes(32).toString("base64url") (43 characters); tokenHash = sha256Hex(rawToken); link = VERIFY_LINK_BASE + "?token=" + rawToken. Before creating, in the same transaction, query verificationTokens where profileId == X, purpose == P, status == "ACTIVE" and set each to SUPERSEDED. Only the newest link for a purpose works.
+
+### 6.1 GET /api/v1/profile — read caller's profile (Req 6, 9)
+
+Logic: read owners/{callerUid}. If missing → 404. Else read profiles/{profileId} and return it. If the profile document is missing or its ownerUid != callerUid, delete owners/{callerUid} and return 404.
+
+| Status | Body                                       |
+|--------|--------------------------------------------|
+| 200    | { "profile": \<Profile DTO\> }             |
+| 404    | error NO_PROFILE, message No profile found |
+| 401    | error UNAUTHENTICATED                      |
+
+### 6.2 POST /api/v1/profile — create profile (Req 2, 3, 8)
+
+Request: { "name": "...", "email": "...", "phone": "9876543210" \| "" \| null, "city": "..." }
+
+Logic:
+
+1.  Normalize and validate per Section 5. Any failure → 400 VALIDATION_ERROR with every failing field in fields (key = field name, value = the Section 5 message).
+
+2.  Compute emailNormalized and emailHash.
+
+3.  In one Firestore transaction: read owners/{callerUid} → exists → 409 PROFILE_ALREADY_EXISTS. Read emailIndex/{emailHash} → exists → 409 EMAIL_EXISTS. Else create profiles/{newId} (Section 4.1 defaults), emailIndex/{emailHash}, owners/{callerUid}.
+
+4.  Return 201 with the new profile (read it back after commit so timestamps are resolved).
+
+| Status    | Body                                                                          |
+|-----------|-------------------------------------------------------------------------------|
+| 201       | { "profile": \<Profile DTO\> }                                                |
+| 400       | error VALIDATION_ERROR + fields                                               |
+| 409       | error EMAIL_EXISTS, message An account with this email already exists         |
+| 409       | error PROFILE_ALREADY_EXISTS, message A profile already exists on this device |
+| 401 / 500 | per 6.0                                                                       |
+
+EMAIL_EXISTS must not return any data of the existing profile.
+
+### 6.3 POST /api/v1/profile/verification-email — send verify link (Req 4)
+
+Request body: {}.
+
+Logic, in one transaction: read owners/{callerUid} → missing → 404 NO_PROFILE. Read the profile. If emailVerified == true → 409 EMAIL_ALREADY_VERIFIED. Run the quota check. Supersede active VERIFY_EMAIL tokens, create the new token doc (purpose VERIFY_EMAIL, requestingUid = callerUid, TTL 86400 s), update emailQuota and updatedAt, create the mail doc with template 7.1-A.
+
+| Status    | Body                                                                                         |
+|-----------|----------------------------------------------------------------------------------------------|
+| 200       | { "result": "VERIFICATION_EMAIL_SENT", "email": "\<profile.email\>", "cooldownSeconds": 60 } |
+| 404       | error NO_PROFILE                                                                             |
+| 409       | error EMAIL_ALREADY_VERIFIED, message Your email is already verified                         |
+| 429       | error RATE_LIMITED, message Please wait before requesting another email + retryAfterSeconds  |
+| 401 / 500 | per 6.0                                                                                      |
+
+### 6.4 POST /api/v1/profile/restore-request — send restore link (Req 8)
+
+Request: { "email": "..." }
+
+Logic:
+
+1.  Validate email per Section 5 → failure → 400 VALIDATION_ERROR (fields.email).
+
+2.  In one transaction: read owners/{callerUid} → exists → 409 DEVICE_HAS_PROFILE. Read emailIndex/{emailHash} → missing → 404 EMAIL_NOT_FOUND. Read the profile. Run the quota check. Supersede active RESTORE_PROFILE tokens for that profile, create the token (purpose RESTORE_PROFILE, requestingUid = callerUid, TTL 3600 s), update emailQuota and updatedAt, create the mail doc with template 7.1-B addressed to the stored profile.email.
+
+| Status    | Body                                                                                    |
+|-----------|-----------------------------------------------------------------------------------------|
+| 200       | { "result": "RESTORE_EMAIL_SENT", "email": "\<profile.email\>", "cooldownSeconds": 60 } |
+| 400       | error VALIDATION_ERROR                                                                  |
+| 404       | error EMAIL_NOT_FOUND, message No account found for this email                          |
+| 409       | error DEVICE_HAS_PROFILE, message A profile already exists on this device               |
+| 429       | error RATE_LIMITED + retryAfterSeconds                                                  |
+| 401 / 500 | per 6.0                                                                                 |
+
+### 6.5 POST /api/v1/tokens/verify — consume a link (Req 4, 5, 8)
+
+Request: { "token": "\<rawToken\>" }
+
+Logic:
+
+1.  If token is not a string matching ^\[A-Za-z0-9\_-\]{43}\$ → 400 INVALID_REQUEST.
+
+2.  tokenHash = sha256Hex(token). In one transaction read verificationTokens/{tokenHash}.
+
+3.  Missing, or status == SUPERSEDED → 404 TOKEN_INVALID (include purpose when the doc exists).
+
+4.  Read profiles/{token.profileId} (always exists; no delete feature).
+
+5.  **If purpose == VERIFY_EMAIL:**
+
+    - status == USED: if profile emailVerified == true → 200 EMAIL_ALREADY_VERIFIED; else 409 TOKEN_ALREADY_USED.
+
+    - Expired → 410 TOKEN_EXPIRED.
+
+    - Profile emailNormalized != token.emailNormalized → 404 TOKEN_INVALID.
+
+    - Else set profile emailVerified = true, emailVerifiedAt = serverTimestamp (only if currently null), updatedAt; set token status = USED, usedAt, usedByUid = callerUid. Commit, then return 200 EMAIL_VERIFIED.
+
+    - isOwner = (profile.ownerUid == callerUid). Include profile only when isOwner is true.
+
+6.  **If purpose == RESTORE_PROFILE:**
+
+    - status == USED → 409 TOKEN_ALREADY_USED.
+
+    - Expired → 410 TOKEN_EXPIRED.
+
+    - Profile emailNormalized != token.emailNormalized → 404 TOKEN_INVALID.
+
+    - token.requestingUid != callerUid → 403 RESTORE_WRONG_DEVICE.
+
+    - owners/{callerUid} exists → 409 DEVICE_HAS_PROFILE.
+
+    - Else: oldUid = profile.ownerUid; delete owners/{oldUid}; create owners/{callerUid}; update profile ownerUid = callerUid, emailVerified = true, emailVerifiedAt (only if null), restoredAt, updatedAt; set this token USED, usedAt, usedByUid; set every other ACTIVE token of this profile (any purpose) to SUPERSEDED. Commit, then return 200 PROFILE_RESTORED with profile.
+
+| Status    | Body                                                                                                                    |
+|-----------|-------------------------------------------------------------------------------------------------------------------------|
+| 200       | { "result": "EMAIL_VERIFIED", "purpose": "VERIFY_EMAIL", "isOwner": true, "profile": \<DTO, only if isOwner\> }         |
+| 200       | { "result": "EMAIL_ALREADY_VERIFIED", "purpose": "VERIFY_EMAIL", "isOwner": bool, "profile": \<DTO, only if isOwner\> } |
+| 200       | { "result": "PROFILE_RESTORED", "purpose": "RESTORE_PROFILE", "isOwner": true, "profile": \<DTO\> }                     |
+| 400       | error INVALID_REQUEST, message Invalid link                                                                             |
+| 404       | error TOKEN_INVALID, message This link is invalid or has been replaced by a newer link                                  |
+| 409       | error TOKEN_ALREADY_USED, message This link has already been used                                                       |
+| 410       | error TOKEN_EXPIRED, message This link has expired                                                                      |
+| 403       | error RESTORE_WRONG_DEVICE, message Open this link on the phone where you requested the restore                         |
+| 409       | error DEVICE_HAS_PROFILE                                                                                                |
+| 401 / 500 | per 6.0                                                                                                                 |
+
+Note: clicking a restore link proves ownership of the email, so it also sets emailVerified = true. After a restore, the old install loses access; its next GET returns 404 (Section 9).
+
+### 6.6 PATCH /api/v1/profile/email — change unverified email (Req 10)
+
+The email can be changed only while emailVerified == false. A successful change also sends a verification link to the new email, so the quota check applies to the change itself.
+
+Request: { "email": "\<new email\>" }
+
+Logic (Firestore transactions must do all reads before any write):
+
+1.  Normalize and validate email per Section 5 → failure → 400 VALIDATION_ERROR (fields.email).
+
+2.  In one transaction, reads: owners/{callerUid} → missing → 404 NO_PROFILE. Read the profile. emailVerified == true → 409 EMAIL_ALREADY_VERIFIED. New emailNormalized equals the profile's emailNormalized → 400 EMAIL_UNCHANGED. Read emailIndex/{newEmailHash} → exists → 409 EMAIL_EXISTS. Run the quota check (6.0). Query all ACTIVE tokens of this profile (any purpose).
+
+3.  Same transaction, writes: delete emailIndex/{oldEmailHash}; create emailIndex/{newEmailHash} (profileId, createdAt); update profile email (trimmed), emailNormalized, emailQuota, updatedAt (emailVerified stays false); set every queried ACTIVE token to SUPERSEDED; create a new VERIFY_EMAIL token for the new email (requestingUid = callerUid, TTL 86400 s); create the mail doc with template 7.1-A addressed to the new email.
+
+4.  Return 200 with the updated profile (read back after commit).
+
+| Status    | Body                                                                             |
+|-----------|----------------------------------------------------------------------------------|
+| 200       | { "result": "EMAIL_CHANGED", "profile": \<Profile DTO\>, "cooldownSeconds": 60 } |
+| 400       | error VALIDATION_ERROR + fields.email                                            |
+| 400       | error EMAIL_UNCHANGED, message This is already your email                        |
+| 404       | error NO_PROFILE                                                                 |
+| 409       | error EMAIL_ALREADY_VERIFIED, message A verified email can't be changed          |
+| 409       | error EMAIL_EXISTS, message An account with this email already exists            |
+| 429       | error RATE_LIMITED + retryAfterSeconds                                           |
+| 401 / 500 | per 6.0                                                                          |
+
+The old email is released at once: another install may create a profile with it. Links sent to the old email stop working (superseded, and 6.5 checks emailNormalized).
+
+## 7. Emails and Android App Links
+
+One link format serves both purposes: https://{{FIREBASE_PROJECT_ID}}.web.app/verify?token=\<rawToken\>. The server decides the purpose from the token document, not the URL.
+
+### 7.1 Email templates (functions/src/email.ts)
+
+{name} = profile.name, {link} = the verify link, {app} = Hazri. HTML-escape {name} in the HTML body. The HTML body is the text body with paragraphs in \<p\> tags and the link as \<a href="{link}"\>Open in {app}\</a\>.
+
+**7.1-A Verify email** (VERIFY_EMAIL)
+
+- Subject: Confirm your email for {app}
+
+- Text body:
+
+```text
+Hi {name},
+
+Tap the link below on your Android phone that has {app} installed to confirm your email:
+
+{link}
+
+This link expires in 24 hours. If you did not request this, you can ignore this email.
+```
+
+**7.1-B Restore profile** (RESTORE_PROFILE)
+
+- Subject: Restore your {app} profile
+
+- Text body:
+
+```text
+Hi {name},
+
+Someone asked to restore your {app} profile on a new phone. If this was you, tap the link below on that phone:
+
+{link}
+
+This link expires in 1 hour. If you did not request this, ignore this email and your profile will stay as it is.
+```
+
+### 7.2 Digital Asset Links (hosting/public/.well-known/assetlinks.json)
+
+```json
+[
+{
+"relation": ["delegate_permission/common.handle_all_urls"],
+"target": {
+"namespace": "android_app",
+"package_name": "{{ANDROID_PACKAGE_NAME}}",
+"sha256_cert_fingerprints": ["{{SHA256_DEBUG}}", "{{SHA256_UPLOAD}}", "{{SHA256_PLAY_SIGNING}}"]
+}
+}
+]
+```
+
+### 7.3 Android intent filter (inside the main \<activity\> of AndroidManifest.xml)
+
+```xml
+<meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
+<intent-filter android:autoVerify="true">
+<action android:name="android.intent.action.VIEW" />
+<category android:name="android.intent.category.DEFAULT" />
+<category android:name="android.intent.category.BROWSABLE" />
+<data android:scheme="https" android:host="{{FIREBASE_PROJECT_ID}}.web.app" android:pathPrefix="/verify" />
+</intent-filter>
+```
+
+The main activity keeps android:launchMode="singleTop". The \<application\> tag sets android:allowBackup="false" so a restored device backup cannot bring back a stale cache.
+
+### 7.4 Browser fallback page (hosting/public/verify/index.html)
+
+Shown only when Android does not hand the link to the app (app not installed, or link opened on a computer). It never calls the API.
+
+- Title and heading: Open this link in the app
+
+- Paragraph: Open this link on the Android phone where the app is installed.
+
+- Button Open in app: href is built by inline JavaScript from location.search as intent://{{FIREBASE_PROJECT_ID}}.web.app/verify\<location.search\>#Intent;scheme=https;package={{ANDROID_PACKAGE_NAME}};end.
+
+- Link Get the app on Google Play → https://play.google.com/store/apps/details?id={{ANDROID_PACKAGE_NAME}}.
+
+- Self-contained HTML, inline CSS, no external resources.
+
+## 8. Flutter app implementation
+
+The app keeps one Riverpod ProfileController as the only source of profile state; every screen reads it, and only the flows below change it.
+
+### 8.1 File structure
+
+```text
+lib/
+main.dart # init Firebase, ProviderScope, MaterialApp, routes, navigatorKey
+firebase_options.dart # generated by flutterfire configure
+config/app_config.dart # Section 2 values
+models/profile.dart # Profile (fromJson/toJson of Profile DTO)
+models/api_exception.dart # ApiException, NetworkException
+validation/validators.dart # Section 5
+services/auth_service.dart # ensureSignedIn(), getIdToken()
+services/api_client.dart # HTTP + auth header + 401 retry + timeout
+services/profile_api.dart # one method per endpoint in Section 6
+services/profile_cache.dart # shared_preferences read/write/clear
+services/deep_link_service.dart # app_links listener -> navigation
+state/profile_controller.dart # ProfileState + ProfileController (Notifier)
+screens/home_screen.dart
+screens/profile_setup_screen.dart
+screens/profile_screen.dart
+screens/email_sent_screen.dart
+screens/link_result_screen.dart
+widgets/profile_banner.dart
+widgets/change_email_dialog.dart
+util/messages.dart # shared error strings (8.10)
+
+functions/src/
+index.ts app.ts config.ts auth.ts errors.ts validation.ts quota.ts tokens.ts email.ts routes/profile.ts routes/tokens.ts
+
+hosting/public/
+.well-known/assetlinks.json verify/index.html
+```
+
+Named routes: / HomeScreen, /profile-setup ProfileSetupScreen, /profile ProfileScreen, /email-sent EmailSentScreen (argument EmailSentArgs{purpose, email, cooldownSeconds}), /link-result LinkResultScreen (argument String token).
+
+### 8.2 Services and local cache
+
+**AuthService.ensureSignedIn():** if FirebaseAuth.instance.currentUser == null, call signInAnonymously(). Called before every API request. **getIdToken(forceRefresh)** returns currentUser!.getIdToken(forceRefresh).
+
+**ApiClient.request(method, path, body):**
+
+1.  ensureSignedIn(), then get the ID token.
+
+2.  Send with headers Authorization: Bearer \<token\> and Content-Type: application/json, timeout 15 s.
+
+3.  On 401: get token with forceRefresh: true, retry once. A second 401 throws ApiException.
+
+4.  2xx → return decoded JSON. Non-2xx → throw ApiException(statusCode, code, message, fields, retryAfterSeconds, purpose) parsed from the error body.
+
+5.  SocketException, TimeoutException, http.ClientException, or FirebaseAuthException with code network-request-failed → throw NetworkException.
+
+6.  No other automatic retries.
+
+**ProfileCache** (shared_preferences key profile_cache_v1), value = JSON of the Profile DTO plus ownerUid:
+
+- write(profile): stores DTO + ownerUid = currentUser.uid.
+
+- read(): returns null and deletes the key if missing, not valid JSON, or ownerUid != currentUser?.uid.
+
+- clear(): removes the key.
+
+### 8.3 ProfileController and app startup (Req 1, 9)
+
+ProfileState (sealed): ProfileLoading, ProfileNone, ProfileLoaded(Profile profile, bool isStale), ProfileUnavailable (no cache and the server could not be reached).
+
+Startup (ProfileController.build() returns ProfileLoading and starts \_bootstrap()):
+
+1.  ensureSignedIn(). On NetworkException with no current user → state ProfileUnavailable; stop.
+
+2.  cache.read() → not null → state ProfileLoaded(cached, isStale: true) (name shows instantly).
+
+3.  Call GET /profile:
+
+    - 200 → cache.write, state ProfileLoaded(p, isStale: false).
+
+    - 404 NO_PROFILE → cache.clear(), state ProfileNone.
+
+    - Any other error → keep ProfileLoaded(cached, true) if cached, else ProfileUnavailable.
+
+Controller methods: refresh() (step 3 only, same rules), setProfile(Profile p) (cache.write + ProfileLoaded(p, false)), markNone() (cache.clear + ProfileNone).
+
+main.dart order: WidgetsFlutterBinding.ensureInitialized() → Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform) → runApp(ProviderScope(child: App())) → in the root widget's first addPostFrameCallback, start DeepLinkService.
+
+### 8.4 Home screen (Req 1, 7, 9)
+
+- App bar: title Hazri, trailing icon button Icons.person → /profile.
+
+- Greeting text at top: ProfileLoaded → Welcome, {name}; any other state → Welcome.
+
+- ProfileBanner below the greeting, shown only when state is ProfileNone or ProfileUnavailable. Hidden for ProfileLoading and ProfileLoaded. Not dismissible.
+
+  - Title: Set up your profile
+
+  - Subtitle: Add your name and email to personalise the app.
+
+  - Whole banner tappable → /profile-setup.
+
+- Below: area reserved for existing Nitnem content (unchanged).
+
+### 8.5 Profile Setup screen (Req 2, 3, 8)
+
+App bar title Set up profile. One Form with four TextFormFields in this order:
+
+| Field | Label            | Keyboard                   | Extras                                 |
+|-------|------------------|----------------------------|----------------------------------------|
+| Name  | Name \*          | text, capitalization words | —                                      |
+| Email | Email \*         | emailAddress               | autocorrect off                        |
+| Phone | Phone (optional) | phone                      | prefixText: "+91 ", digitsOnly, max 10 |
+| City  | City \*          | text, capitalization words | —                                      |
+
+Full-width button Save Profile. autovalidateMode is disabled until the first submit, then onUserInteraction.
+
+On tap:
+
+1.  Run Section 5 validators. Any error → show inline, stop.
+
+2.  Disable all fields and the button; the button shows a small CircularProgressIndicator.
+
+3.  Call POST /profile. Re-enable the form on any non-success result.
+
+| Result                     | App behaviour                                     |
+|----------------------------|---------------------------------------------------|
+| 201                        | setProfile(p); show Profile Saved dialog (8.6)    |
+| 400 VALIDATION_ERROR       | Show each fields message under its field          |
+| 409 EMAIL_EXISTS           | Show Email Exists dialog (8.8); keep typed values |
+| 409 PROFILE_ALREADY_EXISTS | refresh(), then pushReplacementNamed('/profile')  |
+| NetworkException           | SnackBar: network message (8.10)                  |
+| Other error                | SnackBar: generic message (8.10)                  |
+
+### 8.6 Profile Saved dialog (Req 3)
+
+barrierDismissible: false.
+
+- Title: Profile saved
+
+- Body: Would you like to confirm your email {email}? This is optional.
+
+- Skip for now → close dialog, pushNamedAndRemoveUntil('/', (\_) =\> false).
+
+- Confirm my email → button shows progress, call POST /profile/verification-email:
+
+  - 200 → close dialog, pushReplacementNamed('/email-sent', purpose VERIFY_EMAIL).
+
+  - 409 EMAIL_ALREADY_VERIFIED → refresh(), go home.
+
+  - 429 → SnackBar rate-limit message (8.10), stay on dialog.
+
+  - Network/other → SnackBar Couldn't send the email. You can try again from your profile., close dialog, go home.
+
+### 8.7 Profile screen (Req 6, 7)
+
+Calls refresh() (GET /profile) in initState and again every time a route pushed from this screen returns.
+
+- ProfileLoading (no cache) → centered CircularProgressIndicator.
+
+- ProfileLoaded → rows: Name, Email, Phone (value or Not provided), City, Email status = Verified (green, Icons.verified) or Not verified (orange). While a refresh is running show a LinearProgressIndicator at the top.
+
+  - isStale == true after the refresh finished → banner text Showing saved details. Couldn't refresh your email status. with button Retry → refresh().
+
+  - emailVerified == false → button Confirm my email → POST /profile/verification-email: 200 → /email-sent (VERIFY_EMAIL); 409 EMAIL_ALREADY_VERIFIED → refresh(); 429 → rate-limit SnackBar; 404 NO_PROFILE → markNone(); network/other → matching SnackBar.
+
+- ProfileNone → text No profile found and button Set up profile → /profile-setup.
+
+- ProfileUnavailable → text Couldn't load your profile. with buttons Retry (→ refresh()) and Set up profile (→ /profile-setup).
+
+**Change email (Req 10):** when ProfileLoaded and emailVerified == false, show a TextButton labelled Change email directly under the Email row. It opens the Change Email dialog (8.11). Hidden when the email is verified.
+
+### 8.8 Email Exists dialog and restore request (Req 8)
+
+- Title: Email already registered
+
+- Body: An account with {email} already exists. To restore it on this phone, we will send a confirmation link to this email.
+
+- Cancel → close; form keeps its values.
+
+- Send link → progress, POST /profile/restore-request with the typed email:
+
+  - 200 → close dialog, pushReplacementNamed('/email-sent', purpose RESTORE_PROFILE).
+
+  - 404 EMAIL_NOT_FOUND → close; SnackBar No account found for this email. Please tap Save Profile again.
+
+  - 409 DEVICE_HAS_PROFILE → close; refresh(); pushReplacementNamed('/profile').
+
+  - 429 → rate-limit SnackBar, stay on dialog.
+
+  - Network/other → matching SnackBar, stay on dialog.
+
+### 8.9 Email Sent screen and Link Result screen (Req 4, 5, 8)
+
+**Email Sent screen** (/email-sent), app bar title Check your email:
+
+- Text VERIFY_EMAIL: We sent a link to {email}. Open it on this phone to confirm your email.
+
+- Text RESTORE_PROFILE: We sent a link to {email}. Open it on this phone within 1 hour to restore your profile.
+
+- Button Resend link, disabled with label Resend in {n}s for cooldownSeconds after arrival and after each resend. Resend calls the same endpoint (6.3, or 6.4 with the same email). 429 → restart countdown with retryAfterSeconds if ≤ 120, else rate-limit SnackBar.
+
+- Button Back to Home → pushNamedAndRemoveUntil('/', (\_) =\> false).
+
+For purpose VERIFY_EMAIL only, the Email Sent screen also shows a TextButton labelled Wrong email? Change it below the text. It opens the Change Email dialog (8.11). Not shown for RESTORE_PROFILE.
+
+**DeepLinkService:** uses AppLinks(). Handles getInitialLink() once and every event of uriLinkStream. Accept a URI only if scheme https, host {{FIREBASE_PROJECT_ID}}.web.app, path /verify or /verify/. Ignore all others. Take query token; ignore a token already handled in this app process (dedupe). Navigate with navigatorKey.currentState!.pushNamed('/link-result', arguments: token ?? "").
+
+**Link Result screen** (/link-result), app bar title Email link. On open it shows CircularProgressIndicator and text Checking your link…, then calls POST /tokens/verify. The success message is shown only after the server returns 200, which happens only after the Firestore write committed (Req 5).
+
+| Server result              | Title                  | Message                                                      | Action on screen                                   |
+|----------------------------|------------------------|--------------------------------------------------------------|----------------------------------------------------|
+| 200 EMAIL_VERIFIED         | Email verified         | Your email is verified.                                      | If profile present → setProfile. Button Go to Home |
+| 200 EMAIL_ALREADY_VERIFIED | Email verified         | Your email is already verified.                              | Same as above                                      |
+| 200 PROFILE_RESTORED       | Profile restored       | Welcome back, {name}. Your profile has been restored.        | setProfile. Button Go to Home                      |
+| 410 TOKEN_EXPIRED          | Link expired           | This link has expired.                                       | See button rule below                              |
+| 404 TOKEN_INVALID          | Link not valid         | This link is invalid or has been replaced by a newer link.   | See button rule below                              |
+| 409 TOKEN_ALREADY_USED     | Link already used      | This link has already been used.                             | See button rule below                              |
+| 403 RESTORE_WRONG_DEVICE   | Wrong phone            | Open this link on the phone where you requested the restore. | Go to Home                                         |
+| 409 DEVICE_HAS_PROFILE     | Profile already set up | This phone already has a profile.                            | refresh(); Go to Home                              |
+| 400 INVALID_REQUEST        | Link not valid         | Invalid link.                                                | Go to Home                                         |
+| NetworkException           | Couldn't check link    | Network message (8.10)                                       | Retry (repeat the call) and Go to Home             |
+| Other error                | Couldn't check link    | Generic message (8.10)                                       | Retry and Go to Home                               |
+
+Button rule for expired / invalid / used: purpose VERIFY_EMAIL and state is ProfileLoaded with emailVerified == false → button Send a new link (same handling as 8.7 Confirm my email). Purpose RESTORE_PROFILE and state is not ProfileLoaded → button Try again → pushReplacementNamed('/profile-setup'). Always also show Go to Home. Go to Home = pushNamedAndRemoveUntil('/', (\_) =\> false).
+
+### 8.10 Shared messages (lib/util/messages.dart)
+
+| Key                                  | Text                                                                               |
+|--------------------------------------|------------------------------------------------------------------------------------|
+| network                              | No internet connection. Please try again.                                          |
+| generic                              | Something went wrong. Please try again.                                            |
+| rateLimit (retryAfterSeconds ≤ 120)  | Please wait {n} seconds before requesting another email.                           |
+| rateLimit (retryAfterSeconds \> 120) | Too many emails requested. Please try again in {h} hours. where h = ceil(n / 3600) |
+
+### 8.11 Change Email dialog (Req 10)
+
+File lib/widgets/change_email_dialog.dart. Opened only from 8.7 and the Email Sent screen (8.9), and only when state is ProfileLoaded with emailVerified == false. barrierDismissible: false.
+
+- Title: Change email
+
+- One TextFormField: label New email \*, pre-filled with the current email, keyboard emailAddress, autocorrect off, Section 5 email validator.
+
+- Helper text: We will send a new confirmation link to this email.
+
+- Buttons: Cancel (close, no change) and Save and send link.
+
+- On Save and send link: validate; if the normalized value equals the current emailNormalized, show inline This is already your email and send nothing. Else disable the field and buttons, show progress, call PATCH /profile/email.
+
+| Result                     | App behaviour                                                                                                                                                                                                |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 EMAIL_CHANGED          | setProfile(profile); close dialog; pushReplacementNamed('/email-sent', EmailSentArgs(VERIFY_EMAIL, profile.email, cooldownSeconds)) when opened from Email Sent, else pushNamed it; home greeting unaffected |
+| 400 VALIDATION_ERROR       | Inline error from fields.email                                                                                                                                                                               |
+| 400 EMAIL_UNCHANGED        | refresh(); inline This is already your email                                                                                                                                                                 |
+| 409 EMAIL_EXISTS           | Inline An account with this email already exists; nothing changes                                                                                                                                            |
+| 409 EMAIL_ALREADY_VERIFIED | Close; refresh(); SnackBar Your email is already verified and can't be changed.                                                                                                                              |
+| 404 NO_PROFILE             | Close; markNone(); pushNamedAndRemoveUntil('/', (\_) =\> false)                                                                                                                                              |
+| 429 RATE_LIMITED           | Rate-limit SnackBar (8.10); dialog stays open                                                                                                                                                                |
+| NetworkException / other   | Matching SnackBar (8.10); dialog stays open, value kept                                                                                                                                                      |
+
+## 9. Success, failure and boundary scenarios
+
+Every row below must behave exactly as stated; each is already implied by Sections 5–8 and is listed so tests can check it.
+
+### 9.1 Startup and home
+
+| \#  | Scenario                                            | Expected result                                                               |
+|-----|-----------------------------------------------------|-------------------------------------------------------------------------------|
+| S1  | First launch, online                                | Anonymous sign-in; GET → 404; greeting Welcome; banner shown                  |
+| S2  | First launch, offline                               | Sign-in fails → ProfileUnavailable; banner shown; Save shows network SnackBar |
+| S3  | Relaunch with cache, online                         | Name shown instantly from cache; GET 200 updates cache                        |
+| S4  | Relaunch with cache, offline                        | Name shown from cache; no banner; no error on home                            |
+| S5  | Relaunch; profile was restored on another phone     | GET → 404 → cache cleared; Welcome + banner                                   |
+| S6  | Cache JSON corrupt, or cache ownerUid ≠ current uid | Cache deleted; behaves as no cache                                            |
+| S7  | App data cleared or app reinstalled                 | New uid, no cache → same as S1; user can restore via Req 8                    |
+
+### 9.2 Profile creation
+
+| \#  | Scenario                                                             | Expected result                                                            |
+|-----|----------------------------------------------------------------------|----------------------------------------------------------------------------|
+| C1  | All valid, new email                                                 | 201; home shows Welcome, {name}; Profile Saved dialog                      |
+| C2  | Phone left empty                                                     | Accepted; stored phone: null; profile shows Not provided                   |
+| C3  | Name/City length 1 or 51 after normalization                         | Inline error; no request sent                                              |
+| C4  | Name/City length exactly 2 or 50                                     | Accepted                                                                   |
+| C5  | Name Harpreet Kaur                                                   | Stored as Harpreet Kaur                                                    |
+| C6  | Name in Gurmukhi (e.g. ਹਰਪ੍ਰੀਤ)                                       | Accepted                                                                   |
+| C7  | Phone starting with 0–5, or not 10 digits                            | Inline error Enter a valid 10-digit mobile number                          |
+| C8  | Email exists with different case / spaces                            | 409 EMAIL_EXISTS (comparison uses emailNormalized)                         |
+| C9  | Two installs submit the same new email at once                       | Transaction: one gets 201, the other 409 EMAIL_EXISTS                      |
+| C10 | Same install submits twice (double tap or retry after lost response) | Second call → 409 PROFILE_ALREADY_EXISTS → app refreshes and opens Profile |
+| C11 | Client validation bypassed, server rejects                           | 400 VALIDATION_ERROR; messages under fields                                |
+| C12 | Network drops during submit                                          | Network SnackBar; form values kept; retry safe (C10)                       |
+
+### 9.3 Email verification
+
+| \#  | Scenario                                                     | Expected result                                                                                                      |
+|-----|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| V1  | Tap Confirm my email, then open link on same phone           | Email verified; Firestore emailVerified: true; Profile shows Verified                                                |
+| V2  | Link opened while app is closed (cold start)                 | App opens, Link Result screen processes token                                                                        |
+| V3  | Link opened while app is running                             | Link Result screen pushed on top                                                                                     |
+| V4  | Same link opened again after success                         | 200 EMAIL_ALREADY_VERIFIED → Your email is already verified.                                                         |
+| V5  | Older link opened after a newer one was sent                 | 404 TOKEN_INVALID; Send a new link shown                                                                             |
+| V6  | Link opened more than 24 h after sending                     | 410 TOKEN_EXPIRED; Send a new link shown                                                                             |
+| V7  | Link opened on another phone that has the app                | Profile marked verified; isOwner: false; that phone's cache untouched                                                |
+| V8  | Link opened on a computer or phone without the app           | Fallback page (7.4); nothing written                                                                                 |
+| V9  | Resend within 60 s                                           | 429; countdown restarts with retryAfterSeconds                                                                       |
+| V10 | 6th email to the profile within 24 h                         | 429; Too many emails requested… message                                                                              |
+| V11 | Confirm my email tapped when already verified (stale screen) | 409 EMAIL_ALREADY_VERIFIED → refresh shows Verified                                                                  |
+| V12 | Network error on Link Result screen                          | Couldn't check link + Retry; token still usable                                                                      |
+| V13 | Link with missing or malformed token                         | 400 (or empty token) → Invalid link.                                                                                 |
+| V14 | SMTP delivery fails                                          | App still shows Check your email; user can resend after cooldown; developer sees mail/{id}.delivery.state == "ERROR" |
+
+### 9.4 Profile restore
+
+| \#  | Scenario                                                                  | Expected result                                                                                                     |
+|-----|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| R1  | New install enters an existing email                                      | 409 → Email Exists dialog; no profile data returned                                                                 |
+| R2  | Send link then link opened on same phone within 1 h                       | 200 PROFILE_RESTORED; home shows Welcome, {name}; emailVerified: true                                               |
+| R3  | Restore link opened on a different phone                                  | 403 RESTORE_WRONG_DEVICE; nothing changes                                                                           |
+| R4  | Restore link opened after 1 h                                             | 410; Try again → Profile Setup                                                                                      |
+| R5  | User created a new profile with another email before opening restore link | 409 DEVICE_HAS_PROFILE; nothing changes                                                                             |
+| R6  | Restore link opened twice                                                 | Second → 409 TOKEN_ALREADY_USED                                                                                     |
+| R7  | Two restore requests; older link opened                                   | 404 TOKEN_INVALID                                                                                                   |
+| R8  | After R2, the old phone opens the app                                     | GET → 404; cache cleared; banner shown                                                                              |
+| R9  | After R2, old phone opens an old verify link                              | 404 TOKEN_INVALID (superseded during restore)                                                                       |
+| R10 | Attacker spams restore for someone's email                                | Limited to 1 per 60 s and 5 per 24 h per profile; link only works on the attacker's phone if the victim forwards it |
+
+### 9.5 Auth and server
+
+| \#  | Scenario                                 | Expected result                                  |
+|-----|------------------------------------------|--------------------------------------------------|
+| A1  | ID token expired                         | 401 → token force-refreshed → one retry succeeds |
+| A2  | Request without token (e.g. curl)        | 401 UNAUTHENTICATED                              |
+| A3  | Unhandled server exception               | 500 INTERNAL; app shows generic message          |
+| A4  | Client tries direct Firestore read/write | Denied by rules (10.1)                           |
+
+### 9.6 Email change (Req 10)
+
+| \#  | Scenario                                                          | Expected result                                                                                                           |
+|-----|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| E1  | Unverified user changes to a new valid email                      | 200; emailIndex moved to new email; verify link sent to new email; Email Sent screen shows new email                      |
+| E2  | Link sent to the old email opened after the change                | 404 TOKEN_INVALID; nothing changes                                                                                        |
+| E3  | New email belongs to another profile                              | 409 EMAIL_EXISTS inline; nothing changes                                                                                  |
+| E4  | New email equals current one (any case or spaces)                 | Blocked in app; server returns 400 EMAIL_UNCHANGED if reached                                                             |
+| E5  | Email already verified                                            | Change email not shown; server returns 409 EMAIL_ALREADY_VERIFIED if called                                               |
+| E6  | Change within 60 s of the last email, or 6th email in 24 h        | 429; nothing changes (email, index, tokens untouched)                                                                     |
+| E7  | Another install registers the old email after the change          | 201 (old email was released)                                                                                              |
+| E8  | Verify link click and email change arrive together                | Transactions serialize: verify first → change gets 409 EMAIL_ALREADY_VERIFIED; change first → link gets 404 TOKEN_INVALID |
+| E9  | Network drops after the server committed the change; user retries | 400 EMAIL_UNCHANGED → app refreshes and shows the new email                                                               |
+| E10 | A restore link for the old email is pending on another phone      | Superseded by the change → 404 TOKEN_INVALID                                                                              |
+| E11 | User changes email several times                                  | Only the newest link works; each change counts toward the email quota                                                     |
+
+## 10. Security rules, project config and deployment
+
+### 10.1 firestore.rules — deny all client access
+
+```text
+rules_version = '2';
+service cloud.firestore {
+match /databases/{database}/documents {
+match /{document=**} {
+allow read, write: if false;
+}
+}
+}
+```
+
+### 10.2 firebase.json
+
+The ignore list must not contain \*\*/.\*, otherwise .well-known/assetlinks.json is not deployed.
+
+```json
+{
+"firestore": { "rules": "firestore.rules", "indexes": "firestore.indexes.json" },
+"functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs20" }],
+"hosting": {
+"public": "hosting/public",
+"ignore": ["firebase.json", "**/node_modules/**"],
+"rewrites": [
+{ "source": "/api/**", "function": { "functionId": "api", "region": "asia-south1" } },
+{ "source": "/verify", "destination": "/verify/index.html" }
+],
+"headers": [
+{ "source": "/.well-known/assetlinks.json", "headers": [{ "key": "Content-Type", "value": "application/json" }] }
+]
+}
+}
+```
+
+### 10.3 Android build settings
+
+- android/app/build.gradle(.kts): minSdk = 23; applicationId = "{{ANDROID_PACKAGE_NAME}}".
+
+- AndroidManifest.xml: \<uses-permission android:name="android.permission.INTERNET" /\>, android:allowBackup="false", plus Section 7.3.
+
+### 10.4 Deployment steps (developer, in this order)
+
+1.  Create the Firebase project; set Firestore location asia-south1; enable Authentication → Anonymous.
+
+2.  Upgrade to the Blaze plan (required for Cloud Functions and extensions).
+
+3.  Install extension firebase/firestore-send-email: collection mail, SMTP URI {{SMTP_CONNECTION_URI}}, default FROM {{EMAIL_FROM}}.
+
+4.  Run flutterfire configure for Android.
+
+5.  Fill assetlinks.json fingerprints (./gradlew signingReport for debug/upload; Play Console → App integrity for Play signing).
+
+6.  firebase deploy --only firestore,functions,hosting.
+
+7.  Check https://{{FIREBASE_PROJECT_ID}}.web.app/.well-known/assetlinks.json returns the JSON.
+
+8.  Install the app and run adb shell pm get-app-links {{ANDROID_PACKAGE_NAME}}; the host must show verified.
+
+## 11. Acceptance checklist
+
+Implementation is complete only when all items pass. Backend tests run against the Firebase Emulator Suite (Auth, Firestore, Functions) with Jest; app tests use flutter_test.
+
+**Backend (Jest + emulators)**
+
+- [ ] Validation unit tests cover every rule and boundary in Section 5 and rows C3–C7.
+
+- [ ] POST /profile: 201, 400, both 409 codes, and the concurrent case C9.
+
+- [ ] GET /profile: 200, 404, and stale-owner cleanup (6.1).
+
+- [ ] Quota: cooldown (V9) and 5-per-24h (V10), including window reset after 24 h.
+
+- [ ] Token creation supersedes older ACTIVE tokens of the same purpose (V5, R7).
+
+- [ ] /tokens/verify: every row of the 6.5 table, plus V4, V7, R3, R5, R6, R8, R9.
+
+- [ ] Each send creates exactly one mail document with the Section 7.1 subject and text.
+
+- [ ] Requests without a valid ID token return 401.
+
+- [ ] Firestore rules deny all client reads and writes (rules unit test).
+
+**App (flutter_test)**
+
+- [ ] Validators match Section 5 exactly (same cases as backend).
+
+- [ ] ProfileController startup produces the states in S1–S6 (mock API and cache).
+
+- [ ] Home shows banner only for ProfileNone / ProfileUnavailable; greeting per 8.4.
+
+- [ ] Profile Setup handles every row of the 8.5 result table.
+
+- [ ] Link Result screen shows the exact title/message/buttons for every row of the 8.9 table.
+
+- [ ] DeepLinkService accepts only the 7.x URI and ignores duplicates.
+
+**Manual on a real Android device**
+
+- [ ] App Links verified (10.4 step 8); tapping the email link in Gmail opens the app.
+
+- [ ] Full flows V1, V2, V3 and R2 work end to end.
+
+- [ ] Offline launch with cache shows the name (S4).
+
+**Email change**
+
+- [ ] Backend: PATCH /profile/email covers every row of the 6.6 table and E1–E11.
+
+- [ ] Backend: after a change, the old emailIndex doc is gone, the new one exists, and all older tokens are SUPERSEDED.
+
+- [ ] App: Change Email dialog handles every row of the 8.11 table; button hidden when verified (E5).
+
+## 12. Out of scope (do not build)
+
+Anything not listed in Sections 1–11 is out of scope. Specifically:
+
+- Login, sign-up, passwords, Google/phone sign-in, or linking the anonymous account to another provider.
+
+- Editing a profile other than the email change in 6.6; deleting or exporting a profile; changing an email that is already verified.
+
+- Phone number verification (OTP).
+
+- iOS, web or desktop builds.
+
+- Nitnem content, audio, progress tracking, or syncing any non-profile data during restore.
+
+- Push notifications, analytics, crash reporting, App Check, localization, dark-mode work, custom theming.
+
+- An admin panel or any other UI for the database.
+
+- Firebase Dynamic Links (shut down by Google in August 2025) or any custom URL scheme.
 
 ---
 
-## 1.7 Sending the email — what it takes
+## Appendix A. Decisions recorded 2026-10-05
 
-Nothing is being paid for or configured today: `sendSignInLinkToEmail` uses
-Firebase Auth's own mailer. The question is whether that stays true.
+Carried over unchanged from the earlier version of this file (§1.11), where
+they were written down after the PRD was supplied.
 
-### Option 1 — Firebase's built-in mailer (what is in the code now)
+### A.0 Conflicts with the PRD above, awaiting the owner's ruling
 
-Sender `noreply@hazri-dfcc1.firebaseapp.com`. No SMTP, no provider, no domain,
-no Function, no cost.
-
-What it takes, all in the console, all free:
-
-1. **Authentication → Sign-in method → Email/Password → enable, and enable
-   the Email link (passwordless sign-in) sub-toggle.** (B17. Verify this
-   rather than assume it — a send has never been proved to work end to end.)
-2. **Authentication → Settings → Authorized domains** — confirm
-   `hazri-dfcc1.web.app` is listed. (B18)
-3. **Authentication → Templates → Email address sign-in** — set the sender
-   name, the reply-to and the wording. Firebase offers per-locale versions of
-   the template and picks one from `FirebaseAuth.instance.setLanguageCode()`;
-   the app should set that from `AppSettings` at start-up. Check which locales
-   the console actually offers before promising Punjabi. (B24)
-4. **Deploy the pages in `public/`.** Written on 2026-09-26; `firebase deploy
-   --only hosting` is the whole of what is left (B19). `/verify` reads the
-   address it was opened with: when it carries an `oobCode` it shows the
-   whole URL with a copy button and where to paste it, and when it does not
-   it sends the reader back to the email, which is the only honest answer.
-   `/j/<groupId>` does the same for an invite code, using the same
-   last-path-segment rule as `groupIdFromInvite`, so both sides are forgiving
-   in the same way. All three languages, no fonts fetched, no framework.
-   Hosting's free tier (360 MB/day) covers this many times over, and
-   **Hosting bandwidth is not Firestore reads** — these pages cost nothing on
-   the meter that bills.
-
-**Limits to accept:** the sender domain cannot be changed, the mail says
-`firebaseapp.com`, deliverability is Google's rather than ours, and there is a
-per-project daily quota that Firebase does not publish as a number (B15).
-
-**Verdict: this is the right answer for Phase 2**, and step 4 is the whole
-difference between restore working and restore not working.
-
-### Option 2 — custom SMTP inside Firebase Auth
-
-Authentication → Templates → the SMTP settings behind the pencil. Supply a
-host, port, username, password and a From address, and Firebase keeps sending
-the mail but from us. Needs a domain, a mailbox or an ESP's SMTP credentials,
-and SPF + DKIM records on the domain. Costs the domain and whatever the ESP
-charges — free tiers at Resend, Mailgun, Brevo and SES all cover a project
-this size.
-
-Buys: the mail comes from `hazri.app`, deliverability we can see and fix, and
-the project quota stops applying. Changes no Dart at all.
-
-**Only worth it once a domain exists.** It is also half of Phase 3's App
-Links, which need a domain serving `assetlinks.json` anyway — so buy the
-domain once and both problems close together.
-
-### Option 2b — the link on our own domain
-
-A custom domain **on Firebase Hosting**, passed as
-`ActionCodeSettings.linkDomain`.
-
-This one is not a free choice. Firebase Dynamic Links shut down on
-2025-08-25, and [Firebase's migration guide][fdl] says email links are now
-minted on a Firebase Hosting domain — the auto-provisioned default, or a
-custom Hosting domain. **A link on a host Firebase Hosting does not serve
-cannot be minted at all**, so putting `public/` anywhere else would mean two
-hosts, two deploys, and `assetlinks.json` on the one the links do not use.
-That is what closes the question of a second hosting provider: it was
-considered on 2026-09-26 and ruled out on this, not on price.
-
-Worth doing at the same moment as option 2 and Phase 3's App Links — one
-domain, deployed once, closes the sender, the tappable link and
-`assetlinks.json` together.
-
-[fdl]: https://firebase.google.com/docs/auth/android/email-link-migration
-
-### What connecting `hazri.me` will take
-
-**`docs/domain-setup.md` is the record set, the order, and the four things
-that go wrong.** This is the summary.
-
-Registered 2026-09-26 and **not connected to anything**. Nothing in the app
-refers to it and nothing should until Phase 3, because a link already in
-somebody's inbox has to keep working: the domain is added *alongside*
-`hazri-dfcc1.web.app`, never instead of it.
-
-When it goes live:
-
-1. **Firebase Hosting** — add the domain, take the A/AAAA records it gives.
-   The certificate is issued after DNS propagates, which can take a day.
-2. **Authentication → Settings → Authorized domains** — add it there too.
-   Hosting and Auth are separate lists, and missing the second is
-   `unauthorized-continue-uri` (B18).
-3. **`ActionCodeSettings.linkDomain`** — only then does the email link itself
-   move onto the domain. Until it is set, links stay on the default host
-   whatever the website says.
-4. **One `v=spf1` TXT record** carrying both the mailbox's include and the
-   sender's. Two SPF records is a `permerror` and quietly breaks
-   deliverability. DKIM is fine as separate records, one selector each.
-5. **`assetlinks.json`** at `/.well-known/`, served over HTTPS with no
-   redirect, carrying the release keystore's SHA-256. This is what makes the
-   link tappable, and it is blocked on the keystore, not the domain (A-3).
-6. **An HSTS header in `firebase.json`.** `.me` is not on the HSTS preload
-   list, unlike `.app` — `hazri-dfcc1.web.app` gets that for free and
-   `hazri.me` will not, so the header has to be set by hand.
-7. `kSiteBase` in `lib/core/backend/backend.dart`, last: one constant, and
-   the test that holds the two URLs on one host catches anything left
-   behind.
-
-### Option 3 — mint the link ourselves and send it ourselves
-
-A callable Function calls `admin.auth().generateSignInWithEmailLink()` and
-hands the URL to an ESP's API. Or the same thing without writing the sending
-half: the **Trigger Email from Firestore** extension watches a collection and
-sends what is written to it — in which case the rules must refuse every client
-write to that collection, or anybody signed in can send mail as us.
-
-Buys the things options 1 and 2 cannot: the mail in the reader's own language
-including Punjabi whatever the console offers, our own template, bounce and
-complaint handling, and — the real one — the Function can call
-`getUserByEmail` first, which is the only way to answer A10 and stop B1.
-
-Costs one Function invocation per send (nothing, at this scale, inside the
-₹2,000 cap) plus the ESP, and it is the only option with code to maintain.
-
-**Verdict: Phase 3**, and it arrives naturally with the `approveListing` and
-digest Functions rather than on its own.
-
-### Option 4 — a recovery code instead of, or beside, email (decision A-1)
-
-A code shown once at setup, exchanged for a custom token by a Function.
-No mailbox, no deliverability, no B9–B15 at all — and a new secret for
-somebody to lose. It answers none of B1's problem by itself, because a code
-nobody wrote down is a code nobody has.
-
-**Verdict: beside, not instead.** It is the answer for somebody who will not
-give an address, and it is the only recovery that works with the radio off.
-
-### Spam is what makes B1 the ordinary case
-
-The very first verification mail this project sent landed in the spam folder.
-That is not surprising — `noreply@hazri-dfcc1.firebaseapp.com` is a domain
-shared by every Firebase project in the world, with no reputation of its own
-and nothing tying it to Hazri — but it changes how serious B1 is.
-
-Follow the chain. Somebody types their address, is told a link is on its
-way, never sees it, and gives up. Their address is now saved on the user
-document and **not verified**. They believe recovery is set up. It is not,
-and the day they lose the phone they will restore that address, Firebase
-will mint a fresh empty account for it, and the app will report success
-(B1, A10).
-
-So spam delivery does not merely annoy: **it makes the worst failure in this
-document the default path rather than an edge case.** Two consequences:
-
-* **A9 is load-bearing, not tidy-minded.** Every surface showing the address
-  must show whether it is verified, and A5's promise must only ever be made
-  about a verified one.
-* **§1.7 option 2 moves from "once a domain exists" to "before launch".**
-  A sender on a domain we control, with SPF, DKIM and DMARC aligned, is the
-  only real fix. `hazri.me` exists; what it needs is the mailbox and the
-  records in `docs/domain-setup.md`.
-
-Telling people to check their spam folder, which both screens now do, is
-worth doing and does not solve this.
-
-### The recommendation
-
-| When | Do |
-|---|---|
-| ~~Now, Phase 2~~ | **Done 2026-09-27.** Hosting deployed, B17 found and fixed (only Anonymous was enabled), B18 confirmed, the error mappings split (A13). Still to do from this row: say A14 out loud on the restore screen |
-| Next, and sooner than planned | Option 2. Spam delivery makes B1 the ordinary case, so a sender on `hazri.me` with SPF, DKIM and DMARC is a before-launch item rather than a nicety |
-| With the Phase 3 keystore | **`hazri.me` is registered (2026-09-26).** Connect it then, once: it serves `assetlinks.json` (tappable links), `/verify`, and SPF/DKIM for option 2's sender |
-| Phase 3 | Option 3, so the mail is in the reader's language and `getUserByEmail` can close B1 and A10. Option 4 beside it |
-
----
-
-## 1.7a What has to change in the code
-
-The design above is smaller than what it replaces, so this is mostly
-deletion. Written down before any of it is done, because every round so far
-went the other way.
-
-| # | Change | Why |
+| # | PRD says | Appendix A says |
 |---|---|---|
-| 0 | **`syncAccount` Cloud Function**: reads the auth user with `admin.auth().getUser(uid)` and writes `state`, `email`, `providers` into `users/{uid}` | R1a. The only writer of those fields. Called after any act that can change them; idempotent, so calling it twice is free |
-| 0a | `firestore.rules`: refuse `state`, `verified`, `email`, `providers`, `role` on every client write | R1a. Without this the field is a lie any phone can tell. **Published by hand** |
-| 1 | One sealed `AccountState` — `NoAccount`, `LocalAccount`, `RecoverableAccount`, read from the document | R1: a value, not a handful of booleans that can disagree |
-| 2 | One pure mapper `accountFrom(Map?)` — one input now, the document | R2. Tested directly against each shape the server writes, no fake in the way |
-| 3 | Delete `_confirmed` and every screen-held flag; screens render the state | R3. This alone closes the class |
-| 4 | Operations return what happened, with the Firebase code; never a claim about state | R4 |
-| 5 | Every mutation reloads and re-publishes before returning | R5 |
-| 6 | `userChanges()` stays, but only to know **which uid** to read; the state comes from the document | R6, and it stops being load-bearing |
-| 7 | A state line the reader can read out: state, providers, last outcome | R7, half done |
-| 8 | The fork when an address is taken (A11) | Not built; today it silently signs in |
-| 9 | `lookupAccountByEmail` Cloud Function, or stop implying we know (A17) | **D-A1 below.** This is B1 |
+| C1 | §0.2 and §12: no localisation | W5: localisation in `pa`, `hi`, `en` is required (CLAUDE.md rule 5) |
+| C2 | §5: phone is 10 digits matching `PHONE_REGEX`, stored as `+91` + digits | P1–P3: no validation, any country code, stored normalised |
+| C3 | §7.3: main activity keeps `launchMode="singleTop"` | A-1 discusses `launchMode="singleTask"`, so it was written against a different revision of the PRD |
+| C4 | §3.2: Navigator 1.0; minSdk 23; §7.3: `allowBackup="false"`; §7.2: `{{SHA256_DEBUG}}` | A.6 items 1–4 default to go_router, minSdk 24, backup left on, and release fingerprint only |
+| C5 | §12: no syncing of non-profile data during restore | A.2: diary sync stays, and it brings the diary back on a new phone |
 
-Nothing here needs new screens. Items 1 to 7 are a rewrite of one
-repository, one model and two screens, and every one of them removes code.
 
-### What R1 costs
-
-Nothing measurable, which is worth stating because reads are what bills
-(`00-platform.md`).
-
-| | |
-|---|---|
-| Reading the state | **Zero extra.** The account screen already reads `users/{uid}`; the state rides in the document it was fetching anyway |
-| Writing the state | One Function invocation and one write per verification — once in the life of an account, not per launch |
-| Offline | Firestore's cache answers from the last state the server sent. No read, no network, and honest about being the last thing known |
-
-The version this replaces was cheaper only in the sense that it did no work
-at all: it read a boolean the SDK happened to be holding, which is how the
-app came to hold two answers at once.
-
-## 1.8 Backend
-
-- `users/{uid}`: name, city, email, verified, createdAt. The client may not
-  write `role`, `verified` or `groupTotal` — already enforced.
-- `verified` is **not** a Firestore field the app trusts. `emailVerified` is
-  read off the Firebase Auth user, which no client can write, so this is
-  already stronger than a Function setting a field. Anything written into
-  `users/{uid}` about verification is a mirror for other people to read, never
-  the thing the app checks.
-- **New (Phase 3):** a `lookupAccountByEmail` callable, because
-  `getUserByEmail` is the only way a client can be told "no account for that
-  address" (A10, B1) with Email Enumeration Protection on.
-- **New:** a Function on auth-user delete cleans up anything the client could
-  not reach, so a half-finished deletion finishes itself.
-
-## 1.9 Open decisions
-
-| # | Decision | Default |
-|---|---|---|
-| A-1 | Recovery beyond email — a recovery code shown once, or a QR handover phone-to-phone | Add a **recovery code** at A3: one line, copyable, works offline, no email server involved |
-| A-2 | Whether an account is offered again later to somebody who tapped Later | Yes, once, after they have been in a group a week |
-| A-3 | Tappable links need the Phase 3 keystore. Bring the keystore forward? | **Yes, and it is more urgent than it looked.** Found 2026-09-27: the workflow keeps no keystore, so each CI run generates a throwaway debug key. There is no stable SHA to register, *and* a new APK cannot install over an old one — every build costs an uninstall, which takes `user.db` and the unverified anonymous account with it. It also unblocks Play testing and the worst moment in the app |
-| A-4 | Which sender: Firebase's `firebaseapp.com`, or our own domain (§1.7 option 2) | **Closed 2026-09-26: Firebase's**, until a domain is bought for `assetlinks.json`; then both move together. When a sender is bought it is a transactional service (Brevo, or Zoho's ZeptoMail), **never a mailbox's SMTP** — Zoho Mail's own limits page caps external sending at 50–500/hour on reputation and says bulk sending is "not permitted under business usage policy", so one throttle would take out the inbox and the sending together |
-| A-5 | B6/A11 — carry the orphaned document's contents onto the restored account, or say it is being dropped | Say it is being dropped. Merging two profiles is a lot of machinery for a few minutes of one phone's work, and a wrong merge is worse than an honest sentence |
-| A-6 | Does restore promise anything about the diary when sync is off (A14, Y-4)? | No, and it says so before the link is sent. This is settled by Y-4 in `09-diary.md`; it must not be answered twice |
-| D-A1 | An address that already has an account: answer it with a Cloud Function, or stop implying the app can tell? | **Closed 2026-09-27: the Function.** Once `syncAccount` exists the objection to Functions is gone, and `getUserByEmail` is the same admin SDK call from the same deployment. Client-side remains impossible — Email Enumeration Protection returns nothing for every address — and without it B1 stays the ordinary path |
-| A-7 | `kInviteBase` is still a Vercel path that serves nothing. Move it to the same host as `/verify`? | **Closed 2026-09-26: yes.** Both now derive from `kSiteBase` in `lib/core/backend/backend.dart`, and a test holds that they share a host. Vercel is out of the project entirely |
-
-## 1.10 Acceptance
-
-- Widget test: every tab is fully usable with `accountRepository` returning
-  null, and nothing on screen asks for an account.
-- Widget test: A3's explainer appears exactly once, at account creation.
-- Rules test (emulator): a client cannot write `verified` on its own document.
-- Rules test: a non-member cannot read a group's member list.
-- Integration test: delete removes memberships before the profile.
-- Device check: restore onto a second phone with a verified email.
-- Device check: restore an address **no account has**, and be told so rather
-  than landed in a blank account (A10, B1). This is the one that is wrong
-  today, so it is the one that must be seen to fail before it is fixed.
-- ~~Device check: the link out of a real inbox, on a phone.~~ **Done
-  2026-09-27, and it was the first verification this project has ever
-  completed.** Send, deliver, follow the link, `continueWithLink`, and the
-  account screen saying the address is confirmed. It proves B17 (the
-  provider), B18 (the authorised domain), that Firebase's own mailer reaches
-  a real inbox, and that `linkWithCredential` keeps the anonymous uid rather
-  than minting a new one.
-- ~~Unit test: each failure produces its own message.~~ **Done 2026-09-27**,
-  `test/features/join_outcome_words_test.dart`. Not as "the mapping returns
-  the right enum", which is a tautology — the rule it holds is **two causes
-  never produce the same sentence**, checked across all three languages,
-  which is the property that was actually violated. `l10n_test` cannot see
-  this: it checks that keys exist, not that their values differ.
-  **Both halves were watched failing** before being restored — collapsing
-  `JoinFailed` back into `sangatUnavailable` fails it four times, printing
-  the sentence the phone showed; pointing `invalid-email` back at
-  `alreadyUsed` fails the link half.
-- Widget test: the restore screen states what does and does not come back
-  **before** the link is sent (A14).
-- Console check, written down with a date: email link sign-in is enabled, the
-  authorized domains include the continue URL's host, and the template's
-  sender and wording have been read (B17, B18). None of this is visible in
-  git, so a note in the PR description is the only record there is.
-
----
-
-## 1.11 The rewrite — decisions taken 2026-10-05
-
-A PRD (*Profile Setup, Email Verification, Profile Restore*) was supplied on
-2026-10-05 as a Word document. **It replaces the design in §1.4 to §1.10
-rather than amending it**: the existing account code comes out and is built
-again from that PRD. The document itself is not in this repository — only the
-decisions below are written down, so this section is the record.
-
-Where this section and anything above it disagree, **this section wins**.
-
-### 1.11.1 Scope
+### A.1 Scope
 
 | # | Decision |
 |---|---|
@@ -694,7 +1071,7 @@ Where this section and anything above it disagree, **this section wins**.
 | W6 | Sending: **Brevo or similar**, to be configured. |
 | W7 | Cost model as the PRD states it: accepted. |
 
-### 1.11.2 What the sangat's removal takes with it
+### A.2 What the sangat's removal takes with it
 
 Settled 2026-10-05, question by question:
 
@@ -714,7 +1091,7 @@ What this touches outside `lib/features/sangat/` (28 files, 5,352 lines):
 `features/sync/ui/sync_screen.dart`,
 `features/about/ui/privacy_screen.dart`, and fifteen test files.
 
-### 1.11.3 Phone numbers
+### A.3 Phone numbers
 
 | # | Decision |
 |---|---|
@@ -731,7 +1108,7 @@ brackets, which is where the same number typed twice usually differs — but
 country code is required. Anything that looks up an account by phone has to
 treat a miss as "no account found", never as proof there isn't one.
 
-### 1.11.4 Android
+### A.4 Android
 
 | # | Decision |
 |---|---|
@@ -741,14 +1118,14 @@ The PRD's §7.3 specifies `launchMode="singleTask"` and is silent on
 `taskAffinity`, which reads as though `launchMode` were the whole story. It
 is not. A-1 is the missing line.
 
-### 1.11.5 Deliberately untouched
+### A.5 Deliberately untouched
 
 | Area | Decision |
 |---|---|
 | **Firebase Analytics** | **Do not touch it.** `firebase_analytics: ^12.6.0` stays in `pubspec.yaml`, collection stays off, the inert Settings switch stays. A separate feature document will cover it. |
 | **Which parts of the app may require the network** | To be decided later. Until then, **follow the PRD**. |
 
-### 1.11.6 Still open
+### A.6 Still open
 
 These have no answer yet and will block the matching piece of work, not the
 whole rewrite:

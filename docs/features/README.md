@@ -6,7 +6,7 @@ behaviour has to survive.
 
 | # | Feature | File |
 |---|---|---|
-| 1 | Accounts, joining and restoring | [`01-accounts.md`](01-accounts.md) |
+| 1 | User profile: setup, email verification, restore | [`01-accounts.md`](01-accounts.md) |
 | 2 | Notifications | [`02-notifications.md`](02-notifications.md) |
 | 3 | First run: splash, intro, setup | [`03-first-run.md`](03-first-run.md) |
 | 4 | Goals and hazri | [`04-goals.md`](04-goals.md) |
