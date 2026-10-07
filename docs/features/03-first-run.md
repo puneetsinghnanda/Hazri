@@ -47,8 +47,9 @@ Android system splash
   -> Join screen  (only if an invite arrived; F7)
 ```
 
-Nothing else is part of setup. No profile, no city, no reminder, no
-permission, no Sangat.
+Nothing else is part of setup. No profile, no city, no reminder and no
+Sangat. The one thing that appears outside these steps is Android's own
+notification prompt at launch (F5, F-5).
 
 ## 3.4 The behaviour
 
@@ -82,17 +83,20 @@ Today shows `ProfileUnavailable`'s banner.
 | Asked | When |
 | --- | --- |
 | Name, email, city | In Profile Setup, when the person chooses to make a profile (F3). The city is picked from the app's list (`01-accounts.md` §13 D9) |
-| Notification permission | A short sheet on the first Today after setup explains the 04:00 Amrit Vela reminder, with **Allow** (the system dialog) and **Not now** (F6, F-5) |
+| Notification permission | Android's own prompt, straight away at app start, with no screen of Hazri's before it (F6, F-5) |
 | Exact alarms | Never asked. The Notifications screen notes that without them a reminder may arrive some minutes late (`02-notifications.md` DP2) |
 | Audio download | The first time play is pressed, with its size (F-3) |
 | The Sangat | Never during setup. It is its own tab |
 
-**F6. Nothing is asked twice, and "Not now" is a real answer.** Each ask is
-recorded. The notification permission is offered at most twice by the app:
-the first-Today sheet, and once more when a goal item with a reminder time is
-saved. After that only the Notifications screen card offers it
-(`02-notifications.md` DP3). Reminders are planned whatever the answer; without
-permission the Notifications screen says they cannot arrive.
+**F6. The notification prompt is Android's, at app start.** Reminders are on
+by default (`02-notifications.md` CM7), so `ReminderScheduler.reschedule()`
+requests `POST_NOTIFICATIONS` at every app start, as the code does now; on a
+first launch that is over Welcome. Android shows its prompt only while it has
+no recorded answer and stops showing it after a second "Don't allow", so the
+app never nags. After that only the Notifications screen card offers it
+(`02-notifications.md` DP3). Reminders are planned whatever the answer;
+without permission the Notifications screen says they cannot arrive. Every
+other ask is recorded and made once.
 
 **F7. An invite that arrives before setup waits for it.** An App Link
 `/j/<code>` opened before onboarding, or a `sangat_code` from the install
@@ -112,8 +116,8 @@ the whole flow, and it is measurable.
 
 The first Today (`05-today.md`) carries `Welcome`, the profile banner, the
 hazri banner "not marked yet", the Set Goal card with
-`goalSetCardSubtitleFirst` (`04-goals.md` GL1), the call to action and the
-notification sheet of F5. None of them blocks reading.
+`goalSetCardSubtitleFirst` (`04-goals.md` GL1) and the call to action. None
+of them blocks reading.
 
 ## 3.6 The city
 
@@ -135,8 +139,8 @@ There is one city, the profile city (owner, 2026-10-07, F-4).
 | F-e | Skip at How you read | — | Gurmukhi, standard size, Today |
 | F-f | Backgrounded mid-setup | Reopening | The same step, choices kept |
 | F-g | Setup done, offline | First Today | `Welcome`, profile banner, Set Goal card; no spinner |
-| F-h | First Today | — | The notification sheet once; Allow shows the system dialog |
-| F-i | "Not now" on the sheet | Later saving a goal item with a reminder time | Offered once more; after that only the Notifications screen card |
+| F-h | A fresh install | First launch | Android's notification prompt over Welcome; setup continues whatever the answer |
+| F-i | "Don't allow" twice | Later app starts | No prompt; the Notifications screen card offers the setting |
 | F-j | Permission refused | Opening Notifications | The card; reminders shown as unable to arrive; nothing pretends |
 | F-k | Recipient opens `/j/AB12-CD34`, installs from Play | First launch | Setup runs uninterrupted, then the Join screen with the code filled |
 | F-l | Hazri installed, not onboarded | Tapping an invite App Link | Welcome; after setup, the Join screen with the code |
@@ -144,7 +148,7 @@ There is one city, the profile city (owner, 2026-10-07, F-4).
 | F-n | Elder mode on | The whole flow | Every step legible at 1.6× with 64 dp targets |
 | F-o | Killed during setup | Reopening | Resumes; a half-finished setup never leaves the app unusable |
 | F-p | `content.db` fails to open | First run | A real error naming the problem, not a blank screen |
-| F-q | Upgrade from a build with `onboardingDone` | First open | Not re-onboarded; the notification sheet once if permission is not granted |
+| F-q | Upgrade from a build with `onboardingDone` | First open | Not re-onboarded; Android's prompt if it has no answer yet |
 | F-r | No profile | 04:00 Amrit Vela | The text only, no sunrise picture and no city |
 | F-s | Profile in Amritsar | 04:00 Amrit Vela | The picture with Amritsar's sunrise |
 
@@ -163,14 +167,14 @@ already saved in Settings is dropped; the profile city takes over (CY4).
 | F-2 | Elder mode offered, or detected from the system font scale? | **Default:** offered, and pre-selected when the font scale is 1.3 or more. Never forced |
 | F-3 | Audio pack on Wi-Fi automatically? | **Default:** asked once at first play, then remembered. Never 80 MB unasked |
 | F-4 | The Settings city: keep it, or always use the profile city? | **Decided 2026-10-07:** the profile city only; without a profile, no city (3.6) |
-| F-5 | Notification permission: first-Today sheet, or the system dialog at app start as the code does now? | **Open.** Default: the sheet (F5), because Amrit Vela and the Hazri nudge are on by default and the earlier rule, "ask when a reminder is switched on", no longer has a moment to happen in |
+| F-5 | Notification permission: a sheet first, or Android's prompt at app start? | **Decided 2026-10-07:** Android's prompt at app start (F6) |
 
 ## 3.10 What changed on 2026-10-07
 
 | Before | Now | Source |
 | --- | --- | --- |
 | City asked when an Auto reminder time is set; a separate Settings city | One city, the profile's; none without a profile | 3.6, F-4 |
-| Notification permission asked when a reminder is switched on | Reminders are on by default; a sheet on the first Today | `02-notifications.md` CM7, F-5 |
+| Notification permission asked when a reminder is switched on | Reminders are on by default; Android's prompt at app start | `02-notifications.md` CM7, F-5 |
 | Exact alarms asked after the first late reminder | Never asked; a note on the Notifications screen | `02-notifications.md` DP2 |
 | The Sangat as a Today card | Its own tab; invites wait for setup | `08-sangat.md` IV6 |
 | No profile anywhere | Profile from Today's banner, never in setup | `01-accounts.md` §8.4 |

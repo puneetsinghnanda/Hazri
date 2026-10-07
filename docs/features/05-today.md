@@ -136,10 +136,10 @@ local date (`04-goals.md` §2).
 | # | Decision | Status |
 | --- | --- | --- |
 | T-1 | Does the day arc come back? | **Default:** no. The goal widget answers the same question with a number |
-| T-2 | Streak on Today? | **Open.** Default: not shown. If added, a quiet line under hazri, never a score, never mentioned when it breaks |
+| T-2 | Streak on Today? | **Decided 2026-10-07:** shown on Today and in the Diary; never a score, never mentioned when it breaks. **Open:** which design (canvas options Streak 1–4, Diary 1–3) |
 | T-3 | Merge elder mode into one tree now or later? | **Default:** now, with this rework |
-| T-4 | `01-accounts.md` §8.4 has an app bar titled "Hazri"; the app has no brand bar (CLAUDE.md) | **Default:** keep the tab header titled "Today" and put the person icon in it (T8). The greeting and banner are as §8.4 says |
-| T-5 | CTA order puts an unmet goal item before the slot's bani (T4) | **Default:** as written, because the goal is what the person chose |
+| T-4 | `01-accounts.md` §8.4 has an app bar titled "Hazri"; the app has no brand bar (CLAUDE.md) | **Decided 2026-10-07:** the app bar is required, titled Hazri, with the person icon (T8). **Open:** which design (canvas options A–D), and whether other tabs carry it |
+| T-5 | CTA order puts an unmet goal item before the slot's bani (T4) | **Decided 2026-10-07:** as written, because the goal is what the person chose |
 
 ## 5.7 Acceptance
 
@@ -152,7 +152,6 @@ local date (`04-goals.md` §2).
 ## 5.8 Out of scope
 
 - Sangat numbers or banners on Today.
-- A streak until T-2 is decided.
 
 ## 5.9 Dependencies
 
