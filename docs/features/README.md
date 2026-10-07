@@ -59,7 +59,12 @@ A rule nobody can write a scenario for is not a rule yet.
 
 ## The order to build in
 
-Feature order is not preference, it is dependency:
+**Nothing is implemented until every feature has its technical
+specification** (owner, 2026-10-07). The specifications are written first,
+all of them, and building starts after; a feature whose file is still the
+old one is not ready to build.
+
+Once building starts, feature order is not preference, it is dependency:
 
 1. **00-platform** — the backend and the data model everything else assumes.
 2. **02-notifications** — half-broken in the reader's hands right now.

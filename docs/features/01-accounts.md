@@ -1136,8 +1136,11 @@ A-1 it has no task to match against, and the affinity is the missing line.
 | **Firebase Analytics** | **Do not touch it.** `firebase_analytics: ^12.6.0` stays in `pubspec.yaml`, collection stays off, the inert Settings switch stays. A separate feature document will cover it. |
 | **Which parts of the app may require the network** | To be decided later. Until then, **follow the PRD**. |
 
-### 13.8 Still open
+### 13.8 Settled on 2026-10-07
 
-1. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the build on a missing or untranslated key, so English-only keys cannot be committed without relaxing that test. Default: wait for the translations rather than relax it.
-2. **Brevo credentials** (W6). Default: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
-3. **Whether the sangat PRD lands before this is built.** If `users/{uid}` later grows group membership, knowing the shape now saves reshaping the document twice.
+1. **The `pa` and `hi` strings** are written by the implementer alongside the English, and the owner verifies them before release. `l10n_test.dart` is not relaxed: every key lands in all three languages at once.
+2. **The sangat PRD lands before this is built.** No implementation starts until the owner has written the technical specification of every feature (`README.md`, "The order to build in").
+
+### 13.9 Still open
+
+1. **Brevo credentials** (W6). The owner will supply them. Until then: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
