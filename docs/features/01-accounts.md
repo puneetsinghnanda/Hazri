@@ -5,7 +5,7 @@ the owner's PRD, *Feature Document: User Profile — Hazri (Nitnem app)*, dated
 28 Sep 2026, converted from the Word document word for word, **with the
 owner's amendments of 2026-10-05 and 2026-10-07 applied in place**. Each
 amended passage carries a note pointing to **Section 13**, which records every
-amendment (D1–D11), the other decisions taken alongside the PRD, and what is
+amendment (D1–D12), the other decisions taken alongside the PRD, and what is
 still open. Where Section 13 and the PRD text disagree, Section 13 wins.
 
 The earlier version of this file is in git history (`git show cc1c967:docs/features/01-accounts.md`). It
@@ -1066,6 +1066,7 @@ Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7, D9, D10 and 
 | D9 | City | Free text, 2–50 letters | **Chosen from the app's city list** and stored as `cityId`, because the Simran globe needs its position and state (`07-simran.md` §5). Mandatory at creation. It changes only through Edit profile (D11). The request and the DTO carry `cityId` where the PRD says `city`. Somebody whose city is not on the list picks the nearest; cities are added through `tools/content_pipeline/cities.json` (`07-simran.md` S-10). |
 | D10 | Attendance | Not in the PRD | **`lastSeenDay`** on the profile, set once a day by `POST /api/v1/presence/attendance` (`07-simran.md` §6.1). That write does not change `updatedAt`, so a daily visit is not mistaken for a profile change. |
 | D11 | Editing | Only an unverified email (6.6); everything else out of scope (§12) | **Edit profile: name, email and city.** The phone number is not editable. See 13.8. |
+| D12 | Sangat memberships | Not in the PRD | **Profile creation adopts the install's Sangat memberships.** Inside the §6.2 transaction, every membership, contribution and cap the caller's uid made without a profile moves to the new profile (`08-sangat.md` MB2). |
 
 ### 13.2 What D8 needs
 

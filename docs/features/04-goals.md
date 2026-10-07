@@ -125,6 +125,7 @@ Each rule has an ID that tests cite. Goals never write anything of their own abo
 - **CR4. Diary simran.** + logs a sitting with `durationS` = the larger of 300 and that day's in-scope `simranMinutes` × 60 (`source` = `DIARY`). − sets `deletedAt` on that day's newest sitting.
 - **CR5.** Completions have no per-day uniqueness. Reading Japji three times is three rows.
 - **CR6.** Completions beyond the target are kept and shown. They never count twice, because met means `count >= timesPerDay`.
+- **CR7.** Every completion and sitting, and every undo of one, is also added to the Sangat outbox when the person belongs to a group (`08-sangat.md` §5.1). Sangat groups never change anything in this file's tables.
 
 ### 4.6 The day verdict (one function)
 

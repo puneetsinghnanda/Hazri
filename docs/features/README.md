@@ -13,9 +13,10 @@ behaviour has to survive.
 | 5 | Today (the home screen) | [`05-today.md`](05-today.md) |
 | 6 | Nitnem and the reader | [`06-nitnem.md`](06-nitnem.md) |
 | 7 | Simran and the globe | [`07-simran.md`](07-simran.md) |
-| 8 | Sangat: groups, roles, invites | [`08-sangat.md`](08-sangat.md) |
+| 8 | Sangat: groups, goals, invites | [`08-sangat.md`](08-sangat.md) |
 | 9 | Diary | [`09-diary.md`](09-diary.md) |
 | 10 | Weekly backup and restore | [`10-backup.md`](10-backup.md) |
+| 11 | Admin website | [`11-admin.md`](11-admin.md) |
 
 `00-platform.md` holds what they all share: the backend, the data model, and
 the testing rule that comes out of how this went wrong.

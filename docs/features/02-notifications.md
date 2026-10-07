@@ -92,12 +92,15 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 
 ### 4.5 Sangat
 
-- **SG1.** Only to members of a group with an active group goal, on a phone with a profile and an FCM token (8.1).
+- **SG1.** Only to members of a group with an active group goal (or, for SG8, one that has just ended), on a phone with a profile and an FCM token (8.1).
 - **SG2.** **Daily digest** at 21:00 in each member's own time zone, saying what the group did that day (5.5-A). Not sent on a day the group recorded no paath, because a zero would read as a reproach.
 - **SG3.** **Milestones** when the group passes 25, 50 and 75 percent of its target (5.5-B), and **completion** at 100 percent (5.5-D). Each is sent once per goal. A milestone reached between 21:00 and 07:00 of a member's own time waits for 07:00.
 - **SG4.** **Final days**: on the last two days of a goal not yet complete, the digest uses 5.5-C instead of 5.5-A.
-- **SG5.** Never names a member and never says who has not taken part.
-- **SG6.** The group goal itself (what is counted, when "today" ends for a group) is defined by the Sangat feature document, still to be written. Where it disagrees with this section, it updates this section in the same commit.
+- **SG5.** Never says who has not taken part. The only message naming a member is 5.5-E, which tells a creator who joined.
+- **SG6.** The group goal itself (what is counted, when "today" ends for a group) is defined by `08-sangat.md`. "Today" for a group is the IST day (`08-sangat.md` CT9).
+- **SG7. New members** (added 2026-10-07): once a day at 20:00 in the creator's own time, the creator of a custom group gets 5.5-E for the people who joined since the last one. Not sent on a day nobody joined. Built-in groups send none.
+- **SG8. Group ended** (added 2026-10-07): when a custom group becomes inactive by its end date, every member gets 5.5-F at their next 21:00, instead of that day's digest. A group that met its target gets 5.5-D instead.
+- **SG9. Simran goals:** where a message says `{bani}`, a Naam Simran goal uses `notifSangatSimranUnit` instead.
 
 ### 4.6 Rules for every local notification
 
@@ -170,6 +173,13 @@ Actions: Sun "Begin 5 min" and "Later"; Wed "Set a goal" and "Begin 5 min"; Fri 
 | `notifSangatMilestone` (B) | 25, 50, 75 % | **{group} has reached {pct}%** / {done} of {target} {bani}, with {daysLeft} days to go. | **{group} ਨੇ {pct}% ਪੂਰਾ ਕੀਤਾ** / {target} {bani} ਵਿੱਚੋਂ {done}, {daysLeft} ਦਿਨ ਬਾਕੀ। | **{group} ने {pct}% पूरा किया** / {target} {bani} में से {done}, {daysLeft} दिन बाकी। |
 | `notifSangatFinal` (C) | Last 2 days, not complete | **{daysLeft} days left for {group}** / {remaining} paath to the goal. Your paath today brings it closer. | **{group} ਲਈ {daysLeft} ਦਿਨ ਬਾਕੀ** / ਟੀਚੇ ਤੱਕ {remaining} ਪਾਠ। ਅੱਜ ਦਾ ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਨੂੰ ਨੇੜੇ ਲਿਆਉਂਦਾ ਹੈ। | **{group} के लिए {daysLeft} दिन बाकी** / लक्ष्य तक {remaining} पाठ। आज का आपका पाठ इसे नज़दीक लाता है। |
 | `notifSangatComplete` (D) | Target reached | **{group} reached its goal** / {target} {bani}, together. Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh. | **{group} ਨੇ ਟੀਚਾ ਪੂਰਾ ਕੀਤਾ** / {target} {bani}, ਮਿਲ ਕੇ। ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖ਼ਾਲਸਾ, ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਹਿ। | **{group} ने लक्ष्य पूरा किया** / {target} {bani}, मिलकर। वाहिगुरु जी का खालसा, वाहिगुरु जी की फ़तह। |
+
+| `notifSangatJoined` (E) | 20:00, one person joined | **{name} joined {group}** / Your sangat is growing: {count} members now. | **{name} {group} ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਏ** / ਤੁਹਾਡੀ ਸੰਗਤ ਵਧ ਰਹੀ ਹੈ: ਹੁਣ {count} ਮੈਂਬਰ। | **{name} {group} में शामिल हुए** / आपकी संगत बढ़ रही है: अब {count} सदस्य। |
+| `notifSangatJoinedMany` (E) | 20:00, several joined | **{name} and {others} more joined {group}** / Your sangat is growing: {count} members now. | **{name} ਅਤੇ {others} ਹੋਰ {group} ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਏ** / ਤੁਹਾਡੀ ਸੰਗਤ ਵਧ ਰਹੀ ਹੈ: ਹੁਣ {count} ਮੈਂਬਰ। | **{name} और {others} अन्य {group} में शामिल हुए** / आपकी संगत बढ़ रही है: अब {count} सदस्य। |
+| `notifSangatEnded` (F) | Next 21:00 after the end date | **{group} has ended** / Together: {total} of {target} {bani}. Thank you for being part of it. | **{group} ਸਮਾਪਤ ਹੋ ਗਿਆ** / ਮਿਲ ਕੇ: {target} {bani} ਵਿੱਚੋਂ {total}। ਇਸ ਦਾ ਹਿੱਸਾ ਬਣਨ ਲਈ ਧੰਨਵਾਦ। | **{group} समाप्त हो गया** / मिलकर: {target} {bani} में से {total}। इसका हिस्सा बनने के लिए धन्यवाद। |
+| `notifSangatSimranUnit` | In place of `{bani}` for Simran goals | sittings of Naam Simran | ਨਾਮ ਸਿਮਰਨ ਦੀਆਂ ਬੈਠਕਾਂ | नाम सिमरन की बैठकें |
+
+`{name}` is the member's profile name, or `notifSangatSomeone` ("A Sangat member" / ਇੱਕ ਸੰਗਤ ਮੈਂਬਰ / एक संगत सदस्य) for a member without a profile.
 
 Action: "Open Sangat". The expanded A carries a progress bar of the group's percentage.
 
@@ -254,7 +264,7 @@ All Functions follow `00-platform.md` §0.1: `maxInstances: 10`, `minInstances: 
 
 | Function | Trigger | Does |
 | --- | --- | --- |
-| `sangatDispatch` | Cloud Scheduler, every hour at :00 | Finds tokens whose local time is now 21:00 and sends each member the digest (5.5-A, or C in the final two days) for each of their groups with paath today (SG2, SG4). Also delivers milestone notices waiting for a member's 07:00 (SG3). |
+| `sangatDispatch` | Cloud Scheduler, every hour at :00 | Finds tokens whose local time is now 21:00 and sends each member the digest (5.5-A, C in the final two days, or F for a group that has ended) for each of their groups (SG2, SG4, SG8). At 20:00 local, sends creators 5.5-E for members who joined since the last run (SG7). Also delivers milestone notices waiting for a member's 07:00 (SG3). |
 | `sangatMilestone` | Firestore `onDocumentUpdated` on the group's progress document, which the Sangat feature's counting Function maintains | When the percentage crosses 25, 50, 75 or 100, creates `sangatNotices/{groupId}_{goalId}_{milestone}` with create-if-absent (so it is sent once), then sends 5.5-B or D at once to members whose local time is 07:00–20:59, and leaves the rest for `sangatDispatch`. |
 
 ### 8.3 The message
@@ -310,6 +320,8 @@ FCM itself does not bill.
 | T-22 | Member leaves the last group | — | Token deleted; no further sangat pushes |
 | T-23 | Profile restored on a new phone | — | The old phone's token is deleted |
 | T-24 | FCM reports a token unregistered | Sending | Token deleted, no retry |
+| T-24a | Two people joined the creator's group today | 20:00 creator's time | One 5.5-E naming the first and "1 more" |
+| T-24b | A custom group passes its end date unmet | Members' next 21:00 | 5.5-F instead of the digest |
 | T-25 | No network all day | 04:00, goal times, 06:00, 07:00 | All local notifications arrive |
 | T-26 | Permission refused | Notifications screen | The card; nothing pretends to be scheduled |
 | T-27 | Phone rebooted | Boot | Everything re-planned |
@@ -337,7 +349,8 @@ FCM itself does not bill.
 | N-g | Phone time or IST | **Decided:** phone time for every local notification |
 | N-h | Shaheedi Purabs of the Guru Sahibs | **Decided:** events at 07:00, as their calendar kind says |
 | N-1 | Monday's Hazri nudge needs today's live count, which the phone rarely has when it plans the night before | **Open.** As written it will usually send the Sunday fallback. Alternatives: say "yesterday", or replace the message |
-| N-2 | The earlier spec also had Rehras and Kirtan Sohila reminders, a daily Simran reminder, "you were added to a sangat", "somebody joined your group", a new Vichar entry, and a corrected-line notice | **Open.** Removed here, because the owner's list of 2026-10-07 is the closed list (0.2). Any of them comes back only by adding it to this file |
+| N-2 | The earlier spec also had Rehras and Kirtan Sohila reminders, a daily Simran reminder, "you were added to a sangat", a new Vichar entry, and a corrected-line notice | **Open.** Removed here, because the owner's list of 2026-10-07 is the closed list (0.2) |
+| N-i | New-member and group-ended notifications | **Decided 2026-10-07:** added (SG7, SG8) |
 
 ## 13. Out of scope
 
