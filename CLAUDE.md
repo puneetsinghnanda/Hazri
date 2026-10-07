@@ -133,6 +133,7 @@ lib/
 tools/content_pipeline/   builds assets/content/content.db
 content/source/           the reviewed source files the pipeline reads
 design/                   tokens.json, screens.json, HTML specs, PNG renders
+                          canvas.html: every screen on one page, by feature
 public/                   Firebase Hosting: /verify and /j/<groupId>
 ```
 

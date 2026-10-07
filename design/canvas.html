@@ -1,0 +1,333 @@
+<title>Hazri Screens</title>
+<!--
+  Every Hazri design screen on one page, grouped by feature.
+
+  The screens themselves are the files in design/html/ and are loaded from
+  html/<id>.<light|dark>.html, so this page opens straight from a checkout
+  (design/canvas.html) and publishes as a Claude Artifact with design/html/*
+  passed as `files` under html/.
+
+  The list, the grouping, the status of each screen and its one-line note
+  live in SECTIONS below. A screen added to design/html/ is not shown here
+  until it is added there. Status: "new" (chosen and drawn recently),
+  "current" (as drawn), "superseded" (a spec or a newer screen replaces it;
+  the note says which), "reference" (not a screen).
+
+  Where a screen and a spec in docs/features/ disagree, the spec wins
+  (CLAUDE.md rule 2).
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@600;700&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+/* A light-table of phone screens: sections in feature order, screens in rows. */
+:root{
+  --bg:#F4F3F8; --surface:#FFFFFF; --surface2:#ECEBF3; --ink:#1B1D3A; --ink2:#4D5070;
+  --muted:#6E7090; --rule:#E1E1EA; --neela:#262C63; --kesri:#B85F08; --kesriSoft:#FBE8D2;
+  --sage:#2E7A57; --sageSoft:#DCEFE5; --grey:#6E7090; --greySoft:#ECEBF3;
+  --display:'Baloo Paaji 2',Mukta,system-ui,sans-serif; --body:Mukta,system-ui,sans-serif;
+  --shadow:0 1px 2px rgba(27,29,58,.06),0 10px 28px rgba(27,29,58,.08);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C0F24; --surface:#161A37; --surface2:#1F2447; --ink:#EDECF6; --ink2:#B9BAD3;
+  --muted:#9195B5; --rule:#2A2F55; --neela:#C9CCF2; --kesri:#F2A24E; --kesriSoft:#3A2A1A;
+  --sage:#6CCB9C; --sageSoft:#173327; --grey:#9195B5; --greySoft:#1F2447;
+  --shadow:0 0 0 1px rgba(255,255,255,.05); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C0F24; --surface:#161A37; --surface2:#1F2447; --ink:#EDECF6; --ink2:#B9BAD3;
+  --muted:#9195B5; --rule:#2A2F55; --neela:#C9CCF2; --kesri:#F2A24E; --kesriSoft:#3A2A1A;
+  --sage:#6CCB9C; --sageSoft:#173327; --grey:#9195B5; --greySoft:#1F2447;
+  --shadow:0 0 0 1px rgba(255,255,255,.05); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;margin:0;padding-inline:20px;padding-block:28px 64px}
+.wrap{max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:10px}
+h1{font-family:var(--display);font-size:clamp(28px,4vw,40px);line-height:1.05;margin:0;color:var(--neela);text-wrap:balance}
+.lede{color:var(--ink2);max-width:68ch;margin:0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;border-bottom:1px solid var(--rule)}
+.group{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.group span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-right:4px}
+.seg{border:1px solid var(--rule);background:var(--surface);color:var(--ink2);font:inherit;font-size:13.5px;font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer;min-height:34px}
+.seg[aria-pressed="true"]{background:var(--neela);border-color:var(--neela);color:var(--bg)}
+.seg:focus-visible,a:focus-visible{outline:2px solid var(--kesri);outline-offset:2px}
+.jump{display:flex;gap:6px;flex-wrap:wrap}
+.jump a{font-size:13px;color:var(--ink2);text-decoration:none;padding:4px 10px;border-radius:999px;background:var(--surface2);font-weight:600}
+section{display:flex;flex-direction:column;gap:14px;scroll-margin-top:120px}
+.shead{display:flex;flex-direction:column;gap:2px}
+h2{font-family:var(--display);font-size:24px;margin:0;line-height:1.15}
+.snote{color:var(--muted);font-size:13.5px;margin:0;max-width:80ch}
+.row{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.frame{position:relative;overflow:hidden;border-radius:calc(28px * var(--s));background:var(--surface2);box-shadow:var(--shadow);outline:2px solid transparent;outline-offset:3px}
+figure.new .frame{outline-color:var(--kesri)}
+figure.superseded .frame{opacity:.55}
+.frame iframe{border:0;transform-origin:0 0;display:block;pointer-events:none;background:var(--surface)}
+.frame.wide iframe{pointer-events:auto}
+figcaption{display:flex;flex-direction:column;gap:3px;width:calc(390px * var(--s));max-width:100%}
+.wide + figcaption,figure.wide figcaption{width:auto;max-width:72ch}
+.t{font-weight:700;font-size:14px;line-height:1.25}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.meta code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}
+.chip{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
+.chip.new{background:var(--kesriSoft);color:var(--kesri)}
+.chip.current{background:var(--sageSoft);color:var(--sage)}
+.chip.superseded{background:var(--greySoft);color:var(--grey)}
+.chip.reference{background:var(--surface2);color:var(--ink2)}
+.note{font-size:12.5px;color:var(--ink2);line-height:1.4}
+.meta a{color:var(--ink2)}
+.count{font-variant-numeric:tabular-nums}
+@media (max-width:520px){.row{gap:16px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Hazri Screens</h1>
+    <p class="lede">Every design screen in <code>design/html/</code>, grouped by feature, at 390 × 844 dp. Screens marked <b>New</b> were chosen on 7 October 2026. <b>Superseded</b> screens are kept for reference; their note names what replaces them. Where a screen and a spec in <code>docs/features/</code> disagree, the spec wins.</p>
+  </header>
+
+  <div class="bar" role="toolbar" aria-label="View">
+    <div class="group"><span>Screens</span>
+      <button class="seg" id="th-light" aria-pressed="true">Light</button>
+      <button class="seg" id="th-dark" aria-pressed="false">Dark</button>
+    </div>
+    <div class="group"><span>Size</span>
+      <button class="seg" id="sz-s" aria-pressed="false">S</button>
+      <button class="seg" id="sz-m" aria-pressed="true">M</button>
+      <button class="seg" id="sz-l" aria-pressed="false">L</button>
+    </div>
+    <div class="group"><span>Show</span>
+      <button class="seg" id="sh-all" aria-pressed="true">All</button>
+      <button class="seg" id="sh-cur" aria-pressed="false">Hide superseded</button>
+    </div>
+    <div class="group"><span class="count" id="count"></span></div>
+    <nav class="jump" id="jump" aria-label="Sections"></nav>
+  </div>
+
+  <main id="sections" style="display:flex;flex-direction:column;gap:40px"></main>
+</div>
+
+<script>
+const SECTIONS = [
+  { id: 'today', name: 'Today', spec: '05-today.md',
+    screens: [
+      ['85-TodayAppBar', 'Today, with the app bar and streak', 'new', 'App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12'],
+      ['86-TodayNoProfile', 'Today, first day, no profile', 'new', 'The profile banner overlaps the app bar; no streak yet. 05-today.md T-a'],
+      ['61-GoalComplete', "All of today's goals are done", 'current', 'Shown once a day when the goal is met. 04-goals.md CE1'],
+      ['58-TodayHazri', 'Today, hazri marked', 'superseded', 'Replaced by 85'],
+      ['59-TodayNotYet', 'Today, hazri not yet', 'superseded', 'Replaced by 85 and 86'],
+      ['60-TodayPunjabi', 'Today in Punjabi', 'superseded', 'Same layout as 85, in Punjabi'],
+      ['30-Today', 'Today, Phase 2', 'superseded', 'Replaced by 85'],
+      ['09-Today', 'Today, Phase 1', 'superseded', 'Replaced by 85'],
+      ['10-TodayHindi', 'Today in Hindi, Amrit Vela dark', 'superseded', 'Same layout as 85, in Hindi'],
+      ['11-ElderMode', 'Elder mode, Punjabi', 'superseded', 'Elder mode is 85 at larger sizes, not its own screen. 05-today.md T5'],
+    ]},
+  { id: 'diary', name: 'Diary', spec: '09-diary.md',
+    screens: [
+      ['87-DiaryStreak', 'Diary, the month, with the streak', 'new', 'Streak option 2, chosen 7 Oct. 09-diary.md D12'],
+      ['56-DiaryToday', 'Diary, one day', 'current', 'The day screen of 04-goals.md 7.5'],
+      ['57-Diary', 'Diary, the month, Phase 2', 'superseded', 'Replaced by 87; grace days are never shown (09-diary.md D8)'],
+      ['26-Diary', 'Nitnem Diary, Phase 1', 'superseded', 'Replaced by 87'],
+    ]},
+  { id: 'first-run', name: 'First run', spec: '03-first-run.md',
+    note: 'Setup is Welcome, Language and How you read, then Today.',
+    screens: [
+      ['05-SetupLanguage', 'Setup, language', 'current', ''],
+      ['06-SetupReading', 'Setup, how you read', 'current', 'Elder mode is offered here'],
+      ['02-IntroAlwaysWithYou', 'Intro 1, Always with you', 'superseded', 'One Welcome screen, no carousel. 03-first-run.md F2'],
+      ['03-IntroReadAlong', 'Intro 2, Read along', 'superseded', 'One Welcome screen, no carousel'],
+      ['04-IntroYourLanguage', 'Intro 3, Your language', 'superseded', 'One Welcome screen, no carousel'],
+      ['07-SetupReminders', 'Setup, reminders', 'superseded', 'Not part of setup; reminders are on by default'],
+      ['08-ReminderTime', 'Pick your own reminder time', 'superseded', 'Amrit Vela is 04:00; goal items carry their own time. 02-notifications.md'],
+    ]},
+  { id: 'nitnem', name: 'Nitnem and the reader', spec: '06-nitnem.md',
+    screens: [
+      ['12-NitnemList', 'Nitnem list', 'current', ''],
+      ['13-ReaderFollowing', 'Reader, following the audio', 'current', ''],
+      ['14-ReaderMeanings', 'Reader, meanings and pause marks', 'current', ''],
+      ['15-ReaderHindiScrolled', 'Reader in Hindi, scrolled away', 'current', ''],
+      ['16-ReaderNight', 'Reader, Amrit Vela dark', 'current', ''],
+      ['48-ReaderComplete', 'Reader, complete', 'current', ''],
+      ['17-Player', 'Full-screen player', 'current', ''],
+      ['18-BackgroundPlayback', 'Notification and lock screen', 'current', ''],
+    ]},
+  { id: 'goals', name: 'Goals', spec: '04-goals.md',
+    note: 'Drawn before 04-goals.md of 7 October 2026; the spec wins where they differ.',
+    screens: [
+      ['19-PaathGoals', 'Paath goals', 'current', ''],
+      ['47-AddGoal', 'Add a goal', 'current', ''],
+      ['42-LogPaath', 'Log a paath', 'current', ''],
+      ['20-AddGoal', 'Add a paath goal, Phase 1', 'superseded', 'Replaced by 47'],
+    ]},
+  { id: 'simran', name: 'Simran', spec: '07-simran.md',
+    note: 'The shipped Simran tab follows a mock-up of 20 September 2026 that is not in the repository (CLAUDE.md).',
+    screens: [
+      ['29-Simran', 'Simran', 'superseded', 'Globe, legend and colours kept; layout from the 20 Sep mock-up'],
+      ['21-DailySimran', 'Daily Simran, 5 minutes', 'superseded', 'Replaced by the Simran tab'],
+    ]},
+  { id: 'sangat', name: 'Sangat', spec: '08-sangat.md',
+    note: 'Drawn before 08-sangat.md of 7 October 2026; the spec wins where they differ.',
+    screens: [
+      ['38-SangatHome', 'Sangat', 'current', ''],
+      ['31-GroupDetail', 'Group, shared goal', 'current', ''],
+      ['39-CreateGroup', 'Create a group', 'current', ''],
+      ['40-SetGoal', 'Shared goal', 'current', ''],
+      ['41-Invite', 'Invite', 'current', ''],
+      ['52-CodeProblems', 'That code did not work', 'current', ''],
+      ['32-Profile', 'Join the sangat', 'current', ''],
+      ['36-UnlockSheet', 'Join the sangat, sheet', 'current', ''],
+      ['53-RestoreOrNew', 'Restore, or start fresh', 'current', ''],
+      ['54-Restored', 'Your sangat is back', 'current', ''],
+    ]},
+  { id: 'vichar', name: 'Vichar', spec: '',
+    screens: [
+      ['43-Vichar', 'Vichar', 'current', ''],
+      ['44-VicharArticle', 'Vichar, an article', 'current', ''],
+      ['45-VicharTopic', 'Vichar, a reference entry', 'current', ''],
+      ['46-VicharSearch', 'Vichar, search', 'current', ''],
+      ['24-Hukamnama', 'Hukamnama', 'superseded', 'The daily Hukamnama is gone; replaced by Vichar'],
+      ['25-ShareCard', 'Hukamnama share card', 'superseded', 'Goes with the Hukamnama'],
+    ]},
+  { id: 'calendar', name: 'Calendar and notifications', spec: '02-notifications.md',
+    screens: [
+      ['22-GurpurabCalendar', 'Gurpurab and Nanakshahi calendar', 'current', ''],
+      ['50-Notifications', 'Notifications screen', 'current', 'One switch per kind. 02-notifications.md section 9'],
+      ['23-Notifications', 'Reminder notifications, Phase 1', 'superseded', 'Messages are 02-notifications.md section 5'],
+    ]},
+  { id: 'settings', name: 'Menu, settings and account', spec: '01-accounts.md',
+    note: 'Account screens were drawn before 01-accounts.md; the spec wins where they differ.',
+    screens: [
+      ['37-SettingsMenu', 'Menu', 'current', ''],
+      ['27-Settings', 'Settings', 'current', ''],
+      ['33-Account', 'Your account', 'current', ''],
+      ['34-VerifyEmail', 'Verify your email', 'current', ''],
+      ['35-PrivacyData', 'Privacy and my data', 'current', ''],
+      ['49-Sync', 'Sync', 'superseded', 'No sync switch; a weekly backup runs with a profile. 10-backup.md'],
+    ]},
+  { id: 'reference', name: 'Reference', spec: '',
+    screens: [
+      ['00-Foundations', 'Foundations, the design system', 'reference', 'Colours, type and components', 'single'],
+      ['28-GlobeVariants', 'Globe variants', 'reference', 'Options explored for the globe', 'single'],
+    ]},
+];
+
+const SIZES = { s: 0.42, m: 0.6, l: 0.85 };
+const state = { theme: 'light', size: 'm', hideOld: false };
+try {
+  const saved = JSON.parse(localStorage.getItem('hazri-screens-view') || '{}');
+  Object.assign(state, saved);
+} catch (e) {}
+
+function save() { try { localStorage.setItem('hazri-screens-view', JSON.stringify(state)); } catch (e) {} }
+
+function src(id, single) { return 'html/' + id + (single ? '' : '.' + state.theme) + '.html'; }
+
+const LABEL = { new: 'New', current: 'Current', superseded: 'Superseded', reference: 'Reference' };
+
+function build() {
+  const main = document.getElementById('sections');
+  const jump = document.getElementById('jump');
+  for (const sec of SECTIONS) {
+    const s = document.createElement('section');
+    s.id = sec.id;
+    const head = document.createElement('div');
+    head.className = 'shead';
+    const h = document.createElement('h2');
+    h.textContent = sec.name;
+    head.appendChild(h);
+    const bits = [];
+    if (sec.spec) bits.push('Spec: docs/features/' + sec.spec);
+    if (sec.note) bits.push(sec.note);
+    if (bits.length) {
+      const p = document.createElement('p');
+      p.className = 'snote';
+      p.textContent = bits.join(' · ');
+      head.appendChild(p);
+    }
+    s.appendChild(head);
+    const row = document.createElement('div');
+    row.className = 'row';
+    for (const [id, title, status, note, single] of sec.screens) {
+      const fig = document.createElement('figure');
+      fig.className = status + (single ? ' wide' : '');
+      fig.dataset.status = status;
+      const frame = document.createElement('div');
+      frame.className = 'frame' + (single ? ' wide' : '');
+      const ifr = document.createElement('iframe');
+      ifr.loading = 'lazy';
+      ifr.title = title;
+      ifr.dataset.id = id;
+      if (single) { ifr.dataset.single = '1'; ifr.width = 1180; ifr.height = 900; }
+      else { ifr.width = 390; ifr.height = 844; ifr.setAttribute('scrolling', 'no'); ifr.tabIndex = -1; }
+      frame.appendChild(ifr);
+      fig.appendChild(frame);
+      const cap = document.createElement('figcaption');
+      const t = document.createElement('div');
+      t.className = 't';
+      t.textContent = title;
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const chip = document.createElement('span');
+      chip.className = 'chip ' + status;
+      chip.textContent = LABEL[status];
+      const code = document.createElement('code');
+      code.textContent = id;
+      const open = document.createElement('a');
+      open.target = '_blank';
+      open.rel = 'noopener';
+      open.textContent = 'Open';
+      open.dataset.id = id;
+      if (single) open.dataset.single = '1';
+      meta.append(chip, code, open);
+      cap.append(t, meta);
+      if (note) {
+        const n = document.createElement('div');
+        n.className = 'note';
+        n.textContent = note;
+        cap.appendChild(n);
+      }
+      fig.appendChild(cap);
+      row.appendChild(fig);
+    }
+    s.appendChild(row);
+    main.appendChild(s);
+    const a = document.createElement('a');
+    a.href = '#' + sec.id;
+    a.textContent = sec.name;
+    jump.appendChild(a);
+  }
+}
+
+function apply() {
+  const sc = SIZES[state.size] || SIZES.m;
+  document.documentElement.style.setProperty('--s', sc);
+  let shown = 0, total = 0;
+  document.querySelectorAll('figure').forEach(fig => {
+    const ifr = fig.querySelector('iframe');
+    const single = !!ifr.dataset.single;
+    const w = single ? 1180 : 390, h = single ? 900 : 844;
+    const k = single ? Math.min(sc * 1.1, 0.9) : sc;
+    const frame = fig.querySelector('.frame');
+    frame.style.width = Math.round(w * k) + 'px';
+    frame.style.height = Math.round(h * k) + 'px';
+    frame.style.maxWidth = '100%';
+    ifr.style.transform = 'scale(' + k + ')';
+    const want = src(ifr.dataset.id, single);
+    if (ifr.getAttribute('src') !== want) ifr.setAttribute('src', want);
+    fig.querySelector('a').href = want;
+    const hide = state.hideOld && fig.dataset.status === 'superseded';
+    fig.hidden = hide;
+    total++; if (!hide) shown++;
+  });
+  document.getElementById('count').textContent = shown + ' of ' + total + ' screens';
+  for (const t of ['light', 'dark']) document.getElementById('th-' + t).setAttribute('aria-pressed', String(state.theme === t));
+  for (const z of ['s', 'm', 'l']) document.getElementById('sz-' + z).setAttribute('aria-pressed', String(state.size === z));
+  document.getElementById('sh-all').setAttribute('aria-pressed', String(!state.hideOld));
+  document.getElementById('sh-cur').setAttribute('aria-pressed', String(state.hideOld));
+}
+
+build();
+apply();
+document.getElementById('th-light').onclick = () => { state.theme = 'light'; save(); apply(); };
+document.getElementById('th-dark').onclick = () => { state.theme = 'dark'; save(); apply(); };
+for (const z of ['s', 'm', 'l']) document.getElementById('sz-' + z).onclick = () => { state.size = z; save(); apply(); };
+document.getElementById('sh-all').onclick = () => { state.hideOld = false; save(); apply(); };
+document.getElementById('sh-cur').onclick = () => { state.hideOld = true; save(); apply(); };
+</script>

@@ -2007,6 +2007,231 @@ def diary_month() -> str:
 """
 
 
+# ------------------------------------------- chosen 2026-10-07 (05-today, 09-diary)
+
+def app_bar(greeting: str) -> str:
+    """Today's app bar: design option D, chosen 2026-10-07 (05-today.md T11).
+
+    Today only; every other tab keeps its own header. Neela in light and
+    `card2` in dark, because the dark theme's `primary` is kesri. The first
+    card below it overlaps the band by 32 px.
+    """
+    btn = ('width:44px;height:44px;border-radius:{r}px;flex:none;display:flex;'
+           'align-items:center;justify-content:center;background:rgba(255,255,255,.12);'
+           'color:#fff')
+    person = ('<svg class="i" width="22" height="22" viewBox="0 0 24 24">'
+              '<circle cx="12" cy="8.2" r="3.7"/><path d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0"/></svg>')
+    return f"""
+<style>.band{{background:#262C63}}.app.dark .band{{background:var(--card2)}}</style>
+<div class="band col" style="gap:14px;padding:22px 20px 46px;color:#fff;
+  border-radius:0 0 28px 28px">
+  <div class="row" style="gap:10px">
+    <div style="{btn.format(r=13)}">{icon("menu", 20)}</div>
+    <div class="row" style="gap:8px;flex:1">{app_mark(28, "#fff", "#F2A24E")}
+      <div class="disp" style="font-size:22px;font-weight:700;line-height:1">Hazri</div></div>
+    <div style="{btn.format(r=22)}">{person}</div>
+  </div>
+  <div class="col" style="padding-left:2px">
+    <div class="disp" style="font-size:24px;font-weight:700;line-height:1.15">{greeting}</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.78);font-weight:500">
+      Wednesday, 7 October</div>
+  </div>
+</div>"""
+
+
+def streak_strip() -> str:
+    """The Nitnem streak on Today: option 3, the week strip (05-today.md T12).
+
+    Shown only from two days; the last seven days, today ringed.
+    """
+    days = "".join(
+        f'<div class="col" style="align-items:center;gap:4px">'
+        f'<div style="font-size:11px;font-weight:700;color:var(--muted)">{d}</div>'
+        f'<div style="width:22px;height:22px;border-radius:11px;background:var(--kesri);'
+        + ('box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--kesriInk)' if i == 6 else '')
+        + '"></div></div>'
+        for i, d in enumerate("TFSSMTW"))
+    return f"""
+  <div class="card row" style="padding:12px 16px;gap:14px">
+    <div class="col" style="flex:none">
+      <div class="disp" style="font-size:26px;font-weight:700;line-height:1;
+        color:var(--kesriInk)">12</div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600;line-height:1.25">
+        days of Nitnem<br>in a row</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;flex:1">{days}</div>
+  </div>"""
+
+
+def goal_widget() -> str:
+    """The goal widget of 04-goals.md 7.1: items met of items in scope."""
+    tick = (f'<div style="width:24px;height:24px;border-radius:12px;flex:none;'
+            f'background:var(--sage);color:#fff;display:flex;align-items:center;'
+            f'justify-content:center">{icon("check", 14)}</div>')
+    empty = ('<div style="width:24px;height:24px;border-radius:12px;flex:none;'
+             'border:3px solid var(--rule)"></div>')
+    rows = "".join(
+        f'<div class="row" style="gap:10px">{mark}'
+        f'<div style="font-size:14px;font-weight:600;flex:1">{name}</div>'
+        f'<div style="font-size:13px;color:var(--muted);font-weight:600">{what}</div></div>'
+        for mark, name, what in [(tick, "Japji Sahib", "1 of 1"),
+                                 (empty, "Naam Simran", "11 min")])
+    return f"""
+  <div class="card col" style="padding:16px;gap:12px">
+    <div class="row" style="justify-content:space-between">
+      <div class="col">
+        <div class="eyebrow">Today’s goal</div>
+        <div class="disp" style="font-size:20px;font-weight:700;line-height:1.15">
+          1 of 2 done</div>
+      </div>
+      {ring(0.5, 52, 7)}
+    </div>
+    <div class="col" style="gap:9px;border-top:1px solid var(--rule);padding-top:11px">
+      {rows}
+    </div>
+  </div>"""
+
+
+def today_app_bar() -> str:
+    """Today with a profile: the app bar, hazri, the streak, the goal."""
+    return f"""
+{app_bar("Welcome, Harpreet")}
+<div class="col" style="gap:13px;padding:0 20px;margin-top:-32px">
+  {hazri_banner(dict(EN, hazriWith="Marked at 5:10 AM, with Japji Sahib"))}
+  {streak_strip()}
+  {goal_widget()}
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
+    {icon("simran", 20)}<div>Start Naam Simran · 11 min</div></div>
+  {vichar_card()}
+</div>
+{nav("today")}
+"""
+
+
+def today_no_profile() -> str:
+    """Today on the first day: no profile, no goal, nothing yet (05-today.md T-a).
+
+    The profile banner is the first card, so it overlaps the band; no streak
+    card, because there is no streak.
+    """
+    return f"""
+{app_bar("Welcome")}
+<div class="col" style="gap:13px;padding:0 20px;margin-top:-32px">
+  <div class="card row" style="padding:14px 16px;gap:13px;box-shadow:0 10px 24px rgba(27,29,58,.16)">
+    <div style="width:46px;height:46px;border-radius:23px;flex:none;
+      background:var(--kesriSoft);color:var(--kesriInk);display:flex;
+      align-items:center;justify-content:center"><svg class="i" width="22" height="22"
+      viewBox="0 0 24 24"><circle cx="12" cy="8.2" r="3.7"/>
+      <path d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0"/></svg></div>
+    <div class="col" style="flex:1">
+      <div style="font-size:15px;font-weight:700;line-height:1.2">Set up your profile</div>
+      <div style="font-size:12.5px;color:var(--muted)">
+        Add your name and email to personalise the app.</div>
+    </div>
+    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>
+  {hazri_pending()}
+  <div class="card row" style="padding:16px;gap:13px">
+    <div style="width:46px;height:46px;border-radius:14px;flex:none;
+      background:var(--sageSoft);color:var(--sage);display:flex;
+      align-items:center;justify-content:center">{icon("plus", 22)}</div>
+    <div class="col" style="flex:1">
+      <div class="disp" style="font-size:17px;font-weight:700;line-height:1.15">
+        Set a daily goal</div>
+      <div style="font-size:12.5px;color:var(--muted)">
+        Choose the banis you want to recite each day.</div>
+    </div>
+    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
+    {icon("nitnem", 20)}<div>Start Japji Sahib</div></div>
+  {vichar_card()}
+</div>
+{nav("today")}
+"""
+
+
+def diary_streak() -> str:
+    """The Diary month with the streak card of option 2 (09-diary.md D12).
+
+    Dots follow 04-goals.md 4.7: the first is hazri; the second appears only
+    on a day that had a goal. Grace days are never shown (D8).
+    """
+    import calendar as _cal
+    weeks = _cal.Calendar(firstweekday=0).monthdayscalendar(2026, 10)
+    goal_days = {3: True, 4: True, 5: False, 6: True, 7: False}
+    cells = ""
+    for wk in weeks:
+        for d in wk:
+            if d == 0:
+                cells += '<div></div>'
+                continue
+            past = d <= 7
+            dots = ""
+            if past:
+                dots = ('<div style="width:6px;height:6px;border-radius:3px;'
+                        'background:var(--kesri)"></div>')
+                if d in goal_days:
+                    dots += ('<div style="width:6px;height:6px;border-radius:3px;'
+                             f'background:{"var(--sage)" if goal_days[d] else "var(--rule)"}'
+                             '"></div>')
+            border = "var(--kesri)" if d == 7 else "transparent"
+            cells += (
+                f'<div class="col" style="align-items:center;justify-content:center;'
+                f'gap:4px;height:44px;border-radius:13px;border:1.5px solid {border};'
+                f'background:{"var(--card)" if past else "transparent"}">'
+                f'<div style="font-size:13px;font-weight:{700 if d == 7 else 600};'
+                f'color:{"var(--ink)" if past else "var(--muted)"}">{d}</div>'
+                f'<div class="row" style="gap:3px;height:6px">{dots}</div></div>')
+    heads = "".join(
+        f'<div style="text-align:center;font-size:11px;font-weight:700;'
+        f'color:var(--muted)">{c}</div>' for c in "MTWTFSS")
+    legend = "".join(
+        f'<div class="row" style="gap:6px"><div style="width:7px;height:7px;'
+        f'border-radius:4px;background:{c}"></div><div style="font-size:11.5px;'
+        f'color:var(--muted);font-weight:600">{n}</div></div>'
+        for c, n in [("var(--kesri)", "Hazri"), ("var(--sage)", "Goal met")])
+    stat = ('<div class="col" style="flex:1;align-items:center;gap:1px">'
+            '<div class="disp" style="font-size:21px;font-weight:700;color:{c}">{n}</div>'
+            '<div style="font-size:11.5px;color:var(--muted);font-weight:600">{l}</div></div>')
+    rule = '<div style="width:1px;align-self:stretch;background:var(--rule)"></div>'
+    return f"""
+<div class="pad col" style="gap:13px">
+  {header("Nitnem Diary", "Every day you marked your hazri", left="menu")}
+  <div class="card row" style="padding:14px 8px">
+    <div class="col" style="flex:1;align-items:center;gap:2px">
+      <div class="disp" style="font-size:30px;font-weight:700;line-height:1;
+        color:var(--kesriInk)">12</div>
+      <div style="font-size:12.5px;color:var(--muted);font-weight:600">days in a row now</div>
+    </div>
+    {rule}
+    <div class="col" style="flex:1;align-items:center;gap:2px">
+      <div class="disp" style="font-size:30px;font-weight:700;line-height:1">30</div>
+      <div style="font-size:12.5px;color:var(--muted);font-weight:600">your longest</div>
+    </div>
+  </div>
+  <div class="row" style="justify-content:space-between;padding-top:2px">
+    <div style="font-size:15px;font-weight:700">October 2026</div>
+    <div class="row" style="gap:14px;color:var(--muted)">
+      {icon("back", 18)}<div style="transform:rotate(180deg)">{icon("back", 18)}</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+    {heads}{cells}
+  </div>
+  <div class="row" style="gap:16px;justify-content:center">{legend}</div>
+  <div class="card row" style="padding:14px 16px">
+    {stat.format(c="var(--kesri)", n=7, l="hazri days")}{rule}
+    {stat.format(c="var(--sage)", n=3, l="goal days met")}{rule}
+    {stat.format(c="var(--ink)", n=9, l="paath")}
+  </div>
+  <div style="font-size:11.5px;color:var(--muted);text-align:center">
+    Kept on this phone. Backed up each week with your profile.</div>
+</div>
+{nav("diary")}
+"""
+
+
 def sync_states() -> str:
     states = [
         ("check", "Synced", "Everything is up to date · 2 minutes ago",
@@ -2129,6 +2354,10 @@ SCREENS = [
     ("59-TodayNotYet", "Today — hazri not yet", today_not_yet),
     ("60-TodayPunjabi", "Today — in Punjabi", today_punjabi),
     ("61-GoalComplete", "All of today's goals are done", goal_complete),
+    # 62-84 are the superseded Phase 3 set on another branch; never reuse them.
+    ("85-TodayAppBar", "Today — app bar and streak", today_app_bar),
+    ("86-TodayNoProfile", "Today — first day, no profile", today_no_profile),
+    ("87-DiaryStreak", "Diary — the month, with the streak", diary_streak),
 ]
 
 
