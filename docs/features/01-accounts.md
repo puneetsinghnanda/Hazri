@@ -5,7 +5,7 @@ the owner's PRD, *Feature Document: User Profile — Hazri (Nitnem app)*, dated
 28 Sep 2026, converted from the Word document word for word, **with the
 owner's amendments of 2026-10-05 and 2026-10-07 applied in place**. Each
 amended passage carries a note pointing to **Section 13**, which records every
-amendment (D1–D8), the other decisions taken alongside the PRD, and what is
+amendment (D1–D10), the other decisions taken alongside the PRD, and what is
 still open. Where Section 13 and the PRD text disagree, Section 13 wins.
 
 The earlier version of this file is in git history (`git show cc1c967:docs/features/01-accounts.md`). It
@@ -162,7 +162,8 @@ profileId = Firestore auto-generated ID.
 | email                    | string    | no       | Trimmed, as entered (case kept)               |
 | emailNormalized          | string    | no       | Trimmed + lowercased                          |
 | phone                    | string    | yes      | Normalised per Section 5 (§13 D2), or null    |
-| city                     | string    | no       | Normalized per Section 5                      |
+| cityId                   | string    | no       | A city ID from the app's city list (§13 D9). Replaces the free-text city. |
+| lastSeenDay              | string    | yes      | IST day of the last attendance; written only by the attendance call, which leaves updatedAt alone (§13 D10) |
 | emailVerified            | boolean   | no       | false on create                               |
 | emailVerifiedAt          | timestamp | yes      | null until verified                           |
 | createdAt                | timestamp | no       | Server timestamp                              |
@@ -258,7 +259,7 @@ The same rules run in the app (lib/validation/validators.dart) and on the server
 | Name  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your name · Invalid: Name must be 2–50 letters (spaces, . ' - allowed) |
 | Email | Yes      | Trim (store); trim + lowercase (emailNormalized) | ≤ 254 characters and matches EMAIL_REGEX             | Empty: Please enter your email · Invalid: Please enter a valid email address               |
 | Phone | No       | Remove every character that is not a digit, keeping a leading + if typed; empty → null | Always valid (§13 D2) | none |
-| City  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your city · Invalid: City must be 2–50 letters (spaces, . ' - allowed) |
+| City  | Yes      | Chosen from the app's city list (§13 D9)          | A known city ID                                      | Empty: Please choose your city                                                             |
 
 Regular expressions (Dart: RegExp(pattern, unicode: true); TypeScript: new RegExp(pattern, "u")):
 
@@ -300,7 +301,7 @@ fields only for VALIDATION_ERROR; retryAfterSeconds only for RATE_LIMITED; purpo
 **Profile DTO (returned wherever profile appears):**
 
 ```json
-{ "profileId": "abc", "name": "Harpreet Kaur", "email": "Harpreet@Example.com", "phone": "+919876543210", "city": "Amritsar", "emailVerified": false, "createdAt": "2026-09-28T10:00:00.000Z" }
+{ "profileId": "abc", "name": "Harpreet Kaur", "email": "Harpreet@Example.com", "phone": "+919876543210", "cityId": "amritsar", "emailVerified": false, "createdAt": "2026-09-28T10:00:00.000Z" }
 ```
 
 phone may be null. Never return ownerUid, emailNormalized, emailQuota or token data.
@@ -333,7 +334,7 @@ Logic: read owners/{callerUid}. If missing → 404. Else read profiles/{profileI
 
 ### 6.2 POST /api/v1/profile — create profile (Req 2, 3, 8)
 
-Request: { "name": "...", "email": "...", "phone": "9876543210" \| "" \| null, "city": "..." }
+Request: { "name": "...", "email": "...", "phone": "9876543210" \| "" \| null, "cityId": "..." }
 
 Logic:
 
@@ -668,7 +669,7 @@ App bar title Set up profile. One Form with four TextFormFields in this order:
 | Name  | Name \*          | text, capitalization words | —                                      |
 | Email | Email \*         | emailAddress               | autocorrect off                        |
 | Phone | Phone (optional) | phone                      | No prefix, no formatter, no limit (§13 D2) |
-| City  | City \*          | text, capitalization words | —                                      |
+| City  | City \*          | picker over the app's city list (§13 D9) | —                                      |
 
 Full-width button Save Profile. autovalidateMode is disabled until the first submit, then onUserInteraction.
 
@@ -837,8 +838,8 @@ Every row below must behave exactly as stated; each is already implied by Sectio
 |-----|----------------------------------------------------------------------|----------------------------------------------------------------------------|
 | C1  | All valid, new email                                                 | 201; home shows Welcome, {name}; Profile Saved dialog                      |
 | C2  | Phone left empty                                                     | Accepted; stored phone: null; profile shows Not provided                   |
-| C3  | Name/City length 1 or 51 after normalization                         | Inline error; no request sent                                              |
-| C4  | Name/City length exactly 2 or 50                                     | Accepted                                                                   |
+| C3  | Name length 1 or 51 after normalization; no city chosen (§13 D9)     | Inline error; no request sent                                              |
+| C4  | Name length exactly 2 or 50                                          | Accepted                                                                   |
 | C5  | Name Harpreet Kaur                                                   | Stored as Harpreet Kaur                                                    |
 | C6  | Name in Gurmukhi (e.g. ਹਰਪ੍ਰੀਤ)                                       | Accepted                                                                   |
 | C7  | Phone in any format, with or without a country code (§13 D2)         | Accepted; stored normalised                                                |
@@ -1048,7 +1049,7 @@ Anything not listed in Sections 1–11 is out of scope. Specifically:
 
 ### 13.1 Amendments to the PRD
 
-Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7 was decided on 2026-10-07. Each one is applied in the PRD text above where it says *(Amended)*.
+Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7, D9 and D10 were decided on 2026-10-07, the last two with the Simran spec. Each one is applied in the PRD text above where it says *(Amended)*.
 
 | # | Topic | PRD said | Decision |
 |---|---|---|---|
@@ -1060,6 +1061,8 @@ Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7 was decided o
 | D6 | App Link fingerprints | Debug, upload and Play signing SHA-256 | **Release fingerprint only.** CI keeps no debug keystore, so there is no stable debug fingerprint; a debug install gets no App Link and a tapped link opens a browser. |
 | D7 | Launch mode | `singleTop` | **Keep `singleTask`** (decided 2026-10-07), as the app ships it and `test/android/manifest_test.dart` holds it, with the default `taskAffinity` (13.6). A tapped mail link then returns to the running app instead of stacking a new copy on top of it. |
 | D8 | Restore | Profile only; no non-profile data (§12) | **Restore brings back goals and diary entries** (completions and simran sittings) as well as the profile. |
+| D9 | City | Free text, 2–50 letters | **Chosen from the app's city list** and stored as `cityId`, because the Simran globe needs its position and state (`07-simran.md` §5). Mandatory at creation. It changes only when the profile is updated, which today means never: §12 has no profile editing beyond the email. The request and the DTO carry `cityId` where the PRD says `city`. Somebody whose city is not on the list picks the nearest (open: `07-simran.md` S-10). |
+| D10 | Attendance | Not in the PRD | **`lastSeenDay`** on the profile, set once a day by `POST /api/v1/presence/attendance` (`07-simran.md` §6.1). That write does not change `updatedAt`, so a daily visit is not mistaken for a profile change. |
 
 ### 13.2 What D8 needs
 
