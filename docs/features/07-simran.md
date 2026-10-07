@@ -2,9 +2,7 @@
 
 Rewritten 2026-10-07 with Puneet Singh Nanda. It replaces the earlier version
 of this file entirely, including its "sitting now" heartbeat and "sat today"
-counts. Every decision in Section 11 was confirmed by the owner on 2026-10-07
-except S-9 and S-10, which are open; per §0.3, stop and ask before building a
-part that rests on an open one.
+counts. Every decision in Section 11 was confirmed by the owner on 2026-10-07.
 
 ## 0. Implementation directive (mandatory, read first)
 
@@ -14,7 +12,7 @@ part that rests on an open one.
 4. **A sitting never needs the network.** Attendance and the globe are extras: when the server cannot be reached the sitting runs, is logged and marks hazri exactly as offline (`04-goals.md` §4.4).
 5. **Server access follows the Profile PRD**: every call goes through the `api` Cloud Function under `/api/v1` with the anonymous ID token (`01-accounts.md` §6.0); Firestore rules deny all client access.
 6. **No person is identifiable from the globe.** Nothing finer than a city from the app's own list, and no uid, name or count of one that could single somebody out beyond what a city total already shows.
-7. **Strings are localised** in `pa`, `hi` and `en`; the implementer writes `pa` and `hi` and the owner verifies them (`01-accounts.md` §13.8).
+7. **Strings are localised** in `pa`, `hi` and `en`; the implementer writes `pa` and `hi` and the owner verifies them (`01-accounts.md` §13.9).
 8. **Done means tested.** Section 10 passes, `flutter analyze` is clean and `flutter test` passes.
 
 ## 1. Overview and requirement traceability
@@ -37,8 +35,8 @@ The Simran screen runs a sitting of Naam Simran and shows a globe of the sangat.
 
 | Term | Meaning |
 | --- | --- |
-| User | A profile (`01-accounts.md` §4.1). An install without a profile has no city and is not on the globe (S-9). |
-| City | The profile's city, chosen from the app's city list when the profile is created (`01-accounts.md` §13 D9). It is static: it changes only when the profile is updated. |
+| User | A profile (`01-accounts.md` §4.1). An install without a profile has no city: it sees the globe but is not on it and is not counted (S-9). |
+| City | The profile's city, chosen from the app's city list when the profile is created (`01-accounts.md` §13 D9). It changes only when the person edits their profile (§13 D11 there). |
 | Day | The calendar day in India Standard Time (UTC+05:30), the same for every user, so the whole globe resets at one moment. `dayIst` = `YYYY-MM-DD`. |
 | Attendance | The call in 6.1, made once on the first app open of a day (4.2) |
 | Live | A user whose last attendance was on today's `dayIst` |
@@ -82,7 +80,7 @@ Each counted user is drawn exactly once:
 - **AT2. Only with a profile.** The call is made only in `ProfileLoaded` (`01-accounts.md` §8.3). A profile created later in the day marks attendance at once.
 - **AT3. Nothing is sent.** The body is empty. The server finds the profile from the uid (`owners/{uid}`), takes the day from its own clock, and never receives a city: the city is already on the profile.
 - **AT4. Fire and forget.** A failed call leaves the local flag unset, so it is retried at the next start or resume that day. It is never shown and never blocks a screen.
-- **AT5. City.** The city is set when the profile is created and changes only when the profile is updated (`01-accounts.md` §13 D9). Attendance never sends or changes it.
+- **AT5. City.** The city is set when the profile is created and changes only through Edit profile (`01-accounts.md` §13 D11). Attendance never sends or changes it; the next snapshot shows the person in their new city.
 
 ### 4.3 Fetching the globe
 
@@ -92,11 +90,17 @@ Each counted user is drawn exactly once:
 
 ### 4.4 Drawing
 
-- **DR1. Your dot** is orange and blinks with period `YOU_BLINK_PERIOD_MS` on your profile city's `lat`/`lon` from `content.db`. It is drawn from the cached profile on the phone, so it shows even offline. Without a profile there is no orange dot (S-9). With reduced motion on, it does not blink.
+- **DR1. Your dot** is orange and blinks with period `YOU_BLINK_PERIOD_MS` on your profile city's `lat`/`lon` from `content.db`. It is drawn from the cached profile on the phone, so it shows even offline. Without a profile there is no orange dot (NP1). With reduced motion on, it does not blink.
 - **DR2. Live and Here today** are drawn per city from the snapshot, with the counts of 2.1. A count of 0 draws nothing.
 - **DR3. Three dots in one city** sit side by side so none hides another: Here today 1.5 radii west of the city's point, Live 1.5 radii east, and You on the point itself, drawn last.
 - **DR4. Legend:** `simranLegendYou` (orange), `simranLegendLive` (green), `simranLegendHere` (blue), in that order.
 - **DR5. Presence line:** `globeLiveCount` with the snapshot's total `live`.
+
+### 4.4a Without a profile
+
+- **NP1.** Somebody without a profile sees the globe exactly as everybody else does: the snapshot is fetched (4.3) and every green and blue dot drawn, with nobody taken off for themselves, because they are not counted.
+- **NP2.** There is no orange dot and no attendance call.
+- **NP3.** A banner under the legend reads `globeProfileBanner`. Tapping it opens Profile Setup (`01-accounts.md` §8.5). It is not dismissible, and it goes as soon as a profile exists, at which point the orange dot appears and attendance is marked (AT2).
 
 ### 4.5 Dot size
 
@@ -211,6 +215,7 @@ Unchanged layout (0.2). The legend shows the three entries of DR4; the presence 
 | `globeLiveCount` | {count} live today |
 | `globeStale` | Last updated {time} |
 | `globeOffline` | Can't reach the sangat right now |
+| `globeProfileBanner` | Create your profile to see yourself on the globe |
 
 ## 9. Scenarios
 
@@ -221,7 +226,8 @@ Unchanged layout (0.2). The legend shows the three entries of DR4; the presence 
 | G-3 | Profile in Delhi, first open of the day | App starts | One attendance call; the profile's `lastSeenDay` is today; the local flag is set |
 | G-4 | Attendance already marked today | App resumed five times | No further calls |
 | G-5 | Attendance call failed this morning | App resumed in the afternoon | Called again, because the flag was never set |
-| G-6 | No profile | App starts | No attendance call; no orange dot |
+| G-6 | No profile | Simran opens | Other users' green and blue dots, uncorrected for self; no orange dot; `globeProfileBanner` shown; no attendance call |
+| G-6a | No profile, banner shown | Profile created | Banner gone; orange dot on the chosen city; attendance marked |
 | G-7 | 1,000 profiles, 500 marked today including you | Simran opens | 1 orange, 499 green, 500 blue across their cities |
 | G-8 | Delhi: 40 profiles, 25 marked today; you are in Amritsar | Simran opens | Delhi shows green 25 and blue 15 |
 | G-9 | Delhi: 40 profiles, 25 marked today; you are in Delhi and marked | Simran opens | Delhi shows orange, green 24 and blue 15 |
@@ -256,8 +262,8 @@ Unchanged layout (0.2). The legend shows the three entries of DR4; the presence 
 | S-6 | Is the city sent daily? | **Decided 2026-10-07:** no. The city is set when the profile is created and changes only when the profile is updated. The daily call marks attendance only, once, with a local flag (4.2). |
 | S-7 | Settings simran length | **Decided 2026-10-07:** removed |
 | S-8 | Old "sitting now" and "sat today" | **Decided 2026-10-07:** removed |
-| S-9 | Somebody without a profile has no city. Are they off the globe, with no orange dot of their own? | **Open.** Default above: yes, off the globe and not counted |
-| S-10 | The profile's city must come from the app's list of 92 cities, because the globe needs its position and state. Somebody whose city is not on it picks the nearest. Is that acceptable, and who extends the list? | **Open.** Default above: nearest city from the list (`01-accounts.md` §13 D9) |
+| S-9 | Somebody without a profile | **Decided 2026-10-07:** sees everybody else on the globe, has no orange dot, is not counted, and gets a banner to create a profile (4.4a) |
+| S-10 | The profile's city comes from the app's list of 92 cities | **Decided 2026-10-07:** yes; somebody whose city is not on it picks the nearest. Cities are added through `tools/content_pipeline/cities.json`. |
 
 ## 12. Out of scope
 

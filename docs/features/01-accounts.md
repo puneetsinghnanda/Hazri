@@ -5,7 +5,7 @@ the owner's PRD, *Feature Document: User Profile — Hazri (Nitnem app)*, dated
 28 Sep 2026, converted from the Word document word for word, **with the
 owner's amendments of 2026-10-05 and 2026-10-07 applied in place**. Each
 amended passage carries a note pointing to **Section 13**, which records every
-amendment (D1–D10), the other decisions taken alongside the PRD, and what is
+amendment (D1–D11), the other decisions taken alongside the PRD, and what is
 still open. Where Section 13 and the PRD text disagree, Section 13 wins.
 
 The earlier version of this file is in git history (`git show cc1c967:docs/features/01-accounts.md`). It
@@ -23,7 +23,7 @@ This document is the single source of truth. The implementing AI (Claude Code) m
 
 1.  **No inference.** Every behaviour, field, endpoint, status code, UI string, validation rule, timeout and file path must come from this document. Do not add, rename, merge or "improve" anything.
 
-2.  **No extra features.** Do not add login, profile editing (other than the email change in 6.6), profile deletion, analytics, iOS support, theming, or any feature not listed. Section 12 lists what is out of scope. *(Amended: localisation is required, §13 D1.)*
+2.  **No extra features.** Do not add login, profile editing (other than Edit profile, §13 D11), profile deletion, analytics, iOS support, theming, or any feature not listed. Section 12 lists what is out of scope. *(Amended: localisation is required, §13 D1.)*
 
 3.  **Exact strings.** UI copy, email text, error codes and JSON keys must be used character-for-character as written.
 
@@ -726,7 +726,9 @@ Calls refresh() (GET /profile) in initState and again every time a route pushed 
 
 - ProfileUnavailable → text Couldn't load your profile. with buttons Retry (→ refresh()) and Set up profile (→ /profile-setup).
 
-**Change email (Req 10):** when ProfileLoaded and emailVerified == false, show a TextButton labelled Change email directly under the Email row. It opens the Change Email dialog (8.11). Hidden when the email is verified.
+**Change email (Req 10):** when ProfileLoaded and emailVerified == false, show a TextButton labelled Change email directly under the Email row. It opens the Change Email dialog (8.11). Hidden when the email is verified. *(Amended: a verified email is changed through Edit profile, §13 D11.)*
+
+**Edit profile** *(added, §13 D11)*: when ProfileLoaded, a button `profileEditButton` opens the Edit Profile screen (§13.8).
 
 ### 8.8 Email Exists dialog and restore request (Req 8)
 
@@ -1029,7 +1031,7 @@ Anything not listed in Sections 1–11 is out of scope. Specifically:
 
 - Login, sign-up, passwords, Google/phone sign-in, or linking the anonymous account to another provider.
 
-- Editing a profile other than the email change in 6.6; deleting or exporting a profile; changing an email that is already verified.
+- Editing the phone number; deleting or exporting a profile. *(Amended: name, email and city can be edited, §13 D11.)*
 
 - Phone number verification (OTP).
 
@@ -1049,7 +1051,7 @@ Anything not listed in Sections 1–11 is out of scope. Specifically:
 
 ### 13.1 Amendments to the PRD
 
-Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7, D9 and D10 were decided on 2026-10-07, the last two with the Simran spec. Each one is applied in the PRD text above where it says *(Amended)*.
+Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7, D9, D10 and D11 were decided on 2026-10-07, D9 and D10 with the Simran spec. Each one is applied in the PRD text above where it says *(Amended)*.
 
 | # | Topic | PRD said | Decision |
 |---|---|---|---|
@@ -1061,8 +1063,9 @@ Decided by the owner on 2026-10-05 and confirmed on 2026-10-07; D7, D9 and D10 w
 | D6 | App Link fingerprints | Debug, upload and Play signing SHA-256 | **Release fingerprint only.** CI keeps no debug keystore, so there is no stable debug fingerprint; a debug install gets no App Link and a tapped link opens a browser. |
 | D7 | Launch mode | `singleTop` | **Keep `singleTask`** (decided 2026-10-07), as the app ships it and `test/android/manifest_test.dart` holds it, with the default `taskAffinity` (13.6). A tapped mail link then returns to the running app instead of stacking a new copy on top of it. |
 | D8 | Restore | Profile only; no non-profile data (§12) | **Restore brings back goals and diary entries** (completions and simran sittings) as well as the profile. |
-| D9 | City | Free text, 2–50 letters | **Chosen from the app's city list** and stored as `cityId`, because the Simran globe needs its position and state (`07-simran.md` §5). Mandatory at creation. It changes only when the profile is updated, which today means never: §12 has no profile editing beyond the email. The request and the DTO carry `cityId` where the PRD says `city`. Somebody whose city is not on the list picks the nearest (open: `07-simran.md` S-10). |
+| D9 | City | Free text, 2–50 letters | **Chosen from the app's city list** and stored as `cityId`, because the Simran globe needs its position and state (`07-simran.md` §5). Mandatory at creation. It changes only through Edit profile (D11). The request and the DTO carry `cityId` where the PRD says `city`. Somebody whose city is not on the list picks the nearest; cities are added through `tools/content_pipeline/cities.json` (`07-simran.md` S-10). |
 | D10 | Attendance | Not in the PRD | **`lastSeenDay`** on the profile, set once a day by `POST /api/v1/presence/attendance` (`07-simran.md` §6.1). That write does not change `updatedAt`, so a daily visit is not mistaken for a profile change. |
+| D11 | Editing | Only an unverified email (6.6); everything else out of scope (§12) | **Edit profile: name, email and city.** The phone number is not editable. See 13.8. |
 
 ### 13.2 What D8 needs
 
@@ -1139,11 +1142,50 @@ A-1 it has no task to match against, and the affinity is the missing line.
 | **Firebase Analytics** | **Do not touch it.** `firebase_analytics: ^12.6.0` stays in `pubspec.yaml`, collection stays off, the inert Settings switch stays. A separate feature document will cover it. |
 | **Which parts of the app may require the network** | To be decided later. Until then, **follow the PRD**. |
 
-### 13.8 Settled on 2026-10-07
+### 13.8 Edit profile (D11)
+
+**Screen.** `/profile-edit`, opened from the Profile screen in `ProfileLoaded`. App bar `profileEditTitle`. Three fields, pre-filled: Name (validated as §5), City (the same picker as §8.5) and Email (read-only text with a `profileChangeEmail` button under it). Button `profileEditSave`, enabled only when the name or city differs from the profile.
+
+**Name and city: `PATCH /api/v1/profile`.** Request `{ "name"?: "...", "cityId"?: "..." }`.
+
+1. Validate what is present per §5 → `400 VALIDATION_ERROR` + `fields`.
+2. In one transaction: `owners/{callerUid}` missing → `404 NO_PROFILE`. Nothing differs from the stored profile → `400 NOTHING_CHANGED`. Otherwise write the changed fields and `updatedAt`.
+3. `200 { "result": "PROFILE_UPDATED", "profile": <DTO> }`. The app calls `setProfile`. A new city shows on the globe from the next snapshot (`07-simran.md` AT5).
+
+**Email.** `profileChangeEmail` opens the Change Email dialog (§8.11).
+
+- **Unverified email:** exactly §6.6, unchanged.
+- **Verified email:** the change waits for the new address to be confirmed, so a mistyped address can never take away the one that restores the profile. **(Open, E-1)**
+    1. `PATCH /api/v1/profile/email` on a verified profile no longer returns `409 EMAIL_ALREADY_VERIFIED`. It validates and quota-checks as §6.6, then reserves `emailIndex/{newEmailHash}` for this profile (`409 EMAIL_EXISTS` if taken), stores `pendingEmail` and `pendingEmailNormalized` on the profile, supersedes any older `CHANGE_EMAIL` token, and sends template 7.1-A with a token of new purpose `CHANGE_EMAIL` (TTL as `VERIFY_EMAIL`) to the new address. Response `200 { "result": "EMAIL_CHANGE_PENDING", "profile": <DTO>, "cooldownSeconds": 60 }`.
+    2. Until the link is opened, `email`, `emailVerified` and restore all stay on the old address.
+    3. `POST /api/v1/tokens/verify` with a `CHANGE_EMAIL` token: if it is still the newest and `pendingEmailNormalized` matches, set `email` and `emailNormalized` to the pending address, delete the old `emailIndex` document, clear the pending fields, keep `emailVerified` = true, set `emailVerifiedAt`, supersede every other ACTIVE token, and return `200 { "result": "EMAIL_CHANGED", "purpose": "CHANGE_EMAIL", "isOwner": ..., "profile": <DTO if owner> }`. Expired, used or replaced links behave as §6.5.
+    4. A second change request before the first is confirmed releases the first reserved `emailIndex` document and replaces the pending address.
+    5. The Profile screen shows `profileEmailPending` with the pending address under the Email row until it is confirmed.
+
+**New profile fields:** `pendingEmail` and `pendingEmailNormalized` (string, nullable, null when nothing is pending). The DTO gains `pendingEmail`.
+
+**Strings:** `profileEditButton` Edit profile · `profileEditTitle` Edit profile · `profileEditSave` Save changes · `profileChangeEmail` Change email · `profileEmailPending` Waiting for you to confirm {email} · `profileUpdated` Profile updated.
+
+**Scenarios**
+
+| # | Given | When | Then |
+| --- | --- | --- | --- |
+| P-1 | Profile in Delhi | City changed to Amritsar and saved | `PROFILE_UPDATED`; next globe snapshot counts the person in Amritsar |
+| P-2 | Profile | Name changed to one letter | Inline error; nothing sent |
+| P-3 | Profile | Save with nothing changed | Button disabled; server would return `NOTHING_CHANGED` |
+| P-4 | Unverified email | Email changed | §6.6 as before: changed at once, link to the new address |
+| P-5 | Verified email a@x | Change to b@x requested | `EMAIL_CHANGE_PENDING`; email still a@x and verified; b@x reserved; link sent to b@x |
+| P-6 | P-5 | Link opened | Email becomes b@x, verified; a@x released |
+| P-7 | P-5 | Link never opened; profile restored on a new phone | Restore goes to a@x, which still works |
+| P-8 | P-5 | Change to c@x requested before confirming | b@x released; only the c@x link works |
+| P-9 | Another profile owns b@x | Change to b@x | `409 EMAIL_EXISTS`; nothing changes |
+
+### 13.9 Settled on 2026-10-07
 
 1. **The `pa` and `hi` strings** are written by the implementer alongside the English, and the owner verifies them before release. `l10n_test.dart` is not relaxed: every key lands in all three languages at once.
 2. **The sangat PRD lands before this is built.** No implementation starts until the owner has written the technical specification of every feature (`README.md`, "The order to build in").
 
-### 13.9 Still open
+### 13.10 Still open
 
-1. **Brevo credentials** (W6). The owner will supply them. Until then: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
+1. **E-1, changing a verified email** (13.8). Default: the change waits until the new address is confirmed, and the old one keeps working for restore until then.
+2. **Brevo credentials** (W6). The owner will supply them. Until then: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
