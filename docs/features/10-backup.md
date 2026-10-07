@@ -5,8 +5,7 @@ writes `users/{uid}/diary/{day}` directly from the phone
 (`lib/features/sync/`), and it is what `01-accounts.md` §13 D8 (restore brings
 back goals and diary entries) and `04-goals.md` §6 depend on.
 
-Decisions in Section 11 not marked **Decided** have not been confirmed by the
-owner yet. Per §0.3, stop and ask before building a part that rests on one.
+Every decision in Section 11 was confirmed by the owner on 2026-10-07.
 
 ## 0. Implementation directive (mandatory, read first)
 
@@ -94,7 +93,7 @@ Once a week the app sends the server every row that changed since the last backu
 | Present, not on the server | — | Kept unchanged |
 
 - **RS4. Never touches what it did not receive.** A restore never deletes a local row, and never changes a row the server did not send. Data the phone holds for the current week, or for any day after the last backup, stays exactly as it is.
-- **RS5. One active goal.** If both the phone and the server have an active goal (`completedOn` null) and they are different goals, the phone's goal stays active. The server's goal is stored with `completedOn` = the phone goal's `startDate`, and its in-scope items get `removedOn` = the same date, so `04-goals.md` GL3 still holds and no day loses its history. **(default, B-7)**
+- **RS5. One active goal.** If both the phone and the server have an active goal (`completedOn` null) and they are different goals, the phone's goal stays active. The server's goal is stored with `completedOn` = the phone goal's `startDate`, and its in-scope items get `removedOn` = the same date, so `04-goals.md` GL3 still holds and no day loses its history. (B-7)
 - **RS6. Afterwards.** The watermark is left as it was: on a cleared phone it is empty, so the next backup sends everything, restored rows included, and the merge makes that harmless (BK9). Rows written on this phone before the restore are therefore never skipped. `closeGoalIfBlank()` runs (`04-goals.md` BG2), reminders are re-planned and the Diary and Home re-read. A restore never starts a backup on its own.
 - **RS7. Interrupted.** A restore cut off part-way keeps the pages already merged. Running it again is safe, because the merge is idempotent.
 - **RS8. Honest about the gap.** The restore screen says the copy is as of `lastBackupAt` and that anything done after it is not included (`restoreAsOf`, 8.4).
@@ -331,18 +330,18 @@ After `200 PROFILE_RESTORED` (`01-accounts.md` §8.9), the Link Result screen ad
 - [ ] Clear the app's data, restore the profile by email link, restore data: the Diary matches what it showed before.
 - [ ] The weekly job runs after the phone has been off over a Sunday.
 
-## 11. Open decisions
+## 11. Decisions
 
-| # | Question | Default used above |
+| # | Question | Decision |
 | --- | --- | --- |
-| B-1 | "Sunday 12 midnight": the night between Saturday and Sunday, phone local time? | Yes, plus up to 60 minutes of jitter |
-| B-2 | A "Back up now" button as well as the weekly run? | Yes (BK3) |
-| B-3 | Back up only when a profile exists? | Yes (BK4). Without one there is no way to restore. |
+| B-1 | "Sunday 12 midnight": the night between Saturday and Sunday, phone local time? | **Decided 2026-10-07:** Yes, plus up to 60 minutes of jitter |
+| B-2 | A "Back up now" button as well as the weekly run? | **Decided 2026-10-07:** Yes (BK3) |
+| B-3 | Back up only when a profile exists? | **Decided 2026-10-07:** Yes (BK4). Without one there is no way to restore. |
 | B-4 | Wi-Fi only, as the current diary sync's setting allows? | **Decided 2026-10-07: any network.** The Wi-Fi-only setting is removed. |
 | B-5 | What does the backup hold? | **Decided 2026-10-07:** goals and diary entries only, which live on the phone; the server copy exists only for a restore. Profile and sangat data are not copied (3.2). |
-| B-6 | Should reminders, settings or grace days be backed up? | No |
-| B-7 | Two active goals at restore | Keep the phone's; store the server's as completed (RS5) |
-| B-8 | How long are backups kept? | Indefinitely, while the profile exists |
+| B-6 | Should reminders, settings or grace days be backed up? | **Decided 2026-10-07:** No |
+| B-7 | Two active goals at restore | **Decided 2026-10-07:** Keep the phone's; store the server's as completed (RS5) |
+| B-8 | How long are backups kept? | **Decided 2026-10-07:** Indefinitely, while the profile exists |
 
 ## 12. Out of scope
 

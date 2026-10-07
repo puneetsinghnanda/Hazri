@@ -1141,4 +1141,3 @@ A-1 it has no task to match against, and the affinity is the missing line.
 1. **Where the `pa` and `hi` strings come from.** `l10n_test.dart` fails the build on a missing or untranslated key, so English-only keys cannot be committed without relaxing that test. Default: wait for the translations rather than relax it.
 2. **Brevo credentials** (W6). Default: write the sender against Brevo's API with the key read from Secret Manager, so switching it on is configuration rather than code.
 3. **Whether the sangat PRD lands before this is built.** If `users/{uid}` later grows group membership, knowing the shape now saves reshaping the document twice.
-4. **The open decisions of the weekly backup** that D8 depends on (`10-backup.md` §11).
