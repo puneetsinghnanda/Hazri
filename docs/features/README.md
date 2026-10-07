@@ -9,7 +9,7 @@ behaviour has to survive.
 | 1 | Accounts, joining and restoring | [`01-accounts.md`](01-accounts.md) |
 | 2 | Notifications | [`02-notifications.md`](02-notifications.md) |
 | 3 | First run: splash, intro, setup | [`03-first-run.md`](03-first-run.md) |
-| 4 | Goals | [`04-goals.md`](04-goals.md) |
+| 4 | Goals and hazri | [`04-goals.md`](04-goals.md) |
 | 5 | Today (the home screen) | [`05-today.md`](05-today.md) |
 | 6 | Nitnem and the reader | [`06-nitnem.md`](06-nitnem.md) |
 | 7 | Simran and the globe | [`07-simran.md`](07-simran.md) |
