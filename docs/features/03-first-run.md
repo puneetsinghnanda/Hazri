@@ -61,7 +61,7 @@ is ever held in front of anybody for a fixed time.
 
 **F2. Three questions, then the app.**
 
-- **Welcome:** one screen, the app mark and three lines saying what hazri means and what the app is for. One button, **Begin**. No carousel, no dots, no swipe.
+- **Welcome** (owner, 2026-10-08: option D, "a day with Hazri"): one screen. The app mark and name; the headline `welcomeTitleLead` with `welcomeTitleWord` ("Waheguru") in kesri; then one day as a timeline of five cards, which is how the app's features are introduced: the 04:00 Amrit Vela reminder, the hazri marked, the daily goal, the sangat group, the streak in the diary. The timeline is a fixed illustration, the same on every phone, never the reader's own data. One button, **Begin**. No carousel, no dots, no swipe.
 - **Language:** ਪੰਜਾਬੀ / हिन्दी / English. Applies the moment it is tapped, which is also the demonstration.
 - **How you read:** script and text size, shown against a real line of Gurbani from `content.db`. Elder mode is offered here as one obvious option ("Larger text and simpler screens").
 
@@ -72,10 +72,27 @@ Drawn as designs 91 (Android's splash), 92 (Welcome), 93 (Language) and 94
 
 | Key | English |
 | --- | --- |
-| `welcomeLine1` | Hazri means being present. Each day you turn up, it is marked. |
-| `welcomeLine2` | Read or listen to your Nitnem, with the line you are on lit. |
-| `welcomeLine3` | One paath, or five minutes of Simran, marks your hazri. |
+| `welcomeTitleLead` | From Amrit Vela to bedtime, mark your hazri to |
+| `welcomeTitleWord` | Waheguru. |
+| `welcomeAmritVelaTime` | 4:00 AM |
+| `welcomeAmritVela` | Amrit Vela |
+| `welcomeAmritVelaSub` | A gentle reminder, Japji Sahib is ready |
+| `welcomeHazriTime` | 5:10 AM |
+| `welcomeHazriSub` | With Japji Sahib (title: the existing "Today's hazri is marked") |
+| `welcomeGoalTime` | 6:30 PM |
+| `welcomeGoal` | Daily goal · 1 of 2 done |
+| `welcomeGoalSub` | Japji Sahib, and 11 minutes of Simran |
+| `welcomeSangatTime` | 9:00 PM |
+| `welcomeSangat` | Your sangat group |
+| `welcomeSangatSub` | 68 of 101 Sukhmani Sahib, together |
+| `welcomeStreakTime` | Night |
+| `welcomeStreak` | 12 days in a row |
+| `welcomeStreakSub` | Kept in your diary |
 | `welcomeBegin` | Begin |
+
+Times in the timeline are formatted for the reader's language and are part
+of the illustration, not read from the clock. Bani names come from
+`content.db` like everywhere else.
 | `setupLanguageNote` | You can change it any time in Settings. |
 | `elderModeSetup` | Larger text and simpler screens |
 

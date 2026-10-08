@@ -2465,26 +2465,54 @@ def system_splash() -> str:
 
 
 def welcome() -> str:
-    """Welcome (03-first-run.md F2): what hazri means, in three lines, and Begin."""
-    lines = "".join(
-        f'<div class="row" style="gap:12px;align-items:flex-start">'
-        f'<div style="width:30px;height:30px;border-radius:15px;flex:none;background:var(--kesriSoft);'
-        f'color:var(--kesriInk);display:flex;align-items:center;justify-content:center">'
-        f'{icon(ic, 16)}</div><div style="font-size:15.5px;line-height:1.45;color:var(--ink2);'
-        f'padding-top:3px">{t}</div></div>'
-        for ic, t in [("check", "Hazri means being present. Each day you turn up, it is marked."),
-                      ("nitnem", "Read or listen to your Nitnem, with the line you are on lit."),
-                      ("simran", "One paath, or five minutes of Simran, marks your hazri.")])
+    """Welcome (03-first-run.md F2), option D chosen 2026-10-08: a day with Hazri.
+
+    One screen. The headline names Waheguru; under it, one day as a timeline
+    -- the 04:00 reminder, the hazri marked, the daily goal, the sangat group,
+    the streak -- so the features are shown in the order somebody meets them.
+    The figures are an illustration, the same on every phone, not the
+    reader's own: nobody has a day yet when they see this.
+    """
+    card = ("position:relative;display:flex;align-items:center;gap:10px;padding:11px 13px;"
+            "border-radius:16px;background:var(--card);box-shadow:var(--shadow)")
+    def when(t, top=""):
+        return (f'<div style="position:absolute;left:-72px;{top}width:50px;text-align:right;white-space:nowrap;'
+                f'font-size:12px;font-weight:700;color:var(--muted)">{t}</div>'
+                f'<div style="position:absolute;left:-17px;{top.replace("13px", "18px")}width:10px;'
+                f'height:10px;border-radius:5px;background:var(--kesri);box-shadow:0 0 0 3px var(--bg)"></div>')
+    def text(title, sub, sub_colour="var(--muted)"):
+        return (f'<div class="col" style="flex:1"><div style="font-size:14px;font-weight:700">{title}</div>'
+                f'<div style="font-size:12.5px;color:{sub_colour}">{sub}</div></div>')
+    bar = ('<div style="height:6px;border-radius:3px;background:var(--rule)">'
+           '<div style="width:67%;height:6px;border-radius:3px;background:var(--kesri)"></div></div>')
+    streak = ('<div class="row" style="gap:4px">' + "".join(
+        '<div style="width:9px;height:9px;border-radius:5px;background:var(--kesri)"></div>'
+        for _ in range(5)) + '</div>')
     return f"""
-<div class="col" style="height:100%;padding:40px 24px 30px">
-  <div class="col" style="gap:10px;margin-top:62px">
-    {app_mark(72)}
-    <div class="disp" style="font-size:44px;font-weight:700;line-height:1.05;margin-top:6px">Hazri</div>
-    <div class="row" style="gap:12px;align-items:baseline;color:var(--ink2)">
-      <div class="gur" style="font-size:20px;font-weight:600">ਹਾਜ਼ਰੀ</div>
-      <div class="dev" style="font-size:20px;font-weight:600">हाज़री</div></div>
+<div class="col" style="height:100%;padding:48px 22px 30px">
+  <div class="row" style="gap:9px">{app_mark(34)}
+    <div class="disp" style="font-size:23px;font-weight:700;line-height:1">Hazri</div></div>
+  <div class="disp" style="margin-top:22px;font-size:29px;line-height:1.15;font-weight:700">
+    From Amrit Vela to bedtime, mark your hazri to
+    <span style="color:var(--kesri)">Waheguru</span>.</div>
+  <div class="col" style="position:relative;gap:12px;margin-top:24px;padding-left:70px">
+    <div style="position:absolute;left:57px;top:14px;bottom:14px;width:2px;background:var(--kesriSoft)"></div>
+    <div style="{card}">{when("4:00 AM")}
+      <div style="color:var(--primary)">{icon("bell", 19)}</div>
+      {text("Amrit Vela", "A gentle reminder, Japji Sahib is ready")}</div>
+    <div style="{card};background:linear-gradient(135deg,var(--kesri),#B8560A);color:#fff">{when("5:10 AM")}
+      {app_mark(22, "#fff", "#fff")}
+      {text("Today’s hazri is marked", "With Japji Sahib", "rgba(255,255,255,.92)")}</div>
+    <div style="{card}">{when("6:30 PM")}
+      {ring(0.5, 26, 5)}
+      {text("Daily goal · 1 of 2 done", "Japji Sahib, and 11 minutes of Simran")}</div>
+    <div style="{card};flex-direction:column;align-items:stretch;gap:7px">{when("9:00 PM", "top:13px;")}
+      <div class="row" style="gap:10px"><div style="color:var(--primary)">{icon("sangat", 19)}</div>
+        {text("Your sangat group", "68 of 101 Sukhmani Sahib, together")}</div>
+      {bar}</div>
+    <div style="{card}">{when("Night")}
+      {text("12 days in a row", "Kept in your diary")}{streak}</div>
   </div>
-  <div class="col" style="gap:16px;margin-top:34px">{lines}</div>
   <div style="flex:1"></div>
   <div style="margin-bottom:14px">{PROMISES}</div>
   <div class="btn" style="background:var(--primary);color:var(--onPrimary)">Begin</div>
