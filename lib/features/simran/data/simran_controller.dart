@@ -9,6 +9,10 @@ import '../../../core/db/user_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../audio/data/audio_controller.dart';
 import '../data/presence_repository.dart';
+import '../../../core/db/user_db.dart' show SittingSource;
+import '../../goals/data/goals_controller.dart';
+import '../../goals/domain/goal_constants.dart';
+import '../../reminders/data/reminders_controller.dart';
 
 /// A Simran session in progress (PRD 1.13).
 class SimranSession {
@@ -73,11 +77,11 @@ class SimranController extends Notifier<SimranSession> {
   Timer? _ticker;
   bool _logged = false;
 
-  /// The length a fresh sitting would be, when nothing has asked for one.
-  ///
-  /// A sitting that is already open carries its own length on the session.
-  Duration get defaultTotal =>
-      Duration(minutes: ref.read(settingsProvider).simranMinutes);
+  /// The length a fresh sitting would be: the in-scope simran item's
+  /// minutes, or five (04-goals HZ4). A sitting that is already open carries
+  /// its own length on the session.
+  Duration get defaultTotal => Duration(
+      minutes: ref.read(simranGoalMinutesProvider) ?? GoalConstants.simranDefaultMinutes);
 
   @override
   SimranSession build() {
@@ -99,6 +103,8 @@ class SimranController extends Notifier<SimranSession> {
       active: true,
     );
     unawaited(WakelockPlus.enable());
+    // CM5: nothing fires before the sitting ends.
+    ref.read(reminderSchedulerProvider).setQuietUntil(DateTime.now().add(state.total));
     // Before the audio, not after it. Loading a five-minute recitation and
     // bringing up the media session takes fifteen or twenty seconds on a
     // real phone, and the ticker used to be created at the end of all that:
@@ -189,11 +195,12 @@ class SimranController extends Notifier<SimranSession> {
     final capped = elapsed > total ? total : elapsed;
     state = SimranSession(justCompleted: completed);
 
-    await ref.read(userRepositoryProvider).logSimran(
+    await ref.read(userRepositoryProvider).logSitting(
           duration: capped,
-          count: 0,
           completed: completed,
+          source: SittingSource.timer,
         );
+    ref.read(reminderSchedulerProvider).setQuietUntil(null);
     await ref.read(paathPlayerProvider)?.stop();
     // The globe counts sittings that happened, not screens that were opened,
     // so this is here and not in `start`. It is also the only thing simran

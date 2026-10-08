@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/diary/domain/streak.dart';
-import '../../features/goals/domain/goal_progress.dart';
+import '../../features/goals/domain/day_verdict.dart';
 import '../time/clock.dart';
 import 'user_db.dart';
 
@@ -17,56 +19,105 @@ final userRepositoryProvider = Provider<UserRepository>(
   (ref) => UserRepository(ref.watch(userDbProvider), ref.watch(clockProvider)),
 );
 
-/// One day's worth of diary marks.
-class DiaryDay {
-  DiaryDay({
-    required this.date,
-    required this.slots,
-    required this.isGrace,
-    required this.simran,
-    this.goals = GoalDay.none,
+/// What a new goal item asks for (04-goals §5.3, design 47).
+@immutable
+class GoalItemSpec {
+  const GoalItemSpec({
+    required this.itemType,
+    this.baniId,
+    this.timesPerDay = 1,
+    this.simranMinutes,
+    this.durationType = DurationType.everyDay,
+    this.durationDays,
+    this.untilDate,
+    this.reminderTime,
   });
 
-  final DateTime date;
-  final Set<BaniSlotValue> slots;
-  final bool isGrace;
-  final bool simran;
+  const GoalItemSpec.bani(
+    String this.baniId, {
+    this.timesPerDay = 1,
+    this.durationType = DurationType.everyDay,
+    this.durationDays,
+    this.untilDate,
+    this.reminderTime,
+  })  : itemType = ItemType.bani,
+        simranMinutes = null;
 
-  /// What the day's goals came to: how many it asked for, how many were met.
-  ///
-  /// The count matters as much as the verdict. A day with no goals is not a
-  /// day anybody failed, so the diary draws one dot on it rather than a grey
-  /// second one — the difference between "nothing was asked" and "something
-  /// was asked and missed".
-  final GoalDay goals;
+  const GoalItemSpec.simran(
+    int this.simranMinutes, {
+    this.durationType = DurationType.everyDay,
+    this.durationDays,
+    this.untilDate,
+    this.reminderTime,
+  })  : itemType = ItemType.simran,
+        baniId = null,
+        timesPerDay = 1;
 
-  /// Whether the day had goals at all. The diary's second dot exists only
-  /// when this is true.
-  bool get hasGoals => goals.hasGoals;
+  final ItemType itemType;
+  final String? baniId;
+  final int timesPerDay;
+  final int? simranMinutes;
+  final DurationType durationType;
+  final int? durationDays;
 
-  /// Every goal the day asked for was met on it. The second dot, lit.
-  bool get goalsMet => goals.allMet;
+  /// `YYYY-MM-DD`, for [DurationType.untilDate].
+  final String? untilDate;
 
-  bool get isNitnemDay => slots.isNotEmpty;
-
-  /// Whether somebody turned up at all: one paath, or one sitting of simran.
-  ///
-  /// The diary's first dot. It is deliberately a lower bar than [goalsMet] —
-  /// hazri is being present, not finishing the list.
-  bool get hazri => slots.isNotEmpty || simran;
+  /// `HH:mm`, or null for no reminder.
+  final String? reminderTime;
 }
 
-/// Everything written to `user.db`: progress, completions, goals, Simran,
-/// reminders and grace days.
+/// A day's live rows, which [verdictOn] judges.
+@immutable
+class DayRows {
+  const DayRows({
+    required this.day,
+    required this.items,
+    required this.completions,
+    required this.sittings,
+  });
+
+  final String day;
+
+  /// Every goal item ever made; [verdictOn] picks those in scope.
+  final List<GoalItem> items;
+  final List<Completion> completions;
+  final List<SimranSession> sittings;
+
+  DayVerdict get verdict => verdictOn(day, items, completions, sittings);
+
+  List<GoalItem> get itemsInScope => [for (final i in items) if (inScope(i, day)) i];
+}
+
+/// Thrown by the goal operations when a rule refuses the change.
+class GoalRuleException implements Exception {
+  const GoalRuleException(this.rule);
+
+  /// The rule that refused it, e.g. `GI6` for an end date in the past.
+  final String rule;
+
+  @override
+  String toString() => 'GoalRuleException($rule)';
+}
+
+/// Everything written to `user.db`: reading position, completions, sittings,
+/// goals, grace days and the calendar's per-event bells.
+///
+/// Every write runs in one transaction and sets `updatedAt` (04-goals §5.7).
+/// [onChanged] is called after each write that can change what a reminder
+/// should say, so the notification plan follows (RM3).
 class UserRepository {
   UserRepository(this._db, this._clock);
 
   final UserDb _db;
   final Clock _clock;
 
+  /// Re-plans notifications. Set by the scheduler at start-up.
+  VoidCallback? onChanged;
+
   static final _rand = math.Random.secure();
 
-  /// A UUID v4, so rows stay merge-safe if sync is added later (PRD §17.1).
+  /// A UUID v4, so rows stay merge-safe for the backup (04-goals §5.1).
   static String newId() {
     final b = List<int>.generate(16, (_) => _rand.nextInt(256));
     b[6] = (b[6] & 0x0f) | 0x40;
@@ -76,6 +127,11 @@ class UserRepository {
     return '${h(0, 4)}-${h(4, 6)}-${h(6, 8)}-${h(8, 10)}-${h(10, 16)}';
   }
 
+  DateTime get _nowUtc => _clock.now().toUtc();
+  String get _today => localDateKey(_clock.today());
+
+  void _changed() => onChanged?.call();
+
   // ---------------------------------------------------------------- progress
 
   Future<ReadingProgressData?> progressFor(String baniVersionId) =>
@@ -83,7 +139,8 @@ class UserRepository {
             ..where((p) => p.baniVersionId.equals(baniVersionId)))
           .getSingleOrNull();
 
-  Stream<List<ReadingProgressData>> watchAllProgress() => _db.select(_db.readingProgress).watch();
+  Stream<List<ReadingProgressData>> watchAllProgress() =>
+      _db.select(_db.readingProgress).watch();
 
   Future<void> saveProgress(String baniVersionId, int lineIdx, {int audioPosMs = 0}) =>
       _db.into(_db.readingProgress).insertOnConflictUpdate(
@@ -91,184 +148,463 @@ class UserRepository {
               baniVersionId: baniVersionId,
               lineIdx: Value(lineIdx),
               audioPosMs: Value(audioPosMs),
-              updatedAt: DateTime.now().toUtc(),
+              updatedAt: _nowUtc,
             ),
           );
 
   Future<void> clearProgress(String baniVersionId) =>
-      (_db.delete(_db.readingProgress)..where((p) => p.baniVersionId.equals(baniVersionId))).go();
+      (_db.delete(_db.readingProgress)..where((p) => p.baniVersionId.equals(baniVersionId)))
+          .go();
 
   // ------------------------------------------------------------- completions
 
-  Stream<List<Completion>> watchCompletions() => _db.select(_db.completions).watch();
+  /// Every live completion, for the badge and streak counts.
+  Future<List<Completion>> allCompletions() =>
+      (_db.select(_db.completions)..where((c) => c.deletedAt.isNull())).get();
+
+  Stream<List<Completion>> watchCompletions() =>
+      (_db.select(_db.completions)..where((c) => c.deletedAt.isNull())).watch();
 
   Stream<List<Completion>> watchCompletionsOn(DateTime date) {
     final key = localDateKey(date);
-    return (_db.select(_db.completions)..where((c) => c.localDate.equals(key))).watch();
+    return (_db.select(_db.completions)
+          ..where((c) => c.localDate.equals(key) & c.deletedAt.isNull())
+          ..orderBy([(c) => OrderingTerm(expression: c.completedAt)]))
+        .watch();
   }
 
   Future<List<Completion>> completionsOn(DateTime date) {
     final key = localDateKey(date);
-    return (_db.select(_db.completions)..where((c) => c.localDate.equals(key))).get();
+    return (_db.select(_db.completions)
+          ..where((c) => c.localDate.equals(key) & c.deletedAt.isNull())
+          ..orderBy([(c) => OrderingTerm(expression: c.completedAt)]))
+        .get();
   }
 
-  /// Records that a bani was finished.
+  /// Records one recitation (CR1–CR3). Every paath is its own row (CR5); the
+  /// reader and the player make sure one opening logs at most one (CR2).
   ///
-  /// The diary holds one completion per bani per slot per day, so a repeat
-  /// paath on the same day updates rather than duplicates -- extra paaths
-  /// still count towards goals, which are ticked separately.
-  Future<void> logCompletion({
+  /// The caller is `completeBani` (06-nitnem B1) or the Diary's +, and
+  /// nothing else.
+  Future<Completion> logCompletion({
     required String baniId,
     required BaniSlotValue slot,
     required CompletionSource source,
     DateTime? on,
   }) async {
-    final date = on ?? _clock.today();
-    final key = localDateKey(date);
-    final existing = await (_db.select(_db.completions)
-          ..where((c) =>
-              c.localDate.equals(key) & c.baniId.equals(baniId) & c.slot.equalsValue(slot)))
-        .getSingleOrNull();
-    if (existing != null) return;
-    await _db.into(_db.completions).insert(
-          CompletionsCompanion.insert(
-            id: newId(),
-            localDate: key,
-            baniId: baniId,
-            slot: slot,
-            source: source,
-            completedAt: DateTime.now().toUtc(),
-          ),
-        );
+    final now = _nowUtc;
+    final row = CompletionsCompanion.insert(
+      id: newId(),
+      localDate: localDateKey(on ?? _clock.today()),
+      baniId: baniId,
+      slot: slot,
+      source: source,
+      completedAt: now,
+      updatedAt: now,
+    );
+    final saved = await _db.into(_db.completions).insertReturning(row);
+    _changed();
+    return saved;
   }
 
-  Future<void> removeCompletion({
-    required String baniId,
-    required BaniSlotValue slot,
-    required DateTime on,
-  }) {
-    final key = localDateKey(on);
-    return (_db.delete(_db.completions)
+  /// Diary −: soft-deletes the newest live completion of [baniId] on [day],
+  /// whatever its source (CR3). Returns it, or null when there was none.
+  Future<Completion?> undoLatestCompletion(String baniId, DateTime day) async {
+    final key = localDateKey(day);
+    final row = await (_db.select(_db.completions)
           ..where((c) =>
-              c.localDate.equals(key) & c.baniId.equals(baniId) & c.slot.equalsValue(slot)))
-        .go();
+              c.localDate.equals(key) & c.baniId.equals(baniId) & c.deletedAt.isNull())
+          ..orderBy([(c) => OrderingTerm(expression: c.completedAt, mode: OrderingMode.desc)])
+          ..limit(1))
+        .getSingleOrNull();
+    if (row == null) return null;
+    final now = _nowUtc;
+    await (_db.update(_db.completions)..where((c) => c.id.equals(row.id)))
+        .write(CompletionsCompanion(deletedAt: Value(now), updatedAt: Value(now)));
+    _changed();
+    return row;
   }
 
   // ------------------------------------------------------------------ simran
 
-  Stream<List<SimranSession>> watchSimranSessions() => _db.select(_db.simranSessions).watch();
+  Stream<List<SimranSession>> watchSimranSessions() =>
+      (_db.select(_db.simranSessions)..where((s) => s.deletedAt.isNull())).watch();
 
-  /// Records a sitting, and credits a Naam Simran goal for the same day.
-  ///
-  /// The credit is here rather than at the call sites because there are
-  /// three of them -- the timer finishing, a tick in the Diary, and a restore
-  /// -- and none of them was doing it. A bani credits its goal through
-  /// `creditGoalsFor` on every path it can be completed by; simran had no
-  /// equivalent, so the day was marked as hazri and the goal beside it stayed
-  /// undone. That is the misalignment between the Diary and the goals.
-  ///
-  /// Only a completed sitting counts, which is the same bar hazri and the
-  /// Diary already use: `Hazri.from` and `diaryMonth` both filter on
-  /// `completed`. A sitting ended early marks nothing, anywhere.
-  Future<void> logSimran({
+  Future<List<SimranSession>> allSittings() =>
+      (_db.select(_db.simranSessions)..where((s) => s.deletedAt.isNull())).get();
+
+  Stream<List<SimranSession>> watchSittingsOn(DateTime date) {
+    final key = localDateKey(date);
+    return (_db.select(_db.simranSessions)
+          ..where((s) => s.localDate.equals(key) & s.deletedAt.isNull())
+          ..orderBy([(s) => OrderingTerm(expression: s.startedAt)]))
+        .watch();
+  }
+
+  /// Records one sitting with its actual length (HZ4, CR4). A sitting under
+  /// 300 s is stored and marks nothing (HZ3).
+  Future<SimranSession> logSitting({
     required Duration duration,
-    required int count,
     required bool completed,
+    required SittingSource source,
+    int count = 0,
     DateTime? on,
   }) async {
-    final day = on ?? _clock.today();
-    await _db.into(_db.simranSessions).insert(
+    final now = _nowUtc;
+    final saved = await _db.into(_db.simranSessions).insertReturning(
           SimranSessionsCompanion.insert(
             id: newId(),
-            localDate: localDateKey(day),
-            startedAt: DateTime.now().toUtc().subtract(duration),
+            localDate: localDateKey(on ?? _clock.today()),
+            startedAt: now.subtract(duration),
             durationS: duration.inSeconds,
             count: Value(count),
             completed: Value(completed),
+            source: source,
+            updatedAt: now,
           ),
         );
-    if (completed) await creditGoalsFor(kSimranGoalId, on: day);
+    _changed();
+    return saved;
   }
 
-  Future<void> removeSimranOn(DateTime date) async {
-    final key = localDateKey(date);
-    await (_db.delete(_db.simranSessions)..where((s) => s.localDate.equals(key)))
-        .go();
-    // And take back what the sitting gave, the way unticking a bani does.
-    await removeGoalCreditFor(kSimranGoalId, on: date);
+  /// Diary − for Naam Simran: soft-deletes the day's newest live sitting (CR4).
+  Future<SimranSession?> undoLatestSitting(DateTime day) async {
+    final key = localDateKey(day);
+    final row = await (_db.select(_db.simranSessions)
+          ..where((s) => s.localDate.equals(key) & s.deletedAt.isNull())
+          ..orderBy([(s) => OrderingTerm(expression: s.startedAt, mode: OrderingMode.desc)])
+          ..limit(1))
+        .getSingleOrNull();
+    if (row == null) return null;
+    final now = _nowUtc;
+    await (_db.update(_db.simranSessions)..where((s) => s.id.equals(row.id)))
+        .write(SimranSessionsCompanion(deletedAt: Value(now), updatedAt: Value(now)));
+    _changed();
+    return row;
   }
 
-  // ------------------------------------------------------------------- diary
+  // ------------------------------------------------------------------- goals
 
-  /// The diary marks for one calendar month.
-  Future<List<DiaryDay>> diaryMonth(DateTime month) async {
-    final first = DateTime(month.year, month.month, 1);
-    final last = DateTime(month.year, month.month + 1, 0);
-    final from = localDateKey(first);
-    final to = localDateKey(last);
+  /// The active goal (`completedOn` null), or null (GL3).
+  Future<Goal?> activeGoal() =>
+      (_db.select(_db.goals)..where((g) => g.completedOn.isNull())).getSingleOrNull();
 
-    final completions = await (_db.select(_db.completions)
-          ..where((c) => c.localDate.isBiggerOrEqualValue(from) & c.localDate.isSmallerOrEqualValue(to)))
+  Stream<Goal?> watchActiveGoal() =>
+      (_db.select(_db.goals)..where((g) => g.completedOn.isNull())).watchSingleOrNull();
+
+  /// Whether any goal was ever made: decides the Set Goal card's subtitle
+  /// (04-goals §7.1).
+  Stream<bool> watchHadGoal() => _db.select(_db.goals).watch().map((g) => g.isNotEmpty);
+
+  /// Every item of every goal, in creation order. Past days are judged by the
+  /// items that covered them, so history needs them all.
+  Stream<List<GoalItem>> watchAllItems() =>
+      (_db.select(_db.goalItems)..orderBy([(i) => OrderingTerm(expression: i.createdAt)]))
+          .watch();
+
+  Future<List<GoalItem>> allItems() =>
+      (_db.select(_db.goalItems)..orderBy([(i) => OrderingTerm(expression: i.createdAt)]))
+          .get();
+
+  Future<GoalItem?> item(String id) =>
+      (_db.select(_db.goalItems)..where((i) => i.id.equals(id))).getSingleOrNull();
+
+  /// The items of the active goal in scope today, in creation order (§7.3).
+  Future<List<GoalItem>> itemsInScopeToday() async {
+    final goal = await activeGoal();
+    if (goal == null) return const [];
+    final items = await (_db.select(_db.goalItems)
+          ..where((i) => i.goalId.equals(goal.id))
+          ..orderBy([(i) => OrderingTerm(expression: i.createdAt)]))
         .get();
-    final simran = await (_db.select(_db.simranSessions)
+    return [for (final i in items) if (inScope(i, _today)) i];
+  }
+
+  /// The item for [baniId] (or Naam Simran when null) in scope today (GI1).
+  Future<GoalItem?> inScopeItemFor({String? baniId, required ItemType type}) async {
+    final items = await itemsInScopeToday();
+    return items
+        .where((i) => i.itemType == type && (type == ItemType.simran || i.baniId == baniId))
+        .firstOrNull;
+  }
+
+  /// Adds an item, creating the goal if none is active (GL2, GI1, GI2, GI4).
+  /// Throws [GoalRuleException] `GI1` when the bani already has an item in
+  /// scope: the caller opens that item for editing instead.
+  Future<GoalItem> addItem(GoalItemSpec spec) async {
+    _validate(spec);
+    final result = await _db.transaction(() async {
+      final existing = await inScopeItemFor(baniId: spec.baniId, type: spec.itemType);
+      if (existing != null) throw const GoalRuleException('GI1');
+      final now = _nowUtc;
+      final goal = await activeGoal() ??
+          await _db.into(_db.goals).insertReturning(GoalsCompanion.insert(
+            id: newId(),
+            startDate: _today,
+            createdAt: now,
+            updatedAt: now,
+          ));
+      final id = newId();
+      return _db.into(_db.goalItems).insertReturning(GoalItemsCompanion.insert(
+            id: id,
+            goalId: goal.id,
+            seriesId: id,
+            itemType: spec.itemType,
+            baniId: Value(spec.itemType == ItemType.bani ? spec.baniId : null),
+            timesPerDay: spec.itemType == ItemType.simran ? 1 : spec.timesPerDay,
+            simranMinutes: Value(spec.itemType == ItemType.simran ? spec.simranMinutes : null),
+            durationType: spec.durationType,
+            durationDays: Value(spec.durationType == DurationType.days ? spec.durationDays : null),
+            startDate: _today,
+            endDate: Value(endDateFor(
+              type: spec.durationType,
+              seriesStart: _today,
+              durationDays: spec.durationDays,
+              untilDate: spec.untilDate,
+            )),
+            reminderTime: Value(spec.reminderTime),
+            createdAt: now,
+            updatedAt: now,
+          ));
+    });
+    _changed();
+    return result;
+  }
+
+  void _validate(GoalItemSpec spec) {
+    if (spec.itemType == ItemType.bani) {
+      if (spec.baniId == null) throw const GoalRuleException('GI1');
+      if (spec.timesPerDay < 1 || spec.timesPerDay > 11) throw const GoalRuleException('G3');
+    } else {
+      final m = spec.simranMinutes ?? 0;
+      if (m < 5 || m > 120) throw const GoalRuleException('GI5');
+    }
+    if (spec.durationType == DurationType.days) {
+      final d = spec.durationDays ?? 0;
+      if (d < 1 || d > 365) throw const GoalRuleException('GI4');
+    }
+    if (spec.durationType == DurationType.untilDate) {
+      final u = spec.untilDate;
+      if (u == null || u.compareTo(_today) < 0) throw const GoalRuleException('GI4');
+      final max = localDateKey(_clock.today().add(const Duration(days: 365)));
+      if (u.compareTo(max) > 0) throw const GoalRuleException('GI4');
+    }
+  }
+
+  /// Reminder only: updated in place (GI6).
+  Future<void> editReminder(String itemId, String? time) async {
+    await (_db.update(_db.goalItems)..where((i) => i.id.equals(itemId))).write(
+      GoalItemsCompanion(reminderTime: Value(time), updatedAt: Value(_nowUtc)),
+    );
+    _changed();
+  }
+
+  /// Duration: updated in place; the new end date must be today or later
+  /// (GI6, scenario E-7).
+  Future<void> editDuration(
+    String itemId, {
+    required DurationType type,
+    int? durationDays,
+    String? untilDate,
+  }) async {
+    await _db.transaction(() async {
+      final row = await item(itemId);
+      if (row == null) return;
+      final seriesStart = await _seriesStart(row.seriesId);
+      final end = endDateFor(
+        type: type,
+        seriesStart: seriesStart,
+        durationDays: durationDays,
+        untilDate: untilDate,
+      );
+      if (end != null && end.compareTo(_today) < 0) throw const GoalRuleException('GI6');
+      await (_db.update(_db.goalItems)..where((i) => i.id.equals(itemId))).write(
+        GoalItemsCompanion(
+          durationType: Value(type),
+          durationDays: Value(type == DurationType.days ? durationDays : null),
+          endDate: Value(end),
+          updatedAt: Value(_nowUtc),
+        ),
+      );
+    });
+    _changed();
+  }
+
+  Future<String> _seriesStart(String seriesId) async {
+    final rows = await (_db.select(_db.goalItems)..where((i) => i.seriesId.equals(seriesId))).get();
+    return rows.map((r) => r.startDate).reduce((a, b) => a.compareTo(b) <= 0 ? a : b);
+  }
+
+  /// Target (`timesPerDay` or `simranMinutes`): the old row ends today and a
+  /// new row in the same series starts today, unless the old row started
+  /// today, in which case it is updated in place (GI6).
+  Future<GoalItem?> editTarget(String itemId, {int? timesPerDay, int? simranMinutes}) async {
+    final result = await _db.transaction(() async {
+      final row = await item(itemId);
+      if (row == null) return null;
+      final now = _nowUtc;
+      if (row.startDate == _today) {
+        await (_db.update(_db.goalItems)..where((i) => i.id.equals(itemId))).write(
+          GoalItemsCompanion(
+            timesPerDay: Value(timesPerDay ?? row.timesPerDay),
+            simranMinutes: Value(simranMinutes ?? row.simranMinutes),
+            updatedAt: Value(now),
+          ),
+        );
+        return item(itemId);
+      }
+      await (_db.update(_db.goalItems)..where((i) => i.id.equals(itemId)))
+          .write(GoalItemsCompanion(removedOn: Value(_today), updatedAt: Value(now)));
+      return _db.into(_db.goalItems).insertReturning(GoalItemsCompanion.insert(
+            id: newId(),
+            goalId: row.goalId,
+            seriesId: row.seriesId,
+            itemType: row.itemType,
+            baniId: Value(row.baniId),
+            timesPerDay: timesPerDay ?? row.timesPerDay,
+            simranMinutes: Value(simranMinutes ?? row.simranMinutes),
+            durationType: row.durationType,
+            durationDays: Value(row.durationDays),
+            startDate: _today,
+            endDate: Value(row.endDate),
+            reminderTime: Value(row.reminderTime),
+            createdAt: now,
+            updatedAt: now,
+          ));
+    });
+    _changed();
+    return result;
+  }
+
+  /// Remove (GI7): out of scope from today, history kept. Then BG1.
+  Future<void> removeItem(String itemId) async {
+    await _db.transaction(() async {
+      final row = await item(itemId);
+      if (row == null) return;
+      await (_db.update(_db.goalItems)..where((i) => i.id.equals(itemId)))
+          .write(GoalItemsCompanion(removedOn: Value(_today), updatedAt: Value(_nowUtc)));
+      await _closeIfBlank(row.goalId);
+    });
+    _changed();
+  }
+
+  /// BG2: completes the active goal when nothing is in scope today and
+  /// nothing starts later. Run at app start, on resume and at the day change.
+  Future<void> closeGoalIfBlank() async {
+    final goal = await activeGoal();
+    if (goal == null) return;
+    final closed = await _db.transaction(() => _closeIfBlank(goal.id));
+    if (closed) _changed();
+  }
+
+  /// Completes the goal when it is blank: no item in scope today and none
+  /// starting later (§2). Removed today → completed today (BG1); ended by
+  /// duration → the day after the latest last day (BG2).
+  Future<bool> _closeIfBlank(String goalId) async {
+    final items = await (_db.select(_db.goalItems)..where((i) => i.goalId.equals(goalId))).get();
+    final today = _today;
+    final blank = !items.any((i) => inScope(i, today) || i.startDate.compareTo(today) > 0);
+    if (!blank) return false;
+    String? latestLast;
+    for (final i in items) {
+      final last = lastDayOf(i);
+      if (last != null && (latestLast == null || last.compareTo(latestLast) > 0)) {
+        latestLast = last;
+      }
+    }
+    var completedOn = today;
+    if (latestLast != null) {
+      final after = localDateKey(parseLocalDateKey(latestLast).add(const Duration(days: 1)));
+      if (after.compareTo(today) < 0) completedOn = after;
+    }
+    await (_db.update(_db.goals)..where((g) => g.id.equals(goalId)))
+        .write(GoalsCompanion(completedOn: Value(completedOn), updatedAt: Value(_nowUtc)));
+    return true;
+  }
+
+  /// GI9: an item whose bani is not in `content.db` leaves scope today.
+  Future<void> removeItemsWithUnknownBanis(Set<String> knownBaniIds) async {
+    for (final i in await itemsInScopeToday()) {
+      if (i.itemType == ItemType.bani && !knownBaniIds.contains(i.baniId)) {
+        debugPrint('Hazri: goal item ${i.id} names unknown bani ${i.baniId}; removed (GI9)');
+        await removeItem(i.id);
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------- verdicts
+
+  /// One day's rows, live, for [verdictOn] (04-goals §5.7 watchDay).
+  Stream<DayRows> watchDay(DateTime date) {
+    final key = localDateKey(date);
+    final query = _db.select(_db.goalItems).watch();
+    // Re-read on any change to any of the three tables.
+    return _merge3(
+      query,
+      watchCompletionsOn(date),
+      watchSittingsOn(date),
+      (items, completions, sittings) => DayRows(
+        day: key,
+        items: items,
+        completions: completions,
+        sittings: sittings,
+      ),
+    );
+  }
+
+  Future<DayRows> dayRows(DateTime date) async => DayRows(
+        day: localDateKey(date),
+        items: await allItems(),
+        completions: await completionsOn(date),
+        sittings: await (_db.select(_db.simranSessions)
+              ..where((s) => s.localDate.equals(localDateKey(date)) & s.deletedAt.isNull()))
+            .get(),
+      );
+
+  /// The rows of a month, live, for the Diary grid (04-goals §7.4).
+  Stream<MonthRows> watchMonth(DateTime month) {
+    final from = localDateKey(DateTime(month.year, month.month, 1));
+    final to = localDateKey(DateTime(month.year, month.month + 1, 0));
+    final completions = (_db.select(_db.completions)
+          ..where((c) =>
+              c.localDate.isBiggerOrEqualValue(from) &
+              c.localDate.isSmallerOrEqualValue(to) &
+              c.deletedAt.isNull()))
+        .watch();
+    final sittings = (_db.select(_db.simranSessions)
           ..where((s) =>
               s.localDate.isBiggerOrEqualValue(from) &
               s.localDate.isSmallerOrEqualValue(to) &
-              s.completed.equals(true)))
-        .get();
-    final grace = await (_db.select(_db.graceDays)
-          ..where((g) => g.monthKey.equals(monthKey(first))))
-        .get();
-    // Every goal, archived ones included: a goal kept for three weeks and then
-    // stopped still describes those three weeks, and deleting it used to erase
-    // them. `GoalCalculator.appliesOn` decides which days each one covers.
-    final goals = await _db.select(_db.goals).get();
-    final ticks = await (_db.select(_db.goalTicks)
-          ..where((t) =>
-              t.localDate.isBiggerOrEqualValue(from) &
-              t.localDate.isSmallerOrEqualValue(to)))
-        .get();
-    // Counted, not collected: a goal of three paath a day is met at three.
-    final ticksByDay = <String, Map<String, int>>{};
-    for (final t in ticks) {
-      final day = ticksByDay.putIfAbsent(t.localDate, () => {});
-      day[t.goalId] = (day[t.goalId] ?? 0) + 1;
-    }
-
-    final bySlot = <String, Set<BaniSlotValue>>{};
-    for (final c in completions) {
-      bySlot.putIfAbsent(c.localDate, () => {}).add(c.slot);
-    }
-    final simranDays = {for (final s in simran) s.localDate};
-    final graceDays = {for (final g in grace) g.localDate};
-
-    return [
-      for (var d = 1; d <= last.day; d++)
-        () {
-          final date = DateTime(month.year, month.month, d);
-          final key = localDateKey(date);
-          return DiaryDay(
-            date: date,
-            slots: bySlot[key] ?? const {},
-            isGrace: graceDays.contains(key),
-            simran: simranDays.contains(key),
-            goals: GoalCalculator.outcomeOn(
-              goals: goals,
-              ticks: ticksByDay[key] ?? const {},
-              day: date,
-            ),
-          );
-        }(),
-    ];
+              s.deletedAt.isNull()))
+        .watch();
+    return _merge3(
+      watchAllItems(),
+      completions,
+      sittings,
+      (items, c, s) => MonthRows(month: DateTime(month.year, month.month), items: items, completions: c, sittings: s),
+    );
   }
 
-  /// Recomputes the streak, persisting any grace days it had to spend.
-  Future<StreakResult> streak() async {
-    final completions = await _db.select(_db.completions).get();
-    final nitnemDays = <String>{};
-    for (final c in completions) {
-      if (c.slot != BaniSlotValue.none) nitnemDays.add(c.localDate);
-    }
+  /// DV3: the earliest day anything was recorded, or null with no rows.
+  Future<String?> firstRecordedDay() async {
+    final rows = await _db.customSelect('''
+      SELECT MIN(d) AS d FROM (
+        SELECT MIN(local_date) AS d FROM completions WHERE deleted_at IS NULL
+        UNION ALL SELECT MIN(local_date) FROM simran_sessions WHERE deleted_at IS NULL
+        UNION ALL SELECT MIN(start_date) FROM goals)''').getSingle();
+    return rows.readNullable<String>('d');
+  }
+
+  // ------------------------------------------------------------------ streak
+
+  /// `nitnemStreak(today)`: the run now and the longest (09-diary D12),
+  /// persisting any grace days the current run spends (D8).
+  Future<NitnemStreak> nitnemStreak() async {
+    final completions = await allCompletions();
+    final nitnemDays = <String>{
+      for (final c in completions)
+        if (c.slot != BaniSlotValue.none) c.localDate,
+    };
     final grace = await _db.select(_db.graceDays).get();
     final result = StreakCalculator.compute(
       nitnemDays: nitnemDays,
@@ -280,155 +616,21 @@ class UserRepository {
             GraceDaysCompanion.insert(localDate: localDateKey(d), monthKey: monthKey(d)),
           );
     }
-    return result;
-  }
-
-  // ------------------------------------------------------------------- goals
-
-  Stream<List<Goal>> watchGoals() =>
-      (_db.select(_db.goals)..orderBy([(g) => OrderingTerm(expression: g.createdAt)])).watch();
-
-  Future<List<Goal>> activeGoals() =>
-      (_db.select(_db.goals)..where((g) => g.active.equals(true))).get();
-
-  Future<void> saveGoal(GoalsCompanion goal) =>
-      _db.into(_db.goals).insertOnConflictUpdate(goal);
-
-  /// Stops a goal without erasing the days it covered.
-  ///
-  /// It is archived, not deleted: `endedOn` is set to the last day it asked
-  /// anything of, `active` goes false so it leaves the live list, and every
-  /// tick stays. Deleting the row took its ticks with it, so a goal kept from
-  /// the 1st to the 22nd and then stopped rewrote all twenty-two days as
-  /// though nobody had ever set it.
-  ///
-  /// [on] is the last day it counts for, today by default. A goal stopped
-  /// today is still owed today's paath.
-  Future<void> archiveGoal(String id, {DateTime? on}) async {
-    final last = localDateKey(on ?? _clock.today());
-    await (_db.update(_db.goals)..where((g) => g.id.equals(id))).write(
-      GoalsCompanion(
-        endedOn: Value(last),
-        active: const Value(false),
-        updatedAt: Value(DateTime.now().toUtc()),
-      ),
+    final allGrace = {
+      for (final g in grace) g.localDate,
+      for (final d in result.graceUsed) localDateKey(d),
+    };
+    final longest = StreakCalculator.longest(nitnemDays: nitnemDays, graceDays: allGrace);
+    return NitnemStreak(
+      current: result.days,
+      longest: math.max(longest, result.days),
+      days: {...nitnemDays},
     );
   }
 
-  /// Erases a goal and everything it ever recorded.
-  ///
-  /// Only for a goal created by mistake, where there is no history worth
-  /// keeping. Stopping one somebody actually kept is [archiveGoal].
-  Future<void> forgetGoal(String id) async {
-    await (_db.delete(_db.goalTicks)..where((t) => t.goalId.equals(id))).go();
-    await (_db.delete(_db.goals)..where((g) => g.id.equals(id))).go();
-  }
-
-  Stream<List<GoalTick>> watchGoalTicks() => _db.select(_db.goalTicks).watch();
-
-  /// Every goal, with the ticks recorded on [date], as one stream.
-  ///
-  /// A join, rather than watching the goals table and reading the ticks
-  /// alongside it. drift re-runs a watched query when any table the query
-  /// touches changes, and a tick writes to goal_tick, not goal -- so watching
-  /// goals alone left the count frozen at whatever it was when the screen
-  /// opened, however many banis were finished afterwards.
-  Stream<({List<Goal> goals, List<GoalTick> ticks})> watchGoalsAndTicks(
-    DateTime date,
-  ) {
-    final key = localDateKey(date);
-    final query = _db.select(_db.goals).join([
-      leftOuterJoin(
-        _db.goalTicks,
-        _db.goalTicks.goalId.equalsExp(_db.goals.id) &
-            _db.goalTicks.localDate.equals(key),
-      ),
-    ])
-      ..orderBy([OrderingTerm(expression: _db.goals.createdAt)]);
-
-    return query.watch().map((rows) {
-      // The join repeats a goal once per tick, so both sides are de-duplicated
-      // by id rather than collected straight off the rows.
-      final goals = <String, Goal>{};
-      final ticks = <String, GoalTick>{};
-      for (final row in rows) {
-        final goal = row.readTable(_db.goals);
-        goals[goal.id] = goal;
-        final tick = row.readTableOrNull(_db.goalTicks);
-        if (tick != null) ticks[tick.id] = tick;
-      }
-      return (goals: goals.values.toList(), ticks: ticks.values.toList());
-    });
-  }
-
-  Future<List<GoalTick>> goalTicksOn(DateTime date) {
-    final key = localDateKey(date);
-    return (_db.select(_db.goalTicks)..where((t) => t.localDate.equals(key))).get();
-  }
-
-  Future<void> tickGoal(String goalId, {String source = 'manual', DateTime? on}) =>
-      _db.into(_db.goalTicks).insert(
-            GoalTicksCompanion.insert(
-              id: newId(),
-              goalId: goalId,
-              localDate: localDateKey(on ?? _clock.today()),
-              source: source,
-              at: DateTime.now().toUtc(),
-            ),
-          );
-
-  /// Adds a tick to every active goal for [baniId] that has not met its daily
-  /// target yet (PRD 1.15).
-  Future<void> creditGoalsFor(String baniId, {DateTime? on}) async {
-    final day = on ?? _clock.today();
-    final goals = await activeGoals();
-    final ticks = await goalTicksOn(day);
-    for (final g in goals) {
-      if (g.baniId != baniId) continue;
-      final done = ticks.where((t) => t.goalId == g.id).length;
-      if (done >= g.timesPerDay) continue;
-      await tickGoal(g.id, source: 'auto', on: day);
-    }
-  }
-
-  /// Takes back the credit a completion gave, when that completion is undone.
-  ///
-  /// Only the ticks this credited automatically: a tick somebody added by hand
-  /// on the Goals screen is theirs, and unticking a bani in the Diary should
-  /// not quietly delete it.
-  Future<void> removeGoalCreditFor(String baniId, {DateTime? on}) async {
-    final key = localDateKey(on ?? _clock.today());
-    final goals = await activeGoals();
-    for (final g in goals) {
-      if (g.baniId != baniId) continue;
-      final mine = await (_db.select(_db.goalTicks)
-            ..where((t) =>
-                t.goalId.equals(g.id) &
-                t.localDate.equals(key) &
-                t.source.equals('auto'))
-            ..orderBy([(t) => OrderingTerm(expression: t.at, mode: OrderingMode.desc)])
-            ..limit(1))
-          .getSingleOrNull();
-      if (mine != null) {
-        await (_db.delete(_db.goalTicks)..where((t) => t.id.equals(mine.id))).go();
-      }
-    }
-  }
-
-  // --------------------------------------------------------------- reminders
-
-  Stream<List<Reminder>> watchReminders() => _db.select(_db.reminders).watch();
-
-  Future<List<Reminder>> reminders() => _db.select(_db.reminders).get();
-
-  Future<Reminder?> reminder(String id) =>
-      (_db.select(_db.reminders)..where((r) => r.id.equals(id))).getSingleOrNull();
-
-  Future<void> saveReminder(RemindersCompanion reminder) =>
-      _db.into(_db.reminders).insertOnConflictUpdate(reminder);
-
-  Future<void> deleteReminder(String id) =>
-      (_db.delete(_db.reminders)..where((r) => r.id.equals(id))).go();
+  /// Every grace day spent, for the month grid's label (09-diary Y-j).
+  Future<Set<String>> graceDayKeys() async =>
+      {for (final g in await _db.select(_db.graceDays).get()) g.localDate};
 
   // -------------------------------------------------------- event overrides
 
@@ -437,8 +639,99 @@ class UserRepository {
     return {for (final r in rows) r.eventId: r.enabled};
   }
 
-  Future<void> setEventOverride(String eventId, bool enabled) =>
-      _db.into(_db.eventReminderOverrides).insertOnConflictUpdate(
-            EventReminderOverridesCompanion.insert(eventId: eventId, enabled: enabled),
-          );
+  Future<void> setEventOverride(String eventId, bool enabled) async {
+    await _db.into(_db.eventReminderOverrides).insertOnConflictUpdate(
+          EventReminderOverridesCompanion.insert(eventId: eventId, enabled: enabled),
+        );
+    _changed();
+  }
+}
+
+/// A month's live rows, for the Diary grid.
+@immutable
+class MonthRows {
+  const MonthRows({
+    required this.month,
+    required this.items,
+    required this.completions,
+    required this.sittings,
+  });
+
+  final DateTime month;
+  final List<GoalItem> items;
+  final List<Completion> completions;
+  final List<SimranSession> sittings;
+
+  DayVerdict verdict(DateTime day) =>
+      verdictOn(localDateKey(day), items, completions, sittings);
+
+  /// Whether any day of the month had a goal: decides the legend's goal entry
+  /// (04-goals §7.4).
+  bool get anyGoalDay {
+    final last = DateTime(month.year, month.month + 1, 0).day;
+    for (var d = 1; d <= last; d++) {
+      final key = localDateKey(DateTime(month.year, month.month, d));
+      if (items.any((i) => inScope(i, key))) return true;
+    }
+    return false;
+  }
+}
+
+/// The two numbers of the streak cards (05-today T12, 09-diary D12).
+@immutable
+class NitnemStreak {
+  const NitnemStreak({required this.current, required this.longest, this.days = const {}});
+
+  static const zero = NitnemStreak(current: 0, longest: 0);
+
+  final int current;
+  final int longest;
+
+  /// Every Nitnem day, so the week strip can light its dots.
+  final Set<String> days;
+}
+
+/// Combines three streams, emitting once all three have a value.
+Stream<R> _merge3<A, B, C, R>(
+  Stream<A> a,
+  Stream<B> b,
+  Stream<C> c,
+  R Function(A, B, C) combine,
+) {
+  late StreamController<R> out;
+  A? va;
+  B? vb;
+  C? vc;
+  var ha = false, hb = false, hc = false;
+  final subs = <StreamSubscription<Object?>>[];
+  void emit() {
+    if (ha && hb && hc) out.add(combine(va as A, vb as B, vc as C));
+  }
+
+  out = StreamController<R>(
+    onListen: () {
+      subs
+        ..add(a.listen((v) {
+          va = v;
+          ha = true;
+          emit();
+        }, onError: out.addError))
+        ..add(b.listen((v) {
+          vb = v;
+          hb = true;
+          emit();
+        }, onError: out.addError))
+        ..add(c.listen((v) {
+          vc = v;
+          hc = true;
+          emit();
+        }, onError: out.addError));
+    },
+    onCancel: () async {
+      for (final s in subs) {
+        await s.cancel();
+      }
+    },
+  );
+  return out.stream;
 }

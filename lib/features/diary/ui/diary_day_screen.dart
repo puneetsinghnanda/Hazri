@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,11 +18,15 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_mark.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../../core/settings/settings_controller.dart';
-import '../../goals/data/goals_controller.dart';
-import '../../hazri/data/hazri_controller.dart';
+import '../../goals/domain/day_verdict.dart';
+import '../../goals/domain/goal_constants.dart';
 import '../../nitnem/domain/bani.dart';
-import 'diary_screen.dart';
+
+/// One day's live rows; the verdict is recomputed on every change, so both
+/// dots and this screen update together (04-goals §7.5).
+final diaryDayRowsProvider = StreamProvider.family<DayRows, DateTime>(
+  (ref, date) => ref.watch(userRepositoryProvider).watchDay(date),
+);
 
 /// One day in the diary (design 56).
 ///
@@ -32,10 +38,10 @@ class DiaryDayScreen extends ConsumerWidget {
 
   final DateTime date;
 
-  /// Today and the last seven days can be ticked by hand (PRD 1.9).
+  /// Today and the seven days before it can be edited (09-diary D6).
   static bool isEditable(DateTime date, DateTime today) {
     final age = today.difference(DateTime(date.year, date.month, date.day)).inDays;
-    return age >= 0 && age <= 7;
+    return age >= 0 && age <= GoalConstants.diaryEditWindowDays;
   }
 
   @override
@@ -44,7 +50,7 @@ class DiaryDayScreen extends ConsumerWidget {
     final l = L.of(context);
     final dates = HazriDates.of(context);
     final today = ref.watch(clockProvider).today();
-    final day = ref.watch(diaryDayProvider(date)).value;
+    final rows = ref.watch(diaryDayRowsProvider(date)).value;
     final calendar = ref.watch(nanakshahiCalendarProvider).value;
     final nanakshahi = calendar?.dateFor(date);
 
@@ -91,27 +97,19 @@ class DiaryDayScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 14),
-              if (day != null) ...[
-                _HazriBanner(day: day),
-                // Only on a day that had goals. The reader asked that opening
-                // a day say whether they were met, which the screen did not
-                // say anywhere -- it knew the times a goal was due and not
-                // whether it was kept.
-                if (day.hasGoals) ...[
+              if (rows != null) ...[
+                _HazriBanner(rows: rows),
+                // 04-goals §7.5 (2): only on a day that had a goal.
+                if (rows.verdict.goalState != GoalState.none) ...[
                   const SizedBox(height: 10),
-                  _GoalsLine(day: day),
+                  _GoalBlock(rows: rows),
                 ],
                 const SizedBox(height: 14),
-                Eyebrow(l.diaryWhatYouDid),
-                const SizedBox(height: 4),
-                Text(
-                  l.diaryTickAnything,
-                  style: HazriText.caption.copyWith(color: c.muted),
-                ),
-                const SizedBox(height: 8),
-                _TickCard(day: day, editable: isEditable(date, today)),
+                _Recited(rows: rows),
                 const SizedBox(height: 14),
-                _DayStats(day: day),
+                Eyebrow(l.diaryAddRemove),
+                const SizedBox(height: 8),
+                _EditCard(rows: rows, date: date, editable: isEditable(date, today)),
                 const SizedBox(height: 14),
                 HazriCard(
                   colour: c.card2,
@@ -140,75 +138,25 @@ class DiaryDayScreen extends ConsumerWidget {
   }
 }
 
-/// Design 56's banner: kesri and filled when the day was marked, quiet and
-/// grey when it was not, because a day without one is not a day to be shouted
-/// at about.
-/// Whether the day's goals were met, on a day that had any.
-///
-/// Hazri and goals are two different things and this screen now shows both:
-/// the banner above says somebody turned up, this says whether they finished
-/// the list. On most days the first is true and this is not, which is the
-/// honest picture rather than a failure.
-class _GoalsLine extends StatelessWidget {
-  const _GoalsLine({required this.day});
-
-  final DiaryDay day;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final l = L.of(context);
-    final met = day.goalsMet;
-
-    return HazriCard(
-      colour: met ? c.sageSoft : null,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              color: met ? c.sage : c.rule,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            l.diaryGoalsDot,
-            style: HazriText.body.copyWith(color: c.ink, fontWeight: FontWeight.w600),
-          ),
-          const Spacer(),
-          Text(
-            l.goalsDoneOf(day.goals.met, day.goals.inScope),
-            style: HazriText.caption.copyWith(color: met ? c.sage : c.muted),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _HazriBanner extends ConsumerWidget {
-  const _HazriBanner({required this.day});
+  const _HazriBanner({required this.rows});
 
-  final DiaryDay day;
+  final DayRows rows;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
     final dates = HazriDates.of(context);
-    final marked = day.hazri;
+    final marked = rows.verdict.hazri;
     final ink = marked ? Colors.white : c.ink;
 
     // What marked the day, and when. Read from the completions rather than
     // the day summary, which knows that something happened and not what.
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
-    final completions =
-        ref.watch(completionsOnProvider(day.date)).value ?? const <Completion>[];
-    final sessions = (ref.watch(simranSessionsProvider).value ?? const [])
-        .where((x) => x.localDate == localDateKey(day.date) && x.completed);
+    final completions = rows.completions.where((x) => x.deletedAt == null);
+    final sessions = rows.sittings.where(
+        (x) => x.deletedAt == null && x.durationS >= GoalConstants.hazriSimranMinSeconds);
     DateTime? firstAt;
     String? firstWith;
     for (final x in completions) {
@@ -265,7 +213,7 @@ class _HazriBanner extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  marked ? l.hazriMarked : l.hazriNotYet,
+                  marked ? l.diaryHazriMarked : l.diaryNoHazri,
                   style: HazriText.display22.copyWith(color: ink, fontSize: 19),
                 ),
                 if (firstAt != null)
@@ -291,249 +239,305 @@ class _HazriBanner extends ConsumerWidget {
   }
 }
 
-/// The nitnem banis and simran, each with what the diary knows about it.
-class _TickCard extends ConsumerWidget {
-  const _TickCard({required this.day, required this.editable});
+/// The goal block (04-goals §7.5 (2)): the summary, then each item in
+/// scope that day with its count and a tick when met.
+class _GoalBlock extends ConsumerWidget {
+  const _GoalBlock({required this.rows});
 
-  final DiaryDay day;
-  final bool editable;
+  final DayRows rows;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
-    final dates = HazriDates.of(context);
-    final repo = ref.read(userRepositoryProvider);
+    final v = rows.verdict;
+    final met = v.goalState == GoalState.met;
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
-    final nitnem = banis.where((b) => b.category == 'nitnem').toList();
-    final completions =
-        ref.watch(completionsOnProvider(day.date)).value ?? const <Completion>[];
-    final sessions = (ref.watch(simranSessionsProvider).value ?? const [])
-        .where((x) => x.localDate == localDateKey(day.date) && x.completed)
-        .toList();
-    final goals = ref.watch(goalProgressProvider).value ?? const [];
-
-    /// When a goal for this bani asks to be sat, or null. The design's
-    /// "not yet · 6:40 PM" — the only time the app actually knows for a bani
-    /// it has no record of.
-    String? dueAt(String baniId) => goals
-        .where((g) => g.goal.baniId == baniId && g.goal.active)
-        .map((g) => g.goal.reminderTime)
-        .whereType<String>()
-        .firstOrNull;
-
-    String metaFor(String baniId) {
-      final at = completions
-          .where((x) => x.baniId == baniId)
-          .map((x) => x.completedAt.toLocal())
-          .fold<DateTime?>(null, (a, b) => a == null || b.isBefore(a) ? b : a);
-      if (at != null) return dates.time(at);
-      final due = dueAt(baniId);
-      final asTime = HazriDates.atOnDay(due, day.date);
-      return asTime == null ? l.diaryNotYet : l.diaryNotYetAt(dates.time(asTime));
-    }
-
-    final simranMinutes =
-        (sessions.fold<int>(0, (sum, x) => sum + x.durationS) / 60).round();
-
-    Future<void> setBani(Bani bani, bool value) async {
-      final slot = _slotValue(bani.defaultSlot);
-      if (value) {
-        await repo.logCompletion(
-          baniId: bani.id,
-          slot: slot,
-          source: CompletionSource.manual,
-          on: day.date,
-        );
-        // Ticking a bani here counts towards its goals exactly as reading or
-        // listening to it does.
-        await repo.creditGoalsFor(bani.id, on: day.date);
-      } else {
-        await repo.removeCompletion(baniId: bani.id, slot: slot, on: day.date);
-        await repo.removeGoalCreditFor(bani.id, on: day.date);
-      }
-      ref.invalidate(diaryDayProvider);
-      ref.invalidate(diaryDaysProvider);
-      ref.invalidate(streakProvider);
-    }
-
-    // A sitting ticked by hand says that it happened, not how long it was.
-    // The goal's length is the best guess there is, and a hardcoded five
-    // minutes was wrong for everybody who set a goal of eleven.
-    final tickedLength = ref.watch(simranGoalMinutesProvider) ??
-        ref.watch(settingsProvider).simranMinutes;
-
-    Future<void> setSimran(bool value) async {
-      if (value) {
-        await repo.logSimran(
-          duration: Duration(minutes: tickedLength),
-          count: 0,
-          completed: true,
-          on: day.date,
-        );
-      } else {
-        await repo.removeSimranOn(day.date);
-      }
-      ref.invalidate(diaryDayProvider);
-      ref.invalidate(diaryDaysProvider);
-      ref.invalidate(streakProvider);
-    }
+    final items = rows.items.where((i) => inScope(i, rows.day)).toList();
 
     return HazriCard(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      colour: met ? c.sageSoft : null,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (final bani in nitnem)
-            _TickRow(
-              label: bani.name(l.localeName),
-              meta: metaFor(bani.id),
-              checked: day.slots.contains(_slotValue(bani.defaultSlot)),
-              onChanged: editable ? (v) => setBani(bani, v) : null,
-            ),
-          _TickRow(
-            label: l.hazriSimran,
-            meta: day.simran && simranMinutes > 0
-                ? l.minutes(simranMinutes)
-                : (day.simran ? dates.time(sessions.first.startedAt.toLocal()) : l.diaryNotYet),
-            checked: day.simran,
-            onChanged: editable ? setSimran : null,
+          Row(
+            children: [
+              Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(color: met ? c.sage : c.rule, shape: BoxShape.circle),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                l.diaryGoalSummary(v.itemsMet, v.itemsInScope),
+                style: HazriText.body.copyWith(color: c.ink, fontWeight: FontWeight.w600),
+              ),
+            ],
           ),
-          if (!editable)
+          const SizedBox(height: 6),
+          for (final item in items)
             Padding(
-              padding: const EdgeInsets.only(top: 4, bottom: 12),
-              child: Text(
-                l.diaryTickTooOld,
-                style: HazriText.caption.copyWith(color: c.muted),
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      item.itemType == ItemType.simran
+                          ? l.goalNaamSimran
+                          : (banis.where((b) => b.id == item.baniId).firstOrNull?.name(l.localeName) ??
+                              item.baniId ??
+                              ''),
+                      style: HazriText.body.copyWith(color: c.ink2),
+                    ),
+                  ),
+                  Text(
+                    item.itemType == ItemType.simran
+                        ? l.goalTimesOfTarget(
+                            itemProgress(item, rows.completions, rows.sittings) ~/ 60,
+                            item.simranMinutes ?? GoalConstants.simranGoalMinutesMin)
+                        : l.goalTimesOfTarget(
+                            itemProgress(item, rows.completions, rows.sittings), item.timesPerDay),
+                    style: HazriText.caption.copyWith(color: c.muted),
+                  ),
+                  const SizedBox(width: 8),
+                  if (itemMet(item, rows.completions, rows.sittings))
+                    AppIcon(HazriIconData.check, size: 16, color: c.sage)
+                  else
+                    const SizedBox(width: 16),
+                ],
               ),
             ),
         ],
       ),
     );
   }
-
-  static BaniSlotValue _slotValue(BaniSlot slot) => switch (slot) {
-        BaniSlot.morning => BaniSlotValue.morning,
-        BaniSlot.evening => BaniSlotValue.evening,
-        BaniSlot.bedtime => BaniSlotValue.bedtime,
-        BaniSlot.none => BaniSlotValue.none,
-      };
 }
 
-class _TickRow extends StatelessWidget {
-  const _TickRow({
-    required this.label,
-    required this.meta,
-    required this.checked,
-    required this.onChanged,
-  });
+/// Every bani with a live completion that day, in or out of the goal, with
+/// each completion's time and source; then the simran sittings (§7.5 (3)).
+class _Recited extends ConsumerWidget {
+  const _Recited({required this.rows});
 
-  final String label;
-  final String meta;
-  final bool checked;
-  final ValueChanged<bool>? onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Semantics(
-      checked: checked,
-      child: InkWell(
-        onTap: onChanged == null ? null : () => onChanged!(!checked),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Row(
-            children: [
-              Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  color: checked ? c.sage : null,
-                  shape: BoxShape.circle,
-                  border: checked ? null : Border.all(color: c.rule, width: 2),
-                ),
-                alignment: Alignment.center,
-                child: checked
-                    ? const AppIcon(HazriIconData.check,
-                        size: 14, color: Colors.white)
-                    : null,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  label,
-                  style: HazriText.bodyStrong.copyWith(
-                    fontSize: 14.5,
-                    fontWeight: FontWeight.w600,
-                    color: checked ? c.ink : c.muted,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                meta,
-                style: HazriText.captionStrong
-                    .copyWith(color: c.muted, fontSize: 12.5),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Design 56's three numbers, divided rather than carded separately.
-class _DayStats extends ConsumerWidget {
-  const _DayStats({required this.day});
-
-  final DiaryDay day;
+  final DayRows rows;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
-    final streak = ref.watch(streakProvider).value;
-    final minutes = ((ref.watch(simranSessionsProvider).value ?? const [])
-                .where((x) => x.localDate == localDateKey(day.date) && x.completed)
-                .fold<int>(0, (sum, x) => sum + x.durationS) /
-            60)
-        .round();
+    final dates = HazriDates.of(context);
+    final banis = ref.watch(banisProvider).value ?? const <Bani>[];
+    final live = rows.completions.where((x) => x.deletedAt == null).toList()
+      ..sort((a, b) => a.completedAt.compareTo(b.completedAt));
+    final sittings = rows.sittings.where((x) => x.deletedAt == null).toList()
+      ..sort((a, b) => a.startedAt.compareTo(b.startedAt));
+    if (live.isEmpty && sittings.isEmpty) return const SizedBox.shrink();
 
-    final stats = [
-      ('${day.slots.length}', l.diaryStatPaath),
-      ('$minutes', l.diaryStatSimranMinutes),
-      ('${streak?.days ?? 0}', l.diaryStatDaysInRow),
-    ];
+    final byBani = <String, List<Completion>>{};
+    for (final x in live) {
+      byBani.putIfAbsent(x.baniId, () => []).add(x);
+    }
+
+    String source(CompletionSource s) => switch (s) {
+          CompletionSource.reader => l.diarySourceRead,
+          CompletionSource.audio => l.diarySourceListened,
+          CompletionSource.diary => l.diarySourceDiary,
+          CompletionSource.restored => l.diarySourceRestored,
+          CompletionSource.migrated => l.diarySourceMigrated,
+        };
+    String? sittingSource(SittingSource s) => switch (s) {
+          SittingSource.timer => null,
+          SittingSource.diary => l.diarySourceDiary,
+          SittingSource.restored => l.diarySourceRestored,
+          SittingSource.migrated => l.diarySourceMigrated,
+        };
+
+    final meta = HazriText.caption.copyWith(color: c.muted);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Eyebrow(l.diaryRecited),
+        const SizedBox(height: 8),
+        HazriCard(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final MapEntry(key: id, value: list) in byBani.entries)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${banis.where((b) => b.id == id).firstOrNull?.name(l.localeName) ?? id} '
+                        '${l.diaryCountTimes(list.length)}',
+                        style: HazriText.bodyStrong.copyWith(color: c.ink),
+                      ),
+                      for (final x in list)
+                        Text('${dates.time(x.completedAt.toLocal())} · ${source(x.source)}', style: meta),
+                    ],
+                  ),
+                ),
+              for (final s in sittings)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${l.goalNaamSimran} · ${l.minutes((s.durationS / 60).round())}',
+                        style: HazriText.bodyStrong.copyWith(color: c.ink),
+                      ),
+                      Text(
+                        [
+                          dates.time(s.startedAt.toLocal()),
+                          ?sittingSource(s.source),
+                          if (!s.completed) l.diarySimranStoppedEarly,
+                        ].join(' · '),
+                        style: meta,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// + and − for every bani and Naam Simran (§7.5 (4), CR3, CR4). "+" adds one
+/// completion or sitting on that day; "−" undoes the newest, whatever its
+/// source. Older days are read-only and say so before anybody tries.
+class _EditCard extends ConsumerWidget {
+  const _EditCard({required this.rows, required this.date, required this.editable});
+
+  final DayRows rows;
+  final DateTime date;
+  final bool editable;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.colors;
+    final l = L.of(context);
+    final repo = ref.read(userRepositoryProvider);
+    final banis = ref.watch(banisProvider).value ?? const <Bani>[];
+    final live = rows.completions.where((x) => x.deletedAt == null);
+    final sittings = rows.sittings.where((x) => x.deletedAt == null);
+
+    // A sitting added by hand says that it happened, not how long it was: the
+    // in-scope simran item's length, never under the hazri minimum.
+    final simranItem = rows.items
+        .where((i) => i.itemType == ItemType.simran && inScope(i, rows.day))
+        .firstOrNull;
+    final sittingSeconds = math.max(
+      GoalConstants.hazriSimranMinSeconds,
+      (simranItem?.simranMinutes ?? GoalConstants.simranDefaultMinutes) * 60,
+    );
 
     return HazriCard(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            for (var i = 0; i < stats.length; i++) ...[
-              if (i > 0) VerticalDivider(width: 1, thickness: 1, color: c.rule),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      stats[i].$1,
-                      style: HazriText.display22.copyWith(color: c.ink, fontSize: 21),
-                    ),
-                    const SizedBox(height: 1),
-                    Text(
-                      stats[i].$2,
-                      textAlign: TextAlign.center,
-                      style: HazriText.captionStrong
-                          .copyWith(color: c.muted, fontSize: 11.5),
-                    ),
-                  ],
-                ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Column(
+        children: [
+          for (final bani in banis)
+            _CountRow(
+              label: bani.name(l.localeName),
+              count: live.where((x) => x.baniId == bani.id).length,
+              onAdd: editable
+                  ? () => repo.logCompletion(
+                        baniId: bani.id,
+                        slot: slotValueOf(bani.defaultSlot),
+                        source: CompletionSource.diary,
+                        on: date,
+                      )
+                  : null,
+              onRemove: editable ? () => repo.undoLatestCompletion(bani.id, date) : null,
+            ),
+          _CountRow(
+            label: l.goalNaamSimran,
+            count: sittings.length,
+            onAdd: editable
+                ? () => repo.logSitting(
+                      duration: Duration(seconds: sittingSeconds),
+                      completed: true,
+                      source: SittingSource.diary,
+                      on: date,
+                    )
+                : null,
+            onRemove: editable ? () => repo.undoLatestSitting(date) : null,
+          ),
+          if (!editable)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 12),
+              child: Text(l.diaryReadOnly, style: HazriText.caption.copyWith(color: c.muted)),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The content slot as `user.db` stores it.
+BaniSlotValue slotValueOf(BaniSlot slot) => switch (slot) {
+      BaniSlot.morning => BaniSlotValue.morning,
+      BaniSlot.evening => BaniSlotValue.evening,
+      BaniSlot.bedtime => BaniSlotValue.bedtime,
+      BaniSlot.none => BaniSlotValue.none,
+    };
+
+class _CountRow extends StatelessWidget {
+  const _CountRow({
+    required this.label,
+    required this.count,
+    required this.onAdd,
+    required this.onRemove,
+  });
+
+  final String label;
+  final int count;
+  final Future<Object?> Function()? onAdd;
+  final Future<Object?> Function()? onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = L.of(context);
+    final editable = onAdd != null;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: HazriText.bodyStrong.copyWith(
+                fontSize: 14.5,
+                fontWeight: FontWeight.w600,
+                color: count > 0 ? c.ink : c.muted,
               ),
-            ],
-          ],
-        ),
+            ),
+          ),
+          if (editable)
+            IconButton(
+              tooltip: l.actionRemove,
+              onPressed: count == 0 ? null : onRemove,
+              icon: Text('−', style: HazriText.display22.copyWith(fontSize: 20, color: count == 0 ? c.rule : c.ink)),
+            ),
+          SizedBox(
+            width: 28,
+            child: Text('$count',
+                textAlign: TextAlign.center,
+                style: HazriText.captionStrong.copyWith(color: count > 0 ? c.ink : c.muted, fontSize: 14)),
+          ),
+          if (editable)
+            IconButton(
+              tooltip: l.actionAdd,
+              onPressed: onAdd,
+              icon: Text('+', style: HazriText.display22.copyWith(fontSize: 20, color: c.kesri)),
+            ),
+        ],
       ),
     );
   }

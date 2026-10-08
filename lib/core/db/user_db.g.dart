@@ -384,15 +384,6 @@ class $CompletionsTable extends Completions
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<CompletionSource>($CompletionsTable.$convertersource);
-  static const VerificationMeta _goalIdMeta = const VerificationMeta('goalId');
-  @override
-  late final GeneratedColumn<String> goalId = GeneratedColumn<String>(
-    'goal_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
   static const VerificationMeta _completedAtMeta = const VerificationMeta(
     'completedAt',
   );
@@ -404,6 +395,28 @@ class $CompletionsTable extends Completions
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -411,8 +424,9 @@ class $CompletionsTable extends Completions
     baniId,
     slot,
     source,
-    goalId,
     completedAt,
+    updatedAt,
+    deletedAt,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -447,12 +461,6 @@ class $CompletionsTable extends Completions
     } else if (isInserting) {
       context.missing(_baniIdMeta);
     }
-    if (data.containsKey('goal_id')) {
-      context.handle(
-        _goalIdMeta,
-        goalId.isAcceptableOrUnknown(data['goal_id']!, _goalIdMeta),
-      );
-    }
     if (data.containsKey('completed_at')) {
       context.handle(
         _completedAtMeta,
@@ -463,6 +471,20 @@ class $CompletionsTable extends Completions
       );
     } else if (isInserting) {
       context.missing(_completedAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
     }
     return context;
   }
@@ -497,14 +519,18 @@ class $CompletionsTable extends Completions
           data['${effectivePrefix}source'],
         )!,
       ),
-      goalId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}goal_id'],
-      ),
       completedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}completed_at'],
       )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
     );
   }
 
@@ -513,10 +539,11 @@ class $CompletionsTable extends Completions
     return $CompletionsTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<BaniSlotValue, String, String> $converterslot =
-      const EnumNameConverter<BaniSlotValue>(BaniSlotValue.values);
-  static JsonTypeConverter2<CompletionSource, String, String> $convertersource =
-      const EnumNameConverter<CompletionSource>(CompletionSource.values);
+  static TypeConverter<BaniSlotValue, String> $converterslot = const UpperSnake(
+    BaniSlotValue.values,
+  );
+  static TypeConverter<CompletionSource, String> $convertersource =
+      const UpperSnake(CompletionSource.values);
 }
 
 class Completion extends DataClass implements Insertable<Completion> {
@@ -525,16 +552,20 @@ class Completion extends DataClass implements Insertable<Completion> {
   final String baniId;
   final BaniSlotValue slot;
   final CompletionSource source;
-  final String? goalId;
   final DateTime completedAt;
+  final DateTime updatedAt;
+
+  /// Set by Diary − (CR3). A row with it set is ignored everywhere.
+  final DateTime? deletedAt;
   const Completion({
     required this.id,
     required this.localDate,
     required this.baniId,
     required this.slot,
     required this.source,
-    this.goalId,
     required this.completedAt,
+    required this.updatedAt,
+    this.deletedAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -552,10 +583,11 @@ class Completion extends DataClass implements Insertable<Completion> {
         $CompletionsTable.$convertersource.toSql(source),
       );
     }
-    if (!nullToAbsent || goalId != null) {
-      map['goal_id'] = Variable<String>(goalId);
-    }
     map['completed_at'] = Variable<DateTime>(completedAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     return map;
   }
 
@@ -566,10 +598,11 @@ class Completion extends DataClass implements Insertable<Completion> {
       baniId: Value(baniId),
       slot: Value(slot),
       source: Value(source),
-      goalId: goalId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(goalId),
       completedAt: Value(completedAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
     );
   }
 
@@ -582,14 +615,11 @@ class Completion extends DataClass implements Insertable<Completion> {
       id: serializer.fromJson<String>(json['id']),
       localDate: serializer.fromJson<String>(json['localDate']),
       baniId: serializer.fromJson<String>(json['baniId']),
-      slot: $CompletionsTable.$converterslot.fromJson(
-        serializer.fromJson<String>(json['slot']),
-      ),
-      source: $CompletionsTable.$convertersource.fromJson(
-        serializer.fromJson<String>(json['source']),
-      ),
-      goalId: serializer.fromJson<String?>(json['goalId']),
+      slot: serializer.fromJson<BaniSlotValue>(json['slot']),
+      source: serializer.fromJson<CompletionSource>(json['source']),
       completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
   @override
@@ -599,14 +629,11 @@ class Completion extends DataClass implements Insertable<Completion> {
       'id': serializer.toJson<String>(id),
       'localDate': serializer.toJson<String>(localDate),
       'baniId': serializer.toJson<String>(baniId),
-      'slot': serializer.toJson<String>(
-        $CompletionsTable.$converterslot.toJson(slot),
-      ),
-      'source': serializer.toJson<String>(
-        $CompletionsTable.$convertersource.toJson(source),
-      ),
-      'goalId': serializer.toJson<String?>(goalId),
+      'slot': serializer.toJson<BaniSlotValue>(slot),
+      'source': serializer.toJson<CompletionSource>(source),
       'completedAt': serializer.toJson<DateTime>(completedAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
 
@@ -616,16 +643,18 @@ class Completion extends DataClass implements Insertable<Completion> {
     String? baniId,
     BaniSlotValue? slot,
     CompletionSource? source,
-    Value<String?> goalId = const Value.absent(),
     DateTime? completedAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
   }) => Completion(
     id: id ?? this.id,
     localDate: localDate ?? this.localDate,
     baniId: baniId ?? this.baniId,
     slot: slot ?? this.slot,
     source: source ?? this.source,
-    goalId: goalId.present ? goalId.value : this.goalId,
     completedAt: completedAt ?? this.completedAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
   Completion copyWithCompanion(CompletionsCompanion data) {
     return Completion(
@@ -634,10 +663,11 @@ class Completion extends DataClass implements Insertable<Completion> {
       baniId: data.baniId.present ? data.baniId.value : this.baniId,
       slot: data.slot.present ? data.slot.value : this.slot,
       source: data.source.present ? data.source.value : this.source,
-      goalId: data.goalId.present ? data.goalId.value : this.goalId,
       completedAt: data.completedAt.present
           ? data.completedAt.value
           : this.completedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
     );
   }
 
@@ -649,15 +679,24 @@ class Completion extends DataClass implements Insertable<Completion> {
           ..write('baniId: $baniId, ')
           ..write('slot: $slot, ')
           ..write('source: $source, ')
-          ..write('goalId: $goalId, ')
-          ..write('completedAt: $completedAt')
+          ..write('completedAt: $completedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, localDate, baniId, slot, source, goalId, completedAt);
+  int get hashCode => Object.hash(
+    id,
+    localDate,
+    baniId,
+    slot,
+    source,
+    completedAt,
+    updatedAt,
+    deletedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -667,8 +706,9 @@ class Completion extends DataClass implements Insertable<Completion> {
           other.baniId == this.baniId &&
           other.slot == this.slot &&
           other.source == this.source &&
-          other.goalId == this.goalId &&
-          other.completedAt == this.completedAt);
+          other.completedAt == this.completedAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt);
 }
 
 class CompletionsCompanion extends UpdateCompanion<Completion> {
@@ -677,8 +717,9 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
   final Value<String> baniId;
   final Value<BaniSlotValue> slot;
   final Value<CompletionSource> source;
-  final Value<String?> goalId;
   final Value<DateTime> completedAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
   final Value<int> rowid;
   const CompletionsCompanion({
     this.id = const Value.absent(),
@@ -686,8 +727,9 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
     this.baniId = const Value.absent(),
     this.slot = const Value.absent(),
     this.source = const Value.absent(),
-    this.goalId = const Value.absent(),
     this.completedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CompletionsCompanion.insert({
@@ -696,23 +738,26 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
     required String baniId,
     required BaniSlotValue slot,
     required CompletionSource source,
-    this.goalId = const Value.absent(),
     required DateTime completedAt,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        localDate = Value(localDate),
        baniId = Value(baniId),
        slot = Value(slot),
        source = Value(source),
-       completedAt = Value(completedAt);
+       completedAt = Value(completedAt),
+       updatedAt = Value(updatedAt);
   static Insertable<Completion> custom({
     Expression<String>? id,
     Expression<String>? localDate,
     Expression<String>? baniId,
     Expression<String>? slot,
     Expression<String>? source,
-    Expression<String>? goalId,
     Expression<DateTime>? completedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -721,8 +766,9 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
       if (baniId != null) 'bani_id': baniId,
       if (slot != null) 'slot': slot,
       if (source != null) 'source': source,
-      if (goalId != null) 'goal_id': goalId,
       if (completedAt != null) 'completed_at': completedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -733,8 +779,9 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
     Value<String>? baniId,
     Value<BaniSlotValue>? slot,
     Value<CompletionSource>? source,
-    Value<String?>? goalId,
     Value<DateTime>? completedAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
     Value<int>? rowid,
   }) {
     return CompletionsCompanion(
@@ -743,8 +790,9 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
       baniId: baniId ?? this.baniId,
       slot: slot ?? this.slot,
       source: source ?? this.source,
-      goalId: goalId ?? this.goalId,
       completedAt: completedAt ?? this.completedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -771,11 +819,14 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
         $CompletionsTable.$convertersource.toSql(source.value),
       );
     }
-    if (goalId.present) {
-      map['goal_id'] = Variable<String>(goalId.value);
-    }
     if (completedAt.present) {
       map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -791,8 +842,9 @@ class CompletionsCompanion extends UpdateCompanion<Completion> {
           ..write('baniId: $baniId, ')
           ..write('slot: $slot, ')
           ..write('source: $source, ')
-          ..write('goalId: $goalId, ')
           ..write('completedAt: $completedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -873,6 +925,37 @@ class $SimranSessionsTable extends SimranSessions
     defaultValue: const Constant(false),
   );
   @override
+  late final GeneratedColumnWithTypeConverter<SittingSource, String> source =
+      GeneratedColumn<String>(
+        'source',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<SittingSource>($SimranSessionsTable.$convertersource);
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     localDate,
@@ -880,6 +963,9 @@ class $SimranSessionsTable extends SimranSessions
     durationS,
     count,
     completed,
+    source,
+    updatedAt,
+    deletedAt,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -934,6 +1020,20 @@ class $SimranSessionsTable extends SimranSessions
         completed.isAcceptableOrUnknown(data['completed']!, _completedMeta),
       );
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
     return context;
   }
 
@@ -967,6 +1067,20 @@ class $SimranSessionsTable extends SimranSessions
         DriftSqlType.bool,
         data['${effectivePrefix}completed'],
       )!,
+      source: $SimranSessionsTable.$convertersource.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}source'],
+        )!,
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
     );
   }
 
@@ -974,6 +1088,9 @@ class $SimranSessionsTable extends SimranSessions
   $SimranSessionsTable createAlias(String alias) {
     return $SimranSessionsTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<SittingSource, String> $convertersource =
+      const UpperSnake(SittingSource.values);
 }
 
 class SimranSession extends DataClass implements Insertable<SimranSession> {
@@ -982,7 +1099,12 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
   final DateTime startedAt;
   final int durationS;
   final int count;
+
+  /// True when the sitting reached the timer's planned length.
   final bool completed;
+  final SittingSource source;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
   const SimranSession({
     required this.id,
     required this.localDate,
@@ -990,6 +1112,9 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
     required this.durationS,
     required this.count,
     required this.completed,
+    required this.source,
+    required this.updatedAt,
+    this.deletedAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1000,6 +1125,15 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
     map['duration_s'] = Variable<int>(durationS);
     map['count'] = Variable<int>(count);
     map['completed'] = Variable<bool>(completed);
+    {
+      map['source'] = Variable<String>(
+        $SimranSessionsTable.$convertersource.toSql(source),
+      );
+    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     return map;
   }
 
@@ -1011,6 +1145,11 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
       durationS: Value(durationS),
       count: Value(count),
       completed: Value(completed),
+      source: Value(source),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
     );
   }
 
@@ -1026,6 +1165,9 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
       durationS: serializer.fromJson<int>(json['durationS']),
       count: serializer.fromJson<int>(json['count']),
       completed: serializer.fromJson<bool>(json['completed']),
+      source: serializer.fromJson<SittingSource>(json['source']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
   @override
@@ -1038,6 +1180,9 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
       'durationS': serializer.toJson<int>(durationS),
       'count': serializer.toJson<int>(count),
       'completed': serializer.toJson<bool>(completed),
+      'source': serializer.toJson<SittingSource>(source),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
 
@@ -1048,6 +1193,9 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
     int? durationS,
     int? count,
     bool? completed,
+    SittingSource? source,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
   }) => SimranSession(
     id: id ?? this.id,
     localDate: localDate ?? this.localDate,
@@ -1055,6 +1203,9 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
     durationS: durationS ?? this.durationS,
     count: count ?? this.count,
     completed: completed ?? this.completed,
+    source: source ?? this.source,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
   SimranSession copyWithCompanion(SimranSessionsCompanion data) {
     return SimranSession(
@@ -1064,6 +1215,9 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
       durationS: data.durationS.present ? data.durationS.value : this.durationS,
       count: data.count.present ? data.count.value : this.count,
       completed: data.completed.present ? data.completed.value : this.completed,
+      source: data.source.present ? data.source.value : this.source,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
     );
   }
 
@@ -1075,14 +1229,26 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
           ..write('startedAt: $startedAt, ')
           ..write('durationS: $durationS, ')
           ..write('count: $count, ')
-          ..write('completed: $completed')
+          ..write('completed: $completed, ')
+          ..write('source: $source, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, localDate, startedAt, durationS, count, completed);
+  int get hashCode => Object.hash(
+    id,
+    localDate,
+    startedAt,
+    durationS,
+    count,
+    completed,
+    source,
+    updatedAt,
+    deletedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1092,7 +1258,10 @@ class SimranSession extends DataClass implements Insertable<SimranSession> {
           other.startedAt == this.startedAt &&
           other.durationS == this.durationS &&
           other.count == this.count &&
-          other.completed == this.completed);
+          other.completed == this.completed &&
+          other.source == this.source &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt);
 }
 
 class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
@@ -1102,6 +1271,9 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
   final Value<int> durationS;
   final Value<int> count;
   final Value<bool> completed;
+  final Value<SittingSource> source;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
   final Value<int> rowid;
   const SimranSessionsCompanion({
     this.id = const Value.absent(),
@@ -1110,6 +1282,9 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
     this.durationS = const Value.absent(),
     this.count = const Value.absent(),
     this.completed = const Value.absent(),
+    this.source = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SimranSessionsCompanion.insert({
@@ -1119,11 +1294,16 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
     required int durationS,
     this.count = const Value.absent(),
     this.completed = const Value.absent(),
+    required SittingSource source,
+    required DateTime updatedAt,
+    this.deletedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        localDate = Value(localDate),
        startedAt = Value(startedAt),
-       durationS = Value(durationS);
+       durationS = Value(durationS),
+       source = Value(source),
+       updatedAt = Value(updatedAt);
   static Insertable<SimranSession> custom({
     Expression<String>? id,
     Expression<String>? localDate,
@@ -1131,6 +1311,9 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
     Expression<int>? durationS,
     Expression<int>? count,
     Expression<bool>? completed,
+    Expression<String>? source,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1140,6 +1323,9 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
       if (durationS != null) 'duration_s': durationS,
       if (count != null) 'count': count,
       if (completed != null) 'completed': completed,
+      if (source != null) 'source': source,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1151,6 +1337,9 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
     Value<int>? durationS,
     Value<int>? count,
     Value<bool>? completed,
+    Value<SittingSource>? source,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
     Value<int>? rowid,
   }) {
     return SimranSessionsCompanion(
@@ -1160,6 +1349,9 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
       durationS: durationS ?? this.durationS,
       count: count ?? this.count,
       completed: completed ?? this.completed,
+      source: source ?? this.source,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1185,6 +1377,17 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
     if (completed.present) {
       map['completed'] = Variable<bool>(completed.value);
     }
+    if (source.present) {
+      map['source'] = Variable<String>(
+        $SimranSessionsTable.$convertersource.toSql(source.value),
+      );
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1200,6 +1403,9 @@ class SimranSessionsCompanion extends UpdateCompanion<SimranSession> {
           ..write('durationS: $durationS, ')
           ..write('count: $count, ')
           ..write('completed: $completed, ')
+          ..write('source: $source, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1220,67 +1426,6 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _baniIdMeta = const VerificationMeta('baniId');
-  @override
-  late final GeneratedColumn<String> baniId = GeneratedColumn<String>(
-    'bani_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _minutesMeta = const VerificationMeta(
-    'minutes',
-  );
-  @override
-  late final GeneratedColumn<int> minutes = GeneratedColumn<int>(
-    'minutes',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _timesPerDayMeta = const VerificationMeta(
-    'timesPerDay',
-  );
-  @override
-  late final GeneratedColumn<int> timesPerDay = GeneratedColumn<int>(
-    'times_per_day',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(1),
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<GoalDuration, String>
-  durationType = GeneratedColumn<String>(
-    'duration_type',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  ).withConverter<GoalDuration>($GoalsTable.$converterdurationType);
-  static const VerificationMeta _daysMeta = const VerificationMeta('days');
-  @override
-  late final GeneratedColumn<int> days = GeneratedColumn<int>(
-    'days',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _untilDateMeta = const VerificationMeta(
-    'untilDate',
-  );
-  @override
-  late final GeneratedColumn<String> untilDate = GeneratedColumn<String>(
-    'until_date',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
   static const VerificationMeta _startDateMeta = const VerificationMeta(
     'startDate',
   );
@@ -1292,40 +1437,16 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _reminderTimeMeta = const VerificationMeta(
-    'reminderTime',
+  static const VerificationMeta _completedOnMeta = const VerificationMeta(
+    'completedOn',
   );
   @override
-  late final GeneratedColumn<String> reminderTime = GeneratedColumn<String>(
-    'reminder_time',
+  late final GeneratedColumn<String> completedOn = GeneratedColumn<String>(
+    'completed_on',
     aliasedName,
     true,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
-  );
-  static const VerificationMeta _endedOnMeta = const VerificationMeta(
-    'endedOn',
-  );
-  @override
-  late final GeneratedColumn<String> endedOn = GeneratedColumn<String>(
-    'ended_on',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _activeMeta = const VerificationMeta('active');
-  @override
-  late final GeneratedColumn<bool> active = GeneratedColumn<bool>(
-    'active',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("active" IN (0, 1))',
-    ),
-    defaultValue: const Constant(true),
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -1352,16 +1473,8 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    baniId,
-    minutes,
-    timesPerDay,
-    durationType,
-    days,
-    untilDate,
     startDate,
-    reminderTime,
-    endedOn,
-    active,
+    completedOn,
     createdAt,
     updatedAt,
   ];
@@ -1382,41 +1495,6 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('bani_id')) {
-      context.handle(
-        _baniIdMeta,
-        baniId.isAcceptableOrUnknown(data['bani_id']!, _baniIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_baniIdMeta);
-    }
-    if (data.containsKey('minutes')) {
-      context.handle(
-        _minutesMeta,
-        minutes.isAcceptableOrUnknown(data['minutes']!, _minutesMeta),
-      );
-    }
-    if (data.containsKey('times_per_day')) {
-      context.handle(
-        _timesPerDayMeta,
-        timesPerDay.isAcceptableOrUnknown(
-          data['times_per_day']!,
-          _timesPerDayMeta,
-        ),
-      );
-    }
-    if (data.containsKey('days')) {
-      context.handle(
-        _daysMeta,
-        days.isAcceptableOrUnknown(data['days']!, _daysMeta),
-      );
-    }
-    if (data.containsKey('until_date')) {
-      context.handle(
-        _untilDateMeta,
-        untilDate.isAcceptableOrUnknown(data['until_date']!, _untilDateMeta),
-      );
-    }
     if (data.containsKey('start_date')) {
       context.handle(
         _startDateMeta,
@@ -1425,25 +1503,13 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     } else if (isInserting) {
       context.missing(_startDateMeta);
     }
-    if (data.containsKey('reminder_time')) {
+    if (data.containsKey('completed_on')) {
       context.handle(
-        _reminderTimeMeta,
-        reminderTime.isAcceptableOrUnknown(
-          data['reminder_time']!,
-          _reminderTimeMeta,
+        _completedOnMeta,
+        completedOn.isAcceptableOrUnknown(
+          data['completed_on']!,
+          _completedOnMeta,
         ),
-      );
-    }
-    if (data.containsKey('ended_on')) {
-      context.handle(
-        _endedOnMeta,
-        endedOn.isAcceptableOrUnknown(data['ended_on']!, _endedOnMeta),
-      );
-    }
-    if (data.containsKey('active')) {
-      context.handle(
-        _activeMeta,
-        active.isAcceptableOrUnknown(data['active']!, _activeMeta),
       );
     }
     if (data.containsKey('created_at')) {
@@ -1475,48 +1541,14 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      baniId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}bani_id'],
-      )!,
-      minutes: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}minutes'],
-      ),
-      timesPerDay: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}times_per_day'],
-      )!,
-      durationType: $GoalsTable.$converterdurationType.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}duration_type'],
-        )!,
-      ),
-      days: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}days'],
-      ),
-      untilDate: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}until_date'],
-      ),
       startDate: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}start_date'],
       )!,
-      reminderTime: attachedDatabase.typeMapping.read(
+      completedOn: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}reminder_time'],
+        data['${effectivePrefix}completed_on'],
       ),
-      endedOn: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}ended_on'],
-      ),
-      active: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}active'],
-      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -1532,52 +1564,20 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
   $GoalsTable createAlias(String alias) {
     return $GoalsTable(attachedDatabase, alias);
   }
-
-  static JsonTypeConverter2<GoalDuration, String, String>
-  $converterdurationType = const EnumNameConverter<GoalDuration>(
-    GoalDuration.values,
-  );
 }
 
 class Goal extends DataClass implements Insertable<Goal> {
   final String id;
-  final String baniId;
-
-  /// How many minutes a sitting is, for a Naam Simran goal (design 47).
-  /// Null for a bani, which is counted in paath.
-  final int? minutes;
-  final int timesPerDay;
-  final GoalDuration durationType;
-  final int? days;
-  final String? untilDate;
   final String startDate;
-  final String? reminderTime;
 
-  /// The last day this goal asked anything of, when somebody stopped it early.
-  ///
-  /// Stopping a goal archives it rather than deleting it, because the diary is
-  /// a record of days that happened: a goal kept from the 1st to the 22nd and
-  /// then stopped leaves those twenty-two days exactly as they were, met or
-  /// missed. Deleting the row took its ticks with it and rewrote the month.
-  final String? endedOn;
-
-  /// Whether it still appears in the live list. An archived goal is inactive
-  /// and carries [endedOn]; the two move together.
-  final bool active;
+  /// The first blank day (BG1, BG2). Null while the goal is active.
+  final String? completedOn;
   final DateTime createdAt;
   final DateTime updatedAt;
   const Goal({
     required this.id,
-    required this.baniId,
-    this.minutes,
-    required this.timesPerDay,
-    required this.durationType,
-    this.days,
-    this.untilDate,
     required this.startDate,
-    this.reminderTime,
-    this.endedOn,
-    required this.active,
+    this.completedOn,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -1585,30 +1585,10 @@ class Goal extends DataClass implements Insertable<Goal> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['bani_id'] = Variable<String>(baniId);
-    if (!nullToAbsent || minutes != null) {
-      map['minutes'] = Variable<int>(minutes);
-    }
-    map['times_per_day'] = Variable<int>(timesPerDay);
-    {
-      map['duration_type'] = Variable<String>(
-        $GoalsTable.$converterdurationType.toSql(durationType),
-      );
-    }
-    if (!nullToAbsent || days != null) {
-      map['days'] = Variable<int>(days);
-    }
-    if (!nullToAbsent || untilDate != null) {
-      map['until_date'] = Variable<String>(untilDate);
-    }
     map['start_date'] = Variable<String>(startDate);
-    if (!nullToAbsent || reminderTime != null) {
-      map['reminder_time'] = Variable<String>(reminderTime);
+    if (!nullToAbsent || completedOn != null) {
+      map['completed_on'] = Variable<String>(completedOn);
     }
-    if (!nullToAbsent || endedOn != null) {
-      map['ended_on'] = Variable<String>(endedOn);
-    }
-    map['active'] = Variable<bool>(active);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -1617,24 +1597,10 @@ class Goal extends DataClass implements Insertable<Goal> {
   GoalsCompanion toCompanion(bool nullToAbsent) {
     return GoalsCompanion(
       id: Value(id),
-      baniId: Value(baniId),
-      minutes: minutes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(minutes),
-      timesPerDay: Value(timesPerDay),
-      durationType: Value(durationType),
-      days: days == null && nullToAbsent ? const Value.absent() : Value(days),
-      untilDate: untilDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(untilDate),
       startDate: Value(startDate),
-      reminderTime: reminderTime == null && nullToAbsent
+      completedOn: completedOn == null && nullToAbsent
           ? const Value.absent()
-          : Value(reminderTime),
-      endedOn: endedOn == null && nullToAbsent
-          ? const Value.absent()
-          : Value(endedOn),
-      active: Value(active),
+          : Value(completedOn),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -1647,18 +1613,8 @@ class Goal extends DataClass implements Insertable<Goal> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Goal(
       id: serializer.fromJson<String>(json['id']),
-      baniId: serializer.fromJson<String>(json['baniId']),
-      minutes: serializer.fromJson<int?>(json['minutes']),
-      timesPerDay: serializer.fromJson<int>(json['timesPerDay']),
-      durationType: $GoalsTable.$converterdurationType.fromJson(
-        serializer.fromJson<String>(json['durationType']),
-      ),
-      days: serializer.fromJson<int?>(json['days']),
-      untilDate: serializer.fromJson<String?>(json['untilDate']),
       startDate: serializer.fromJson<String>(json['startDate']),
-      reminderTime: serializer.fromJson<String?>(json['reminderTime']),
-      endedOn: serializer.fromJson<String?>(json['endedOn']),
-      active: serializer.fromJson<bool>(json['active']),
+      completedOn: serializer.fromJson<String?>(json['completedOn']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -1668,18 +1624,8 @@ class Goal extends DataClass implements Insertable<Goal> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'baniId': serializer.toJson<String>(baniId),
-      'minutes': serializer.toJson<int?>(minutes),
-      'timesPerDay': serializer.toJson<int>(timesPerDay),
-      'durationType': serializer.toJson<String>(
-        $GoalsTable.$converterdurationType.toJson(durationType),
-      ),
-      'days': serializer.toJson<int?>(days),
-      'untilDate': serializer.toJson<String?>(untilDate),
       'startDate': serializer.toJson<String>(startDate),
-      'reminderTime': serializer.toJson<String?>(reminderTime),
-      'endedOn': serializer.toJson<String?>(endedOn),
-      'active': serializer.toJson<bool>(active),
+      'completedOn': serializer.toJson<String?>(completedOn),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -1687,52 +1633,24 @@ class Goal extends DataClass implements Insertable<Goal> {
 
   Goal copyWith({
     String? id,
-    String? baniId,
-    Value<int?> minutes = const Value.absent(),
-    int? timesPerDay,
-    GoalDuration? durationType,
-    Value<int?> days = const Value.absent(),
-    Value<String?> untilDate = const Value.absent(),
     String? startDate,
-    Value<String?> reminderTime = const Value.absent(),
-    Value<String?> endedOn = const Value.absent(),
-    bool? active,
+    Value<String?> completedOn = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => Goal(
     id: id ?? this.id,
-    baniId: baniId ?? this.baniId,
-    minutes: minutes.present ? minutes.value : this.minutes,
-    timesPerDay: timesPerDay ?? this.timesPerDay,
-    durationType: durationType ?? this.durationType,
-    days: days.present ? days.value : this.days,
-    untilDate: untilDate.present ? untilDate.value : this.untilDate,
     startDate: startDate ?? this.startDate,
-    reminderTime: reminderTime.present ? reminderTime.value : this.reminderTime,
-    endedOn: endedOn.present ? endedOn.value : this.endedOn,
-    active: active ?? this.active,
+    completedOn: completedOn.present ? completedOn.value : this.completedOn,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
   Goal copyWithCompanion(GoalsCompanion data) {
     return Goal(
       id: data.id.present ? data.id.value : this.id,
-      baniId: data.baniId.present ? data.baniId.value : this.baniId,
-      minutes: data.minutes.present ? data.minutes.value : this.minutes,
-      timesPerDay: data.timesPerDay.present
-          ? data.timesPerDay.value
-          : this.timesPerDay,
-      durationType: data.durationType.present
-          ? data.durationType.value
-          : this.durationType,
-      days: data.days.present ? data.days.value : this.days,
-      untilDate: data.untilDate.present ? data.untilDate.value : this.untilDate,
       startDate: data.startDate.present ? data.startDate.value : this.startDate,
-      reminderTime: data.reminderTime.present
-          ? data.reminderTime.value
-          : this.reminderTime,
-      endedOn: data.endedOn.present ? data.endedOn.value : this.endedOn,
-      active: data.active.present ? data.active.value : this.active,
+      completedOn: data.completedOn.present
+          ? data.completedOn.value
+          : this.completedOn,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -1742,16 +1660,8 @@ class Goal extends DataClass implements Insertable<Goal> {
   String toString() {
     return (StringBuffer('Goal(')
           ..write('id: $id, ')
-          ..write('baniId: $baniId, ')
-          ..write('minutes: $minutes, ')
-          ..write('timesPerDay: $timesPerDay, ')
-          ..write('durationType: $durationType, ')
-          ..write('days: $days, ')
-          ..write('untilDate: $untilDate, ')
           ..write('startDate: $startDate, ')
-          ..write('reminderTime: $reminderTime, ')
-          ..write('endedOn: $endedOn, ')
-          ..write('active: $active, ')
+          ..write('completedOn: $completedOn, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -1759,120 +1669,57 @@ class Goal extends DataClass implements Insertable<Goal> {
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    baniId,
-    minutes,
-    timesPerDay,
-    durationType,
-    days,
-    untilDate,
-    startDate,
-    reminderTime,
-    endedOn,
-    active,
-    createdAt,
-    updatedAt,
-  );
+  int get hashCode =>
+      Object.hash(id, startDate, completedOn, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Goal &&
           other.id == this.id &&
-          other.baniId == this.baniId &&
-          other.minutes == this.minutes &&
-          other.timesPerDay == this.timesPerDay &&
-          other.durationType == this.durationType &&
-          other.days == this.days &&
-          other.untilDate == this.untilDate &&
           other.startDate == this.startDate &&
-          other.reminderTime == this.reminderTime &&
-          other.endedOn == this.endedOn &&
-          other.active == this.active &&
+          other.completedOn == this.completedOn &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
 
 class GoalsCompanion extends UpdateCompanion<Goal> {
   final Value<String> id;
-  final Value<String> baniId;
-  final Value<int?> minutes;
-  final Value<int> timesPerDay;
-  final Value<GoalDuration> durationType;
-  final Value<int?> days;
-  final Value<String?> untilDate;
   final Value<String> startDate;
-  final Value<String?> reminderTime;
-  final Value<String?> endedOn;
-  final Value<bool> active;
+  final Value<String?> completedOn;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<int> rowid;
   const GoalsCompanion({
     this.id = const Value.absent(),
-    this.baniId = const Value.absent(),
-    this.minutes = const Value.absent(),
-    this.timesPerDay = const Value.absent(),
-    this.durationType = const Value.absent(),
-    this.days = const Value.absent(),
-    this.untilDate = const Value.absent(),
     this.startDate = const Value.absent(),
-    this.reminderTime = const Value.absent(),
-    this.endedOn = const Value.absent(),
-    this.active = const Value.absent(),
+    this.completedOn = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   GoalsCompanion.insert({
     required String id,
-    required String baniId,
-    this.minutes = const Value.absent(),
-    this.timesPerDay = const Value.absent(),
-    required GoalDuration durationType,
-    this.days = const Value.absent(),
-    this.untilDate = const Value.absent(),
     required String startDate,
-    this.reminderTime = const Value.absent(),
-    this.endedOn = const Value.absent(),
-    this.active = const Value.absent(),
+    this.completedOn = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       baniId = Value(baniId),
-       durationType = Value(durationType),
        startDate = Value(startDate),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt);
   static Insertable<Goal> custom({
     Expression<String>? id,
-    Expression<String>? baniId,
-    Expression<int>? minutes,
-    Expression<int>? timesPerDay,
-    Expression<String>? durationType,
-    Expression<int>? days,
-    Expression<String>? untilDate,
     Expression<String>? startDate,
-    Expression<String>? reminderTime,
-    Expression<String>? endedOn,
-    Expression<bool>? active,
+    Expression<String>? completedOn,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (baniId != null) 'bani_id': baniId,
-      if (minutes != null) 'minutes': minutes,
-      if (timesPerDay != null) 'times_per_day': timesPerDay,
-      if (durationType != null) 'duration_type': durationType,
-      if (days != null) 'days': days,
-      if (untilDate != null) 'until_date': untilDate,
       if (startDate != null) 'start_date': startDate,
-      if (reminderTime != null) 'reminder_time': reminderTime,
-      if (endedOn != null) 'ended_on': endedOn,
-      if (active != null) 'active': active,
+      if (completedOn != null) 'completed_on': completedOn,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (rowid != null) 'rowid': rowid,
@@ -1881,32 +1728,16 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
 
   GoalsCompanion copyWith({
     Value<String>? id,
-    Value<String>? baniId,
-    Value<int?>? minutes,
-    Value<int>? timesPerDay,
-    Value<GoalDuration>? durationType,
-    Value<int?>? days,
-    Value<String?>? untilDate,
     Value<String>? startDate,
-    Value<String?>? reminderTime,
-    Value<String?>? endedOn,
-    Value<bool>? active,
+    Value<String?>? completedOn,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<int>? rowid,
   }) {
     return GoalsCompanion(
       id: id ?? this.id,
-      baniId: baniId ?? this.baniId,
-      minutes: minutes ?? this.minutes,
-      timesPerDay: timesPerDay ?? this.timesPerDay,
-      durationType: durationType ?? this.durationType,
-      days: days ?? this.days,
-      untilDate: untilDate ?? this.untilDate,
       startDate: startDate ?? this.startDate,
-      reminderTime: reminderTime ?? this.reminderTime,
-      endedOn: endedOn ?? this.endedOn,
-      active: active ?? this.active,
+      completedOn: completedOn ?? this.completedOn,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       rowid: rowid ?? this.rowid,
@@ -1919,37 +1750,11 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (baniId.present) {
-      map['bani_id'] = Variable<String>(baniId.value);
-    }
-    if (minutes.present) {
-      map['minutes'] = Variable<int>(minutes.value);
-    }
-    if (timesPerDay.present) {
-      map['times_per_day'] = Variable<int>(timesPerDay.value);
-    }
-    if (durationType.present) {
-      map['duration_type'] = Variable<String>(
-        $GoalsTable.$converterdurationType.toSql(durationType.value),
-      );
-    }
-    if (days.present) {
-      map['days'] = Variable<int>(days.value);
-    }
-    if (untilDate.present) {
-      map['until_date'] = Variable<String>(untilDate.value);
-    }
     if (startDate.present) {
       map['start_date'] = Variable<String>(startDate.value);
     }
-    if (reminderTime.present) {
-      map['reminder_time'] = Variable<String>(reminderTime.value);
-    }
-    if (endedOn.present) {
-      map['ended_on'] = Variable<String>(endedOn.value);
-    }
-    if (active.present) {
-      map['active'] = Variable<bool>(active.value);
+    if (completedOn.present) {
+      map['completed_on'] = Variable<String>(completedOn.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -1967,16 +1772,8 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   String toString() {
     return (StringBuffer('GoalsCompanion(')
           ..write('id: $id, ')
-          ..write('baniId: $baniId, ')
-          ..write('minutes: $minutes, ')
-          ..write('timesPerDay: $timesPerDay, ')
-          ..write('durationType: $durationType, ')
-          ..write('days: $days, ')
-          ..write('untilDate: $untilDate, ')
           ..write('startDate: $startDate, ')
-          ..write('reminderTime: $reminderTime, ')
-          ..write('endedOn: $endedOn, ')
-          ..write('active: $active, ')
+          ..write('completedOn: $completedOn, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('rowid: $rowid')
@@ -1985,12 +1782,12 @@ class GoalsCompanion extends UpdateCompanion<Goal> {
   }
 }
 
-class $GoalTicksTable extends GoalTicks
-    with TableInfo<$GoalTicksTable, GoalTick> {
+class $GoalItemsTable extends GoalItems
+    with TableInfo<$GoalItemsTable, GoalItem> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $GoalTicksTable(this.attachedDatabase, [this._alias]);
+  $GoalItemsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -2009,16 +1806,905 @@ class $GoalTicksTable extends GoalTicks
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _localDateMeta = const VerificationMeta(
-    'localDate',
+  static const VerificationMeta _seriesIdMeta = const VerificationMeta(
+    'seriesId',
   );
   @override
-  late final GeneratedColumn<String> localDate = GeneratedColumn<String>(
-    'local_date',
+  late final GeneratedColumn<String> seriesId = GeneratedColumn<String>(
+    'series_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<ItemType, String> itemType =
+      GeneratedColumn<String>(
+        'item_type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<ItemType>($GoalItemsTable.$converteritemType);
+  static const VerificationMeta _baniIdMeta = const VerificationMeta('baniId');
+  @override
+  late final GeneratedColumn<String> baniId = GeneratedColumn<String>(
+    'bani_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _timesPerDayMeta = const VerificationMeta(
+    'timesPerDay',
+  );
+  @override
+  late final GeneratedColumn<int> timesPerDay = GeneratedColumn<int>(
+    'times_per_day',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _simranMinutesMeta = const VerificationMeta(
+    'simranMinutes',
+  );
+  @override
+  late final GeneratedColumn<int> simranMinutes = GeneratedColumn<int>(
+    'simran_minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DurationType, String>
+  durationType = GeneratedColumn<String>(
+    'duration_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<DurationType>($GoalItemsTable.$converterdurationType);
+  static const VerificationMeta _durationDaysMeta = const VerificationMeta(
+    'durationDays',
+  );
+  @override
+  late final GeneratedColumn<int> durationDays = GeneratedColumn<int>(
+    'duration_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
+  @override
+  late final GeneratedColumn<String> startDate = GeneratedColumn<String>(
+    'start_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endDateMeta = const VerificationMeta(
+    'endDate',
+  );
+  @override
+  late final GeneratedColumn<String> endDate = GeneratedColumn<String>(
+    'end_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _removedOnMeta = const VerificationMeta(
+    'removedOn',
+  );
+  @override
+  late final GeneratedColumn<String> removedOn = GeneratedColumn<String>(
+    'removed_on',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reminderTimeMeta = const VerificationMeta(
+    'reminderTime',
+  );
+  @override
+  late final GeneratedColumn<String> reminderTime = GeneratedColumn<String>(
+    'reminder_time',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    goalId,
+    seriesId,
+    itemType,
+    baniId,
+    timesPerDay,
+    simranMinutes,
+    durationType,
+    durationDays,
+    startDate,
+    endDate,
+    removedOn,
+    reminderTime,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'goal_items';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<GoalItem> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('goal_id')) {
+      context.handle(
+        _goalIdMeta,
+        goalId.isAcceptableOrUnknown(data['goal_id']!, _goalIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_goalIdMeta);
+    }
+    if (data.containsKey('series_id')) {
+      context.handle(
+        _seriesIdMeta,
+        seriesId.isAcceptableOrUnknown(data['series_id']!, _seriesIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_seriesIdMeta);
+    }
+    if (data.containsKey('bani_id')) {
+      context.handle(
+        _baniIdMeta,
+        baniId.isAcceptableOrUnknown(data['bani_id']!, _baniIdMeta),
+      );
+    }
+    if (data.containsKey('times_per_day')) {
+      context.handle(
+        _timesPerDayMeta,
+        timesPerDay.isAcceptableOrUnknown(
+          data['times_per_day']!,
+          _timesPerDayMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_timesPerDayMeta);
+    }
+    if (data.containsKey('simran_minutes')) {
+      context.handle(
+        _simranMinutesMeta,
+        simranMinutes.isAcceptableOrUnknown(
+          data['simran_minutes']!,
+          _simranMinutesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('duration_days')) {
+      context.handle(
+        _durationDaysMeta,
+        durationDays.isAcceptableOrUnknown(
+          data['duration_days']!,
+          _durationDaysMeta,
+        ),
+      );
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('end_date')) {
+      context.handle(
+        _endDateMeta,
+        endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta),
+      );
+    }
+    if (data.containsKey('removed_on')) {
+      context.handle(
+        _removedOnMeta,
+        removedOn.isAcceptableOrUnknown(data['removed_on']!, _removedOnMeta),
+      );
+    }
+    if (data.containsKey('reminder_time')) {
+      context.handle(
+        _reminderTimeMeta,
+        reminderTime.isAcceptableOrUnknown(
+          data['reminder_time']!,
+          _reminderTimeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GoalItem map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GoalItem(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      goalId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}goal_id'],
+      )!,
+      seriesId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}series_id'],
+      )!,
+      itemType: $GoalItemsTable.$converteritemType.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}item_type'],
+        )!,
+      ),
+      baniId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}bani_id'],
+      ),
+      timesPerDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}times_per_day'],
+      )!,
+      simranMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}simran_minutes'],
+      ),
+      durationType: $GoalItemsTable.$converterdurationType.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}duration_type'],
+        )!,
+      ),
+      durationDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_days'],
+      ),
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_date'],
+      )!,
+      endDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}end_date'],
+      ),
+      removedOn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}removed_on'],
+      ),
+      reminderTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reminder_time'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $GoalItemsTable createAlias(String alias) {
+    return $GoalItemsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<ItemType, String> $converteritemType = const UpperSnake(
+    ItemType.values,
+  );
+  static TypeConverter<DurationType, String> $converterdurationType =
+      const UpperSnake(DurationType.values);
+}
+
+class GoalItem extends DataClass implements Insertable<GoalItem> {
+  final String id;
+  final String goalId;
+
+  /// Equals [id] on the first row of a series; a target edit copies it (GI6).
+  final String seriesId;
+  final ItemType itemType;
+  final String? baniId;
+  final int timesPerDay;
+  final int? simranMinutes;
+  final DurationType durationType;
+  final int? durationDays;
+  final String startDate;
+  final String? endDate;
+  final String? removedOn;
+
+  /// `HH:mm`, local. Null means the reminder is off (RM1).
+  final String? reminderTime;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const GoalItem({
+    required this.id,
+    required this.goalId,
+    required this.seriesId,
+    required this.itemType,
+    this.baniId,
+    required this.timesPerDay,
+    this.simranMinutes,
+    required this.durationType,
+    this.durationDays,
+    required this.startDate,
+    this.endDate,
+    this.removedOn,
+    this.reminderTime,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['goal_id'] = Variable<String>(goalId);
+    map['series_id'] = Variable<String>(seriesId);
+    {
+      map['item_type'] = Variable<String>(
+        $GoalItemsTable.$converteritemType.toSql(itemType),
+      );
+    }
+    if (!nullToAbsent || baniId != null) {
+      map['bani_id'] = Variable<String>(baniId);
+    }
+    map['times_per_day'] = Variable<int>(timesPerDay);
+    if (!nullToAbsent || simranMinutes != null) {
+      map['simran_minutes'] = Variable<int>(simranMinutes);
+    }
+    {
+      map['duration_type'] = Variable<String>(
+        $GoalItemsTable.$converterdurationType.toSql(durationType),
+      );
+    }
+    if (!nullToAbsent || durationDays != null) {
+      map['duration_days'] = Variable<int>(durationDays);
+    }
+    map['start_date'] = Variable<String>(startDate);
+    if (!nullToAbsent || endDate != null) {
+      map['end_date'] = Variable<String>(endDate);
+    }
+    if (!nullToAbsent || removedOn != null) {
+      map['removed_on'] = Variable<String>(removedOn);
+    }
+    if (!nullToAbsent || reminderTime != null) {
+      map['reminder_time'] = Variable<String>(reminderTime);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  GoalItemsCompanion toCompanion(bool nullToAbsent) {
+    return GoalItemsCompanion(
+      id: Value(id),
+      goalId: Value(goalId),
+      seriesId: Value(seriesId),
+      itemType: Value(itemType),
+      baniId: baniId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(baniId),
+      timesPerDay: Value(timesPerDay),
+      simranMinutes: simranMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(simranMinutes),
+      durationType: Value(durationType),
+      durationDays: durationDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(durationDays),
+      startDate: Value(startDate),
+      endDate: endDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endDate),
+      removedOn: removedOn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(removedOn),
+      reminderTime: reminderTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reminderTime),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory GoalItem.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GoalItem(
+      id: serializer.fromJson<String>(json['id']),
+      goalId: serializer.fromJson<String>(json['goalId']),
+      seriesId: serializer.fromJson<String>(json['seriesId']),
+      itemType: serializer.fromJson<ItemType>(json['itemType']),
+      baniId: serializer.fromJson<String?>(json['baniId']),
+      timesPerDay: serializer.fromJson<int>(json['timesPerDay']),
+      simranMinutes: serializer.fromJson<int?>(json['simranMinutes']),
+      durationType: serializer.fromJson<DurationType>(json['durationType']),
+      durationDays: serializer.fromJson<int?>(json['durationDays']),
+      startDate: serializer.fromJson<String>(json['startDate']),
+      endDate: serializer.fromJson<String?>(json['endDate']),
+      removedOn: serializer.fromJson<String?>(json['removedOn']),
+      reminderTime: serializer.fromJson<String?>(json['reminderTime']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'goalId': serializer.toJson<String>(goalId),
+      'seriesId': serializer.toJson<String>(seriesId),
+      'itemType': serializer.toJson<ItemType>(itemType),
+      'baniId': serializer.toJson<String?>(baniId),
+      'timesPerDay': serializer.toJson<int>(timesPerDay),
+      'simranMinutes': serializer.toJson<int?>(simranMinutes),
+      'durationType': serializer.toJson<DurationType>(durationType),
+      'durationDays': serializer.toJson<int?>(durationDays),
+      'startDate': serializer.toJson<String>(startDate),
+      'endDate': serializer.toJson<String?>(endDate),
+      'removedOn': serializer.toJson<String?>(removedOn),
+      'reminderTime': serializer.toJson<String?>(reminderTime),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  GoalItem copyWith({
+    String? id,
+    String? goalId,
+    String? seriesId,
+    ItemType? itemType,
+    Value<String?> baniId = const Value.absent(),
+    int? timesPerDay,
+    Value<int?> simranMinutes = const Value.absent(),
+    DurationType? durationType,
+    Value<int?> durationDays = const Value.absent(),
+    String? startDate,
+    Value<String?> endDate = const Value.absent(),
+    Value<String?> removedOn = const Value.absent(),
+    Value<String?> reminderTime = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => GoalItem(
+    id: id ?? this.id,
+    goalId: goalId ?? this.goalId,
+    seriesId: seriesId ?? this.seriesId,
+    itemType: itemType ?? this.itemType,
+    baniId: baniId.present ? baniId.value : this.baniId,
+    timesPerDay: timesPerDay ?? this.timesPerDay,
+    simranMinutes: simranMinutes.present
+        ? simranMinutes.value
+        : this.simranMinutes,
+    durationType: durationType ?? this.durationType,
+    durationDays: durationDays.present ? durationDays.value : this.durationDays,
+    startDate: startDate ?? this.startDate,
+    endDate: endDate.present ? endDate.value : this.endDate,
+    removedOn: removedOn.present ? removedOn.value : this.removedOn,
+    reminderTime: reminderTime.present ? reminderTime.value : this.reminderTime,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  GoalItem copyWithCompanion(GoalItemsCompanion data) {
+    return GoalItem(
+      id: data.id.present ? data.id.value : this.id,
+      goalId: data.goalId.present ? data.goalId.value : this.goalId,
+      seriesId: data.seriesId.present ? data.seriesId.value : this.seriesId,
+      itemType: data.itemType.present ? data.itemType.value : this.itemType,
+      baniId: data.baniId.present ? data.baniId.value : this.baniId,
+      timesPerDay: data.timesPerDay.present
+          ? data.timesPerDay.value
+          : this.timesPerDay,
+      simranMinutes: data.simranMinutes.present
+          ? data.simranMinutes.value
+          : this.simranMinutes,
+      durationType: data.durationType.present
+          ? data.durationType.value
+          : this.durationType,
+      durationDays: data.durationDays.present
+          ? data.durationDays.value
+          : this.durationDays,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      removedOn: data.removedOn.present ? data.removedOn.value : this.removedOn,
+      reminderTime: data.reminderTime.present
+          ? data.reminderTime.value
+          : this.reminderTime,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GoalItem(')
+          ..write('id: $id, ')
+          ..write('goalId: $goalId, ')
+          ..write('seriesId: $seriesId, ')
+          ..write('itemType: $itemType, ')
+          ..write('baniId: $baniId, ')
+          ..write('timesPerDay: $timesPerDay, ')
+          ..write('simranMinutes: $simranMinutes, ')
+          ..write('durationType: $durationType, ')
+          ..write('durationDays: $durationDays, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('removedOn: $removedOn, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    goalId,
+    seriesId,
+    itemType,
+    baniId,
+    timesPerDay,
+    simranMinutes,
+    durationType,
+    durationDays,
+    startDate,
+    endDate,
+    removedOn,
+    reminderTime,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GoalItem &&
+          other.id == this.id &&
+          other.goalId == this.goalId &&
+          other.seriesId == this.seriesId &&
+          other.itemType == this.itemType &&
+          other.baniId == this.baniId &&
+          other.timesPerDay == this.timesPerDay &&
+          other.simranMinutes == this.simranMinutes &&
+          other.durationType == this.durationType &&
+          other.durationDays == this.durationDays &&
+          other.startDate == this.startDate &&
+          other.endDate == this.endDate &&
+          other.removedOn == this.removedOn &&
+          other.reminderTime == this.reminderTime &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class GoalItemsCompanion extends UpdateCompanion<GoalItem> {
+  final Value<String> id;
+  final Value<String> goalId;
+  final Value<String> seriesId;
+  final Value<ItemType> itemType;
+  final Value<String?> baniId;
+  final Value<int> timesPerDay;
+  final Value<int?> simranMinutes;
+  final Value<DurationType> durationType;
+  final Value<int?> durationDays;
+  final Value<String> startDate;
+  final Value<String?> endDate;
+  final Value<String?> removedOn;
+  final Value<String?> reminderTime;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const GoalItemsCompanion({
+    this.id = const Value.absent(),
+    this.goalId = const Value.absent(),
+    this.seriesId = const Value.absent(),
+    this.itemType = const Value.absent(),
+    this.baniId = const Value.absent(),
+    this.timesPerDay = const Value.absent(),
+    this.simranMinutes = const Value.absent(),
+    this.durationType = const Value.absent(),
+    this.durationDays = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.endDate = const Value.absent(),
+    this.removedOn = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GoalItemsCompanion.insert({
+    required String id,
+    required String goalId,
+    required String seriesId,
+    required ItemType itemType,
+    this.baniId = const Value.absent(),
+    required int timesPerDay,
+    this.simranMinutes = const Value.absent(),
+    required DurationType durationType,
+    this.durationDays = const Value.absent(),
+    required String startDate,
+    this.endDate = const Value.absent(),
+    this.removedOn = const Value.absent(),
+    this.reminderTime = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       goalId = Value(goalId),
+       seriesId = Value(seriesId),
+       itemType = Value(itemType),
+       timesPerDay = Value(timesPerDay),
+       durationType = Value(durationType),
+       startDate = Value(startDate),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<GoalItem> custom({
+    Expression<String>? id,
+    Expression<String>? goalId,
+    Expression<String>? seriesId,
+    Expression<String>? itemType,
+    Expression<String>? baniId,
+    Expression<int>? timesPerDay,
+    Expression<int>? simranMinutes,
+    Expression<String>? durationType,
+    Expression<int>? durationDays,
+    Expression<String>? startDate,
+    Expression<String>? endDate,
+    Expression<String>? removedOn,
+    Expression<String>? reminderTime,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (goalId != null) 'goal_id': goalId,
+      if (seriesId != null) 'series_id': seriesId,
+      if (itemType != null) 'item_type': itemType,
+      if (baniId != null) 'bani_id': baniId,
+      if (timesPerDay != null) 'times_per_day': timesPerDay,
+      if (simranMinutes != null) 'simran_minutes': simranMinutes,
+      if (durationType != null) 'duration_type': durationType,
+      if (durationDays != null) 'duration_days': durationDays,
+      if (startDate != null) 'start_date': startDate,
+      if (endDate != null) 'end_date': endDate,
+      if (removedOn != null) 'removed_on': removedOn,
+      if (reminderTime != null) 'reminder_time': reminderTime,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GoalItemsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? goalId,
+    Value<String>? seriesId,
+    Value<ItemType>? itemType,
+    Value<String?>? baniId,
+    Value<int>? timesPerDay,
+    Value<int?>? simranMinutes,
+    Value<DurationType>? durationType,
+    Value<int?>? durationDays,
+    Value<String>? startDate,
+    Value<String?>? endDate,
+    Value<String?>? removedOn,
+    Value<String?>? reminderTime,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return GoalItemsCompanion(
+      id: id ?? this.id,
+      goalId: goalId ?? this.goalId,
+      seriesId: seriesId ?? this.seriesId,
+      itemType: itemType ?? this.itemType,
+      baniId: baniId ?? this.baniId,
+      timesPerDay: timesPerDay ?? this.timesPerDay,
+      simranMinutes: simranMinutes ?? this.simranMinutes,
+      durationType: durationType ?? this.durationType,
+      durationDays: durationDays ?? this.durationDays,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      removedOn: removedOn ?? this.removedOn,
+      reminderTime: reminderTime ?? this.reminderTime,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (goalId.present) {
+      map['goal_id'] = Variable<String>(goalId.value);
+    }
+    if (seriesId.present) {
+      map['series_id'] = Variable<String>(seriesId.value);
+    }
+    if (itemType.present) {
+      map['item_type'] = Variable<String>(
+        $GoalItemsTable.$converteritemType.toSql(itemType.value),
+      );
+    }
+    if (baniId.present) {
+      map['bani_id'] = Variable<String>(baniId.value);
+    }
+    if (timesPerDay.present) {
+      map['times_per_day'] = Variable<int>(timesPerDay.value);
+    }
+    if (simranMinutes.present) {
+      map['simran_minutes'] = Variable<int>(simranMinutes.value);
+    }
+    if (durationType.present) {
+      map['duration_type'] = Variable<String>(
+        $GoalItemsTable.$converterdurationType.toSql(durationType.value),
+      );
+    }
+    if (durationDays.present) {
+      map['duration_days'] = Variable<int>(durationDays.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<String>(startDate.value);
+    }
+    if (endDate.present) {
+      map['end_date'] = Variable<String>(endDate.value);
+    }
+    if (removedOn.present) {
+      map['removed_on'] = Variable<String>(removedOn.value);
+    }
+    if (reminderTime.present) {
+      map['reminder_time'] = Variable<String>(reminderTime.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GoalItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('goalId: $goalId, ')
+          ..write('seriesId: $seriesId, ')
+          ..write('itemType: $itemType, ')
+          ..write('baniId: $baniId, ')
+          ..write('timesPerDay: $timesPerDay, ')
+          ..write('simranMinutes: $simranMinutes, ')
+          ..write('durationType: $durationType, ')
+          ..write('durationDays: $durationDays, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('removedOn: $removedOn, ')
+          ..write('reminderTime: $reminderTime, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SangatOutboxTable extends SangatOutbox
+    with TableInfo<$SangatOutboxTable, OutboxRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SangatOutboxTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _kindMeta = const VerificationMeta('kind');
+  @override
+  late final GeneratedColumn<String> kind = GeneratedColumn<String>(
+    'kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _baniIdMeta = const VerificationMeta('baniId');
+  @override
+  late final GeneratedColumn<String> baniId = GeneratedColumn<String>(
+    'bani_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _durationSMeta = const VerificationMeta(
+    'durationS',
+  );
+  @override
+  late final GeneratedColumn<int> durationS = GeneratedColumn<int>(
+    'duration_s',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _sourceMeta = const VerificationMeta('source');
   @override
@@ -2038,16 +2724,64 @@ class $GoalTicksTable extends GoalTicks
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _retractedMeta = const VerificationMeta(
+    'retracted',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, goalId, localDate, source, at];
+  late final GeneratedColumn<bool> retracted = GeneratedColumn<bool>(
+    'retracted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("retracted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
+  @override
+  late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
+    'attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    kind,
+    baniId,
+    durationS,
+    source,
+    at,
+    retracted,
+    attempts,
+    createdAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'goal_ticks';
+  static const String $name = 'sangat_outbox';
   @override
   VerificationContext validateIntegrity(
-    Insertable<GoalTick> instance, {
+    Insertable<OutboxRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -2057,21 +2791,25 @@ class $GoalTicksTable extends GoalTicks
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('goal_id')) {
+    if (data.containsKey('kind')) {
       context.handle(
-        _goalIdMeta,
-        goalId.isAcceptableOrUnknown(data['goal_id']!, _goalIdMeta),
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
       );
     } else if (isInserting) {
-      context.missing(_goalIdMeta);
+      context.missing(_kindMeta);
     }
-    if (data.containsKey('local_date')) {
+    if (data.containsKey('bani_id')) {
       context.handle(
-        _localDateMeta,
-        localDate.isAcceptableOrUnknown(data['local_date']!, _localDateMeta),
+        _baniIdMeta,
+        baniId.isAcceptableOrUnknown(data['bani_id']!, _baniIdMeta),
       );
-    } else if (isInserting) {
-      context.missing(_localDateMeta);
+    }
+    if (data.containsKey('duration_s')) {
+      context.handle(
+        _durationSMeta,
+        durationS.isAcceptableOrUnknown(data['duration_s']!, _durationSMeta),
+      );
     }
     if (data.containsKey('source')) {
       context.handle(
@@ -2086,27 +2824,51 @@ class $GoalTicksTable extends GoalTicks
     } else if (isInserting) {
       context.missing(_atMeta);
     }
+    if (data.containsKey('retracted')) {
+      context.handle(
+        _retractedMeta,
+        retracted.isAcceptableOrUnknown(data['retracted']!, _retractedMeta),
+      );
+    }
+    if (data.containsKey('attempts')) {
+      context.handle(
+        _attemptsMeta,
+        attempts.isAcceptableOrUnknown(data['attempts']!, _attemptsMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {id, retracted};
   @override
-  GoalTick map(Map<String, dynamic> data, {String? tablePrefix}) {
+  OutboxRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return GoalTick(
+    return OutboxRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      goalId: attachedDatabase.typeMapping.read(
+      kind: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}goal_id'],
+        data['${effectivePrefix}kind'],
       )!,
-      localDate: attachedDatabase.typeMapping.read(
+      baniId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}local_date'],
-      )!,
+        data['${effectivePrefix}bani_id'],
+      ),
+      durationS: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration_s'],
+      ),
       source: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}source'],
@@ -2115,60 +2877,107 @@ class $GoalTicksTable extends GoalTicks
         DriftSqlType.dateTime,
         data['${effectivePrefix}at'],
       )!,
+      retracted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}retracted'],
+      )!,
+      attempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attempts'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
   @override
-  $GoalTicksTable createAlias(String alias) {
-    return $GoalTicksTable(attachedDatabase, alias);
+  $SangatOutboxTable createAlias(String alias) {
+    return $SangatOutboxTable(attachedDatabase, alias);
   }
 }
 
-class GoalTick extends DataClass implements Insertable<GoalTick> {
+class OutboxRow extends DataClass implements Insertable<OutboxRow> {
+  /// The completion's or sitting's id.
   final String id;
-  final String goalId;
-  final String localDate;
+
+  /// `BANI` or `SIMRAN`.
+  final String kind;
+  final String? baniId;
+  final int? durationS;
+
+  /// `READER`, `AUDIO`, `DIARY`, `TIMER`, …
   final String source;
   final DateTime at;
-  const GoalTick({
+
+  /// True when this row takes back an earlier one (Diary −, CT5).
+  final bool retracted;
+  final int attempts;
+  final DateTime createdAt;
+  const OutboxRow({
     required this.id,
-    required this.goalId,
-    required this.localDate,
+    required this.kind,
+    this.baniId,
+    this.durationS,
     required this.source,
     required this.at,
+    required this.retracted,
+    required this.attempts,
+    required this.createdAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['goal_id'] = Variable<String>(goalId);
-    map['local_date'] = Variable<String>(localDate);
+    map['kind'] = Variable<String>(kind);
+    if (!nullToAbsent || baniId != null) {
+      map['bani_id'] = Variable<String>(baniId);
+    }
+    if (!nullToAbsent || durationS != null) {
+      map['duration_s'] = Variable<int>(durationS);
+    }
     map['source'] = Variable<String>(source);
     map['at'] = Variable<DateTime>(at);
+    map['retracted'] = Variable<bool>(retracted);
+    map['attempts'] = Variable<int>(attempts);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
-  GoalTicksCompanion toCompanion(bool nullToAbsent) {
-    return GoalTicksCompanion(
+  SangatOutboxCompanion toCompanion(bool nullToAbsent) {
+    return SangatOutboxCompanion(
       id: Value(id),
-      goalId: Value(goalId),
-      localDate: Value(localDate),
+      kind: Value(kind),
+      baniId: baniId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(baniId),
+      durationS: durationS == null && nullToAbsent
+          ? const Value.absent()
+          : Value(durationS),
       source: Value(source),
       at: Value(at),
+      retracted: Value(retracted),
+      attempts: Value(attempts),
+      createdAt: Value(createdAt),
     );
   }
 
-  factory GoalTick.fromJson(
+  factory OutboxRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return GoalTick(
+    return OutboxRow(
       id: serializer.fromJson<String>(json['id']),
-      goalId: serializer.fromJson<String>(json['goalId']),
-      localDate: serializer.fromJson<String>(json['localDate']),
+      kind: serializer.fromJson<String>(json['kind']),
+      baniId: serializer.fromJson<String?>(json['baniId']),
+      durationS: serializer.fromJson<int?>(json['durationS']),
       source: serializer.fromJson<String>(json['source']),
       at: serializer.fromJson<DateTime>(json['at']),
+      retracted: serializer.fromJson<bool>(json['retracted']),
+      attempts: serializer.fromJson<int>(json['attempts']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -2176,595 +2985,64 @@ class GoalTick extends DataClass implements Insertable<GoalTick> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'goalId': serializer.toJson<String>(goalId),
-      'localDate': serializer.toJson<String>(localDate),
+      'kind': serializer.toJson<String>(kind),
+      'baniId': serializer.toJson<String?>(baniId),
+      'durationS': serializer.toJson<int?>(durationS),
       'source': serializer.toJson<String>(source),
       'at': serializer.toJson<DateTime>(at),
+      'retracted': serializer.toJson<bool>(retracted),
+      'attempts': serializer.toJson<int>(attempts),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
-  GoalTick copyWith({
+  OutboxRow copyWith({
     String? id,
-    String? goalId,
-    String? localDate,
+    String? kind,
+    Value<String?> baniId = const Value.absent(),
+    Value<int?> durationS = const Value.absent(),
     String? source,
     DateTime? at,
-  }) => GoalTick(
+    bool? retracted,
+    int? attempts,
+    DateTime? createdAt,
+  }) => OutboxRow(
     id: id ?? this.id,
-    goalId: goalId ?? this.goalId,
-    localDate: localDate ?? this.localDate,
+    kind: kind ?? this.kind,
+    baniId: baniId.present ? baniId.value : this.baniId,
+    durationS: durationS.present ? durationS.value : this.durationS,
     source: source ?? this.source,
     at: at ?? this.at,
+    retracted: retracted ?? this.retracted,
+    attempts: attempts ?? this.attempts,
+    createdAt: createdAt ?? this.createdAt,
   );
-  GoalTick copyWithCompanion(GoalTicksCompanion data) {
-    return GoalTick(
+  OutboxRow copyWithCompanion(SangatOutboxCompanion data) {
+    return OutboxRow(
       id: data.id.present ? data.id.value : this.id,
-      goalId: data.goalId.present ? data.goalId.value : this.goalId,
-      localDate: data.localDate.present ? data.localDate.value : this.localDate,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      baniId: data.baniId.present ? data.baniId.value : this.baniId,
+      durationS: data.durationS.present ? data.durationS.value : this.durationS,
       source: data.source.present ? data.source.value : this.source,
       at: data.at.present ? data.at.value : this.at,
+      retracted: data.retracted.present ? data.retracted.value : this.retracted,
+      attempts: data.attempts.present ? data.attempts.value : this.attempts,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('GoalTick(')
+    return (StringBuffer('OutboxRow(')
           ..write('id: $id, ')
-          ..write('goalId: $goalId, ')
-          ..write('localDate: $localDate, ')
-          ..write('source: $source, ')
-          ..write('at: $at')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, goalId, localDate, source, at);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is GoalTick &&
-          other.id == this.id &&
-          other.goalId == this.goalId &&
-          other.localDate == this.localDate &&
-          other.source == this.source &&
-          other.at == this.at);
-}
-
-class GoalTicksCompanion extends UpdateCompanion<GoalTick> {
-  final Value<String> id;
-  final Value<String> goalId;
-  final Value<String> localDate;
-  final Value<String> source;
-  final Value<DateTime> at;
-  final Value<int> rowid;
-  const GoalTicksCompanion({
-    this.id = const Value.absent(),
-    this.goalId = const Value.absent(),
-    this.localDate = const Value.absent(),
-    this.source = const Value.absent(),
-    this.at = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  GoalTicksCompanion.insert({
-    required String id,
-    required String goalId,
-    required String localDate,
-    required String source,
-    required DateTime at,
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       goalId = Value(goalId),
-       localDate = Value(localDate),
-       source = Value(source),
-       at = Value(at);
-  static Insertable<GoalTick> custom({
-    Expression<String>? id,
-    Expression<String>? goalId,
-    Expression<String>? localDate,
-    Expression<String>? source,
-    Expression<DateTime>? at,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (goalId != null) 'goal_id': goalId,
-      if (localDate != null) 'local_date': localDate,
-      if (source != null) 'source': source,
-      if (at != null) 'at': at,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  GoalTicksCompanion copyWith({
-    Value<String>? id,
-    Value<String>? goalId,
-    Value<String>? localDate,
-    Value<String>? source,
-    Value<DateTime>? at,
-    Value<int>? rowid,
-  }) {
-    return GoalTicksCompanion(
-      id: id ?? this.id,
-      goalId: goalId ?? this.goalId,
-      localDate: localDate ?? this.localDate,
-      source: source ?? this.source,
-      at: at ?? this.at,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (goalId.present) {
-      map['goal_id'] = Variable<String>(goalId.value);
-    }
-    if (localDate.present) {
-      map['local_date'] = Variable<String>(localDate.value);
-    }
-    if (source.present) {
-      map['source'] = Variable<String>(source.value);
-    }
-    if (at.present) {
-      map['at'] = Variable<DateTime>(at.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('GoalTicksCompanion(')
-          ..write('id: $id, ')
-          ..write('goalId: $goalId, ')
-          ..write('localDate: $localDate, ')
+          ..write('kind: $kind, ')
+          ..write('baniId: $baniId, ')
+          ..write('durationS: $durationS, ')
           ..write('source: $source, ')
           ..write('at: $at, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $RemindersTable extends Reminders
-    with TableInfo<$RemindersTable, Reminder> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $RemindersTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<ReminderTarget, String>
-  targetType = GeneratedColumn<String>(
-    'target_type',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  ).withConverter<ReminderTarget>($RemindersTable.$convertertargetType);
-  static const VerificationMeta _targetIdMeta = const VerificationMeta(
-    'targetId',
-  );
-  @override
-  late final GeneratedColumn<String> targetId = GeneratedColumn<String>(
-    'target_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<ReminderMode, String> mode =
-      GeneratedColumn<String>(
-        'mode',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: true,
-      ).withConverter<ReminderMode>($RemindersTable.$convertermode);
-  static const VerificationMeta _anchorMeta = const VerificationMeta('anchor');
-  @override
-  late final GeneratedColumn<String> anchor = GeneratedColumn<String>(
-    'anchor',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _offsetMinMeta = const VerificationMeta(
-    'offsetMin',
-  );
-  @override
-  late final GeneratedColumn<int> offsetMin = GeneratedColumn<int>(
-    'offset_min',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _timeHhmmMeta = const VerificationMeta(
-    'timeHhmm',
-  );
-  @override
-  late final GeneratedColumn<String> timeHhmm = GeneratedColumn<String>(
-    'time_hhmm',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _daysMaskMeta = const VerificationMeta(
-    'daysMask',
-  );
-  @override
-  late final GeneratedColumn<int> daysMask = GeneratedColumn<int>(
-    'days_mask',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0x7F),
-  );
-  static const VerificationMeta _slotOverrideMeta = const VerificationMeta(
-    'slotOverride',
-  );
-  @override
-  late final GeneratedColumn<String> slotOverride = GeneratedColumn<String>(
-    'slot_override',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
-    'updatedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
-    'updated_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    targetType,
-    targetId,
-    mode,
-    anchor,
-    offsetMin,
-    timeHhmm,
-    daysMask,
-    slotOverride,
-    updatedAt,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'reminders';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<Reminder> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    if (data.containsKey('target_id')) {
-      context.handle(
-        _targetIdMeta,
-        targetId.isAcceptableOrUnknown(data['target_id']!, _targetIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_targetIdMeta);
-    }
-    if (data.containsKey('anchor')) {
-      context.handle(
-        _anchorMeta,
-        anchor.isAcceptableOrUnknown(data['anchor']!, _anchorMeta),
-      );
-    }
-    if (data.containsKey('offset_min')) {
-      context.handle(
-        _offsetMinMeta,
-        offsetMin.isAcceptableOrUnknown(data['offset_min']!, _offsetMinMeta),
-      );
-    }
-    if (data.containsKey('time_hhmm')) {
-      context.handle(
-        _timeHhmmMeta,
-        timeHhmm.isAcceptableOrUnknown(data['time_hhmm']!, _timeHhmmMeta),
-      );
-    }
-    if (data.containsKey('days_mask')) {
-      context.handle(
-        _daysMaskMeta,
-        daysMask.isAcceptableOrUnknown(data['days_mask']!, _daysMaskMeta),
-      );
-    }
-    if (data.containsKey('slot_override')) {
-      context.handle(
-        _slotOverrideMeta,
-        slotOverride.isAcceptableOrUnknown(
-          data['slot_override']!,
-          _slotOverrideMeta,
-        ),
-      );
-    }
-    if (data.containsKey('updated_at')) {
-      context.handle(
-        _updatedAtMeta,
-        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_updatedAtMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  Reminder map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Reminder(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}id'],
-      )!,
-      targetType: $RemindersTable.$convertertargetType.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}target_type'],
-        )!,
-      ),
-      targetId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}target_id'],
-      )!,
-      mode: $RemindersTable.$convertermode.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}mode'],
-        )!,
-      ),
-      anchor: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}anchor'],
-      ),
-      offsetMin: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}offset_min'],
-      ),
-      timeHhmm: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}time_hhmm'],
-      ),
-      daysMask: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}days_mask'],
-      )!,
-      slotOverride: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}slot_override'],
-      ),
-      updatedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}updated_at'],
-      )!,
-    );
-  }
-
-  @override
-  $RemindersTable createAlias(String alias) {
-    return $RemindersTable(attachedDatabase, alias);
-  }
-
-  static JsonTypeConverter2<ReminderTarget, String, String>
-  $convertertargetType = const EnumNameConverter<ReminderTarget>(
-    ReminderTarget.values,
-  );
-  static JsonTypeConverter2<ReminderMode, String, String> $convertermode =
-      const EnumNameConverter<ReminderMode>(ReminderMode.values);
-}
-
-class Reminder extends DataClass implements Insertable<Reminder> {
-  final String id;
-  final ReminderTarget targetType;
-  final String targetId;
-  final ReminderMode mode;
-  final String? anchor;
-  final int? offsetMin;
-  final String? timeHhmm;
-  final int daysMask;
-  final String? slotOverride;
-  final DateTime updatedAt;
-  const Reminder({
-    required this.id,
-    required this.targetType,
-    required this.targetId,
-    required this.mode,
-    this.anchor,
-    this.offsetMin,
-    this.timeHhmm,
-    required this.daysMask,
-    this.slotOverride,
-    required this.updatedAt,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    {
-      map['target_type'] = Variable<String>(
-        $RemindersTable.$convertertargetType.toSql(targetType),
-      );
-    }
-    map['target_id'] = Variable<String>(targetId);
-    {
-      map['mode'] = Variable<String>(
-        $RemindersTable.$convertermode.toSql(mode),
-      );
-    }
-    if (!nullToAbsent || anchor != null) {
-      map['anchor'] = Variable<String>(anchor);
-    }
-    if (!nullToAbsent || offsetMin != null) {
-      map['offset_min'] = Variable<int>(offsetMin);
-    }
-    if (!nullToAbsent || timeHhmm != null) {
-      map['time_hhmm'] = Variable<String>(timeHhmm);
-    }
-    map['days_mask'] = Variable<int>(daysMask);
-    if (!nullToAbsent || slotOverride != null) {
-      map['slot_override'] = Variable<String>(slotOverride);
-    }
-    map['updated_at'] = Variable<DateTime>(updatedAt);
-    return map;
-  }
-
-  RemindersCompanion toCompanion(bool nullToAbsent) {
-    return RemindersCompanion(
-      id: Value(id),
-      targetType: Value(targetType),
-      targetId: Value(targetId),
-      mode: Value(mode),
-      anchor: anchor == null && nullToAbsent
-          ? const Value.absent()
-          : Value(anchor),
-      offsetMin: offsetMin == null && nullToAbsent
-          ? const Value.absent()
-          : Value(offsetMin),
-      timeHhmm: timeHhmm == null && nullToAbsent
-          ? const Value.absent()
-          : Value(timeHhmm),
-      daysMask: Value(daysMask),
-      slotOverride: slotOverride == null && nullToAbsent
-          ? const Value.absent()
-          : Value(slotOverride),
-      updatedAt: Value(updatedAt),
-    );
-  }
-
-  factory Reminder.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Reminder(
-      id: serializer.fromJson<String>(json['id']),
-      targetType: $RemindersTable.$convertertargetType.fromJson(
-        serializer.fromJson<String>(json['targetType']),
-      ),
-      targetId: serializer.fromJson<String>(json['targetId']),
-      mode: $RemindersTable.$convertermode.fromJson(
-        serializer.fromJson<String>(json['mode']),
-      ),
-      anchor: serializer.fromJson<String?>(json['anchor']),
-      offsetMin: serializer.fromJson<int?>(json['offsetMin']),
-      timeHhmm: serializer.fromJson<String?>(json['timeHhmm']),
-      daysMask: serializer.fromJson<int>(json['daysMask']),
-      slotOverride: serializer.fromJson<String?>(json['slotOverride']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'targetType': serializer.toJson<String>(
-        $RemindersTable.$convertertargetType.toJson(targetType),
-      ),
-      'targetId': serializer.toJson<String>(targetId),
-      'mode': serializer.toJson<String>(
-        $RemindersTable.$convertermode.toJson(mode),
-      ),
-      'anchor': serializer.toJson<String?>(anchor),
-      'offsetMin': serializer.toJson<int?>(offsetMin),
-      'timeHhmm': serializer.toJson<String?>(timeHhmm),
-      'daysMask': serializer.toJson<int>(daysMask),
-      'slotOverride': serializer.toJson<String?>(slotOverride),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
-    };
-  }
-
-  Reminder copyWith({
-    String? id,
-    ReminderTarget? targetType,
-    String? targetId,
-    ReminderMode? mode,
-    Value<String?> anchor = const Value.absent(),
-    Value<int?> offsetMin = const Value.absent(),
-    Value<String?> timeHhmm = const Value.absent(),
-    int? daysMask,
-    Value<String?> slotOverride = const Value.absent(),
-    DateTime? updatedAt,
-  }) => Reminder(
-    id: id ?? this.id,
-    targetType: targetType ?? this.targetType,
-    targetId: targetId ?? this.targetId,
-    mode: mode ?? this.mode,
-    anchor: anchor.present ? anchor.value : this.anchor,
-    offsetMin: offsetMin.present ? offsetMin.value : this.offsetMin,
-    timeHhmm: timeHhmm.present ? timeHhmm.value : this.timeHhmm,
-    daysMask: daysMask ?? this.daysMask,
-    slotOverride: slotOverride.present ? slotOverride.value : this.slotOverride,
-    updatedAt: updatedAt ?? this.updatedAt,
-  );
-  Reminder copyWithCompanion(RemindersCompanion data) {
-    return Reminder(
-      id: data.id.present ? data.id.value : this.id,
-      targetType: data.targetType.present
-          ? data.targetType.value
-          : this.targetType,
-      targetId: data.targetId.present ? data.targetId.value : this.targetId,
-      mode: data.mode.present ? data.mode.value : this.mode,
-      anchor: data.anchor.present ? data.anchor.value : this.anchor,
-      offsetMin: data.offsetMin.present ? data.offsetMin.value : this.offsetMin,
-      timeHhmm: data.timeHhmm.present ? data.timeHhmm.value : this.timeHhmm,
-      daysMask: data.daysMask.present ? data.daysMask.value : this.daysMask,
-      slotOverride: data.slotOverride.present
-          ? data.slotOverride.value
-          : this.slotOverride,
-      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('Reminder(')
-          ..write('id: $id, ')
-          ..write('targetType: $targetType, ')
-          ..write('targetId: $targetId, ')
-          ..write('mode: $mode, ')
-          ..write('anchor: $anchor, ')
-          ..write('offsetMin: $offsetMin, ')
-          ..write('timeHhmm: $timeHhmm, ')
-          ..write('daysMask: $daysMask, ')
-          ..write('slotOverride: $slotOverride, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('retracted: $retracted, ')
+          ..write('attempts: $attempts, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -2772,126 +3050,117 @@ class Reminder extends DataClass implements Insertable<Reminder> {
   @override
   int get hashCode => Object.hash(
     id,
-    targetType,
-    targetId,
-    mode,
-    anchor,
-    offsetMin,
-    timeHhmm,
-    daysMask,
-    slotOverride,
-    updatedAt,
+    kind,
+    baniId,
+    durationS,
+    source,
+    at,
+    retracted,
+    attempts,
+    createdAt,
   );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Reminder &&
+      (other is OutboxRow &&
           other.id == this.id &&
-          other.targetType == this.targetType &&
-          other.targetId == this.targetId &&
-          other.mode == this.mode &&
-          other.anchor == this.anchor &&
-          other.offsetMin == this.offsetMin &&
-          other.timeHhmm == this.timeHhmm &&
-          other.daysMask == this.daysMask &&
-          other.slotOverride == this.slotOverride &&
-          other.updatedAt == this.updatedAt);
+          other.kind == this.kind &&
+          other.baniId == this.baniId &&
+          other.durationS == this.durationS &&
+          other.source == this.source &&
+          other.at == this.at &&
+          other.retracted == this.retracted &&
+          other.attempts == this.attempts &&
+          other.createdAt == this.createdAt);
 }
 
-class RemindersCompanion extends UpdateCompanion<Reminder> {
+class SangatOutboxCompanion extends UpdateCompanion<OutboxRow> {
   final Value<String> id;
-  final Value<ReminderTarget> targetType;
-  final Value<String> targetId;
-  final Value<ReminderMode> mode;
-  final Value<String?> anchor;
-  final Value<int?> offsetMin;
-  final Value<String?> timeHhmm;
-  final Value<int> daysMask;
-  final Value<String?> slotOverride;
-  final Value<DateTime> updatedAt;
+  final Value<String> kind;
+  final Value<String?> baniId;
+  final Value<int?> durationS;
+  final Value<String> source;
+  final Value<DateTime> at;
+  final Value<bool> retracted;
+  final Value<int> attempts;
+  final Value<DateTime> createdAt;
   final Value<int> rowid;
-  const RemindersCompanion({
+  const SangatOutboxCompanion({
     this.id = const Value.absent(),
-    this.targetType = const Value.absent(),
-    this.targetId = const Value.absent(),
-    this.mode = const Value.absent(),
-    this.anchor = const Value.absent(),
-    this.offsetMin = const Value.absent(),
-    this.timeHhmm = const Value.absent(),
-    this.daysMask = const Value.absent(),
-    this.slotOverride = const Value.absent(),
-    this.updatedAt = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.baniId = const Value.absent(),
+    this.durationS = const Value.absent(),
+    this.source = const Value.absent(),
+    this.at = const Value.absent(),
+    this.retracted = const Value.absent(),
+    this.attempts = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  RemindersCompanion.insert({
+  SangatOutboxCompanion.insert({
     required String id,
-    required ReminderTarget targetType,
-    required String targetId,
-    required ReminderMode mode,
-    this.anchor = const Value.absent(),
-    this.offsetMin = const Value.absent(),
-    this.timeHhmm = const Value.absent(),
-    this.daysMask = const Value.absent(),
-    this.slotOverride = const Value.absent(),
-    required DateTime updatedAt,
+    required String kind,
+    this.baniId = const Value.absent(),
+    this.durationS = const Value.absent(),
+    required String source,
+    required DateTime at,
+    this.retracted = const Value.absent(),
+    this.attempts = const Value.absent(),
+    required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       targetType = Value(targetType),
-       targetId = Value(targetId),
-       mode = Value(mode),
-       updatedAt = Value(updatedAt);
-  static Insertable<Reminder> custom({
+       kind = Value(kind),
+       source = Value(source),
+       at = Value(at),
+       createdAt = Value(createdAt);
+  static Insertable<OutboxRow> custom({
     Expression<String>? id,
-    Expression<String>? targetType,
-    Expression<String>? targetId,
-    Expression<String>? mode,
-    Expression<String>? anchor,
-    Expression<int>? offsetMin,
-    Expression<String>? timeHhmm,
-    Expression<int>? daysMask,
-    Expression<String>? slotOverride,
-    Expression<DateTime>? updatedAt,
+    Expression<String>? kind,
+    Expression<String>? baniId,
+    Expression<int>? durationS,
+    Expression<String>? source,
+    Expression<DateTime>? at,
+    Expression<bool>? retracted,
+    Expression<int>? attempts,
+    Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (targetType != null) 'target_type': targetType,
-      if (targetId != null) 'target_id': targetId,
-      if (mode != null) 'mode': mode,
-      if (anchor != null) 'anchor': anchor,
-      if (offsetMin != null) 'offset_min': offsetMin,
-      if (timeHhmm != null) 'time_hhmm': timeHhmm,
-      if (daysMask != null) 'days_mask': daysMask,
-      if (slotOverride != null) 'slot_override': slotOverride,
-      if (updatedAt != null) 'updated_at': updatedAt,
+      if (kind != null) 'kind': kind,
+      if (baniId != null) 'bani_id': baniId,
+      if (durationS != null) 'duration_s': durationS,
+      if (source != null) 'source': source,
+      if (at != null) 'at': at,
+      if (retracted != null) 'retracted': retracted,
+      if (attempts != null) 'attempts': attempts,
+      if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
-  RemindersCompanion copyWith({
+  SangatOutboxCompanion copyWith({
     Value<String>? id,
-    Value<ReminderTarget>? targetType,
-    Value<String>? targetId,
-    Value<ReminderMode>? mode,
-    Value<String?>? anchor,
-    Value<int?>? offsetMin,
-    Value<String?>? timeHhmm,
-    Value<int>? daysMask,
-    Value<String?>? slotOverride,
-    Value<DateTime>? updatedAt,
+    Value<String>? kind,
+    Value<String?>? baniId,
+    Value<int?>? durationS,
+    Value<String>? source,
+    Value<DateTime>? at,
+    Value<bool>? retracted,
+    Value<int>? attempts,
+    Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
-    return RemindersCompanion(
+    return SangatOutboxCompanion(
       id: id ?? this.id,
-      targetType: targetType ?? this.targetType,
-      targetId: targetId ?? this.targetId,
-      mode: mode ?? this.mode,
-      anchor: anchor ?? this.anchor,
-      offsetMin: offsetMin ?? this.offsetMin,
-      timeHhmm: timeHhmm ?? this.timeHhmm,
-      daysMask: daysMask ?? this.daysMask,
-      slotOverride: slotOverride ?? this.slotOverride,
-      updatedAt: updatedAt ?? this.updatedAt,
+      kind: kind ?? this.kind,
+      baniId: baniId ?? this.baniId,
+      durationS: durationS ?? this.durationS,
+      source: source ?? this.source,
+      at: at ?? this.at,
+      retracted: retracted ?? this.retracted,
+      attempts: attempts ?? this.attempts,
+      createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2902,36 +3171,29 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (targetType.present) {
-      map['target_type'] = Variable<String>(
-        $RemindersTable.$convertertargetType.toSql(targetType.value),
-      );
+    if (kind.present) {
+      map['kind'] = Variable<String>(kind.value);
     }
-    if (targetId.present) {
-      map['target_id'] = Variable<String>(targetId.value);
+    if (baniId.present) {
+      map['bani_id'] = Variable<String>(baniId.value);
     }
-    if (mode.present) {
-      map['mode'] = Variable<String>(
-        $RemindersTable.$convertermode.toSql(mode.value),
-      );
+    if (durationS.present) {
+      map['duration_s'] = Variable<int>(durationS.value);
     }
-    if (anchor.present) {
-      map['anchor'] = Variable<String>(anchor.value);
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
     }
-    if (offsetMin.present) {
-      map['offset_min'] = Variable<int>(offsetMin.value);
+    if (at.present) {
+      map['at'] = Variable<DateTime>(at.value);
     }
-    if (timeHhmm.present) {
-      map['time_hhmm'] = Variable<String>(timeHhmm.value);
+    if (retracted.present) {
+      map['retracted'] = Variable<bool>(retracted.value);
     }
-    if (daysMask.present) {
-      map['days_mask'] = Variable<int>(daysMask.value);
+    if (attempts.present) {
+      map['attempts'] = Variable<int>(attempts.value);
     }
-    if (slotOverride.present) {
-      map['slot_override'] = Variable<String>(slotOverride.value);
-    }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -2941,17 +3203,16 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
 
   @override
   String toString() {
-    return (StringBuffer('RemindersCompanion(')
+    return (StringBuffer('SangatOutboxCompanion(')
           ..write('id: $id, ')
-          ..write('targetType: $targetType, ')
-          ..write('targetId: $targetId, ')
-          ..write('mode: $mode, ')
-          ..write('anchor: $anchor, ')
-          ..write('offsetMin: $offsetMin, ')
-          ..write('timeHhmm: $timeHhmm, ')
-          ..write('daysMask: $daysMask, ')
-          ..write('slotOverride: $slotOverride, ')
-          ..write('updatedAt: $updatedAt, ')
+          ..write('kind: $kind, ')
+          ..write('baniId: $baniId, ')
+          ..write('durationS: $durationS, ')
+          ..write('source: $source, ')
+          ..write('at: $at, ')
+          ..write('retracted: $retracted, ')
+          ..write('attempts: $attempts, ')
+          ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3409,8 +3670,8 @@ abstract class _$UserDb extends GeneratedDatabase {
   late final $CompletionsTable completions = $CompletionsTable(this);
   late final $SimranSessionsTable simranSessions = $SimranSessionsTable(this);
   late final $GoalsTable goals = $GoalsTable(this);
-  late final $GoalTicksTable goalTicks = $GoalTicksTable(this);
-  late final $RemindersTable reminders = $RemindersTable(this);
+  late final $GoalItemsTable goalItems = $GoalItemsTable(this);
+  late final $SangatOutboxTable sangatOutbox = $SangatOutboxTable(this);
   late final $GraceDaysTable graceDays = $GraceDaysTable(this);
   late final $EventReminderOverridesTable eventReminderOverrides =
       $EventReminderOverridesTable(this);
@@ -3423,8 +3684,8 @@ abstract class _$UserDb extends GeneratedDatabase {
     completions,
     simranSessions,
     goals,
-    goalTicks,
-    reminders,
+    goalItems,
+    sangatOutbox,
     graceDays,
     eventReminderOverrides,
   ];
@@ -3637,8 +3898,9 @@ typedef $$CompletionsTableCreateCompanionBuilder =
       required String baniId,
       required BaniSlotValue slot,
       required CompletionSource source,
-      Value<String?> goalId,
       required DateTime completedAt,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
 typedef $$CompletionsTableUpdateCompanionBuilder =
@@ -3648,8 +3910,9 @@ typedef $$CompletionsTableUpdateCompanionBuilder =
       Value<String> baniId,
       Value<BaniSlotValue> slot,
       Value<CompletionSource> source,
-      Value<String?> goalId,
       Value<DateTime> completedAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
 
@@ -3689,13 +3952,18 @@ class $$CompletionsTableFilterComposer
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
-  ColumnFilters<String> get goalId => $composableBuilder(
-    column: $table.goalId,
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<DateTime> get completedAt => $composableBuilder(
-    column: $table.completedAt,
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -3734,13 +4002,18 @@ class $$CompletionsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get goalId => $composableBuilder(
-    column: $table.goalId,
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
-    column: $table.completedAt,
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -3769,13 +4042,16 @@ class $$CompletionsTableAnnotationComposer
   GeneratedColumnWithTypeConverter<CompletionSource, String> get source =>
       $composableBuilder(column: $table.source, builder: (column) => column);
 
-  GeneratedColumn<String> get goalId =>
-      $composableBuilder(column: $table.goalId, builder: (column) => column);
-
   GeneratedColumn<DateTime> get completedAt => $composableBuilder(
     column: $table.completedAt,
     builder: (column) => column,
   );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 }
 
 class $$CompletionsTableTableManager
@@ -3811,8 +4087,9 @@ class $$CompletionsTableTableManager
                 Value<String> baniId = const Value.absent(),
                 Value<BaniSlotValue> slot = const Value.absent(),
                 Value<CompletionSource> source = const Value.absent(),
-                Value<String?> goalId = const Value.absent(),
                 Value<DateTime> completedAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CompletionsCompanion(
                 id: id,
@@ -3820,8 +4097,9 @@ class $$CompletionsTableTableManager
                 baniId: baniId,
                 slot: slot,
                 source: source,
-                goalId: goalId,
                 completedAt: completedAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3831,8 +4109,9 @@ class $$CompletionsTableTableManager
                 required String baniId,
                 required BaniSlotValue slot,
                 required CompletionSource source,
-                Value<String?> goalId = const Value.absent(),
                 required DateTime completedAt,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CompletionsCompanion.insert(
                 id: id,
@@ -3840,8 +4119,9 @@ class $$CompletionsTableTableManager
                 baniId: baniId,
                 slot: slot,
                 source: source,
-                goalId: goalId,
                 completedAt: completedAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -3883,6 +4163,9 @@ typedef $$SimranSessionsTableCreateCompanionBuilder =
       required int durationS,
       Value<int> count,
       Value<bool> completed,
+      required SittingSource source,
+      required DateTime updatedAt,
+      Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
 typedef $$SimranSessionsTableUpdateCompanionBuilder =
@@ -3893,6 +4176,9 @@ typedef $$SimranSessionsTableUpdateCompanionBuilder =
       Value<int> durationS,
       Value<int> count,
       Value<bool> completed,
+      Value<SittingSource> source,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
       Value<int> rowid,
     });
 
@@ -3932,6 +4218,22 @@ class $$SimranSessionsTableFilterComposer
 
   ColumnFilters<bool> get completed => $composableBuilder(
     column: $table.completed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SittingSource, SittingSource, String>
+  get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -3974,6 +4276,21 @@ class $$SimranSessionsTableOrderingComposer
     column: $table.completed,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$SimranSessionsTableAnnotationComposer
@@ -4002,6 +4319,15 @@ class $$SimranSessionsTableAnnotationComposer
 
   GeneratedColumn<bool> get completed =>
       $composableBuilder(column: $table.completed, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SittingSource, String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 }
 
 class $$SimranSessionsTableTableManager
@@ -4041,6 +4367,9 @@ class $$SimranSessionsTableTableManager
                 Value<int> durationS = const Value.absent(),
                 Value<int> count = const Value.absent(),
                 Value<bool> completed = const Value.absent(),
+                Value<SittingSource> source = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SimranSessionsCompanion(
                 id: id,
@@ -4049,6 +4378,9 @@ class $$SimranSessionsTableTableManager
                 durationS: durationS,
                 count: count,
                 completed: completed,
+                source: source,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -4059,6 +4391,9 @@ class $$SimranSessionsTableTableManager
                 required int durationS,
                 Value<int> count = const Value.absent(),
                 Value<bool> completed = const Value.absent(),
+                required SittingSource source,
+                required DateTime updatedAt,
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SimranSessionsCompanion.insert(
                 id: id,
@@ -4067,6 +4402,9 @@ class $$SimranSessionsTableTableManager
                 durationS: durationS,
                 count: count,
                 completed: completed,
+                source: source,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -4106,16 +4444,8 @@ typedef $$SimranSessionsTableProcessedTableManager =
 typedef $$GoalsTableCreateCompanionBuilder =
     GoalsCompanion Function({
       required String id,
-      required String baniId,
-      Value<int?> minutes,
-      Value<int> timesPerDay,
-      required GoalDuration durationType,
-      Value<int?> days,
-      Value<String?> untilDate,
       required String startDate,
-      Value<String?> reminderTime,
-      Value<String?> endedOn,
-      Value<bool> active,
+      Value<String?> completedOn,
       required DateTime createdAt,
       required DateTime updatedAt,
       Value<int> rowid,
@@ -4123,16 +4453,8 @@ typedef $$GoalsTableCreateCompanionBuilder =
 typedef $$GoalsTableUpdateCompanionBuilder =
     GoalsCompanion Function({
       Value<String> id,
-      Value<String> baniId,
-      Value<int?> minutes,
-      Value<int> timesPerDay,
-      Value<GoalDuration> durationType,
-      Value<int?> days,
-      Value<String?> untilDate,
       Value<String> startDate,
-      Value<String?> reminderTime,
-      Value<String?> endedOn,
-      Value<bool> active,
+      Value<String?> completedOn,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<int> rowid,
@@ -4151,54 +4473,13 @@ class $$GoalsTableFilterComposer extends Composer<_$UserDb, $GoalsTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get baniId => $composableBuilder(
-    column: $table.baniId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get minutes => $composableBuilder(
-    column: $table.minutes,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get timesPerDay => $composableBuilder(
-    column: $table.timesPerDay,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnWithTypeConverterFilters<GoalDuration, GoalDuration, String>
-  get durationType => $composableBuilder(
-    column: $table.durationType,
-    builder: (column) => ColumnWithTypeConverterFilters(column),
-  );
-
-  ColumnFilters<int> get days => $composableBuilder(
-    column: $table.days,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get untilDate => $composableBuilder(
-    column: $table.untilDate,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get startDate => $composableBuilder(
     column: $table.startDate,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get reminderTime => $composableBuilder(
-    column: $table.reminderTime,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get endedOn => $composableBuilder(
-    column: $table.endedOn,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get active => $composableBuilder(
-    column: $table.active,
+  ColumnFilters<String> get completedOn => $composableBuilder(
+    column: $table.completedOn,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4226,53 +4507,13 @@ class $$GoalsTableOrderingComposer extends Composer<_$UserDb, $GoalsTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get baniId => $composableBuilder(
-    column: $table.baniId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get minutes => $composableBuilder(
-    column: $table.minutes,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get timesPerDay => $composableBuilder(
-    column: $table.timesPerDay,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get durationType => $composableBuilder(
-    column: $table.durationType,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get days => $composableBuilder(
-    column: $table.days,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get untilDate => $composableBuilder(
-    column: $table.untilDate,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get startDate => $composableBuilder(
     column: $table.startDate,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get reminderTime => $composableBuilder(
-    column: $table.reminderTime,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get endedOn => $composableBuilder(
-    column: $table.endedOn,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get active => $composableBuilder(
-    column: $table.active,
+  ColumnOrderings<String> get completedOn => $composableBuilder(
+    column: $table.completedOn,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4298,42 +4539,13 @@ class $$GoalsTableAnnotationComposer extends Composer<_$UserDb, $GoalsTable> {
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get baniId =>
-      $composableBuilder(column: $table.baniId, builder: (column) => column);
-
-  GeneratedColumn<int> get minutes =>
-      $composableBuilder(column: $table.minutes, builder: (column) => column);
-
-  GeneratedColumn<int> get timesPerDay => $composableBuilder(
-    column: $table.timesPerDay,
-    builder: (column) => column,
-  );
-
-  GeneratedColumnWithTypeConverter<GoalDuration, String> get durationType =>
-      $composableBuilder(
-        column: $table.durationType,
-        builder: (column) => column,
-      );
-
-  GeneratedColumn<int> get days =>
-      $composableBuilder(column: $table.days, builder: (column) => column);
-
-  GeneratedColumn<String> get untilDate =>
-      $composableBuilder(column: $table.untilDate, builder: (column) => column);
-
   GeneratedColumn<String> get startDate =>
       $composableBuilder(column: $table.startDate, builder: (column) => column);
 
-  GeneratedColumn<String> get reminderTime => $composableBuilder(
-    column: $table.reminderTime,
+  GeneratedColumn<String> get completedOn => $composableBuilder(
+    column: $table.completedOn,
     builder: (column) => column,
   );
-
-  GeneratedColumn<String> get endedOn =>
-      $composableBuilder(column: $table.endedOn, builder: (column) => column);
-
-  GeneratedColumn<bool> get active =>
-      $composableBuilder(column: $table.active, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -4371,31 +4583,15 @@ class $$GoalsTableTableManager
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String> baniId = const Value.absent(),
-                Value<int?> minutes = const Value.absent(),
-                Value<int> timesPerDay = const Value.absent(),
-                Value<GoalDuration> durationType = const Value.absent(),
-                Value<int?> days = const Value.absent(),
-                Value<String?> untilDate = const Value.absent(),
                 Value<String> startDate = const Value.absent(),
-                Value<String?> reminderTime = const Value.absent(),
-                Value<String?> endedOn = const Value.absent(),
-                Value<bool> active = const Value.absent(),
+                Value<String?> completedOn = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GoalsCompanion(
                 id: id,
-                baniId: baniId,
-                minutes: minutes,
-                timesPerDay: timesPerDay,
-                durationType: durationType,
-                days: days,
-                untilDate: untilDate,
                 startDate: startDate,
-                reminderTime: reminderTime,
-                endedOn: endedOn,
-                active: active,
+                completedOn: completedOn,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 rowid: rowid,
@@ -4403,31 +4599,15 @@ class $$GoalsTableTableManager
           createCompanionCallback:
               ({
                 required String id,
-                required String baniId,
-                Value<int?> minutes = const Value.absent(),
-                Value<int> timesPerDay = const Value.absent(),
-                required GoalDuration durationType,
-                Value<int?> days = const Value.absent(),
-                Value<String?> untilDate = const Value.absent(),
                 required String startDate,
-                Value<String?> reminderTime = const Value.absent(),
-                Value<String?> endedOn = const Value.absent(),
-                Value<bool> active = const Value.absent(),
+                Value<String?> completedOn = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
                 Value<int> rowid = const Value.absent(),
               }) => GoalsCompanion.insert(
                 id: id,
-                baniId: baniId,
-                minutes: minutes,
-                timesPerDay: timesPerDay,
-                durationType: durationType,
-                days: days,
-                untilDate: untilDate,
                 startDate: startDate,
-                reminderTime: reminderTime,
-                endedOn: endedOn,
-                active: active,
+                completedOn: completedOn,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 rowid: rowid,
@@ -4459,28 +4639,48 @@ typedef $$GoalsTableProcessedTableManager =
       Goal,
       PrefetchHooks Function()
     >;
-typedef $$GoalTicksTableCreateCompanionBuilder =
-    GoalTicksCompanion Function({
+typedef $$GoalItemsTableCreateCompanionBuilder =
+    GoalItemsCompanion Function({
       required String id,
       required String goalId,
-      required String localDate,
-      required String source,
-      required DateTime at,
+      required String seriesId,
+      required ItemType itemType,
+      Value<String?> baniId,
+      required int timesPerDay,
+      Value<int?> simranMinutes,
+      required DurationType durationType,
+      Value<int?> durationDays,
+      required String startDate,
+      Value<String?> endDate,
+      Value<String?> removedOn,
+      Value<String?> reminderTime,
+      required DateTime createdAt,
+      required DateTime updatedAt,
       Value<int> rowid,
     });
-typedef $$GoalTicksTableUpdateCompanionBuilder =
-    GoalTicksCompanion Function({
+typedef $$GoalItemsTableUpdateCompanionBuilder =
+    GoalItemsCompanion Function({
       Value<String> id,
       Value<String> goalId,
-      Value<String> localDate,
-      Value<String> source,
-      Value<DateTime> at,
+      Value<String> seriesId,
+      Value<ItemType> itemType,
+      Value<String?> baniId,
+      Value<int> timesPerDay,
+      Value<int?> simranMinutes,
+      Value<DurationType> durationType,
+      Value<int?> durationDays,
+      Value<String> startDate,
+      Value<String?> endDate,
+      Value<String?> removedOn,
+      Value<String?> reminderTime,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
       Value<int> rowid,
     });
 
-class $$GoalTicksTableFilterComposer
-    extends Composer<_$UserDb, $GoalTicksTable> {
-  $$GoalTicksTableFilterComposer({
+class $$GoalItemsTableFilterComposer
+    extends Composer<_$UserDb, $GoalItemsTable> {
+  $$GoalItemsTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -4497,25 +4697,77 @@ class $$GoalTicksTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get localDate => $composableBuilder(
-    column: $table.localDate,
+  ColumnFilters<String> get seriesId => $composableBuilder(
+    column: $table.seriesId,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get source => $composableBuilder(
-    column: $table.source,
+  ColumnWithTypeConverterFilters<ItemType, ItemType, String> get itemType =>
+      $composableBuilder(
+        column: $table.itemType,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get baniId => $composableBuilder(
+    column: $table.baniId,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<DateTime> get at => $composableBuilder(
-    column: $table.at,
+  ColumnFilters<int> get timesPerDay => $composableBuilder(
+    column: $table.timesPerDay,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get simranMinutes => $composableBuilder(
+    column: $table.simranMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DurationType, DurationType, String>
+  get durationType => $composableBuilder(
+    column: $table.durationType,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get durationDays => $composableBuilder(
+    column: $table.durationDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get removedOn => $composableBuilder(
+    column: $table.removedOn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
 }
 
-class $$GoalTicksTableOrderingComposer
-    extends Composer<_$UserDb, $GoalTicksTable> {
-  $$GoalTicksTableOrderingComposer({
+class $$GoalItemsTableOrderingComposer
+    extends Composer<_$UserDb, $GoalItemsTable> {
+  $$GoalItemsTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -4532,25 +4784,75 @@ class $$GoalTicksTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get localDate => $composableBuilder(
-    column: $table.localDate,
+  ColumnOrderings<String> get seriesId => $composableBuilder(
+    column: $table.seriesId,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get source => $composableBuilder(
-    column: $table.source,
+  ColumnOrderings<String> get itemType => $composableBuilder(
+    column: $table.itemType,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<DateTime> get at => $composableBuilder(
-    column: $table.at,
+  ColumnOrderings<String> get baniId => $composableBuilder(
+    column: $table.baniId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get timesPerDay => $composableBuilder(
+    column: $table.timesPerDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get simranMinutes => $composableBuilder(
+    column: $table.simranMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get durationType => $composableBuilder(
+    column: $table.durationType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get durationDays => $composableBuilder(
+    column: $table.durationDays,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get removedOn => $composableBuilder(
+    column: $table.removedOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
   );
 }
 
-class $$GoalTicksTableAnnotationComposer
-    extends Composer<_$UserDb, $GoalTicksTable> {
-  $$GoalTicksTableAnnotationComposer({
+class $$GoalItemsTableAnnotationComposer
+    extends Composer<_$UserDb, $GoalItemsTable> {
+  $$GoalItemsTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -4563,79 +4865,160 @@ class $$GoalTicksTableAnnotationComposer
   GeneratedColumn<String> get goalId =>
       $composableBuilder(column: $table.goalId, builder: (column) => column);
 
-  GeneratedColumn<String> get localDate =>
-      $composableBuilder(column: $table.localDate, builder: (column) => column);
+  GeneratedColumn<String> get seriesId =>
+      $composableBuilder(column: $table.seriesId, builder: (column) => column);
 
-  GeneratedColumn<String> get source =>
-      $composableBuilder(column: $table.source, builder: (column) => column);
+  GeneratedColumnWithTypeConverter<ItemType, String> get itemType =>
+      $composableBuilder(column: $table.itemType, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get at =>
-      $composableBuilder(column: $table.at, builder: (column) => column);
+  GeneratedColumn<String> get baniId =>
+      $composableBuilder(column: $table.baniId, builder: (column) => column);
+
+  GeneratedColumn<int> get timesPerDay => $composableBuilder(
+    column: $table.timesPerDay,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get simranMinutes => $composableBuilder(
+    column: $table.simranMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DurationType, String> get durationType =>
+      $composableBuilder(
+        column: $table.durationType,
+        builder: (column) => column,
+      );
+
+  GeneratedColumn<int> get durationDays => $composableBuilder(
+    column: $table.durationDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<String> get endDate =>
+      $composableBuilder(column: $table.endDate, builder: (column) => column);
+
+  GeneratedColumn<String> get removedOn =>
+      $composableBuilder(column: $table.removedOn, builder: (column) => column);
+
+  GeneratedColumn<String> get reminderTime => $composableBuilder(
+    column: $table.reminderTime,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 }
 
-class $$GoalTicksTableTableManager
+class $$GoalItemsTableTableManager
     extends
         RootTableManager<
           _$UserDb,
-          $GoalTicksTable,
-          GoalTick,
-          $$GoalTicksTableFilterComposer,
-          $$GoalTicksTableOrderingComposer,
-          $$GoalTicksTableAnnotationComposer,
-          $$GoalTicksTableCreateCompanionBuilder,
-          $$GoalTicksTableUpdateCompanionBuilder,
-          (GoalTick, BaseReferences<_$UserDb, $GoalTicksTable, GoalTick>),
-          GoalTick,
+          $GoalItemsTable,
+          GoalItem,
+          $$GoalItemsTableFilterComposer,
+          $$GoalItemsTableOrderingComposer,
+          $$GoalItemsTableAnnotationComposer,
+          $$GoalItemsTableCreateCompanionBuilder,
+          $$GoalItemsTableUpdateCompanionBuilder,
+          (GoalItem, BaseReferences<_$UserDb, $GoalItemsTable, GoalItem>),
+          GoalItem,
           PrefetchHooks Function()
         > {
-  $$GoalTicksTableTableManager(_$UserDb db, $GoalTicksTable table)
+  $$GoalItemsTableTableManager(_$UserDb db, $GoalItemsTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$GoalTicksTableFilterComposer($db: db, $table: table),
+              $$GoalItemsTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$GoalTicksTableOrderingComposer($db: db, $table: table),
+              $$GoalItemsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$GoalTicksTableAnnotationComposer($db: db, $table: table),
+              $$GoalItemsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> goalId = const Value.absent(),
-                Value<String> localDate = const Value.absent(),
-                Value<String> source = const Value.absent(),
-                Value<DateTime> at = const Value.absent(),
+                Value<String> seriesId = const Value.absent(),
+                Value<ItemType> itemType = const Value.absent(),
+                Value<String?> baniId = const Value.absent(),
+                Value<int> timesPerDay = const Value.absent(),
+                Value<int?> simranMinutes = const Value.absent(),
+                Value<DurationType> durationType = const Value.absent(),
+                Value<int?> durationDays = const Value.absent(),
+                Value<String> startDate = const Value.absent(),
+                Value<String?> endDate = const Value.absent(),
+                Value<String?> removedOn = const Value.absent(),
+                Value<String?> reminderTime = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => GoalTicksCompanion(
+              }) => GoalItemsCompanion(
                 id: id,
                 goalId: goalId,
-                localDate: localDate,
-                source: source,
-                at: at,
+                seriesId: seriesId,
+                itemType: itemType,
+                baniId: baniId,
+                timesPerDay: timesPerDay,
+                simranMinutes: simranMinutes,
+                durationType: durationType,
+                durationDays: durationDays,
+                startDate: startDate,
+                endDate: endDate,
+                removedOn: removedOn,
+                reminderTime: reminderTime,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
                 required String goalId,
-                required String localDate,
-                required String source,
-                required DateTime at,
+                required String seriesId,
+                required ItemType itemType,
+                Value<String?> baniId = const Value.absent(),
+                required int timesPerDay,
+                Value<int?> simranMinutes = const Value.absent(),
+                required DurationType durationType,
+                Value<int?> durationDays = const Value.absent(),
+                required String startDate,
+                Value<String?> endDate = const Value.absent(),
+                Value<String?> removedOn = const Value.absent(),
+                Value<String?> reminderTime = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
                 Value<int> rowid = const Value.absent(),
-              }) => GoalTicksCompanion.insert(
+              }) => GoalItemsCompanion.insert(
                 id: id,
                 goalId: goalId,
-                localDate: localDate,
-                source: source,
-                at: at,
+                seriesId: seriesId,
+                itemType: itemType,
+                baniId: baniId,
+                timesPerDay: timesPerDay,
+                simranMinutes: simranMinutes,
+                durationType: durationType,
+                durationDays: durationDays,
+                startDate: startDate,
+                endDate: endDate,
+                removedOn: removedOn,
+                reminderTime: reminderTime,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$GoalTicksTable, GoalTick>(table),
-                  BaseReferences<_$UserDb, $GoalTicksTable, GoalTick>(
+                  e.readTable<$GoalItemsTable, GoalItem>(table),
+                  BaseReferences<_$UserDb, $GoalItemsTable, GoalItem>(
                     db,
                     table,
                     e,
@@ -4648,52 +5031,50 @@ class $$GoalTicksTableTableManager
       );
 }
 
-typedef $$GoalTicksTableProcessedTableManager =
+typedef $$GoalItemsTableProcessedTableManager =
     ProcessedTableManager<
       _$UserDb,
-      $GoalTicksTable,
-      GoalTick,
-      $$GoalTicksTableFilterComposer,
-      $$GoalTicksTableOrderingComposer,
-      $$GoalTicksTableAnnotationComposer,
-      $$GoalTicksTableCreateCompanionBuilder,
-      $$GoalTicksTableUpdateCompanionBuilder,
-      (GoalTick, BaseReferences<_$UserDb, $GoalTicksTable, GoalTick>),
-      GoalTick,
+      $GoalItemsTable,
+      GoalItem,
+      $$GoalItemsTableFilterComposer,
+      $$GoalItemsTableOrderingComposer,
+      $$GoalItemsTableAnnotationComposer,
+      $$GoalItemsTableCreateCompanionBuilder,
+      $$GoalItemsTableUpdateCompanionBuilder,
+      (GoalItem, BaseReferences<_$UserDb, $GoalItemsTable, GoalItem>),
+      GoalItem,
       PrefetchHooks Function()
     >;
-typedef $$RemindersTableCreateCompanionBuilder =
-    RemindersCompanion Function({
+typedef $$SangatOutboxTableCreateCompanionBuilder =
+    SangatOutboxCompanion Function({
       required String id,
-      required ReminderTarget targetType,
-      required String targetId,
-      required ReminderMode mode,
-      Value<String?> anchor,
-      Value<int?> offsetMin,
-      Value<String?> timeHhmm,
-      Value<int> daysMask,
-      Value<String?> slotOverride,
-      required DateTime updatedAt,
+      required String kind,
+      Value<String?> baniId,
+      Value<int?> durationS,
+      required String source,
+      required DateTime at,
+      Value<bool> retracted,
+      Value<int> attempts,
+      required DateTime createdAt,
       Value<int> rowid,
     });
-typedef $$RemindersTableUpdateCompanionBuilder =
-    RemindersCompanion Function({
+typedef $$SangatOutboxTableUpdateCompanionBuilder =
+    SangatOutboxCompanion Function({
       Value<String> id,
-      Value<ReminderTarget> targetType,
-      Value<String> targetId,
-      Value<ReminderMode> mode,
-      Value<String?> anchor,
-      Value<int?> offsetMin,
-      Value<String?> timeHhmm,
-      Value<int> daysMask,
-      Value<String?> slotOverride,
-      Value<DateTime> updatedAt,
+      Value<String> kind,
+      Value<String?> baniId,
+      Value<int?> durationS,
+      Value<String> source,
+      Value<DateTime> at,
+      Value<bool> retracted,
+      Value<int> attempts,
+      Value<DateTime> createdAt,
       Value<int> rowid,
     });
 
-class $$RemindersTableFilterComposer
-    extends Composer<_$UserDb, $RemindersTable> {
-  $$RemindersTableFilterComposer({
+class $$SangatOutboxTableFilterComposer
+    extends Composer<_$UserDb, $SangatOutboxTable> {
+  $$SangatOutboxTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -4705,57 +5086,50 @@ class $$RemindersTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnWithTypeConverterFilters<ReminderTarget, ReminderTarget, String>
-  get targetType => $composableBuilder(
-    column: $table.targetType,
-    builder: (column) => ColumnWithTypeConverterFilters(column),
-  );
-
-  ColumnFilters<String> get targetId => $composableBuilder(
-    column: $table.targetId,
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnWithTypeConverterFilters<ReminderMode, ReminderMode, String> get mode =>
-      $composableBuilder(
-        column: $table.mode,
-        builder: (column) => ColumnWithTypeConverterFilters(column),
-      );
-
-  ColumnFilters<String> get anchor => $composableBuilder(
-    column: $table.anchor,
+  ColumnFilters<String> get baniId => $composableBuilder(
+    column: $table.baniId,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get offsetMin => $composableBuilder(
-    column: $table.offsetMin,
+  ColumnFilters<int> get durationS => $composableBuilder(
+    column: $table.durationS,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get timeHhmm => $composableBuilder(
-    column: $table.timeHhmm,
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get daysMask => $composableBuilder(
-    column: $table.daysMask,
+  ColumnFilters<DateTime> get at => $composableBuilder(
+    column: $table.at,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get slotOverride => $composableBuilder(
-    column: $table.slotOverride,
+  ColumnFilters<bool> get retracted => $composableBuilder(
+    column: $table.retracted,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
-    column: $table.updatedAt,
+  ColumnFilters<int> get attempts => $composableBuilder(
+    column: $table.attempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 }
 
-class $$RemindersTableOrderingComposer
-    extends Composer<_$UserDb, $RemindersTable> {
-  $$RemindersTableOrderingComposer({
+class $$SangatOutboxTableOrderingComposer
+    extends Composer<_$UserDb, $SangatOutboxTable> {
+  $$SangatOutboxTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -4767,55 +5141,50 @@ class $$RemindersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get targetType => $composableBuilder(
-    column: $table.targetType,
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get targetId => $composableBuilder(
-    column: $table.targetId,
+  ColumnOrderings<String> get baniId => $composableBuilder(
+    column: $table.baniId,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get mode => $composableBuilder(
-    column: $table.mode,
+  ColumnOrderings<int> get durationS => $composableBuilder(
+    column: $table.durationS,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get anchor => $composableBuilder(
-    column: $table.anchor,
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get offsetMin => $composableBuilder(
-    column: $table.offsetMin,
+  ColumnOrderings<DateTime> get at => $composableBuilder(
+    column: $table.at,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get timeHhmm => $composableBuilder(
-    column: $table.timeHhmm,
+  ColumnOrderings<bool> get retracted => $composableBuilder(
+    column: $table.retracted,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get daysMask => $composableBuilder(
-    column: $table.daysMask,
+  ColumnOrderings<int> get attempts => $composableBuilder(
+    column: $table.attempts,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get slotOverride => $composableBuilder(
-    column: $table.slotOverride,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
-    column: $table.updatedAt,
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
 }
 
-class $$RemindersTableAnnotationComposer
-    extends Composer<_$UserDb, $RemindersTable> {
-  $$RemindersTableAnnotationComposer({
+class $$SangatOutboxTableAnnotationComposer
+    extends Composer<_$UserDb, $SangatOutboxTable> {
+  $$SangatOutboxTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -4825,122 +5194,110 @@ class $$RemindersTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumnWithTypeConverter<ReminderTarget, String> get targetType =>
-      $composableBuilder(
-        column: $table.targetType,
-        builder: (column) => column,
-      );
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
 
-  GeneratedColumn<String> get targetId =>
-      $composableBuilder(column: $table.targetId, builder: (column) => column);
+  GeneratedColumn<String> get baniId =>
+      $composableBuilder(column: $table.baniId, builder: (column) => column);
 
-  GeneratedColumnWithTypeConverter<ReminderMode, String> get mode =>
-      $composableBuilder(column: $table.mode, builder: (column) => column);
+  GeneratedColumn<int> get durationS =>
+      $composableBuilder(column: $table.durationS, builder: (column) => column);
 
-  GeneratedColumn<String> get anchor =>
-      $composableBuilder(column: $table.anchor, builder: (column) => column);
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
 
-  GeneratedColumn<int> get offsetMin =>
-      $composableBuilder(column: $table.offsetMin, builder: (column) => column);
+  GeneratedColumn<DateTime> get at =>
+      $composableBuilder(column: $table.at, builder: (column) => column);
 
-  GeneratedColumn<String> get timeHhmm =>
-      $composableBuilder(column: $table.timeHhmm, builder: (column) => column);
+  GeneratedColumn<bool> get retracted =>
+      $composableBuilder(column: $table.retracted, builder: (column) => column);
 
-  GeneratedColumn<int> get daysMask =>
-      $composableBuilder(column: $table.daysMask, builder: (column) => column);
+  GeneratedColumn<int> get attempts =>
+      $composableBuilder(column: $table.attempts, builder: (column) => column);
 
-  GeneratedColumn<String> get slotOverride => $composableBuilder(
-    column: $table.slotOverride,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<DateTime> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
-class $$RemindersTableTableManager
+class $$SangatOutboxTableTableManager
     extends
         RootTableManager<
           _$UserDb,
-          $RemindersTable,
-          Reminder,
-          $$RemindersTableFilterComposer,
-          $$RemindersTableOrderingComposer,
-          $$RemindersTableAnnotationComposer,
-          $$RemindersTableCreateCompanionBuilder,
-          $$RemindersTableUpdateCompanionBuilder,
-          (Reminder, BaseReferences<_$UserDb, $RemindersTable, Reminder>),
-          Reminder,
+          $SangatOutboxTable,
+          OutboxRow,
+          $$SangatOutboxTableFilterComposer,
+          $$SangatOutboxTableOrderingComposer,
+          $$SangatOutboxTableAnnotationComposer,
+          $$SangatOutboxTableCreateCompanionBuilder,
+          $$SangatOutboxTableUpdateCompanionBuilder,
+          (OutboxRow, BaseReferences<_$UserDb, $SangatOutboxTable, OutboxRow>),
+          OutboxRow,
           PrefetchHooks Function()
         > {
-  $$RemindersTableTableManager(_$UserDb db, $RemindersTable table)
+  $$SangatOutboxTableTableManager(_$UserDb db, $SangatOutboxTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$RemindersTableFilterComposer($db: db, $table: table),
+              $$SangatOutboxTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$RemindersTableOrderingComposer($db: db, $table: table),
+              $$SangatOutboxTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$RemindersTableAnnotationComposer($db: db, $table: table),
+              $$SangatOutboxTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<ReminderTarget> targetType = const Value.absent(),
-                Value<String> targetId = const Value.absent(),
-                Value<ReminderMode> mode = const Value.absent(),
-                Value<String?> anchor = const Value.absent(),
-                Value<int?> offsetMin = const Value.absent(),
-                Value<String?> timeHhmm = const Value.absent(),
-                Value<int> daysMask = const Value.absent(),
-                Value<String?> slotOverride = const Value.absent(),
-                Value<DateTime> updatedAt = const Value.absent(),
+                Value<String> kind = const Value.absent(),
+                Value<String?> baniId = const Value.absent(),
+                Value<int?> durationS = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<DateTime> at = const Value.absent(),
+                Value<bool> retracted = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => RemindersCompanion(
+              }) => SangatOutboxCompanion(
                 id: id,
-                targetType: targetType,
-                targetId: targetId,
-                mode: mode,
-                anchor: anchor,
-                offsetMin: offsetMin,
-                timeHhmm: timeHhmm,
-                daysMask: daysMask,
-                slotOverride: slotOverride,
-                updatedAt: updatedAt,
+                kind: kind,
+                baniId: baniId,
+                durationS: durationS,
+                source: source,
+                at: at,
+                retracted: retracted,
+                attempts: attempts,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
-                required ReminderTarget targetType,
-                required String targetId,
-                required ReminderMode mode,
-                Value<String?> anchor = const Value.absent(),
-                Value<int?> offsetMin = const Value.absent(),
-                Value<String?> timeHhmm = const Value.absent(),
-                Value<int> daysMask = const Value.absent(),
-                Value<String?> slotOverride = const Value.absent(),
-                required DateTime updatedAt,
+                required String kind,
+                Value<String?> baniId = const Value.absent(),
+                Value<int?> durationS = const Value.absent(),
+                required String source,
+                required DateTime at,
+                Value<bool> retracted = const Value.absent(),
+                Value<int> attempts = const Value.absent(),
+                required DateTime createdAt,
                 Value<int> rowid = const Value.absent(),
-              }) => RemindersCompanion.insert(
+              }) => SangatOutboxCompanion.insert(
                 id: id,
-                targetType: targetType,
-                targetId: targetId,
-                mode: mode,
-                anchor: anchor,
-                offsetMin: offsetMin,
-                timeHhmm: timeHhmm,
-                daysMask: daysMask,
-                slotOverride: slotOverride,
-                updatedAt: updatedAt,
+                kind: kind,
+                baniId: baniId,
+                durationS: durationS,
+                source: source,
+                at: at,
+                retracted: retracted,
+                attempts: attempts,
+                createdAt: createdAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$RemindersTable, Reminder>(table),
-                  BaseReferences<_$UserDb, $RemindersTable, Reminder>(
+                  e.readTable<$SangatOutboxTable, OutboxRow>(table),
+                  BaseReferences<_$UserDb, $SangatOutboxTable, OutboxRow>(
                     db,
                     table,
                     e,
@@ -4953,18 +5310,18 @@ class $$RemindersTableTableManager
       );
 }
 
-typedef $$RemindersTableProcessedTableManager =
+typedef $$SangatOutboxTableProcessedTableManager =
     ProcessedTableManager<
       _$UserDb,
-      $RemindersTable,
-      Reminder,
-      $$RemindersTableFilterComposer,
-      $$RemindersTableOrderingComposer,
-      $$RemindersTableAnnotationComposer,
-      $$RemindersTableCreateCompanionBuilder,
-      $$RemindersTableUpdateCompanionBuilder,
-      (Reminder, BaseReferences<_$UserDb, $RemindersTable, Reminder>),
-      Reminder,
+      $SangatOutboxTable,
+      OutboxRow,
+      $$SangatOutboxTableFilterComposer,
+      $$SangatOutboxTableOrderingComposer,
+      $$SangatOutboxTableAnnotationComposer,
+      $$SangatOutboxTableCreateCompanionBuilder,
+      $$SangatOutboxTableUpdateCompanionBuilder,
+      (OutboxRow, BaseReferences<_$UserDb, $SangatOutboxTable, OutboxRow>),
+      OutboxRow,
       PrefetchHooks Function()
     >;
 typedef $$GraceDaysTableCreateCompanionBuilder =
@@ -5299,10 +5656,10 @@ class $UserDbManager {
       $$SimranSessionsTableTableManager(_db, _db.simranSessions);
   $$GoalsTableTableManager get goals =>
       $$GoalsTableTableManager(_db, _db.goals);
-  $$GoalTicksTableTableManager get goalTicks =>
-      $$GoalTicksTableTableManager(_db, _db.goalTicks);
-  $$RemindersTableTableManager get reminders =>
-      $$RemindersTableTableManager(_db, _db.reminders);
+  $$GoalItemsTableTableManager get goalItems =>
+      $$GoalItemsTableTableManager(_db, _db.goalItems);
+  $$SangatOutboxTableTableManager get sangatOutbox =>
+      $$SangatOutboxTableTableManager(_db, _db.sangatOutbox);
   $$GraceDaysTableTableManager get graceDays =>
       $$GraceDaysTableTableManager(_db, _db.graceDays);
   $$EventReminderOverridesTableTableManager get eventReminderOverrides =>

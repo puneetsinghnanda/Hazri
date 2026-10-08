@@ -24,12 +24,8 @@ class AppSettings {
     this.elderMode = false,
     this.cityId = 'new_delhi',
     this.speed = 1.0,
-    this.simranMinutes = 5,
     this.onboardingDone = false,
-    this.exactAlarmAsked = false,
     this.analyticsEnabled = false,
-    this.diarySync = false,
-    this.syncWifiOnly = true,
   });
 
   final Locale locale;
@@ -46,20 +42,8 @@ class AppSettings {
   final bool elderMode;
   final String cityId;
   final double speed;
-  final int simranMinutes;
   final bool onboardingDone;
-  final bool exactAlarmAsked;
   final bool analyticsEnabled;
-
-  /// Whether the diary is copied to the account. **Off by default**, and off
-  /// is a complete answer: the diary works, the streak works and the whole of
-  /// Phase 1 works without it. What it buys is the diary coming back on a new
-  /// phone, and nothing else.
-  final bool diarySync;
-
-  /// **On by default**, because somebody's mobile data is theirs. A diary is
-  /// small, but "small" is not a promise anybody made them.
-  final bool syncWifiOnly;
 
   /// In elder mode the reader never goes below 30 sp (PRD 1.12).
   double get effectiveReaderFontSize =>
@@ -80,12 +64,8 @@ class AppSettings {
     bool? elderMode,
     String? cityId,
     double? speed,
-    int? simranMinutes,
     bool? onboardingDone,
-    bool? exactAlarmAsked,
     bool? analyticsEnabled,
-    bool? diarySync,
-    bool? syncWifiOnly,
   }) {
     return AppSettings(
       locale: locale ?? this.locale,
@@ -102,12 +82,8 @@ class AppSettings {
       elderMode: elderMode ?? this.elderMode,
       cityId: cityId ?? this.cityId,
       speed: speed ?? this.speed,
-      simranMinutes: simranMinutes ?? this.simranMinutes,
       onboardingDone: onboardingDone ?? this.onboardingDone,
-      exactAlarmAsked: exactAlarmAsked ?? this.exactAlarmAsked,
       analyticsEnabled: analyticsEnabled ?? this.analyticsEnabled,
-      diarySync: diarySync ?? this.diarySync,
-      syncWifiOnly: syncWifiOnly ?? this.syncWifiOnly,
     );
   }
 

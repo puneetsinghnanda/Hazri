@@ -27,12 +27,8 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kElder = 'elder_mode';
   static const _kCity = 'city_id';
   static const _kSpeed = 'speed';
-  static const _kSimranMinutes = 'simran_minutes';
   static const _kOnboardingDone = 'onboarding_done';
-  static const _kExactAlarmAsked = 'exact_alarm_asked';
   static const _kAnalytics = 'analytics_enabled';
-  static const _kDiarySync = 'diary_sync';
-  static const _kSyncWifiOnly = 'sync_wifi_only';
 
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
 
@@ -65,12 +61,8 @@ class SettingsController extends Notifier<AppSettings> {
       elderMode: p.getBool(_kElder) ?? base.elderMode,
       cityId: p.getString(_kCity) ?? base.cityId,
       speed: p.getDouble(_kSpeed) ?? base.speed,
-      simranMinutes: p.getInt(_kSimranMinutes) ?? base.simranMinutes,
       onboardingDone: p.getBool(_kOnboardingDone) ?? base.onboardingDone,
-      exactAlarmAsked: p.getBool(_kExactAlarmAsked) ?? base.exactAlarmAsked,
       analyticsEnabled: p.getBool(_kAnalytics) ?? base.analyticsEnabled,
-      diarySync: p.getBool(_kDiarySync) ?? base.diarySync,
-      syncWifiOnly: p.getBool(_kSyncWifiOnly) ?? base.syncWifiOnly,
     );
   }
 
@@ -170,23 +162,9 @@ class SettingsController extends Notifier<AppSettings> {
     state = state.copyWith(onboardingDone: v);
   }
 
-  Future<void> setExactAlarmAsked(bool v) async {
-    await _prefs.setBool(_kExactAlarmAsked, v);
-    state = state.copyWith(exactAlarmAsked: v);
-  }
-
   Future<void> setAnalyticsEnabled(bool v) async {
     await _prefs.setBool(_kAnalytics, v);
     state = state.copyWith(analyticsEnabled: v);
   }
 
-  Future<void> setDiarySync(bool v) async {
-    await _prefs.setBool(_kDiarySync, v);
-    state = state.copyWith(diarySync: v);
-  }
-
-  Future<void> setSyncWifiOnly(bool v) async {
-    await _prefs.setBool(_kSyncWifiOnly, v);
-    state = state.copyWith(syncWifiOnly: v);
-  }
 }

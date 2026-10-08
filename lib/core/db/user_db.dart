@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -7,22 +8,42 @@ import 'package:path_provider/path_provider.dart';
 
 part 'user_db.g.dart';
 
-/// How a completion came to be recorded.
-/// How a completion came to be recorded.
-///
-/// `restored` is a diary day that came back from the account on a new phone.
-/// Kept apart from `manual` because it was not somebody ticking a box, and a
-/// diary that cannot tell the two apart cannot explain itself later.
-enum CompletionSource { read, listen, manual, restored }
+// The schema of `user.db`, version 5. ARCHITECTURE §3.3 (04-goals §5) is the
+// definition; this file is its code. Enum columns hold UPPER_SNAKE strings
+// (04-goals §5.1), so every enum here goes through [UpperSnake].
 
-/// Whether a reminder follows the sun, a fixed time, or is off.
-enum ReminderMode { auto, fixed, off }
+/// How a completion came to be recorded (04-goals §5.4).
+enum CompletionSource { reader, audio, diary, restored, migrated }
 
-/// What a reminder is attached to.
-enum ReminderTarget { slot, bani, simran, gurpurab, goal }
+/// How a Naam Simran sitting came to be recorded (04-goals §5.5).
+enum SittingSource { timer, diary, restored, migrated }
 
-/// How long a paath goal runs for.
-enum GoalDuration { everyDay, days, until }
+/// A goal item is one bani, or Naam Simran (04-goals §5.3).
+enum ItemType { bani, simran }
+
+/// How long a goal item runs (04-goals GI4).
+enum DurationType { everyDay, days, untilDate }
+
+/// Mirrors `BaniSlot` from the content database so completions can carry a
+/// slot without the two databases depending on each other.
+enum BaniSlotValue { morning, evening, bedtime, none }
+
+/// Stores a Dart enum as its UPPER_SNAKE name: `everyDay` ↔ `EVERY_DAY`.
+class UpperSnake<T extends Enum> extends TypeConverter<T, String> {
+  const UpperSnake(this.values);
+
+  final List<T> values;
+
+  static String encode(Enum e) => e.name
+      .replaceAllMapped(RegExp('([a-z0-9])([A-Z])'), (m) => '${m[1]}_${m[2]}')
+      .toUpperCase();
+
+  @override
+  T fromSql(String fromDb) => values.firstWhere((v) => encode(v) == fromDb);
+
+  @override
+  String toSql(T value) => encode(value);
+}
 
 /// Where the reader or player last was in a bani.
 class ReadingProgress extends Table {
@@ -35,69 +56,52 @@ class ReadingProgress extends Table {
   Set<Column> get primaryKey => {baniVersionId};
 }
 
-/// One bani finished on one day.
+/// One recitation of one bani (04-goals §5.4). No uniqueness per day: reading
+/// Japji three times is three rows (CR5).
+@DataClassName('Completion')
 class Completions extends Table {
   TextColumn get id => text()();
   TextColumn get localDate => text()();
   TextColumn get baniId => text()();
-  TextColumn get slot => textEnum<BaniSlotValue>()();
-  TextColumn get source => textEnum<CompletionSource>()();
-  TextColumn get goalId => text().nullable()();
+  TextColumn get slot => text().map(const UpperSnake(BaniSlotValue.values))();
+  TextColumn get source => text().map(const UpperSnake(CompletionSource.values))();
   DateTimeColumn get completedAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// Set by Diary − (CR3). A row with it set is ignored everywhere.
+  DateTimeColumn get deletedAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
 }
 
-/// Mirrors `BaniSlot` from the content database so completions can be stored
-/// per slot without the two databases depending on each other.
-enum BaniSlotValue { morning, evening, bedtime, none }
-
+/// One Naam Simran sitting, with its actual length (04-goals §5.5).
+@DataClassName('SimranSession')
 class SimranSessions extends Table {
   TextColumn get id => text()();
   TextColumn get localDate => text()();
   DateTimeColumn get startedAt => dateTime()();
   IntColumn get durationS => integer()();
   IntColumn get count => integer().withDefault(const Constant(0))();
+
+  /// True when the sitting reached the timer's planned length.
   BoolColumn get completed => boolean().withDefault(const Constant(false))();
+  TextColumn get source => text().map(const UpperSnake(SittingSource.values))();
+  DateTimeColumn get updatedAt => dateTime()();
+  DateTimeColumn get deletedAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
 }
 
-/// The id a Naam Simran goal carries in [Goals.baniId].
-///
-/// Simran is not a bani and has no row in content.db, so a goal for it needs
-/// an id of its own. A sentinel rather than a second table: everything else
-/// about a goal -- its schedule, its ticks, its length -- is identical, and
-/// two tables would mean two of every query.
-const String kSimranGoalId = 'simran';
-
+/// One goal. At most one row has [completedOn] null (GL3).
+@DataClassName('Goal')
 class Goals extends Table {
   TextColumn get id => text()();
-  TextColumn get baniId => text()();
-
-  /// How many minutes a sitting is, for a Naam Simran goal (design 47).
-  /// Null for a bani, which is counted in paath.
-  IntColumn get minutes => integer().nullable()();
-  IntColumn get timesPerDay => integer().withDefault(const Constant(1))();
-  TextColumn get durationType => textEnum<GoalDuration>()();
-  IntColumn get days => integer().nullable()();
-  TextColumn get untilDate => text().nullable()();
   TextColumn get startDate => text()();
-  TextColumn get reminderTime => text().nullable()();
 
-  /// The last day this goal asked anything of, when somebody stopped it early.
-  ///
-  /// Stopping a goal archives it rather than deleting it, because the diary is
-  /// a record of days that happened: a goal kept from the 1st to the 22nd and
-  /// then stopped leaves those twenty-two days exactly as they were, met or
-  /// missed. Deleting the row took its ticks with it and rewrote the month.
-  TextColumn get endedOn => text().nullable()();
-
-  /// Whether it still appears in the live list. An archived goal is inactive
-  /// and carries [endedOn]; the two move together.
-  BoolColumn get active => boolean().withDefault(const Constant(true))();
+  /// The first blank day (BG1, BG2). Null while the goal is active.
+  TextColumn get completedOn => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
@@ -105,34 +109,58 @@ class Goals extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-class GoalTicks extends Table {
+/// One stretch of one bani, or of Naam Simran, inside a goal (04-goals §5.3).
+@DataClassName('GoalItem')
+class GoalItems extends Table {
   TextColumn get id => text()();
   TextColumn get goalId => text()();
-  TextColumn get localDate => text()();
-  TextColumn get source => text()();
-  DateTimeColumn get at => dateTime()();
 
-  @override
-  Set<Column> get primaryKey => {id};
-}
+  /// Equals [id] on the first row of a series; a target edit copies it (GI6).
+  TextColumn get seriesId => text()();
+  TextColumn get itemType => text().map(const UpperSnake(ItemType.values))();
+  TextColumn get baniId => text().nullable()();
+  IntColumn get timesPerDay => integer()();
+  IntColumn get simranMinutes => integer().nullable()();
+  TextColumn get durationType => text().map(const UpperSnake(DurationType.values))();
+  IntColumn get durationDays => integer().nullable()();
+  TextColumn get startDate => text()();
+  TextColumn get endDate => text().nullable()();
+  TextColumn get removedOn => text().nullable()();
 
-class Reminders extends Table {
-  TextColumn get id => text()();
-  TextColumn get targetType => textEnum<ReminderTarget>()();
-  TextColumn get targetId => text()();
-  TextColumn get mode => textEnum<ReminderMode>()();
-  TextColumn get anchor => text().nullable()();
-  IntColumn get offsetMin => integer().nullable()();
-  TextColumn get timeHhmm => text().nullable()();
-  IntColumn get daysMask => integer().withDefault(const Constant(0x7F))();
-  TextColumn get slotOverride => text().nullable()();
+  /// `HH:mm`, local. Null means the reminder is off (RM1).
+  TextColumn get reminderTime => text().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
   @override
   Set<Column> get primaryKey => {id};
 }
 
-/// A missed day the streak forgives. Two per calendar month.
+/// Paath and sittings waiting to be sent to the Sangat (08-sangat §5.1).
+@DataClassName('OutboxRow')
+class SangatOutbox extends Table {
+  /// The completion's or sitting's id.
+  TextColumn get id => text()();
+
+  /// `BANI` or `SIMRAN`.
+  TextColumn get kind => text()();
+  TextColumn get baniId => text().nullable()();
+  IntColumn get durationS => integer().nullable()();
+
+  /// `READER`, `AUDIO`, `DIARY`, `TIMER`, …
+  TextColumn get source => text()();
+  DateTimeColumn get at => dateTime()();
+
+  /// True when this row takes back an earlier one (Diary −, CT5).
+  BoolColumn get retracted => boolean().withDefault(const Constant(false))();
+  IntColumn get attempts => integer().withDefault(const Constant(0))();
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id, retracted};
+}
+
+/// A missed day the streak forgives. Two per calendar month, never announced.
 class GraceDays extends Table {
   TextColumn get localDate => text()();
   TextColumn get monthKey => text()();
@@ -141,6 +169,7 @@ class GraceDays extends Table {
   Set<Column> get primaryKey => {localDate};
 }
 
+/// The calendar's per-event bell (02-notifications §9).
 class EventReminderOverrides extends Table {
   TextColumn get eventId => text()();
   BoolColumn get enabled => boolean()();
@@ -149,18 +178,16 @@ class EventReminderOverrides extends Table {
   Set<Column> get primaryKey => {eventId};
 }
 
-/// Everything the user creates.
-///
-/// Every row carries a UUID id and `updated_at` in UTC so that optional sync
-/// can be added later without a migration (PRD §17.1).
+/// Everything the reader creates. Every row carries a UUID id and `updatedAt`,
+/// which is what the weekly backup sends (10-backup.md).
 @DriftDatabase(
   tables: [
     ReadingProgress,
     Completions,
     SimranSessions,
     Goals,
-    GoalTicks,
-    Reminders,
+    GoalItems,
+    SangatOutbox,
     GraceDays,
     EventReminderOverrides,
   ],
@@ -172,28 +199,36 @@ class UserDb extends _$UserDb {
   UserDb.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    onUpgrade: (m, from, to) async {
-      // 2: the daily Hukamnama gave way to ਅੱਜ ਦਾ ਵਿਚਾਰ, which is bundled
-      // content and needs no cache of its own.
-      if (from < 2) await customStatement('DROP TABLE IF EXISTS hukamnama_cache');
-      // 3: a goal can now be Naam Simran, which is counted in minutes rather
-      // than paath (design 47). Nullable, so every existing goal is untouched
-      // and still means what it meant.
-      if (from < 3) await m.addColumn(goals, goals.minutes);
-      // 4: stopping a goal archives it instead of deleting it, so the days it
-      // covered keep their marks (scenario 4). Null on every existing goal,
-      // which is right: none of them was stopped early, they either still run
-      // or ran out on their own.
-      if (from < 4) await m.addColumn(goals, goals.endedOn);
-    },
-    beforeOpen: (details) async {
-      await customStatement('PRAGMA foreign_keys = ON');
-    },
-  );
+        onCreate: (m) async {
+          await m.createAll();
+          await _createIndexes();
+        },
+        onUpgrade: (m, from, to) async {
+          if (from < 2) await customStatement('DROP TABLE IF EXISTS hukamnama_cache');
+          if (from < 3) await customStatement('ALTER TABLE goals ADD COLUMN minutes INTEGER');
+          if (from < 4) await customStatement('ALTER TABLE goals ADD COLUMN ended_on TEXT');
+          if (from < 5) await migrateToV5(this, m);
+        },
+        beforeOpen: (details) async {
+          await customStatement('PRAGMA foreign_keys = ON');
+        },
+      );
+
+  Future<void> _createIndexes() async {
+    // 04-goals §5.6.
+    await customStatement(
+        'CREATE INDEX IF NOT EXISTS idx_goal_items_goal ON goal_items (goal_id)');
+    await customStatement(
+        'CREATE INDEX IF NOT EXISTS idx_goals_completed ON goals (completed_on)');
+    await customStatement(
+        'CREATE INDEX IF NOT EXISTS idx_completions_date ON completions (local_date)');
+    await customStatement(
+        'CREATE INDEX IF NOT EXISTS idx_simran_date ON simran_sessions (local_date)');
+  }
 
   static Future<UserDb> open() async {
     final dir = await getApplicationDocumentsDirectory();
@@ -201,4 +236,173 @@ class UserDb extends _$UserDb {
     await file.parent.create(recursive: true);
     return UserDb(NativeDatabase.createInBackground(file));
   }
+}
+
+/// The migration of 04-goals §5.8, from schema 4 to 5, in one transaction.
+///
+/// Public so the migration test can run it on a hand-built v4 database.
+Future<void> migrateToV5(UserDb db, Migrator m) async {
+  await db.transaction(() async {
+    final today = _dateKey(DateTime.now());
+
+    // 1. The old goals table makes way for goals and goal_items.
+    await db.customStatement('ALTER TABLE goals RENAME TO goals_v4');
+    await m.createTable(db.goals);
+    await m.createTable(db.goalItems);
+
+    final old = await db.customSelect('SELECT * FROM goals_v4').get();
+    final nowUtc = DateTime.now().toUtc();
+    if (old.isNotEmpty) {
+      // 2. One goal for all the old rows.
+      String? earliest;
+      // A goal stays active while any of its items still has a day ahead of
+      // it, today included; otherwise it completed the day after the last.
+      var anyActive = false;
+      String? latestLast;
+      final items = <GoalItemsCompanion>[];
+      final goalId = _uuid();
+      for (final r in old) {
+        final id = r.read<String>('id');
+        final baniId = r.read<String>('bani_id');
+        final start = r.read<String>('start_date');
+        final minutes = r.readNullable<int>('minutes');
+        final times = r.read<int>('times_per_day');
+        final type = switch (r.read<String>('duration_type')) {
+          'days' => DurationType.days,
+          'until' => DurationType.untilDate,
+          _ => DurationType.everyDay,
+        };
+        final days = r.readNullable<int>('days');
+        final until = r.readNullable<String>('until_date');
+        final endedOn = r.readNullable<String>('ended_on');
+        final isSimran = baniId == 'simran';
+        final endDate = switch (type) {
+          DurationType.everyDay => null,
+          DurationType.days => _dateKey(_parse(start).add(Duration(days: (days ?? 1) - 1))),
+          DurationType.untilDate => until,
+        };
+        // removedOn: the day after old endedOn, when set.
+        final removedOn = endedOn == null ? null : _dateKey(_parse(endedOn).add(const Duration(days: 1)));
+        // The item's last day, for the goal's completedOn.
+        final lastCandidates = [?endDate, if (removedOn != null) _dateKey(_parse(removedOn).subtract(const Duration(days: 1)))];
+        lastCandidates.sort();
+        final last = lastCandidates.isEmpty ? null : lastCandidates.first;
+        if (last == null || last.compareTo(today) >= 0) anyActive = true;
+        if (last != null && (latestLast == null || last.compareTo(latestLast) > 0)) latestLast = last;
+        if (earliest == null || start.compareTo(earliest) < 0) earliest = start;
+
+        items.add(GoalItemsCompanion.insert(
+          id: id,
+          goalId: goalId,
+          seriesId: id,
+          itemType: isSimran ? ItemType.simran : ItemType.bani,
+          baniId: Value(isSimran ? null : baniId),
+          timesPerDay: isSimran ? 1 : times,
+          simranMinutes: Value(isSimran ? (minutes ?? 5) : null),
+          durationType: type,
+          durationDays: Value(type == DurationType.days ? days : null),
+          startDate: start,
+          endDate: Value(endDate),
+          removedOn: Value(removedOn),
+          reminderTime: Value(r.readNullable<String>('reminder_time')),
+          createdAt: nowUtc,
+          updatedAt: nowUtc,
+        ));
+      }
+      final completedOn = anyActive || latestLast == null
+          ? null
+          : _dateKey(_parse(latestLast).add(const Duration(days: 1)));
+      await db.into(db.goals).insert(GoalsCompanion.insert(
+            id: goalId,
+            startDate: earliest!,
+            completedOn: Value(completedOn),
+            createdAt: nowUtc,
+            updatedAt: nowUtc,
+          ));
+      for (final i in items) {
+        await db.into(db.goalItems).insert(i);
+      }
+    }
+
+    // 5. completions: map the values and drop goal_id.
+    await db.customStatement('ALTER TABLE completions RENAME TO completions_v4');
+    await m.createTable(db.completions);
+    await db.customStatement('''
+      INSERT INTO completions (id, local_date, bani_id, slot, source, completed_at, updated_at, deleted_at)
+      SELECT id, local_date, bani_id, UPPER(slot),
+        CASE source WHEN 'read' THEN 'READER' WHEN 'listen' THEN 'AUDIO'
+                    WHEN 'manual' THEN 'DIARY' WHEN 'restored' THEN 'RESTORED'
+                    ELSE 'DIARY' END,
+        completed_at, completed_at, NULL
+      FROM completions_v4''');
+
+    // 6. simran_sessions gain source, updated_at and deleted_at.
+    await db.customStatement('ALTER TABLE simran_sessions RENAME TO simran_sessions_v4');
+    await m.createTable(db.simranSessions);
+    await db.customStatement('''
+      INSERT INTO simran_sessions (id, local_date, started_at, duration_s, count, completed, source, updated_at, deleted_at)
+      SELECT id, local_date, started_at, duration_s, count, completed, 'TIMER', started_at, NULL
+      FROM simran_sessions_v4''');
+
+    // 4. Manual ticks become MIGRATED completions or sittings; auto ticks go,
+    // because a completion already stands behind each one.
+    final ticks = await db.customSelect('''
+      SELECT t.local_date AS day, t.at AS at, g.bani_id AS bani, g.minutes AS minutes
+      FROM goal_ticks t JOIN goals_v4 g ON g.id = t.goal_id
+      WHERE t.source = 'manual' ''').get();
+    for (final t in ticks) {
+      final day = t.read<String>('day');
+      final at = t.read<DateTime>('at');
+      final bani = t.read<String>('bani');
+      if (bani == 'simran') {
+        final minutes = t.readNullable<int>('minutes') ?? 5;
+        await db.into(db.simranSessions).insert(SimranSessionsCompanion.insert(
+              id: _uuid(),
+              localDate: day,
+              startedAt: at,
+              durationS: minutes * 60,
+              completed: const Value(true),
+              source: SittingSource.migrated,
+              updatedAt: nowUtc,
+            ));
+      } else {
+        await db.into(db.completions).insert(CompletionsCompanion.insert(
+              id: _uuid(),
+              localDate: day,
+              baniId: bani,
+              slot: BaniSlotValue.none,
+              source: CompletionSource.migrated,
+              completedAt: at,
+              updatedAt: nowUtc,
+            ));
+      }
+    }
+
+    // The sangat outbox is new in 5 (08-sangat §5.1).
+    await m.createTable(db.sangatOutbox);
+
+    for (final t in ['goal_ticks', 'goals_v4', 'completions_v4', 'simran_sessions_v4', 'reminders']) {
+      await db.customStatement('DROP TABLE IF EXISTS $t');
+    }
+    await db._createIndexes();
+  });
+}
+
+String _dateKey(DateTime d) =>
+    '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+DateTime _parse(String key) {
+  final p = key.split('-').map(int.parse).toList();
+  return DateTime(p[0], p[1], p[2]);
+}
+
+final _rand = Random.secure();
+
+String _uuid() {
+  final b = List<int>.generate(16, (_) => _rand.nextInt(256));
+  b[6] = (b[6] & 0x0f) | 0x40;
+  b[8] = (b[8] & 0x3f) | 0x80;
+  String h(int from, int to) =>
+      b.sublist(from, to).map((x) => x.toRadixString(16).padLeft(2, '0')).join();
+  return '${h(0, 4)}-${h(4, 6)}-${h(6, 8)}-${h(8, 10)}-${h(10, 16)}';
 }

@@ -6,61 +6,45 @@ import '../../../core/db/user_repository.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../goals/data/goals_controller.dart';
+import '../../goals/domain/day_verdict.dart';
+import '../../goals/domain/goal_constants.dart';
 import '../domain/hazri.dart';
 
-/// Today's completions, and every simran session, as two plain streams.
-///
-/// Two subscriptions rather than one loop that queries the other inside
-/// itself. The nested version worked and then hung under `flutter_test`'s
-/// fake clock, which does not advance the real event loop drift needs: the
-/// first event arrived and the `await` inside it never returned. Combining
-/// two independent streams has no such await and is simpler to read besides.
-/// The completions on one day. Public because the diary's day sheet needs
-/// the same rows to say what marked that day and at what time.
+/// The live completions on one day, for the Diary's day screen.
 final completionsOnProvider =
     StreamProvider.family<List<Completion>, DateTime>((ref, day) {
   return ref.watch(userRepositoryProvider).watchCompletionsOn(day);
 });
 
-final _completionsTodayProvider = StreamProvider<List<Completion>>((ref) {
-  final repo = ref.watch(userRepositoryProvider);
-  return repo.watchCompletionsOn(ref.watch(clockProvider).today());
+/// The live sittings on one day.
+final sittingsOnProvider =
+    StreamProvider.family<List<SimranSession>, DateTime>((ref, day) {
+  return ref.watch(userRepositoryProvider).watchSittingsOn(day);
 });
 
-final simranSessionsProvider = StreamProvider<List<SimranSession>>(
-  (ref) => ref.watch(userRepositoryProvider).watchSimranSessions(),
-);
-
-/// Today's hazri: whether somebody has turned up, and with what.
+/// Today's hazri: whether somebody has turned up, and with what (HZ1).
 ///
-/// Derived, never stored. A hazri row would be a second source of truth for
-/// something the completions and simran sessions already say, and the two
-/// would drift the first time a diary entry was edited by hand.
+/// Derived, never stored: any live completion, or a sitting of 300 s or more.
 final hazriTodayProvider = Provider<Hazri>((ref) {
-  final todayKey = localDateKey(ref.watch(clockProvider).today());
-  final completions = ref.watch(_completionsTodayProvider).value ?? const [];
-  final sessions = ref.watch(simranSessionsProvider).value ?? const [];
-
+  final rows = ref.watch(todayRowsProvider).value;
+  if (rows == null) return Hazri.none;
   return Hazri.from(
     completions: [
-      for (final c in completions) (at: c.completedAt.toLocal(), baniId: c.baniId),
+      for (final c in rows.completions) (at: c.completedAt.toLocal(), baniId: c.baniId),
     ],
     completedSimran: [
-      for (final s in sessions)
-        if (s.localDate == todayKey && s.completed) s.startedAt.toLocal(),
+      for (final s in rows.sittings)
+        if (s.durationS >= GoalConstants.hazriSimranMinSeconds)
+          s.startedAt.toLocal().add(Duration(seconds: s.durationS)),
     ],
   );
 });
 
-/// Whether every active goal has been met today.
-///
-/// The cue for design 61, and deliberately separate from [hazriTodayProvider]:
-/// the reader was explicit that hazri and goals are two different things and
-/// one does not imply the other.
-final goalsAllDoneTodayProvider = Provider<bool>((ref) {
-  final summary = ref.watch(goalsSummaryProvider);
-  return summary.total > 0 && summary.doneToday >= summary.total;
-});
+/// Whether today's goal is met: the cue for design 61 (CE1). Separate from
+/// [hazriTodayProvider] — hazri and goals are two different things.
+final goalsAllDoneTodayProvider = Provider<bool>(
+  (ref) => ref.watch(todayVerdictProvider).goalState == GoalState.met,
+);
 
 /// Shows design 61 once, on the day the goals are all met.
 ///

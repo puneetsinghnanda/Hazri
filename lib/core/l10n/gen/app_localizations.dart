@@ -1374,7 +1374,7 @@ abstract class L {
   /// No description provided for @goalsTitle.
   ///
   /// In en, this message translates to:
-  /// **'My goals'**
+  /// **'Goals'**
   String get goalsTitle;
 
   /// No description provided for @goalsSubtitle.
@@ -1386,7 +1386,7 @@ abstract class L {
   /// No description provided for @goalsAdd.
   ///
   /// In en, this message translates to:
-  /// **'Add a paath goal'**
+  /// **'Add to goal'**
   String get goalsAdd;
 
   /// No description provided for @goalsFooter.
@@ -1506,7 +1506,7 @@ abstract class L {
   /// No description provided for @goalSave.
   ///
   /// In en, this message translates to:
-  /// **'Save goal'**
+  /// **'Add to goal'**
   String get goalSave;
 
   /// No description provided for @goalMoreBanis.
@@ -1911,83 +1911,17 @@ abstract class L {
   /// **'If you join the sangat, what goes to the server is your name, city, email and the counts behind the groups and goals you joined. The words in your diary never go, and your email is never shown to anybody else.'**
   String get privacySangat;
 
-  /// No description provided for @notifChannelNitnem.
-  ///
-  /// In en, this message translates to:
-  /// **'Nitnem reminders'**
-  String get notifChannelNitnem;
-
-  /// No description provided for @notifChannelSimran.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily Simran'**
-  String get notifChannelSimran;
-
-  /// No description provided for @notifChannelGurpurab.
-  ///
-  /// In en, this message translates to:
-  /// **'Gurpurab'**
-  String get notifChannelGurpurab;
-
   /// No description provided for @notifChannelGoals.
   ///
   /// In en, this message translates to:
-  /// **'Paath goals'**
+  /// **'Goal reminders'**
   String get notifChannelGoals;
-
-  /// No description provided for @notifAmritVelaTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Amrit Vela'**
-  String get notifAmritVelaTitle;
-
-  /// No description provided for @notifAmritVelaBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{bani} is ready — sunrise today is at {time}.'**
-  String notifAmritVelaBody(String bani, String time);
-
-  /// No description provided for @notifSimranTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily Simran'**
-  String get notifSimranTitle;
-
-  /// No description provided for @notifSimranBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Five quiet minutes of Waheguru Simran.'**
-  String get notifSimranBody;
 
   /// No description provided for @notifGurpurabTitle.
   ///
   /// In en, this message translates to:
-  /// **'Tomorrow is a Gurpurab'**
-  String get notifGurpurabTitle;
-
-  /// No description provided for @notifGurpurabToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Today is a Gurpurab'**
-  String get notifGurpurabToday;
-
-  /// No description provided for @notifRehrasBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your evening bani, at the time you chose — {minutes} minutes.'**
-  String notifRehrasBody(int minutes);
-
-  /// No description provided for @notifBaniBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{bani} — {minutes} minutes.'**
-  String notifBaniBody(String bani, int minutes);
-
-  /// No description provided for @notifGoalBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your paath goal for today — {done} of {total} done.'**
-  String notifGoalBody(int done, int total);
+  /// **'Today: {event}'**
+  String notifGurpurabTitle(String event);
 
   /// No description provided for @notifActionStartNitnem.
   ///
@@ -1995,35 +1929,11 @@ abstract class L {
   /// **'Start Nitnem'**
   String get notifActionStartNitnem;
 
-  /// No description provided for @notifActionStart.
-  ///
-  /// In en, this message translates to:
-  /// **'Start'**
-  String get notifActionStart;
-
   /// No description provided for @notifActionLater.
   ///
   /// In en, this message translates to:
   /// **'Later'**
   String get notifActionLater;
-
-  /// No description provided for @notifActionBegin.
-  ///
-  /// In en, this message translates to:
-  /// **'Begin'**
-  String get notifActionBegin;
-
-  /// No description provided for @notifActionSkipToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Skip today'**
-  String get notifActionSkipToday;
-
-  /// No description provided for @notifActionOpenCalendar.
-  ///
-  /// In en, this message translates to:
-  /// **'Open calendar'**
-  String get notifActionOpenCalendar;
 
   /// No description provided for @shareCardTitle.
   ///
@@ -3765,78 +3675,6 @@ abstract class L {
   /// **'Notifications'**
   String get notifTitle;
 
-  /// No description provided for @notifOwnPractice.
-  ///
-  /// In en, this message translates to:
-  /// **'Your own practice'**
-  String get notifOwnPractice;
-
-  /// No description provided for @notifYourGroups.
-  ///
-  /// In en, this message translates to:
-  /// **'Your groups'**
-  String get notifYourGroups;
-
-  /// No description provided for @notifGlobal.
-  ///
-  /// In en, this message translates to:
-  /// **'Global Simran'**
-  String get notifGlobal;
-
-  /// No description provided for @notifGoalClose.
-  ///
-  /// In en, this message translates to:
-  /// **'A goal is close'**
-  String get notifGoalClose;
-
-  /// No description provided for @notifGoalCloseSub.
-  ///
-  /// In en, this message translates to:
-  /// **'When the group passes 90%'**
-  String get notifGoalCloseSub;
-
-  /// No description provided for @notifSomeoneJoined.
-  ///
-  /// In en, this message translates to:
-  /// **'Someone joined'**
-  String get notifSomeoneJoined;
-
-  /// No description provided for @notifSomeoneJoinedSub.
-  ///
-  /// In en, this message translates to:
-  /// **'New members in your groups'**
-  String get notifSomeoneJoinedSub;
-
-  /// No description provided for @notifGroupSummary.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily group summary'**
-  String get notifGroupSummary;
-
-  /// No description provided for @notifGroupSummarySub.
-  ///
-  /// In en, this message translates to:
-  /// **'One message, at 9 PM'**
-  String get notifGroupSummarySub;
-
-  /// No description provided for @notifLargeGatherings.
-  ///
-  /// In en, this message translates to:
-  /// **'Large gatherings'**
-  String get notifLargeGatherings;
-
-  /// No description provided for @notifLargeGatheringsSub.
-  ///
-  /// In en, this message translates to:
-  /// **'When thousands are sitting together'**
-  String get notifLargeGatheringsSub;
-
-  /// No description provided for @notifGroupsNotYet.
-  ///
-  /// In en, this message translates to:
-  /// **'These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off.'**
-  String get notifGroupsNotYet;
-
   /// No description provided for @menuTooltip.
   ///
   /// In en, this message translates to:
@@ -4100,6 +3938,762 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Waheguru.'**
   String get simranVerseTwoWord;
+
+  /// No description provided for @notifAv1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Amrit Vela'**
+  String get notifAv1Title;
+
+  /// No description provided for @notifAv1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The quietest hour of the day is here. {bani} is ready when you are.'**
+  String notifAv1Body(String bani);
+
+  /// No description provided for @notifAv2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning, {name}'**
+  String notifAv2Title(String name);
+
+  /// No description provided for @notifAv2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise in {city} is at {sunrise}. Your Nitnem is ready.'**
+  String notifAv2Body(String city, String sunrise);
+
+  /// No description provided for @notifAv3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'The sangat is waking up'**
+  String get notifAv3Title;
+
+  /// No description provided for @notifAv3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark your Hazri with Sangat. Begin now.'**
+  String get notifAv3Body;
+
+  /// No description provided for @notifAv4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {streak} of your Nitnem'**
+  String notifAv4Title(int streak);
+
+  /// No description provided for @notifAv4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'{streak} mornings in a row. Today\'s is waiting.'**
+  String notifAv4Body(int streak);
+
+  /// No description provided for @notifAv5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Before the world wakes'**
+  String get notifAv5Title;
+
+  /// No description provided for @notifAv5Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A few quiet minutes now, before the day begins. {bani} is one tap away.'**
+  String notifAv5Body(String bani);
+
+  /// No description provided for @notifAv6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Hazri for {weekday}'**
+  String notifAv6Title(String weekday);
+
+  /// No description provided for @notifAv6Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark today\'s Hazri with Nitnem or five minutes of Naam Simran.'**
+  String get notifAv6Body;
+
+  /// No description provided for @notifAv7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the day with Waheguru'**
+  String get notifAv7Title;
+
+  /// No description provided for @notifAv7Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Nitnem first, everything else after. Hazri is open.'**
+  String get notifAv7Body;
+
+  /// No description provided for @notifGoalBaniTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for {bani}'**
+  String notifGoalBaniTitle(String bani);
+
+  /// No description provided for @notifGoalBaniBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {target} today. Your goal, day {day} of {days}.'**
+  String notifGoalBaniBody(int done, int target, int day, int days);
+
+  /// No description provided for @notifGoalBaniOpenBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {target} today.'**
+  String notifGoalBaniOpenBody(int done, int target);
+
+  /// No description provided for @notifGoalSimranTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {minutes} minutes of Naam Simran'**
+  String notifGoalSimranTitle(int minutes);
+
+  /// No description provided for @notifGoalSimranBody.
+  ///
+  /// In en, this message translates to:
+  /// **'One tap and the timer begins.'**
+  String get notifGoalSimranBody;
+
+  /// No description provided for @notifGurpurabBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark the day with Nitnem and your Hazri.'**
+  String get notifGurpurabBody;
+
+  /// No description provided for @notifRememberTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today we remember: {event}'**
+  String notifRememberTitle(String event);
+
+  /// No description provided for @notifRememberBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin the day with Nitnem and your Hazri.'**
+  String get notifRememberBody;
+
+  /// No description provided for @notifEventTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: {event}'**
+  String notifEventTitle(String event);
+
+  /// No description provided for @notifEventBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin the day with Nitnem and your Hazri.'**
+  String get notifEventBody;
+
+  /// No description provided for @notifHn1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Hazri for today is still open'**
+  String get notifHn1Title;
+
+  /// No description provided for @notifHn1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Five minutes of Naam Simran marks it. Begin when you\'re ready.'**
+  String get notifHn1Body;
+
+  /// No description provided for @notifHn2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of the sangat are here today'**
+  String notifHn2Title(int count);
+
+  /// No description provided for @notifHn2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Join them with five minutes of Waheguru Simran.'**
+  String get notifHn2Body;
+
+  /// No description provided for @notifHn3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Five minutes, just for you'**
+  String get notifHn3Title;
+
+  /// No description provided for @notifHn3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin the day with Waheguru Simran, and your Hazri is marked.'**
+  String get notifHn3Body;
+
+  /// No description provided for @notifHn4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Make it a habit'**
+  String get notifHn4Title;
+
+  /// No description provided for @notifHn4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Naam Simran to a daily goal and Hazri will remind you at your own time.'**
+  String get notifHn4Body;
+
+  /// No description provided for @notifHn5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Five minutes before the day gets busy'**
+  String get notifHn5Title;
+
+  /// No description provided for @notifHn5Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A short sitting of Naam Simran now marks today\'s Hazri.'**
+  String get notifHn5Body;
+
+  /// No description provided for @notifHn6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Light up {city} on the globe'**
+  String notifHn6Title(String city);
+
+  /// No description provided for @notifHn6Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Hazri and you show as live today. Five minutes of Simran marks your Hazri.'**
+  String get notifHn6Body;
+
+  /// No description provided for @notifHn7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'One small step today'**
+  String get notifHn7Title;
+
+  /// No description provided for @notifHn7Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Five minutes of Naam Simran. That\'s all today\'s Hazri needs.'**
+  String get notifHn7Body;
+
+  /// No description provided for @notifActionOpenBani.
+  ///
+  /// In en, this message translates to:
+  /// **'Open {bani}'**
+  String notifActionOpenBani(String bani);
+
+  /// No description provided for @notifActionBeginMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin {minutes} min'**
+  String notifActionBeginMinutes(int minutes);
+
+  /// No description provided for @notifActionSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'In 15 min'**
+  String get notifActionSnooze;
+
+  /// No description provided for @notifActionSeeCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'See calendar'**
+  String get notifActionSeeCalendar;
+
+  /// No description provided for @notifActionSetGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a goal'**
+  String get notifActionSetGoal;
+
+  /// No description provided for @notifActionOpenHazri.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Hazri'**
+  String get notifActionOpenHazri;
+
+  /// No description provided for @notifActionOpenSangat.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Sangat'**
+  String get notifActionOpenSangat;
+
+  /// No description provided for @notifChannelAmritVela.
+  ///
+  /// In en, this message translates to:
+  /// **'Amrit Vela'**
+  String get notifChannelAmritVela;
+
+  /// No description provided for @notifChannelCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurpurab and Sikh events'**
+  String get notifChannelCalendar;
+
+  /// No description provided for @notifChannelHazri.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri reminder'**
+  String get notifChannelHazri;
+
+  /// No description provided for @notifChannelSangat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangat'**
+  String get notifChannelSangat;
+
+  /// No description provided for @notifKindsHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'What Hazri sends'**
+  String get notifKindsHeading;
+
+  /// No description provided for @notifKindAmritVela.
+  ///
+  /// In en, this message translates to:
+  /// **'Amrit Vela'**
+  String get notifKindAmritVela;
+
+  /// No description provided for @notifKindAmritVelaSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day at 4:00 AM'**
+  String get notifKindAmritVelaSub;
+
+  /// No description provided for @notifKindGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal reminders'**
+  String get notifKindGoals;
+
+  /// No description provided for @notifKindGoalsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'At the time you set on each goal'**
+  String get notifKindGoalsSub;
+
+  /// No description provided for @notifKindCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurpurab and Sikh events'**
+  String get notifKindCalendar;
+
+  /// No description provided for @notifKindCalendarSub.
+  ///
+  /// In en, this message translates to:
+  /// **'On the day: Gurpurabs at 6:00 AM, other days at 7:00 AM'**
+  String get notifKindCalendarSub;
+
+  /// No description provided for @notifKindHazri.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri reminder'**
+  String get notifKindHazri;
+
+  /// No description provided for @notifKindHazriSub.
+  ///
+  /// In en, this message translates to:
+  /// **'At 7:00 AM, only with no goal and no Hazri yet'**
+  String get notifKindHazriSub;
+
+  /// No description provided for @notifKindSangat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangat'**
+  String get notifKindSangat;
+
+  /// No description provided for @notifKindSangatSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Your groups at 9:00 PM, and their milestones'**
+  String get notifKindSangatSub;
+
+  /// No description provided for @notifExactNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Without the \"Alarms and reminders\" permission, Android may deliver a reminder a few minutes late.'**
+  String get notifExactNote;
+
+  /// No description provided for @notifNoAds.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri never sends anything you did not ask for, and never an advertisement.'**
+  String get notifNoAds;
+
+  /// No description provided for @notifDiagnostics.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnostics'**
+  String get notifDiagnostics;
+
+  /// No description provided for @notifDiagnosticsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'What this phone says about reminders'**
+  String get notifDiagnosticsSub;
+
+  /// No description provided for @notifDiagAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications allowed'**
+  String get notifDiagAllowed;
+
+  /// No description provided for @notifDiagExact.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact alarms allowed'**
+  String get notifDiagExact;
+
+  /// No description provided for @notifDiagBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery optimisation off for Hazri'**
+  String get notifDiagBattery;
+
+  /// No description provided for @notifDiagPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get notifDiagPending;
+
+  /// No description provided for @notifDiagNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get notifDiagNext;
+
+  /// No description provided for @notifDiagNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing scheduled'**
+  String get notifDiagNone;
+
+  /// No description provided for @notifDiagLast.
+  ///
+  /// In en, this message translates to:
+  /// **'Last delivered'**
+  String get notifDiagLast;
+
+  /// No description provided for @notifDiagSendNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Send one now'**
+  String get notifDiagSendNow;
+
+  /// No description provided for @notifDiagSendSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Send one in two minutes'**
+  String get notifDiagSendSoon;
+
+  /// No description provided for @notifDiagTestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri test'**
+  String get notifDiagTestTitle;
+
+  /// No description provided for @notifDiagTestBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can read this, reminders reach this phone.'**
+  String get notifDiagTestBody;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @goalSetCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a daily goal'**
+  String get goalSetCardTitle;
+
+  /// No description provided for @goalSetCardSubtitleFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the banis you want to recite each day.'**
+  String get goalSetCardSubtitleFirst;
+
+  /// No description provided for @goalSetCardSubtitleAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Your last goal is complete. Set a new one.'**
+  String get goalSetCardSubtitleAgain;
+
+  /// No description provided for @goalWidgetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s goal'**
+  String get goalWidgetTitle;
+
+  /// No description provided for @goalWidgetProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{met} of {total} done'**
+  String goalWidgetProgress(int met, int total);
+
+  /// No description provided for @goalTimesOfTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {target}'**
+  String goalTimesOfTarget(int done, int target);
+
+  /// No description provided for @goalSimranMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String goalSimranMinutes(int minutes);
+
+  /// No description provided for @goalInGoalBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'In your goal'**
+  String get goalInGoalBadge;
+
+  /// No description provided for @goalTimesPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Times a day'**
+  String get goalTimesPerDay;
+
+  /// No description provided for @goalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'How long'**
+  String get goalDuration;
+
+  /// No description provided for @goalDurationDays.
+  ///
+  /// In en, this message translates to:
+  /// **'For {n} days'**
+  String goalDurationDays(int n);
+
+  /// No description provided for @goalDurationUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {date}'**
+  String goalDurationUntil(String date);
+
+  /// No description provided for @goalDayOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {n} of {total}'**
+  String goalDayOfTotal(int n, int total);
+
+  /// No description provided for @goalReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get goalReminder;
+
+  /// No description provided for @goalEditSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get goalEditSave;
+
+  /// No description provided for @goalRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get goalRemove;
+
+  /// No description provided for @goalRemoveConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}?'**
+  String goalRemoveConfirmTitle(String name);
+
+  /// No description provided for @goalRemoveConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It leaves your goal from today. Days already recorded stay as they are.'**
+  String get goalRemoveConfirmBody;
+
+  /// No description provided for @goalEndDateInPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose today or a later date.'**
+  String get goalEndDateInPast;
+
+  /// No description provided for @goalValidationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 5 to 120 minutes.'**
+  String get goalValidationMinutes;
+
+  /// No description provided for @goalReminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for your daily goal'**
+  String get goalReminderBody;
+
+  /// No description provided for @goalTimesRule.
+  ///
+  /// In en, this message translates to:
+  /// **'{times, plural, =1{once a day} other{{times} times a day}}'**
+  String goalTimesRule(int times);
+
+  /// No description provided for @goalAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to your goal'**
+  String get goalAddTitle;
+
+  /// No description provided for @goalEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit {name}'**
+  String goalEditTitle(String name);
+
+  /// No description provided for @goalChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose'**
+  String get goalChoose;
+
+  /// No description provided for @goalNaamSimran.
+  ///
+  /// In en, this message translates to:
+  /// **'Naam Simran'**
+  String get goalNaamSimran;
+
+  /// No description provided for @goalMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get goalMinutesLabel;
+
+  /// No description provided for @goalCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get goalCustom;
+
+  /// No description provided for @goalEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get goalEdit;
+
+  /// No description provided for @goalCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s goal is done'**
+  String get goalCompleteTitle;
+
+  /// No description provided for @diaryHazriMarked.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri marked'**
+  String get diaryHazriMarked;
+
+  /// No description provided for @diaryNoHazri.
+  ///
+  /// In en, this message translates to:
+  /// **'No hazri'**
+  String get diaryNoHazri;
+
+  /// No description provided for @diaryGoalSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: {met} of {total} met'**
+  String diaryGoalSummary(int met, int total);
+
+  /// No description provided for @diaryLegendHazri.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri'**
+  String get diaryLegendHazri;
+
+  /// No description provided for @diaryLegendGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal met'**
+  String get diaryLegendGoal;
+
+  /// No description provided for @diarySourceRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get diarySourceRead;
+
+  /// No description provided for @diarySourceListened.
+  ///
+  /// In en, this message translates to:
+  /// **'Listened'**
+  String get diarySourceListened;
+
+  /// No description provided for @diarySourceDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked in Diary'**
+  String get diarySourceDiary;
+
+  /// No description provided for @diarySourceRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored'**
+  String get diarySourceRestored;
+
+  /// No description provided for @diarySourceMigrated.
+  ///
+  /// In en, this message translates to:
+  /// **'Carried over'**
+  String get diarySourceMigrated;
+
+  /// No description provided for @diarySimranStoppedEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'stopped early'**
+  String get diarySimranStoppedEarly;
+
+  /// No description provided for @diaryReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Days more than 7 days ago can\'t be changed.'**
+  String get diaryReadOnly;
+
+  /// No description provided for @diaryRecited.
+  ///
+  /// In en, this message translates to:
+  /// **'Recited'**
+  String get diaryRecited;
+
+  /// No description provided for @diaryCountTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'× {count}'**
+  String diaryCountTimes(int count);
+
+  /// No description provided for @diaryAddRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Add or take away'**
+  String get diaryAddRemove;
+
+  /// No description provided for @diaryStreakNow.
+  ///
+  /// In en, this message translates to:
+  /// **'days in a row now'**
+  String get diaryStreakNow;
+
+  /// No description provided for @diaryStreakLongest.
+  ///
+  /// In en, this message translates to:
+  /// **'your longest'**
+  String get diaryStreakLongest;
+
+  /// No description provided for @todayStreakCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'days of Nitnem in a row'**
+  String get todayStreakCaption;
+
+  /// No description provided for @actionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get actionAdd;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

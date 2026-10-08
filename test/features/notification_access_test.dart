@@ -14,6 +14,9 @@ class FakeSystemSettings implements SystemSettings {
     opened++;
     return true;
   }
+
+  @override
+  Future<bool?> ignoringBatteryOptimizations() async => null;
 }
 
 /// The lock-screen controls are the playback service's notification, so this is

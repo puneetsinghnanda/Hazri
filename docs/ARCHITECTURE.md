@@ -589,6 +589,7 @@ added. The *Phase 2* column is the target.
 | `onboarding_done` | bool | false | Kept |
 | `analytics_enabled` | bool | false | Kept, never written in Phase 2 |
 | `goal_complete_sheet_shown_on` | date | — | Kept (`04-goals.md` CE1) |
+| `notif_on_amrit_vela`, `notif_on_goal_reminders`, `notif_on_sikh_calendar`, `notif_on_hazri_nudge`, `notif_on_sangat` | bool | true | **New.** One switch per kind, keyed by its channel (`02-notifications.md` CM7) |
 | `city_id` | String | `new_delhi` | **Removed.** One city, the profile's; none without a profile (`03-first-run.md` CY1–CY3) |
 | `simran_minutes` | int | 5 | **Removed.** The sitting is 5 minutes or the goal item's minutes (`07-simran.md` S-7) |
 | `exact_alarm_asked` | bool | false | **Removed.** Exact alarms are never asked (`02-notifications.md` DP2) |

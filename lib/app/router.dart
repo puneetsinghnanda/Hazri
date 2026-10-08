@@ -21,6 +21,7 @@ import '../features/onboarding/ui/splash_screen.dart';
 import '../features/reader/ui/reader_screen.dart';
 import '../features/reminders/data/reminder_service.dart';
 import '../features/reminders/ui/battery_help_screen.dart';
+import '../features/reminders/ui/notification_diagnostics_screen.dart';
 import '../features/reminders/ui/notifications_screen.dart';
 import '../features/settings/ui/settings_screen.dart';
 import '../features/simran/ui/simran_screen.dart';
@@ -62,6 +63,9 @@ abstract final class Routes {
 
   /// Every notification Hazri can send, in one place (design 50).
   static const notifications = '/notifications';
+
+  /// What the phone says about reminders (02-notifications DP4).
+  static const notificationDiagnostics = '/notifications/diagnostics';
 
   /// The five bottom-nav branches. Going to one of these switches tabs;
   /// pushing one would stack a second copy on top of the shell.
@@ -152,6 +156,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),
       GoRoute(path: Routes.licences, builder: (_, _) => const LicencesScreen()),
       GoRoute(path: Routes.notifications, builder: (_, _) => const NotificationsScreen()),
+      GoRoute(
+        path: Routes.notificationDiagnostics,
+        builder: (_, _) => const NotificationDiagnosticsScreen(),
+      ),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
     ],
     redirect: (context, state) {

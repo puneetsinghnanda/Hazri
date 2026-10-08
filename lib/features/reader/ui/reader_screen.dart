@@ -8,9 +8,8 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../app/router.dart';
-import '../../../core/db/content_db.dart' show BaniSlot;
 import '../../../core/db/content_repository.dart';
-import '../../../core/db/user_db.dart' show BaniSlotValue, CompletionSource;
+import '../../../core/db/user_db.dart' show CompletionSource;
 import '../../../core/db/user_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/app_settings.dart';
@@ -25,6 +24,7 @@ import '../../audio/data/notification_access.dart';
 import '../../audio/domain/paath_player.dart';
 import '../../audio/domain/timings.dart';
 import '../../audio/ui/player_bar.dart';
+import '../../nitnem/data/complete_bani.dart';
 import '../../nitnem/domain/bani.dart';
 import 'gurbani_line_view.dart';
 import 'text_settings_sheet.dart';
@@ -66,6 +66,10 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   /// `ref` is no longer usable by then.
   late final UserRepository _repo;
 
+  /// The one completion path, and this opening of the bani on it (CR2).
+  late final CompletionPath _completion;
+  late final int _opening;
+
   /// Captured alongside the repository: `dispose` writes the audio position
   /// too, and `ref` is gone by then.
   PaathPlayer? _player;
@@ -88,6 +92,8 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     super.initState();
     _repo = ref.read(userRepositoryProvider);
     _player = ref.read(paathPlayerProvider);
+    _completion = ref.read(completionPathProvider);
+    _opening = _completion.opened(widget.slug);
     if (widget.autoplay) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _startAudio());
     }
@@ -99,6 +105,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
 
   @override
   void dispose() {
+    _completion.closed(widget.slug, _opening);
     _itemPositions.itemPositions.removeListener(_onScroll);
     _saveTimer?.cancel();
     _saveProgress();
@@ -227,20 +234,8 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
       _completionLogged = false;
       return;
     }
-    await _repo.logCompletion(
-      baniId: bani.id,
-      slot: _slotValue(bani.defaultSlot),
-      source: CompletionSource.read,
-    );
-    await _repo.creditGoalsFor(bani.id);
+    await _completion.completeBani(bani, CompletionSource.reader);
   }
-
-  static BaniSlotValue _slotValue(BaniSlot slot) => switch (slot) {
-    BaniSlot.morning => BaniSlotValue.morning,
-    BaniSlot.evening => BaniSlotValue.evening,
-    BaniSlot.bedtime => BaniSlotValue.bedtime,
-    BaniSlot.none => BaniSlotValue.none,
-  };
 
   void _saveProgress() {
     final versionId = _versionId;

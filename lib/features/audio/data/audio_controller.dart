@@ -7,9 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show AudioTrackRow, BaniSlot;
 import '../../../core/db/content_repository.dart';
-import '../../../core/db/user_db.dart' show BaniSlotValue, CompletionSource;
-import '../../../core/db/user_repository.dart';
+import '../../../core/db/user_db.dart' show CompletionSource;
 import '../../../core/settings/settings_controller.dart';
+import '../../nitnem/data/complete_bani.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../simran/domain/simran_track.dart';
 import '../domain/paath_player.dart';
@@ -84,18 +84,7 @@ class PlaybackController {
     final banis = await _ref.read(contentRepositoryProvider).banis();
     final bani = banis.where((b) => b.id == baniId).firstOrNull;
     if (bani == null) return;
-    final repo = _ref.read(userRepositoryProvider);
-    await repo.logCompletion(
-      baniId: bani.id,
-      slot: switch (bani.defaultSlot) {
-        BaniSlot.morning => BaniSlotValue.morning,
-        BaniSlot.evening => BaniSlotValue.evening,
-        BaniSlot.bedtime => BaniSlotValue.bedtime,
-        BaniSlot.none => BaniSlotValue.none,
-      },
-      source: CompletionSource.listen,
-    );
-    await repo.creditGoalsFor(bani.id);
+    await _ref.read(completionPathProvider).completeBani(bani, CompletionSource.audio);
   }
 
   PaathTrack? _trackFor(Bani bani, Map<String, AudioTrackRow> tracks, String language) {

@@ -10,9 +10,8 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
-import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../domain/streak.dart';
+import '../../goals/domain/day_verdict.dart';
 import '../../../app/menu_sheet.dart';
 import '../../../core/widgets/tab_header.dart';
 
@@ -22,27 +21,33 @@ final diaryMonthProvider = StateProvider<DateTime>((ref) {
   return DateTime(today.year, today.month);
 });
 
-final diaryDaysProvider = FutureProvider<List<DiaryDay>>((ref) {
-  // Rebuild whenever a completion or Simran session is written.
-  ref.watch(userRepositoryProvider).watchCompletions();
-  return ref.watch(userRepositoryProvider).diaryMonth(ref.watch(diaryMonthProvider));
-});
-
-final streakProvider = FutureProvider<StreakResult>(
-  (ref) => ref.watch(userRepositoryProvider).streak(),
+/// The month's live rows; both dots of every day come from
+/// [MonthRows.verdict] (09-diary D4).
+final diaryMonthRowsProvider = StreamProvider<MonthRows>(
+  (ref) => ref.watch(userRepositoryProvider).watchMonth(ref.watch(diaryMonthProvider)),
 );
 
-/// One day, for design 56.
-///
-/// Derived from the month it falls in rather than queried on its own, so the
-/// grace day and the goals-met flag are worked out by exactly the code the
-/// grid uses. It is a local SQLite read either way.
-final diaryDayProvider = FutureProvider.family<DiaryDay?, DateTime>((ref, date) async {
-  ref.watch(userRepositoryProvider).watchCompletions();
-  final month = await ref
-      .watch(userRepositoryProvider)
-      .diaryMonth(DateTime(date.year, date.month));
-  return month.where((d) => d.date.day == date.day).firstOrNull;
+/// The streak card's two numbers (D12), recomputed whenever a completion is
+/// written.
+final nitnemStreakProvider = FutureProvider<NitnemStreak>((ref) async {
+  ref.watch(_completionsTick);
+  return ref.watch(userRepositoryProvider).nitnemStreak();
+});
+
+final _completionsTick = StreamProvider<int>(
+  (ref) => ref.watch(userRepositoryProvider).watchCompletions().map((c) => c.length),
+);
+
+/// DV3: no dots before the first recorded day.
+final firstRecordedDayProvider = FutureProvider<String?>((ref) async {
+  ref.watch(_completionsTick);
+  return ref.watch(userRepositoryProvider).firstRecordedDay();
+});
+
+/// Grace days spent, for the grid's quiet label (Y-j).
+final graceDaysProvider = FutureProvider<Set<String>>((ref) async {
+  await ref.watch(nitnemStreakProvider.future);
+  return ref.watch(userRepositoryProvider).graceDayKeys();
 });
 
 /// The Nitnem Diary (Design 26).
@@ -58,8 +63,8 @@ class DiaryScreen extends ConsumerWidget {
     final l = L.of(context);
     final dates = HazriDates.of(context);
     final month = ref.watch(diaryMonthProvider);
-    final days = ref.watch(diaryDaysProvider).value ?? const <DiaryDay>[];
-    final streak = ref.watch(streakProvider).value;
+    final rows = ref.watch(diaryMonthRowsProvider).value;
+    final streak = ref.watch(nitnemStreakProvider).value ?? NitnemStreak.zero;
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -108,12 +113,17 @@ class DiaryScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+              // D12: hidden while both numbers are under 2.
+              if (streak.longest >= 2) ...[
+                const SizedBox(height: 14),
+                DiaryStreakCard(streak: streak),
+              ],
               const SizedBox(height: 14),
-              _StreakCard(streak: streak),
-              const SizedBox(height: 14),
-              _MonthGrid(month: month, days: days),
-              const SizedBox(height: 14),
-              _MonthStats(days: days),
+              if (rows != null) ...[
+                _MonthGrid(month: month, rows: rows),
+                const SizedBox(height: 14),
+                _MonthStats(month: month, rows: rows),
+              ],
               const SizedBox(height: 14),
               Text(
                 l.diaryFooter,
@@ -128,52 +138,37 @@ class DiaryScreen extends ConsumerWidget {
   }
 }
 
-class _StreakCard extends StatelessWidget {
-  const _StreakCard({required this.streak});
+/// Design 87: now and longest, divided by a rule (09-diary D12). Only the
+/// longest half while the run now is under 2; nothing ever says a streak
+/// ended, and grace days are never mentioned.
+class DiaryStreakCard extends StatelessWidget {
+  const DiaryStreakCard({super.key, required this.streak});
 
-  final StreakResult? streak;
+  final NitnemStreak streak;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
-    final days = streak?.days ?? 0;
-
+    Widget half(int n, String label, Color colour) => Expanded(
+          child: Column(
+            children: [
+              Text('$n', style: HazriText.display22.copyWith(color: colour, fontSize: 30)),
+              const SizedBox(height: 2),
+              Text(label,
+                  textAlign: TextAlign.center,
+                  style: HazriText.caption.copyWith(color: c.muted, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        );
     return HazriCard(
       child: Row(
         children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: c.kesriSoft,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            alignment: Alignment.center,
-            child: AppIcon(HazriIconData.sunArc, size: 30, color: c.kesriInk),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // The number is in the sentence rather than beside it. A
-                // 44-point numeral with a caption under it read as a score.
-                Text(
-                  days == 0
-                      ? l.diaryStreakNone
-                      : (days == 1 ? l.diaryStreakOne : l.diaryStreakDays(days)),
-                  style: HazriText.display22.copyWith(color: c.ink, fontSize: 23),
-                ),
-                const SizedBox(height: 1),
-                Text(
-                  '${l.diaryGentleStreak} · '
-                  '${l.diaryGrace(streak?.graceLeftThisMonth ?? StreakCalculator.gracePerMonth)}',
-                  style: HazriText.caption.copyWith(color: c.muted),
-                ),
-              ],
-            ),
-          ),
+          if (streak.current >= 2) ...[
+            half(streak.current, l.diaryStreakNow, c.kesri),
+            Container(width: 1, height: 44, color: c.rule),
+          ],
+          half(streak.longest, l.diaryStreakLongest, c.ink),
         ],
       ),
     );
@@ -181,16 +176,19 @@ class _StreakCard extends StatelessWidget {
 }
 
 class _MonthGrid extends ConsumerWidget {
-  const _MonthGrid({required this.month, required this.days});
+  const _MonthGrid({required this.month, required this.rows});
 
   final DateTime month;
-  final List<DiaryDay> days;
+  final MonthRows rows;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
     final today = ref.watch(clockProvider).today();
+    final first = ref.watch(firstRecordedDayProvider).value;
+    final grace = ref.watch(graceDaysProvider).value ?? const <String>{};
+    final length = DateTime(month.year, month.month + 1, 0).day;
     final labels = [l.dayMon, l.dayTue, l.dayWed, l.dayThu, l.dayFri, l.daySat, l.daySun];
 
     // Monday-first grid, with blanks before the first of the month.
@@ -222,15 +220,20 @@ class _MonthGrid extends ConsumerWidget {
               mainAxisSpacing: 4,
               crossAxisSpacing: 4,
             ),
-            itemCount: leading + days.length,
+            itemCount: leading + length,
             itemBuilder: (context, i) {
               if (i < leading) return const SizedBox.shrink();
-              final day = days[i - leading];
+              final date = DateTime(month.year, month.month, i - leading + 1);
+              final key = localDateKey(date);
+              final future = date.isAfter(today);
+              final beforeFirst = first == null || key.compareTo(first) < 0;
               return _DayCell(
-                day: day,
-                isToday: day.date == today,
-                isFuture: day.date.isAfter(today),
-                onTap: () => _openDay(context, ref, day.date),
+                date: date,
+                verdict: future || beforeFirst ? null : rows.verdict(date),
+                isGrace: grace.contains(key),
+                isToday: date == today,
+                isFuture: future,
+                onTap: () => _openDay(context, ref, date),
               );
             },
           ),
@@ -245,8 +248,8 @@ class _MonthGrid extends ConsumerWidget {
             runSpacing: 4,
             children: [
               for (final (label, colour) in [
-                (l.diaryHazriDot, c.kesri),
-                if (days.any((d) => d.hasGoals)) (l.diaryGoalsDot, c.sage),
+                (l.diaryLegendHazri, c.kesri),
+                if (rows.anyGoalDay) (l.diaryLegendGoal, c.sage),
               ])
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -282,13 +285,19 @@ class _MonthGrid extends ConsumerWidget {
 
 class _DayCell extends StatelessWidget {
   const _DayCell({
-    required this.day,
+    required this.date,
+    required this.verdict,
+    required this.isGrace,
     required this.isToday,
     required this.isFuture,
     required this.onTap,
   });
 
-  final DiaryDay day;
+  final DateTime date;
+
+  /// Null for a day with no dots: future, or before the first recorded day.
+  final DayVerdict? verdict;
+  final bool isGrace;
   final bool isToday;
   final bool isFuture;
   final VoidCallback onTap;
@@ -301,9 +310,10 @@ class _DayCell extends StatelessWidget {
     // after the last one ran out, is not a day anybody failed, and a grey
     // second dot on it says the opposite. So: one dot means nothing was
     // asked, two mean something was, lit or not.
+    final v = verdict;
     final dots = [
-      (day.hazri, c.kesri),
-      if (day.hasGoals) (day.goalsMet, c.sage),
+      if (v != null) (v.hazri, c.kesri),
+      if (v != null && v.goalState != GoalState.none) (v.goalState == GoalState.met, c.sage),
     ];
 
     return InkWell(
@@ -318,14 +328,14 @@ class _DayCell extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '${day.date.day}',
+              '${date.day}',
               style: HazriText.caption.copyWith(
                 color: isFuture ? c.muted.withValues(alpha: 0.5) : c.ink,
                 fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
             const SizedBox(height: 3),
-            if (day.isGrace)
+            if (isGrace && !(v?.hazri ?? false))
               Text(
                 L.of(context).diaryGraceLabel,
                 style: HazriText.caption.copyWith(fontSize: 7, color: c.muted),
@@ -354,9 +364,10 @@ class _DayCell extends StatelessWidget {
 }
 
 class _MonthStats extends ConsumerWidget {
-  const _MonthStats({required this.days});
+  const _MonthStats({required this.month, required this.rows});
 
-  final List<DiaryDay> days;
+  final DateTime month;
+  final MonthRows rows;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -364,8 +375,14 @@ class _MonthStats extends ConsumerWidget {
     final l = L.of(context);
 
     // The same two things the dots count, so the month reads one way.
-    final hazriDays = days.where((d) => d.hazri).length;
-    final goalsMet = days.where((d) => d.goalsMet).length;
+    final today = ref.watch(clockProvider).today();
+    final verdicts = [
+      for (var d = 1; d <= DateTime(month.year, month.month + 1, 0).day; d++)
+        if (!DateTime(month.year, month.month, d).isAfter(today))
+          rows.verdict(DateTime(month.year, month.month, d)),
+    ];
+    final hazriDays = verdicts.where((v) => v.hazri).length;
+    final goalsMet = verdicts.where((v) => v.goalState == GoalState.met).length;
 
     final stats = [
       (hazriDays, l.diaryStatHazriDays, c.kesri),

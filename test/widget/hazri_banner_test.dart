@@ -59,7 +59,7 @@ void main() {
     await app.container.read(userRepositoryProvider).logCompletion(
           baniId: 'japji',
           slot: BaniSlotValue.morning,
-          source: CompletionSource.read,
+          source: CompletionSource.reader,
           on: DateTime(2026, 11, 20, 5, 52),
         );
     // drift's query and its watch both run on the real event loop, which the

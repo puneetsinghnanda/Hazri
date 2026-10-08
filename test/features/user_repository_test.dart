@@ -1,435 +1,278 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/time/clock.dart';
-import 'package:hazri/features/goals/domain/goal_progress.dart';
+import 'package:hazri/features/goals/domain/day_verdict.dart';
 
-/// Completion, goal and diary rules against a real (in-memory) database.
+/// 04-goals §8 against a real (in-memory) database: every row a test.
 void main() {
   late UserDb db;
   late UserRepository repo;
   late FixedClock clock;
 
-  final today = DateTime(2026, 9, 12);
+  DateTime d(int month, int day, [int hour = 9]) => DateTime(2026, month, day, hour);
 
   setUp(() {
     db = UserDb.memory();
-    clock = FixedClock(DateTime(2026, 9, 12, 6, 30));
+    clock = FixedClock(d(10, 1));
     repo = UserRepository(db, clock);
   });
 
   tearDown(() => db.close());
 
-  group('completions', () {
-    test('one bani in one slot counts once a day, however often it is read', () async {
-      for (var i = 0; i < 3; i++) {
-        await repo.logCompletion(
-          baniId: 'JAPJ',
-          slot: BaniSlotValue.morning,
-          source: CompletionSource.read,
-        );
+  Future<Completion> read(String bani, {DateTime? on, CompletionSource source = CompletionSource.reader}) =>
+      repo.logCompletion(baniId: bani, slot: BaniSlotValue.morning, source: source, on: on);
+
+  Future<SimranSession> sit(int seconds, {DateTime? on, bool completed = true}) => repo.logSitting(
+      duration: Duration(seconds: seconds), completed: completed, source: SittingSource.timer, on: on);
+
+  Future<DayVerdict> verdict([DateTime? day]) async => (await repo.dayRows(day ?? clock.today())).verdict;
+
+  group('8.1 hazri without goals', () {
+    test('H-1: a completed bani marks hazri; no second dot', () async {
+      await read('JAPJ');
+      final v = await verdict();
+      expect(v.hazri, isTrue);
+      expect(v.goalState, GoalState.none);
+    });
+
+    test('H-2: a 5-minute sitting marks hazri', () async {
+      await sit(300);
+      expect((await verdict()).hazri, isTrue);
+    });
+
+    test('H-3: 4 min 59 s is stored and marks nothing', () async {
+      await sit(299, completed: false);
+      expect((await verdict()).hazri, isFalse);
+      expect(await repo.allSittings(), hasLength(1));
+    });
+
+    test('H-6: a bani outside the goal marks hazri, not the goal', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await read('REHR');
+      final v = await verdict();
+      expect(v.hazri, isTrue);
+      expect(v.goalState, GoalState.notMet);
+    });
+  });
+
+  group('8.2 goals', () {
+    test('G-2: Japji ×1 read → met (DV2)', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await read('JAPJ');
+      final v = await verdict();
+      expect(v.goalState, GoalState.met);
+      expect((v.itemsMet, v.itemsInScope), (1, 1));
+    });
+
+    test('G-3, G-4: Japji ×3 needs three completions', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ', timesPerDay: 3));
+      await read('JAPJ');
+      expect((await verdict()).goalState, GoalState.notMet);
+      await read('JAPJ');
+      await read('JAPJ');
+      expect((await verdict()).goalState, GoalState.met);
+    });
+
+    test('G-5: a sitting shorter than the item is not met (HZ4)', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await repo.addItem(const GoalItemSpec.simran(11));
+      await read('JAPJ');
+      await sit(7 * 60, completed: false);
+      final v = await verdict();
+      expect(v.hazri, isTrue);
+      expect((v.itemsMet, v.itemsInScope), (1, 2));
+    });
+
+    test('G-6: an 11-minute sitting meets Simran 11', () async {
+      await repo.addItem(const GoalItemSpec.simran(11));
+      await sit(11 * 60);
+      expect((await verdict()).goalState, GoalState.met);
+    });
+
+    test('G-7: Japji read twice is two rows and met once (CR6)', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await read('JAPJ');
+      await read('JAPJ');
+      expect(await repo.completionsOn(clock.today()), hasLength(2));
+      expect((await verdict()).itemsMet, 1);
+    });
+
+    test('G-11 / GI1: an item already in scope cannot be added twice', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      expect(() => repo.addItem(const GoalItemSpec.bani('JAPJ')), throwsA(isA<GoalRuleException>()));
+    });
+
+    test('GL3: one active goal holds every item', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await repo.addItem(const GoalItemSpec.bani('REHR'));
+      expect(await db.select(db.goals).get(), hasLength(1));
+    });
+  });
+
+  group('8.3 duration, editing and removal', () {
+    test('E-1: a 7-day goal kept to the end completes on day 8', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ', durationType: DurationType.days, durationDays: 7));
+      for (var day = 1; day <= 7; day++) {
+        clock.instant = d(10, day);
+        await read('JAPJ');
       }
-      final rows = await repo.completionsOn(today);
-      expect(rows.length, 1);
-      expect(rows.single.source, CompletionSource.read);
+      clock.instant = d(10, 8);
+      await repo.closeGoalIfBlank();
+      expect((await verdict(d(10, 7))).goalState, GoalState.met);
+      expect((await verdict(d(10, 8))).goalState, GoalState.none);
+      expect(await repo.activeGoal(), isNull);
+      expect((await db.select(db.goals).getSingle()).completedOn, '2026-10-08');
     });
 
-    test('different banis in the same slot are separate completions', () async {
-      await repo.logCompletion(
-        baniId: 'JAPJ',
-        slot: BaniSlotValue.morning,
-        source: CompletionSource.read,
-      );
-      await repo.logCompletion(
-        baniId: 'JAAP',
-        slot: BaniSlotValue.morning,
-        source: CompletionSource.listen,
-      );
-      expect((await repo.completionsOn(today)).length, 2);
+    test('E-2: removing one of two keeps the goal; earlier days unchanged', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      final rehras = await repo.addItem(const GoalItemSpec.bani('REHR'));
+      await read('JAPJ');
+      clock.instant = d(10, 20);
+      await repo.removeItem(rehras.id);
+      expect(await repo.activeGoal(), isNotNull);
+      expect((await verdict(d(10, 1))).itemsInScope, 2);
+      expect((await verdict(d(10, 20))).itemsInScope, 1);
     });
 
-    test('a manual tick can be removed again', () async {
-      await repo.logCompletion(
-        baniId: 'REHR',
-        slot: BaniSlotValue.evening,
-        source: CompletionSource.manual,
-        on: today,
-      );
-      expect((await repo.completionsOn(today)).length, 1);
-      await repo.removeCompletion(
-        baniId: 'REHR',
-        slot: BaniSlotValue.evening,
-        on: today,
-      );
-      expect(await repo.completionsOn(today), isEmpty);
+    test('E-3: removing the only item today completes the goal; today has no second dot', () async {
+      final japji = await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      clock.instant = d(10, 5);
+      await read('JAPJ');
+      await repo.removeItem(japji.id);
+      expect(await repo.activeGoal(), isNull);
+      expect((await verdict()).goalState, GoalState.none);
+      expect((await verdict(d(10, 4))).goalState, GoalState.notMet);
     });
 
-    test('completions are filed under the day they happened', () async {
-      final yesterday = today.subtract(const Duration(days: 1));
-      await repo.logCompletion(
-        baniId: 'JAPJ',
-        slot: BaniSlotValue.morning,
-        source: CompletionSource.manual,
-        on: yesterday,
-      );
-      expect(await repo.completionsOn(today), isEmpty);
-      expect((await repo.completionsOn(yesterday)).length, 1);
-    });
-  });
-
-  group('reading progress', () {
-    test('is stored per bani version and overwritten as reading continues', () async {
-      await repo.saveProgress('JAPJ_SGPC', 12);
-      await repo.saveProgress('JAPJ_SGPC', 40);
-      final p = await repo.progressFor('JAPJ_SGPC');
-      expect(p!.lineIdx, 40);
-      expect(await repo.progressFor('REHR_SGPC'), isNull);
-    });
-  });
-
-  group('goals', () {
-    Future<String> addGoal({int times = 1, String bani = 'JAPJ'}) async {
-      final id = UserRepository.newId();
-      await repo.saveGoal(
-        GoalsCompanion.insert(
-          id: id,
-          baniId: bani,
-          timesPerDay: Value(times),
-          durationType: GoalDuration.everyDay,
-          startDate: localDateKey(today),
-          createdAt: DateTime.now().toUtc(),
-          updatedAt: DateTime.now().toUtc(),
-        ),
-      );
-      return id;
-    }
-
-    test('finishing a bani credits its goals, up to the daily target', () async {
-      final id = await addGoal(times: 2);
-      await repo.creditGoalsFor('JAPJ');
-      await repo.creditGoalsFor('JAPJ');
-      await repo.creditGoalsFor('JAPJ');
-      final ticks = await repo.goalTicksOn(today);
-      expect(ticks.where((t) => t.goalId == id).length, 2);
+    test('E-4: added and removed the same day is never in scope', () async {
+      await repo.addItem(const GoalItemSpec.bani('REHR'));
+      final japji = await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await repo.removeItem(japji.id);
+      expect((await verdict()).itemsInScope, 1);
     });
 
-    test('a goal for another bani is not credited', () async {
-      await addGoal(bani: 'SUKH');
-      await repo.creditGoalsFor('JAPJ');
-      expect(await repo.goalTicksOn(today), isEmpty);
+    test('E-5: a target change applies from today; earlier days keep theirs (GI6)', () async {
+      final japji = await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await read('JAPJ');
+      clock.instant = d(10, 11);
+      await repo.editTarget(japji.id, timesPerDay: 3);
+      await read('JAPJ');
+      expect((await verdict(d(10, 1))).goalState, GoalState.met);
+      expect((await verdict()).goalState, GoalState.notMet);
     });
 
-    test('the progress stream moves when a bani is finished', () async {
-      // The bug this exists for: the stream watched the goals table, and a
-      // tick writes to goal_tick, so the count stayed at whatever it was when
-      // the screen opened however many banis were finished afterwards.
-      final id = await addGoal(times: 2);
-      final seen = <int>[];
-      final sub = repo.watchGoalsAndTicks(today).listen((data) =>
-          seen.add(data.ticks.where((t) => t.goalId == id).length));
-
-      await pumpEventQueue();
-      await repo.creditGoalsFor('JAPJ');
-      await pumpEventQueue();
-      await repo.creditGoalsFor('JAPJ');
-      await pumpEventQueue();
-      await sub.cancel();
-
-      expect(seen.first, 0, reason: 'starts at nothing done');
-      expect(seen.last, 2, reason: 'the stream never reported the ticks');
+    test('E-6: lengthening a 40-day item moves its end from the series start', () async {
+      final japji = await repo.addItem(
+          const GoalItemSpec.bani('JAPJ', durationType: DurationType.days, durationDays: 40));
+      clock.instant = d(10, 12);
+      await repo.editDuration(japji.id, type: DurationType.days, durationDays: 60);
+      final row = await repo.item(japji.id);
+      expect(row!.endDate, '2026-11-29');
     });
 
-    test('the stream carries the goal even before anything is ticked', () async {
-      await addGoal();
-      final data = await repo.watchGoalsAndTicks(today).first;
-      expect(data.goals.length, 1);
-      expect(data.ticks, isEmpty);
-    });
-
-    test('a goal ticked twice is not reported twice by the join', () async {
-      await addGoal(times: 3);
-      await repo.creditGoalsFor('JAPJ');
-      await repo.creditGoalsFor('JAPJ');
-      final data = await repo.watchGoalsAndTicks(today).first;
-      expect(data.goals.length, 1, reason: 'the join repeats a goal per tick');
-      expect(data.ticks.length, 2);
-    });
-
-    test('undoing a completion takes back only the credit it gave', () async {
-      final id = await addGoal(times: 3);
-      await repo.creditGoalsFor('JAPJ');
-      await repo.tickGoal(id); // somebody added this one by hand
-      expect((await repo.goalTicksOn(today)).length, 2);
-
-      await repo.removeGoalCreditFor('JAPJ');
-      final left = await repo.goalTicksOn(today);
-      expect(left.length, 1);
-      expect(left.single.source, 'manual', reason: 'the hand-added tick is theirs');
-    });
-
-    test('a goal credited for an earlier day lands on that day', () async {
-      final id = await addGoal();
-      final yesterday = today.subtract(const Duration(days: 1));
-      await repo.creditGoalsFor('JAPJ', on: yesterday);
-      expect(await repo.goalTicksOn(today), isEmpty);
-      expect((await repo.goalTicksOn(yesterday)).single.goalId, id);
-    });
-
-    test('a manual +1 adds a tick beyond the automatic ones', () async {
-      final id = await addGoal(times: 5);
-      await repo.creditGoalsFor('JAPJ');
-      await repo.tickGoal(id);
-      expect((await repo.goalTicksOn(today)).length, 2);
-    });
-
-    test('progress reports done for the day once the target is met', () async {
-      final id = await addGoal(times: 2);
-      await repo.creditGoalsFor('JAPJ');
-      final goals = await repo.activeGoals();
-      var progress = GoalCalculator.progressFor(
-        goal: goals.single,
-        ticksToday: await repo.goalTicksOn(today),
-        today: today,
-      );
-      expect(progress.isDoneToday, isFalse);
-      expect(progress.fraction, 0.5);
-
-      await repo.tickGoal(id);
-      progress = GoalCalculator.progressFor(
-        goal: goals.single,
-        ticksToday: await repo.goalTicksOn(today),
-        today: today,
-      );
-      expect(progress.isDoneToday, isTrue);
-    });
-
-    test('stopping a goal keeps the days it covered', () async {
-      // The reader's scenario 4: a goal kept from the 1st to the 22nd and then
-      // stopped leaves those days exactly as they were. Deleting the row used
-      // to take its ticks with it and rewrite the month.
-      final id = await addGoal();
-      await repo.tickGoal(id);
-      await repo.archiveGoal(id);
-
-      expect(await repo.activeGoals(), isEmpty, reason: 'it stops asking');
-      expect(await repo.goalTicksOn(today), hasLength(1), reason: 'the day stands');
-    });
-
-    test('the diary month agrees with the goals card, target for target',
-        () async {
-      // A goal of three is met at three. The month grid used to call it met on
-      // the first tick, so the green dot and Today's card disagreed all day.
-      final id = await addGoal(times: 3);
-      await repo.tickGoal(id);
-
-      var day = (await repo.diaryMonth(today)).firstWhere((d) => d.date == today);
-      expect(day.hasGoals, isTrue, reason: 'the day had a goal, so two dots');
-      expect(day.goalsMet, isFalse, reason: 'one of three is not met');
-
-      await repo.tickGoal(id);
-      await repo.tickGoal(id);
-      day = (await repo.diaryMonth(today)).firstWhere((d) => d.date == today);
-      expect(day.goalsMet, isTrue);
-    });
-
-    test('a day before the goal existed has no second dot', () async {
-      await addGoal();
-      final before = (await repo.diaryMonth(today))
-          .firstWhere((d) => d.date == DateTime(2026, 9, 1));
-      expect(before.hasGoals, isFalse);
-      expect(before.goalsMet, isFalse);
-    });
-
-    test('a stopped goal leaves its days alone and stops asking', () async {
-      // Scenario 4, through the database rather than the calculator.
-      final id = await addGoal();
-      await repo.tickGoal(id);
-      await repo.archiveGoal(id);
-
-      final month = await repo.diaryMonth(today);
-      final stoppedOn = month.firstWhere((d) => d.date == today);
-      expect(stoppedOn.hasGoals, isTrue, reason: 'the day it was stopped counts');
-      expect(stoppedOn.goalsMet, isTrue, reason: 'and it was met');
-
-      final after =
-          month.firstWhere((d) => d.date == DateTime(2026, 9, 13));
-      expect(after.hasGoals, isFalse, reason: 'it asks nothing of tomorrow');
-    });
-
-    test('forgetting a goal really does take its ticks with it', () async {
-      final id = await addGoal();
-      await repo.tickGoal(id);
-      await repo.forgetGoal(id);
-      expect(await repo.activeGoals(), isEmpty);
-      expect(await repo.goalTicksOn(today), isEmpty);
-    });
-  });
-
-  group('simran', () {
-    test('a completed session lands on today and is visible to the diary', () async {
-      await repo.logSimran(
-        duration: const Duration(minutes: 5),
-        count: 108,
-        completed: true,
-      );
-      final days = await repo.diaryMonth(today);
-      expect(days.firstWhere((d) => d.date == today).simran, isTrue);
-    });
-
-    test('a session ended early is logged but does not count as done', () async {
-      await repo.logSimran(
-        duration: const Duration(minutes: 2),
-        count: 20,
-        completed: false,
-      );
-      final days = await repo.diaryMonth(today);
-      expect(days.firstWhere((d) => d.date == today).simran, isFalse);
-    });
-
-    test('and it credits a Naam Simran goal, like a bani credits its own',
-        () async {
-      // The reported bug: sit the simran, the day is marked as hazri, and
-      // the goal beside it stays undone. A bani credits its goal on every
-      // path it can be finished by; simran credited nothing, anywhere.
-      final id = UserRepository.newId();
-      await repo.saveGoal(
-        GoalsCompanion.insert(
-          id: id,
-          baniId: kSimranGoalId,
-          minutes: const Value(11),
-          timesPerDay: const Value(1),
-          durationType: GoalDuration.everyDay,
-          startDate: localDateKey(today),
-          createdAt: DateTime.now().toUtc(),
-          updatedAt: DateTime.now().toUtc(),
-        ),
-      );
-
-      await repo.logSimran(
-        duration: const Duration(minutes: 11),
-        count: 0,
-        completed: true,
-      );
-
-      final ticks = await repo.goalTicksOn(today);
-      expect(ticks.where((t) => t.goalId == id).length, 1);
-      // And the diary agrees, which is the alignment that was missing.
-      final days = await repo.diaryMonth(today);
-      expect(days.firstWhere((d) => d.date == today).simran, isTrue);
-    });
-
-    test('a sitting ended early credits nothing, the way it marks nothing',
-        () async {
-      final id = UserRepository.newId();
-      await repo.saveGoal(
-        GoalsCompanion.insert(
-          id: id,
-          baniId: kSimranGoalId,
-          timesPerDay: const Value(1),
-          durationType: GoalDuration.everyDay,
-          startDate: localDateKey(today),
-          createdAt: DateTime.now().toUtc(),
-          updatedAt: DateTime.now().toUtc(),
-        ),
-      );
-      await repo.logSimran(
-        duration: const Duration(minutes: 1),
-        count: 0,
-        completed: false,
-      );
-      expect(await repo.goalTicksOn(today), isEmpty);
-    });
-
-    test('and unticking the day in the Diary takes the credit back', () async {
-      final id = UserRepository.newId();
-      await repo.saveGoal(
-        GoalsCompanion.insert(
-          id: id,
-          baniId: kSimranGoalId,
-          timesPerDay: const Value(1),
-          durationType: GoalDuration.everyDay,
-          startDate: localDateKey(today),
-          createdAt: DateTime.now().toUtc(),
-          updatedAt: DateTime.now().toUtc(),
-        ),
-      );
-      await repo.logSimran(
-        duration: const Duration(minutes: 5),
-        count: 0,
-        completed: true,
-      );
-      expect(await repo.goalTicksOn(today), hasLength(1));
-
-      await repo.removeSimranOn(today);
-      expect(await repo.goalTicksOn(today), isEmpty);
-      final days = await repo.diaryMonth(today);
-      expect(days.firstWhere((d) => d.date == today).simran, isFalse);
-    });
-  });
-
-  group('diary month', () {
-    test('covers every day of the month, in order', () async {
-      final days = await repo.diaryMonth(DateTime(2026, 9));
-      expect(days.length, 30);
-      expect(days.first.date, DateTime(2026, 9, 1));
-      expect(days.last.date, DateTime(2026, 9, 30));
-    });
-
-    test('February in a leap year has 29 days', () async {
-      final days = await repo.diaryMonth(DateTime(2028, 2));
-      expect(days.length, 29);
-    });
-
-    test('marks which slots were completed on each day', () async {
-      await repo.logCompletion(
-        baniId: 'JAPJ',
-        slot: BaniSlotValue.morning,
-        source: CompletionSource.read,
-        on: DateTime(2026, 9, 3),
-      );
-      final days = await repo.diaryMonth(DateTime(2026, 9));
-      final third = days.firstWhere((d) => d.date == DateTime(2026, 9, 3));
-      expect(third.slots, {BaniSlotValue.morning});
-      expect(third.isNitnemDay, isTrue);
-      expect(days.first.isNitnemDay, isFalse);
-    });
-  });
-
-  group('streak', () {
-    test('persists the grace days it grants, so they stay put', () async {
-      for (final offset in [0, 1, 2, 4, 5]) {
-        await repo.logCompletion(
-          baniId: 'JAPJ',
-          slot: BaniSlotValue.morning,
-          source: CompletionSource.manual,
-          on: today.subtract(Duration(days: offset)),
-        );
-      }
-      final first = await repo.streak();
-      expect(first.days, 5);
-      expect(first.graceUsed.length, 1);
-
-      // Running again must not spend a second grace day on the same gap.
-      final second = await repo.streak();
-      expect(second.days, 5);
-      expect(second.graceUsed, isEmpty);
-
-      final days = await repo.diaryMonth(DateTime(2026, 9));
-      expect(days.firstWhere((d) => d.date == DateTime(2026, 9, 9)).isGrace, isTrue);
-    });
-  });
-
-  group('ids', () {
-    test('are UUID v4, so rows stay merge-safe if sync is added', () {
-      final id = UserRepository.newId();
+    test('E-7: an end date in the past is refused and nothing saves', () async {
+      final japji = await repo.addItem(
+          const GoalItemSpec.bani('JAPJ', durationType: DurationType.days, durationDays: 40));
+      clock.instant = d(10, 12);
       expect(
-        RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')
-            .hasMatch(id),
-        isTrue,
-        reason: id,
+        () => repo.editDuration(japji.id, type: DurationType.untilDate, untilDate: '2026-10-11'),
+        throwsA(isA<GoalRuleException>()),
       );
-      expect(UserRepository.newId(), isNot(id));
+      expect((await repo.item(japji.id))!.endDate, '2026-11-09');
     });
+
+    test('E-8: a reminder change moves only the reminder', () async {
+      final japji = await repo.addItem(const GoalItemSpec.bani('JAPJ', reminderTime: '06:00'));
+      await repo.editReminder(japji.id, '06:30');
+      final rows = await repo.allItems();
+      expect(rows, hasLength(1));
+      expect(rows.single.reminderTime, '06:30');
+    });
+
+    test('E-9: after a completed goal, adding starts a new one (GL4)', () async {
+      final japji = await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      await repo.removeItem(japji.id);
+      clock.instant = d(10, 2);
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      final goals = await db.select(db.goals).get();
+      expect(goals, hasLength(2));
+      expect(goals.where((g) => g.completedOn == null).single.startDate, '2026-10-02');
+    });
+  });
+
+  group('8.4 Diary editing', () {
+    test('D-1: + on a past day lights both dots', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      clock.instant = d(10, 4);
+      await read('JAPJ', on: d(10, 1), source: CompletionSource.diary);
+      final v = await verdict(d(10, 1));
+      expect(v.hazri, isTrue);
+      expect(v.goalState, GoalState.met);
+    });
+
+    test('D-2: − undoes the reader\'s completion by setting deletedAt (CR4)', () async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      final c = await read('JAPJ');
+      await repo.undoLatestCompletion('JAPJ', clock.today());
+      final v = await verdict();
+      expect(v.hazri, isFalse);
+      expect(v.goalState, GoalState.notMet);
+      final row = await (db.select(db.completions)..where((x) => x.id.equals(c.id))).getSingle();
+      expect(row.deletedAt, isNotNull);
+    });
+
+    test('CR4: − takes the newest, whatever its source', () async {
+      await read('JAPJ', source: CompletionSource.reader);
+      clock.instant = d(10, 1, 10);
+      await read('JAPJ', source: CompletionSource.audio);
+      await repo.undoLatestCompletion('JAPJ', clock.today());
+      final live = await repo.completionsOn(clock.today());
+      expect(live.single.source, CompletionSource.reader);
+    });
+
+    test('D-3: − with nothing to undo changes nothing', () async {
+      await read('REHR');
+      expect(await repo.undoLatestCompletion('JAPJ', clock.today()), isNull);
+      expect(await repo.completionsOn(clock.today()), hasLength(1));
+    });
+  });
+
+  group('the streak (09-diary D12)', () {
+    test('counts Nitnem days only; Sukhmani marks hazri and not the streak (D9)', () async {
+      for (var day = 1; day <= 3; day++) {
+        clock.instant = d(10, day);
+        await read('JAPJ');
+      }
+      clock.instant = d(10, 4);
+      await repo.logCompletion(baniId: 'SUKH', slot: BaniSlotValue.none, source: CompletionSource.reader);
+      final s = await repo.nitnemStreak();
+      expect(s.current, 3);
+      expect(s.longest, 3);
+    });
+
+    test('longest outlives a broken run', () async {
+      for (final day in [1, 2, 3, 4]) {
+        clock.instant = d(9, day);
+        await read('JAPJ');
+      }
+      for (final day in [20, 21]) {
+        clock.instant = d(9, day);
+        await read('JAPJ');
+      }
+      final s = await repo.nitnemStreak();
+      expect(s.current, 2);
+      expect(s.longest, 4);
+    });
+  });
+
+  test('onChanged fires on every write (RM3, CM2)', () async {
+    var calls = 0;
+    repo.onChanged = () => calls++;
+    await read('JAPJ');
+    await sit(300);
+    await repo.addItem(const GoalItemSpec.bani('REHR'));
+    expect(calls, greaterThanOrEqualTo(3));
   });
 }

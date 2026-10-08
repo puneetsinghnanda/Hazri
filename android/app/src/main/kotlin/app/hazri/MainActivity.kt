@@ -3,6 +3,7 @@ package app.hazri
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.view.WindowCompat
 import com.ryanheise.audioservice.AudioServiceActivity
@@ -36,6 +37,12 @@ class MainActivity : AudioServiceActivity() {
                             .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
                         startActivity(intent)
                         result.success(true)
+                    }
+                    // Diagnostics (02-notifications DP4): whether Android's
+                    // battery optimisation is off for Hazri.
+                    "ignoringBatteryOptimizations" -> {
+                        val pm = getSystemService(POWER_SERVICE) as PowerManager
+                        result.success(pm.isIgnoringBatteryOptimizations(packageName))
                     }
                     else -> result.notImplemented()
                 }

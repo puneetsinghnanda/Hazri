@@ -8,6 +8,10 @@ import 'package:flutter/services.dart';
 abstract interface class SystemSettings {
   /// Opens this app's notification settings.
   Future<bool> openNotificationSettings();
+
+  /// Whether battery optimisation is off for Hazri, or null when unknown
+  /// (02-notifications DP4).
+  Future<bool?> ignoringBatteryOptimizations();
 }
 
 class AndroidSystemSettings implements SystemSettings {
@@ -24,6 +28,17 @@ class AndroidSystemSettings implements SystemSettings {
       return false;
     } on MissingPluginException {
       return false;
+    }
+  }
+
+  @override
+  Future<bool?> ignoringBatteryOptimizations() async {
+    try {
+      return await _channel.invokeMethod<bool>('ignoringBatteryOptimizations');
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
     }
   }
 }

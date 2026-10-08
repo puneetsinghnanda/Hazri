@@ -3,45 +3,58 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/db/user_db.dart';
 import '../../../core/db/user_repository.dart';
 import '../../../core/time/clock.dart';
-import '../domain/goal_progress.dart';
+import '../domain/day_verdict.dart';
 
-/// Every goal with today's progress attached.
-final goalProgressProvider = StreamProvider<List<GoalProgress>>((ref) {
-  final repo = ref.watch(userRepositoryProvider);
+/// Today's rows, live: every item, today's completions and sittings.
+final todayRowsProvider = StreamProvider<DayRows>((ref) {
   final today = ref.watch(clockProvider).today();
-
-  // Goals and today's ticks arrive together, so finishing a bani moves the
-  // count while the screen is open.
-  return repo.watchGoalsAndTicks(today).map((data) => [
-        for (final g in data.goals)
-          GoalCalculator.progressFor(goal: g, ticksToday: data.ticks, today: today),
-      ]);
+  return ref.watch(userRepositoryProvider).watchDay(today);
 });
 
-/// The one-line summary shown on the Nitnem list.
+/// Today's verdict (04-goals §4.6). Today, the Goals screen and the
+/// goal-complete cue all read this; nothing re-derives it.
+final todayVerdictProvider = Provider<DayVerdict>(
+  (ref) => ref.watch(todayRowsProvider).value?.verdict ?? DayVerdict.empty,
+);
+
+/// The items in scope today, in creation order (§7.3).
+final itemsInScopeTodayProvider = Provider<List<GoalItem>>((ref) {
+  final rows = ref.watch(todayRowsProvider).value;
+  if (rows == null) return const [];
+  return [...rows.itemsInScope]..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+});
+
+/// The active goal, or null (GL1).
+final activeGoalProvider = StreamProvider<Goal?>(
+  (ref) => ref.watch(userRepositoryProvider).watchActiveGoal(),
+);
+
+/// Whether any goal was ever made: the Set Goal card's two subtitles (§7.1).
+final hadGoalProvider = StreamProvider<bool>(
+  (ref) => ref.watch(userRepositoryProvider).watchHadGoal(),
+);
+
+/// Items met of items in scope today, for the Nitnem list's one line.
 typedef GoalsSummary = ({int doneToday, int total});
 
 final goalsSummaryProvider = Provider<GoalsSummary>((ref) {
-  final progress = ref.watch(goalProgressProvider).value ?? const <GoalProgress>[];
-  final active = progress.where((p) => p.goal.active && !p.isComplete).toList();
-  return (
-    doneToday: active.where((p) => p.isDoneToday).length,
-    total: active.length,
-  );
+  final v = ref.watch(todayVerdictProvider);
+  return (doneToday: v.itemsMet, total: v.itemsInScope);
 });
 
-/// The length of an open Naam Simran goal, or null when there is none.
-///
-/// A simran goal carries the minutes somebody chose for it, and the Simran
-/// screen used the five-minute default whatever the goal said — so an eleven
-/// minute goal started an eleven minute recitation that stopped at five and
-/// was logged as five. The goal wins where there is one; Settings is what
-/// somebody who has not set a goal gets.
+/// The Simran timer's length: the in-scope simran item's minutes, or null for
+/// the 5-minute default (HZ4).
 final simranGoalMinutesProvider = Provider<int?>((ref) {
-  final progress = ref.watch(goalProgressProvider).value ?? const <GoalProgress>[];
-  return progress
-      .where((p) => p.goal.baniId == kSimranGoalId && p.goal.active && !p.isComplete)
-      .map((p) => p.goal.minutes)
-      .whereType<int>()
-      .firstOrNull;
+  final items = ref.watch(itemsInScopeTodayProvider);
+  return items.where((i) => i.itemType == ItemType.simran).firstOrNull?.simranMinutes;
 });
+
+/// How an item stands today: its progress against its target.
+({int done, int target, bool met}) itemToday(GoalItem item, DayRows? rows) {
+  if (rows == null) return (done: 0, target: item.timesPerDay, met: false);
+  final done = itemProgress(item, rows.completions, rows.sittings);
+  final met = itemMet(item, rows.completions, rows.sittings);
+  return item.itemType == ItemType.simran
+      ? (done: done ~/ 60, target: item.simranMinutes ?? 5, met: met)
+      : (done: done, target: item.timesPerDay, met: met);
+}

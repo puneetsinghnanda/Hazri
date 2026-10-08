@@ -3,9 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
-import '../../../core/db/content_db.dart';
-import '../../../core/db/content_repository.dart';
-import '../../../core/db/user_db.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/app_settings.dart';
 import '../../../core/settings/settings_controller.dart';
@@ -16,13 +13,11 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_mark.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../reminders/data/reminder_service.dart';
 import '../../reminders/data/reminders_controller.dart';
-import '../../reminders/domain/reminder_plan.dart';
-import '../../reminders/ui/city_picker_sheet.dart';
-import '../../reminders/ui/reminder_row.dart';
 
-/// Setup steps 1-3 (PRD 1.2). Nothing is required except the language.
+/// Setup: language, then how you read (03-first-run F1). Nothing is required
+/// except the language. Reminders are on by default and Android's permission
+/// prompt comes at app start (02-notifications), so there is no reminders step.
 class SetupScreen extends ConsumerWidget {
   const SetupScreen({super.key, required this.step});
 
@@ -41,7 +36,6 @@ class SetupScreen extends ConsumerWidget {
               Expanded(
                 child: switch (step) {
                   2 => const _StepReading(),
-                  3 => const _StepReminders(),
                   _ => const _StepLanguage(),
                 },
               ),
@@ -77,7 +71,7 @@ class _StepHeader extends StatelessWidget {
                 : null,
           ),
           const Spacer(),
-          for (var i = 1; i <= 3; i++)
+          for (var i = 1; i <= 2; i++)
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 3),
               height: 4,
@@ -352,7 +346,7 @@ class _StepReading extends ConsumerWidget {
         ),
         _StepFooter(
           label: l.actionContinue,
-          onPressed: () => context.go(Routes.setup(3)),
+          onPressed: () => _finish(context, ref),
         ),
       ],
     );
@@ -400,205 +394,6 @@ class _ScriptCard extends StatelessWidget {
   }
 }
 
-// ------------------------------------------------------------------- step 3
-
-class _StepReminders extends ConsumerStatefulWidget {
-  const _StepReminders();
-
-  @override
-  ConsumerState<_StepReminders> createState() => _StepRemindersState();
-}
-
-class _StepRemindersState extends ConsumerState<_StepReminders> {
-  bool? _exactAllowed;
-  bool _askedNotifications = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _requestPermissions());
-  }
-
-  /// The notification permission is asked for on reaching this step; denying it
-  /// never blocks setup (PRD 1.2 AC).
-  Future<void> _requestPermissions() async {
-    if (_askedNotifications) return;
-    _askedNotifications = true;
-    final service = ref.read(reminderServiceProvider);
-    await service.requestNotificationPermission();
-    final exact = await service.canScheduleExact();
-    if (mounted) setState(() => _exactAllowed = exact);
-  }
-
-  Future<void> _requestExactAlarm() async {
-    final service = ref.read(reminderServiceProvider);
-    await service.requestExactAlarmPermission();
-    await ref.read(settingsProvider.notifier).setExactAlarmAsked(true);
-    final exact = await service.canScheduleExact();
-    if (mounted) setState(() => _exactAllowed = exact);
-  }
-
-  Future<void> _finish() async {
-    await ref.read(settingsProvider.notifier).setOnboardingDone(true);
-    await ref.read(reminderSchedulerProvider).reschedule();
-    if (mounted) context.go(Routes.today);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final l = L.of(context);
-    final reminders = ref.watch(remindersProvider).value ?? const <Reminder>[];
-    final cityId = ref.watch(settingsProvider).cityId;
-    final city = ref.watch(citiesProvider).value?.where((x) => x.id == cityId).firstOrNull;
-    final localeCode = Localizations.localeOf(context).languageCode;
-
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 16, HazriSize.gutter, 8),
-            children: [
-              Text(l.setupRemindersTitle, style: HazriText.display22.copyWith(color: c.ink)),
-              const SizedBox(height: 8),
-              Text(l.setupRemindersBody, style: HazriText.bodySmall.copyWith(color: c.ink2)),
-              const SizedBox(height: 16),
-              HazriCard(
-                padding: EdgeInsets.zero,
-                child: Column(
-                  children: [
-                    for (final id in ReminderIds.defaults)
-                      ReminderRow(
-                        reminderId: id,
-                        reminder: reminders.where((r) => r.id == id).firstOrNull,
-                        showDivider: id != ReminderIds.defaults.last,
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (_exactAllowed == false)
-                HazriCard(
-                  colour: c.kesriSoft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          AppIcon(HazriIconData.clock, size: 20, color: c.kesriInk),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              l.allowOnTimeTitle,
-                              style: HazriText.bodyStrong.copyWith(color: c.kesriInk),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        l.allowOnTimeBody,
-                        style: HazriText.bodySmall.copyWith(color: c.kesriInk),
-                      ),
-                      const SizedBox(height: 12),
-                      Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: PrimaryButton(
-                          label: l.actionAllow,
-                          expanded: false,
-                          minHeight: 44,
-                          onPressed: _requestExactAlarm,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else if (_exactAllowed == true)
-                HazriCard(
-                  colour: c.sageSoft,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Row(
-                    children: [
-                      AppIcon(HazriIconData.check, size: 18, color: c.sage),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          l.allowOnTimeGranted,
-                          style: HazriText.bodySmall.copyWith(color: c.sage),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              const SizedBox(height: 10),
-              HazriCard(
-                onTap: () => showCityPickerSheet(context),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                child: Row(
-                  children: [
-                    AppIcon(HazriIconData.pin, size: 18, color: c.ink2),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        l.usingCityForSun(_cityName(city, localeCode)),
-                        style: HazriText.bodySmall.copyWith(color: c.ink2),
-                      ),
-                    ),
-                    Text(
-                      l.actionChange,
-                      style: HazriText.chip.copyWith(color: c.kesriInk),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              // The recitation ships inside the app, so there is no download
-              // to wait for (PRD 1.2 shows one; this build has nothing to
-              // fetch).
-              HazriCard(
-                colour: c.sageSoft,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppIcon(HazriIconData.headphones, size: 20, color: c.sage),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l.audioIncluded,
-                            style: HazriText.bodyStrong.copyWith(color: c.sage),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            l.audioIncludedSub,
-                            style: HazriText.bodySmall.copyWith(color: c.sage),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        _StepFooter(label: l.beginMyNitnem, onPressed: _finish),
-      ],
-    );
-  }
-
-  static String _cityName(CityRow? city, String languageCode) {
-    if (city == null) return '—';
-    return switch (languageCode) {
-      'pa' => city.namePa,
-      'hi' => city.nameHi,
-      _ => city.nameEn,
-    };
-  }
-}
-
 class _StepFooter extends StatelessWidget {
   const _StepFooter({required this.label, required this.onPressed, this.note});
 
@@ -631,3 +426,11 @@ class _StepFooter extends StatelessWidget {
 /// Formats today's Auto time for a reminder row, e.g. "4:30 AM".
 String formatAutoTime(BuildContext context, DateTime? at) =>
     at == null ? '—' : HazriDates.of(context).time(at);
+
+/// Ends setup: the scheduler asks for the notification permission and plans
+/// the defaults.
+Future<void> _finish(BuildContext context, WidgetRef ref) async {
+  await ref.read(settingsProvider.notifier).setOnboardingDone(true);
+  await ref.read(reminderSchedulerProvider).reschedule();
+  if (context.mounted) context.go(Routes.today);
+}

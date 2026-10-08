@@ -723,7 +723,7 @@ class LPa extends L {
   String get gurpurabNoneUpcoming => 'ਅਗਲੇ 90 ਦਿਨਾਂ ਵਿੱਚ ਕੋਈ ਦਿਹਾੜਾ ਨਹੀਂ';
 
   @override
-  String get goalsTitle => 'ਮੇਰੇ ਸੰਕਲਪ';
+  String get goalsTitle => 'ਟੀਚੇ';
 
   @override
   String goalsSubtitle(int done, int total) {
@@ -731,7 +731,7 @@ class LPa extends L {
   }
 
   @override
-  String get goalsAdd => 'ਪਾਠ ਦਾ ਸੰਕਲਪ ਜੋੜੋ';
+  String get goalsAdd => 'ਟੀਚੇ ਵਿੱਚ ਜੋੜੋ';
 
   @override
   String get goalsFooter =>
@@ -807,7 +807,7 @@ class LPa extends L {
   }
 
   @override
-  String get goalSave => 'ਸੰਕਲਪ ਸੰਭਾਲੋ';
+  String get goalSave => 'ਟੀਚੇ ਵਿੱਚ ਜੋੜੋ';
 
   @override
   String get goalMoreBanis => 'ਹੋਰ…';
@@ -1032,69 +1032,18 @@ class LPa extends L {
       'ਜੇ ਤੁਸੀਂ ਸੰਗਤ ਨਾਲ ਜੁੜਦੇ ਹੋ, ਤਾਂ ਸਰਵਰ ਉੱਤੇ ਸਿਰਫ਼ ਤੁਹਾਡਾ ਨਾਂ, ਸ਼ਹਿਰ, ਈਮੇਲ ਅਤੇ ਤੁਹਾਡੇ ਗਰੁੱਪਾਂ ਤੇ ਸੰਕਲਪਾਂ ਦੀ ਗਿਣਤੀ ਜਾਂਦੀ ਹੈ। ਤੁਹਾਡੀ ਡਾਇਰੀ ਦੇ ਸ਼ਬਦ ਕਦੇ ਨਹੀਂ ਜਾਂਦੇ, ਅਤੇ ਤੁਹਾਡੀ ਈਮੇਲ ਕਿਸੇ ਹੋਰ ਨੂੰ ਕਦੇ ਨਹੀਂ ਵਿਖਾਈ ਜਾਂਦੀ।';
 
   @override
-  String get notifChannelNitnem => 'ਨਿਤਨੇਮ ਦੇ ਚੇਤੇ';
+  String get notifChannelGoals => 'ਟੀਚੇ ਦੀਆਂ ਯਾਦ-ਦਹਾਨੀਆਂ';
 
   @override
-  String get notifChannelSimran => 'ਰੋਜ਼ਾਨਾ ਸਿਮਰਨ';
-
-  @override
-  String get notifChannelGurpurab => 'ਗੁਰਪੁਰਬ';
-
-  @override
-  String get notifChannelGoals => 'ਪਾਠ ਦੇ ਸੰਕਲਪ';
-
-  @override
-  String get notifAmritVelaTitle => 'ਅੰਮ੍ਰਿਤ ਵੇਲਾ';
-
-  @override
-  String notifAmritVelaBody(String bani, String time) {
-    return '$bani ਤਿਆਰ ਹੈ — ਅੱਜ ਸੂਰਜ $time ਵਜੇ ਚੜ੍ਹਦਾ ਹੈ।';
-  }
-
-  @override
-  String get notifSimranTitle => 'ਰੋਜ਼ਾਨਾ ਸਿਮਰਨ';
-
-  @override
-  String get notifSimranBody => 'ਵਾਹਿਗੁਰੂ ਸਿਮਰਨ ਦੇ ਪੰਜ ਸ਼ਾਂਤ ਮਿੰਟ।';
-
-  @override
-  String get notifGurpurabTitle => 'ਕੱਲ੍ਹ ਗੁਰਪੁਰਬ ਹੈ';
-
-  @override
-  String get notifGurpurabToday => 'ਅੱਜ ਗੁਰਪੁਰਬ ਹੈ';
-
-  @override
-  String notifRehrasBody(int minutes) {
-    return 'ਤੁਹਾਡੀ ਸ਼ਾਮ ਦੀ ਬਾਣੀ, ਤੁਹਾਡੇ ਚੁਣੇ ਵੇਲੇ ਉੱਤੇ — $minutes ਮਿੰਟ।';
-  }
-
-  @override
-  String notifBaniBody(String bani, int minutes) {
-    return '$bani — $minutes ਮਿੰਟ।';
-  }
-
-  @override
-  String notifGoalBody(int done, int total) {
-    return 'ਅੱਜ ਦਾ ਤੁਹਾਡਾ ਪਾਠ ਸੰਕਲਪ — $total ਵਿੱਚੋਂ $done ਹੋ ਗਏ।';
+  String notifGurpurabTitle(String event) {
+    return 'ਅੱਜ: $event';
   }
 
   @override
   String get notifActionStartNitnem => 'ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ';
 
   @override
-  String get notifActionStart => 'ਸ਼ੁਰੂ ਕਰੋ';
-
-  @override
   String get notifActionLater => 'ਬਾਅਦ ਵਿੱਚ';
-
-  @override
-  String get notifActionBegin => 'ਸ਼ੁਰੂ';
-
-  @override
-  String get notifActionSkipToday => 'ਅੱਜ ਛੱਡੋ';
-
-  @override
-  String get notifActionOpenCalendar => 'ਕੈਲੰਡਰ ਖੋਲ੍ਹੋ';
 
   @override
   String get shareCardTitle => 'ਅੱਜ ਦਾ ਵਿਚਾਰ';
@@ -2038,43 +1987,6 @@ class LPa extends L {
   String get notifTitle => 'ਸੂਚਨਾਵਾਂ';
 
   @override
-  String get notifOwnPractice => 'ਤੁਹਾਡਾ ਆਪਣਾ ਅਭਿਆਸ';
-
-  @override
-  String get notifYourGroups => 'ਤੁਹਾਡੇ ਗਰੁੱਪ';
-
-  @override
-  String get notifGlobal => 'ਸੰਸਾਰ ਭਰ ਦਾ ਸਿਮਰਨ';
-
-  @override
-  String get notifGoalClose => 'ਸੰਕਲਪ ਨੇੜੇ ਹੈ';
-
-  @override
-  String get notifGoalCloseSub => 'ਜਦੋਂ ਗਰੁੱਪ 90% ਤੋਂ ਲੰਘ ਜਾਵੇ';
-
-  @override
-  String get notifSomeoneJoined => 'ਕੋਈ ਜੁੜਿਆ';
-
-  @override
-  String get notifSomeoneJoinedSub => 'ਤੁਹਾਡੇ ਗਰੁੱਪਾਂ ਵਿੱਚ ਨਵੇਂ ਜਣੇ';
-
-  @override
-  String get notifGroupSummary => 'ਰੋਜ਼ਾਨਾ ਗਰੁੱਪ ਦਾ ਸਾਰ';
-
-  @override
-  String get notifGroupSummarySub => 'ਇੱਕ ਸੁਨੇਹਾ, ਰਾਤ 9 ਵਜੇ';
-
-  @override
-  String get notifLargeGatherings => 'ਵੱਡੇ ਇਕੱਠ';
-
-  @override
-  String get notifLargeGatheringsSub => 'ਜਦੋਂ ਹਜ਼ਾਰਾਂ ਰਲ਼ ਕੇ ਬੈਠੇ ਹੋਣ';
-
-  @override
-  String get notifGroupsNotYet =>
-      'ਇਹਨਾਂ ਲਈ ਸਰਵਰ ਤੋਂ ਸੁਨੇਹਾ ਭੇਜਣਾ ਪੈਂਦਾ ਹੈ, ਤੇ ਹਾਜ਼ਰੀ ਕੋਲ ਅਜੇ ਉਹ ਨਹੀਂ ਹੈ। ਉੱਤੇ ਵਾਲੀਆਂ ਤੁਹਾਡੀਆਂ ਆਪਣੀਆਂ ਯਾਦ-ਦਹਾਨੀਆਂ ਇਸੇ ਫ਼ੋਨ ਵੱਲੋਂ ਹਨ ਤੇ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀਆਂ ਹਨ।';
-
-  @override
   String get menuTooltip => 'ਮੀਨੂੰ';
 
   @override
@@ -2224,4 +2136,461 @@ class LPa extends L {
 
   @override
   String get simranVerseTwoWord => 'ਵਾਹਿਗੁਰੂ।';
+
+  @override
+  String get notifAv1Title => 'ਅੰਮ੍ਰਿਤ ਵੇਲਾ';
+
+  @override
+  String notifAv1Body(String bani) {
+    return 'ਦਿਨ ਦਾ ਸਭ ਤੋਂ ਸ਼ਾਂਤ ਸਮਾਂ ਆ ਗਿਆ ਹੈ। ਜਦੋਂ ਤੁਸੀਂ ਤਿਆਰ ਹੋਵੋ, $bani ਖੁੱਲ੍ਹਾ ਹੈ।';
+  }
+
+  @override
+  String notifAv2Title(String name) {
+    return 'ਸ਼ੁਭ ਸਵੇਰ, $name';
+  }
+
+  @override
+  String notifAv2Body(String city, String sunrise) {
+    return '$city ਵਿੱਚ ਸੂਰਜ $sunrise ਵਜੇ ਚੜ੍ਹੇਗਾ। ਤੁਹਾਡਾ ਨਿਤਨੇਮ ਤਿਆਰ ਹੈ।';
+  }
+
+  @override
+  String get notifAv3Title => 'ਸੰਗਤ ਜਾਗ ਰਹੀ ਹੈ';
+
+  @override
+  String get notifAv3Body => 'ਸੰਗਤ ਨਾਲ ਆਪਣੀ ਹਾਜ਼ਰੀ ਲਗਾਓ। ਹੁਣੇ ਸ਼ੁਰੂ ਕਰੋ।';
+
+  @override
+  String notifAv4Title(int streak) {
+    return 'ਤੁਹਾਡੇ ਨਿਤਨੇਮ ਦਾ ਦਿਨ $streak';
+  }
+
+  @override
+  String notifAv4Body(int streak) {
+    return 'ਲਗਾਤਾਰ $streak ਸਵੇਰਾਂ। ਅੱਜ ਦੀ ਉਡੀਕ ਹੈ।';
+  }
+
+  @override
+  String get notifAv5Title => 'ਦੁਨੀਆ ਜਾਗਣ ਤੋਂ ਪਹਿਲਾਂ';
+
+  @override
+  String notifAv5Body(String bani) {
+    return 'ਦਿਨ ਸ਼ੁਰੂ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਕੁਝ ਸ਼ਾਂਤ ਪਲ। $bani ਬੱਸ ਇੱਕ ਟੈਪ ਦੂਰ ਹੈ।';
+  }
+
+  @override
+  String notifAv6Title(String weekday) {
+    return '$weekday ਦੀ ਤੁਹਾਡੀ ਹਾਜ਼ਰੀ';
+  }
+
+  @override
+  String get notifAv6Body =>
+      'ਨਿਤਨੇਮ ਜਾਂ ਪੰਜ ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ ਨਾਲ ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲਗਾਓ।';
+
+  @override
+  String get notifAv7Title => 'ਦਿਨ ਦੀ ਸ਼ੁਰੂਆਤ ਵਾਹਿਗੁਰੂ ਨਾਲ';
+
+  @override
+  String get notifAv7Body =>
+      'ਪਹਿਲਾਂ ਨਿਤਨੇਮ, ਬਾਕੀ ਸਭ ਬਾਅਦ ਵਿੱਚ। ਹਾਜ਼ਰੀ ਖੁੱਲ੍ਹੀ ਹੈ।';
+
+  @override
+  String notifGoalBaniTitle(String bani) {
+    return '$bani ਦਾ ਸਮਾਂ';
+  }
+
+  @override
+  String notifGoalBaniBody(int done, int target, int day, int days) {
+    return 'ਅੱਜ $target ਵਿੱਚੋਂ $done। ਤੁਹਾਡਾ ਟੀਚਾ, $days ਵਿੱਚੋਂ ਦਿਨ $day।';
+  }
+
+  @override
+  String notifGoalBaniOpenBody(int done, int target) {
+    return 'ਅੱਜ $target ਵਿੱਚੋਂ $done।';
+  }
+
+  @override
+  String notifGoalSimranTitle(int minutes) {
+    return 'ਤੁਹਾਡੇ $minutes ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ';
+  }
+
+  @override
+  String get notifGoalSimranBody => 'ਇੱਕ ਟੈਪ ਨਾਲ ਟਾਈਮਰ ਸ਼ੁਰੂ।';
+
+  @override
+  String get notifGurpurabBody => 'ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਮਨਾਓ।';
+
+  @override
+  String notifRememberTitle(String event) {
+    return 'ਅੱਜ ਅਸੀਂ ਯਾਦ ਕਰਦੇ ਹਾਂ: $event';
+  }
+
+  @override
+  String get notifRememberBody => 'ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ।';
+
+  @override
+  String notifEventTitle(String event) {
+    return 'ਅੱਜ: $event';
+  }
+
+  @override
+  String get notifEventBody => 'ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ।';
+
+  @override
+  String get notifHn1Title => 'ਤੁਹਾਡੀ ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਅਜੇ ਬਾਕੀ ਹੈ';
+
+  @override
+  String get notifHn1Body =>
+      'ਪੰਜ ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ ਨਾਲ ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ। ਜਦੋਂ ਤਿਆਰ ਹੋਵੋ, ਸ਼ੁਰੂ ਕਰੋ।';
+
+  @override
+  String notifHn2Title(int count) {
+    return 'ਅੱਜ ਸੰਗਤ ਦੇ $count ਜੀਅ ਹਾਜ਼ਰ ਹਨ';
+  }
+
+  @override
+  String get notifHn2Body => 'ਪੰਜ ਮਿੰਟ ਵਾਹਿਗੁਰੂ ਸਿਮਰਨ ਨਾਲ ਉਨ੍ਹਾਂ ਨਾਲ ਜੁੜੋ।';
+
+  @override
+  String get notifHn3Title => 'ਪੰਜ ਮਿੰਟ, ਸਿਰਫ਼ ਤੁਹਾਡੇ ਲਈ';
+
+  @override
+  String get notifHn3Body =>
+      'ਦਿਨ ਦੀ ਸ਼ੁਰੂਆਤ ਵਾਹਿਗੁਰੂ ਸਿਮਰਨ ਨਾਲ ਕਰੋ, ਤੇ ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਵੇਗੀ।';
+
+  @override
+  String get notifHn4Title => 'ਇਸ ਨੂੰ ਆਦਤ ਬਣਾਓ';
+
+  @override
+  String get notifHn4Body =>
+      'ਨਾਮ ਸਿਮਰਨ ਨੂੰ ਰੋਜ਼ਾਨਾ ਟੀਚੇ ਵਿੱਚ ਜੋੜੋ, ਹਾਜ਼ਰੀ ਤੁਹਾਡੇ ਸਮੇਂ ’ਤੇ ਯਾਦ ਕਰਾਏਗੀ।';
+
+  @override
+  String get notifHn5Title => 'ਦਿਨ ਰੁੱਝਣ ਤੋਂ ਪਹਿਲਾਂ ਪੰਜ ਮਿੰਟ';
+
+  @override
+  String get notifHn5Body =>
+      'ਹੁਣੇ ਥੋੜ੍ਹਾ ਨਾਮ ਸਿਮਰਨ, ਤੇ ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ।';
+
+  @override
+  String notifHn6Title(String city) {
+    return 'ਗਲੋਬ ’ਤੇ $city ਰੋਸ਼ਨ ਕਰੋ';
+  }
+
+  @override
+  String get notifHn6Body =>
+      'ਹਾਜ਼ਰੀ ਖੋਲ੍ਹੋ, ਅੱਜ ਤੁਸੀਂ ਲਾਈਵ ਦਿਖੋਗੇ। ਪੰਜ ਮਿੰਟ ਸਿਮਰਨ ਨਾਲ ਹਾਜ਼ਰੀ ਲੱਗਦੀ ਹੈ।';
+
+  @override
+  String get notifHn7Title => 'ਅੱਜ ਇੱਕ ਛੋਟਾ ਕਦਮ';
+
+  @override
+  String get notifHn7Body =>
+      'ਪੰਜ ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ। ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲਈ ਬੱਸ ਇੰਨਾ ਹੀ।';
+
+  @override
+  String notifActionOpenBani(String bani) {
+    return '$bani ਖੋਲ੍ਹੋ';
+  }
+
+  @override
+  String notifActionBeginMinutes(int minutes) {
+    return '$minutes ਮਿੰਟ ਸ਼ੁਰੂ ਕਰੋ';
+  }
+
+  @override
+  String get notifActionSnooze => '15 ਮਿੰਟ ਬਾਅਦ';
+
+  @override
+  String get notifActionSeeCalendar => 'ਕੈਲੰਡਰ ਵੇਖੋ';
+
+  @override
+  String get notifActionSetGoal => 'ਟੀਚਾ ਬਣਾਓ';
+
+  @override
+  String get notifActionOpenHazri => 'ਹਾਜ਼ਰੀ ਖੋਲ੍ਹੋ';
+
+  @override
+  String get notifActionOpenSangat => 'ਸੰਗਤ ਖੋਲ੍ਹੋ';
+
+  @override
+  String get notifChannelAmritVela => 'ਅੰਮ੍ਰਿਤ ਵੇਲਾ';
+
+  @override
+  String get notifChannelCalendar => 'ਗੁਰਪੁਰਬ ਅਤੇ ਸਿੱਖ ਦਿਹਾੜੇ';
+
+  @override
+  String get notifChannelHazri => 'ਹਾਜ਼ਰੀ ਦੀ ਯਾਦ';
+
+  @override
+  String get notifChannelSangat => 'ਸੰਗਤ';
+
+  @override
+  String get notifKindsHeading => 'ਹਾਜ਼ਰੀ ਕੀ ਭੇਜਦੀ ਹੈ';
+
+  @override
+  String get notifKindAmritVela => 'ਅੰਮ੍ਰਿਤ ਵੇਲਾ';
+
+  @override
+  String get notifKindAmritVelaSub => 'ਹਰ ਰੋਜ਼ ਸਵੇਰੇ 4:00 ਵਜੇ';
+
+  @override
+  String get notifKindGoals => 'ਟੀਚੇ ਦੀਆਂ ਯਾਦ-ਦਹਾਨੀਆਂ';
+
+  @override
+  String get notifKindGoalsSub => 'ਹਰ ਟੀਚੇ ’ਤੇ ਤੁਹਾਡੇ ਰੱਖੇ ਸਮੇਂ ’ਤੇ';
+
+  @override
+  String get notifKindCalendar => 'ਗੁਰਪੁਰਬ ਅਤੇ ਸਿੱਖ ਦਿਹਾੜੇ';
+
+  @override
+  String get notifKindCalendarSub =>
+      'ਉਸੇ ਦਿਨ: ਗੁਰਪੁਰਬ ਸਵੇਰੇ 6:00, ਹੋਰ ਦਿਹਾੜੇ ਸਵੇਰੇ 7:00';
+
+  @override
+  String get notifKindHazri => 'ਹਾਜ਼ਰੀ ਦੀ ਯਾਦ';
+
+  @override
+  String get notifKindHazriSub =>
+      'ਸਵੇਰੇ 7:00, ਸਿਰਫ਼ ਜਦੋਂ ਕੋਈ ਟੀਚਾ ਨਾ ਹੋਵੇ ਅਤੇ ਹਾਜ਼ਰੀ ਅਜੇ ਨਾ ਲੱਗੀ ਹੋਵੇ';
+
+  @override
+  String get notifKindSangat => 'ਸੰਗਤ';
+
+  @override
+  String get notifKindSangatSub =>
+      'ਤੁਹਾਡੇ ਸਮੂਹ ਰਾਤ 9:00 ਵਜੇ, ਅਤੇ ਉਨ੍ਹਾਂ ਦੇ ਪੜਾਅ';
+
+  @override
+  String get notifExactNote =>
+      '\"ਅਲਾਰਮ ਅਤੇ ਰਿਮਾਈਂਡਰ\" ਦੀ ਇਜਾਜ਼ਤ ਤੋਂ ਬਿਨਾਂ, ਐਂਡਰਾਇਡ ਕੋਈ ਯਾਦ ਕੁਝ ਮਿੰਟ ਦੇਰੀ ਨਾਲ ਦੇ ਸਕਦਾ ਹੈ।';
+
+  @override
+  String get notifNoAds =>
+      'ਹਾਜ਼ਰੀ ਕਦੇ ਵੀ ਉਹ ਨਹੀਂ ਭੇਜਦੀ ਜੋ ਤੁਸੀਂ ਨਹੀਂ ਮੰਗਿਆ, ਅਤੇ ਕਦੇ ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ।';
+
+  @override
+  String get notifDiagnostics => 'ਜਾਂਚ';
+
+  @override
+  String get notifDiagnosticsSub => 'ਇਹ ਫ਼ੋਨ ਯਾਦ-ਦਹਾਨੀਆਂ ਬਾਰੇ ਕੀ ਕਹਿੰਦਾ ਹੈ';
+
+  @override
+  String get notifDiagAllowed => 'ਸੂਚਨਾਵਾਂ ਦੀ ਇਜਾਜ਼ਤ';
+
+  @override
+  String get notifDiagExact => 'ਠੀਕ ਸਮੇਂ ਦੇ ਅਲਾਰਮ ਦੀ ਇਜਾਜ਼ਤ';
+
+  @override
+  String get notifDiagBattery => 'ਹਾਜ਼ਰੀ ਲਈ ਬੈਟਰੀ ਬਚਤ ਬੰਦ';
+
+  @override
+  String get notifDiagPending => 'ਬਾਕੀ';
+
+  @override
+  String get notifDiagNext => 'ਅਗਲੀਆਂ';
+
+  @override
+  String get notifDiagNone => 'ਕੁਝ ਵੀ ਤੈਅ ਨਹੀਂ';
+
+  @override
+  String get notifDiagLast => 'ਆਖ਼ਰੀ ਪਹੁੰਚੀ';
+
+  @override
+  String get notifDiagSendNow => 'ਹੁਣੇ ਇੱਕ ਭੇਜੋ';
+
+  @override
+  String get notifDiagSendSoon => 'ਦੋ ਮਿੰਟ ਵਿੱਚ ਇੱਕ ਭੇਜੋ';
+
+  @override
+  String get notifDiagTestTitle => 'ਹਾਜ਼ਰੀ ਜਾਂਚ';
+
+  @override
+  String get notifDiagTestBody =>
+      'ਜੇ ਤੁਸੀਂ ਇਹ ਪੜ੍ਹ ਸਕਦੇ ਹੋ, ਤਾਂ ਯਾਦ-ਦਹਾਨੀਆਂ ਇਸ ਫ਼ੋਨ ਤੱਕ ਪਹੁੰਚਦੀਆਂ ਹਨ।';
+
+  @override
+  String get yes => 'ਹਾਂ';
+
+  @override
+  String get no => 'ਨਹੀਂ';
+
+  @override
+  String get goalSetCardTitle => 'ਰੋਜ਼ਾਨਾ ਟੀਚਾ ਬਣਾਓ';
+
+  @override
+  String get goalSetCardSubtitleFirst =>
+      'ਉਹ ਬਾਣੀਆਂ ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਹਰ ਰੋਜ਼ ਪੜ੍ਹਨੀਆਂ ਚਾਹੁੰਦੇ ਹੋ।';
+
+  @override
+  String get goalSetCardSubtitleAgain =>
+      'ਤੁਹਾਡਾ ਪਿਛਲਾ ਟੀਚਾ ਪੂਰਾ ਹੋ ਗਿਆ ਹੈ। ਨਵਾਂ ਬਣਾਓ।';
+
+  @override
+  String get goalWidgetTitle => 'ਅੱਜ ਦਾ ਟੀਚਾ';
+
+  @override
+  String goalWidgetProgress(int met, int total) {
+    return '$total ਵਿੱਚੋਂ $met ਪੂਰੇ';
+  }
+
+  @override
+  String goalTimesOfTarget(int done, int target) {
+    return '$target ਵਿੱਚੋਂ $done';
+  }
+
+  @override
+  String goalSimranMinutes(int minutes) {
+    return '$minutes ਮਿੰਟ';
+  }
+
+  @override
+  String get goalInGoalBadge => 'ਤੁਹਾਡੇ ਟੀਚੇ ਵਿੱਚ';
+
+  @override
+  String get goalTimesPerDay => 'ਦਿਨ ਵਿੱਚ ਕਿੰਨੀ ਵਾਰ';
+
+  @override
+  String get goalDuration => 'ਕਿੰਨੇ ਸਮੇਂ ਲਈ';
+
+  @override
+  String goalDurationDays(int n) {
+    return '$n ਦਿਨਾਂ ਲਈ';
+  }
+
+  @override
+  String goalDurationUntil(String date) {
+    return '$date ਤੱਕ';
+  }
+
+  @override
+  String goalDayOfTotal(int n, int total) {
+    return '$total ਵਿੱਚੋਂ ਦਿਨ $n';
+  }
+
+  @override
+  String get goalReminder => 'ਯਾਦ-ਦਹਾਨੀ';
+
+  @override
+  String get goalEditSave => 'ਸੰਭਾਲੋ';
+
+  @override
+  String get goalRemove => 'ਹਟਾਓ';
+
+  @override
+  String goalRemoveConfirmTitle(String name) {
+    return '$name ਹਟਾਉਣਾ ਹੈ?';
+  }
+
+  @override
+  String get goalRemoveConfirmBody =>
+      'ਇਹ ਅੱਜ ਤੋਂ ਤੁਹਾਡੇ ਟੀਚੇ ਵਿੱਚੋਂ ਹਟ ਜਾਵੇਗੀ। ਪਹਿਲਾਂ ਦਰਜ ਦਿਨ ਉਸੇ ਤਰ੍ਹਾਂ ਰਹਿਣਗੇ।';
+
+  @override
+  String get goalEndDateInPast => 'ਅੱਜ ਜਾਂ ਬਾਅਦ ਦੀ ਕੋਈ ਤਾਰੀਖ਼ ਚੁਣੋ।';
+
+  @override
+  String get goalValidationMinutes => '5 ਤੋਂ 120 ਮਿੰਟ ਦਰਜ ਕਰੋ।';
+
+  @override
+  String get goalReminderBody => 'ਤੁਹਾਡੇ ਰੋਜ਼ਾਨਾ ਟੀਚੇ ਦਾ ਸਮਾਂ';
+
+  @override
+  String goalTimesRule(int times) {
+    String _temp0 = intl.Intl.pluralLogic(
+      times,
+      locale: localeName,
+      other: 'ਦਿਨ ਵਿੱਚ $times ਵਾਰ',
+      one: 'ਦਿਨ ਵਿੱਚ ਇੱਕ ਵਾਰ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get goalAddTitle => 'ਆਪਣੇ ਟੀਚੇ ਵਿੱਚ ਜੋੜੋ';
+
+  @override
+  String goalEditTitle(String name) {
+    return '$name ਬਦਲੋ';
+  }
+
+  @override
+  String get goalChoose => 'ਚੁਣੋ';
+
+  @override
+  String get goalNaamSimran => 'ਨਾਮ ਸਿਮਰਨ';
+
+  @override
+  String get goalMinutesLabel => 'ਮਿੰਟ';
+
+  @override
+  String get goalCustom => 'ਆਪਣੇ ਮੁਤਾਬਕ';
+
+  @override
+  String get goalEdit => 'ਬਦਲੋ';
+
+  @override
+  String get goalCompleteTitle => 'ਅੱਜ ਦਾ ਟੀਚਾ ਪੂਰਾ ਹੋਇਆ';
+
+  @override
+  String get diaryHazriMarked => 'ਹਾਜ਼ਰੀ ਲੱਗ ਗਈ';
+
+  @override
+  String get diaryNoHazri => 'ਹਾਜ਼ਰੀ ਨਹੀਂ ਲੱਗੀ';
+
+  @override
+  String diaryGoalSummary(int met, int total) {
+    return 'ਟੀਚਾ: $total ਵਿੱਚੋਂ $met ਪੂਰੇ';
+  }
+
+  @override
+  String get diaryLegendHazri => 'ਹਾਜ਼ਰੀ';
+
+  @override
+  String get diaryLegendGoal => 'ਟੀਚਾ ਪੂਰਾ';
+
+  @override
+  String get diarySourceRead => 'ਪੜ੍ਹਿਆ';
+
+  @override
+  String get diarySourceListened => 'ਸੁਣਿਆ';
+
+  @override
+  String get diarySourceDiary => 'ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ';
+
+  @override
+  String get diarySourceRestored => 'ਵਾਪਸ ਲਿਆਂਦਾ';
+
+  @override
+  String get diarySourceMigrated => 'ਪਹਿਲਾਂ ਤੋਂ ਲਿਆਂਦਾ';
+
+  @override
+  String get diarySimranStoppedEarly => 'ਜਲਦੀ ਰੋਕਿਆ';
+
+  @override
+  String get diaryReadOnly => '7 ਦਿਨਾਂ ਤੋਂ ਪੁਰਾਣੇ ਦਿਨ ਬਦਲੇ ਨਹੀਂ ਜਾ ਸਕਦੇ।';
+
+  @override
+  String get diaryRecited => 'ਪੜ੍ਹੀਆਂ';
+
+  @override
+  String diaryCountTimes(int count) {
+    return '× $count';
+  }
+
+  @override
+  String get diaryAddRemove => 'ਜੋੜੋ ਜਾਂ ਘਟਾਓ';
+
+  @override
+  String get diaryStreakNow => 'ਹੁਣ ਲਗਾਤਾਰ ਦਿਨ';
+
+  @override
+  String get diaryStreakLongest => 'ਤੁਹਾਡਾ ਸਭ ਤੋਂ ਲੰਬਾ';
+
+  @override
+  String get todayStreakCaption => 'ਲਗਾਤਾਰ ਨਿਤਨੇਮ ਦੇ ਦਿਨ';
+
+  @override
+  String get actionAdd => 'ਜੋੜੋ';
 }

@@ -1,21 +1,15 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
-import 'package:hazri/core/time/clock.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
 
 import '../app_harness.dart';
 
-/// Today opens on the goals card (design 30): a prompt before any goal
-/// exists, then a count, a ring and one row per goal.
-///
-/// The Phase 1 card drew a day arc with the goals hung off it as nodes.
-/// These tests moved with it rather than being deleted: the questions are
-/// the same, and the answers are now numbers rather than positions on a
-/// curve.
+/// Today's goal widget (04-goals §7.1): the Set Goal card until an item is in
+/// scope, then a header with `itemsMet` of `itemsInScope` and one row per
+/// item.
 void main() {
   late TestApp app;
 
@@ -28,19 +22,7 @@ void main() {
 
   tearDown(() => app.dispose());
 
-  Future<void> addGoal(String id, String bani, String? at, {int times = 1}) =>
-      app.container.read(userRepositoryProvider).saveGoal(
-            GoalsCompanion.insert(
-              id: id,
-              baniId: bani,
-              timesPerDay: Value(times),
-              durationType: GoalDuration.everyDay,
-              startDate: localDateKey(DateTime(2026, 9, 14)),
-              reminderTime: Value(at),
-              createdAt: DateTime.now().toUtc(),
-              updatedAt: DateTime.now().toUtc(),
-            ),
-          );
+  UserRepository repo() => app.container.read(userRepositoryProvider);
 
   Future<L> pump(WidgetTester tester) async {
     usePhoneFrame(tester);
@@ -49,52 +31,42 @@ void main() {
     return L.delegate.load(const Locale('en'));
   }
 
-  testWidgets('with no goals it asks for one instead of an empty card',
-      (tester) async {
+  testWidgets('no goal ever: the Set Goal card, first-time subtitle', (tester) async {
     final l = await pump(tester);
-    expect(find.text(l.goalsEmptyTitle), findsOneWidget);
-    expect(find.text(l.goalsAdd), findsOneWidget);
-    expect(find.text(l.goalsCardTitle.toUpperCase()), findsNothing);
+    expect(find.text(l.goalSetCardTitle), findsOneWidget);
+    expect(find.text(l.goalSetCardSubtitleFirst), findsOneWidget);
+    expect(find.text(l.goalWidgetTitle.toUpperCase()), findsNothing);
   });
 
-  testWidgets('a goal is a row with its name and the time it is due',
-      (tester) async {
-    await addGoal('g1', 'JAPJ', '05:30');
+  testWidgets('an item in scope: the widget with the item and "0 of 1"', (tester) async {
+    await repo().addItem(const GoalItemSpec.bani('JAPJ'));
     final l = await pump(tester);
-    expect(find.text(l.goalsCardTitle.toUpperCase()), findsOneWidget);
+    expect(find.text(l.goalWidgetTitle.toUpperCase()), findsOneWidget);
+    expect(find.text(l.goalWidgetProgress(0, 1)), findsOneWidget);
     expect(find.text('Japji Sahib'), findsOneWidget);
-    expect(find.text(l.goalsEmptyTitle), findsNothing);
+    expect(find.text(l.goalTimesOfTarget(0, 1)), findsOneWidget);
   });
 
-  testWidgets('a goal with no time shows how many of how many, not a blank',
-      (tester) async {
-    await addGoal('g1', 'JAPJ', '05:30');
-    await addGoal('g2', 'SOHL', null, times: 2);
+  testWidgets('a completion moves the header (one rule: verdictOn)', (tester) async {
+    await repo().addItem(const GoalItemSpec.bani('JAPJ'));
+    await repo().addItem(const GoalItemSpec.bani('SOHL', timesPerDay: 2));
+    await repo().logCompletion(baniId: 'JAPJ', slot: BaniSlotValue.morning, source: CompletionSource.reader);
     final l = await pump(tester);
-    expect(find.text('Kirtan Sohila'), findsOneWidget);
-    expect(find.text(l.nOfM(0, 2)), findsOneWidget);
+    expect(find.text(l.goalWidgetProgress(1, 2)), findsOneWidget);
+    expect(find.text(l.goalTimesOfTarget(0, 2)), findsOneWidget);
   });
 
-  testWidgets('the headline counts goals, and the ring counts the paath in them',
-      (tester) async {
-    // One of two goals done, but three of six paath: the row count and the
-    // ring answer different questions and both are on the card.
-    await addGoal('g1', 'JAPJ', null);
-    await addGoal('g2', 'SOHL', null, times: 5);
+  testWidgets('Naam Simran is named, in minutes', (tester) async {
+    await repo().addItem(const GoalItemSpec.simran(11));
     final l = await pump(tester);
-    expect(find.text(l.goalsDoneOf(0, 2)), findsOneWidget);
-    expect(find.text('0%'), findsOneWidget);
+    expect(find.text(l.goalNaamSimran), findsOneWidget);
+    expect(find.text(l.goalSimranMinutes(0)), findsOneWidget);
   });
 
-  testWidgets('a Naam Simran goal is named, not shown as a bare id',
-      (tester) async {
-    await addGoal('g1', kSimranGoalId, '05:15');
+  testWidgets('after the last item is removed: the card says set a new one (GL1)', (tester) async {
+    final item = await repo().addItem(const GoalItemSpec.bani('JAPJ'));
+    await repo().removeItem(item.id);
     final l = await pump(tester);
-    expect(find.text(l.hazriSimran), findsOneWidget);
-  });
-
-  testWidgets('the Start Nitnem button survived the card change', (tester) async {
-    await pump(tester);
-    expect(find.byType(TodayScreen), findsOneWidget);
+    expect(find.text(l.goalSetCardSubtitleAgain), findsOneWidget);
   });
 }

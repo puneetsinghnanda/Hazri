@@ -94,4 +94,27 @@ abstract final class StreakCalculator {
       graceLeftThisMonth: graceLeft(),
     );
   }
+
+  /// The longest run in the history on the phone (09-diary D12): Nitnem days
+  /// in a row, with a granted grace day bridging a gap without adding to the
+  /// count, exactly as the current run is counted.
+  static int longest({required Set<String> nitnemDays, required Set<String> graceDays}) {
+    if (nitnemDays.isEmpty) return 0;
+    final sorted = nitnemDays.toList()..sort();
+    var best = 0;
+    var run = 0;
+    var cursor = parseLocalDateKey(sorted.first);
+    final end = parseLocalDateKey(sorted.last);
+    while (!cursor.isAfter(end)) {
+      final key = localDateKey(cursor);
+      if (nitnemDays.contains(key)) {
+        run++;
+        if (run > best) best = run;
+      } else if (!graceDays.contains(key)) {
+        run = 0;
+      }
+      cursor = cursor.add(const Duration(days: 1));
+    }
+    return best;
+  }
 }

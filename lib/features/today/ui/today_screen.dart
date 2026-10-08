@@ -25,9 +25,10 @@ import '../../hazri/ui/hazri_banner.dart';
 import '../domain/today_state.dart';
 import 'elder_today.dart';
 import '../../goals/data/goals_controller.dart';
-import '../../goals/domain/goal_progress.dart';
+import '../../goals/domain/day_verdict.dart';
+import '../../goals/ui/set_goal_card.dart';
 import '../../vichar/ui/vichar_card.dart';
-import '../../../core/db/user_db.dart' show kSimranGoalId;
+import '../../../core/db/user_db.dart' show GoalItem, ItemType;
 import '../../../core/widgets/progress_ring.dart';
 
 /// The Today tab (Design 09/10), or its elder-mode variant (Design 11).
@@ -130,196 +131,142 @@ class _GoalsCard extends ConsumerWidget {
     final dates = HazriDates.of(context);
     final now = ref.watch(clockProvider).now();
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
-    final progress = ref.watch(goalProgressProvider);
+    final rows = ref.watch(todayRowsProvider);
 
-    if (progress.isLoading) {
+    if (rows.isLoading && !rows.hasValue) {
       return const HazriCard(
         padding: EdgeInsets.symmetric(vertical: 60),
         child: Center(child: CircularProgressIndicator()),
       );
     }
 
-    final live = (progress.value ?? const <GoalProgress>[])
-        .where((p) => p.goal.active && !p.isComplete)
-        .toList();
+    // 04-goals §7.1: the Set Goal card until there is an item in scope.
+    final items = ref.watch(itemsInScopeTodayProvider);
+    if (items.isEmpty) return const SetGoalCard();
+    final verdict = ref.watch(todayVerdictProvider);
 
-    if (live.isEmpty) return const _NoGoalsCard();
-
-    String nameOf(String baniId) => baniId == kSimranGoalId
-        ? l.hazriSimran
-        : (banis
-                .where((b) => b.id == baniId)
-                .map((b) => b.name(l.localeName))
-                .firstOrNull ??
+    String nameOf(GoalItem item) => item.itemType == ItemType.simran
+        ? l.goalNaamSimran
+        : (banis.where((b) => b.id == item.baniId).map((b) => b.name(l.localeName)).firstOrNull ??
             '');
 
-    // Timed goals in clock order, then the untimed ones. A goal with no time
-    // is not a lesser goal; it simply has nothing to sort by.
-    final sorted = [...live]..sort((a, b) {
-        final at = _at(a.goal.reminderTime, now);
-        final bt = _at(b.goal.reminderTime, now);
+    // Timed items in clock order, then the untimed ones.
+    final sorted = [...items]..sort((a, b) {
+        final at = _at(a.reminderTime, now);
+        final bt = _at(b.reminderTime, now);
         if (at == null && bt == null) return 0;
         if (at == null) return 1;
         if (bt == null) return -1;
         return at.compareTo(bt);
       });
-
-    final done = live.where((p) => p.isDoneToday).length;
-    // Part-done counts: three of five paath is more than nothing, and the
-    // headline ring says so even though the row count does not.
-    var ticks = 0;
-    var target = 0;
-    for (final p in live) {
-      ticks += p.doneToday.clamp(0, p.goal.timesPerDay);
-      target += p.goal.timesPerDay;
-    }
-    final fraction = target == 0 ? 0.0 : ticks / target;
+    final fraction = verdict.itemsInScope == 0 ? 0.0 : verdict.itemsMet / verdict.itemsInScope;
 
     return HazriCard(
-      onTap: () => context.push(Routes.goals),
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Eyebrow(l.goalsCardTitle),
-                    Text(
-                      l.goalsDoneOf(done, live.length),
-                      style: HazriText.display22.copyWith(color: c.ink, fontSize: 20),
-                    ),
-                  ],
+          InkWell(
+            onTap: () => context.push(Routes.goals),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Eyebrow(l.goalWidgetTitle),
+                      Text(
+                        l.goalWidgetProgress(verdict.itemsMet, verdict.itemsInScope),
+                        style: HazriText.display22.copyWith(color: c.ink, fontSize: 20),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              ProgressRing(
-                progress: fraction,
-                size: 56,
-                strokeWidth: 7,
-                child: Text(
-                  '${(fraction * 100).round()}%',
-                  style: HazriText.captionStrong.copyWith(color: c.ink),
+                ProgressRing(
+                  progress: fraction,
+                  size: 56,
+                  strokeWidth: 7,
+                  done: verdict.goalState == GoalState.met,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 11),
           Divider(height: 1, color: c.rule),
-          const SizedBox(height: 11),
-          for (var i = 0; i < sorted.length; i++) ...[
-            if (i > 0) const SizedBox(height: 9),
+          const SizedBox(height: 5),
+          for (final item in sorted)
             _GoalRow(
-              name: nameOf(sorted[i].goal.baniId),
-              progress: sorted[i],
-              at: _at(sorted[i].goal.reminderTime, now),
+              item: item,
+              name: nameOf(item),
+              progress: itemToday(item, rows.value),
+              at: _at(item.reminderTime, now),
               dates: dates,
+              onTap: () {
+                if (item.itemType == ItemType.simran) {
+                  context.go(Routes.simran);
+                  return;
+                }
+                final bani = banis.where((b) => b.id == item.baniId).firstOrNull;
+                if (bani != null) context.push(Routes.reader(bani.slug));
+              },
             ),
-          ],
         ],
       ),
     );
   }
 }
 
-/// One goal on design 30's card: a small ring, its name, and when or how much.
+/// One item on the goal widget: a small ring, its name, and how much (§7.1).
 class _GoalRow extends StatelessWidget {
   const _GoalRow({
+    required this.item,
     required this.name,
     required this.progress,
     required this.at,
     required this.dates,
+    required this.onTap,
   });
 
+  final GoalItem item;
   final String name;
-  final GoalProgress progress;
+  final ({int done, int target, bool met}) progress;
   final DateTime? at;
   final HazriDates dates;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
-    final target = progress.goal.timesPerDay;
-    final fraction = target == 0 ? 0.0 : (progress.doneToday / target).clamp(0.0, 1.0);
+    final fraction =
+        progress.target == 0 ? 0.0 : (progress.done / progress.target).clamp(0.0, 1.0);
+    final amount = item.itemType == ItemType.simran
+        ? l.goalSimranMinutes(progress.done)
+        : l.goalTimesOfTarget(progress.done, progress.target);
 
-    return Row(
-      children: [
-        ProgressRing(
-          progress: fraction,
-          size: 26,
-          strokeWidth: 4,
-          done: progress.isDoneToday,
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            name,
-            style: HazriText.captionStrong.copyWith(color: c.ink, fontSize: 13.5),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          // The time it is due if it has one, otherwise how many of how many.
-          at != null ? dates.timeCompact(at!) : l.nOfM(progress.doneToday, target),
-          style: HazriText.caption.copyWith(color: c.muted, fontWeight: FontWeight.w600),
-        ),
-      ],
-    );
-  }
-}
-
-/// What Today shows before any goal exists.
-class _NoGoalsCard extends StatelessWidget {
-  const _NoGoalsCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final l = L.of(context);
-    return HazriCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: c.sageSoft,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Center(
-                  child: AppIcon(HazriIconData.flag, size: 22, color: c.sage),
-                ),
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: [
+            ProgressRing(progress: fraction, size: 26, strokeWidth: 4, done: progress.met),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                name,
+                style: HazriText.captionStrong.copyWith(color: c.ink, fontSize: 13.5),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(l.goalsEmptyTitle,
-                        style: HazriText.bodyStrong.copyWith(color: c.ink)),
-                    const SizedBox(height: 2),
-                    Text(l.goalsEmptyBody,
-                        style: HazriText.bodySmall.copyWith(color: c.ink2)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          PrimaryButton(
-            label: l.goalsAdd,
-            icon: HazriIconData.check,
-            onPressed: () => context.push(Routes.goals),
-          ),
-        ],
+            ),
+            const SizedBox(width: 8),
+            Text(
+              at == null || progress.met ? amount : '$amount · ${dates.timeCompact(at!)}',
+              style: HazriText.caption.copyWith(color: c.muted, fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
       ),
     );
   }

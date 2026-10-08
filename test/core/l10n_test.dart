@@ -75,6 +75,8 @@ void main() {
       'vicharNative',
       'diaryTickTitle',
       'nOfM',
+      // "× 2": a sign and a number.
+      'diaryCountTimes',
     };
     var identical = 0;
     for (final key in keys(en)) {

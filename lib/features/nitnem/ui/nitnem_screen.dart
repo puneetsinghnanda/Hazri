@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show BaniSlot;
 import '../../../core/db/content_repository.dart';
-import '../../../core/db/user_db.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
@@ -17,7 +16,6 @@ import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/audio_controller.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../reminders/data/reminders_controller.dart';
-import '../../reminders/domain/reminder_plan.dart';
 import '../../today/data/today_controller.dart';
 import '../data/nitnem_controller.dart';
 import '../domain/bani.dart';
@@ -35,7 +33,6 @@ class NitnemScreen extends ConsumerWidget {
     final sections = ref.watch(nitnemSectionsProvider);
     final slotTimes = ref.watch(slotTimesProvider).value;
     final dates = HazriDates.of(context);
-    final reminders = ref.watch(remindersProvider).value ?? const <Reminder>[];
     final hasAnyAudio = ref.watch(hasAudioProvider);
 
     String? subtitleFor(BaniSlot slot) {
@@ -44,13 +41,11 @@ class NitnemScreen extends ConsumerWidget {
         final minutes = banis.fold<int>(0, (sum, b) => sum + b.estMinutes);
         return l.nitnemSectionSummary(banis.length, minutes);
       }
+      // Rehras at sunset; the per-slot reminders and their own times went
+      // with 02-notifications N-2, so bedtime carries no time of its own.
       final at = slotTimes?[slot];
-      if (at == null) return null;
-      final id = slot == BaniSlot.evening ? ReminderIds.evening : ReminderIds.bedtime;
-      final mode = reminders.where((r) => r.id == id).firstOrNull?.mode;
-      return mode == ReminderMode.auto
-          ? l.nitnemAtSunset(dates.time(at))
-          : l.nitnemYourTime(dates.time(at));
+      if (at == null || slot != BaniSlot.evening) return null;
+      return l.nitnemAtSunset(dates.time(at));
     }
 
     return Scaffold(

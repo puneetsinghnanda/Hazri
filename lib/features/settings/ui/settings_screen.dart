@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
 import '../../../core/db/content_repository.dart';
-import '../../../core/db/user_db.dart' show Reminder;
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/app_settings.dart';
 import '../../../core/settings/settings_controller.dart';
@@ -15,16 +14,8 @@ import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/audio_controller.dart';
 import '../../audio/data/notification_access.dart';
 import '../../goals/data/goals_controller.dart';
-import '../../reminders/data/reminder_service.dart';
-import '../../reminders/data/reminders_controller.dart';
-import '../../reminders/domain/reminder_plan.dart';
 import '../../reminders/ui/city_picker_sheet.dart';
-import '../../reminders/ui/reminder_row.dart';
 import 'screen_scaffold.dart';
-
-final _exactAlarmProvider = FutureProvider<bool>(
-  (ref) => ref.watch(reminderServiceProvider).canScheduleExact(),
-);
 
 /// Settings (Design 27). Every change persists immediately.
 class SettingsScreen extends ConsumerWidget {
@@ -37,9 +28,7 @@ class SettingsScreen extends ConsumerWidget {
     final s = ref.watch(settingsProvider);
     final n = ref.read(settingsProvider.notifier);
     final lang = Localizations.localeOf(context).languageCode;
-    final reminders = ref.watch(remindersProvider).value ?? const <Reminder>[];
     final goals = ref.watch(goalsSummaryProvider);
-    final exact = ref.watch(_exactAlarmProvider).value;
     final hasAudio = ref.watch(hasAudioProvider);
     final city = ref
         .watch(citiesProvider)
@@ -198,34 +187,11 @@ class SettingsScreen extends ConsumerWidget {
               SettingsSection(
                 title: l.settingsSectionReminders,
                 children: [
-                  for (final id in ReminderIds.defaults)
-                    ReminderRow(
-                      reminderId: id,
-                      reminder: reminders.where((r) => r.id == id).firstOrNull,
-                      showDivider: false,
-                    ),
                   SettingsRow(
                     title: l.settingsPaathGoals,
                     subtitle: l.settingsPaathGoalsSub,
                     value: l.settingsGoalsCount(goals.total),
                     onTap: () => context.push(Routes.goals),
-                  ),
-                  SettingsRow(
-                    title: l.settingsOnTimeReminders,
-                    subtitle: exact == null
-                        ? null
-                        : exact
-                            ? l.settingsOnTimeAllowed
-                            : l.settingsOnTimeNotAllowed,
-                    value: exact == false ? l.actionAllow : null,
-                    onTap: exact == false
-                        ? () async {
-                            await ref
-                                .read(reminderServiceProvider)
-                                .requestExactAlarmPermission();
-                            ref.invalidate(_exactAlarmProvider);
-                          }
-                        : null,
                   ),
                   SettingsRow(
                     title: l.settingsSunFor,
@@ -240,7 +206,6 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   SettingsRow(
                     title: l.notifTitle,
-                    subtitle: l.notifOwnPractice,
                     onTap: () => context.push(Routes.notifications),
                   ),
                   SettingsRow(

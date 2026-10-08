@@ -9,7 +9,6 @@ import '../../../app/menu_sheet.dart';
 import '../../../app/router.dart';
 import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
-import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/time/date_format.dart';
@@ -23,6 +22,7 @@ import '../data/simran_controller.dart';
 import '../domain/simran_track.dart';
 import 'simran_globe.dart';
 import 'simran_naam.dart';
+import '../../goals/domain/goal_constants.dart';
 
 /// Daily Simran.
 ///
@@ -84,7 +84,6 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
   @override
   Widget build(BuildContext context) {
     final l = L.of(context);
-    final settings = ref.watch(settingsProvider);
     final session = ref.watch(simranSessionProvider);
     final controller = ref.read(simranSessionProvider.notifier);
     final doneToday = ref.watch(simranDoneTodayProvider).value ?? false;
@@ -95,7 +94,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
     // A simran goal's length wins over the Settings default, so "11 min" on
     // the goal is what the button offers and what the timer counts.
     final minutes =
-        ref.watch(simranGoalMinutesProvider) ?? settings.simranMinutes;
+        ref.watch(simranGoalMinutesProvider) ?? GoalConstants.simranDefaultMinutes;
 
     // A session that ran its full length may well have finished while this
     // screen was not on top, so the toast follows the state, not the tap.

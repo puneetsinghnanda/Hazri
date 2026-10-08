@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/db/user_repository.dart';
 import '../core/l10n/gen/app_localizations.dart';
 import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_theme.dart';
@@ -35,12 +36,14 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     if (state == AppLifecycleState.resumed) _replan();
   }
 
-  /// Rebuilds the rolling reminder window.
+  /// Closes a goal whose items have all ended (04-goals BG2), then rebuilds
+  /// the rolling reminder window.
   void _replan() {
-    if (!ref.read(settingsProvider).onboardingDone) return;
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(reminderSchedulerProvider).reschedule(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(userRepositoryProvider).closeGoalIfBlank();
+      if (!ref.read(settingsProvider).onboardingDone) return;
+      await ref.read(reminderSchedulerProvider).reschedule();
+    });
   }
 
   @override

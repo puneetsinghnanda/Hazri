@@ -7,6 +7,7 @@ import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/core/theme/hazri_theme.dart';
+import 'package:hazri/core/time/clock.dart';
 import 'package:hazri/features/diary/ui/diary_day_screen.dart';
 import 'package:hazri/features/diary/ui/diary_screen.dart';
 
@@ -76,45 +77,74 @@ void main() {
     expect(find.byType(DiaryDayScreen), findsOneWidget);
     expect(find.byType(BottomSheet), findsNothing);
     final l = await L.delegate.load(const Locale('en'));
-    expect(find.text(l.diaryWhatYouDid.toUpperCase()), findsOneWidget);
+    expect(find.text(l.diaryAddRemove.toUpperCase()), findsOneWidget);
   });
 
-  testWidgets('it carries design 56: banner, ticks, stats and the note',
+  /// The + beside [name] in the edit card.
+  Finder plusFor(String name, L l) => find.descendant(
+        of: find.ancestor(of: find.text(name), matching: find.byType(Row)).first,
+        matching: find.byTooltip(l.actionAdd),
+      );
+
+  testWidgets('it carries 04-goals §7.5: hazri line, the edit card and the note',
       (tester) async {
     usePhoneFrame(tester);
     await tester.pumpWidget(diaryApp(at: Routes.diaryDay(today)));
     await settle(tester);
     final l = await L.delegate.load(const Locale('en'));
 
-    expect(find.text(l.hazriNotYet), findsOneWidget);
-    expect(find.text(l.diaryWhatYouDid.toUpperCase()), findsOneWidget);
-    expect(find.text(l.diaryStatPaath), findsOneWidget);
-    expect(find.text(l.diaryStatSimranMinutes), findsOneWidget);
-    expect(find.text(l.diaryStatDaysInRow), findsOneWidget);
+    expect(find.text(l.diaryNoHazri), findsOneWidget);
+    expect(find.text(l.diaryAddRemove.toUpperCase()), findsOneWidget);
+    await tester.scrollUntilVisible(find.text(l.diaryHazriNote), 300);
     expect(find.text(l.diaryHazriNote), findsOneWidget);
-    // Nothing is ticked yet, so every row says so.
-    expect(find.text(l.diaryNotYet), findsWidgets);
+    // No goal that day, so no goal block (§7.5 (2)).
+    expect(find.textContaining('Goal:'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('ticking a bani writes it and marks the day', (tester) async {
+  testWidgets('+ logs a completion marked in the Diary and marks the day (Y-h)', (tester) async {
     usePhoneFrame(tester);
     await tester.pumpWidget(diaryApp(at: Routes.diaryDay(today)));
     await settle(tester);
     final l = await L.delegate.load(const Locale('en'));
 
-    await tester.tap(find.text('Japji Sahib'));
+    await tester.tap(plusFor('Japji Sahib', l));
     await settle(tester);
 
     final repo = app.container.read(userRepositoryProvider);
     final rows = await repo.completionsOn(today);
     expect(rows, hasLength(1));
-    expect(rows.single.source, CompletionSource.manual);
-    // And the banner turns over to design 56's kesri state.
-    expect(find.text(l.hazriMarked), findsOneWidget);
+    expect(rows.single.source, CompletionSource.diary);
+    expect(find.text(l.diaryHazriMarked), findsOneWidget);
+    // Listed under Recited with its source (§7.5 (3)).
+    expect(find.textContaining(l.diarySourceDiary), findsOneWidget);
   });
 
-  testWidgets('a day older than a week opens read-only rather than refusing',
+  testWidgets('− undoes the newest completion whatever its source (CR4)', (tester) async {
+    usePhoneFrame(tester);
+    final repo = app.container.read(userRepositoryProvider);
+    final clock = app.container.read(clockProvider) as FixedClock;
+    await repo.logCompletion(baniId: 'JAPJ', slot: BaniSlotValue.morning, source: CompletionSource.reader, on: today);
+    clock.instant = DateTime(2026, 9, 18, 7);
+    await repo.logCompletion(baniId: 'JAPJ', slot: BaniSlotValue.morning, source: CompletionSource.audio, on: today);
+    await tester.pumpWidget(diaryApp(at: Routes.diaryDay(today)));
+    await settle(tester);
+    final l = await L.delegate.load(const Locale('en'));
+    expect(find.textContaining(l.diaryCountTimes(2)), findsOneWidget);
+
+    final minus = find.descendant(
+      of: find.ancestor(of: find.text('Japji Sahib'), matching: find.byType(Row)).last,
+      matching: find.byTooltip(l.actionRemove),
+    );
+    await tester.tap(minus);
+    await settle(tester);
+
+    final live = await repo.completionsOn(today);
+    expect(live, hasLength(1));
+    expect(live.single.source, CompletionSource.reader);
+  });
+
+  testWidgets('a day older than a week opens read-only and says so (Y-i)',
       (tester) async {
     usePhoneFrame(tester);
     await tester.pumpWidget(
@@ -123,14 +153,8 @@ void main() {
     final l = await L.delegate.load(const Locale('en'));
 
     expect(find.byType(DiaryDayScreen), findsOneWidget);
-    expect(find.text(l.diaryTickTooOld), findsOneWidget);
-
-    await tester.tap(find.text('Japji Sahib'));
-    await settle(tester);
-    final rows = await app.container
-        .read(userRepositoryProvider)
-        .completionsOn(DateTime(2026, 9, 1));
-    expect(rows, isEmpty);
+    expect(find.text(l.diaryReadOnly), findsOneWidget);
+    expect(find.byTooltip(l.actionAdd), findsNothing);
   });
 
   for (final locale in [Locale('en'), Locale('pa'), Locale('hi')]) {

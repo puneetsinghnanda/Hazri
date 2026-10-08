@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,107 +13,175 @@ import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../reminders/ui/time_wheel.dart';
 import '../data/goals_controller.dart';
+import '../domain/goal_constants.dart';
 
-/// Add a paath goal (Design 20).
-Future<void> showAddGoalSheet(BuildContext context) => showModalBottomSheet<void>(
-  context: context,
-  isScrollControlled: true,
-  useSafeArea: true,
-  builder: (_) => const _AddGoalSheet(),
-);
+/// The Add Goal and Edit Item sheet (04-goals §7.2, design 47). [editing]
+/// opens it on an existing item; choosing a bani already in scope switches to
+/// editing that item (GI1).
+Future<void> showGoalItemSheet(BuildContext context, {GoalItem? editing, bool simran = false}) =>
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => _GoalItemSheet(editing: editing, startWithSimran: simran),
+    );
 
-class _AddGoalSheet extends ConsumerStatefulWidget {
-  const _AddGoalSheet();
+class _GoalItemSheet extends ConsumerStatefulWidget {
+  const _GoalItemSheet({this.editing, this.startWithSimran = false});
+
+  final GoalItem? editing;
+  final bool startWithSimran;
 
   @override
-  ConsumerState<_AddGoalSheet> createState() => _AddGoalSheetState();
+  ConsumerState<_GoalItemSheet> createState() => _GoalItemSheetState();
 }
 
-class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
-  String? _baniId;
+/// What the chips select: a bani id, or Naam Simran.
+const _simranChoice = '__simran__';
+
+class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
+  GoalItem? _editing;
+  String? _choice;
   int _times = 1;
-  GoalDuration _duration = GoalDuration.everyDay;
-  int _days = 40;
+  int _minutes = GoalConstants.simranGoalMinutesDefault;
+  DurationType _duration = DurationType.everyDay;
+  int _days = GoalConstants.durationDaysPreset;
   DateTime? _until;
-  bool _remind = true;
+  bool _remind = false;
   TimeOfDay _time = const TimeOfDay(hour: 19, minute: 30);
   bool _showAllBanis = false;
+  String? _error;
 
-  /// Minutes a sitting lasts, when the goal is Naam Simran.
-  int _minutes = 11;
-
-  bool get _isSimran => _baniId == kSimranGoalId;
-
-  /// The five banis the design offers first, before "More…".
+  /// The featured banis, before More… (§7.2).
   static const _featured = ['JAPJ', 'CHAU', 'SUKH', 'ANND', 'REHR'];
 
-  /// The lengths design 47 offers, before Custom.
-  static const _lengths = [5, 11, 21, 31];
+  bool get _isSimran => _choice == _simranChoice;
 
-  /// Design 47's "Custom" length. A plain number, because a sitting is
-  /// however long somebody has, not one of four blessed values.
-  Future<void> _pickMinutes() async {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.startWithSimran) _choice = _simranChoice;
+    final e = widget.editing;
+    if (e != null) _loadFrom(e);
+  }
+
+  void _loadFrom(GoalItem e) {
+    _editing = e;
+    _choice = e.itemType == ItemType.simran ? _simranChoice : e.baniId;
+    _times = e.timesPerDay;
+    _minutes = e.simranMinutes ?? GoalConstants.simranGoalMinutesDefault;
+    _duration = e.durationType;
+    _days = e.durationDays ?? GoalConstants.durationDaysPreset;
+    _until = e.durationType == DurationType.untilDate && e.endDate != null
+        ? parseLocalDateKey(e.endDate!)
+        : null;
+    final t = e.reminderTime;
+    _remind = t != null;
+    if (t != null) {
+      final p = t.split(':');
+      _time = TimeOfDay(hour: int.parse(p[0]), minute: int.parse(p[1]));
+    }
+  }
+
+  /// GI1: choosing something already in scope opens it for editing.
+  void _choose(String choice) {
+    final items = ref.read(itemsInScopeTodayProvider);
+    final existing = items.where((i) => choice == _simranChoice
+        ? i.itemType == ItemType.simran
+        : i.itemType == ItemType.bani && i.baniId == choice).firstOrNull;
+    setState(() {
+      _error = null;
+      if (existing != null) {
+        _loadFrom(existing);
+      } else {
+        _editing = null;
+        _choice = choice;
+      }
+    });
+  }
+
+  String? get _reminder => _remind
+      ? '${_time.hour.toString().padLeft(2, '0')}:${_time.minute.toString().padLeft(2, '0')}'
+      : null;
+
+  Future<void> _pickMinutes(L l) async {
     final controller = TextEditingController(text: '$_minutes');
     final chosen = await showDialog<int>(
       context: context,
       builder: (dialog) => AlertDialog(
-        title: Text(L.of(dialog).goalHowLong),
+        title: Text(l.goalMinutesLabel),
         content: TextField(
           controller: controller,
           autofocus: true,
           keyboardType: TextInputType.number,
         ),
         actions: [
+          TextButton(onPressed: () => Navigator.of(dialog).pop(), child: Text(l.actionCancel)),
           TextButton(
-            onPressed: () => Navigator.of(dialog).pop(),
-            child: Text(L.of(dialog).actionCancel),
-          ),
-          TextButton(
-            onPressed: () =>
-                Navigator.of(dialog).pop(int.tryParse(controller.text.trim())),
-            child: Text(L.of(dialog).actionDone),
+            onPressed: () => Navigator.of(dialog).pop(int.tryParse(controller.text.trim()) ?? -1),
+            child: Text(l.actionDone),
           ),
         ],
       ),
     );
     controller.dispose();
-    if (chosen != null && chosen > 0 && mounted) {
-      setState(() => _minutes = chosen.clamp(1, 300));
+    if (chosen == null || !mounted) return;
+    if (chosen < GoalConstants.simranGoalMinutesMin || chosen > GoalConstants.simranGoalMinutesMax) {
+      setState(() => _error = l.goalValidationMinutes);
+      return;
     }
+    setState(() {
+      _error = null;
+      _minutes = chosen;
+    });
   }
 
-  Future<void> _save() async {
-    final baniId = _baniId;
-    if (baniId == null) return;
-    final now = DateTime.now().toUtc();
-    final today = ref.read(clockProvider).today();
-
-    await ref.read(userRepositoryProvider).saveGoal(
-          GoalsCompanion.insert(
-            id: UserRepository.newId(),
-            baniId: baniId,
-            minutes: Value(_isSimran ? _minutes : null),
-            timesPerDay: Value(_isSimran ? 1 : _times),
-            durationType: _duration,
-            days: Value(_duration == GoalDuration.days ? _days : null),
-            untilDate: Value(
-              _duration == GoalDuration.until && _until != null
-                  ? localDateKey(_until!)
-                  : null,
-            ),
-            startDate: localDateKey(today),
-            reminderTime: Value(
-              _remind
-                  ? '${_time.hour.toString().padLeft(2, '0')}:'
-                      '${_time.minute.toString().padLeft(2, '0')}'
-                  : null,
-            ),
-            createdAt: now,
-            updatedAt: now,
-          ),
-        );
-    ref.invalidate(goalProgressProvider);
-    if (mounted) Navigator.of(context).pop();
+  Future<void> _save(L l) async {
+    final choice = _choice;
+    if (choice == null) return;
+    final repo = ref.read(userRepositoryProvider);
+    final untilKey = _until == null ? null : localDateKey(_until!);
+    try {
+      final e = _editing;
+      if (e == null) {
+        await repo.addItem(_isSimran
+            ? GoalItemSpec.simran(
+                _minutes,
+                durationType: _duration,
+                durationDays: _days,
+                untilDate: untilKey,
+                reminderTime: _reminder,
+              )
+            : GoalItemSpec.bani(
+                choice,
+                timesPerDay: _times,
+                durationType: _duration,
+                durationDays: _days,
+                untilDate: untilKey,
+                reminderTime: _reminder,
+              ));
+      } else {
+        // §5.7: whatever changed, through the operation for it.
+        if (e.reminderTime != _reminder) await repo.editReminder(e.id, _reminder);
+        final durationChanged = e.durationType != _duration ||
+            (_duration == DurationType.days && e.durationDays != _days) ||
+            (_duration == DurationType.untilDate && e.endDate != untilKey);
+        if (durationChanged) {
+          await repo.editDuration(e.id, type: _duration, durationDays: _days, untilDate: untilKey);
+        }
+        final targetChanged = _isSimran ? e.simranMinutes != _minutes : e.timesPerDay != _times;
+        if (targetChanged) {
+          await repo.editTarget(
+            e.id,
+            timesPerDay: _isSimran ? null : _times,
+            simranMinutes: _isSimran ? _minutes : null,
+          );
+        }
+      }
+      if (mounted) Navigator.of(context).pop();
+    } on GoalRuleException catch (err) {
+      setState(() => _error = err.rule == 'GI6' || err.rule == 'GI4' ? l.goalEndDateInPast : null);
+    }
   }
 
   @override
@@ -123,10 +190,22 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
     final l = L.of(context);
     final dates = HazriDates.of(context);
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
-    final shown = _showAllBanis
-        ? banis
-        : banis.where((b) => _featured.contains(b.id)).toList();
-    final selected = banis.where((b) => b.id == _baniId).firstOrNull;
+    final inScope = ref.watch(itemsInScopeTodayProvider);
+    final shown = _showAllBanis ? banis : banis.where((b) => _featured.contains(b.id)).toList();
+    final selected = banis.where((b) => b.id == _choice).firstOrNull;
+    final editingName = _isSimran ? l.goalNaamSimran : selected?.name(l.localeName);
+
+    bool inGoal(String choice) => inScope.any((i) => choice == _simranChoice
+        ? i.itemType == ItemType.simran
+        : i.baniId == choice);
+
+    Widget chip(String label, bool on, VoidCallback onTap, {String? badge}) => HazriChip(
+          label: badge == null ? label : '$label · $badge',
+          background: on ? c.kesriSoft : c.card2,
+          foreground: on ? c.kesriInk : c.ink2,
+          minHeight: 40,
+          onTap: onTap,
+        );
 
     return SafeArea(
       top: false,
@@ -146,177 +225,157 @@ class _AddGoalSheetState extends ConsumerState<_AddGoalSheet> {
                 width: 40,
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 16),
-                decoration: BoxDecoration(
-                  color: c.rule,
-                  borderRadius: BorderRadius.circular(2),
-                ),
+                decoration: BoxDecoration(color: c.rule, borderRadius: BorderRadius.circular(2)),
               ),
             ),
-            Text(l.goalsAdd, style: HazriText.display22.copyWith(color: c.ink)),
-            const SizedBox(height: 16),
-            Text(l.goalSimranOrBani, style: HazriText.bodySmall.copyWith(color: c.muted)),
-            const SizedBox(height: 14),
-            Text(l.goalFieldBani, style: HazriText.bodyStrong.copyWith(color: c.ink)),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                // Naam Simran first, as design 47 has it. It is the shortest
-                // thing somebody can promise themselves and the likeliest
-                // first goal, so it should not be behind "More…".
-                HazriChip(
-                  label: l.hazriSimran,
-                  background: _isSimran ? c.kesriSoft : c.card2,
-                  foreground: _isSimran ? c.kesriInk : c.ink2,
-                  minHeight: 40,
-                  onTap: () => setState(() => _baniId = kSimranGoalId),
-                ),
-                for (final b in shown)
-                  HazriChip(
-                    label: b.name(l.localeName),
-                    background: _baniId == b.id ? c.kesriSoft : c.card2,
-                    foreground: _baniId == b.id ? c.kesriInk : c.ink2,
-                    minHeight: 40,
-                    onTap: () => setState(() => _baniId = b.id),
-                  ),
-                if (!_showAllBanis)
-                  HazriChip(
-                    label: l.goalMoreBanis,
-                    minHeight: 40,
-                    onTap: () => setState(() => _showAllBanis = true),
-                  ),
-              ],
+            Text(
+              _editing != null && editingName != null ? l.goalEditTitle(editingName) : l.goalAddTitle,
+              style: HazriText.display22.copyWith(color: c.ink),
             ),
-            const SizedBox(height: 18),
-            if (_isSimran) ...[
-              Text(l.goalHowLong, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+            const SizedBox(height: 16),
+            if (_editing == null) ...[
+              Text(l.goalChoose, style: HazriText.bodyStrong.copyWith(color: c.ink)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  for (final m in _lengths)
-                    HazriChip(
-                      label: l.minutes(m),
-                      background: _minutes == m ? c.kesriSoft : c.card2,
-                      foreground: _minutes == m ? c.kesriInk : c.ink2,
-                      minHeight: 40,
-                      onTap: () => setState(() => _minutes = m),
-                    ),
-                  HazriChip(
-                    label: l.goalCustomMinutes,
-                    background: _lengths.contains(_minutes) ? c.card2 : c.kesriSoft,
-                    foreground: _lengths.contains(_minutes) ? c.ink2 : c.kesriInk,
-                    minHeight: 40,
-                    onTap: _pickMinutes,
+                  for (final b in shown)
+                    chip(b.name(l.localeName), _choice == b.id, () => _choose(b.id),
+                        badge: inGoal(b.id) ? l.goalInGoalBadge : null),
+                  if (!_showAllBanis)
+                    chip(l.goalMoreBanis, false, () => setState(() => _showAllBanis = true)),
+                  chip(l.goalNaamSimran, _isSimran, () => _choose(_simranChoice),
+                      badge: inGoal(_simranChoice) ? l.goalInGoalBadge : null),
+                ],
+              ),
+              const SizedBox(height: 18),
+            ],
+            if (_isSimran) ...[
+              Text(l.goalMinutesLabel, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final m in GoalConstants.simranGoalMinutesPresets)
+                    chip(l.goalSimranMinutes(m), _minutes == m, () => setState(() => _minutes = m)),
+                  chip(
+                    GoalConstants.simranGoalMinutesPresets.contains(_minutes)
+                        ? l.goalCustom
+                        : l.goalSimranMinutes(_minutes),
+                    !GoalConstants.simranGoalMinutesPresets.contains(_minutes),
+                    () => _pickMinutes(l),
                   ),
                 ],
               ),
+            ] else if (_choice != null) ...[
+              Text(l.goalTimesPerDay, style: HazriText.bodyStrong.copyWith(color: c.ink)),
               const SizedBox(height: 8),
-              Text(l.goalSimranLoops,
-                  style: HazriText.caption.copyWith(color: c.muted)),
-            ] else ...[
-            Text(l.goalFieldTimes, style: HazriText.bodyStrong.copyWith(color: c.ink)),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                _StepperButton(
-                  label: '−',
-                  onTap: _times > 1 ? () => setState(() => _times--) : null,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      '$_times',
-                      style: HazriText.display22.copyWith(color: c.ink),
+              Row(
+                children: [
+                  _StepperButton(
+                    label: '−',
+                    onTap: _times > GoalConstants.timesPerDayMin ? () => setState(() => _times--) : null,
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text('$_times', style: HazriText.display22.copyWith(color: c.ink)),
                     ),
                   ),
-                ),
-                _StepperButton(
-                  label: '+',
-                  onTap: _times < 21 ? () => setState(() => _times++) : null,
-                ),
-              ],
-            ),
-            if (selected != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  l.goalFieldTimesHint(selected.estMinutes),
-                  style: HazriText.caption.copyWith(color: c.muted),
-                ),
+                  _StepperButton(
+                    label: '+',
+                    onTap: _times < GoalConstants.timesPerDayMax ? () => setState(() => _times++) : null,
+                  ),
+                ],
               ),
             ],
-            const SizedBox(height: 18),
-            Text(l.goalFieldDuration, style: HazriText.bodyStrong.copyWith(color: c.ink)),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                HazriChip(
-                  label: l.goalDurationEveryDay,
-                  minHeight: 40,
-                  background: _duration == GoalDuration.everyDay ? c.kesriSoft : c.card2,
-                  foreground: _duration == GoalDuration.everyDay ? c.kesriInk : c.ink2,
-                  onTap: () => setState(() => _duration = GoalDuration.everyDay),
-                ),
-                HazriChip(
-                  label: l.goalDuration40Days,
-                  minHeight: 40,
-                  background: _duration == GoalDuration.days ? c.kesriSoft : c.card2,
-                  foreground: _duration == GoalDuration.days ? c.kesriInk : c.ink2,
-                  onTap: () => setState(() {
-                    _duration = GoalDuration.days;
-                    _days = 40;
-                  }),
-                ),
-                HazriChip(
-                  label: _until == null
-                      ? l.goalDurationUntilDate
-                      : l.goalRuleUntil(dates.shortDate(_until!)),
-                  minHeight: 40,
-                  background: _duration == GoalDuration.until ? c.kesriSoft : c.card2,
-                  foreground: _duration == GoalDuration.until ? c.kesriInk : c.ink2,
-                  onTap: () async {
-                    final today = ref.read(clockProvider).today();
-                    final picked = await showDatePicker(
-                      context: context,
-                      firstDate: today,
-                      lastDate: today.add(const Duration(days: 365 * 2)),
-                      initialDate: _until ?? today.add(const Duration(days: 40)),
-                    );
-                    if (picked != null) {
-                      setState(() {
-                        _duration = GoalDuration.until;
-                        _until = picked;
-                      });
-                    }
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 18),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l.goalFieldReminder,
-                    style: HazriText.bodyStrong.copyWith(color: c.ink),
-                  ),
-                ),
-                Switch(value: _remind, onChanged: (v) => setState(() => _remind = v)),
-              ],
-            ),
-            if (_remind) ...[
+            if (_choice != null) ...[
+              const SizedBox(height: 18),
+              Text(l.goalDuration, style: HazriText.bodyStrong.copyWith(color: c.ink)),
               const SizedBox(height: 8),
-              TimeWheel(value: _time, onChanged: (v) => setState(() => _time = v)),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  chip(l.goalDurationEveryDay, _duration == DurationType.everyDay,
+                      () => setState(() => _duration = DurationType.everyDay)),
+                  chip(l.goalDurationDays(_days), _duration == DurationType.days,
+                      () => setState(() => _duration = DurationType.days)),
+                  chip(
+                    _until == null
+                        ? l.goalDurationUntil('…')
+                        : l.goalDurationUntil(dates.shortDate(_until!)),
+                    _duration == DurationType.untilDate,
+                    () async {
+                      final today = ref.read(clockProvider).today();
+                      final picked = await showDatePicker(
+                        context: context,
+                        firstDate: today,
+                        lastDate: today.add(const Duration(days: GoalConstants.untilDateMaxAheadDays)),
+                        initialDate: _until ?? today.add(const Duration(days: 40)),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          _duration = DurationType.untilDate;
+                          _until = picked;
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+              if (_duration == DurationType.days) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _StepperButton(
+                      label: '−',
+                      onTap: _days > GoalConstants.durationDaysMin ? () => setState(() => _days--) : null,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text('$_days', style: HazriText.display22.copyWith(color: c.ink)),
+                      ),
+                    ),
+                    _StepperButton(
+                      label: '+',
+                      onTap: _days < GoalConstants.durationDaysMax ? () => setState(() => _days++) : null,
+                    ),
+                  ],
+                ),
+              ],
+              const SizedBox(height: 18),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(l.goalReminder, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+                  ),
+                  Switch(
+                    value: _remind,
+                    onChanged: (v) => setState(() {
+                      _remind = v;
+                      // RM1: 19:30 pre-filled when switched on.
+                      if (v && _editing?.reminderTime == null) {
+                        _time = const TimeOfDay(hour: 19, minute: 30);
+                      }
+                    }),
+                  ),
+                ],
+              ),
+              if (_remind) ...[
+                const SizedBox(height: 8),
+                TimeWheel(value: _time, onChanged: (v) => setState(() => _time = v)),
+              ],
+            ],
+            if (_error != null) ...[
+              const SizedBox(height: 12),
+              Text(_error!, style: HazriText.bodySmall.copyWith(color: c.kesriInk)),
             ],
             const SizedBox(height: 20),
             PrimaryButton(
-              label: l.goalSave,
-              onPressed: _baniId == null ? null : _save,
+              label: _editing == null ? l.goalSave : l.goalEditSave,
+              onPressed: _choice == null ? null : () => _save(l),
             ),
           ],
         ),
@@ -340,17 +399,9 @@ class _StepperButton extends StatelessWidget {
       child: Container(
         width: 52,
         height: 52,
-        decoration: BoxDecoration(
-          color: c.card2,
-          borderRadius: BorderRadius.circular(HazriRadius.chip),
-        ),
+        decoration: BoxDecoration(color: c.card2, borderRadius: BorderRadius.circular(HazriRadius.chip)),
         child: Center(
-          child: Text(
-            label,
-            style: HazriText.display22.copyWith(
-              color: onTap == null ? c.muted : c.ink,
-            ),
-          ),
+          child: Text(label, style: HazriText.display22.copyWith(color: onTap == null ? c.muted : c.ink)),
         ),
       ),
     );

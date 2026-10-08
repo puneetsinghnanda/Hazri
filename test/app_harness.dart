@@ -19,6 +19,7 @@ import 'package:hazri/core/theme/hazri_theme.dart';
 import 'package:hazri/core/time/clock.dart';
 import 'package:hazri/features/audio/domain/paath_player.dart';
 import 'package:hazri/features/reminders/data/reminder_service.dart';
+import 'package:hazri/features/reminders/domain/reminder_plan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A player that records what it was told to do.
@@ -84,7 +85,7 @@ class FakePaathPlayer implements PaathPlayer {
 /// Stands in for the local-notifications plugin, which is not registered in a
 /// widget test and throws if its platform instance is asked for.
 class FakeReminderService extends ReminderService {
-  final scheduled = <ScheduledNotification>[];
+  final scheduled = <PlannedNotification>[];
 
   bool notificationsGranted = true;
   bool exactAlarmsGranted = true;
@@ -112,14 +113,18 @@ class FakeReminderService extends ReminderService {
   Future<bool> canScheduleExact() async => exactAlarmsGranted;
 
   @override
-  Future<void> requestExactAlarmPermission() async => exactAlarmsGranted = true;
-
-  @override
-  Future<void> replaceSchedule(List<ScheduledNotification> notifications) async {
+  Future<void> replaceSchedule(
+    List<PlannedNotification> planned, {
+    required Map<NotificationKind, String> channelNames,
+  }) async {
     scheduled
       ..clear()
-      ..addAll(notifications);
+      ..addAll(planned);
+    lastPlan = planned;
   }
+
+  @override
+  Future<String?> lastShownTitle() async => null;
 
   @override
   Future<void> cancelAll() async => scheduled.clear();

@@ -383,19 +383,12 @@ has that the target replaces, and PRD §11 says which step removes each:
   below all go with it.
 - **Diary sync is replaced by the weekly backup** (`10-backup.md`), only with
   a profile, with no switch.
-- **Goals become one goal of items** (`04-goals.md`, `user.db` schema 5):
-  `verdictOn` replaces `GoalCalculator.outcomeOn`, `forgetGoal` and
-  `archiveGoal` go, every paath is a row, and goal reminders are derived from
-  items.
 - **Today gets the navy app bar** (`05-today.md` T11) -- so "no brand bar"
   below now describes every tab but Today -- plus the streak card; the join
   banner goes and elder Today stops being a fork.
 - **The globe's legend is You, Live and Here today**, refreshed every 2
   minutes, placed by the profile's city with attendance once a day
   (`07-simran.md`); "in the sangat" and the 45-second presence read go.
-- **The Gurpurab reminder fires at 06:00 on the day**, not 20:00 the evening
-  before, and the Rehras, Kirtan Sohila and Daily Simran reminders go
-  (`02-notifications.md`).
 - **There is one city, the profile's**; the Settings city goes, and without a
   profile nothing guesses one (`03-first-run.md` CY1–CY3).
 - **First run is Android's splash, Welcome, Language, How you read**; the
@@ -451,15 +444,18 @@ has that the target replaces, and PRD §11 says which step removes each:
   rule, which gated `read` on `isMember`, `join` could not read the group it
   was about to join and every code was refused with "something went wrong at
   our end". If that message comes back, check the console before the Dart.
-- **Reminders are seeded by the scheduler, not by a screen.** Until
-  2026-09-23 the five default rows were written as a side effect of *watching*
-  `remindersProvider`, and `ReminderScheduler.reschedule()` reads the table
-  directly -- so on any phone where no screen listing reminders had been
-  opened, including every phone that upgraded with onboarding already done,
-  the read came back empty and **nothing was ever scheduled, silently**. The
-  seeding now happens inside `reschedule()`. Do not move it back out: the
-  planner had good unit tests throughout and they could not see this, because
-  what was wrong sat either side of the pure function.
+- **Goals, the Diary and local notifications follow the 2026-10-07 specs**
+  (PRD §11 steps 2 and 3, built 2026-10-08). `user.db` is schema 5: one
+  goal of items, every paath a row in `completions`, every sitting a row in
+  `simran_sessions`, and `verdictOn` in
+  `lib/features/goals/domain/day_verdict.dart` is the one rule Today, the
+  Goals screen, the Diary grid and the day screen all call. The v4 → v5
+  migration (04-goals §5.8) is tested on a hand-built v4 database. The
+  planner (`ReminderPlanner.plan`) is pure and plans the five kinds of
+  `02-notifications.md` for 7 days from the database every time anything is
+  written (`UserRepository.onChanged`); there is no reminders table any more
+  and nothing to seed. The manifest receivers below still matter exactly as
+  written.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own
@@ -485,14 +481,6 @@ has that the target replaces, and PRD §11 says which step removes each:
   wired to nothing; it is used now. This was real but it was **not** the reason
   the reader saw nothing -- their permission had been granted all along. See
   the receiver above.
-- **The Gurpurab reminder is conditional on the calendar**, and used to fire
-  every single night at 20:00 saying "Tomorrow is a Gurpurab" with the body
-  "Gurpurab calendar" -- on the six nights in seven when it was not, and with
-  no event named. `ReminderPlanner.plan` now takes `gurpurabDates` and emits
-  an occurrence only on the eve of a day the calendar flags (`default_remind`,
-  or the reader's own per-event override), and the body is that event's name.
-  An empty set means silence, which is the right answer when the calendar has
-  run out of year rather than a nightly guess.
 - **A listed group cannot be listed from the app.** `listed` is refused by the
   rules on create and pinned on update, so a group made on a phone is always
   private. Asking to be listed writes `listingRequested`, and approving one is
@@ -544,48 +532,12 @@ has that the target replaces, and PRD §11 says which step removes each:
   together never saw each other. Your own dot always showed because it is
   drawn from Settings on the phone, not from the server, which made the bug
   look like a drawing problem rather than a fetching one.
-- **One rule decides whether a day's goals were met**, and it is
-  `GoalCalculator.outcomeOn` / `appliesOn` in
-  `lib/features/goals/domain/goal_progress.dart`. Today's card, the diary's
-  month grid and the diary's day screen all call it. They used to answer the
-  same question three ways: the grid counted a goal met on **one** tick,
-  ignoring `timesPerDay`, so a goal of three paath lit its green dot after the
-  first while Today still said nought of one; and it judged every goal that
-  had ever started against every later day, so a goal that ended a fortnight
-  ago darkened every day since and could never light again. Do not re-derive
-  this anywhere.
-- **A goal covers a window of days, and outside it the goal is absent rather
-  than unmet.** The window runs from `startDate` to the earliest of: its
-  length in days, its `untilDate`, and `endedOn`. That distinction is what
-  the diary's dots are built on -- **one dot on a day with no goals, two on a
-  day that had them** -- because a grey second dot on a day nobody set a goal
-  says somebody failed, and they did not.
-- **Stopping a goal archives it; it does not delete it.** `archiveGoal` sets
-  `endedOn` and `active: false` and keeps every tick, so a goal kept from the
-  1st to the 22nd leaves those twenty-two days exactly as they were.
-  `deleteGoal` used to remove the row and its ticks and rewrite the month;
-  it is now `forgetGoal`, for a goal set by mistake, and nothing in the UI
-  calls it except the explicit Delete. Starting a stopped goal again inserts
-  a **new row from today** rather than reopening the old one, because one row
-  carries one stretch of days and reopening it would pull the whole gap back
-  into scope.
 - **The hazri banner is shown to everybody.** It used to return an empty box
   unless `hasJoinedSangat`, so the one thing the app is named after was
   invisible to the majority who never join -- against rule 4, which says the
   sangat is opt-in. The cost is that Today can carry the join banner and the
   hazri banner at once until the join banner is dismissed; the "Not now"
   memory that fixes that proprly lives on `claude/eloquent-edison-qsjll0`.
-- **A goal's `reminderTime` is scheduled**, as a reminder row built in memory
-  by `_goalReminders` rather than stored. It was displayed in three places and
-  scheduled in none, so a goal set for 6:40 PM said 6:40 PM everywhere and
-  never notified. Derived rather than stored so that adding, retiming or
-  stopping a goal needs nothing kept in step.
-- **A simran sitting credits its goal from inside the repository**, in
-  `logSimran` and `removeSimranOn`, not at the three call sites that reach
-  them -- the timer finishing, a tick in the Diary, a sync restore. Each of
-  those used to have to remember, and none of them did, so a day was marked
-  as hazri while the goal beside it stayed undone. A bani still credits at
-  its call sites; if a fourth simran path appears, it inherits this one.
 - **Two people in the same city are one dot**, sized by the count and lit as
   yours. The globe knows cities, not people, so there is no second dot to
   draw; the headline counts them.

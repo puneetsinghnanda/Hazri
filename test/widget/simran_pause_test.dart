@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
-import 'package:hazri/core/time/clock.dart';
 import 'package:hazri/core/db/content_repository.dart';
 import 'package:hazri/features/simran/data/simran_controller.dart';
 import 'package:hazri/features/simran/domain/simran_track.dart';
@@ -26,22 +23,8 @@ void main() {
     await settle(tester);
   }
 
-  Future<void> giveSimranGoal(TestApp app, {required int minutes}) async {
-    final now = DateTime(2026, 9, 20, 6, 30);
-    await app.container.read(userRepositoryProvider).saveGoal(
-          GoalsCompanion(
-            id: const Value('g-simran'),
-            baniId: const Value(kSimranGoalId),
-            minutes: Value(minutes),
-            timesPerDay: const Value(1),
-            durationType: const Value(GoalDuration.everyDay),
-            startDate: Value(localDateKey(now)),
-            active: const Value(true),
-            createdAt: Value(now.toUtc()),
-            updatedAt: Value(now.toUtc()),
-          ),
-        );
-  }
+  Future<void> giveSimranGoal(TestApp app, {required int minutes}) =>
+      app.container.read(userRepositoryProvider).addItem(GoalItemSpec.simran(minutes));
 
   setUp(() async {
     app = await TestApp.create(

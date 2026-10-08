@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
+import 'package:hazri/features/reminders/data/notification_switches.dart';
+import 'package:hazri/features/reminders/domain/reminder_plan.dart';
 import 'package:hazri/features/reminders/ui/notifications_screen.dart';
 
 import '../app_harness.dart';
 
-/// Design 50. The point of these tests is the split: what this phone can do
-/// on its own, and what needs a server Phase 2 does not have.
+/// The Notifications screen (02-notifications §6): one switch per kind, all
+/// on by default; the Sangat switch only for a member.
 void main() {
+  late TestApp app;
+
   Future<L> pump(WidgetTester tester, {Locale locale = const Locale('en')}) async {
-    final app = await TestApp.create(prefs: {'onboarding_done': true});
+    app = await TestApp.create(prefs: {'onboarding_done': true});
     addTearDown(app.dispose);
     usePhoneFrame(tester);
     await tester.pumpWidget(
@@ -19,34 +23,29 @@ void main() {
     return L.delegate.load(locale);
   }
 
-  testWidgets('the three groups are all named', (tester) async {
-    final l = await pump(tester);
-    expect(find.text(l.notifOwnPractice.toUpperCase()), findsOneWidget);
-    await tester.drag(find.byType(ListView), const Offset(0, -500));
-    await settle(tester);
-    expect(find.text(l.notifYourGroups.toUpperCase()), findsOneWidget);
-  });
-
-  testWidgets('group notifications are shown switched off and unavailable',
+  testWidgets('four kinds, each switched on; no Sangat switch without a group',
       (tester) async {
     final l = await pump(tester);
-    await tester.drag(find.byType(ListView), const Offset(0, -500));
-    await settle(tester);
-
-    expect(find.text(l.notifGoalClose), findsOneWidget);
-    // A dead switch, not a live one that does nothing: nobody should turn
-    // this on and wonder for a week why nothing arrived.
+    expect(find.text(l.notifKindAmritVela), findsOneWidget);
+    expect(find.text(l.notifKindGoals), findsOneWidget);
+    expect(find.text(l.notifKindCalendar), findsOneWidget);
+    expect(find.text(l.notifKindHazri), findsOneWidget);
+    expect(find.text(l.notifKindSangat), findsNothing);
     final switches = tester.widgetList<Switch>(find.byType(Switch));
-    expect(switches.every((s) => s.onChanged == null), isTrue);
-    expect(switches.every((s) => s.value == false), isTrue);
+    expect(switches, hasLength(4));
+    expect(switches.every((s) => s.value), isTrue);
   });
 
-  testWidgets('and the screen says why, rather than hiding them',
-      (tester) async {
+  testWidgets('turning a kind off is stored and re-plans without it', (tester) async {
     final l = await pump(tester);
-    await tester.drag(find.byType(ListView), const Offset(0, -900));
+    await tester.tap(find.descendant(
+      of: find.ancestor(of: find.text(l.notifKindHazri), matching: find.byType(Row)).first,
+      matching: find.byType(Switch),
+    ));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
     await settle(tester);
-    expect(find.text(l.notifGroupsNotYet), findsOneWidget);
+    expect(app.container.read(notificationSwitchesProvider).contains(NotificationKind.hazriNudge), isFalse);
+    expect(app.reminders.scheduled.where((n) => n.kind == NotificationKind.hazriNudge), isEmpty);
   });
 
   for (final locale in [const Locale('en'), const Locale('pa'), const Locale('hi')]) {

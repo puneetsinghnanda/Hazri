@@ -463,7 +463,7 @@
   "gurpurabFilterAll": "All days",
   "gurpurabFilterGurpurabsOnly": "Gurpurabs only",
   "gurpurabNoneUpcoming": "No events in the next 90 days",
-  "goalsTitle": "My goals",
+  "goalsTitle": "Goals",
   "goalsSubtitle": "{done} of {total} done today",
   "@goalsSubtitle": {
     "placeholders": {
@@ -475,7 +475,7 @@
       }
     }
   },
-  "goalsAdd": "Add a paath goal",
+  "goalsAdd": "Add to goal",
   "goalsFooter": "Goals, counts and reminders stay on this phone and appear in your Diary.",
   "goalsEmpty": "No goals yet. A goal is a quiet way to keep an extra paath going.",
   "goalRuleOnce": "Once a day",
@@ -553,7 +553,7 @@
       }
     }
   },
-  "goalSave": "Save goal",
+  "goalSave": "Add to goal",
   "goalMoreBanis": "More…",
   "goalPause": "Pause goal",
   "goalDeleteConfirm": "Delete this goal? Its ticks stay in your Diary.",
@@ -635,62 +635,10 @@
   "privacyBody": "Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with the radio off. Your diary, goals and settings stay on this phone and in your own Google backup. If you pick a city or use your location, it stays on the phone and is used only to work out sunrise and sunset.",
   "privacyNoAnalytics": "Nothing leaves this phone unless you join the sangat. Analytics are switched off in this build and no crash reports are sent.",
   "privacySangat": "If you join the sangat, what goes to the server is your name, city, email and the counts behind the groups and goals you joined. The words in your diary never go, and your email is never shown to anybody else.",
-  "notifChannelNitnem": "Nitnem reminders",
-  "notifChannelSimran": "Daily Simran",
-  "notifChannelGurpurab": "Gurpurab",
-  "notifChannelGoals": "Paath goals",
-  "notifAmritVelaTitle": "Amrit Vela",
-  "notifAmritVelaBody": "{bani} is ready — sunrise today is at {time}.",
-  "@notifAmritVelaBody": {
-    "placeholders": {
-      "bani": {
-        "type": "String"
-      },
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "notifSimranTitle": "Daily Simran",
-  "notifSimranBody": "Five quiet minutes of Waheguru Simran.",
-  "notifGurpurabTitle": "Tomorrow is a Gurpurab",
-  "notifGurpurabToday": "Today is a Gurpurab",
-  "notifRehrasBody": "Your evening bani, at the time you chose — {minutes} minutes.",
-  "@notifRehrasBody": {
-    "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
-  "notifBaniBody": "{bani} — {minutes} minutes.",
-  "@notifBaniBody": {
-    "placeholders": {
-      "bani": {
-        "type": "String"
-      },
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
-  "notifGoalBody": "Your paath goal for today — {done} of {total} done.",
-  "@notifGoalBody": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
+  "notifChannelGoals": "Goal reminders",
+  "notifGurpurabTitle": "Today: {event}",
   "notifActionStartNitnem": "Start Nitnem",
-  "notifActionStart": "Start",
   "notifActionLater": "Later",
-  "notifActionBegin": "Begin",
-  "notifActionSkipToday": "Skip today",
-  "notifActionOpenCalendar": "Open calendar",
   "shareCardTitle": "Today's Vichar",
   "shareCardFooter": "Read daily on Hazri",
   "shareCardTruncated": "…read in Hazri",
@@ -1080,18 +1028,6 @@
     }
   },
   "notifTitle": "Notifications",
-  "notifOwnPractice": "Your own practice",
-  "notifYourGroups": "Your groups",
-  "notifGlobal": "Global Simran",
-  "notifGoalClose": "A goal is close",
-  "notifGoalCloseSub": "When the group passes 90%",
-  "notifSomeoneJoined": "Someone joined",
-  "notifSomeoneJoinedSub": "New members in your groups",
-  "notifGroupSummary": "Daily group summary",
-  "notifGroupSummarySub": "One message, at 9 PM",
-  "notifLargeGatherings": "Large gatherings",
-  "notifLargeGatheringsSub": "When thousands are sitting together",
-  "notifGroupsNotYet": "These need a message sent from a server, and Hazri has none yet. Your own reminders above are set by this phone and work with the radio off.",
   "menuTooltip": "Menu",
   "simranYouAndOthers": "You and {count} others",
   "simranAreHereToday": "are here today",
@@ -1190,5 +1126,361 @@
   "simranHeadlineTwoWord": "World.",
   "simranVerseOne": "Breathe in peace, breathe out worry.",
   "simranVerseTwoLead": "With every breath, say ",
-  "simranVerseTwoWord": "Waheguru."
+  "simranVerseTwoWord": "Waheguru.",
+  "notifAv1Title": "Amrit Vela",
+  "notifAv1Body": "The quietest hour of the day is here. {bani} is ready when you are.",
+  "@notifAv1Body": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAv2Title": "Good morning, {name}",
+  "@notifAv2Title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAv2Body": "Sunrise in {city} is at {sunrise}. Your Nitnem is ready.",
+  "@notifAv2Body": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      },
+      "sunrise": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAv3Title": "The sangat is waking up",
+  "notifAv3Body": "Mark your Hazri with Sangat. Begin now.",
+  "notifAv4Title": "Day {streak} of your Nitnem",
+  "@notifAv4Title": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "notifAv4Body": "{streak} mornings in a row. Today's is waiting.",
+  "@notifAv4Body": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "notifAv5Title": "Before the world wakes",
+  "notifAv5Body": "A few quiet minutes now, before the day begins. {bani} is one tap away.",
+  "@notifAv5Body": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAv6Title": "Your Hazri for {weekday}",
+  "@notifAv6Title": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAv6Body": "Mark today's Hazri with Nitnem or five minutes of Naam Simran.",
+  "notifAv7Title": "Start the day with Waheguru",
+  "notifAv7Body": "Nitnem first, everything else after. Hazri is open.",
+  "notifGoalBaniTitle": "Time for {bani}",
+  "@notifGoalBaniTitle": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "notifGoalBaniBody": "{done} of {target} today. Your goal, day {day} of {days}.",
+  "@notifGoalBaniBody": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "notifGoalBaniOpenBody": "{done} of {target} today.",
+  "@notifGoalBaniOpenBody": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "notifGoalSimranTitle": "Your {minutes} minutes of Naam Simran",
+  "@notifGoalSimranTitle": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "notifGoalSimranBody": "One tap and the timer begins.",
+  "@notifGurpurabTitle": {
+    "placeholders": {
+      "event": {
+        "type": "String"
+      }
+    }
+  },
+  "notifGurpurabBody": "Mark the day with Nitnem and your Hazri.",
+  "notifRememberTitle": "Today we remember: {event}",
+  "@notifRememberTitle": {
+    "placeholders": {
+      "event": {
+        "type": "String"
+      }
+    }
+  },
+  "notifRememberBody": "Begin the day with Nitnem and your Hazri.",
+  "notifEventTitle": "Today: {event}",
+  "@notifEventTitle": {
+    "placeholders": {
+      "event": {
+        "type": "String"
+      }
+    }
+  },
+  "notifEventBody": "Begin the day with Nitnem and your Hazri.",
+  "notifHn1Title": "Your Hazri for today is still open",
+  "notifHn1Body": "Five minutes of Naam Simran marks it. Begin when you're ready.",
+  "notifHn2Title": "{count} of the sangat are here today",
+  "@notifHn2Title": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notifHn2Body": "Join them with five minutes of Waheguru Simran.",
+  "notifHn3Title": "Five minutes, just for you",
+  "notifHn3Body": "Begin the day with Waheguru Simran, and your Hazri is marked.",
+  "notifHn4Title": "Make it a habit",
+  "notifHn4Body": "Add Naam Simran to a daily goal and Hazri will remind you at your own time.",
+  "notifHn5Title": "Five minutes before the day gets busy",
+  "notifHn5Body": "A short sitting of Naam Simran now marks today's Hazri.",
+  "notifHn6Title": "Light up {city} on the globe",
+  "@notifHn6Title": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "notifHn6Body": "Open Hazri and you show as live today. Five minutes of Simran marks your Hazri.",
+  "notifHn7Title": "One small step today",
+  "notifHn7Body": "Five minutes of Naam Simran. That's all today's Hazri needs.",
+  "notifActionOpenBani": "Open {bani}",
+  "@notifActionOpenBani": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "notifActionBeginMinutes": "Begin {minutes} min",
+  "@notifActionBeginMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "notifActionSnooze": "In 15 min",
+  "notifActionSeeCalendar": "See calendar",
+  "notifActionSetGoal": "Set a goal",
+  "notifActionOpenHazri": "Open Hazri",
+  "notifActionOpenSangat": "Open Sangat",
+  "notifChannelAmritVela": "Amrit Vela",
+  "notifChannelCalendar": "Gurpurab and Sikh events",
+  "notifChannelHazri": "Hazri reminder",
+  "notifChannelSangat": "Sangat",
+  "notifKindsHeading": "What Hazri sends",
+  "notifKindAmritVela": "Amrit Vela",
+  "notifKindAmritVelaSub": "Every day at 4:00 AM",
+  "notifKindGoals": "Goal reminders",
+  "notifKindGoalsSub": "At the time you set on each goal",
+  "notifKindCalendar": "Gurpurab and Sikh events",
+  "notifKindCalendarSub": "On the day: Gurpurabs at 6:00 AM, other days at 7:00 AM",
+  "notifKindHazri": "Hazri reminder",
+  "notifKindHazriSub": "At 7:00 AM, only with no goal and no Hazri yet",
+  "notifKindSangat": "Sangat",
+  "notifKindSangatSub": "Your groups at 9:00 PM, and their milestones",
+  "notifExactNote": "Without the \"Alarms and reminders\" permission, Android may deliver a reminder a few minutes late.",
+  "notifNoAds": "Hazri never sends anything you did not ask for, and never an advertisement.",
+  "notifDiagnostics": "Diagnostics",
+  "notifDiagnosticsSub": "What this phone says about reminders",
+  "notifDiagAllowed": "Notifications allowed",
+  "notifDiagExact": "Exact alarms allowed",
+  "notifDiagBattery": "Battery optimisation off for Hazri",
+  "notifDiagPending": "Pending",
+  "notifDiagNext": "Next",
+  "notifDiagNone": "Nothing scheduled",
+  "notifDiagLast": "Last delivered",
+  "notifDiagSendNow": "Send one now",
+  "notifDiagSendSoon": "Send one in two minutes",
+  "notifDiagTestTitle": "Hazri test",
+  "notifDiagTestBody": "If you can read this, reminders reach this phone.",
+  "yes": "Yes",
+  "no": "No",
+  "goalSetCardTitle": "Set a daily goal",
+  "goalSetCardSubtitleFirst": "Choose the banis you want to recite each day.",
+  "goalSetCardSubtitleAgain": "Your last goal is complete. Set a new one.",
+  "goalWidgetTitle": "Today's goal",
+  "goalWidgetProgress": "{met} of {total} done",
+  "@goalWidgetProgress": {
+    "placeholders": {
+      "met": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goalTimesOfTarget": "{done} of {target}",
+  "@goalTimesOfTarget": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "goalSimranMinutes": "{minutes} min",
+  "@goalSimranMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "goalInGoalBadge": "In your goal",
+  "goalTimesPerDay": "Times a day",
+  "goalDuration": "How long",
+  "goalDurationDays": "For {n} days",
+  "@goalDurationDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalDurationUntil": "Until {date}",
+  "@goalDurationUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalDayOfTotal": "Day {n} of {total}",
+  "@goalDayOfTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goalReminder": "Reminder",
+  "goalEditSave": "Save",
+  "goalRemove": "Remove",
+  "goalRemoveConfirmTitle": "Remove {name}?",
+  "@goalRemoveConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalRemoveConfirmBody": "It leaves your goal from today. Days already recorded stay as they are.",
+  "goalEndDateInPast": "Choose today or a later date.",
+  "goalValidationMinutes": "Enter 5 to 120 minutes.",
+  "goalReminderBody": "Time for your daily goal",
+  "goalTimesRule": "{times, plural, =1{once a day} other{{times} times a day}}",
+  "@goalTimesRule": {
+    "placeholders": {
+      "times": {
+        "type": "int"
+      }
+    }
+  },
+  "goalAddTitle": "Add to your goal",
+  "goalEditTitle": "Edit {name}",
+  "@goalEditTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalChoose": "Choose",
+  "goalNaamSimran": "Naam Simran",
+  "goalMinutesLabel": "Minutes",
+  "goalCustom": "Custom",
+  "goalEdit": "Edit",
+  "goalCompleteTitle": "Today's goal is done",
+  "diaryHazriMarked": "Hazri marked",
+  "diaryNoHazri": "No hazri",
+  "diaryGoalSummary": "Goal: {met} of {total} met",
+  "@diaryGoalSummary": {
+    "placeholders": {
+      "met": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "diaryLegendHazri": "Hazri",
+  "diaryLegendGoal": "Goal met",
+  "diarySourceRead": "Read",
+  "diarySourceListened": "Listened",
+  "diarySourceDiary": "Marked in Diary",
+  "diarySourceRestored": "Restored",
+  "diarySourceMigrated": "Carried over",
+  "diarySimranStoppedEarly": "stopped early",
+  "diaryReadOnly": "Days more than 7 days ago can't be changed.",
+  "diaryRecited": "Recited",
+  "diaryCountTimes": "× {count}",
+  "@diaryCountTimes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "diaryAddRemove": "Add or take away",
+  "diaryStreakNow": "days in a row now",
+  "diaryStreakLongest": "your longest",
+  "todayStreakCaption": "days of Nitnem in a row",
+  "actionAdd": "Add"
 }
