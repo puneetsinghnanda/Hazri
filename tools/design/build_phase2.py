@@ -2232,6 +2232,166 @@ def diary_streak() -> str:
 """
 
 
+# ------------------------------------------- the Simran tab as it ships (07-simran)
+
+SKY = {"live": "#3DBE7B", "here": "#5B8DEF", "you": "#F2A24E"}
+
+
+def sky_globe(size: int, you: bool = True) -> str:
+    """The globe of `simran_globe.dart`: a lit sea, a fine grid, bright coasts.
+
+    Dots follow 07-simran.md DR1-DR4: orange for you (with its halo), green
+    for Live, blue for Here today. Without a profile there is no orange dot.
+    """
+    kind = {"you": "you", "today": "live", "member": "here"}
+    pts = []
+    for lat, lon, k in PEOPLE:
+        if k == "you" and not you:
+            continue
+        p = project(lat, lon)
+        if p is None:
+            continue
+        x, y = p
+        c = SKY[kind[k]]
+        if k == "you":
+            pts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="12" fill="#6FC3D3" opacity="0.18"/>'
+                       f'<circle cx="{x:.1f}" cy="{y:.1f}" r="7.5" fill="#6FC3D3" opacity="0.28"/>'
+                       f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.6" fill="{c}"/>')
+        else:
+            r = 3.4 if k == "today" else 2.8
+            pts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r * 2.2:.1f}" fill="{c}" opacity="0.22"/>'
+                       f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r}" fill="{c}"/>')
+    grid = graticule().replace('stroke="#2A3A6B" stroke-width="0.8" opacity="0.55"',
+                               'stroke="#2F4E96" stroke-width="0.7" opacity="0.6"')
+    coast = coastline().replace('stroke="#41609E" stroke-width="1"',
+                                'stroke="#8FD4FF" stroke-width="0.9" opacity="0.8"')
+    return (
+        f'<svg width="{size}" height="{size}" viewBox="10 10 300 300" style="display:block;overflow:visible">'
+        '<defs><radialGradient id="sea"><stop offset="0" stop-color="#071232"/>'
+        '<stop offset=".72" stop-color="#071232"/><stop offset="1" stop-color="#0A1F52"/>'
+        '</radialGradient><radialGradient id="glow"><stop offset=".72" stop-color="#6FC3D3" '
+        'stop-opacity=".22"/><stop offset="1" stop-color="#6FC3D3" stop-opacity="0"/>'
+        '</radialGradient></defs>'
+        '<circle cx="160" cy="160" r="200" fill="url(#glow)"/>'
+        '<circle cx="160" cy="160" r="150" fill="url(#sea)"/>'
+        f'{grid}{coast}'
+        '<circle cx="160" cy="160" r="149.5" fill="none" stroke="#7FC4FF" stroke-width="2" opacity=".85"/>'
+        f'{"".join(pts)}</svg>')
+
+
+def stars() -> str:
+    """A fixed field, seeded like `_Starfield`, so it is the same every build."""
+    import random
+    rnd = random.Random(7)
+    return "".join(
+        f'<circle cx="{rnd.uniform(0, 390):.0f}" cy="{rnd.uniform(0, 760):.0f}" '
+        f'r="{rnd.choice([0.6, 0.8, 1.1]):.1f}" fill="#fff" opacity="{rnd.uniform(.25, .8):.2f}"/>'
+        for _ in range(90))
+
+
+def simran_sky(state: str = "rest") -> str:
+    """The Simran tab to the reader's mock-up of 2026-09-20, with 07-simran.md.
+
+    `rest` with a profile, `sitting` while a sitting runs, `noprofile` for
+    somebody without one (NP1-NP3). One screen in all three: the countdown
+    takes the presence line's place while a sitting runs.
+    """
+    serif = "font-family:'Playfair Display','Noto Serif Gurmukhi',serif"
+    dark_btn = ('width:40px;height:40px;border-radius:13px;display:flex;flex:none;'
+                'align-items:center;justify-content:center;background:rgba(255,255,255,.09);color:#fff')
+    rule = ('<div style="flex:1;max-width:110px;height:1px;background:linear-gradient'
+            '({d},rgba(242,162,78,0),rgba(242,162,78,.45))"></div>')
+    legend = "".join(
+        f'<div class="row" style="gap:6px"><div style="width:8px;height:8px;border-radius:4px;'
+        f'background:{c}"></div><div style="font-size:11.5px;color:rgba(255,255,255,.72);'
+        f'font-weight:600">{t}</div></div>'
+        for c, t in [(SKY["you"], "You"), (SKY["live"], "Live"), (SKY["here"], "Here today")])
+    naam = ""
+    if state == "sitting":
+        for x, y, o in [(96, 250, .5), (262, 300, .42), (150, 420, .3), (290, 200, .22)]:
+            naam += (f'<div class="gur" style="position:absolute;left:{x}px;top:{y}px;'
+                     f'font-size:17px;font-weight:500;color:rgba(255,230,194,{o});'
+                     f'text-shadow:0 0 12px rgba(242,162,78,{o * .6:.2f})">ਵਾਹਿਗੁਰੂ</div>')
+    if state == "sitting":
+        middle = f"""
+    <div class="col" style="align-items:center">
+      <div style="font-size:34px;font-weight:500;color:#fff;line-height:1.1;
+        font-variant-numeric:tabular-nums">7:42</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,.55)">left of 11:00</div>
+    </div>"""
+        buttons = f"""
+    <div class="row" style="gap:12px">
+      <div class="btn" style="flex:1;background:#F2A24E;color:#1C1206">Pause</div>
+      <div class="btn" style="flex:1;background:rgba(255,255,255,.10);color:#fff">End</div>
+    </div>"""
+    else:
+        middle = f"""
+    <div style="{serif};font-size:20px;font-weight:500;line-height:1.25;color:#fff;
+      text-align:center"><span style="color:#6FE3A6">48</span> live today</div>"""
+        minutes = 5 if state == "noprofile" else 11
+        buttons = f"""
+    <div class="btn" style="background:#F2A24E;color:#1C1206">
+      {icon("simran", 20)}<div>Begin Simran · {minutes} min</div></div>"""
+    banner = ""
+    if state == "noprofile":
+        banner = f"""
+    <div class="row" style="gap:11px;padding:11px 14px;border-radius:16px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff">
+      <svg class="i" width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="8.2" r="3.7"/>
+        <path d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0"/></svg>
+      <div style="flex:1;font-size:13px;font-weight:600;line-height:1.3">
+        Create your profile to see yourself on the globe</div>
+      <div style="opacity:.6;transform:rotate(180deg)">{icon("back", 16)}</div>
+    </div>"""
+    return f"""
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&amp;display=swap">
+<div style="position:absolute;inset:0;background:radial-gradient(110% 80% at 50% 57%,#071130,#040819)"></div>
+<svg style="position:absolute;left:0;top:0" width="390" height="760">{stars()}</svg>
+<div class="col" style="position:absolute;left:0;right:0;top:0;bottom:78px;padding:18px 0 14px">
+  <div class="row" style="gap:8px;padding:0 20px">
+    <div style="{dark_btn}">{icon("menu", 20)}</div>
+    <div class="col" style="flex:1;align-items:center;gap:2px">
+      <div style="{serif};font-size:23px;font-weight:500;line-height:1.1;color:#fff">Daily
+        <span style="color:#F2A24E">Simran</span></div>
+      <div style="font-size:8.5px;letter-spacing:.9px;font-weight:500;color:rgba(255,255,255,.62)">
+        ONE BREATH · ONE WORLD · ONE WAHEGURU</div>
+    </div>
+    <div style="{dark_btn}">{icon("bell", 20)}</div>
+  </div>
+  <div class="row" style="justify-content:center;padding:12px 20px 0">
+    {rule.format(d="to right")}
+    <div class="gur" style="padding:0 14px;font-size:17px;line-height:1.3;font-weight:500;color:#F2A24E">ੴ</div>
+    {rule.format(d="to left")}
+  </div>
+  <div style="text-align:center;font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.7);padding:0 20px">
+    Breathe in peace, breathe out worry.<br>With every breath, say
+    <span style="color:#F2A24E;font-weight:600">Waheguru.</span></div>
+  <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;
+    overflow:visible">{sky_globe(390, you=state != "noprofile")}
+    <div style="position:absolute;inset:0">{naam}</div></div>
+  <div class="col" style="gap:8px;padding:6px 20px 0">
+    {middle}
+    <div class="row" style="gap:13px;justify-content:center;flex-wrap:wrap">{legend}</div>
+    {banner}
+    {buttons}
+  </div>
+</div>
+{nav("simran")}
+"""
+
+
+def simran_rest() -> str:
+    return simran_sky("rest")
+
+
+def simran_sitting() -> str:
+    return simran_sky("sitting")
+
+
+def simran_no_profile() -> str:
+    return simran_sky("noprofile")
+
+
 def sync_states() -> str:
     states = [
         ("check", "Synced", "Everything is up to date · 2 minutes ago",
@@ -2358,6 +2518,9 @@ SCREENS = [
     ("85-TodayAppBar", "Today — app bar and streak", today_app_bar),
     ("86-TodayNoProfile", "Today — first day, no profile", today_no_profile),
     ("87-DiaryStreak", "Diary — the month, with the streak", diary_streak),
+    ("88-Simran", "Simran — at rest", simran_rest),
+    ("89-SimranSitting", "Simran — a sitting running", simran_sitting),
+    ("90-SimranNoProfile", "Simran — no profile", simran_no_profile),
 ]
 
 

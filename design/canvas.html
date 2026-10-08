@@ -40,6 +40,7 @@
   --sage:#6CCB9C; --sageSoft:#173327; --grey:#9195B5; --greySoft:#1F2447;
   --shadow:0 0 0 1px rgba(255,255,255,.05); color-scheme:dark}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;margin:0;padding-inline:20px;padding-block:28px 64px}
 .wrap{max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
 header{display:flex;flex-direction:column;gap:10px}
@@ -83,7 +84,7 @@ figcaption{display:flex;flex-direction:column;gap:3px;width:calc(390px * var(--s
 <div class="wrap">
   <header>
     <h1>Hazri Screens</h1>
-    <p class="lede">Every design screen in <code>design/html/</code>, grouped by feature, at 390 × 844 dp. Screens marked <b>New</b> were chosen on 7 October 2026. <b>Superseded</b> screens are kept for reference; their note names what replaces them. Where a screen and a spec in <code>docs/features/</code> disagree, the spec wins.</p>
+    <p class="lede">Every design screen in <code>design/html/</code>, grouped by feature, at 390 × 844 dp. Screens marked <b>New</b> were chosen or drawn on 7 and 8 October 2026. <b>Superseded</b> screens are hidden; Include superseded shows them, each with a note naming what replaces it. Where a screen and a spec in <code>docs/features/</code> disagree, the spec wins.</p>
   </header>
 
   <div class="bar" role="toolbar" aria-label="View">
@@ -97,8 +98,8 @@ figcaption{display:flex;flex-direction:column;gap:3px;width:calc(390px * var(--s
       <button class="seg" id="sz-l" aria-pressed="false">L</button>
     </div>
     <div class="group"><span>Show</span>
-      <button class="seg" id="sh-all" aria-pressed="true">All</button>
-      <button class="seg" id="sh-cur" aria-pressed="false">Hide superseded</button>
+      <button class="seg" id="sh-cur" aria-pressed="true">Current only</button>
+      <button class="seg" id="sh-all" aria-pressed="false">Include superseded</button>
     </div>
     <div class="group"><span class="count" id="count"></span></div>
     <nav class="jump" id="jump" aria-label="Sections"></nav>
@@ -160,10 +161,13 @@ const SECTIONS = [
       ['20-AddGoal', 'Add a paath goal, Phase 1', 'superseded', 'Replaced by 47'],
     ]},
   { id: 'simran', name: 'Simran', spec: '07-simran.md',
-    note: 'The shipped Simran tab follows a mock-up of 20 September 2026 that is not in the repository (CLAUDE.md).',
+    note: 'Drawn on 8 October 2026 from the Simran tab as it ships (the 20 September mock-up) and the legend and banner of 07-simran.md.',
     screens: [
-      ['29-Simran', 'Simran', 'superseded', 'Globe, legend and colours kept; layout from the 20 Sep mock-up'],
-      ['21-DailySimran', 'Daily Simran, 5 minutes', 'superseded', 'Replaced by the Simran tab'],
+      ['88-Simran', 'Simran, at rest', 'new', 'Sitting length from the goal, else 5 min. Legend You, Live, Here today. 07-simran.md SM1, DR1-DR5'],
+      ['89-SimranSitting', 'Simran, a sitting running', 'new', 'The countdown takes the presence line\'s place; Pause and End. ਵਾਹਿਗੁਰੂ drifts off the globe'],
+      ['90-SimranNoProfile', 'Simran, no profile', 'new', 'No orange dot; the profile banner under the legend. 07-simran.md NP1-NP3'],
+      ['29-Simran', 'Simran, Phase 2', 'superseded', 'Replaced by 88'],
+      ['21-DailySimran', 'Daily Simran, Phase 1', 'superseded', 'Replaced by 88 and 89'],
     ]},
   { id: 'sangat', name: 'Sangat', spec: '08-sangat.md',
     note: 'Drawn before 08-sangat.md of 7 October 2026; the spec wins where they differ.',
@@ -212,13 +216,13 @@ const SECTIONS = [
 ];
 
 const SIZES = { s: 0.42, m: 0.6, l: 0.85 };
-const state = { theme: 'light', size: 'm', hideOld: false };
+const state = { theme: 'light', size: 'm', hideOld: true };
 try {
-  const saved = JSON.parse(localStorage.getItem('hazri-screens-view') || '{}');
+  const saved = JSON.parse(localStorage.getItem('hazri-screens-view-2') || '{}');
   Object.assign(state, saved);
 } catch (e) {}
 
-function save() { try { localStorage.setItem('hazri-screens-view', JSON.stringify(state)); } catch (e) {} }
+function save() { try { localStorage.setItem('hazri-screens-view-2', JSON.stringify(state)); } catch (e) {} }
 
 function src(id, single) { return 'html/' + id + (single ? '' : '.' + state.theme) + '.html'; }
 
@@ -318,6 +322,13 @@ function apply() {
     const hide = state.hideOld && fig.dataset.status === 'superseded';
     fig.hidden = hide;
     total++; if (!hide) shown++;
+  });
+  // A section whose every screen is hidden goes too, with its link.
+  document.querySelectorAll('section').forEach(sec => {
+    const empty = !sec.querySelector('figure:not([hidden])');
+    sec.hidden = empty;
+    const link = document.querySelector('#jump a[href="#' + sec.id + '"]');
+    if (link) link.hidden = empty;
   });
   document.getElementById('count').textContent = shown + ' of ' + total + ' screens';
   for (const t of ['light', 'dark']) document.getElementById('th-' + t).setAttribute('aria-pressed', String(state.theme === t));
