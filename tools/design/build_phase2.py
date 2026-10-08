@@ -2241,7 +2241,9 @@ def sky_globe(size: int, you: bool = True) -> str:
     """The globe of `simran_globe.dart`: a lit sea, a fine grid, bright coasts.
 
     Dots follow 07-simran.md DR1-DR4: orange for you (with its halo), green
-    for Live, blue for Here today. Without a profile there is no orange dot.
+    for Live, blue for Here today. The threads of design 29 run from your dot
+    to every other (DR6). Without a profile there is no orange dot and so no
+    threads.
     """
     kind = {"you": "you", "today": "live", "member": "here"}
     pts = []
@@ -2274,7 +2276,7 @@ def sky_globe(size: int, you: bool = True) -> str:
         '</radialGradient></defs>'
         '<circle cx="160" cy="160" r="200" fill="url(#glow)"/>'
         '<circle cx="160" cy="160" r="150" fill="url(#sea)"/>'
-        f'{grid}{coast}'
+        f'{grid}{coast}{threads() if you else ""}'
         '<circle cx="160" cy="160" r="149.5" fill="none" stroke="#7FC4FF" stroke-width="2" opacity=".85"/>'
         f'{"".join(pts)}</svg>')
 

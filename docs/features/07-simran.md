@@ -95,6 +95,7 @@ Each counted user is drawn exactly once:
 - **DR3. Three dots in one city** sit side by side so none hides another: Here today 1.5 radii west of the city's point, Live 1.5 radii east, and You on the point itself, drawn last.
 - **DR4. Legend:** `simranLegendYou` (orange), `simranLegendLive` (green), `simranLegendHere` (blue), in that order.
 - **DR5. Presence line:** `globeLiveCount` with the snapshot's total `live`.
+- **DR6. Threads** (owner, 2026-10-08, from design 29): a thread runs from your dot to every other dot drawn on the visible side of the globe, green and blue alike. Each is a quadratic curve bowed sideways by 14% of its length, kesri (`#F2A24E`), 0.7 logical px wide at 28% opacity, drawn under the dots. A thread to a dot on the far side is not drawn (SZ2). With at most two dots per city on the list, there are never more than about 190 threads, so they are always drawn. Without a profile there is no dot to start from and so no threads (NP2). They do not move except with the globe.
 
 ### 4.4a Without a profile
 
@@ -203,7 +204,7 @@ Returns the snapshot of 5.4 exactly as stored, with `builtAt` as an ISO string. 
 
 ### 8.1 Screen
 
-Unchanged layout (0.2). The legend shows the three entries of DR4; the presence line shows DR5; the globe draws DR1–DR3 with the sizes of 4.5.
+Unchanged layout (0.2), drawn as designs 88, 89 and 90. The legend shows the three entries of DR4; the presence line shows DR5; the globe draws DR1–DR3 with the sizes of 4.5, and the threads of DR6.
 
 ### 8.2 Strings
 
@@ -238,11 +239,15 @@ Unchanged layout (0.2). The legend shows the three entries of DR4; the presence 
 | G-14 | 00:00 IST passes | Next snapshot | Everybody not yet marked on the new day moves from green to blue; the next app open marks again |
 | G-15 | 20,000 attendances in 5 minutes | — | Each writes only its own profile; the next snapshot counts them |
 | G-16 | Reduced motion on | Simran open | Your dot does not blink; nothing else changes |
+| G-17 | Profile in Amritsar; dots in Delhi, Southall and Toronto, Toronto on the far side | Simran open | Two threads from Amritsar, to Delhi and Southall; none to Toronto |
+| G-18 | No profile | Simran open | No threads |
+| G-19 | The globe is turned by hand | — | The threads turn with it; one whose far end goes over the horizon disappears |
 
 ## 10. Acceptance checklist
 
 - [ ] Unit: the count split of 2.1 for you inside and outside a city, live and not live.
 - [ ] Unit: SZ1 radii, including a snapshot where every count is equal.
+- [ ] Widget: DR6 threads to every visible dot, none to the far side, none without a profile.
 - [ ] Unit: AT1 calls at most once per `dayIst`, sets the flag only on success, and AT2 never calls without a profile.
 - [ ] Unit: SM1 length from the goal, else 5.
 - [ ] Backend (emulator): attendance statuses and idempotence, and that it leaves `updatedAt` alone; the snapshot counts live and counted correctly across a day change; `GLOBE_NOT_READY` before the first build.
@@ -264,6 +269,7 @@ Unchanged layout (0.2). The legend shows the three entries of DR4; the presence 
 | S-8 | Old "sitting now" and "sat today" | **Decided 2026-10-07:** removed |
 | S-9 | Somebody without a profile | **Decided 2026-10-07:** sees everybody else on the globe, has no orange dot, is not counted, and gets a banner to create a profile (4.4a) |
 | S-10 | The profile's city comes from the app's list of 92 cities | **Decided 2026-10-07:** yes; somebody whose city is not on it picks the nearest. Cities are added through `tools/content_pipeline/cities.json`. |
+| S-11 | Connecting lines on the globe | **Decided 2026-10-08:** yes, design 29's threads from your dot to every other (DR6) |
 
 ## 12. Out of scope
 
