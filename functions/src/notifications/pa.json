@@ -1,0 +1,19 @@
+{
+  "notifSangatDigestTitle": "{group}: ਅੱਜ {count} ਪਾਠ",
+  "notifSangatDigestBody": "ਮਿਲ ਕੇ {target} {bani} ਦਾ {pct}% ਪੂਰਾ। ਹਰ ਪਾਠ ਇਸ ਵਿੱਚ ਜੁੜਦਾ ਹੈ।",
+  "notifSangatMilestoneTitle": "{group} ਨੇ {pct}% ਪੂਰਾ ਕੀਤਾ",
+  "notifSangatMilestoneBody": "{target} {bani} ਵਿੱਚੋਂ {done}, {daysLeft} ਦਿਨ ਬਾਕੀ।",
+  "notifSangatFinalTitle": "{group} ਲਈ {daysLeft} ਦਿਨ ਬਾਕੀ",
+  "notifSangatFinalBody": "ਟੀਚੇ ਤੱਕ {remaining} ਪਾਠ। ਅੱਜ ਦਾ ਤੁਹਾਡਾ ਪਾਠ ਇਸ ਨੂੰ ਨੇੜੇ ਲਿਆਉਂਦਾ ਹੈ।",
+  "notifSangatCompleteTitle": "{group} ਨੇ ਟੀਚਾ ਪੂਰਾ ਕੀਤਾ",
+  "notifSangatCompleteBody": "{target} {bani}, ਮਿਲ ਕੇ। ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖ਼ਾਲਸਾ, ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਹਿ।",
+  "notifSangatJoinedTitle": "{name} {group} ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਏ",
+  "notifSangatJoinedBody": "ਤੁਹਾਡੀ ਸੰਗਤ ਵਧ ਰਹੀ ਹੈ: ਹੁਣ {count} ਮੈਂਬਰ।",
+  "notifSangatJoinedManyTitle": "{name} ਅਤੇ {others} ਹੋਰ {group} ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਏ",
+  "notifSangatJoinedManyBody": "ਤੁਹਾਡੀ ਸੰਗਤ ਵਧ ਰਹੀ ਹੈ: ਹੁਣ {count} ਮੈਂਬਰ।",
+  "notifSangatEndedTitle": "{group} ਸਮਾਪਤ ਹੋ ਗਿਆ",
+  "notifSangatEndedBody": "ਮਿਲ ਕੇ: {target} {bani} ਵਿੱਚੋਂ {total}। ਇਸ ਦਾ ਹਿੱਸਾ ਬਣਨ ਲਈ ਧੰਨਵਾਦ।",
+  "notifSangatSimranUnit": "ਨਾਮ ਸਿਮਰਨ ਦੀਆਂ ਬੈਠਕਾਂ",
+  "notifSangatSomeone": "ਇੱਕ ਸੰਗਤ ਮੈਂਬਰ",
+  "notifActionOpenSangat": "ਸੰਗਤ ਖੋਲ੍ਹੋ"
+}
