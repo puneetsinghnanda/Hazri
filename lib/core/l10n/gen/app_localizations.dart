@@ -5673,6 +5673,36 @@ abstract class L {
   /// In en, this message translates to:
   /// **'You have an invite to a group.'**
   String get sangatJoinFromInvite;
+
+  /// No description provided for @simranLegendLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get simranLegendLive;
+
+  /// No description provided for @globeLiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} live today'**
+  String globeLiveCount(int count);
+
+  /// No description provided for @globeStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated {time}'**
+  String globeStale(String time);
+
+  /// No description provided for @globeOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t reach the sangat right now'**
+  String get globeOffline;
+
+  /// No description provided for @globeProfileBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your profile to see yourself on the globe'**
+  String get globeProfileBanner;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

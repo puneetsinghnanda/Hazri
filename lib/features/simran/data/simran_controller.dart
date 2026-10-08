@@ -7,8 +7,6 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_repository.dart';
 import '../../audio/data/audio_controller.dart';
-import '../../profile/data/profile_controller.dart';
-import '../data/presence_repository.dart';
 import '../../../core/db/user_db.dart' show SittingSource;
 import '../../goals/data/goals_controller.dart';
 import '../../goals/domain/goal_constants.dart';
@@ -202,34 +200,8 @@ class SimranController extends Notifier<SimranSession> {
         );
     ref.read(reminderSchedulerProvider).setQuietUntil(null);
     await ref.read(paathPlayerProvider)?.stop();
-    // The globe counts sittings that happened, not screens that were opened,
-    // so this is here and not in `start`. It is also the only thing simran
-    // sends anywhere, and only for somebody who joined the sangat: the
-    // repository is the no-op one for everybody else.
-    if (completed) unawaited(_markOnTheGlobe());
     if (completed) await HapticFeedback.mediumImpact();
     await WakelockPlus.disable();
     return completed;
-  }
-
-  /// Adds this sitting to today's count for the city the person chose.
-  ///
-  /// Never awaited and never allowed to fail loudly: a globe that did not get
-  /// the news is not a reason for somebody's simran to end in an error.
-  Future<void> _markOnTheGlobe() async {
-    final cityId = ref.read(profileProvider)?.cityId;
-    if (cityId == null) return;
-    final city = (await ref.read(citiesProvider.future))
-        .where((c) => c.id == cityId)
-        .firstOrNull;
-    if (city == null) return;
-    await ref.read(presenceRepositoryProvider).markSitting(
-          cityId: city.id,
-          cityName: city.nameEn,
-          lat: city.lat,
-          lon: city.lon,
-        );
-    // And read the globe again, so the sitting just added appears on it.
-    ref.invalidate(simranPresenceProvider);
   }
 }

@@ -13,6 +13,7 @@ import '../features/profile/data/profile_controller.dart';
 import '../features/sangat/data/sangat_controller.dart';
 import '../features/sangat/data/sangat_device.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import '../features/simran/data/presence_repository.dart';
 import 'router.dart';
 
 class HazriApp extends ConsumerStatefulWidget {
@@ -33,6 +34,12 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     // reconnect sending what waited offline (08-sangat §5.1, K13).
     ref.read(sangatMemberProvider);
     ref.read(sangatDeviceProvider);
+    // AT2: a profile created later in the day marks attendance at once.
+    ref.listenManual(profileControllerProvider, (was, now) {
+      if (now is ProfileLoaded && was is! ProfileLoaded) {
+        unawaited(ref.read(presenceServiceProvider).markAttendance());
+      }
+    });
     _online = Connectivity().onConnectivityChanged.listen((r) {
       if (!r.contains(ConnectivityResult.none)) unawaited(ref.read(outboxSenderProvider).send());
     });
@@ -66,6 +73,8 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
       await ref.read(userRepositoryProvider).closeGoalIfBlank();
       unawaited(ref.read(outboxSenderProvider).send());
       unawaited(ref.read(sangatDeviceProvider).sync());
+      // 07-simran AT1: once per IST day, with a profile.
+      unawaited(ref.read(presenceServiceProvider).markAttendance());
       await ref.read(installInviteProvider).readOnce();
       if (!ref.read(settingsProvider).onboardingDone) return;
       // IV6: an invite carried through the Play install, once setup is done.

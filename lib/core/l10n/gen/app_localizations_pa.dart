@@ -3160,4 +3160,24 @@ class LPa extends L {
 
   @override
   String get sangatJoinFromInvite => 'ਤੁਹਾਨੂੰ ਇੱਕ ਗਰੁੱਪ ਦਾ ਸੱਦਾ ਹੈ।';
+
+  @override
+  String get simranLegendLive => 'ਲਾਈਵ';
+
+  @override
+  String globeLiveCount(int count) {
+    return 'ਅੱਜ $count ਹਾਜ਼ਰ';
+  }
+
+  @override
+  String globeStale(String time) {
+    return 'ਆਖਰੀ ਵਾਰ ਤਾਜ਼ਾ $time';
+  }
+
+  @override
+  String get globeOffline => 'ਹੁਣੇ ਸੰਗਤ ਨਾਲ ਜੁੜ ਨਹੀਂ ਹੋ ਰਿਹਾ';
+
+  @override
+  String get globeProfileBanner =>
+      'ਗਲੋਬ ਉੱਤੇ ਆਪਣੇ ਆਪ ਨੂੰ ਦੇਖਣ ਲਈ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ';
 }

@@ -3164,4 +3164,24 @@ class LEn extends L {
 
   @override
   String get sangatJoinFromInvite => 'You have an invite to a group.';
+
+  @override
+  String get simranLegendLive => 'Live';
+
+  @override
+  String globeLiveCount(int count) {
+    return '$count live today';
+  }
+
+  @override
+  String globeStale(String time) {
+    return 'Last updated $time';
+  }
+
+  @override
+  String get globeOffline => 'Can\'t reach the sangat right now';
+
+  @override
+  String get globeProfileBanner =>
+      'Create your profile to see yourself on the globe';
 }

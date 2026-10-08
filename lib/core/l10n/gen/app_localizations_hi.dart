@@ -3154,4 +3154,24 @@ class LHi extends L {
 
   @override
   String get sangatJoinFromInvite => 'आपको एक ग्रुप का निमंत्रण है।';
+
+  @override
+  String get simranLegendLive => 'लाइव';
+
+  @override
+  String globeLiveCount(int count) {
+    return 'आज $count हाज़िर';
+  }
+
+  @override
+  String globeStale(String time) {
+    return 'आख़िरी बार ताज़ा $time';
+  }
+
+  @override
+  String get globeOffline => 'अभी संगत से जुड़ नहीं पा रहे';
+
+  @override
+  String get globeProfileBanner =>
+      'ग्लोब पर ख़ुद को देखने के लिए अपनी प्रोफ़ाइल बनाएँ';
 }

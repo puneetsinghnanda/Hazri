@@ -18,12 +18,17 @@ import '../domain/world_outline.dart';
 class SimranGlobe extends ConsumerStatefulWidget {
   const SimranGlobe({
     super.key,
-    required this.presence,
+    required this.dots,
+    this.threads = const [],
     this.size = 260,
     this.spinning = true,
   });
 
-  final SangatPresence presence;
+  /// You, Live and Here today (07-simran §2.1).
+  final List<GlobeDot> dots;
+
+  /// Index pairs into [dots] (DR6, DR7).
+  final List<(int, int)> threads;
   final double size;
 
   /// Turns slowly on its own. Off in tests and when the system asks for
@@ -43,16 +48,10 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
     duration: const Duration(seconds: 120),
   );
 
-  /// The slow breath under your own dot.
-  ///
-  /// Four seconds out and four back, and it moves the halo rather than the
-  /// dot: a light that blinks off says something went wrong, and anything
-  /// quick is the last thing somebody about to sit still for eleven minutes
-  /// needs. The dot itself never dims and never changes size — what drifts
-  /// is the glow around it.
+  /// Your dot's blink: `YOU_BLINK_PERIOD_MS` = 1600, out and back (DR1).
   late final AnimationController _pulse = AnimationController(
     vsync: this,
-    duration: const Duration(seconds: 4),
+    duration: const Duration(milliseconds: 800),
   );
 
   /// A quarter of a degree, which at this size is under a pixel at the
@@ -135,8 +134,8 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
         builder: (context, _) => CustomPaint(
           size: Size.square(widget.size),
           painter: GlobePainter(
-            cities: widget.presence.cities,
-            yourCityId: widget.presence.yourCityId,
+            dots: widget.dots,
+            threads: widget.threads,
             outline: outline,
             rotation: _step(
               _dragged + (reduceMotion ? 0 : _spin.value * 2 * math.pi),
@@ -145,8 +144,9 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
             tilt: _step(_tilt, _rotationStep),
             // Half way through the breath when nothing is animating, so a
             // still frame is never the smallest the halo gets.
+            // G-16: reduced motion, no blink.
             breath: reduceMotion
-                ? 0.5
+                ? 1
                 : _step(Curves.easeInOut.transform(_pulse.value), 1 / 24),
           ),
         ),
@@ -159,15 +159,16 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
 /// it lands.
 class GlobePainter extends CustomPainter {
   GlobePainter({
-    required this.cities,
+    required this.dots,
     required this.outline,
     required this.rotation,
     required this.breath,
     this.tilt = 0,
-    this.yourCityId,
+    this.threads = const [],
   });
 
-  final List<PresenceCity> cities;
+  final List<GlobeDot> dots;
+  final List<(int, int)> threads;
   final WorldOutline outline;
 
   /// About the polar axis — the spin, plus whatever the hand has added.
@@ -179,8 +180,6 @@ class GlobePainter extends CustomPainter {
   /// 0 to 1 and back, four seconds each way.
   final double breath;
 
-  /// Lit differently, because the legend says which dot is yours.
-  final String? yourCityId;
 
   /// The globe's own palette, not the theme's. It is a night sky on both
   /// themes, and a light-theme globe would be a different object rather than
@@ -190,9 +189,12 @@ class GlobePainter extends CustomPainter {
   static const _grid = Color(0xFF2F4E96);
   static const _coast = Color(0xFF8FD4FF);
   static const _rim = Color(0xFF7FC4FF);
-  static const _light = Color(0xFFE8F4F8);
-  static const _halo = Color(0xFF6FC3D3);
   static const _you = Color(0xFFF2A24E);
+
+  /// DR4's legend colours: Live green, Here today blue.
+  static const live = Color(0xFF6FE3A6);
+  static const here = Color(0xFF5AA9FF);
+  static const you = _you;
 
   /// Parallels every 30°, meridians every 30°, as points rather than as the
   /// closed-form ellipses they used to be.
@@ -413,53 +415,68 @@ class GlobePainter extends CustomPainter {
     double sinT,
   ) {
     const toRadians = math.pi / 180;
-    for (final city in cities) {
-      final phi = city.lat * toRadians;
-      final lambda = city.lon * toRadians;
-      final at = project(
-        cosPhi: math.cos(phi),
-        sinPhi: math.sin(phi),
-        cosLambda: math.cos(lambda),
-        sinLambda: math.sin(lambda),
-        r: r,
-        cosR: cosR,
-        sinR: sinR,
-        cosT: cosT,
-        sinT: sinT,
+    Offset? at(GlobeDot d) => project(
+          cosPhi: math.cos(d.lat * toRadians),
+          sinPhi: math.sin(d.lat * toRadians),
+          cosLambda: math.cos(d.lon * toRadians),
+          sinLambda: math.sin(d.lon * toRadians),
+          r: r,
+          cosR: cosR,
+          sinR: sinR,
+          cosT: cosT,
+          sinT: sinT,
+        );
+    final points = [for (final d in dots) at(d)];
+
+    // DR6/DR7: threads under the dots, only when both ends face the viewer
+    // (SZ2). A quadratic bowed sideways by 14% of its length.
+    final thread = Paint()
+      ..color = _you.withValues(alpha: 0.28)
+      ..strokeWidth = 0.7
+      ..style = PaintingStyle.stroke;
+    for (final (a, b) in threads) {
+      final pa = points[a], pb = points[b];
+      if (pa == null || pb == null) continue;
+      final p0 = centre + pa, p1 = centre + pb;
+      final mid = (p0 + p1) / 2;
+      final d = p1 - p0;
+      final control = mid + Offset(-d.dy, d.dx) * 0.14;
+      canvas.drawPath(
+        Path()
+          ..moveTo(p0.dx, p0.dy)
+          ..quadraticBezierTo(control.dx, control.dy, p1.dx, p1.dy),
+        thread,
       );
-      if (at == null) continue;
-      final mine = city.id == yourCityId;
-      // Bigger where more people are sitting, but gently: a city of two is
-      // not twice the light of a city of one.
-      final radius = 1.8 + math.min(3.4, math.log(city.count + 1) * 1.1);
-      if (mine) {
-        // Two haloes round your own dot, breathing. The outer one moves most,
-        // so the edge of the glow drifts rather than the dot appearing to
-        // change size.
+    }
+
+    // DR3: Here today 1.5 radii west, Live 1.5 radii east, You on the point,
+    // drawn last.
+    for (final pass in [DotKind.here, DotKind.live, DotKind.you]) {
+      for (var i = 0; i < dots.length; i++) {
+        final dot = dots[i];
+        final p = points[i];
+        if (dot.kind != pass || p == null) continue;
+        final shift = switch (dot.kind) {
+          DotKind.here => -1.5 * dot.radius,
+          DotKind.live => 1.5 * dot.radius,
+          DotKind.you => 0.0,
+        };
+        final c = centre + p + Offset(shift, 0);
+        if (dot.kind == DotKind.you) {
+          canvas.drawCircle(c, dot.radius + 6, Paint()..color = _you.withValues(alpha: 0.12 + 0.22 * breath));
+          canvas.drawCircle(c, dot.radius, Paint()..color = _you.withValues(alpha: 0.45 + 0.55 * breath));
+          continue;
+        }
+        final colour = dot.kind == DotKind.live ? live : here;
         canvas.drawCircle(
-          centre + at,
-          (radius + 8) * (0.88 + 0.24 * breath),
-          Paint()..color = _you.withValues(alpha: 0.10 + 0.10 * breath),
-        );
-        canvas.drawCircle(
-          centre + at,
-          (radius + 3) * (0.94 + 0.12 * breath),
-          Paint()..color = _you.withValues(alpha: 0.24 + 0.10 * breath),
-        );
-      } else {
-        canvas.drawCircle(
-          centre + at,
-          radius * 2.6,
+          c,
+          dot.radius * 1.8,
           Paint()
-            ..color = _halo.withValues(alpha: 0.18)
+            ..color = colour.withValues(alpha: 0.18)
             ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
         );
+        canvas.drawCircle(c, dot.radius, Paint()..color = colour.withValues(alpha: 0.9));
       }
-      canvas.drawCircle(
-        centre + at,
-        mine ? radius + 1 : radius,
-        Paint()..color = mine ? _you : _light,
-      );
     }
   }
 
@@ -501,7 +518,7 @@ class GlobePainter extends CustomPainter {
       old.rotation != rotation ||
       old.tilt != tilt ||
       old.breath != breath ||
-      old.cities != cities ||
-      old.outline != outline ||
-      old.yourCityId != yourCityId;
+      old.dots != dots ||
+      old.threads != threads ||
+      old.outline != outline;
 }

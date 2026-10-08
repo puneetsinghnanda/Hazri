@@ -479,6 +479,15 @@ has that the target replaces, and PRD §11 says which step removes each:
   a group. The install referrer is read in `MainActivity.kt` with Google's
   `installreferrer` library directly: the Flutter plugin for it uses the
   `kotlinOptions` block Kotlin 2.4 rejects. The admin website is `admin/`.
+- **The globe follows 07-simran (PRD §11 step 7)**: one shared snapshot from
+  `GET /presence/globe`, fetched on opening the tab and every 2 minutes only
+  while it is visible; attendance marked once per IST day with a profile;
+  You (orange, blinking), Live (green) and Here today (blue) split per §2.1;
+  dots sized by SZ1; threads from your dot (DR6) or, without a profile, a
+  web joining every dot (DR7). A sitting no longer reports to the globe. The
+  paragraphs further down about the 45-second presence read, "in the
+  sangat", two people in one city being one dot and the headline describe
+  the build before this one.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own

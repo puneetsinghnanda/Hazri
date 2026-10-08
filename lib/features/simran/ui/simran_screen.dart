@@ -23,6 +23,7 @@ import '../domain/simran_track.dart';
 import 'simran_globe.dart';
 import 'simran_naam.dart';
 import '../../goals/domain/goal_constants.dart';
+import '../../profile/data/profile_controller.dart';
 
 /// Daily Simran.
 ///
@@ -38,26 +39,33 @@ class SimranScreen extends ConsumerStatefulWidget {
 
 class _SimranScreenState extends ConsumerState<SimranScreen>
     with WidgetsBindingObserver {
-  /// How often the globe asks who else is sitting, while it is on screen.
-  ///
-  /// The presence read used to happen once, when the provider was first
-  /// touched, and never again -- so somebody who began after you had opened
-  /// the tab never appeared, and your own sitting did not either. Your own
-  /// dot was the only one that showed because it is drawn from Settings, on
-  /// the phone, rather than from the server.
-  ///
-  /// A read costs one document per city with somebody in it, plus one
-  /// aggregation, and only runs while this tab is actually in front of
-  /// somebody. Live enough for two people sitting together to see each other.
-  static const _refresh = Duration(seconds: 45);
+  /// GB1: every `GLOBE_REFRESH_SECONDS` while the tab is visible, at once
+  /// when it becomes visible, and on return to the foreground; never while
+  /// the tab is behind another (G-12). The server answers one shared
+  /// snapshot, so the cost is the same for one viewer or a million.
+  static const _refresh = Duration(seconds: 120);
 
   Timer? _poll;
+  bool _visible = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _poll = Timer.periodic(_refresh, (_) => _readPresence());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // The shell keeps other tabs built but with tickers off.
+    final visible = TickerMode.valuesOf(context).enabled;
+    if (visible == _visible) return;
+    _visible = visible;
+    _poll?.cancel();
+    if (visible) {
+      _readGlobe();
+      _poll = Timer.periodic(_refresh, (_) => _readGlobe());
+    }
   }
 
   @override
@@ -67,8 +75,8 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
     super.dispose();
   }
 
-  void _readPresence() {
-    if (mounted) ref.invalidate(simranPresenceProvider);
+  void _readGlobe() {
+    if (mounted) unawaited(ref.read(globeProvider.notifier).refresh());
   }
 
   @override
@@ -76,8 +84,7 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
     if (state == AppLifecycleState.resumed) {
       // Recompute from the start instant rather than trusting the ticker.
       ref.read(simranSessionProvider.notifier).tick();
-      // And catch up on whoever sat while the phone was in a pocket.
-      _readPresence();
+      if (_visible) _readGlobe();
     }
   }
 
@@ -87,7 +94,8 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
     final session = ref.watch(simranSessionProvider);
     final controller = ref.read(simranSessionProvider.notifier);
     final doneToday = ref.watch(simranDoneTodayProvider).value ?? false;
-    final presence = ref.watch(globePresenceProvider);
+    final drawing = ref.watch(globeDrawingProvider);
+    final globe = ref.watch(globeProvider);
     // The recitation's own onsets, so ਵਾਹਿਗੁਰੂ appears when it is said.
     final track = ref.watch(simranTrackProvider).value;
 
@@ -107,7 +115,8 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
     });
 
     return _SimranSky(
-      presence: presence,
+      drawing: drawing,
+      globe: globe,
       minutes: minutes,
       doneToday: doneToday,
       session: session,
@@ -137,7 +146,8 @@ class _SimranScreenState extends ConsumerState<SimranScreen>
 /// vanished at the exact moment somebody began.
 class _SimranSky extends ConsumerWidget {
   const _SimranSky({
-    required this.presence,
+    required this.drawing,
+    required this.globe,
     required this.minutes,
     required this.doneToday,
     required this.session,
@@ -148,7 +158,8 @@ class _SimranSky extends ConsumerWidget {
     required this.onEnd,
   });
 
-  final SangatPresence presence;
+  final ({List<GlobeDot> dots, List<(int, int)> threads}) drawing;
+  final GlobeState globe;
   final int minutes;
   final bool doneToday;
   final SimranSession session;
@@ -161,9 +172,9 @@ class _SimranSky extends ConsumerWidget {
   /// The screen's own palette, which is a night sky on both themes.
   static const _sky = Color(0xFF040819);
   static const _skyLow = Color(0xFF071130);
-  static const _you = Color(0xFFF2A24E);
-  static const _here = Color(0xFF3DBE7B);
-  static const _others = Color(0xFF6FE3A6);
+  static const _you = GlobePainter.you;
+  static const _live = GlobePainter.live;
+  static const _here = GlobePainter.here;
 
   /// The side margin every block but the globe keeps.
   static Widget _gutter(Widget child) =>
@@ -261,7 +272,8 @@ class _SimranSky extends ConsumerWidget {
                                   // whole screen along with it.
                                   RepaintBoundary(
                                     child: SimranGlobe(
-                                      presence: presence,
+                                      dots: drawing.dots,
+                                      threads: drawing.threads,
                                       size: size,
                                     ),
                                   ),
@@ -302,19 +314,7 @@ class _SimranSky extends ConsumerWidget {
                         style: HazriText.caption.copyWith(color: white55),
                       ),
                     ] else ...[
-                      _Presence(presence: presence, others: _others),
-                      // Only what is actually known, and only when there is
-                      // something to say: "You are the first here today"
-                      // followed by "0 cities today" is the hopeful zero the
-                      // line above it exists to avoid. A month total and a
-                      // country count are not stored anywhere either.
-                      if (presence.activeCities.isNotEmpty) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          l.simranCitiesToday(presence.activeCities.length),
-                          style: HazriText.caption.copyWith(color: white55),
-                        ),
-                      ],
+                      _Presence(globe: globe, colour: _live),
                     ],
                     const SizedBox(height: 8),
                     Wrap(
@@ -323,9 +323,39 @@ class _SimranSky extends ConsumerWidget {
                       runSpacing: 6,
                       children: [
                         _LegendDot(colour: _you, label: l.simranLegendYou),
+                        _LegendDot(colour: _live, label: l.simranLegendLive),
                         _LegendDot(colour: _here, label: l.simranLegendHere),
                       ],
                     ),
+                    // GB3: a snapshot over 10 minutes old says when it is from.
+                    if (globe.snapshot != null &&
+                        globe.failing &&
+                        globe.fetchedAt != null &&
+                        DateTime.now().difference(globe.fetchedAt!) > const Duration(minutes: 10))
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(l.globeStale(HazriDates.of(context).time(globe.fetchedAt!)),
+                            style: HazriText.caption.copyWith(color: white55)),
+                      ),
+                    // NP3: without a profile, the way onto the globe.
+                    if (ref.watch(profileControllerProvider) is! ProfileLoaded)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: InkWell(
+                          onTap: () => context.push(Routes.profileSetup),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: _you.withValues(alpha: 0.14),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: _you.withValues(alpha: 0.4)),
+                            ),
+                            child: Text(l.globeProfileBanner,
+                                textAlign: TextAlign.center,
+                                style: HazriText.caption.copyWith(color: white)),
+                          ),
+                        ),
+                      ),
                     const SizedBox(height: 10),
                     // Two controls while a sitting is open, not one. Ending
                     // was the only way out, so a knock at the door cost
@@ -492,37 +522,21 @@ class _OnkarRule extends StatelessWidget {
   }
 }
 
-/// Who is sitting, where the countdown goes when nothing is running.
+/// DR5: the snapshot's live total; GB3: offline with no snapshot at all.
 class _Presence extends StatelessWidget {
-  const _Presence({required this.presence, required this.others});
+  const _Presence({required this.globe, required this.colour});
 
-  final SangatPresence presence;
-  final Color others;
+  final GlobeState globe;
+  final Color colour;
 
   @override
   Widget build(BuildContext context) {
     final l = L.of(context);
-    if (presence.isQuiet) {
-      return Text(
-        l.simranGlobeFirst,
-        textAlign: TextAlign.center,
-        style: SimranText.presence.copyWith(color: Colors.white),
-      );
-    }
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: '${l.simranYouAndOthers(presence.others)} ',
-            style: SimranText.presence.copyWith(color: others),
-          ),
-          TextSpan(
-            text: l.simranAreHereToday,
-            style: SimranText.presence.copyWith(color: Colors.white),
-          ),
-        ],
-      ),
+    final snapshot = globe.snapshot;
+    return Text(
+      snapshot == null ? l.globeOffline : l.globeLiveCount(snapshot.live),
       textAlign: TextAlign.center,
+      style: SimranText.presence.copyWith(color: snapshot == null ? Colors.white : colour),
     );
   }
 }
