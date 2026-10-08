@@ -1731,7 +1731,7 @@ Shown only when Android does not hand the link to the app (app not installed, or
 - Deployed with `firebase deploy --only hosting:admin`, by hand, like the public site.
 - **As built (2026-10-08):** `admin/`, vanilla TypeScript with Vite and the
   Firebase JS SDK's Auth. Its Firebase web config (`apiKey`, `appId`) comes
-  from `admin/.env.local`, made from `admin/.env.example`; the API base is
+  from `admin/.env.local`, made by copying `admin/env.example`; the API base is
   `https://hazri-dfcc1.web.app/api/v1/admin` (cross-origin, allowed by
   `ADMIN_ORIGINS` in `functions/src/config.ts`).
 

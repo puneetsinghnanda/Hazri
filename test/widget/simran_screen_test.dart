@@ -39,7 +39,9 @@ void main() {
     // The header's second line is the mock-up's kicker; it replaced design
     // 29's "turn the globe with your hand".
     expect(find.text(l.simranKicker), findsOneWidget);
-    expect(find.text(l.simranGlobeFirst), findsOneWidget);
+    // No server in this harness: the globe says so (07-simran GB3) rather
+    // than claim anybody is or is not here.
+    expect(find.text(l.globeOffline), findsOneWidget);
   });
 
   testWidgets('it offers the sitting, with its length on the button',
