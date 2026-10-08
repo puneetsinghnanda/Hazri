@@ -17,7 +17,11 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   final config =
       jsonDecode(File('firebase.json').readAsStringSync()) as Map<String, dynamic>;
-  final hosting = config['hosting'] as Map<String, dynamic>;
+  // Two Hosting targets since Phase 2: `public` (links, /verify, /j/, and
+  // /api/** to the Function) and `admin`. Only `public` carries the links.
+  final hosting = (config['hosting'] as List<dynamic>)
+      .cast<Map<String, dynamic>>()
+      .singleWhere((h) => h['target'] == 'public');
 
   test('the deploy does not exclude .well-known', () {
     final ignore = (hosting['ignore'] as List<dynamic>).cast<String>();
@@ -46,5 +50,13 @@ void main() {
           reason: 'a catch-all rewrite would shadow /.well-known/');
       expect(rule['source'], isNot(startsWith('/.well-known')));
     }
+  });
+
+  test('/api/** reaches the api Function in the database\'s region', () {
+    final rewrites = (hosting['rewrites'] as List<dynamic>).cast<Map<String, dynamic>>();
+    final api = rewrites.singleWhere((r) => r['source'] == '/api/**');
+    final fn = api['function'] as Map<String, dynamic>;
+    expect(fn['functionId'], 'api');
+    expect(fn['region'], 'asia-south1');
   });
 }
