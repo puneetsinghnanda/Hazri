@@ -22,6 +22,7 @@ class BackupStore {
           ..where((g) => after(g.updatedAt) | g.id.isIn(itemGoalIds)))
         .get();
     return ChangedRows(
+      badges: await (_db.select(_db.badges)..where((b) => after(b.updatedAt))).get(),
       goals: goals,
       items: items,
       completions: await (_db.select(_db.completions)..where((c) => after(c.updatedAt))).get(),
@@ -98,6 +99,7 @@ class BackupStore {
 /// What [BackupStore.changedSince] found.
 class ChangedRows {
   const ChangedRows({
+    this.badges = const [],
     required this.goals,
     required this.items,
     required this.completions,
@@ -109,6 +111,9 @@ class ChangedRows {
   final List<Completion> completions;
   final List<SimranSession> sittings;
 
-  int get count => goals.length + items.length + completions.length + sittings.length;
+  /// 12-badges BB1.
+  final List<BadgeRow> badges;
+
+  int get count => goals.length + items.length + completions.length + sittings.length + badges.length;
   bool get isEmpty => count == 0;
 }

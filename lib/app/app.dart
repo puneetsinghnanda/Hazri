@@ -14,6 +14,9 @@ import '../features/sangat/data/sangat_controller.dart';
 import '../features/sangat/data/sangat_device.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../features/simran/data/presence_repository.dart';
+import '../features/badges/data/badge_controller.dart';
+import '../features/badges/ui/badge_widgets.dart';
+import '../features/simran/data/simran_controller.dart';
 import 'router.dart';
 
 class HazriApp extends ConsumerStatefulWidget {
@@ -28,6 +31,14 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // 12-badges AN1, UI7: a waiting badge's sheet shows when a tab is on
+    // screen, never over the reader or a running Simran sitting.
+    final router = ref.read(routerProvider);
+    router.routerDelegate.addListener(_announceBadge);
+    ref.listenManual(pendingBadgeProvider, (_, _) => _announceBadge());
+    ref.listenManual(simranSessionProvider, (_, s) {
+      if (!s.active) _announceBadge();
+    });
     // Keeps the weekly backup in step with the profile from the first frame.
     ref.read(backupControllerProvider);
     // The Sangat: the outbox flag, its sender, the push token, and a
@@ -47,6 +58,20 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
   }
 
   StreamSubscription<List<ConnectivityResult>>? _online;
+
+  void _announceBadge() {
+    final badge = ref.read(pendingBadgeProvider);
+    if (badge == null) return;
+    final path = ref.read(routerProvider).routerDelegate.currentConfiguration.uri.path;
+    if (!Routes.tabs.contains(path)) return;
+    if (ref.read(simranSessionProvider).active) return;
+    final context = rootNavigatorKey.currentContext;
+    if (context == null) return;
+    ref.read(pendingBadgeProvider.notifier).state = null;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) showBadgeEarnedSheet(context, badge);
+    });
+  }
 
   @override
   void dispose() {
@@ -73,6 +98,10 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
       await ref.read(userRepositoryProvider).closeGoalIfBlank();
       unawaited(ref.read(outboxSenderProvider).send());
       unawaited(ref.read(sangatDeviceProvider).sync());
+      // 12-badges EV2 at start (LS1: history counts), and the Sangat facts
+      // once a day (SF4).
+      unawaited(ref.read(badgeControllerProvider).evaluate());
+      unawaited(ref.read(badgeControllerProvider).refreshFacts(daily: true));
       // 07-simran AT1: once per IST day, with a profile.
       unawaited(ref.read(presenceServiceProvider).markAttendance());
       await ref.read(installInviteProvider).readOnce();

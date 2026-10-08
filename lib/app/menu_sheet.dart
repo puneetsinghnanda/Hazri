@@ -9,7 +9,12 @@ import '../core/theme/icon_data.dart';
 import '../core/widgets/app_icon.dart';
 import '../core/widgets/surfaces.dart';
 import '../features/today/ui/help_sheet.dart';
+import '../core/db/content_db.dart';
+import '../core/db/content_repository.dart';
+import '../features/badges/data/badge_controller.dart';
+import '../features/badges/ui/badge_widgets.dart';
 import '../features/profile/data/profile_controller.dart';
+import '../features/profile/ui/city_picker_sheet.dart';
 import 'router.dart';
 
 /// Design 37 — what the menu button opens.
@@ -61,6 +66,8 @@ class _MenuSheet extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 16),
+              const _MenuHeader(),
+              const SizedBox(height: 12),
               HazriCard(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -73,6 +80,13 @@ class _MenuSheet extends ConsumerWidget {
                         _ => l.profileBannerTitle,
                       },
                       onTap: () => go(Routes.profile),
+                    ),
+                    Divider(height: 1, color: c.rule),
+                    // 12-badges UI6: Badges after Your profile.
+                    _Row(
+                      icon: HazriIconData.sparkle,
+                      label: l.badgesTitle,
+                      onTap: () => go(Routes.badges),
                     ),
                     Divider(height: 1, color: c.rule),
                     // Vichar is a section, not a setting, and it had no door
@@ -160,6 +174,81 @@ class _Row extends StatelessWidget {
             ),
             AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Design 99, option 5C (12-badges UI6): navy, with the avatar, the name and
+/// city, then the badge count and the ten emblems. The block opens the
+/// Badges page. Without a profile there is no name or city, and the row of
+/// ten still shows.
+class _MenuHeader extends ConsumerWidget {
+  const _MenuHeader();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.colors;
+    final l = L.of(context);
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final profile = ref.watch(profileProvider);
+    final lang = Localizations.localeOf(context).languageCode;
+    final cities = ref.watch(citiesProvider).value ?? const <CityRow>[];
+    final city = profile == null ? null : cities.where((x) => x.id == profile.cityId).firstOrNull;
+    final earned = (ref.watch(earnedBadgesProvider).value ?? const []).length;
+    const white = Colors.white;
+
+    return Material(
+      color: dark ? c.card2 : const Color(0xFF262C63),
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {
+          Navigator.of(context).pop();
+          context.push(Routes.badges);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (profile != null)
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 22,
+                      backgroundColor: white.withValues(alpha: 0.15),
+                      child: Text(profile.name.characters.first,
+                          style: HazriText.bodyStrong.copyWith(color: white, fontSize: 18)),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(profile.name, style: HazriText.bodyStrong.copyWith(color: white, fontSize: 17)),
+                          if (city != null)
+                            Text(cityName(city, lang),
+                                style: HazriText.caption.copyWith(color: white.withValues(alpha: 0.78))),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              if (profile != null) const SizedBox(height: 14),
+              Row(
+                children: [
+                  Text(l.badgesTitle, style: HazriText.captionStrong.copyWith(color: white)),
+                  const Spacer(),
+                  Text(l.badgesMenuCount(earned),
+                      style: HazriText.caption.copyWith(color: white.withValues(alpha: 0.78))),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const BadgeRow10(size: 24),
+            ],
+          ),
         ),
       ),
     );

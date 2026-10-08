@@ -130,7 +130,18 @@ class UserRepository {
   DateTime get _nowUtc => _clock.now().toUtc();
   String get _today => localDateKey(_clock.today());
 
-  void _changed() => onChanged?.call();
+  void _changed() {
+    onChanged?.call();
+    for (final l in _listeners) {
+      l();
+    }
+  }
+
+  final _listeners = <void Function()>[];
+
+  /// Called after every completion, sitting, Diary edit and goal change, as
+  /// [onChanged] is; for the badges (12-badges EV2).
+  void addChangeListener(void Function() listener) => _listeners.add(listener);
 
   /// 08-sangat §5.1: queue every paath and sitting, and every undo, for the
   /// Sangat. Set while the person belongs to at least one active group;

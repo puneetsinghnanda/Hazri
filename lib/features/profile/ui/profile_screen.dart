@@ -15,6 +15,7 @@ import '../data/profile_api.dart';
 import '../data/profile_controller.dart';
 import '../domain/profile.dart';
 import '../../backup/ui/backup_section.dart';
+import '../../badges/ui/badge_widgets.dart';
 import 'change_email_dialog.dart';
 import 'city_picker_sheet.dart';
 import 'email_sent_screen.dart';
@@ -116,6 +117,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   const SizedBox(height: 12),
                 ],
                 _Details(profile: profile),
+                // 12-badges UI5, design 98.
+                const ProfileBadgesSection(),
                 const BackupSection(),
                 const SizedBox(height: 16),
                 if (!profile.emailVerified) ...[

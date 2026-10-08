@@ -161,6 +161,25 @@ class SangatOutbox extends Table {
 }
 
 /// A missed day the streak forgives. Two per calendar month, never announced.
+/// Badges earned (12-badges §4.1, ARCHITECTURE §3.6). A row is never
+/// deleted or taken back (NT1).
+@DataClassName('BadgeRow')
+class Badges extends Table {
+  /// One of 12-badges §2, e.g. `JIGYASU`.
+  TextColumn get badgeId => text()();
+
+  /// The local date the rule was first found met.
+  TextColumn get earnedOn => text()();
+
+  /// When its sheet was shown, or when it was marked never to be shown.
+  DateTimeColumn get announcedAt => dateTime().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {badgeId};
+}
+
 class GraceDays extends Table {
   TextColumn get localDate => text()();
   TextColumn get monthKey => text()();
@@ -190,6 +209,7 @@ class EventReminderOverrides extends Table {
     SangatOutbox,
     GraceDays,
     EventReminderOverrides,
+    Badges,
   ],
 )
 class UserDb extends _$UserDb {
@@ -199,7 +219,7 @@ class UserDb extends _$UserDb {
   UserDb.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -212,6 +232,8 @@ class UserDb extends _$UserDb {
           if (from < 3) await customStatement('ALTER TABLE goals ADD COLUMN minutes INTEGER');
           if (from < 4) await customStatement('ALTER TABLE goals ADD COLUMN ended_on TEXT');
           if (from < 5) await migrateToV5(this, m);
+          // 12-badges §4.1: the table, empty.
+          if (from < 6) await m.createTable(badges);
         },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');

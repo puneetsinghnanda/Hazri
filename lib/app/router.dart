@@ -35,6 +35,7 @@ import '../features/profile/ui/profile_setup_screen.dart';
 import '../features/sangat/ui/create_group_screen.dart';
 import '../features/sangat/ui/group_screen.dart';
 import '../features/sangat/ui/join_screen.dart';
+import '../features/badges/ui/badges_screen.dart';
 import 'shell.dart';
 
 /// Named routes, so no screen has to spell a path out by hand.
@@ -73,6 +74,10 @@ abstract final class Routes {
   static String sangatGroup(String id, {bool share = false}) => '/sangat-group/$id${share ? '?share=1' : ''}';
   static const licences = '/licences';
 
+  /// Badges (12-badges UI2, UI4).
+  static const badges = '/badges';
+  static String badge(String id) => '/badges/$id';
+
   /// The profile (`01-accounts.md` §8, ARCHITECTURE §2.4).
   static const profile = '/profile';
   static const profileSetup = '/profile-setup';
@@ -107,6 +112,10 @@ abstract final class Routes {
 }
 
 final _rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+
+/// The root navigator, for a sheet shown from outside any screen (the badge
+/// announcement).
+GlobalKey<NavigatorState> get rootNavigatorKey => _rootKey;
 
 final routerProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
@@ -196,6 +205,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           groupId: state.pathParameters['id']!,
           offerShare: state.uri.queryParameters['share'] == '1',
         ),
+      ),
+      GoRoute(path: Routes.badges, builder: (_, _) => const BadgesScreen()),
+      GoRoute(
+        path: '/badges/:id',
+        builder: (_, state) => BadgeDetailScreen(badgeId: state.pathParameters['id']!),
       ),
       GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen()),
       GoRoute(path: Routes.profileSetup, builder: (_, _) => const ProfileSetupScreen()),

@@ -1894,5 +1894,86 @@
         "type": "int"
       }
     }
-  }
+  },
+  "badgesTitle": "Badges",
+  "badgesSummary": "{earned} of 10 earned · Hazri on {count} days",
+  "@badgesSummary": {
+    "placeholders": {
+      "earned": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "badgesSeeAll": "See all 10",
+  "badgesMenuCount": "{earned} of 10",
+  "@badgesMenuCount": {
+    "placeholders": {
+      "earned": {
+        "type": "int"
+      }
+    }
+  },
+  "badgeEarnedOn": "Earned {date}",
+  "@badgeEarnedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "badgeNotYet": "Not yet",
+  "badgeNumber": "Badge {n} of 10",
+  "@badgeNumber": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "badgeWhatItMarks": "What it marks",
+  "badgeHowEarned": "How it is earned",
+  "badgeEarnedNew": "New badge",
+  "badgeEarnedYours": "Your badges",
+  "badgeEarnedDone": "Done",
+  "badgeEarnedSee": "See all badges",
+  "badgeMarksJigyasu": "The seeker: the first hazri",
+  "badgeMarksShardhalu": "Coming back with shardha",
+  "badgeMarksAbhyasi": "One who practises: the habit is forming",
+  "badgeMarksNitnemi": "Keeps the Nitnem",
+  "badgeMarksSimrani": "Settled in Simran",
+  "badgeMarksPaathi": "Has read every bani through, Sukhmani Sahib included",
+  "badgeMarksSevadar": "Sewa in the sangat: group goals carried to their end",
+  "badgeMarksGursikh": "The whole of it held together over months",
+  "badgeMarksSatsangi": "Brought others into the sangat",
+  "badgeMarksVichari": "The long road: a year of days",
+  "badgeRuleJigyasu": "Your first hazri",
+  "badgeRuleShardhalu": "Hazri on 7 days",
+  "badgeRuleAbhyasi": "Hazri on 40 days",
+  "badgeRuleNitnemi": "The five morning banis on 40 days",
+  "badgeRuleSimrani": "Simran of 5 minutes or more on 108 days",
+  "badgeRulePaathi": "Every bani read through once",
+  "badgeRuleSevadar": "3 sangat goals reached with you",
+  "badgeRuleGursikh": "Nitnemi, Simrani, Paathi and hazri on 180 days",
+  "badgeRuleSatsangi": "5 people joined groups you created",
+  "badgeRuleVichari": "Hazri on 365 days",
+  "badgeHowJigyasu": "Mark your hazri once: finish any bani, or sit in Simran for 5 minutes.",
+  "badgeHowShardhalu": "Hazri on 7 days. The days need not be in a row.",
+  "badgeHowAbhyasi": "Hazri on 40 days. The days need not be in a row.",
+  "badgeHowNitnemi": "{banis}, all five on the same day, on 40 days. The days need not be in a row.",
+  "@badgeHowNitnemi": {
+    "placeholders": {
+      "banis": {
+        "type": "String"
+      }
+    }
+  },
+  "badgeHowSimrani": "A sitting of Simran of 5 minutes or more on 108 days. The days need not be in a row.",
+  "badgeHowPaathi": "Read or listen to every bani in the app through to the end at least once, Ardas and Sukhmani Sahib included.",
+  "badgeHowSevadar": "Be part of 3 sangat goals that are reached, with at least one paath of your own in each. Needs a profile.",
+  "badgeHowGursikh": "Earn Nitnemi, Simrani and Paathi, and hazri on 180 days. The days need not be in a row.",
+  "badgeHowSatsangi": "5 people join groups you created, each counted once. Needs a profile.",
+  "badgeHowVichari": "Hazri on 365 days. The days need not be in a row."
 }

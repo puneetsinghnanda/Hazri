@@ -111,4 +111,21 @@ abstract final class BackupJson {
         updatedAt: _dt(j['updatedAt']),
         deletedAt: _dtOrNull(j['deletedAt']),
       );
+
+  /// 12-badges BB1.
+  static Map<String, Object?> badge(BadgeRow b) => {
+        'badgeId': b.badgeId,
+        'earnedOn': b.earnedOn,
+        'announcedAt': _isoOrNull(b.announcedAt),
+        'createdAt': _iso(b.createdAt),
+        'updatedAt': _iso(b.updatedAt),
+      };
+
+  static BadgeRow badgeFrom(Map<String, Object?> j) => BadgeRow(
+        badgeId: j['badgeId']! as String,
+        earnedOn: j['earnedOn']! as String,
+        announcedAt: _dtOrNull(j['announcedAt']),
+        createdAt: _dt(j['createdAt']),
+        updatedAt: _dt(j['updatedAt']),
+      );
 }

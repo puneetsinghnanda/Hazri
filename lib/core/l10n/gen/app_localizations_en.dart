@@ -3192,4 +3192,155 @@ class LEn extends L {
   String todayStreakDays(int count) {
     return '$count';
   }
+
+  @override
+  String get badgesTitle => 'Badges';
+
+  @override
+  String badgesSummary(int earned, int count) {
+    return '$earned of 10 earned · Hazri on $count days';
+  }
+
+  @override
+  String get badgesSeeAll => 'See all 10';
+
+  @override
+  String badgesMenuCount(int earned) {
+    return '$earned of 10';
+  }
+
+  @override
+  String badgeEarnedOn(String date) {
+    return 'Earned $date';
+  }
+
+  @override
+  String get badgeNotYet => 'Not yet';
+
+  @override
+  String badgeNumber(int n) {
+    return 'Badge $n of 10';
+  }
+
+  @override
+  String get badgeWhatItMarks => 'What it marks';
+
+  @override
+  String get badgeHowEarned => 'How it is earned';
+
+  @override
+  String get badgeEarnedNew => 'New badge';
+
+  @override
+  String get badgeEarnedYours => 'Your badges';
+
+  @override
+  String get badgeEarnedDone => 'Done';
+
+  @override
+  String get badgeEarnedSee => 'See all badges';
+
+  @override
+  String get badgeMarksJigyasu => 'The seeker: the first hazri';
+
+  @override
+  String get badgeMarksShardhalu => 'Coming back with shardha';
+
+  @override
+  String get badgeMarksAbhyasi => 'One who practises: the habit is forming';
+
+  @override
+  String get badgeMarksNitnemi => 'Keeps the Nitnem';
+
+  @override
+  String get badgeMarksSimrani => 'Settled in Simran';
+
+  @override
+  String get badgeMarksPaathi =>
+      'Has read every bani through, Sukhmani Sahib included';
+
+  @override
+  String get badgeMarksSevadar =>
+      'Sewa in the sangat: group goals carried to their end';
+
+  @override
+  String get badgeMarksGursikh => 'The whole of it held together over months';
+
+  @override
+  String get badgeMarksSatsangi => 'Brought others into the sangat';
+
+  @override
+  String get badgeMarksVichari => 'The long road: a year of days';
+
+  @override
+  String get badgeRuleJigyasu => 'Your first hazri';
+
+  @override
+  String get badgeRuleShardhalu => 'Hazri on 7 days';
+
+  @override
+  String get badgeRuleAbhyasi => 'Hazri on 40 days';
+
+  @override
+  String get badgeRuleNitnemi => 'The five morning banis on 40 days';
+
+  @override
+  String get badgeRuleSimrani => 'Simran of 5 minutes or more on 108 days';
+
+  @override
+  String get badgeRulePaathi => 'Every bani read through once';
+
+  @override
+  String get badgeRuleSevadar => '3 sangat goals reached with you';
+
+  @override
+  String get badgeRuleGursikh =>
+      'Nitnemi, Simrani, Paathi and hazri on 180 days';
+
+  @override
+  String get badgeRuleSatsangi => '5 people joined groups you created';
+
+  @override
+  String get badgeRuleVichari => 'Hazri on 365 days';
+
+  @override
+  String get badgeHowJigyasu =>
+      'Mark your hazri once: finish any bani, or sit in Simran for 5 minutes.';
+
+  @override
+  String get badgeHowShardhalu =>
+      'Hazri on 7 days. The days need not be in a row.';
+
+  @override
+  String get badgeHowAbhyasi =>
+      'Hazri on 40 days. The days need not be in a row.';
+
+  @override
+  String badgeHowNitnemi(String banis) {
+    return '$banis, all five on the same day, on 40 days. The days need not be in a row.';
+  }
+
+  @override
+  String get badgeHowSimrani =>
+      'A sitting of Simran of 5 minutes or more on 108 days. The days need not be in a row.';
+
+  @override
+  String get badgeHowPaathi =>
+      'Read or listen to every bani in the app through to the end at least once, Ardas and Sukhmani Sahib included.';
+
+  @override
+  String get badgeHowSevadar =>
+      'Be part of 3 sangat goals that are reached, with at least one paath of your own in each. Needs a profile.';
+
+  @override
+  String get badgeHowGursikh =>
+      'Earn Nitnemi, Simrani and Paathi, and hazri on 180 days. The days need not be in a row.';
+
+  @override
+  String get badgeHowSatsangi =>
+      '5 people join groups you created, each counted once. Needs a profile.';
+
+  @override
+  String get badgeHowVichari =>
+      'Hazri on 365 days. The days need not be in a row.';
 }

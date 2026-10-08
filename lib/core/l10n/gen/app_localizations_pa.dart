@@ -3188,4 +3188,149 @@ class LPa extends L {
   String todayStreakDays(int count) {
     return '$count';
   }
+
+  @override
+  String get badgesTitle => 'ਬੈਜ';
+
+  @override
+  String badgesSummary(int earned, int count) {
+    return '10 ਵਿੱਚੋਂ $earned ਮਿਲੇ · $count ਦਿਨ ਹਾਜ਼ਰੀ';
+  }
+
+  @override
+  String get badgesSeeAll => 'ਸਾਰੇ 10 ਦੇਖੋ';
+
+  @override
+  String badgesMenuCount(int earned) {
+    return '10 ਵਿੱਚੋਂ $earned';
+  }
+
+  @override
+  String badgeEarnedOn(String date) {
+    return '$date ਨੂੰ ਮਿਲਿਆ';
+  }
+
+  @override
+  String get badgeNotYet => 'ਹਾਲੇ ਨਹੀਂ';
+
+  @override
+  String badgeNumber(int n) {
+    return '10 ਵਿੱਚੋਂ ਬੈਜ $n';
+  }
+
+  @override
+  String get badgeWhatItMarks => 'ਇਹ ਕੀ ਦਰਸਾਉਂਦਾ ਹੈ';
+
+  @override
+  String get badgeHowEarned => 'ਇਹ ਕਿਵੇਂ ਮਿਲਦਾ ਹੈ';
+
+  @override
+  String get badgeEarnedNew => 'ਨਵਾਂ ਬੈਜ';
+
+  @override
+  String get badgeEarnedYours => 'ਤੁਹਾਡੇ ਬੈਜ';
+
+  @override
+  String get badgeEarnedDone => 'ਠੀਕ ਹੈ';
+
+  @override
+  String get badgeEarnedSee => 'ਸਾਰੇ ਬੈਜ ਦੇਖੋ';
+
+  @override
+  String get badgeMarksJigyasu => 'ਖੋਜੀ: ਪਹਿਲੀ ਹਾਜ਼ਰੀ';
+
+  @override
+  String get badgeMarksShardhalu => 'ਸ਼ਰਧਾ ਨਾਲ ਮੁੜ-ਮੁੜ ਆਉਣਾ';
+
+  @override
+  String get badgeMarksAbhyasi => 'ਅਭਿਆਸ ਕਰਨ ਵਾਲਾ: ਆਦਤ ਬਣ ਰਹੀ ਹੈ';
+
+  @override
+  String get badgeMarksNitnemi => 'ਨਿਤਨੇਮ ਨਿਭਾਉਣ ਵਾਲਾ';
+
+  @override
+  String get badgeMarksSimrani => 'ਸਿਮਰਨ ਵਿੱਚ ਟਿਕਿਆ';
+
+  @override
+  String get badgeMarksPaathi => 'ਹਰ ਬਾਣੀ ਪੂਰੀ ਪੜ੍ਹੀ, ਸੁਖਮਨੀ ਸਾਹਿਬ ਸਮੇਤ';
+
+  @override
+  String get badgeMarksSevadar => 'ਸੰਗਤ ਵਿੱਚ ਸੇਵਾ: ਗਰੁੱਪ ਦੇ ਟੀਚੇ ਸਿਰੇ ਚੜ੍ਹਾਏ';
+
+  @override
+  String get badgeMarksGursikh => 'ਮਹੀਨਿਆਂ ਤੱਕ ਸਭ ਕੁਝ ਇਕੱਠਾ ਨਿਭਾਇਆ';
+
+  @override
+  String get badgeMarksSatsangi => 'ਹੋਰਨਾਂ ਨੂੰ ਸੰਗਤ ਵਿੱਚ ਲਿਆਂਦਾ';
+
+  @override
+  String get badgeMarksVichari => 'ਲੰਮਾ ਰਾਹ: ਇੱਕ ਸਾਲ ਦੇ ਦਿਨ';
+
+  @override
+  String get badgeRuleJigyasu => 'ਤੁਹਾਡੀ ਪਹਿਲੀ ਹਾਜ਼ਰੀ';
+
+  @override
+  String get badgeRuleShardhalu => '7 ਦਿਨ ਹਾਜ਼ਰੀ';
+
+  @override
+  String get badgeRuleAbhyasi => '40 ਦਿਨ ਹਾਜ਼ਰੀ';
+
+  @override
+  String get badgeRuleNitnemi => '40 ਦਿਨ ਸਵੇਰ ਦੀਆਂ ਪੰਜ ਬਾਣੀਆਂ';
+
+  @override
+  String get badgeRuleSimrani => '108 ਦਿਨ 5 ਮਿੰਟ ਜਾਂ ਵੱਧ ਸਿਮਰਨ';
+
+  @override
+  String get badgeRulePaathi => 'ਹਰ ਬਾਣੀ ਇੱਕ ਵਾਰ ਪੂਰੀ ਪੜ੍ਹੀ';
+
+  @override
+  String get badgeRuleSevadar => 'ਤੁਹਾਡੇ ਨਾਲ 3 ਸੰਗਤ ਟੀਚੇ ਪੂਰੇ';
+
+  @override
+  String get badgeRuleGursikh => 'ਨਿਤਨੇਮੀ, ਸਿਮਰਨੀ, ਪਾਠੀ ਅਤੇ 180 ਦਿਨ ਹਾਜ਼ਰੀ';
+
+  @override
+  String get badgeRuleSatsangi => 'ਤੁਹਾਡੇ ਬਣਾਏ ਗਰੁੱਪਾਂ ਵਿੱਚ 5 ਜਣੇ ਜੁੜੇ';
+
+  @override
+  String get badgeRuleVichari => '365 ਦਿਨ ਹਾਜ਼ਰੀ';
+
+  @override
+  String get badgeHowJigyasu =>
+      'ਇੱਕ ਵਾਰ ਹਾਜ਼ਰੀ ਲਾਓ: ਕੋਈ ਵੀ ਬਾਣੀ ਪੂਰੀ ਕਰੋ, ਜਾਂ 5 ਮਿੰਟ ਸਿਮਰਨ ਕਰੋ।';
+
+  @override
+  String get badgeHowShardhalu => '7 ਦਿਨ ਹਾਜ਼ਰੀ। ਦਿਨ ਲਗਾਤਾਰ ਹੋਣੇ ਜ਼ਰੂਰੀ ਨਹੀਂ।';
+
+  @override
+  String get badgeHowAbhyasi => '40 ਦਿਨ ਹਾਜ਼ਰੀ। ਦਿਨ ਲਗਾਤਾਰ ਹੋਣੇ ਜ਼ਰੂਰੀ ਨਹੀਂ।';
+
+  @override
+  String badgeHowNitnemi(String banis) {
+    return '$banis, ਪੰਜੇ ਇੱਕੋ ਦਿਨ, 40 ਦਿਨ। ਦਿਨ ਲਗਾਤਾਰ ਹੋਣੇ ਜ਼ਰੂਰੀ ਨਹੀਂ।';
+  }
+
+  @override
+  String get badgeHowSimrani =>
+      '108 ਦਿਨ 5 ਮਿੰਟ ਜਾਂ ਵੱਧ ਦਾ ਸਿਮਰਨ। ਦਿਨ ਲਗਾਤਾਰ ਹੋਣੇ ਜ਼ਰੂਰੀ ਨਹੀਂ।';
+
+  @override
+  String get badgeHowPaathi =>
+      'ਐਪ ਦੀ ਹਰ ਬਾਣੀ ਘੱਟੋ-ਘੱਟ ਇੱਕ ਵਾਰ ਅੰਤ ਤੱਕ ਪੜ੍ਹੋ ਜਾਂ ਸੁਣੋ, ਅਰਦਾਸ ਅਤੇ ਸੁਖਮਨੀ ਸਾਹਿਬ ਸਮੇਤ।';
+
+  @override
+  String get badgeHowSevadar =>
+      '3 ਸੰਗਤ ਟੀਚਿਆਂ ਦਾ ਹਿੱਸਾ ਬਣੋ ਜੋ ਪੂਰੇ ਹੋਣ, ਹਰੇਕ ਵਿੱਚ ਘੱਟੋ-ਘੱਟ ਇੱਕ ਪਾਠ ਤੁਹਾਡਾ। ਪ੍ਰੋਫਾਈਲ ਚਾਹੀਦੀ ਹੈ।';
+
+  @override
+  String get badgeHowGursikh =>
+      'ਨਿਤਨੇਮੀ, ਸਿਮਰਨੀ ਅਤੇ ਪਾਠੀ ਪ੍ਰਾਪਤ ਕਰੋ, ਅਤੇ 180 ਦਿਨ ਹਾਜ਼ਰੀ। ਦਿਨ ਲਗਾਤਾਰ ਹੋਣੇ ਜ਼ਰੂਰੀ ਨਹੀਂ।';
+
+  @override
+  String get badgeHowSatsangi =>
+      'ਤੁਹਾਡੇ ਬਣਾਏ ਗਰੁੱਪਾਂ ਵਿੱਚ 5 ਜਣੇ ਜੁੜਨ, ਹਰ ਕੋਈ ਇੱਕ ਵਾਰ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ। ਪ੍ਰੋਫਾਈਲ ਚਾਹੀਦੀ ਹੈ।';
+
+  @override
+  String get badgeHowVichari => '365 ਦਿਨ ਹਾਜ਼ਰੀ। ਦਿਨ ਲਗਾਤਾਰ ਹੋਣੇ ਜ਼ਰੂਰੀ ਨਹੀਂ।';
 }

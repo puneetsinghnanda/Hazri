@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +14,7 @@ import '../../../core/widgets/surfaces.dart';
 import '../../../core/widgets/tab_header.dart';
 import '../../profile/data/profile_controller.dart';
 import '../../profile/ui/messages.dart';
+import '../../badges/data/badge_controller.dart';
 import '../data/sangat_api.dart';
 import '../data/sangat_controller.dart';
 import '../domain/sangat_models.dart';
@@ -36,6 +39,8 @@ class _SangatScreenState extends ConsumerState<SangatScreen> {
   }
 
   Future<void> _refresh() async {
+    // 12-badges SF4: the Sangat facts when the tab opens.
+    unawaited(ref.read(badgeControllerProvider).refreshFacts());
     await ref.read(sangatListsProvider.notifier).refresh();
     await ref.read(outboxSenderProvider).send();
   }

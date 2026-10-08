@@ -494,6 +494,14 @@ has that the target replaces, and PRD §11 says which step removes each:
   and elder mode as one tree (`ElderTodayScreen` is gone; elder hides the
   Vichar and Gurpurab cards). "There is no brand bar" below now describes
   every tab except Today.
+- **Badges are built (PRD §11 step 9)**: `user.db` schema 6 adds `badges`;
+  `evaluateBadges` (`BadgeController.evaluate`) runs after every write
+  through `UserRepository.addChangeListener`, at start, after the Sangat
+  facts and silently after a restore. The sheet is shown by a router
+  listener in `app.dart`, only on a tab and never during a sitting, so a
+  badge earned in the reader waits until the reader is left (UI7). The
+  badge names of §2 live in `BadgeId` as proper nouns by script, like a
+  bani's name; everything else is in the ARB files.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own

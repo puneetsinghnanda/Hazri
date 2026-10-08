@@ -5715,6 +5715,264 @@ abstract class L {
   /// In en, this message translates to:
   /// **'{count}'**
   String todayStreakDays(int count);
+
+  /// No description provided for @badgesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get badgesTitle;
+
+  /// No description provided for @badgesSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{earned} of 10 earned · Hazri on {count} days'**
+  String badgesSummary(int earned, int count);
+
+  /// No description provided for @badgesSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all 10'**
+  String get badgesSeeAll;
+
+  /// No description provided for @badgesMenuCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{earned} of 10'**
+  String badgesMenuCount(int earned);
+
+  /// No description provided for @badgeEarnedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned {date}'**
+  String badgeEarnedOn(String date);
+
+  /// No description provided for @badgeNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get badgeNotYet;
+
+  /// No description provided for @badgeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Badge {n} of 10'**
+  String badgeNumber(int n);
+
+  /// No description provided for @badgeWhatItMarks.
+  ///
+  /// In en, this message translates to:
+  /// **'What it marks'**
+  String get badgeWhatItMarks;
+
+  /// No description provided for @badgeHowEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'How it is earned'**
+  String get badgeHowEarned;
+
+  /// No description provided for @badgeEarnedNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New badge'**
+  String get badgeEarnedNew;
+
+  /// No description provided for @badgeEarnedYours.
+  ///
+  /// In en, this message translates to:
+  /// **'Your badges'**
+  String get badgeEarnedYours;
+
+  /// No description provided for @badgeEarnedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get badgeEarnedDone;
+
+  /// No description provided for @badgeEarnedSee.
+  ///
+  /// In en, this message translates to:
+  /// **'See all badges'**
+  String get badgeEarnedSee;
+
+  /// No description provided for @badgeMarksJigyasu.
+  ///
+  /// In en, this message translates to:
+  /// **'The seeker: the first hazri'**
+  String get badgeMarksJigyasu;
+
+  /// No description provided for @badgeMarksShardhalu.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming back with shardha'**
+  String get badgeMarksShardhalu;
+
+  /// No description provided for @badgeMarksAbhyasi.
+  ///
+  /// In en, this message translates to:
+  /// **'One who practises: the habit is forming'**
+  String get badgeMarksAbhyasi;
+
+  /// No description provided for @badgeMarksNitnemi.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeps the Nitnem'**
+  String get badgeMarksNitnemi;
+
+  /// No description provided for @badgeMarksSimrani.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled in Simran'**
+  String get badgeMarksSimrani;
+
+  /// No description provided for @badgeMarksPaathi.
+  ///
+  /// In en, this message translates to:
+  /// **'Has read every bani through, Sukhmani Sahib included'**
+  String get badgeMarksPaathi;
+
+  /// No description provided for @badgeMarksSevadar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sewa in the sangat: group goals carried to their end'**
+  String get badgeMarksSevadar;
+
+  /// No description provided for @badgeMarksGursikh.
+  ///
+  /// In en, this message translates to:
+  /// **'The whole of it held together over months'**
+  String get badgeMarksGursikh;
+
+  /// No description provided for @badgeMarksSatsangi.
+  ///
+  /// In en, this message translates to:
+  /// **'Brought others into the sangat'**
+  String get badgeMarksSatsangi;
+
+  /// No description provided for @badgeMarksVichari.
+  ///
+  /// In en, this message translates to:
+  /// **'The long road: a year of days'**
+  String get badgeMarksVichari;
+
+  /// No description provided for @badgeRuleJigyasu.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first hazri'**
+  String get badgeRuleJigyasu;
+
+  /// No description provided for @badgeRuleShardhalu.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri on 7 days'**
+  String get badgeRuleShardhalu;
+
+  /// No description provided for @badgeRuleAbhyasi.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri on 40 days'**
+  String get badgeRuleAbhyasi;
+
+  /// No description provided for @badgeRuleNitnemi.
+  ///
+  /// In en, this message translates to:
+  /// **'The five morning banis on 40 days'**
+  String get badgeRuleNitnemi;
+
+  /// No description provided for @badgeRuleSimrani.
+  ///
+  /// In en, this message translates to:
+  /// **'Simran of 5 minutes or more on 108 days'**
+  String get badgeRuleSimrani;
+
+  /// No description provided for @badgeRulePaathi.
+  ///
+  /// In en, this message translates to:
+  /// **'Every bani read through once'**
+  String get badgeRulePaathi;
+
+  /// No description provided for @badgeRuleSevadar.
+  ///
+  /// In en, this message translates to:
+  /// **'3 sangat goals reached with you'**
+  String get badgeRuleSevadar;
+
+  /// No description provided for @badgeRuleGursikh.
+  ///
+  /// In en, this message translates to:
+  /// **'Nitnemi, Simrani, Paathi and hazri on 180 days'**
+  String get badgeRuleGursikh;
+
+  /// No description provided for @badgeRuleSatsangi.
+  ///
+  /// In en, this message translates to:
+  /// **'5 people joined groups you created'**
+  String get badgeRuleSatsangi;
+
+  /// No description provided for @badgeRuleVichari.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri on 365 days'**
+  String get badgeRuleVichari;
+
+  /// No description provided for @badgeHowJigyasu.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark your hazri once: finish any bani, or sit in Simran for 5 minutes.'**
+  String get badgeHowJigyasu;
+
+  /// No description provided for @badgeHowShardhalu.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri on 7 days. The days need not be in a row.'**
+  String get badgeHowShardhalu;
+
+  /// No description provided for @badgeHowAbhyasi.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri on 40 days. The days need not be in a row.'**
+  String get badgeHowAbhyasi;
+
+  /// No description provided for @badgeHowNitnemi.
+  ///
+  /// In en, this message translates to:
+  /// **'{banis}, all five on the same day, on 40 days. The days need not be in a row.'**
+  String badgeHowNitnemi(String banis);
+
+  /// No description provided for @badgeHowSimrani.
+  ///
+  /// In en, this message translates to:
+  /// **'A sitting of Simran of 5 minutes or more on 108 days. The days need not be in a row.'**
+  String get badgeHowSimrani;
+
+  /// No description provided for @badgeHowPaathi.
+  ///
+  /// In en, this message translates to:
+  /// **'Read or listen to every bani in the app through to the end at least once, Ardas and Sukhmani Sahib included.'**
+  String get badgeHowPaathi;
+
+  /// No description provided for @badgeHowSevadar.
+  ///
+  /// In en, this message translates to:
+  /// **'Be part of 3 sangat goals that are reached, with at least one paath of your own in each. Needs a profile.'**
+  String get badgeHowSevadar;
+
+  /// No description provided for @badgeHowGursikh.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn Nitnemi, Simrani and Paathi, and hazri on 180 days. The days need not be in a row.'**
+  String get badgeHowGursikh;
+
+  /// No description provided for @badgeHowSatsangi.
+  ///
+  /// In en, this message translates to:
+  /// **'5 people join groups you created, each counted once. Needs a profile.'**
+  String get badgeHowSatsangi;
+
+  /// No description provided for @badgeHowVichari.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri on 365 days. The days need not be in a row.'**
+  String get badgeHowVichari;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

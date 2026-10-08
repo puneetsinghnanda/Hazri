@@ -13,6 +13,8 @@ import '../../../core/db/user_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../../core/time/clock.dart';
 import '../domain/backup_json.dart';
+import '../../badges/data/badge_controller.dart';
+import '../../badges/data/badge_store.dart';
 import 'backup_store.dart';
 
 /// The outcome of a backup or restore, for the Profile screen.
@@ -60,6 +62,7 @@ class BackupService {
     required SharedPreferences prefs,
     required Clock clock,
     this.afterRestore,
+    this.badges,
   })  : _api = api,
         _store = store,
         _prefs = prefs,
@@ -72,6 +75,9 @@ class BackupService {
 
   /// RS6: what runs after a restore (close a blank goal, re-plan reminders).
   final Future<void> Function()? afterRestore;
+
+  /// Where restored badges go (12-badges BB3); null leaves them out.
+  final BadgeStore? badges;
 
   static const kLastAt = 'backup_last_at_v1';
   static const kRunningSince = 'backup_running_since_v1';
@@ -146,12 +152,14 @@ class BackupService {
     var goals = <Map<String, Object?>>[];
     var completions = <Map<String, Object?>>[];
     var sittings = <Map<String, Object?>>[];
+    var badges = <Map<String, Object?>>[];
     var n = 0;
     void flush() {
-      out.add({'goals': goals, 'completions': completions, 'simranSessions': sittings, 'badges': const []});
+      out.add({'goals': goals, 'completions': completions, 'simranSessions': sittings, 'badges': badges});
       goals = [];
       completions = [];
       sittings = [];
+      badges = [];
       n = 0;
     }
 
@@ -174,6 +182,11 @@ class BackupService {
     for (final s in rows.sittings) {
       if (n + 1 > max) flush();
       sittings.add(BackupJson.sitting(s));
+      n++;
+    }
+    for (final b in rows.badges) {
+      if (n + 1 > max) flush();
+      badges.add(BackupJson.badge(b));
       n++;
     }
     if (n > 0 || out.isEmpty) flush();
@@ -228,6 +241,15 @@ class BackupService {
           from = page['next'] as String?;
         }
       }
+      // 12-badges BB3: after goals and weeks, the badges, never announced.
+      final store = badges;
+      if (store != null) {
+        final b = await _api.get('/backup/badges');
+        added += await store.mergeRestored([
+          for (final r in (b['badges'] as List<Object?>? ?? const []).cast<Map<String, Object?>>())
+            BackupJson.badgeFrom(r),
+        ]);
+      }
       await afterRestore?.call();
       return RestoreDone(added);
     } on ApiException catch (e) {
@@ -256,9 +278,12 @@ final backupServiceProvider = Provider<BackupService>((ref) {
     store: ref.watch(backupStoreProvider),
     prefs: ref.watch(sharedPreferencesProvider),
     clock: ref.watch(clockProvider),
+    badges: ref.watch(badgeStoreProvider),
     afterRestore: () async {
       await repo.closeGoalIfBlank();
       repo.onChanged?.call();
+      // BB4: what the restore completes is found silently.
+      await ref.read(badgeControllerProvider).evaluate(silent: true);
     },
   );
 });

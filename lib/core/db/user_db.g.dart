@@ -3661,6 +3661,384 @@ class EventReminderOverridesCompanion
   }
 }
 
+class $BadgesTable extends Badges with TableInfo<$BadgesTable, BadgeRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BadgesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _badgeIdMeta = const VerificationMeta(
+    'badgeId',
+  );
+  @override
+  late final GeneratedColumn<String> badgeId = GeneratedColumn<String>(
+    'badge_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _earnedOnMeta = const VerificationMeta(
+    'earnedOn',
+  );
+  @override
+  late final GeneratedColumn<String> earnedOn = GeneratedColumn<String>(
+    'earned_on',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _announcedAtMeta = const VerificationMeta(
+    'announcedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> announcedAt = GeneratedColumn<DateTime>(
+    'announced_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    badgeId,
+    earnedOn,
+    announcedAt,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'badges';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BadgeRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('badge_id')) {
+      context.handle(
+        _badgeIdMeta,
+        badgeId.isAcceptableOrUnknown(data['badge_id']!, _badgeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_badgeIdMeta);
+    }
+    if (data.containsKey('earned_on')) {
+      context.handle(
+        _earnedOnMeta,
+        earnedOn.isAcceptableOrUnknown(data['earned_on']!, _earnedOnMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_earnedOnMeta);
+    }
+    if (data.containsKey('announced_at')) {
+      context.handle(
+        _announcedAtMeta,
+        announcedAt.isAcceptableOrUnknown(
+          data['announced_at']!,
+          _announcedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {badgeId};
+  @override
+  BadgeRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BadgeRow(
+      badgeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}badge_id'],
+      )!,
+      earnedOn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}earned_on'],
+      )!,
+      announcedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}announced_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $BadgesTable createAlias(String alias) {
+    return $BadgesTable(attachedDatabase, alias);
+  }
+}
+
+class BadgeRow extends DataClass implements Insertable<BadgeRow> {
+  /// One of 12-badges §2, e.g. `JIGYASU`.
+  final String badgeId;
+
+  /// The local date the rule was first found met.
+  final String earnedOn;
+
+  /// When its sheet was shown, or when it was marked never to be shown.
+  final DateTime? announcedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const BadgeRow({
+    required this.badgeId,
+    required this.earnedOn,
+    this.announcedAt,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['badge_id'] = Variable<String>(badgeId);
+    map['earned_on'] = Variable<String>(earnedOn);
+    if (!nullToAbsent || announcedAt != null) {
+      map['announced_at'] = Variable<DateTime>(announcedAt);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  BadgesCompanion toCompanion(bool nullToAbsent) {
+    return BadgesCompanion(
+      badgeId: Value(badgeId),
+      earnedOn: Value(earnedOn),
+      announcedAt: announcedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(announcedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory BadgeRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BadgeRow(
+      badgeId: serializer.fromJson<String>(json['badgeId']),
+      earnedOn: serializer.fromJson<String>(json['earnedOn']),
+      announcedAt: serializer.fromJson<DateTime?>(json['announcedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'badgeId': serializer.toJson<String>(badgeId),
+      'earnedOn': serializer.toJson<String>(earnedOn),
+      'announcedAt': serializer.toJson<DateTime?>(announcedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  BadgeRow copyWith({
+    String? badgeId,
+    String? earnedOn,
+    Value<DateTime?> announcedAt = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => BadgeRow(
+    badgeId: badgeId ?? this.badgeId,
+    earnedOn: earnedOn ?? this.earnedOn,
+    announcedAt: announcedAt.present ? announcedAt.value : this.announcedAt,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  BadgeRow copyWithCompanion(BadgesCompanion data) {
+    return BadgeRow(
+      badgeId: data.badgeId.present ? data.badgeId.value : this.badgeId,
+      earnedOn: data.earnedOn.present ? data.earnedOn.value : this.earnedOn,
+      announcedAt: data.announcedAt.present
+          ? data.announcedAt.value
+          : this.announcedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BadgeRow(')
+          ..write('badgeId: $badgeId, ')
+          ..write('earnedOn: $earnedOn, ')
+          ..write('announcedAt: $announcedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(badgeId, earnedOn, announcedAt, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BadgeRow &&
+          other.badgeId == this.badgeId &&
+          other.earnedOn == this.earnedOn &&
+          other.announcedAt == this.announcedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class BadgesCompanion extends UpdateCompanion<BadgeRow> {
+  final Value<String> badgeId;
+  final Value<String> earnedOn;
+  final Value<DateTime?> announcedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const BadgesCompanion({
+    this.badgeId = const Value.absent(),
+    this.earnedOn = const Value.absent(),
+    this.announcedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BadgesCompanion.insert({
+    required String badgeId,
+    required String earnedOn,
+    this.announcedAt = const Value.absent(),
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : badgeId = Value(badgeId),
+       earnedOn = Value(earnedOn),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<BadgeRow> custom({
+    Expression<String>? badgeId,
+    Expression<String>? earnedOn,
+    Expression<DateTime>? announcedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (badgeId != null) 'badge_id': badgeId,
+      if (earnedOn != null) 'earned_on': earnedOn,
+      if (announcedAt != null) 'announced_at': announcedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BadgesCompanion copyWith({
+    Value<String>? badgeId,
+    Value<String>? earnedOn,
+    Value<DateTime?>? announcedAt,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return BadgesCompanion(
+      badgeId: badgeId ?? this.badgeId,
+      earnedOn: earnedOn ?? this.earnedOn,
+      announcedAt: announcedAt ?? this.announcedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (badgeId.present) {
+      map['badge_id'] = Variable<String>(badgeId.value);
+    }
+    if (earnedOn.present) {
+      map['earned_on'] = Variable<String>(earnedOn.value);
+    }
+    if (announcedAt.present) {
+      map['announced_at'] = Variable<DateTime>(announcedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BadgesCompanion(')
+          ..write('badgeId: $badgeId, ')
+          ..write('earnedOn: $earnedOn, ')
+          ..write('announcedAt: $announcedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDb extends GeneratedDatabase {
   _$UserDb(QueryExecutor e) : super(e);
   $UserDbManager get managers => $UserDbManager(this);
@@ -3675,6 +4053,7 @@ abstract class _$UserDb extends GeneratedDatabase {
   late final $GraceDaysTable graceDays = $GraceDaysTable(this);
   late final $EventReminderOverridesTable eventReminderOverrides =
       $EventReminderOverridesTable(this);
+  late final $BadgesTable badges = $BadgesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3688,6 +4067,7 @@ abstract class _$UserDb extends GeneratedDatabase {
     sangatOutbox,
     graceDays,
     eventReminderOverrides,
+    badges,
   ];
 }
 
@@ -5644,6 +6024,208 @@ typedef $$EventReminderOverridesTableProcessedTableManager =
       EventReminderOverride,
       PrefetchHooks Function()
     >;
+typedef $$BadgesTableCreateCompanionBuilder =
+    BadgesCompanion Function({
+      required String badgeId,
+      required String earnedOn,
+      Value<DateTime?> announcedAt,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$BadgesTableUpdateCompanionBuilder =
+    BadgesCompanion Function({
+      Value<String> badgeId,
+      Value<String> earnedOn,
+      Value<DateTime?> announcedAt,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$BadgesTableFilterComposer extends Composer<_$UserDb, $BadgesTable> {
+  $$BadgesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get badgeId => $composableBuilder(
+    column: $table.badgeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get earnedOn => $composableBuilder(
+    column: $table.earnedOn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get announcedAt => $composableBuilder(
+    column: $table.announcedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$BadgesTableOrderingComposer extends Composer<_$UserDb, $BadgesTable> {
+  $$BadgesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get badgeId => $composableBuilder(
+    column: $table.badgeId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get earnedOn => $composableBuilder(
+    column: $table.earnedOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get announcedAt => $composableBuilder(
+    column: $table.announcedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$BadgesTableAnnotationComposer extends Composer<_$UserDb, $BadgesTable> {
+  $$BadgesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get badgeId =>
+      $composableBuilder(column: $table.badgeId, builder: (column) => column);
+
+  GeneratedColumn<String> get earnedOn =>
+      $composableBuilder(column: $table.earnedOn, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get announcedAt => $composableBuilder(
+    column: $table.announcedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$BadgesTableTableManager
+    extends
+        RootTableManager<
+          _$UserDb,
+          $BadgesTable,
+          BadgeRow,
+          $$BadgesTableFilterComposer,
+          $$BadgesTableOrderingComposer,
+          $$BadgesTableAnnotationComposer,
+          $$BadgesTableCreateCompanionBuilder,
+          $$BadgesTableUpdateCompanionBuilder,
+          (BadgeRow, BaseReferences<_$UserDb, $BadgesTable, BadgeRow>),
+          BadgeRow,
+          PrefetchHooks Function()
+        > {
+  $$BadgesTableTableManager(_$UserDb db, $BadgesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BadgesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BadgesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BadgesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> badgeId = const Value.absent(),
+                Value<String> earnedOn = const Value.absent(),
+                Value<DateTime?> announcedAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BadgesCompanion(
+                badgeId: badgeId,
+                earnedOn: earnedOn,
+                announcedAt: announcedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String badgeId,
+                required String earnedOn,
+                Value<DateTime?> announcedAt = const Value.absent(),
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => BadgesCompanion.insert(
+                badgeId: badgeId,
+                earnedOn: earnedOn,
+                announcedAt: announcedAt,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$BadgesTable, BadgeRow>(table),
+                  BaseReferences<_$UserDb, $BadgesTable, BadgeRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$BadgesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDb,
+      $BadgesTable,
+      BadgeRow,
+      $$BadgesTableFilterComposer,
+      $$BadgesTableOrderingComposer,
+      $$BadgesTableAnnotationComposer,
+      $$BadgesTableCreateCompanionBuilder,
+      $$BadgesTableUpdateCompanionBuilder,
+      (BadgeRow, BaseReferences<_$UserDb, $BadgesTable, BadgeRow>),
+      BadgeRow,
+      PrefetchHooks Function()
+    >;
 
 class $UserDbManager {
   final _$UserDb _db;
@@ -5667,4 +6249,6 @@ class $UserDbManager {
         _db,
         _db.eventReminderOverrides,
       );
+  $$BadgesTableTableManager get badges =>
+      $$BadgesTableTableManager(_db, _db.badges);
 }
