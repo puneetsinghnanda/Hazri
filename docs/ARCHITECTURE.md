@@ -237,6 +237,15 @@ hosting/public/
 .well-known/assetlinks.json verify/index.html
 ```
 
+**As built (2026-10-08)**, following this repository's layout rather than
+the PRD's flat one: `lib/features/profile/domain/` (`profile.dart`,
+`validators.dart`), `data/` (`profile_api.dart`, `profile_cache.dart`,
+`profile_controller.dart`, `incoming_link.dart`, which is the
+DeepLinkService as a go_router `redirect` per §13 D3) and `ui/` (the five
+screens, `change_email_dialog.dart`, `profile_banner.dart`, `messages.dart`,
+`city_field.dart`, `city_picker_sheet.dart`). The API client and auth are
+`lib/core/backend/`. "Home" is Today.
+
 Named routes: / HomeScreen, /profile-setup ProfileSetupScreen, /profile ProfileScreen, /email-sent EmailSentScreen (argument EmailSentArgs{purpose, email, cooldownSeconds}), /link-result LinkResultScreen (argument String token).
 
 ### 2.5 Profile client: services and the profile cache

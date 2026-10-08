@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/content_db.dart';
 import '../../../core/db/content_repository.dart';
-import '../../../core/settings/settings_controller.dart';
+import '../../profile/data/profile_controller.dart';
 import '../domain/simran_presence.dart';
 
 /// Who is sitting in simran today, and where.
@@ -60,7 +60,7 @@ final simranPresenceProvider = FutureProvider<SangatPresence>(
 final globePresenceProvider = Provider<SangatPresence>((ref) {
   final presence =
       ref.watch(simranPresenceProvider).value ?? SangatPresence.empty;
-  final id = ref.watch(settingsProvider).cityId;
+  final id = ref.watch(profileProvider)?.cityId;
   final rows = ref.watch(citiesProvider).value ?? const <CityRow>[];
   final home = rows.where((c) => c.id == id).firstOrNull;
   if (home == null) return presence;

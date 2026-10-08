@@ -1020,15 +1020,7 @@ class LHi extends L {
 
   @override
   String get privacyBody =>
-      'हाज़िरी में न कोई पासवर्ड है और न कोई साइन-इन स्क्रीन। बाणी पढ़ना, सुनना, कैलेंडर देखना और डायरी लिखना — सब इसी फ़ोन पर होता है और बिना इंटरनेट के भी चलता है। आपकी डायरी, संकल्प और सेटिंग्स इसी फ़ोन और आपके अपने गूगल बैकअप में रहते हैं। अगर आप शहर चुनते हैं या अपनी जगह का उपयोग करते हैं, वह फ़ोन में ही रहती है और केवल सूर्योदय-सूर्यास्त के लिए उपयोग होती है।';
-
-  @override
-  String get privacyNoAnalytics =>
-      'जब तक आप संगत से नहीं जुड़ते, इस फ़ोन से कुछ भी बाहर नहीं जाता। इस बिल्ड में एनालिटिक्स बंद हैं और कोई क्रैश रिपोर्ट नहीं भेजी जाती।';
-
-  @override
-  String get privacySangat =>
-      'अगर आप संगत से जुड़ते हैं, तो सर्वर पर सिर्फ़ आपका नाम, शहर, ईमेल और आपके ग्रुप व संकल्पों की गिनती जाती है। आपकी डायरी के शब्द कभी नहीं जाते, और आपकी ईमेल किसी और को कभी नहीं दिखाई जाती।';
+      'हाज़री में न कोई पासवर्ड है न साइन-इन। बाणी पढ़ना, सुनना, कैलेंडर देखना और डायरी लिखना — सब इसी फ़ोन पर होता है और बिना इंटरनेट चलता है।';
 
   @override
   String get notifChannelGoals => 'लक्ष्य के रिमाइंडर';
@@ -1754,14 +1746,14 @@ class LHi extends L {
   String get linkProblemTitle => 'वह लिंक काम नहीं किया';
 
   @override
-  String get linkUsedTitle => 'पहले ही इस्तेमाल हो चुका';
+  String get linkUsedTitle => 'लिंक पहले ही इस्तेमाल हो चुका';
 
   @override
   String get linkUsedBody =>
       'यह लिंक एक फ़ोन को साइन-इन कर चुका है। हर लिंक एक बार चलता है और फिर बंद हो जाता है — इसी वजह से आगे भेजी गई ईमेल अंदर आने का रास्ता नहीं बनती।';
 
   @override
-  String get linkExpiredTitle => 'बहुत पुराना';
+  String get linkExpiredTitle => 'लिंक की अवधि समाप्त';
 
   @override
   String get linkExpiredBody =>
@@ -1807,28 +1799,6 @@ class LHi extends L {
   String get privacyPhoneContent => 'हर बाणी, उसका पाठ और कैलेंडर';
 
   @override
-  String get privacySharedWithSangat => 'संगत के साथ साझा';
-
-  @override
-  String get privacyShareName => 'आपका नाम';
-
-  @override
-  String get privacyShareCity => 'आपका चुना शहर — गोले पर एक बिंदु के रूप में';
-
-  @override
-  String get privacyShareGroups => 'आप किन ग्रुपों में हैं';
-
-  @override
-  String get privacyShareCounts => 'साझा संकल्प में आपने कितना किया';
-
-  @override
-  String get privacyAccountOnly => 'सिर्फ़ आपके खाते के लिए रखा';
-
-  @override
-  String get privacyAccountEmail =>
-      'आपकी ईमेल — इसका एक ही काम है, खाता वापस लाना';
-
-  @override
   String get privacyShowMyName => 'ग्रुपों में मेरा नाम दिखाएँ';
 
   @override
@@ -1855,10 +1825,6 @@ class LHi extends L {
 
   @override
   String get privacyDeleted => 'आपका खाता और उसका डेटा मिट गया';
-
-  @override
-  String get privacyNotJoined =>
-      'आप संगत से नहीं जुड़े, इसलिए यहाँ से कुछ भी इस फ़ोन से बाहर नहीं गया।';
 
   @override
   String get libraryTitle => 'विचार';
@@ -2588,4 +2554,338 @@ class LHi extends L {
 
   @override
   String get actionAdd => 'जोड़ें';
+
+  @override
+  String get profileWelcome => 'स्वागत है';
+
+  @override
+  String profileWelcomeName(String name) {
+    return 'स्वागत है, $name';
+  }
+
+  @override
+  String get profileBannerTitle => 'अपनी प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get profileBannerSubtitle =>
+      'ऐप को अपना बनाने के लिए अपना नाम और ईमेल जोड़ें।';
+
+  @override
+  String get profileSetupTitle => 'प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get profileFieldName => 'नाम *';
+
+  @override
+  String get profileFieldEmail => 'ईमेल *';
+
+  @override
+  String get profileFieldPhone => 'फ़ोन (वैकल्पिक)';
+
+  @override
+  String get profileFieldCity => 'शहर *';
+
+  @override
+  String get profileSave => 'प्रोफ़ाइल सहेजें';
+
+  @override
+  String get profileErrNameEmpty => 'कृपया अपना नाम लिखें';
+
+  @override
+  String get profileErrNameInvalid =>
+      'नाम 2–50 अक्षरों का हो (स्पेस, . \' - चल सकते हैं)';
+
+  @override
+  String get profileErrEmailEmpty => 'कृपया अपना ईमेल लिखें';
+
+  @override
+  String get profileErrEmailInvalid => 'कृपया सही ईमेल पता लिखें';
+
+  @override
+  String get profileErrCityEmpty => 'कृपया अपना शहर चुनें';
+
+  @override
+  String get profileCityChoose => 'अपना शहर चुनें';
+
+  @override
+  String get profileCitySearch => 'शहर खोजें';
+
+  @override
+  String get profileCityNearest => 'सूची में नहीं? सबसे नज़दीकी शहर चुनें।';
+
+  @override
+  String get profileSavedTitle => 'प्रोफ़ाइल सहेजी गई';
+
+  @override
+  String profileSavedBody(String email) {
+    return 'क्या आप अपने ईमेल $email की पुष्टि करना चाहेंगे? यह वैकल्पिक है।';
+  }
+
+  @override
+  String get profileSkipForNow => 'अभी नहीं';
+
+  @override
+  String get profileConfirmEmail => 'मेरे ईमेल की पुष्टि करें';
+
+  @override
+  String get profileSendFailed =>
+      'ईमेल नहीं भेजा जा सका। आप अपनी प्रोफ़ाइल से फिर कोशिश कर सकते हैं।';
+
+  @override
+  String get profileTitle => 'प्रोफ़ाइल';
+
+  @override
+  String get profileRowName => 'नाम';
+
+  @override
+  String get profileRowEmail => 'ईमेल';
+
+  @override
+  String get profileRowPhone => 'फ़ोन';
+
+  @override
+  String get profileRowCity => 'शहर';
+
+  @override
+  String get profileRowEmailStatus => 'ईमेल की स्थिति';
+
+  @override
+  String get profileNotProvided => 'नहीं दिया';
+
+  @override
+  String get profileVerified => 'पुष्टि हुई';
+
+  @override
+  String get profileNotVerified => 'पुष्टि नहीं हुई';
+
+  @override
+  String get profileStale =>
+      'सहेजे गए विवरण दिख रहे हैं। ईमेल की स्थिति ताज़ा नहीं हो सकी।';
+
+  @override
+  String get profileRetry => 'फिर कोशिश करें';
+
+  @override
+  String get profileNone => 'कोई प्रोफ़ाइल नहीं मिली';
+
+  @override
+  String get profileUnavailable => 'आपकी प्रोफ़ाइल खुल नहीं सकी।';
+
+  @override
+  String get profileChangeEmail => 'ईमेल बदलें';
+
+  @override
+  String get profileEditButton => 'प्रोफ़ाइल बदलें';
+
+  @override
+  String get profileEditTitle => 'प्रोफ़ाइल बदलें';
+
+  @override
+  String get profileEditSave => 'बदलाव सहेजें';
+
+  @override
+  String profileEmailPending(String email) {
+    return '$email की पुष्टि की प्रतीक्षा है';
+  }
+
+  @override
+  String get profileUpdated => 'प्रोफ़ाइल बदल दी गई';
+
+  @override
+  String get profileEmailExistsTitle => 'ईमेल पहले से दर्ज है';
+
+  @override
+  String profileEmailExistsBody(String email) {
+    return '$email वाला खाता पहले से मौजूद है। इसे इस फ़ोन पर वापस लाने के लिए हम इस ईमेल पर पुष्टि का लिंक भेजेंगे।';
+  }
+
+  @override
+  String get profileSendLink => 'लिंक भेजें';
+
+  @override
+  String get profileEmailNotFound =>
+      'इस ईमेल का कोई खाता नहीं मिला। कृपया फिर से प्रोफ़ाइल सहेजें दबाएँ।';
+
+  @override
+  String get emailSentTitle => 'अपना ईमेल देखें';
+
+  @override
+  String emailSentVerify(String email) {
+    return 'हमने $email पर लिंक भेजा है। अपने ईमेल की पुष्टि के लिए इसे इसी फ़ोन पर खोलें।';
+  }
+
+  @override
+  String emailSentRestore(String email) {
+    return 'हमने $email पर लिंक भेजा है। अपनी प्रोफ़ाइल वापस लाने के लिए इसे 1 घंटे के भीतर इसी फ़ोन पर खोलें।';
+  }
+
+  @override
+  String get emailSentResend => 'लिंक फिर भेजें';
+
+  @override
+  String emailSentResendIn(int n) {
+    return '$n सेकंड बाद फिर भेजें';
+  }
+
+  @override
+  String get emailSentBackHome => 'मुख्य पेज पर वापस';
+
+  @override
+  String get emailSentWrongEmail => 'ग़लत ईमेल? बदलें';
+
+  @override
+  String get linkResultTitle => 'ईमेल लिंक';
+
+  @override
+  String get linkChecking => 'आपका लिंक जाँचा जा रहा है…';
+
+  @override
+  String get linkEmailVerifiedTitle => 'ईमेल की पुष्टि हुई';
+
+  @override
+  String get linkEmailVerified => 'आपके ईमेल की पुष्टि हो गई है।';
+
+  @override
+  String get linkEmailAlreadyVerified =>
+      'आपके ईमेल की पुष्टि पहले ही हो चुकी है।';
+
+  @override
+  String get linkEmailChanged => 'आपके नए ईमेल की पुष्टि हो गई है।';
+
+  @override
+  String get linkRestoredTitle => 'प्रोफ़ाइल वापस आ गई';
+
+  @override
+  String linkRestored(String name) {
+    return 'फिर से स्वागत है, $name। आपकी प्रोफ़ाइल वापस आ गई है।';
+  }
+
+  @override
+  String get linkExpired => 'इस लिंक की अवधि समाप्त हो गई है।';
+
+  @override
+  String get linkInvalidTitle => 'लिंक मान्य नहीं';
+
+  @override
+  String get linkInvalid =>
+      'यह लिंक मान्य नहीं है या इसकी जगह नया लिंक आ गया है।';
+
+  @override
+  String get linkUsed => 'यह लिंक पहले ही इस्तेमाल हो चुका है।';
+
+  @override
+  String get linkWrongPhoneTitle => 'ग़लत फ़ोन';
+
+  @override
+  String get linkWrongPhone =>
+      'यह लिंक उस फ़ोन पर खोलें जहाँ से आपने प्रोफ़ाइल वापस माँगी थी।';
+
+  @override
+  String get linkDeviceHasProfileTitle => 'प्रोफ़ाइल पहले से बनी है';
+
+  @override
+  String get linkDeviceHasProfile => 'इस फ़ोन पर पहले से प्रोफ़ाइल है।';
+
+  @override
+  String get linkBadRequest => 'लिंक मान्य नहीं।';
+
+  @override
+  String get linkCouldNotCheckTitle => 'लिंक जाँचा नहीं जा सका';
+
+  @override
+  String get linkSendNew => 'नया लिंक भेजें';
+
+  @override
+  String get linkTryAgain => 'फिर कोशिश करें';
+
+  @override
+  String get linkGoHome => 'मुख्य पेज पर जाएँ';
+
+  @override
+  String get msgNetwork => 'इंटरनेट कनेक्शन नहीं है। कृपया फिर कोशिश करें।';
+
+  @override
+  String get msgGeneric => 'कुछ ग़लत हो गया। कृपया फिर कोशिश करें।';
+
+  @override
+  String msgRateLimitSeconds(int n) {
+    return 'कृपया दूसरा ईमेल माँगने से पहले $n सेकंड रुकें।';
+  }
+
+  @override
+  String msgRateLimitHours(int h) {
+    return 'बहुत सारे ईमेल माँगे गए। कृपया $h घंटे बाद कोशिश करें।';
+  }
+
+  @override
+  String get msgEmailNotConfigured =>
+      'अभी ईमेल नहीं भेजा जा सकता। आपकी प्रोफ़ाइल सहेजी हुई है; पुष्टि बाद में करें।';
+
+  @override
+  String get changeEmailTitle => 'ईमेल बदलें';
+
+  @override
+  String get changeEmailField => 'नया ईमेल *';
+
+  @override
+  String get changeEmailHelper => 'हम इस ईमेल पर पुष्टि का नया लिंक भेजेंगे।';
+
+  @override
+  String get changeEmailSave => 'सहेजें और लिंक भेजें';
+
+  @override
+  String get changeEmailSame => 'यह पहले से आपका ईमेल है';
+
+  @override
+  String get changeEmailExists => 'इस ईमेल वाला खाता पहले से मौजूद है';
+
+  @override
+  String get changeEmailAlreadyVerified =>
+      'आपके ईमेल की पुष्टि हो चुकी है और इसे बदला नहीं जा सकता।';
+
+  @override
+  String get privacyNothingUnless =>
+      'जब तक आप प्रोफ़ाइल नहीं बनाते या किसी ग्रुप में नहीं जुड़ते, कुछ भी इस फ़ोन से बाहर नहीं जाता। उपयोग के आँकड़े इकट्ठे नहीं किए जाते, और न कोई विज्ञापन ID है न विज्ञापन।';
+
+  @override
+  String get privacyPhoneSignIn =>
+      'ऐप खुलने पर एक गुमनाम साइन-इन: इंस्टॉल का एक नंबर, कभी नाम नहीं';
+
+  @override
+  String get privacyWithProfile => 'अगर आप प्रोफ़ाइल बनाते हैं';
+
+  @override
+  String get privacyProfileDetails =>
+      'आपका नाम, ईमेल और शहर, और फ़ोन नंबर अगर आप देते हैं';
+
+  @override
+  String get privacyProfileMail =>
+      'ईमेल सिर्फ़ उसी पते पर: पुष्टि के लिए, और नए फ़ोन पर प्रोफ़ाइल वापस लाने के लिए';
+
+  @override
+  String get privacyProfileAttendance =>
+      'दिन में एक बार, कि आपने ऐप खोला — इसी से आपका शहर ग्लोब पर दिखता है';
+
+  @override
+  String get privacyProfileBackup =>
+      'आपके लक्ष्यों, पाठ, सिमरन और बैजों का साप्ताहिक बैकअप, ताकि प्रोफ़ाइल वापस लाने पर ये भी वापस आ सकें';
+
+  @override
+  String get privacyWithGroup => 'अगर आप किसी ग्रुप में जुड़ते हैं';
+
+  @override
+  String get privacyGroupCounts =>
+      'हर पाठ या सिमरन जो आपके ग्रुपों में गिना जाता है';
+
+  @override
+  String get privacyGroupName =>
+      'आपका नाम, सिर्फ़ आपके ग्रुपों के सदस्यों को दिखता';
+
+  @override
+  String get privacyGroupToken =>
+      'ग्रुप की सूचनाओं के लिए इस फ़ोन का सूचना टोकन, भाषा और समय क्षेत्र';
+
+  @override
+  String get privacyGlobe =>
+      'ग्लोब शहर और गिनती दिखाता है, कभी नाम नहीं। कुछ भी बेचा या किसी से साझा नहीं किया जाता।';
 }

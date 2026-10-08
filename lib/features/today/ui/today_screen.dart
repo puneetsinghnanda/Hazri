@@ -28,6 +28,8 @@ import '../../goals/data/goals_controller.dart';
 import '../../goals/domain/day_verdict.dart';
 import '../../goals/ui/set_goal_card.dart';
 import '../../vichar/ui/vichar_card.dart';
+import '../../profile/data/profile_controller.dart';
+import '../../profile/ui/profile_banner.dart';
 import '../../../core/db/user_db.dart' show GoalItem, ItemType;
 import '../../../core/widgets/progress_ring.dart';
 
@@ -73,12 +75,25 @@ class TodayScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
             children: [
               // Design 30's header: the menu, the tab's name, the date.
+              // The greeting and the person icon (01-accounts §8.4, 05-today T8).
               TabHeader(
-                title: l.navToday,
+                title: greeting(l, ref.watch(profileControllerProvider)),
                 subtitle: dates.longDate(now),
                 onMenu: () => showMenuSheet(context),
+                trailing: CardIconButton(
+                  icon: HazriIconData.menu,
+                  tooltip: l.profileTitle,
+                  size: 40,
+                  iconSize: 20,
+                  onPressed: () => context.push(Routes.profile),
+                  child: Icon(Icons.person, size: 20, color: c.ink),
+                ),
               ),
               const SizedBox(height: 6),
+              const ProfileBanner(),
+              if (ref.watch(profileControllerProvider) is ProfileNone ||
+                  ref.watch(profileControllerProvider) is ProfileUnavailable)
+                const SizedBox(height: 12),
               const HazriBanner(),
               const _GoalsCard(),
               const SizedBox(height: 12),

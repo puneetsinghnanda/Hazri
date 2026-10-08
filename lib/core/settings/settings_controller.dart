@@ -25,7 +25,6 @@ class SettingsController extends Notifier<AppSettings> {
   static const _kFollowAudio = 'follow_audio';
   static const _kTheme = 'theme';
   static const _kElder = 'elder_mode';
-  static const _kCity = 'city_id';
   static const _kSpeed = 'speed';
   static const _kOnboardingDone = 'onboarding_done';
   static const _kAnalytics = 'analytics_enabled';
@@ -59,7 +58,6 @@ class SettingsController extends Notifier<AppSettings> {
       followAudio: p.getBool(_kFollowAudio) ?? base.followAudio,
       themeMode: _enum(ThemeMode.values, p.getString(_kTheme), base.themeMode),
       elderMode: p.getBool(_kElder) ?? base.elderMode,
-      cityId: p.getString(_kCity) ?? base.cityId,
       speed: p.getDouble(_kSpeed) ?? base.speed,
       onboardingDone: p.getBool(_kOnboardingDone) ?? base.onboardingDone,
       analyticsEnabled: p.getBool(_kAnalytics) ?? base.analyticsEnabled,
@@ -145,11 +143,6 @@ class SettingsController extends Notifier<AppSettings> {
   Future<void> setElderMode(bool v) async {
     await _prefs.setBool(_kElder, v);
     state = state.copyWith(elderMode: v);
-  }
-
-  Future<void> setCityId(String v) async {
-    await _prefs.setString(_kCity, v);
-    state = state.copyWith(cityId: v);
   }
 
   Future<void> setSpeed(double v) async {

@@ -456,6 +456,15 @@ has that the target replaces, and PRD §11 says which step removes each:
   written (`UserRepository.onChanged`); there is no reminders table any more
   and nothing to seed. The manifest receivers below still matter exactly as
   written.
+- **The profile is built (PRD §11 step 4, 2026-10-08)**: anonymous sign-in,
+  the profile cache, Setup / Profile / Edit / Email sent / Link result, the
+  greeting, person icon and banner on Today, `/verify` links through the
+  router's redirect, the Settings city removed (the profile's city is the
+  only one, and without a profile sunrise times fall back to fixed ones).
+  The email endpoints answer `503 EMAIL_NOT_CONFIGURED` until
+  `BREVO_API_KEY` is set as a Functions secret; the app says so rather than
+  calling it a network failure. The profile's own links need only the
+  Anonymous provider, so the Email/Password provider can be switched off.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own

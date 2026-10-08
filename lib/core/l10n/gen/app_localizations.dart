@@ -1896,20 +1896,8 @@ abstract class L {
   /// No description provided for @privacyBody.
   ///
   /// In en, this message translates to:
-  /// **'Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with the radio off. Your diary, goals and settings stay on this phone and in your own Google backup. If you pick a city or use your location, it stays on the phone and is used only to work out sunrise and sunset.'**
+  /// **'Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with no network.'**
   String get privacyBody;
-
-  /// No description provided for @privacyNoAnalytics.
-  ///
-  /// In en, this message translates to:
-  /// **'Nothing leaves this phone unless you join the sangat. Analytics are switched off in this build and no crash reports are sent.'**
-  String get privacyNoAnalytics;
-
-  /// No description provided for @privacySangat.
-  ///
-  /// In en, this message translates to:
-  /// **'If you join the sangat, what goes to the server is your name, city, email and the counts behind the groups and goals you joined. The words in your diary never go, and your email is never shown to anybody else.'**
-  String get privacySangat;
 
   /// No description provided for @notifChannelGoals.
   ///
@@ -3258,7 +3246,7 @@ abstract class L {
   /// No description provided for @linkUsedTitle.
   ///
   /// In en, this message translates to:
-  /// **'Already used'**
+  /// **'Link already used'**
   String get linkUsedTitle;
 
   /// No description provided for @linkUsedBody.
@@ -3270,7 +3258,7 @@ abstract class L {
   /// No description provided for @linkExpiredTitle.
   ///
   /// In en, this message translates to:
-  /// **'Too old'**
+  /// **'Link expired'**
   String get linkExpiredTitle;
 
   /// No description provided for @linkExpiredBody.
@@ -3351,48 +3339,6 @@ abstract class L {
   /// **'Every bani, its audio and the calendar'**
   String get privacyPhoneContent;
 
-  /// No description provided for @privacySharedWithSangat.
-  ///
-  /// In en, this message translates to:
-  /// **'Shared with the sangat'**
-  String get privacySharedWithSangat;
-
-  /// No description provided for @privacyShareName.
-  ///
-  /// In en, this message translates to:
-  /// **'Your name'**
-  String get privacyShareName;
-
-  /// No description provided for @privacyShareCity.
-  ///
-  /// In en, this message translates to:
-  /// **'The city you chose — shown as one dot on the globe'**
-  String get privacyShareCity;
-
-  /// No description provided for @privacyShareGroups.
-  ///
-  /// In en, this message translates to:
-  /// **'Which groups you are in'**
-  String get privacyShareGroups;
-
-  /// No description provided for @privacyShareCounts.
-  ///
-  /// In en, this message translates to:
-  /// **'How much you have completed towards a shared goal'**
-  String get privacyShareCounts;
-
-  /// No description provided for @privacyAccountOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'Held for your account alone'**
-  String get privacyAccountOnly;
-
-  /// No description provided for @privacyAccountEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Your email — the only thing it does is bring your account back'**
-  String get privacyAccountEmail;
-
   /// No description provided for @privacyShowMyName.
   ///
   /// In en, this message translates to:
@@ -3446,12 +3392,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Your account and its data are gone'**
   String get privacyDeleted;
-
-  /// No description provided for @privacyNotJoined.
-  ///
-  /// In en, this message translates to:
-  /// **'You have not joined the sangat, so nothing here has left this phone.'**
-  String get privacyNotJoined;
 
   /// No description provided for @libraryTitle.
   ///
@@ -4694,6 +4634,594 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Add'**
   String get actionAdd;
+
+  /// No description provided for @profileWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get profileWelcome;
+
+  /// No description provided for @profileWelcomeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {name}'**
+  String profileWelcomeName(String name);
+
+  /// No description provided for @profileBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your profile'**
+  String get profileBannerTitle;
+
+  /// No description provided for @profileBannerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your name and email to personalise the app.'**
+  String get profileBannerSubtitle;
+
+  /// No description provided for @profileSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up profile'**
+  String get profileSetupTitle;
+
+  /// No description provided for @profileFieldName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name *'**
+  String get profileFieldName;
+
+  /// No description provided for @profileFieldEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email *'**
+  String get profileFieldEmail;
+
+  /// No description provided for @profileFieldPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone (optional)'**
+  String get profileFieldPhone;
+
+  /// No description provided for @profileFieldCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City *'**
+  String get profileFieldCity;
+
+  /// No description provided for @profileSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Profile'**
+  String get profileSave;
+
+  /// No description provided for @profileErrNameEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get profileErrNameEmpty;
+
+  /// No description provided for @profileErrNameInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be 2–50 letters (spaces, . \' - allowed)'**
+  String get profileErrNameInvalid;
+
+  /// No description provided for @profileErrEmailEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get profileErrEmailEmpty;
+
+  /// No description provided for @profileErrEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get profileErrEmailInvalid;
+
+  /// No description provided for @profileErrCityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose your city'**
+  String get profileErrCityEmpty;
+
+  /// No description provided for @profileCityChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your city'**
+  String get profileCityChoose;
+
+  /// No description provided for @profileCitySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search cities'**
+  String get profileCitySearch;
+
+  /// No description provided for @profileCityNearest.
+  ///
+  /// In en, this message translates to:
+  /// **'Not on the list? Choose the nearest city.'**
+  String get profileCityNearest;
+
+  /// No description provided for @profileSavedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved'**
+  String get profileSavedTitle;
+
+  /// No description provided for @profileSavedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to confirm your email {email}? This is optional.'**
+  String profileSavedBody(String email);
+
+  /// No description provided for @profileSkipForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get profileSkipForNow;
+
+  /// No description provided for @profileConfirmEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm my email'**
+  String get profileConfirmEmail;
+
+  /// No description provided for @profileSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t send the email. You can try again from your profile.'**
+  String get profileSendFailed;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @profileRowName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get profileRowName;
+
+  /// No description provided for @profileRowEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get profileRowEmail;
+
+  /// No description provided for @profileRowPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get profileRowPhone;
+
+  /// No description provided for @profileRowCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get profileRowCity;
+
+  /// No description provided for @profileRowEmailStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Email status'**
+  String get profileRowEmailStatus;
+
+  /// No description provided for @profileNotProvided.
+  ///
+  /// In en, this message translates to:
+  /// **'Not provided'**
+  String get profileNotProvided;
+
+  /// No description provided for @profileVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get profileVerified;
+
+  /// No description provided for @profileNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not verified'**
+  String get profileNotVerified;
+
+  /// No description provided for @profileStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing saved details. Couldn\'t refresh your email status.'**
+  String get profileStale;
+
+  /// No description provided for @profileRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get profileRetry;
+
+  /// No description provided for @profileNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No profile found'**
+  String get profileNone;
+
+  /// No description provided for @profileUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your profile.'**
+  String get profileUnavailable;
+
+  /// No description provided for @profileChangeEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Change email'**
+  String get profileChangeEmail;
+
+  /// No description provided for @profileEditButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profileEditButton;
+
+  /// No description provided for @profileEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profileEditTitle;
+
+  /// No description provided for @profileEditSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get profileEditSave;
+
+  /// No description provided for @profileEmailPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for you to confirm {email}'**
+  String profileEmailPending(String email);
+
+  /// No description provided for @profileUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated'**
+  String get profileUpdated;
+
+  /// No description provided for @profileEmailExistsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email already registered'**
+  String get profileEmailExistsTitle;
+
+  /// No description provided for @profileEmailExistsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with {email} already exists. To restore it on this phone, we will send a confirmation link to this email.'**
+  String profileEmailExistsBody(String email);
+
+  /// No description provided for @profileSendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send link'**
+  String get profileSendLink;
+
+  /// No description provided for @profileEmailNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No account found for this email. Please tap Save Profile again.'**
+  String get profileEmailNotFound;
+
+  /// No description provided for @emailSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get emailSentTitle;
+
+  /// No description provided for @emailSentVerify.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a link to {email}. Open it on this phone to confirm your email.'**
+  String emailSentVerify(String email);
+
+  /// No description provided for @emailSentRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a link to {email}. Open it on this phone within 1 hour to restore your profile.'**
+  String emailSentRestore(String email);
+
+  /// No description provided for @emailSentResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend link'**
+  String get emailSentResend;
+
+  /// No description provided for @emailSentResendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend in {n}s'**
+  String emailSentResendIn(int n);
+
+  /// No description provided for @emailSentBackHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get emailSentBackHome;
+
+  /// No description provided for @emailSentWrongEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong email? Change it'**
+  String get emailSentWrongEmail;
+
+  /// No description provided for @linkResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email link'**
+  String get linkResultTitle;
+
+  /// No description provided for @linkChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your link…'**
+  String get linkChecking;
+
+  /// No description provided for @linkEmailVerifiedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified'**
+  String get linkEmailVerifiedTitle;
+
+  /// No description provided for @linkEmailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is verified.'**
+  String get linkEmailVerified;
+
+  /// No description provided for @linkEmailAlreadyVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is already verified.'**
+  String get linkEmailAlreadyVerified;
+
+  /// No description provided for @linkEmailChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new email is confirmed.'**
+  String get linkEmailChanged;
+
+  /// No description provided for @linkRestoredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile restored'**
+  String get linkRestoredTitle;
+
+  /// No description provided for @linkRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back, {name}. Your profile has been restored.'**
+  String linkRestored(String name);
+
+  /// No description provided for @linkExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This link has expired.'**
+  String get linkExpired;
+
+  /// No description provided for @linkInvalidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link not valid'**
+  String get linkInvalidTitle;
+
+  /// No description provided for @linkInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This link is invalid or has been replaced by a newer link.'**
+  String get linkInvalid;
+
+  /// No description provided for @linkUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'This link has already been used.'**
+  String get linkUsed;
+
+  /// No description provided for @linkWrongPhoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong phone'**
+  String get linkWrongPhoneTitle;
+
+  /// No description provided for @linkWrongPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Open this link on the phone where you requested the restore.'**
+  String get linkWrongPhone;
+
+  /// No description provided for @linkDeviceHasProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile already set up'**
+  String get linkDeviceHasProfileTitle;
+
+  /// No description provided for @linkDeviceHasProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone already has a profile.'**
+  String get linkDeviceHasProfile;
+
+  /// No description provided for @linkBadRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid link.'**
+  String get linkBadRequest;
+
+  /// No description provided for @linkCouldNotCheckTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t check link'**
+  String get linkCouldNotCheckTitle;
+
+  /// No description provided for @linkSendNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a new link'**
+  String get linkSendNew;
+
+  /// No description provided for @linkTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get linkTryAgain;
+
+  /// No description provided for @linkGoHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Home'**
+  String get linkGoHome;
+
+  /// No description provided for @msgNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Please try again.'**
+  String get msgNetwork;
+
+  /// No description provided for @msgGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get msgGeneric;
+
+  /// No description provided for @msgRateLimitSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait {n} seconds before requesting another email.'**
+  String msgRateLimitSeconds(int n);
+
+  /// No description provided for @msgRateLimitHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many emails requested. Please try again in {h} hours.'**
+  String msgRateLimitHours(int h);
+
+  /// No description provided for @msgEmailNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Email can\'t be sent yet. Your profile is saved; try confirming later.'**
+  String get msgEmailNotConfigured;
+
+  /// No description provided for @changeEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change email'**
+  String get changeEmailTitle;
+
+  /// No description provided for @changeEmailField.
+  ///
+  /// In en, this message translates to:
+  /// **'New email *'**
+  String get changeEmailField;
+
+  /// No description provided for @changeEmailHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send a new confirmation link to this email.'**
+  String get changeEmailHelper;
+
+  /// No description provided for @changeEmailSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and send link'**
+  String get changeEmailSave;
+
+  /// No description provided for @changeEmailSame.
+  ///
+  /// In en, this message translates to:
+  /// **'This is already your email'**
+  String get changeEmailSame;
+
+  /// No description provided for @changeEmailExists.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email already exists'**
+  String get changeEmailExists;
+
+  /// No description provided for @changeEmailAlreadyVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is already verified and can\'t be changed.'**
+  String get changeEmailAlreadyVerified;
+
+  /// No description provided for @privacyNothingUnless.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing leaves this phone unless you make a profile or join a group. Analytics are not collected, and there is no advertising ID and no ads.'**
+  String get privacyNothingUnless;
+
+  /// No description provided for @privacyPhoneSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'An anonymous sign-in when the app starts: an install number, never a name'**
+  String get privacyPhoneSignIn;
+
+  /// No description provided for @privacyWithProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'If you make a profile'**
+  String get privacyWithProfile;
+
+  /// No description provided for @privacyProfileDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name, email and city, and your phone number if you give it'**
+  String get privacyProfileDetails;
+
+  /// No description provided for @privacyProfileMail.
+  ///
+  /// In en, this message translates to:
+  /// **'Emails only to that address: to confirm it, and to bring your profile back on a new phone'**
+  String get privacyProfileMail;
+
+  /// No description provided for @privacyProfileAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Once a day, that you opened the app — which is how your city shows on the globe'**
+  String get privacyProfileAttendance;
+
+  /// No description provided for @privacyProfileBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'A weekly backup of your goals, what you recited, your simran and your badges, so a restore can bring them back'**
+  String get privacyProfileBackup;
+
+  /// No description provided for @privacyWithGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'If you join a group'**
+  String get privacyWithGroup;
+
+  /// No description provided for @privacyGroupCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Each paath or sitting that counts toward your groups'**
+  String get privacyGroupCounts;
+
+  /// No description provided for @privacyGroupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name, shown only to the members of your groups'**
+  String get privacyGroupName;
+
+  /// No description provided for @privacyGroupToken.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone\'s notification token, language and time zone, for the group\'s notifications'**
+  String get privacyGroupToken;
+
+  /// No description provided for @privacyGlobe.
+  ///
+  /// In en, this message translates to:
+  /// **'The globe shows a city and a count, never a name. Nothing is sold or shared with anyone.'**
+  String get privacyGlobe;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

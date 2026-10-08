@@ -211,9 +211,13 @@ class CardIconButton extends StatelessWidget {
     this.background,
     this.foreground,
     this.radius = 14,
+    this.child,
   });
 
   final String icon;
+
+  /// Drawn instead of [icon]: a Material icon the app's set does not have.
+  final Widget? child;
   final VoidCallback? onPressed;
   final String? tooltip;
   final double size;
@@ -240,7 +244,7 @@ class CardIconButton extends StatelessWidget {
           child: SizedBox.square(
             dimension: size,
             child: Center(
-              child: AppIcon(icon, size: iconSize, color: foreground ?? c.ink),
+              child: child ?? AppIcon(icon, size: iconSize, color: foreground ?? c.ink),
             ),
           ),
         ),

@@ -1025,15 +1025,7 @@ class LEn extends L {
 
   @override
   String get privacyBody =>
-      'Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with the radio off. Your diary, goals and settings stay on this phone and in your own Google backup. If you pick a city or use your location, it stays on the phone and is used only to work out sunrise and sunset.';
-
-  @override
-  String get privacyNoAnalytics =>
-      'Nothing leaves this phone unless you join the sangat. Analytics are switched off in this build and no crash reports are sent.';
-
-  @override
-  String get privacySangat =>
-      'If you join the sangat, what goes to the server is your name, city, email and the counts behind the groups and goals you joined. The words in your diary never go, and your email is never shown to anybody else.';
+      'Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with no network.';
 
   @override
   String get notifChannelGoals => 'Goal reminders';
@@ -1757,14 +1749,14 @@ class LEn extends L {
   String get linkProblemTitle => 'That link did not work';
 
   @override
-  String get linkUsedTitle => 'Already used';
+  String get linkUsedTitle => 'Link already used';
 
   @override
   String get linkUsedBody =>
       'This link has signed in a phone already. Every link works once and then stops, which is what keeps a forwarded email from being a way in.';
 
   @override
-  String get linkExpiredTitle => 'Too old';
+  String get linkExpiredTitle => 'Link expired';
 
   @override
   String get linkExpiredBody =>
@@ -1810,30 +1802,6 @@ class LEn extends L {
   String get privacyPhoneContent => 'Every bani, its audio and the calendar';
 
   @override
-  String get privacySharedWithSangat => 'Shared with the sangat';
-
-  @override
-  String get privacyShareName => 'Your name';
-
-  @override
-  String get privacyShareCity =>
-      'The city you chose — shown as one dot on the globe';
-
-  @override
-  String get privacyShareGroups => 'Which groups you are in';
-
-  @override
-  String get privacyShareCounts =>
-      'How much you have completed towards a shared goal';
-
-  @override
-  String get privacyAccountOnly => 'Held for your account alone';
-
-  @override
-  String get privacyAccountEmail =>
-      'Your email — the only thing it does is bring your account back';
-
-  @override
   String get privacyShowMyName => 'Show my name in groups';
 
   @override
@@ -1860,10 +1828,6 @@ class LEn extends L {
 
   @override
   String get privacyDeleted => 'Your account and its data are gone';
-
-  @override
-  String get privacyNotJoined =>
-      'You have not joined the sangat, so nothing here has left this phone.';
 
   @override
   String get libraryTitle => 'Vichar';
@@ -2599,4 +2563,338 @@ class LEn extends L {
 
   @override
   String get actionAdd => 'Add';
+
+  @override
+  String get profileWelcome => 'Welcome';
+
+  @override
+  String profileWelcomeName(String name) {
+    return 'Welcome, $name';
+  }
+
+  @override
+  String get profileBannerTitle => 'Set up your profile';
+
+  @override
+  String get profileBannerSubtitle =>
+      'Add your name and email to personalise the app.';
+
+  @override
+  String get profileSetupTitle => 'Set up profile';
+
+  @override
+  String get profileFieldName => 'Name *';
+
+  @override
+  String get profileFieldEmail => 'Email *';
+
+  @override
+  String get profileFieldPhone => 'Phone (optional)';
+
+  @override
+  String get profileFieldCity => 'City *';
+
+  @override
+  String get profileSave => 'Save Profile';
+
+  @override
+  String get profileErrNameEmpty => 'Please enter your name';
+
+  @override
+  String get profileErrNameInvalid =>
+      'Name must be 2–50 letters (spaces, . \' - allowed)';
+
+  @override
+  String get profileErrEmailEmpty => 'Please enter your email';
+
+  @override
+  String get profileErrEmailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get profileErrCityEmpty => 'Please choose your city';
+
+  @override
+  String get profileCityChoose => 'Choose your city';
+
+  @override
+  String get profileCitySearch => 'Search cities';
+
+  @override
+  String get profileCityNearest => 'Not on the list? Choose the nearest city.';
+
+  @override
+  String get profileSavedTitle => 'Profile saved';
+
+  @override
+  String profileSavedBody(String email) {
+    return 'Would you like to confirm your email $email? This is optional.';
+  }
+
+  @override
+  String get profileSkipForNow => 'Skip for now';
+
+  @override
+  String get profileConfirmEmail => 'Confirm my email';
+
+  @override
+  String get profileSendFailed =>
+      'Couldn\'t send the email. You can try again from your profile.';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get profileRowName => 'Name';
+
+  @override
+  String get profileRowEmail => 'Email';
+
+  @override
+  String get profileRowPhone => 'Phone';
+
+  @override
+  String get profileRowCity => 'City';
+
+  @override
+  String get profileRowEmailStatus => 'Email status';
+
+  @override
+  String get profileNotProvided => 'Not provided';
+
+  @override
+  String get profileVerified => 'Verified';
+
+  @override
+  String get profileNotVerified => 'Not verified';
+
+  @override
+  String get profileStale =>
+      'Showing saved details. Couldn\'t refresh your email status.';
+
+  @override
+  String get profileRetry => 'Retry';
+
+  @override
+  String get profileNone => 'No profile found';
+
+  @override
+  String get profileUnavailable => 'Couldn\'t load your profile.';
+
+  @override
+  String get profileChangeEmail => 'Change email';
+
+  @override
+  String get profileEditButton => 'Edit profile';
+
+  @override
+  String get profileEditTitle => 'Edit profile';
+
+  @override
+  String get profileEditSave => 'Save changes';
+
+  @override
+  String profileEmailPending(String email) {
+    return 'Waiting for you to confirm $email';
+  }
+
+  @override
+  String get profileUpdated => 'Profile updated';
+
+  @override
+  String get profileEmailExistsTitle => 'Email already registered';
+
+  @override
+  String profileEmailExistsBody(String email) {
+    return 'An account with $email already exists. To restore it on this phone, we will send a confirmation link to this email.';
+  }
+
+  @override
+  String get profileSendLink => 'Send link';
+
+  @override
+  String get profileEmailNotFound =>
+      'No account found for this email. Please tap Save Profile again.';
+
+  @override
+  String get emailSentTitle => 'Check your email';
+
+  @override
+  String emailSentVerify(String email) {
+    return 'We sent a link to $email. Open it on this phone to confirm your email.';
+  }
+
+  @override
+  String emailSentRestore(String email) {
+    return 'We sent a link to $email. Open it on this phone within 1 hour to restore your profile.';
+  }
+
+  @override
+  String get emailSentResend => 'Resend link';
+
+  @override
+  String emailSentResendIn(int n) {
+    return 'Resend in ${n}s';
+  }
+
+  @override
+  String get emailSentBackHome => 'Back to Home';
+
+  @override
+  String get emailSentWrongEmail => 'Wrong email? Change it';
+
+  @override
+  String get linkResultTitle => 'Email link';
+
+  @override
+  String get linkChecking => 'Checking your link…';
+
+  @override
+  String get linkEmailVerifiedTitle => 'Email verified';
+
+  @override
+  String get linkEmailVerified => 'Your email is verified.';
+
+  @override
+  String get linkEmailAlreadyVerified => 'Your email is already verified.';
+
+  @override
+  String get linkEmailChanged => 'Your new email is confirmed.';
+
+  @override
+  String get linkRestoredTitle => 'Profile restored';
+
+  @override
+  String linkRestored(String name) {
+    return 'Welcome back, $name. Your profile has been restored.';
+  }
+
+  @override
+  String get linkExpired => 'This link has expired.';
+
+  @override
+  String get linkInvalidTitle => 'Link not valid';
+
+  @override
+  String get linkInvalid =>
+      'This link is invalid or has been replaced by a newer link.';
+
+  @override
+  String get linkUsed => 'This link has already been used.';
+
+  @override
+  String get linkWrongPhoneTitle => 'Wrong phone';
+
+  @override
+  String get linkWrongPhone =>
+      'Open this link on the phone where you requested the restore.';
+
+  @override
+  String get linkDeviceHasProfileTitle => 'Profile already set up';
+
+  @override
+  String get linkDeviceHasProfile => 'This phone already has a profile.';
+
+  @override
+  String get linkBadRequest => 'Invalid link.';
+
+  @override
+  String get linkCouldNotCheckTitle => 'Couldn\'t check link';
+
+  @override
+  String get linkSendNew => 'Send a new link';
+
+  @override
+  String get linkTryAgain => 'Try again';
+
+  @override
+  String get linkGoHome => 'Go to Home';
+
+  @override
+  String get msgNetwork => 'No internet connection. Please try again.';
+
+  @override
+  String get msgGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String msgRateLimitSeconds(int n) {
+    return 'Please wait $n seconds before requesting another email.';
+  }
+
+  @override
+  String msgRateLimitHours(int h) {
+    return 'Too many emails requested. Please try again in $h hours.';
+  }
+
+  @override
+  String get msgEmailNotConfigured =>
+      'Email can\'t be sent yet. Your profile is saved; try confirming later.';
+
+  @override
+  String get changeEmailTitle => 'Change email';
+
+  @override
+  String get changeEmailField => 'New email *';
+
+  @override
+  String get changeEmailHelper =>
+      'We will send a new confirmation link to this email.';
+
+  @override
+  String get changeEmailSave => 'Save and send link';
+
+  @override
+  String get changeEmailSame => 'This is already your email';
+
+  @override
+  String get changeEmailExists => 'An account with this email already exists';
+
+  @override
+  String get changeEmailAlreadyVerified =>
+      'Your email is already verified and can\'t be changed.';
+
+  @override
+  String get privacyNothingUnless =>
+      'Nothing leaves this phone unless you make a profile or join a group. Analytics are not collected, and there is no advertising ID and no ads.';
+
+  @override
+  String get privacyPhoneSignIn =>
+      'An anonymous sign-in when the app starts: an install number, never a name';
+
+  @override
+  String get privacyWithProfile => 'If you make a profile';
+
+  @override
+  String get privacyProfileDetails =>
+      'Your name, email and city, and your phone number if you give it';
+
+  @override
+  String get privacyProfileMail =>
+      'Emails only to that address: to confirm it, and to bring your profile back on a new phone';
+
+  @override
+  String get privacyProfileAttendance =>
+      'Once a day, that you opened the app — which is how your city shows on the globe';
+
+  @override
+  String get privacyProfileBackup =>
+      'A weekly backup of your goals, what you recited, your simran and your badges, so a restore can bring them back';
+
+  @override
+  String get privacyWithGroup => 'If you join a group';
+
+  @override
+  String get privacyGroupCounts =>
+      'Each paath or sitting that counts toward your groups';
+
+  @override
+  String get privacyGroupName =>
+      'Your name, shown only to the members of your groups';
+
+  @override
+  String get privacyGroupToken =>
+      'This phone\'s notification token, language and time zone, for the group\'s notifications';
+
+  @override
+  String get privacyGlobe =>
+      'The globe shows a city and a count, never a name. Nothing is sold or shared with anyone.';
 }

@@ -632,9 +632,7 @@
   "aboutContact": "Contact",
   "aboutNoAudioYet": "The recitation shipped with the app is played from the phone and never streamed.",
   "privacyTitle": "Privacy",
-  "privacyBody": "Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with the radio off. Your diary, goals and settings stay on this phone and in your own Google backup. If you pick a city or use your location, it stays on the phone and is used only to work out sunrise and sunset.",
-  "privacyNoAnalytics": "Nothing leaves this phone unless you join the sangat. Analytics are switched off in this build and no crash reports are sent.",
-  "privacySangat": "If you join the sangat, what goes to the server is your name, city, email and the counts behind the groups and goals you joined. The words in your diary never go, and your email is never shown to anybody else.",
+  "privacyBody": "Hazri has no password and no sign-in screen. Reading a bani, hearing it, seeing the calendar and writing your diary all happen on this phone and work with no network.",
   "notifChannelGoals": "Goal reminders",
   "notifGurpurabTitle": "Today: {event}",
   "notifActionStartNitnem": "Start Nitnem",
@@ -934,9 +932,9 @@
   "restoreDiaryNote": "Your diary comes back only if sync was on. With sync off, your groups and goals are kept and the diary stays on the phone that wrote it.",
   "restoreOpenToday": "Open Today",
   "linkProblemTitle": "That link did not work",
-  "linkUsedTitle": "Already used",
+  "linkUsedTitle": "Link already used",
   "linkUsedBody": "This link has signed in a phone already. Every link works once and then stops, which is what keeps a forwarded email from being a way in.",
-  "linkExpiredTitle": "Too old",
+  "linkExpiredTitle": "Link expired",
   "linkExpiredBody": "Links last an hour. This one has lapsed on its own — nobody used it.",
   "linkWrongTitle": "Not a link from us",
   "linkWrongBody": "That does not look like the link we sent. Copy the whole of it, including everything after the question mark.",
@@ -950,13 +948,6 @@
   "privacyPhoneDiary": "Your diary and streaks",
   "privacyPhoneProgress": "Reading position and goals",
   "privacyPhoneContent": "Every bani, its audio and the calendar",
-  "privacySharedWithSangat": "Shared with the sangat",
-  "privacyShareName": "Your name",
-  "privacyShareCity": "The city you chose — shown as one dot on the globe",
-  "privacyShareGroups": "Which groups you are in",
-  "privacyShareCounts": "How much you have completed towards a shared goal",
-  "privacyAccountOnly": "Held for your account alone",
-  "privacyAccountEmail": "Your email — the only thing it does is bring your account back",
   "privacyShowMyName": "Show my name in groups",
   "privacyShowMyNameSub": "Off shows you as “a member”",
   "privacyDownload": "Download everything we hold",
@@ -966,7 +957,6 @@
   "privacyDeleteConfirm": "Delete everything the sangat holds? Your groups, your counts and your account go. Nothing on this phone is touched.",
   "privacyDeleteDo": "Delete it",
   "privacyDeleted": "Your account and its data are gone",
-  "privacyNotJoined": "You have not joined the sangat, so nothing here has left this phone.",
   "libraryTitle": "Vichar",
   "librarySubtitle": "Read, and look things up",
   "librarySearchHint": "Search articles, gurdwaras, banis…",
@@ -1482,5 +1472,173 @@
   "diaryStreakNow": "days in a row now",
   "diaryStreakLongest": "your longest",
   "todayStreakCaption": "days of Nitnem in a row",
-  "actionAdd": "Add"
+  "actionAdd": "Add",
+  "profileWelcome": "Welcome",
+  "profileWelcomeName": "Welcome, {name}",
+  "@profileWelcomeName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBannerTitle": "Set up your profile",
+  "profileBannerSubtitle": "Add your name and email to personalise the app.",
+  "profileSetupTitle": "Set up profile",
+  "profileFieldName": "Name *",
+  "profileFieldEmail": "Email *",
+  "profileFieldPhone": "Phone (optional)",
+  "profileFieldCity": "City *",
+  "profileSave": "Save Profile",
+  "profileErrNameEmpty": "Please enter your name",
+  "profileErrNameInvalid": "Name must be 2–50 letters (spaces, . ' - allowed)",
+  "profileErrEmailEmpty": "Please enter your email",
+  "profileErrEmailInvalid": "Please enter a valid email address",
+  "profileErrCityEmpty": "Please choose your city",
+  "profileCityChoose": "Choose your city",
+  "profileCitySearch": "Search cities",
+  "profileCityNearest": "Not on the list? Choose the nearest city.",
+  "profileSavedTitle": "Profile saved",
+  "profileSavedBody": "Would you like to confirm your email {email}? This is optional.",
+  "@profileSavedBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSkipForNow": "Skip for now",
+  "profileConfirmEmail": "Confirm my email",
+  "profileSendFailed": "Couldn't send the email. You can try again from your profile.",
+  "profileTitle": "Profile",
+  "profileRowName": "Name",
+  "profileRowEmail": "Email",
+  "profileRowPhone": "Phone",
+  "profileRowCity": "City",
+  "profileRowEmailStatus": "Email status",
+  "profileNotProvided": "Not provided",
+  "profileVerified": "Verified",
+  "profileNotVerified": "Not verified",
+  "profileStale": "Showing saved details. Couldn't refresh your email status.",
+  "profileRetry": "Retry",
+  "profileNone": "No profile found",
+  "profileUnavailable": "Couldn't load your profile.",
+  "profileChangeEmail": "Change email",
+  "profileEditButton": "Edit profile",
+  "profileEditTitle": "Edit profile",
+  "profileEditSave": "Save changes",
+  "profileEmailPending": "Waiting for you to confirm {email}",
+  "@profileEmailPending": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profileUpdated": "Profile updated",
+  "profileEmailExistsTitle": "Email already registered",
+  "profileEmailExistsBody": "An account with {email} already exists. To restore it on this phone, we will send a confirmation link to this email.",
+  "@profileEmailExistsBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSendLink": "Send link",
+  "profileEmailNotFound": "No account found for this email. Please tap Save Profile again.",
+  "emailSentTitle": "Check your email",
+  "emailSentVerify": "We sent a link to {email}. Open it on this phone to confirm your email.",
+  "@emailSentVerify": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailSentRestore": "We sent a link to {email}. Open it on this phone within 1 hour to restore your profile.",
+  "@emailSentRestore": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailSentResend": "Resend link",
+  "emailSentResendIn": "Resend in {n}s",
+  "@emailSentResendIn": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "emailSentBackHome": "Back to Home",
+  "emailSentWrongEmail": "Wrong email? Change it",
+  "linkResultTitle": "Email link",
+  "linkChecking": "Checking your link…",
+  "linkEmailVerifiedTitle": "Email verified",
+  "linkEmailVerified": "Your email is verified.",
+  "linkEmailAlreadyVerified": "Your email is already verified.",
+  "linkEmailChanged": "Your new email is confirmed.",
+  "linkRestoredTitle": "Profile restored",
+  "linkRestored": "Welcome back, {name}. Your profile has been restored.",
+  "@linkRestored": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "linkExpired": "This link has expired.",
+  "linkInvalidTitle": "Link not valid",
+  "linkInvalid": "This link is invalid or has been replaced by a newer link.",
+  "linkUsed": "This link has already been used.",
+  "linkWrongPhoneTitle": "Wrong phone",
+  "linkWrongPhone": "Open this link on the phone where you requested the restore.",
+  "linkDeviceHasProfileTitle": "Profile already set up",
+  "linkDeviceHasProfile": "This phone already has a profile.",
+  "linkBadRequest": "Invalid link.",
+  "linkCouldNotCheckTitle": "Couldn't check link",
+  "linkSendNew": "Send a new link",
+  "linkTryAgain": "Try again",
+  "linkGoHome": "Go to Home",
+  "msgNetwork": "No internet connection. Please try again.",
+  "msgGeneric": "Something went wrong. Please try again.",
+  "msgRateLimitSeconds": "Please wait {n} seconds before requesting another email.",
+  "@msgRateLimitSeconds": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "msgRateLimitHours": "Too many emails requested. Please try again in {h} hours.",
+  "@msgRateLimitHours": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "msgEmailNotConfigured": "Email can't be sent yet. Your profile is saved; try confirming later.",
+  "changeEmailTitle": "Change email",
+  "changeEmailField": "New email *",
+  "changeEmailHelper": "We will send a new confirmation link to this email.",
+  "changeEmailSave": "Save and send link",
+  "changeEmailSame": "This is already your email",
+  "changeEmailExists": "An account with this email already exists",
+  "changeEmailAlreadyVerified": "Your email is already verified and can't be changed.",
+  "privacyNothingUnless": "Nothing leaves this phone unless you make a profile or join a group. Analytics are not collected, and there is no advertising ID and no ads.",
+  "privacyPhoneSignIn": "An anonymous sign-in when the app starts: an install number, never a name",
+  "privacyWithProfile": "If you make a profile",
+  "privacyProfileDetails": "Your name, email and city, and your phone number if you give it",
+  "privacyProfileMail": "Emails only to that address: to confirm it, and to bring your profile back on a new phone",
+  "privacyProfileAttendance": "Once a day, that you opened the app — which is how your city shows on the globe",
+  "privacyProfileBackup": "A weekly backup of your goals, what you recited, your simran and your badges, so a restore can bring them back",
+  "privacyWithGroup": "If you join a group",
+  "privacyGroupCounts": "Each paath or sitting that counts toward your groups",
+  "privacyGroupName": "Your name, shown only to the members of your groups",
+  "privacyGroupToken": "This phone's notification token, language and time zone, for the group's notifications",
+  "privacyGlobe": "The globe shows a city and a count, never a name. Nothing is sold or shared with anyone."
 }

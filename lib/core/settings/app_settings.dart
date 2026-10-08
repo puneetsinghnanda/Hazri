@@ -22,7 +22,6 @@ class AppSettings {
     this.followAudio = true,
     this.themeMode = ThemeMode.system,
     this.elderMode = false,
-    this.cityId = 'new_delhi',
     this.speed = 1.0,
     this.onboardingDone = false,
     this.analyticsEnabled = false,
@@ -40,7 +39,6 @@ class AppSettings {
   final bool followAudio;
   final ThemeMode themeMode;
   final bool elderMode;
-  final String cityId;
   final double speed;
   final bool onboardingDone;
   final bool analyticsEnabled;
@@ -62,7 +60,6 @@ class AppSettings {
     bool? followAudio,
     ThemeMode? themeMode,
     bool? elderMode,
-    String? cityId,
     double? speed,
     bool? onboardingDone,
     bool? analyticsEnabled,
@@ -80,7 +77,6 @@ class AppSettings {
       followAudio: followAudio ?? this.followAudio,
       themeMode: themeMode ?? this.themeMode,
       elderMode: elderMode ?? this.elderMode,
-      cityId: cityId ?? this.cityId,
       speed: speed ?? this.speed,
       onboardingDone: onboardingDone ?? this.onboardingDone,
       analyticsEnabled: analyticsEnabled ?? this.analyticsEnabled,

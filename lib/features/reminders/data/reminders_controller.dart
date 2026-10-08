@@ -14,6 +14,7 @@ import '../../../core/time/solar.dart';
 import '../../gurpurab/domain/calendar_display.dart';
 import '../../nitnem/domain/bani.dart';
 import '../domain/reminder_plan.dart';
+import '../../profile/data/profile_controller.dart';
 import 'notification_switches.dart';
 import 'reminder_service.dart';
 
@@ -26,12 +27,13 @@ class SunLocation {
   final double longitude;
 }
 
-/// The place sunrise and sunset are worked out for. New Delhi until the
-/// profile's city replaces the Settings city in step 4 (03-first-run CY1).
-final sunLocationProvider = FutureProvider<SunLocation>((ref) async {
-  final cityId = ref.watch(settingsProvider.select((s) => s.cityId));
+/// The place sunrise and sunset are worked out for: the profile's city, or
+/// none. Without a profile nothing guesses one (03-first-run CY3).
+final sunLocationProvider = FutureProvider<SunLocation?>((ref) async {
+  final cityId = ref.watch(profileProvider.select((p) => p?.cityId));
+  if (cityId == null) return null;
   final city = await ref.watch(contentRepositoryProvider).city(cityId);
-  return SunLocation(latitude: city?.lat ?? 28.6139, longitude: city?.lon ?? 77.2090);
+  return city == null ? null : SunLocation(latitude: city.lat, longitude: city.lon);
 });
 
 /// When each slot of the day begins, for the Nitnem list and Today's call to
@@ -42,8 +44,8 @@ final slotTimesProvider = FutureProvider<Map<BaniSlot, DateTime>>((ref) async {
   final at = await ref.watch(sunLocationProvider.future);
   final today = ref.watch(clockProvider).today();
   DateTime fixed(int h, int m) => DateTime(today.year, today.month, today.day, h, m);
-  final sunrise = SolarService.sunrise(today, at.latitude, at.longitude)?.toLocal();
-  final sunset = SolarService.sunset(today, at.latitude, at.longitude)?.toLocal();
+  final sunrise = at == null ? null : SolarService.sunrise(today, at.latitude, at.longitude)?.toLocal();
+  final sunset = at == null ? null : SolarService.sunset(today, at.latitude, at.longitude)?.toLocal();
   final morning = sunrise == null
       ? fixed(4, 30)
       : roundToNearestMinutes(sunrise.subtract(const Duration(minutes: 90)), 5);
@@ -141,8 +143,24 @@ class ReminderScheduler {
     final nitnemToday = todayCompletions.any((c) => c.slot != BaniSlotValue.none);
     final streak = nitnemToday ? (await repo.nitnemStreak()).current : null;
 
+    // AV4 and the Friday nudge: only with a profile (CY3).
+    final profile = _ref.read(profileProvider);
+    final city = profile == null ? null : await content.city(profile.cityId);
+    final cityName = city == null
+        ? null
+        : switch (lang) {
+            'pa' => city.namePa,
+            'hi' => city.nameHi,
+            _ => city.nameEn,
+          };
+
     return PlannerInput(
       now: clock.now(),
+      profileName: profile?.name,
+      cityName: cityName,
+      sunrise: city == null
+          ? null
+          : (d) => SolarService.sunrise(d, city.lat, city.lon)?.toLocal(),
       enabled: _ref.read(notificationSwitchesProvider),
       items: rows.items,
       todayCompletions: rows.completions,

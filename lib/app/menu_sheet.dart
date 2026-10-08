@@ -9,6 +9,7 @@ import '../core/theme/icon_data.dart';
 import '../core/widgets/app_icon.dart';
 import '../core/widgets/surfaces.dart';
 import '../features/today/ui/help_sheet.dart';
+import '../features/profile/data/profile_controller.dart';
 import 'router.dart';
 
 /// Design 37 — what the menu button opens.
@@ -64,6 +65,16 @@ class _MenuSheet extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
+                    // The profile, or the way to make one (01-accounts §8.7).
+                    _Row(
+                      icon: HazriIconData.mail,
+                      label: switch (ref.watch(profileControllerProvider)) {
+                        ProfileLoaded(:final profile) => profile.name,
+                        _ => l.profileBannerTitle,
+                      },
+                      onTap: () => go(Routes.profile),
+                    ),
+                    Divider(height: 1, color: c.rule),
                     // Vichar is a section, not a setting, and it had no door
                     // at all: the only way in was a link at the bottom of the
                     // day's Vichar screen, which nobody would think to look

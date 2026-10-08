@@ -4,25 +4,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/db/content_db.dart';
 import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
-import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../data/reminders_controller.dart';
 
-/// The offline city picker (PRD 1.2). The list ships with the app, so this
-/// works in airplane mode.
-Future<void> showCityPickerSheet(BuildContext context) => showModalBottomSheet<void>(
-  context: context,
-  isScrollControlled: true,
-  useSafeArea: true,
-  builder: (_) => const _CityPickerSheet(),
-);
+/// The offline city picker of Profile Setup and Edit profile
+/// (`01-accounts.md` §13 D9, `03-first-run.md` CY1). The list ships with the
+/// app, so this works in airplane mode. Returns the chosen city's id, or null
+/// when closed.
+Future<String?> showCityPickerSheet(BuildContext context, {String? selected}) =>
+    showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => _CityPickerSheet(selected: selected),
+    );
+
+/// A city's name in the reader's language.
+String cityName(CityRow c, String lang) => switch (lang) {
+      'pa' => c.namePa,
+      'hi' => c.nameHi,
+      _ => c.nameEn,
+    };
 
 class _CityPickerSheet extends ConsumerStatefulWidget {
-  const _CityPickerSheet();
+  const _CityPickerSheet({this.selected});
+
+  final String? selected;
 
   @override
   ConsumerState<_CityPickerSheet> createState() => _CityPickerSheetState();
@@ -37,18 +47,12 @@ class _CityPickerSheetState extends ConsumerState<_CityPickerSheet> {
     super.dispose();
   }
 
-  String _name(CityRow c, String lang) => switch (lang) {
-    'pa' => c.namePa,
-    'hi' => c.nameHi,
-    _ => c.nameEn,
-  };
-
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
     final lang = Localizations.localeOf(context).languageCode;
-    final selected = ref.watch(settingsProvider).cityId;
+    final selected = widget.selected;
     final all = ref.watch(citiesProvider).value ?? const <CityRow>[];
 
     final query = _search.text.trim().toLowerCase();
@@ -143,7 +147,7 @@ class _CityPickerSheetState extends ConsumerState<_CityPickerSheet> {
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          _name(city, lang),
+                          cityName(city, lang),
                           style: HazriText.body.copyWith(
                             color: c.ink,
                             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
@@ -156,12 +160,7 @@ class _CityPickerSheetState extends ConsumerState<_CityPickerSheet> {
                         trailing: isSelected
                             ? AppIcon(HazriIconData.check, size: 20, color: c.sage)
                             : null,
-                        onTap: () async {
-                          await ref.read(settingsProvider.notifier).setCityId(city.id);
-                          ref.invalidate(sunLocationProvider);
-                          await ref.read(reminderSchedulerProvider).reschedule();
-                          if (context.mounted) Navigator.of(context).pop();
-                        },
+                        onTap: () => Navigator.of(context).pop(city.id),
                       );
                     },
                   ),
@@ -174,7 +173,7 @@ class _CityPickerSheetState extends ConsumerState<_CityPickerSheet> {
               12 + MediaQuery.viewPaddingOf(context).bottom,
             ),
             child: Text(
-              l.cityPickerNote,
+              l.profileCityNearest,
               textAlign: TextAlign.center,
               style: HazriText.caption.copyWith(color: c.muted),
             ),

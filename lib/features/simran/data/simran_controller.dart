@@ -6,8 +6,8 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_repository.dart';
-import '../../../core/settings/settings_controller.dart';
 import '../../audio/data/audio_controller.dart';
+import '../../profile/data/profile_controller.dart';
 import '../data/presence_repository.dart';
 import '../../../core/db/user_db.dart' show SittingSource;
 import '../../goals/data/goals_controller.dart';
@@ -217,7 +217,8 @@ class SimranController extends Notifier<SimranSession> {
   /// Never awaited and never allowed to fail loudly: a globe that did not get
   /// the news is not a reason for somebody's simran to end in an error.
   Future<void> _markOnTheGlobe() async {
-    final cityId = ref.read(settingsProvider).cityId;
+    final cityId = ref.read(profileProvider)?.cityId;
+    if (cityId == null) return;
     final city = (await ref.read(citiesProvider.future))
         .where((c) => c.id == cityId)
         .firstOrNull;

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
-import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/app_settings.dart';
 import '../../../core/settings/settings_controller.dart';
@@ -14,7 +13,6 @@ import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/audio_controller.dart';
 import '../../audio/data/notification_access.dart';
 import '../../goals/data/goals_controller.dart';
-import '../../reminders/ui/city_picker_sheet.dart';
 import 'screen_scaffold.dart';
 
 /// Settings (Design 27). Every change persists immediately.
@@ -27,14 +25,8 @@ class SettingsScreen extends ConsumerWidget {
     final l = L.of(context);
     final s = ref.watch(settingsProvider);
     final n = ref.read(settingsProvider.notifier);
-    final lang = Localizations.localeOf(context).languageCode;
     final goals = ref.watch(goalsSummaryProvider);
     final hasAudio = ref.watch(hasAudioProvider);
-    final city = ref
-        .watch(citiesProvider)
-        .value
-        ?.where((x) => x.id == s.cityId)
-        .firstOrNull;
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -192,17 +184,6 @@ class SettingsScreen extends ConsumerWidget {
                     subtitle: l.settingsPaathGoalsSub,
                     value: l.settingsGoalsCount(goals.total),
                     onTap: () => context.push(Routes.goals),
-                  ),
-                  SettingsRow(
-                    title: l.settingsSunFor,
-                    value: city == null
-                        ? '—'
-                        : switch (lang) {
-                            'pa' => city.namePa,
-                            'hi' => city.nameHi,
-                            _ => city.nameEn,
-                          },
-                    onTap: () => showCityPickerSheet(context),
                   ),
                   SettingsRow(
                     title: l.notifTitle,

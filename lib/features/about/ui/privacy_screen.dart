@@ -10,13 +10,10 @@ import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
 
-/// Design 35 — what is on the phone, what the sangat sees, and the two
-/// buttons that let somebody take it back.
-///
-/// The three headings are the point. Most of what this app knows never
-/// leaves the phone, and saying which is which — rather than one paragraph
-/// about caring deeply — is the only version of this screen worth having.
-/// PRD §13.1 is what it must agree with, and neither runs ahead of the other.
+/// Design 35, as PRD §8.3 words it: what stays on the phone, what a profile
+/// sends, what a group sends. PRD §8.1 is the closed list this must agree
+/// with, and Google Play's Data safety form with both; neither runs ahead of
+/// the build.
 class PrivacyScreen extends ConsumerWidget {
   const PrivacyScreen({super.key});
 
@@ -33,45 +30,30 @@ class PrivacyScreen extends ConsumerWidget {
         const SizedBox(height: 16),
         HazriCard(
           colour: c.sageSoft,
-          child: Text(
-            l.privacyNoAnalytics,
-            style: HazriText.bodySmall.copyWith(color: c.sage),
-          ),
+          child: Text(l.privacyNothingUnless, style: HazriText.bodySmall.copyWith(color: c.sage)),
         ),
         const SizedBox(height: 6),
-
         _Section(title: l.privacyOnPhoneOnly, icon: HazriIconData.lock, items: [
           l.privacyPhoneDiary,
           l.privacyPhoneProgress,
           l.privacyPhoneContent,
+          l.privacyPhoneSignIn,
         ]),
-
-        // Shown whether or not somebody joined, because what the sangat would
-        // see is exactly what somebody deciding needs to read.
-        _Section(title: l.privacySharedWithSangat, icon: HazriIconData.sangat, items: [
-          l.privacyShareName,
-          l.privacyShareCity,
-          l.privacyShareGroups,
-          l.privacyShareCounts,
+        _Section(title: l.privacyWithProfile, icon: HazriIconData.mail, items: [
+          l.privacyProfileDetails,
+          l.privacyProfileMail,
+          l.privacyProfileAttendance,
+          l.privacyProfileBackup,
         ]),
-
-        _Section(title: l.privacyAccountOnly, icon: HazriIconData.mail, items: [
-          l.privacyAccountEmail,
+        _Section(title: l.privacyWithGroup, icon: HazriIconData.sangat, items: [
+          l.privacyGroupCounts,
+          l.privacyGroupName,
+          l.privacyGroupToken,
         ]),
-
         const SizedBox(height: 18),
         HazriCard(
           colour: c.card2,
-          child: Text(l.privacyNotJoined,
-              style: HazriText.bodySmall.copyWith(color: c.ink2)),
-        ),
-        const SizedBox(height: 16),
-        HazriCard(
-          colour: c.card2,
-          child: Text(
-            l.privacySangat,
-            style: HazriText.bodySmall.copyWith(color: c.ink2),
-          ),
+          child: Text(l.privacyGlobe, style: HazriText.bodySmall.copyWith(color: c.ink2)),
         ),
       ],
     );

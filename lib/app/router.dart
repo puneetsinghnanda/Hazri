@@ -26,6 +26,12 @@ import '../features/reminders/ui/notifications_screen.dart';
 import '../features/settings/ui/settings_screen.dart';
 import '../features/simran/ui/simran_screen.dart';
 import '../features/today/ui/today_screen.dart';
+import '../features/profile/data/incoming_link.dart';
+import '../features/profile/ui/email_sent_screen.dart';
+import '../features/profile/ui/link_result_screen.dart';
+import '../features/profile/ui/profile_edit_screen.dart';
+import '../features/profile/ui/profile_screen.dart';
+import '../features/profile/ui/profile_setup_screen.dart';
 import 'shell.dart';
 
 /// Named routes, so no screen has to spell a path out by hand.
@@ -59,6 +65,17 @@ abstract final class Routes {
   /// The Sangat tab. Rebuilt in step 6 (PRD §11.4).
   static const sangat = '/sangat';
   static const licences = '/licences';
+
+  /// The profile (`01-accounts.md` §8, ARCHITECTURE §2.4).
+  static const profile = '/profile';
+  static const profileSetup = '/profile-setup';
+  static const profileEdit = '/profile-edit';
+
+  /// `extra`: an `EmailSentArgs`.
+  static const emailSent = '/email-sent';
+
+  /// Where a tapped `/verify?token=` link lands (§8.9).
+  static String linkResult(String token) => '/link-result?token=${Uri.encodeQueryComponent(token)}';
   static const batteryHelp = '/reminders-help';
 
   /// Every notification Hazri can send, in one place (design 50).
@@ -161,15 +178,27 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const NotificationDiagnosticsScreen(),
       ),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
+      GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen()),
+      GoRoute(path: Routes.profileSetup, builder: (_, _) => const ProfileSetupScreen()),
+      GoRoute(path: Routes.profileEdit, builder: (_, _) => const ProfileEditScreen()),
+      GoRoute(
+        path: Routes.emailSent,
+        builder: (_, state) => state.extra is EmailSentArgs
+            ? EmailSentScreen(args: state.extra! as EmailSentArgs)
+            : const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/link-result',
+        builder: (_, state) => LinkResultScreen(token: state.uri.queryParameters['token'] ?? ''),
+      ),
     ],
     redirect: (context, state) {
-      // An https link on one of our hosts that no route claims opens the
-      // app rather than go_router's "no routes for location" page. The
-      // verification, restore and invite links get their own handling with
-      // the profile (step 4) and the Sangat (step 6).
-      if (state.uri.hasScheme && state.uri.scheme.startsWith('http')) {
-        return Routes.today;
-      }
+      // A tapped link arrives here as the whole URI (D3). /verify goes to
+      // the Link Result screen, once per token per process (§8.9); any other
+      // https link on one of our hosts opens the app rather than
+      // go_router's "no routes for location" page.
+      final link = incomingLinkRoute(state.uri);
+      if (link != null) return link;
 
       final settings = ref.read(settingsProvider);
       final loc = state.matchedLocation;
