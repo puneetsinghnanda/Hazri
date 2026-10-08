@@ -393,84 +393,6 @@ abstract class L {
   /// **'No ads on Gurbani'**
   String get chipNoAdsOnGurbani;
 
-  /// No description provided for @introTitle1.
-  ///
-  /// In en, this message translates to:
-  /// **'Your Nitnem, always with you'**
-  String get introTitle1;
-
-  /// No description provided for @introBody1.
-  ///
-  /// In en, this message translates to:
-  /// **'All seven Nitnem banis, a 5-minute daily Simran, and Gurpurab reminders. Nitnem reminders follow sunrise and sunset where you are.'**
-  String get introBody1;
-
-  /// No description provided for @introTitle2.
-  ///
-  /// In en, this message translates to:
-  /// **'Read along as the paath is recited'**
-  String get introTitle2;
-
-  /// No description provided for @introBody2.
-  ///
-  /// In en, this message translates to:
-  /// **'The line being recited lights up and the page scrolls with the paathi\'s voice. Minimise the app or lock your phone — the paath carries on.'**
-  String get introBody2;
-
-  /// No description provided for @introTitle3.
-  ///
-  /// In en, this message translates to:
-  /// **'In your language, at your pace'**
-  String get introTitle3;
-
-  /// No description provided for @introBody3.
-  ///
-  /// In en, this message translates to:
-  /// **'Read Gurbani in Gurmukhi, Hindi or Roman, with simple meanings in Punjabi, Hindi or English. Elder mode makes everything larger.'**
-  String get introBody3;
-
-  /// No description provided for @introGetStarted.
-  ///
-  /// In en, this message translates to:
-  /// **'Get started'**
-  String get introGetStarted;
-
-  /// No description provided for @introPhoneLocked.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone locked'**
-  String get introPhoneLocked;
-
-  /// No description provided for @introPaathKeepsPlaying.
-  ///
-  /// In en, this message translates to:
-  /// **'Paath keeps playing'**
-  String get introPaathKeepsPlaying;
-
-  /// No description provided for @introMeaningsIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Meanings: ਪੰਜਾਬੀ · हिन्दी · English'**
-  String get introMeaningsIn;
-
-  /// No description provided for @introBanisCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} banis'**
-  String introBanisCount(int count);
-
-  /// No description provided for @introAtSunset.
-  ///
-  /// In en, this message translates to:
-  /// **'at sunset'**
-  String get introAtSunset;
-
-  /// No description provided for @introBeforeSleep.
-  ///
-  /// In en, this message translates to:
-  /// **'before sleep'**
-  String get introBeforeSleep;
-
   /// No description provided for @setupLanguageTitle.
   ///
   /// In en, this message translates to:
@@ -1232,18 +1154,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Japji'**
   String get diaryStatJapji;
-
-  /// No description provided for @diaryStatRehras.
-  ///
-  /// In en, this message translates to:
-  /// **'Rehras'**
-  String get diaryStatRehras;
-
-  /// No description provided for @diaryStatSohila.
-  ///
-  /// In en, this message translates to:
-  /// **'Sohila'**
-  String get diaryStatSohila;
 
   /// No description provided for @diaryStatSimran.
   ///
@@ -5973,6 +5883,120 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Hazri on 365 days. The days need not be in a row.'**
   String get badgeHowVichari;
+
+  /// No description provided for @welcomeTitleLead.
+  ///
+  /// In en, this message translates to:
+  /// **'From Amrit Vela to bedtime, mark your hazri to'**
+  String get welcomeTitleLead;
+
+  /// No description provided for @welcomeTitleWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Waheguru.'**
+  String get welcomeTitleWord;
+
+  /// No description provided for @welcomeAmritVelaTime.
+  ///
+  /// In en, this message translates to:
+  /// **'4:00 AM'**
+  String get welcomeAmritVelaTime;
+
+  /// No description provided for @welcomeAmritVela.
+  ///
+  /// In en, this message translates to:
+  /// **'Amrit Vela'**
+  String get welcomeAmritVela;
+
+  /// No description provided for @welcomeAmritVelaSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle reminder, {bani} is ready'**
+  String welcomeAmritVelaSub(String bani);
+
+  /// No description provided for @welcomeHazriTime.
+  ///
+  /// In en, this message translates to:
+  /// **'5:10 AM'**
+  String get welcomeHazriTime;
+
+  /// No description provided for @welcomeHazriSub.
+  ///
+  /// In en, this message translates to:
+  /// **'With {bani}'**
+  String welcomeHazriSub(String bani);
+
+  /// No description provided for @welcomeGoalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'6:30 PM'**
+  String get welcomeGoalTime;
+
+  /// No description provided for @welcomeGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal · 1 of 2 done'**
+  String get welcomeGoal;
+
+  /// No description provided for @welcomeGoalSub.
+  ///
+  /// In en, this message translates to:
+  /// **'{bani}, and 11 minutes of Simran'**
+  String welcomeGoalSub(String bani);
+
+  /// No description provided for @welcomeSangatTime.
+  ///
+  /// In en, this message translates to:
+  /// **'9:00 PM'**
+  String get welcomeSangatTime;
+
+  /// No description provided for @welcomeSangat.
+  ///
+  /// In en, this message translates to:
+  /// **'Your sangat group'**
+  String get welcomeSangat;
+
+  /// No description provided for @welcomeSangatSub.
+  ///
+  /// In en, this message translates to:
+  /// **'68 of 101 {bani}, together'**
+  String welcomeSangatSub(String bani);
+
+  /// No description provided for @welcomeStreakTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get welcomeStreakTime;
+
+  /// No description provided for @welcomeStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'12 days in a row'**
+  String get welcomeStreak;
+
+  /// No description provided for @welcomeStreakSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept in your diary'**
+  String get welcomeStreakSub;
+
+  /// No description provided for @welcomeBegin.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin'**
+  String get welcomeBegin;
+
+  /// No description provided for @setupLanguageNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change it any time in Settings.'**
+  String get setupLanguageNote;
+
+  /// No description provided for @elderModeSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Larger text and simpler screens'**
+  String get elderModeSetup;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

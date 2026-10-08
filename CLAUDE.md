@@ -391,8 +391,9 @@ has that the target replaces, and PRD §11 says which step removes each:
   (`07-simran.md`); "in the sangat" and the 45-second presence read go.
 - **There is one city, the profile's**; the Settings city goes, and without a
   profile nothing guesses one (`03-first-run.md` CY1–CY3).
-- **First run is Android's splash, Welcome, Language, How you read**; the
-  branded splash and the reminders step go (`03-first-run.md` F1–F2).
+- **First run is Android's splash, Welcome, Language, How you read** --
+  built 2026-10-08: `/` is a redirect, not a screen; the branded splash, the
+  three intro pages and the reminders step are gone (`03-first-run.md` F1–F8).
 
 ## Known gaps in this build
 

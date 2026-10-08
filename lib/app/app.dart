@@ -104,12 +104,14 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
       unawaited(ref.read(badgeControllerProvider).refreshFacts(daily: true));
       // 07-simran AT1: once per IST day, with a profile.
       unawaited(ref.read(presenceServiceProvider).markAttendance());
+      // 03-first-run F6: Android's prompt at every start, over Welcome on a
+      // first launch; reminders are planned whatever the answer.
+      unawaited(ref.read(reminderSchedulerProvider).reschedule());
       await ref.read(installInviteProvider).readOnce();
       if (!ref.read(settingsProvider).onboardingDone) return;
       // IV6: an invite carried through the Play install, once setup is done.
       final code = await ref.read(installInviteProvider).take();
       if (code != null) ref.read(routerProvider).push(Routes.sangatJoin(code));
-      await ref.read(reminderSchedulerProvider).reschedule();
     });
   }
 

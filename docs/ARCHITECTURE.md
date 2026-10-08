@@ -632,6 +632,7 @@ language's defaults, and re-plans notifications (`02-notifications.md` CM6).
 | `backup_running_since_v1` | shared_preferences | `startedAt` of a backup in progress (BK7) |
 | `sangat_member_v1` | shared_preferences | Whether this install belongs to an active Sangat group, from the last 7.1/7.2 answer; turns the outbox on (08-sangat §5.1). Added 2026-10-08 |
 | `install_referrer_read_v1`, `sangat_pending_code_v1` | shared_preferences | The Play install referrer was read (IV6), and the invite code it carried, kept until setup is done. Added 2026-10-08 |
+| `held_link_v1` | shared_preferences | An App Link (`/j/<code>`, `/verify`) opened before setup, as the in-app route it resolves to, opened once setup completes (`03-first-run.md` F7). Added 2026-10-08 |
 | `backup_next_due_v1` | shared_preferences | When the weekly job is next due, local ISO string; an app open after it runs the catch-up (BK2). Added 2026-10-08 |
 
 No `user.db` table is added. Every backed-up row already has `id`, `updatedAt` and, for diary rows, `deletedAt` (`04-goals.md` §5.1).

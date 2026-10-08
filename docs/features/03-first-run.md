@@ -17,6 +17,14 @@ work without, and nothing else.
 
 ## 3.2 What exists today
 
+**Built 2026-10-08 (PRD §11 step 10):** `Routes.splash` is a redirect,
+`WelcomeScreen` is design 92, setup is Language then How you read with Skip,
+the sample line is the first verse of Japji Sahib from `content.db`,
+`reschedule()` runs at every start before the onboarding check (F6), and a
+link or install-referrer code that arrives before setup is held and opened
+after it (`held_link_v1`, F7). `test/features/first_run_test.dart` drives
+the real router. What follows is the code as it was before that.
+
 ```
 Android system splash (SplashScreen API, app mark on #0C0F24)
   -> Hazri's own branded splash, held 1500 ms, first launch only

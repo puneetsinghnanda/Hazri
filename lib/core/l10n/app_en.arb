@@ -73,26 +73,6 @@
   "chipWorksOffline": "Works offline",
   "chipNoLogin": "No login",
   "chipNoAdsOnGurbani": "No ads on Gurbani",
-  "introTitle1": "Your Nitnem, always with you",
-  "introBody1": "All seven Nitnem banis, a 5-minute daily Simran, and Gurpurab reminders. Nitnem reminders follow sunrise and sunset where you are.",
-  "introTitle2": "Read along as the paath is recited",
-  "introBody2": "The line being recited lights up and the page scrolls with the paathi's voice. Minimise the app or lock your phone — the paath carries on.",
-  "introTitle3": "In your language, at your pace",
-  "introBody3": "Read Gurbani in Gurmukhi, Hindi or Roman, with simple meanings in Punjabi, Hindi or English. Elder mode makes everything larger.",
-  "introGetStarted": "Get started",
-  "introPhoneLocked": "Phone locked",
-  "introPaathKeepsPlaying": "Paath keeps playing",
-  "introMeaningsIn": "Meanings: ਪੰਜਾਬੀ · हिन्दी · English",
-  "introBanisCount": "{count} banis",
-  "@introBanisCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "introAtSunset": "at sunset",
-  "introBeforeSleep": "before sleep",
   "setupLanguageTitle": "Choose your language",
   "setupLanguagePunjabi": "ਪੰਜਾਬੀ",
   "setupLanguagePunjabiSub": "Punjabi",
@@ -413,8 +393,6 @@
   "diaryTickHint": "Tick anything you completed on this day.",
   "diaryTickTooOld": "Only today and the last 7 days can be changed.",
   "diaryStatJapji": "Japji",
-  "diaryStatRehras": "Rehras",
-  "diaryStatSohila": "Sohila",
   "diaryStatSimran": "Simran",
   "simranTitle": "Daily Simran",
   "simranSubtitle": "5 quiet minutes of Naam Simran",
@@ -1975,5 +1953,52 @@
   "badgeHowSevadar": "Be part of 3 sangat goals that are reached, with at least one paath of your own in each. Needs a profile.",
   "badgeHowGursikh": "Earn Nitnemi, Simrani and Paathi, and hazri on 180 days. The days need not be in a row.",
   "badgeHowSatsangi": "5 people join groups you created, each counted once. Needs a profile.",
-  "badgeHowVichari": "Hazri on 365 days. The days need not be in a row."
+  "badgeHowVichari": "Hazri on 365 days. The days need not be in a row.",
+  "welcomeTitleLead": "From Amrit Vela to bedtime, mark your hazri to",
+  "welcomeTitleWord": "Waheguru.",
+  "welcomeAmritVelaTime": "4:00 AM",
+  "welcomeAmritVela": "Amrit Vela",
+  "welcomeAmritVelaSub": "A gentle reminder, {bani} is ready",
+  "@welcomeAmritVelaSub": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeHazriTime": "5:10 AM",
+  "welcomeHazriSub": "With {bani}",
+  "@welcomeHazriSub": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeGoalTime": "6:30 PM",
+  "welcomeGoal": "Daily goal · 1 of 2 done",
+  "welcomeGoalSub": "{bani}, and 11 minutes of Simran",
+  "@welcomeGoalSub": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeSangatTime": "9:00 PM",
+  "welcomeSangat": "Your sangat group",
+  "welcomeSangatSub": "68 of 101 {bani}, together",
+  "@welcomeSangatSub": {
+    "placeholders": {
+      "bani": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeStreakTime": "Night",
+  "welcomeStreak": "12 days in a row",
+  "welcomeStreakSub": "Kept in your diary",
+  "welcomeBegin": "Begin",
+  "setupLanguageNote": "You can change it any time in Settings.",
+  "elderModeSetup": "Larger text and simpler screens"
 }

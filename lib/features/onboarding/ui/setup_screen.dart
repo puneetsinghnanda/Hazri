@@ -13,7 +13,10 @@ import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_mark.dart';
 import '../../../core/widgets/surfaces.dart';
-import '../../reminders/data/reminders_controller.dart';
+import '../../../core/db/content_repository.dart';
+import '../../nitnem/domain/bani.dart';
+import '../../profile/data/incoming_link.dart';
+import '../../sangat/data/sangat_device.dart';
 
 /// Setup: language, then how you read (03-first-run F1). Nothing is required
 /// except the language. Reminders are on by default and Android's permission
@@ -61,12 +64,15 @@ class _StepHeader extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 44,
+            width: 64,
             child: canGoBack
-                ? CardIconButton(
-                    icon: HazriIconData.chevronLeft,
-                    tooltip: L.of(context).actionBack,
-                    onPressed: () => context.go(Routes.setup(step - 1)),
+                ? Align(
+                    alignment: Alignment.centerLeft,
+                    child: CardIconButton(
+                      icon: HazriIconData.chevronLeft,
+                      tooltip: L.of(context).actionBack,
+                      onPressed: () => context.go(Routes.setup(step - 1)),
+                    ),
                   )
                 : null,
           ),
@@ -82,7 +88,11 @@ class _StepHeader extends StatelessWidget {
               ),
             ),
           const Spacer(),
-          const SizedBox(width: 44),
+          // F8: Skip on How you read is Gurmukhi at the standard size.
+          SizedBox(
+            width: 64,
+            child: step == 2 ? const _SkipButton() : null,
+          ),
         ],
       ),
     );
@@ -149,7 +159,7 @@ class _StepLanguage extends ConsumerWidget {
           ),
         ),
         _StepFooter(
-          note: '${l.chipWorksOffline} · ${l.chipNoLogin} · ${l.chipNoAdsOnGurbani}',
+          note: l.setupLanguageNote,
           label: l.actionContinue,
           onPressed: () => context.go(Routes.setup(2)),
         ),
@@ -227,18 +237,14 @@ class _RadioDot extends StatelessWidget {
 class _StepReading extends ConsumerWidget {
   const _StepReading();
 
-  static const _sample = (
-    gurmukhi: 'ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥',
-    devanagari: 'आदि सचु जुगादि सचु ॥',
-    roman: 'aad sach jugaad sach',
-  );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
     final s = ref.watch(settingsProvider);
     final notifier = ref.read(settingsProvider.notifier);
+    // F2: a real line of Gurbani, from content.db like everywhere else.
+    final line = ref.watch(setupSampleLineProvider).value;
 
     return Column(
       children: [
@@ -250,7 +256,7 @@ class _StepReading extends ConsumerWidget {
               const SizedBox(height: 16),
               _ScriptCard(
                 eyebrow: 'ਗੁਰਮੁਖੀ · GURMUKHI',
-                sample: _sample.gurmukhi,
+                sample: line?.gurmukhi ?? '',
                 style: HazriText.gurmukhi(s.readerFontSize),
                 selected: s.script == GurbaniScript.gurmukhi,
                 onTap: () => notifier.setScript(GurbaniScript.gurmukhi),
@@ -258,7 +264,7 @@ class _StepReading extends ConsumerWidget {
               const SizedBox(height: 10),
               _ScriptCard(
                 eyebrow: 'हिन्दी · DEVANAGARI',
-                sample: _sample.devanagari,
+                sample: line?.devanagari ?? '',
                 style: HazriText.devanagari(s.readerFontSize - 1),
                 selected: s.script == GurbaniScript.devanagari,
                 onTap: () => notifier.setScript(GurbaniScript.devanagari),
@@ -266,7 +272,7 @@ class _StepReading extends ConsumerWidget {
               const SizedBox(height: 10),
               _ScriptCard(
                 eyebrow: 'ROMAN',
-                sample: _sample.roman,
+                sample: line?.roman ?? '',
                 style: HazriText.roman(s.readerFontSize - 4),
                 selected: s.script == GurbaniScript.roman,
                 onTap: () => notifier.setScript(GurbaniScript.roman),
@@ -314,7 +320,7 @@ class _StepReading extends ConsumerWidget {
                         children: [
                           Text(l.elderMode, style: HazriText.bodyStrong.copyWith(color: c.ink)),
                           Text(
-                            l.elderModeSub,
+                            l.elderModeSetup,
                             style: HazriText.bodySmall.copyWith(color: c.muted),
                           ),
                         ],
@@ -427,10 +433,49 @@ class _StepFooter extends StatelessWidget {
 String formatAutoTime(BuildContext context, DateTime? at) =>
     at == null ? '—' : HazriDates.of(context).time(at);
 
-/// Ends setup: the scheduler asks for the notification permission and plans
-/// the defaults.
+/// The first verse of Japji Sahib, shown on How you read (F2).
+final setupSampleLineProvider = FutureProvider<GurbaniLine?>((ref) async {
+  final banis = await ref.watch(banisProvider.future);
+  final japji = banis.where((b) => b.id == 'JAPJ').firstOrNull;
+  if (japji?.versionId == null) return null;
+  final lines = await ref.watch(baniLinesProvider(japji!.versionId!).future);
+  return lines.where((x) => !x.isHeading).firstOrNull;
+});
+
+class _SkipButton extends ConsumerWidget {
+  const _SkipButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.colors;
+    return TextButton(
+      onPressed: () async {
+        final n = ref.read(settingsProvider.notifier);
+        await n.setScript(GurbaniScript.gurmukhi);
+        await n.setReaderFontSize(ReaderType.gurmukhiDefault);
+        if (context.mounted) await _finish(context, ref);
+      },
+      child: Text(
+        L.of(context).actionSkip,
+        style: HazriText.bodyStrong.copyWith(color: c.muted),
+      ),
+    );
+  }
+}
+
+/// Ends setup and opens Today, then whatever waited for it (F7): a link
+/// opened before setup, else an invite carried through the Play install.
+/// The notification prompt has already come at app start (F6).
 Future<void> _finish(BuildContext context, WidgetRef ref) async {
+  // Read before Today replaces this screen and its ref goes with it.
+  final prefs = ref.read(sharedPreferencesProvider);
+  final invite = ref.read(installInviteProvider);
   await ref.read(settingsProvider.notifier).setOnboardingDone(true);
-  await ref.read(reminderSchedulerProvider).reschedule();
-  if (context.mounted) context.go(Routes.today);
+  if (!context.mounted) return;
+  final router = GoRouter.of(context);
+  router.go(Routes.today);
+  final held = await takeHeldLink(prefs);
+  final code = held == null ? await invite.take() : null;
+  final next = held ?? (code == null ? null : Routes.sangatJoin(code));
+  if (next != null) router.push(next);
 }

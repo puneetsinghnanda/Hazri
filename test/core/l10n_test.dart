@@ -68,7 +68,6 @@ void main() {
       'setupLanguageHindiSub',
       'setupLanguageEnglish',
       'setupLanguageEnglishSub',
-      'introMeaningsIn',
       'simranWaheguru',
       // The Gurmukhi wordmark on the Vichar share card, the same in any UI
       // language exactly as the app's own name is.

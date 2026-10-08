@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../config/app_config.dart';
 
 /// The hosts App Links are declared for (`AndroidManifest.xml`): one Hosting
@@ -31,4 +35,17 @@ String? incomingLinkRoute(Uri uri) {
     if (code.isNotEmpty) return '/sangat-join?code=${Uri.encodeQueryComponent(code)}';
   }
   return '/today';
+}
+
+/// 03-first-run F7: a link opened before setup is done, kept until it is.
+const kHeldLink = 'held_link_v1';
+
+void holdLink(SharedPreferences prefs, String route) =>
+    unawaited(prefs.setString(kHeldLink, route));
+
+/// The held route, cleared as it is taken.
+Future<String?> takeHeldLink(SharedPreferences prefs) async {
+  final route = prefs.getString(kHeldLink);
+  if (route != null) await prefs.remove(kHeldLink);
+  return route;
 }

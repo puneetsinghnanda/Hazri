@@ -162,50 +162,6 @@ class LEn extends L {
   String get chipNoAdsOnGurbani => 'No ads on Gurbani';
 
   @override
-  String get introTitle1 => 'Your Nitnem, always with you';
-
-  @override
-  String get introBody1 =>
-      'All seven Nitnem banis, a 5-minute daily Simran, and Gurpurab reminders. Nitnem reminders follow sunrise and sunset where you are.';
-
-  @override
-  String get introTitle2 => 'Read along as the paath is recited';
-
-  @override
-  String get introBody2 =>
-      'The line being recited lights up and the page scrolls with the paathi\'s voice. Minimise the app or lock your phone — the paath carries on.';
-
-  @override
-  String get introTitle3 => 'In your language, at your pace';
-
-  @override
-  String get introBody3 =>
-      'Read Gurbani in Gurmukhi, Hindi or Roman, with simple meanings in Punjabi, Hindi or English. Elder mode makes everything larger.';
-
-  @override
-  String get introGetStarted => 'Get started';
-
-  @override
-  String get introPhoneLocked => 'Phone locked';
-
-  @override
-  String get introPaathKeepsPlaying => 'Paath keeps playing';
-
-  @override
-  String get introMeaningsIn => 'Meanings: ਪੰਜਾਬੀ · हिन्दी · English';
-
-  @override
-  String introBanisCount(int count) {
-    return '$count banis';
-  }
-
-  @override
-  String get introAtSunset => 'at sunset';
-
-  @override
-  String get introBeforeSleep => 'before sleep';
-
-  @override
   String get setupLanguageTitle => 'Choose your language';
 
   @override
@@ -646,12 +602,6 @@ class LEn extends L {
 
   @override
   String get diaryStatJapji => 'Japji';
-
-  @override
-  String get diaryStatRehras => 'Rehras';
-
-  @override
-  String get diaryStatSohila => 'Sohila';
 
   @override
   String get diaryStatSimran => 'Simran';
@@ -3343,4 +3293,70 @@ class LEn extends L {
   @override
   String get badgeHowVichari =>
       'Hazri on 365 days. The days need not be in a row.';
+
+  @override
+  String get welcomeTitleLead =>
+      'From Amrit Vela to bedtime, mark your hazri to';
+
+  @override
+  String get welcomeTitleWord => 'Waheguru.';
+
+  @override
+  String get welcomeAmritVelaTime => '4:00 AM';
+
+  @override
+  String get welcomeAmritVela => 'Amrit Vela';
+
+  @override
+  String welcomeAmritVelaSub(String bani) {
+    return 'A gentle reminder, $bani is ready';
+  }
+
+  @override
+  String get welcomeHazriTime => '5:10 AM';
+
+  @override
+  String welcomeHazriSub(String bani) {
+    return 'With $bani';
+  }
+
+  @override
+  String get welcomeGoalTime => '6:30 PM';
+
+  @override
+  String get welcomeGoal => 'Daily goal · 1 of 2 done';
+
+  @override
+  String welcomeGoalSub(String bani) {
+    return '$bani, and 11 minutes of Simran';
+  }
+
+  @override
+  String get welcomeSangatTime => '9:00 PM';
+
+  @override
+  String get welcomeSangat => 'Your sangat group';
+
+  @override
+  String welcomeSangatSub(String bani) {
+    return '68 of 101 $bani, together';
+  }
+
+  @override
+  String get welcomeStreakTime => 'Night';
+
+  @override
+  String get welcomeStreak => '12 days in a row';
+
+  @override
+  String get welcomeStreakSub => 'Kept in your diary';
+
+  @override
+  String get welcomeBegin => 'Begin';
+
+  @override
+  String get setupLanguageNote => 'You can change it any time in Settings.';
+
+  @override
+  String get elderModeSetup => 'Larger text and simpler screens';
 }

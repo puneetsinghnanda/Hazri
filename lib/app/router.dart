@@ -15,9 +15,8 @@ import '../features/library/ui/library_entry_screen.dart';
 import '../features/library/ui/library_screen.dart';
 import '../features/vichar/ui/vichar_screen.dart';
 import '../features/nitnem/ui/nitnem_screen.dart';
-import '../features/onboarding/ui/intro_screen.dart';
 import '../features/onboarding/ui/setup_screen.dart';
-import '../features/onboarding/ui/splash_screen.dart';
+import '../features/onboarding/ui/welcome_screen.dart';
 import '../features/reader/ui/reader_screen.dart';
 import '../features/reminders/data/reminder_service.dart';
 import '../features/reminders/ui/battery_help_screen.dart';
@@ -122,8 +121,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     navigatorKey: _rootKey,
     initialLocation: Routes.splash,
     routes: [
-      GoRoute(path: Routes.splash, builder: (_, _) => const SplashScreen()),
-      GoRoute(path: Routes.intro, builder: (_, _) => const IntroScreen()),
+      // 03-first-run F1: no screen of its own; the redirect below decides
+      // before the first frame.
+      GoRoute(path: Routes.splash, builder: (_, _) => const SizedBox.shrink()),
+      GoRoute(path: Routes.intro, builder: (_, _) => const WelcomeScreen()),
       GoRoute(
         path: '/setup/:step',
         builder: (_, state) =>
@@ -230,13 +231,23 @@ final routerProvider = Provider<GoRouter>((ref) {
       // the Link Result screen, once per token per process (§8.9); any other
       // https link on one of our hosts opens the app rather than
       // go_router's "no routes for location" page.
-      final link = incomingLinkRoute(state.uri);
-      if (link != null) return link;
-
       final settings = ref.read(settingsProvider);
+      final link = incomingLinkRoute(state.uri);
+      if (link != null) {
+        // 03-first-run F7: a link that arrives before setup waits for it.
+        if (settings.onboardingDone) return link;
+        if (link != Routes.today) {
+          holdLink(ref.read(sharedPreferencesProvider), link);
+        }
+        return Routes.intro;
+      }
+
       final loc = state.matchedLocation;
       final inOnboarding = loc == Routes.intro || loc.startsWith('/setup');
-      if (loc == Routes.splash) return null;
+      // F1: the splash is a redirect, never a screen held for a time.
+      if (loc == Routes.splash) {
+        return settings.onboardingDone ? Routes.today : Routes.intro;
+      }
       if (!settings.onboardingDone && !inOnboarding) return Routes.intro;
       if (settings.onboardingDone && inOnboarding) return Routes.today;
       return null;

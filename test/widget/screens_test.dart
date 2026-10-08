@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/diary/ui/diary_screen.dart';
 import 'package:hazri/features/nitnem/ui/nitnem_screen.dart';
-import 'package:hazri/features/onboarding/ui/intro_screen.dart';
+import 'package:hazri/features/onboarding/ui/welcome_screen.dart';
 import 'package:hazri/features/reader/ui/reader_screen.dart';
 import 'package:hazri/features/settings/ui/settings_screen.dart';
 import 'package:hazri/features/simran/ui/simran_screen.dart';
@@ -94,10 +94,10 @@ void main() {
         expect(find.text(l.settingsTitle), findsOneWidget);
       });
 
-      testWidgets('Intro renders in $label', (tester) async {
-        await pumpScreen(tester, const IntroScreen(), locale: locale, dark: dark);
+      testWidgets('Welcome renders in $label', (tester) async {
+        await pumpScreen(tester, const WelcomeScreen(), locale: locale, dark: dark);
         final l = await L.delegate.load(locale);
-        expect(find.text(l.introTitle1), findsOneWidget);
+        expect(find.text(l.welcomeBegin), findsOneWidget);
       });
     }
   }
