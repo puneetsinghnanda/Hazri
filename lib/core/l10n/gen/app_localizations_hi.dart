@@ -1059,7 +1059,7 @@ class LHi extends L {
 
   @override
   String get audioIncludedSub =>
-      'जपु जी साहिब बिना इंटरनेट चलता है, और लिखाई साथ-साथ चलती है।';
+      'हर बाणी बिना इंटरनेट चलती है, पाठ साथ-साथ चलता है।';
 
   @override
   String get settingsAudioOnPhone => 'इसी फ़ोन में सहेजी है';
@@ -3174,4 +3174,12 @@ class LHi extends L {
   @override
   String get globeProfileBanner =>
       'ग्लोब पर ख़ुद को देखने के लिए अपनी प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get appBarTitle => 'हाज़री';
+
+  @override
+  String todayStreakDays(int count) {
+    return '$count';
+  }
 }

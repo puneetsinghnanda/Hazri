@@ -77,6 +77,8 @@ void main() {
       'nOfM',
       // "× 2": a sign and a number.
       'diaryCountTimes',
+      // 05-today §5.7a: the number alone.
+      'todayStreakDays',
     };
     var identical = 0;
     for (final key in keys(en)) {

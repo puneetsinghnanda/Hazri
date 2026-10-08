@@ -8,6 +8,10 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/audio_controller.dart';
 
+/// The length chosen for the running sleep timer, so only its chip is lit
+/// (PRD §11 step 8: the timer marks only the chosen length).
+final sleepChoiceProvider = StateProvider<Duration?>((ref) => null);
+
 /// Speed and sleep timer (PRD 1.7, 1.8).
 Future<void> showPlaybackOptionsSheet(BuildContext context) =>
     showModalBottomSheet<void>(
@@ -37,6 +41,7 @@ class _PlaybackOptionsSheet extends ConsumerWidget {
     final l = L.of(context);
     final speed = ref.watch(settingsProvider.select((s) => s.speed));
     final remaining = ref.watch(sleepRemainingProvider).value;
+    final chosen = remaining == null ? null : ref.watch(sleepChoiceProvider);
     final controller = ref.read(playbackControllerProvider);
 
     return SafeArea(
@@ -85,13 +90,10 @@ class _PlaybackOptionsSheet extends ConsumerWidget {
                   HazriChip(
                     label: duration == null ? l.off : l.minutes(duration.inMinutes),
                     minHeight: 40,
-                    background: (remaining == null) == (duration == null)
-                        ? c.kesriSoft
-                        : c.card2,
-                    foreground: (remaining == null) == (duration == null)
-                        ? c.kesriInk
-                        : c.ink2,
+                    background: chosen == duration ? c.kesriSoft : c.card2,
+                    foreground: chosen == duration ? c.kesriInk : c.ink2,
                     onTap: () {
+                      ref.read(sleepChoiceProvider.notifier).state = duration;
                       ref.read(audioHandlerProvider)?.setSleepTimer(duration);
                       Navigator.of(context).pop();
                     },

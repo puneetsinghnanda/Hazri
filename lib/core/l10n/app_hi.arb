@@ -311,7 +311,7 @@
   "shareCardShare": "शेयर करें",
   "comingSoonShort": "जल्द",
   "audioIncluded": "पाठ की आवाज़ शामिल है",
-  "audioIncludedSub": "जपु जी साहिब बिना इंटरनेट चलता है, और लिखाई साथ-साथ चलती है।",
+  "audioIncludedSub": "हर बाणी बिना इंटरनेट चलती है, पाठ साथ-साथ चलता है।",
   "settingsAudioOnPhone": "इसी फ़ोन में सहेजी है",
   "aboutAudioHeading": "पाठ की रिकॉर्डिंग",
   "readerTapLineToSeek": "पाठ वहीं से शुरू करने के लिए किसी भी पंक्ति पर टैप करें",
@@ -963,5 +963,7 @@
   "globeLiveCount": "आज {count} हाज़िर",
   "globeStale": "आख़िरी बार ताज़ा {time}",
   "globeOffline": "अभी संगत से जुड़ नहीं पा रहे",
-  "globeProfileBanner": "ग्लोब पर ख़ुद को देखने के लिए अपनी प्रोफ़ाइल बनाएँ"
+  "globeProfileBanner": "ग्लोब पर ख़ुद को देखने के लिए अपनी प्रोफ़ाइल बनाएँ",
+  "appBarTitle": "हाज़री",
+  "todayStreakDays": "{count}"
 }

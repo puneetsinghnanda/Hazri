@@ -87,20 +87,24 @@ void main() {
     expect(cta.minutes, 43, reason: 'the morning minus Japji');
   });
 
-  test('morning done, before Rehras: Start Rehras Sahib', () {
+  const morning = {'JAPJ', 'JAAP', 'TVPS', 'CHAU', 'ANND'};
+
+  test('T4 (3): morning done, in the evening slot: Start Rehras Sahib', () {
     final cta = TodayLogic.cta(
       banis: banis,
-      progress: progress(slots: {BaniSlot.morning}),
+      progress: progress(baniIds: morning),
+      currentSlot: BaniSlot.evening,
     );
     expect(cta.kind, TodayCtaKind.startBani);
     expect(cta.bani?.id, 'REHR');
     expect(cta.minutes, 18);
   });
 
-  test('Rehras done, before Sohila: Start Kirtan Sohila', () {
+  test('T4 (4): the current slot done, the next slot\'s first bani', () {
     final cta = TodayLogic.cta(
       banis: banis,
-      progress: progress(slots: {BaniSlot.morning, BaniSlot.evening}),
+      progress: progress(baniIds: {...morning, 'REHR'}),
+      currentSlot: BaniSlot.evening,
     );
     expect(cta.kind, TodayCtaKind.startBani);
     expect(cta.bani?.id, 'SOHL');
@@ -110,12 +114,54 @@ void main() {
   test('all three slots done: the day is complete', () {
     final cta = TodayLogic.cta(
       banis: banis,
-      progress: progress(
-        slots: {BaniSlot.morning, BaniSlot.evening, BaniSlot.bedtime},
-      ),
+      progress: progress(baniIds: {...morning, 'REHR', 'SOHL'}),
+      currentSlot: BaniSlot.bedtime,
     );
     expect(cta.kind, TodayCtaKind.allDone);
     expect(cta.bani, isNull);
+  });
+
+  test('T-h: an unmet goal item comes before the slot\'s bani (T-5)', () {
+    final cta = TodayLogic.cta(
+      banis: banis,
+      progress: progress(),
+      unmetItems: const [(baniId: 'REHR', simranMinutes: null)],
+    );
+    expect(cta.kind, TodayCtaKind.startBani);
+    expect(cta.bani?.id, 'REHR');
+  });
+
+  test('T-i: a simran item unmet offers the Simran menu with its minutes', () {
+    final cta = TodayLogic.cta(
+      banis: banis,
+      progress: progress(baniIds: {'JAPJ'}),
+      unmetItems: const [(baniId: null, simranMinutes: 11)],
+    );
+    expect(cta.kind, TodayCtaKind.simran);
+    expect(cta.minutes, 11);
+  });
+
+  test('T-l: a paath in progress comes before any goal item', () {
+    final cta = TodayLogic.cta(
+      banis: banis,
+      progress: progress(
+        resume: ResumePoint(baniVersionId: 'REHR_SGPC', lineIdx: 30, updatedAt: DateTime(2026, 9, 12, 18)),
+      ),
+      unmetItems: const [(baniId: 'JAPJ', simranMinutes: null)],
+    );
+    expect(cta.kind, TodayCtaKind.continueBani);
+    expect(cta.bani?.id, 'REHR');
+  });
+
+  test('the slot follows the clock', () {
+    final times = {
+      BaniSlot.morning: DateTime(2026, 9, 12, 4, 30),
+      BaniSlot.evening: DateTime(2026, 9, 12, 18, 30),
+      BaniSlot.bedtime: DateTime(2026, 9, 12, 22),
+    };
+    expect(TodayLogic.slotAt(DateTime(2026, 9, 12, 9), times), BaniSlot.morning);
+    expect(TodayLogic.slotAt(DateTime(2026, 9, 12, 19), times), BaniSlot.evening);
+    expect(TodayLogic.slotAt(DateTime(2026, 9, 12, 22, 30), times), BaniSlot.bedtime);
   });
 
   group('morningCount', () {

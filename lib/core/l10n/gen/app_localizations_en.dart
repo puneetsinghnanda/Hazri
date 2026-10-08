@@ -1064,7 +1064,7 @@ class LEn extends L {
 
   @override
   String get audioIncludedSub =>
-      'Japji Sahib plays offline, with the text following along.';
+      'Every bani plays offline, with the text following along.';
 
   @override
   String get settingsAudioOnPhone => 'Saved on this phone';
@@ -3184,4 +3184,12 @@ class LEn extends L {
   @override
   String get globeProfileBanner =>
       'Create your profile to see yourself on the globe';
+
+  @override
+  String get appBarTitle => 'Hazri';
+
+  @override
+  String todayStreakDays(int count) {
+    return '$count';
+  }
 }

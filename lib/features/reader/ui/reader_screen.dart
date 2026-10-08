@@ -29,6 +29,7 @@ import '../../nitnem/domain/bani.dart';
 import 'gurbani_line_view.dart';
 import 'text_settings_sheet.dart';
 import '../../hazri/data/hazri_controller.dart';
+import '../../goals/data/goals_controller.dart';
 import '../../../core/time/date_format.dart';
 
 /// The reader (Design 13-16).
@@ -673,7 +674,15 @@ class _EndOfBaniCard extends ConsumerWidget {
         .where((b) => b.defaultSlot == bani.defaultSlot && b.sort > bani.sort)
         .firstOrNull;
     final hazri = ref.watch(hazriTodayProvider);
-    final markedByThis = hazri.isMarked && hazri.baniId == bani.id;
+    // PRD §4.5: the time of *this* completion, the latest of this bani today,
+    // not the time hazri was first marked.
+    final mine = (ref.watch(todayRowsProvider).value?.completions ?? const [])
+        .where((c) => c.baniId == bani.id)
+        .map((c) => c.completedAt.toLocal())
+        .fold<DateTime?>(null, (a, b) => a == null || b.isAfter(a) ? b : a);
+    // "When this was what marked today's hazri": the first thing today was
+    // this very paath.
+    final markedByThis = hazri.isMarked && hazri.baniId == bani.id && mine != null && hazri.markedAt == mine;
 
     return Padding(
       padding: const EdgeInsets.only(top: 24, bottom: 8),
@@ -702,10 +711,9 @@ class _EndOfBaniCard extends ConsumerWidget {
                         l.readerCompleteTitle(bani.name(l.localeName)),
                         style: HazriText.bodyStrong.copyWith(color: c.ink),
                       ),
-                      if (hazri.markedAt != null)
+                      if (mine != null)
                         Text(
-                          l.readerLoggedInDiary(
-                              HazriDates.of(context).time(hazri.markedAt!)),
+                          l.readerLoggedInDiary(HazriDates.of(context).time(mine)),
                           style: HazriText.caption.copyWith(color: c.muted),
                         ),
                     ],

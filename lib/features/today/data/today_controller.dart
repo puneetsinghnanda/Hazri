@@ -5,6 +5,9 @@ import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_db.dart';
 import '../../../core/db/user_repository.dart';
 import '../../../core/time/clock.dart';
+import '../../goals/data/goals_controller.dart';
+import '../../goals/domain/day_verdict.dart';
+import '../../reminders/data/reminders_controller.dart';
 import '../domain/today_state.dart';
 
 /// What has been completed today and where the reader left off.
@@ -50,12 +53,25 @@ final dayProgressProvider = StreamProvider<DayProgress>((ref) async* {
   }
 });
 
-/// Today's primary button.
+/// Today's primary button (05-today T4).
 final todayCtaProvider = Provider<TodayCta?>((ref) {
   final banis = ref.watch(banisProvider).value;
   final progress = ref.watch(dayProgressProvider).value;
   if (banis == null || progress == null) return null;
-  return TodayLogic.cta(banis: banis, progress: progress);
+  final rows = ref.watch(todayRowsProvider).value;
+  final items = ref.watch(itemsInScopeTodayProvider);
+  final unmet = [
+    for (final i in items)
+      if (rows == null || !itemMet(i, rows.completions, rows.sittings))
+        (baniId: i.itemType == ItemType.simran ? null : i.baniId, simranMinutes: i.simranMinutes),
+  ];
+  final slotTimes = ref.watch(slotTimesProvider).value ?? const {};
+  return TodayLogic.cta(
+    banis: banis,
+    progress: progress,
+    unmetItems: unmet,
+    currentSlot: TodayLogic.slotAt(ref.watch(clockProvider).now(), slotTimes),
+  );
 });
 
 /// Whether Simran has been completed today.

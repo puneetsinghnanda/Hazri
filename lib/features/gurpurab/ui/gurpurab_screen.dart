@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/content_db.dart';
@@ -94,9 +95,11 @@ class GurpurabScreen extends ConsumerWidget {
             colour: c.card2,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Text(
+              // With the year: "14 Mar to 13 Mar" says nothing about which
+              // March is covered.
               l.gurpurabNoDataBody(
-                dates.shortDate(calendar.coveredFrom!),
-                dates.shortDate(calendar.coveredToInclusive!),
+                DateFormat.yMMMd(l.localeName).format(calendar.coveredFrom!),
+                DateFormat.yMMMd(l.localeName).format(calendar.coveredToInclusive!),
               ),
               style: HazriText.bodySmall.copyWith(color: c.ink2),
             ),

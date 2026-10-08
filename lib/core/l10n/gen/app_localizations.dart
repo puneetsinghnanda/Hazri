@@ -1968,7 +1968,7 @@ abstract class L {
   /// No description provided for @audioIncludedSub.
   ///
   /// In en, this message translates to:
-  /// **'Japji Sahib plays offline, with the text following along.'**
+  /// **'Every bani plays offline, with the text following along.'**
   String get audioIncludedSub;
 
   /// No description provided for @settingsAudioOnPhone.
@@ -5703,6 +5703,18 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Create your profile to see yourself on the globe'**
   String get globeProfileBanner;
+
+  /// No description provided for @appBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri'**
+  String get appBarTitle;
+
+  /// No description provided for @todayStreakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}'**
+  String todayStreakDays(int count);
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

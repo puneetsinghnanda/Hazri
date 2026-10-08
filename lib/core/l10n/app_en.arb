@@ -644,7 +644,7 @@
   "shareCardShare": "Share",
   "comingSoonShort": "Soon",
   "audioIncluded": "Recitation included",
-  "audioIncludedSub": "Japji Sahib plays offline, with the text following along.",
+  "audioIncludedSub": "Every bani plays offline, with the text following along.",
   "settingsAudioOnPhone": "Saved on this phone",
   "aboutAudioHeading": "Recitation",
   "readerTapLineToSeek": "Tap any line to start the paath there",
@@ -1885,5 +1885,14 @@
     }
   },
   "globeOffline": "Can't reach the sangat right now",
-  "globeProfileBanner": "Create your profile to see yourself on the globe"
+  "globeProfileBanner": "Create your profile to see yourself on the globe",
+  "appBarTitle": "Hazri",
+  "todayStreakDays": "{count}",
+  "@todayStreakDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

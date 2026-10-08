@@ -156,12 +156,30 @@ class SettingsScreen extends ConsumerWidget {
                               ref.read(notificationsAllowedProvider.notifier).allow()
                           : null,
                     ),
-                  _SegmentedRow(
-                    title: l.playerSpeed,
-                    options: const [('0.75', '0.75×'), ('1.0', '1.0×'), ('1.5', '1.5×')],
-                    value: s.speed.toStringAsFixed(s.speed == 0.75 ? 2 : 1),
-                    onChanged: (v) =>
-                        ref.read(playbackControllerProvider).setSpeed(double.parse(v)),
+                  // PRD §4.6: the same six speeds as the player's sheet.
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l.playerSpeed, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+                        const SizedBox(height: 10),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            for (final v in const [0.75, 0.9, 1.0, 1.1, 1.25, 1.5])
+                              HazriChip(
+                                label: '${v.toStringAsFixed(v == v.roundToDouble() ? 1 : 2)}×',
+                                minHeight: 40,
+                                background: s.speed == v ? c.kesriSoft : c.card2,
+                                foreground: s.speed == v ? c.kesriInk : c.ink2,
+                                onTap: () => ref.read(playbackControllerProvider).setSpeed(v),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

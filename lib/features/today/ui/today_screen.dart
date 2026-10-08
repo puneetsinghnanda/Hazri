@@ -18,12 +18,14 @@ import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../data/today_controller.dart';
 import '../../../app/menu_sheet.dart';
-import '../../../core/widgets/tab_header.dart';
 import '../../hazri/data/hazri_controller.dart';
 import '../../hazri/ui/goal_complete_sheet.dart';
 import '../../hazri/ui/hazri_banner.dart';
 import '../domain/today_state.dart';
-import 'elder_today.dart';
+import '../../diary/ui/diary_screen.dart' show nitnemStreakProvider;
+import '../../../core/db/user_repository.dart' show NitnemStreak;
+import '../../../core/widgets/app_mark.dart';
+import 'package:intl/intl.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../goals/domain/day_verdict.dart';
 import '../../goals/ui/set_goal_card.dart';
@@ -57,60 +59,193 @@ class TodayScreen extends ConsumerWidget {
       });
     });
 
-    if (ref.watch(settingsProvider.select((s) => s.elderMode))) {
-      return const ElderTodayScreen();
-    }
+    // T5: elder mode is a mode, not a screen. Sizes come from the elder
+    // theme; the secondary cards (Vichar, Gurpurab) step aside.
+    final elder = ref.watch(settingsProvider.select((s) => s.elderMode));
+    final c = context.colors;
+    final profile = ref.watch(profileControllerProvider);
+    final hasBanner = profile is ProfileNone || profile is ProfileUnavailable;
+    final streak = ref.watch(nitnemStreakProvider).value;
 
+    return Scaffold(
+      backgroundColor: c.bg,
+      body: PhoneWidth(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const _TodayAppBar(),
+            // T11: the first card overlaps the band by 32 dp.
+            Transform.translate(
+              offset: const Offset(0, -32),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: HazriSize.gutter),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (hasBanner) ...[
+                      const ProfileBanner(),
+                      const SizedBox(height: 12),
+                    ],
+                    const HazriBanner(),
+                    // T12: only at 2 days or more; nothing said below that.
+                    if (streak != null && streak.current >= 2) ...[
+                      _StreakCard(streak: streak),
+                      const SizedBox(height: 12),
+                    ],
+                    const _GoalsCard(),
+                    const SizedBox(height: 12),
+                    _CtaButton(cta: ref.watch(todayCtaProvider)),
+                    if (!elder) ...[
+                      const SizedBox(height: 12),
+                      const VicharCard(),
+                      const SizedBox(height: 12),
+                      const _GurpurabCard(),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// T11, canvas option D: the navy band on Today only. Menu, the sunrise
+/// mark and "Hazri", the person button; then the greeting and the date,
+/// Gregorian and Nanakshahi.
+class _TodayAppBar extends ConsumerWidget {
+  const _TodayAppBar();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
     final dates = HazriDates.of(context);
     final now = ref.watch(clockProvider).now();
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final band = dark ? c.card2 : c.primary;
+    const white = Colors.white;
+    final calendar = ref.watch(nanakshahiCalendarProvider).value;
+    final ns = calendar?.dateFor(DateTime(now.year, now.month, now.day));
+    final date = [dates.longDate(now), ?ns?.labelWithYear(l.localeName)].join(' · ');
 
-    return Scaffold(
-      backgroundColor: c.bg,
-      body: SafeArea(
-        bottom: false,
-        child: PhoneWidth(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
+    Widget round(Widget child, String tooltip, VoidCallback onTap, {bool circle = false}) => Tooltip(
+          message: tooltip,
+          child: Material(
+            color: white.withValues(alpha: 0.12),
+            shape: circle ? const CircleBorder() : RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            child: InkWell(
+              customBorder: circle ? const CircleBorder() : null,
+              borderRadius: circle ? null : BorderRadius.circular(14),
+              onTap: onTap,
+              child: SizedBox.square(dimension: 44, child: Center(child: child)),
+            ),
+          ),
+        );
+
+    return Container(
+      decoration: BoxDecoration(
+        color: band,
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
+      ),
+      padding: EdgeInsets.fromLTRB(HazriSize.gutter, MediaQuery.paddingOf(context).top + 10, HazriSize.gutter, 52),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              // Design 30's header: the menu, the tab's name, the date.
-              // The greeting and the person icon (01-accounts §8.4, 05-today T8).
-              TabHeader(
-                title: greeting(l, ref.watch(profileControllerProvider)),
-                subtitle: dates.longDate(now),
-                onMenu: () => showMenuSheet(context),
-                trailing: CardIconButton(
-                  icon: HazriIconData.menu,
-                  tooltip: l.profileTitle,
-                  size: 40,
-                  iconSize: 20,
-                  onPressed: () => context.push(Routes.profile),
-                  child: Icon(Icons.person, size: 20, color: c.ink),
+              round(AppIcon(HazriIconData.menu, size: 20, color: white), l.menuTooltip, () => showMenuSheet(context)),
+              const SizedBox(width: 12),
+              const AppMark(size: 28, arcColor: white, sunColor: Color(0xFFF2A24E)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l.appBarTitle,
+                  style: HazriText.brand.copyWith(fontSize: 22, color: white),
                 ),
               ),
-              const SizedBox(height: 6),
-              const ProfileBanner(),
-              if (ref.watch(profileControllerProvider) is ProfileNone ||
-                  ref.watch(profileControllerProvider) is ProfileUnavailable)
-                const SizedBox(height: 12),
-              const HazriBanner(),
-              const _GoalsCard(),
-              const SizedBox(height: 12),
-              // No Simran tile of its own: design 30 has Simran as a row on
-              // the goals card, and the tile was asking the same question in
-              // two places on one screen.
-              _CtaButton(cta: ref.watch(todayCtaProvider)),
-              const SizedBox(height: 12),
-              // Gurpurab above the Vichar, as designs 30 and 58 have it: a
-              // Gurpurab is a date somebody has to plan around and the day's
-              // line is there whenever they get to it.
-              const _GurpurabCard(),
-              const SizedBox(height: 12),
-              const VicharCard(),
+              round(const Icon(Icons.person, size: 22, color: white), l.profileTitle,
+                  () => context.push(Routes.profile), circle: true),
             ],
           ),
-        ),
+          const SizedBox(height: 18),
+          Text(
+            greeting(l, ref.watch(profileControllerProvider)),
+            style: HazriText.display22.copyWith(color: white, fontSize: 24),
+          ),
+          const SizedBox(height: 2),
+          Text(date, style: HazriText.caption.copyWith(color: white.withValues(alpha: 0.78), fontSize: 13)),
+        ],
+      ),
+    );
+  }
+}
+
+/// T12, canvas option Streak 3: the number over its caption, and the last
+/// seven days, saffron for a day that counts, today ringed. Opens the Diary.
+class _StreakCard extends ConsumerWidget {
+  const _StreakCard({required this.streak});
+
+  final NitnemStreak streak;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.colors;
+    final l = L.of(context);
+    final today = ref.watch(clockProvider).today();
+    final days = [for (var i = 6; i >= 0; i--) today.subtract(Duration(days: i))];
+    String initial(DateTime d) {
+      try {
+        return DateFormat('EEEEE', l.localeName).format(d);
+      } on Object {
+        return DateFormat('EEEEE').format(d);
+      }
+    }
+
+    return HazriCard(
+      onTap: () => context.go(Routes.diary),
+      child: Row(
+        children: [
+          Flexible(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l.todayStreakDays(streak.current),
+                    style: HazriText.display22.copyWith(color: c.kesri, fontSize: 30, height: 1.1)),
+                Text(l.todayStreakCaption,
+                    maxLines: 3, style: HazriText.caption.copyWith(color: c.muted)),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (final d in days)
+                  Column(
+                    children: [
+                      Text(initial(d), style: HazriText.caption.copyWith(color: c.muted, fontSize: 11)),
+                      const SizedBox(height: 4),
+                      Container(
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: streak.days.contains(localDateKey(d)) ? c.kesri : c.rule,
+                          border: d == today ? Border.all(color: c.ink, width: 1.5) : null,
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -305,6 +440,14 @@ class _CtaButton extends ConsumerWidget {
         icon: HazriIconData.check,
         secondary: true,
         onPressed: () => context.go(Routes.diary),
+      );
+    }
+
+    if (cta!.kind == TodayCtaKind.simran) {
+      return PrimaryButton(
+        label: l.simranBeginMinutes(cta!.minutes),
+        icon: HazriIconData.simranDots,
+        onPressed: () => context.go(Routes.simran),
       );
     }
 

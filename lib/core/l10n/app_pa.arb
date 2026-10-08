@@ -311,7 +311,7 @@
   "shareCardShare": "ਸਾਂਝਾ ਕਰੋ",
   "comingSoonShort": "ਜਲਦੀ",
   "audioIncluded": "ਪਾਠ ਦੀ ਆਵਾਜ਼ ਸ਼ਾਮਲ ਹੈ",
-  "audioIncludedSub": "ਜਪੁ ਜੀ ਸਾਹਿਬ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦਾ ਹੈ, ਅਤੇ ਲਿਖਤ ਨਾਲ-ਨਾਲ ਚੱਲਦੀ ਹੈ।",
+  "audioIncludedSub": "ਹਰ ਬਾਣੀ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀ ਹੈ, ਪਾਠ ਨਾਲ-ਨਾਲ ਚੱਲਦਾ ਹੈ।",
   "settingsAudioOnPhone": "ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲੀ ਹੈ",
   "aboutAudioHeading": "ਪਾਠ ਦੀ ਰਿਕਾਰਡਿੰਗ",
   "readerTapLineToSeek": "ਪਾਠ ਉੱਥੋਂ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਸੇ ਵੀ ਪੰਕਤੀ ਉੱਤੇ ਟੈਪ ਕਰੋ",
@@ -963,5 +963,7 @@
   "globeLiveCount": "ਅੱਜ {count} ਹਾਜ਼ਰ",
   "globeStale": "ਆਖਰੀ ਵਾਰ ਤਾਜ਼ਾ {time}",
   "globeOffline": "ਹੁਣੇ ਸੰਗਤ ਨਾਲ ਜੁੜ ਨਹੀਂ ਹੋ ਰਿਹਾ",
-  "globeProfileBanner": "ਗਲੋਬ ਉੱਤੇ ਆਪਣੇ ਆਪ ਨੂੰ ਦੇਖਣ ਲਈ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ"
+  "globeProfileBanner": "ਗਲੋਬ ਉੱਤੇ ਆਪਣੇ ਆਪ ਨੂੰ ਦੇਖਣ ਲਈ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ",
+  "appBarTitle": "ਹਾਜ਼ਰੀ",
+  "todayStreakDays": "{count}"
 }

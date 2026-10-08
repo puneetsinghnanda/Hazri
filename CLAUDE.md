@@ -488,6 +488,12 @@ has that the target replaces, and PRD §11 says which step removes each:
   paragraphs further down about the 45-second presence read, "in the
   sangat", two people in one city being one dot and the headline describe
   the build before this one.
+- **Today follows 05-today (PRD §11 step 8)**: the navy band on Today only
+  (T11), the streak card with the week strip at 2 days or more (T12), the
+  CTA order of T4 (in progress, unmet goal item, current slot, next slot),
+  and elder mode as one tree (`ElderTodayScreen` is gone; elder hides the
+  Vichar and Gurpurab cards). "There is no brand bar" below now describes
+  every tab except Today.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own

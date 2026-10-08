@@ -4,7 +4,7 @@ import '../../../core/db/content_db.dart' show BaniSlot;
 import '../../nitnem/domain/bani.dart';
 
 /// Which button Today offers (PRD 1.3).
-enum TodayCtaKind { startNitnem, continueBani, startBani, allDone }
+enum TodayCtaKind { startNitnem, continueBani, startBani, simran, allDone }
 
 /// The primary action on Today.
 @immutable
@@ -56,16 +56,20 @@ class DayProgress {
 
 /// Works out Today's button and the day-arc state.
 abstract final class TodayLogic {
-  /// The CTA for the current state of the day.
+  /// The CTA for the current state of the day (05-today T4), in order:
   ///
-  /// Order matters: a paath already under way is always offered before a fresh
-  /// one, so "Continue" wins over "Start".
+  /// 1. a paath in progress today → Continue, at the saved line;
+  /// 2. the first goal item in scope not yet met, in the goal's order → its
+  ///    bani, or the Simran menu with the item's minutes ([unmetItems] comes
+  ///    from `verdictOn`, never a count of its own);
+  /// 3. the current slot's first bani not completed today;
+  /// 4. the next slot's first bani.
   static TodayCta cta({
     required List<Bani> banis,
     required DayProgress progress,
+    List<({String? baniId, int? simranMinutes})> unmetItems = const [],
+    BaniSlot currentSlot = BaniSlot.morning,
   }) {
-    final morning = banis.where((b) => b.defaultSlot == BaniSlot.morning).toList();
-
     final resume = progress.resume;
     if (resume != null) {
       final bani = banis
@@ -83,25 +87,41 @@ abstract final class TodayLogic {
       }
     }
 
-    if (!progress.isDone(BaniSlot.morning)) {
-      final remaining =
-          morning.where((b) => !progress.completedBaniIds.contains(b.id)).toList();
-      final next = remaining.firstOrNull ?? morning.firstOrNull;
-      return TodayCta(
-        kind: TodayCtaKind.startNitnem,
-        bani: next,
-        minutes: remaining.fold(0, (sum, b) => sum + b.estMinutes),
-      );
+    for (final item in unmetItems) {
+      if (item.baniId == null) {
+        return TodayCta(kind: TodayCtaKind.simran, minutes: item.simranMinutes ?? 5);
+      }
+      final bani = banis.where((b) => b.id == item.baniId).firstOrNull;
+      if (bani != null) return TodayCta(kind: TodayCtaKind.startBani, bani: bani, minutes: bani.estMinutes);
     }
 
-    for (final slot in [BaniSlot.evening, BaniSlot.bedtime]) {
-      if (progress.isDone(slot)) continue;
-      final bani = banis.where((b) => b.defaultSlot == slot).firstOrNull;
-      if (bani == null) continue;
-      return TodayCta(kind: TodayCtaKind.startBani, bani: bani, minutes: bani.estMinutes);
+    const order = [BaniSlot.morning, BaniSlot.evening, BaniSlot.bedtime];
+    for (final slot in order.skip(order.indexOf(currentSlot).clamp(0, 2))) {
+      final remaining = banis
+          .where((b) => b.defaultSlot == slot && !progress.completedBaniIds.contains(b.id))
+          .toList();
+      if (remaining.isEmpty) continue;
+      if (slot == BaniSlot.morning) {
+        return TodayCta(
+          kind: TodayCtaKind.startNitnem,
+          bani: remaining.first,
+          minutes: remaining.fold(0, (sum, b) => sum + b.estMinutes),
+        );
+      }
+      return TodayCta(kind: TodayCtaKind.startBani, bani: remaining.first, minutes: remaining.first.estMinutes);
     }
 
     return const TodayCta(kind: TodayCtaKind.allDone);
+  }
+
+  /// The slot the clock is in: bedtime from its time, evening from sunset,
+  /// otherwise morning.
+  static BaniSlot slotAt(DateTime now, Map<BaniSlot, DateTime> slotTimes) {
+    final bed = slotTimes[BaniSlot.bedtime];
+    final eve = slotTimes[BaniSlot.evening];
+    if (bed != null && !now.isBefore(bed)) return BaniSlot.bedtime;
+    if (eve != null && !now.isBefore(eve)) return BaniSlot.evening;
+    return BaniSlot.morning;
   }
 
   /// How many of the morning banis are finished, and how many there are.

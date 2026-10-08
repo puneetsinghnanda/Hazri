@@ -1060,7 +1060,7 @@ class LPa extends L {
 
   @override
   String get audioIncludedSub =>
-      'ਜਪੁ ਜੀ ਸਾਹਿਬ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦਾ ਹੈ, ਅਤੇ ਲਿਖਤ ਨਾਲ-ਨਾਲ ਚੱਲਦੀ ਹੈ।';
+      'ਹਰ ਬਾਣੀ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦੀ ਹੈ, ਪਾਠ ਨਾਲ-ਨਾਲ ਚੱਲਦਾ ਹੈ।';
 
   @override
   String get settingsAudioOnPhone => 'ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਸੰਭਾਲੀ ਹੈ';
@@ -3180,4 +3180,12 @@ class LPa extends L {
   @override
   String get globeProfileBanner =>
       'ਗਲੋਬ ਉੱਤੇ ਆਪਣੇ ਆਪ ਨੂੰ ਦੇਖਣ ਲਈ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ';
+
+  @override
+  String get appBarTitle => 'ਹਾਜ਼ਰੀ';
+
+  @override
+  String todayStreakDays(int count) {
+    return '$count';
+  }
 }
