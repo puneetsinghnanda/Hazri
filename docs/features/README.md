@@ -72,8 +72,17 @@ Once building starts, feature order is not preference, it is dependency:
 2. **02-notifications** — half-broken in the reader's hands right now.
 3. **04-goals** and **09-diary** — one shared rule, already half done.
 4. **01-accounts** — the gate the sangat sits behind.
-5. **08-sangat** — needs accounts and the backend.
-6. **07-simran** — needs the backend for live presence.
-7. **05-today**, **06-nitnem** — mostly consolidation once the rest is settled.
-8. **03-first-run** — last, because it introduces everything else and should
+5. **10-backup** — needs the profile and the goals schema.
+6. **08-sangat** and **11-admin** — need accounts and the backend; the admin
+   website runs the built-in groups.
+7. **07-simran** — needs the backend for live presence.
+8. **05-today**, **06-nitnem** — mostly consolidation once the rest is settled.
+9. **12-badges** — needs the goals schema; its profile section needs
+   accounts and backup, and Sevadar and Satsangi need the sangat. The eight
+   phone-only badges can ship before the sangat.
+10. **03-first-run** — last, because it introduces everything else and should
    be designed once the rest has stopped moving.
+
+All twelve files now exist (2026-10-08), so the condition above is met. The
+summary of all of them is `docs/PRD.md` §3.5, and the build order is also
+§15.1 there.

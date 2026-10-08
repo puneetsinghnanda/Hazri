@@ -7,9 +7,13 @@ to every session in this repository.
    `design/html/NN-*.{light,dark}.html` are 390 x 844 CSS px = 390 x 844 dp.
    Match layout, spacing, radii, colours and type; build with Flutter widgets.
    `design/tokens.json` is the source of truth for colour, type and shape, and
-   is mirrored in `lib/core/theme/`.
-2. **Behaviour comes from the PRD.** Where a design and the PRD disagree, the
-   PRD wins; note the conflict in the PR description.
+   is mirrored in `lib/core/theme/`. **Only screens marked *new* or *current*
+   on `design/canvas.html` are the spec**; a *superseded* one is history (see
+   "The designs" below).
+2. **Behaviour comes from the PRD and `docs/features/`.** Where a design and
+   either disagree, the written behaviour wins; where the PRD and a feature
+   file disagree, the feature file wins. Note the conflict in the PR
+   description.
 3. **Never create, paraphrase, auto-translate or AI-generate Gurbani text,
    Gurbani audio, meanings, or images of the Gurus.** Every line of Gurbani and
    every meaning in the app comes from `content/source/` through
@@ -18,14 +22,20 @@ to every session in this repository.
 4. **No ad SDKs, no third-party tracking or attribution SDKs, no login,
    ever.** Phase 1 goes further: it makes no network requests at all and
    `INTERNET` is removed from the merged manifest. **Phase 2 restores
-   `INTERNET`** and adds Firebase. What it may then send is a closed list:
-   an anonymous account, the sangat (groups, shared goals, the globe) and
-   diary sync. **Firebase Analytics ships in Phase 2 with collection off and
+   `INTERNET`** and adds Firebase. What it may then send is a closed list,
+   each item named by a feature file (PRD §13.1): the anonymous sign-in; **a
+   profile the person chooses to make** (name, email, city, phone if given)
+   with its verification and restore mail; with a profile, the **daily
+   attendance mark** and the **weekly backup**; for a Sangat member, their
+   paath toward their groups and an FCM token. No client touches Firestore:
+   everything goes through the `api` Cloud Function. **Firebase Analytics ships in Phase 2 with collection off and
    sends nothing** (`setAnalyticsCollectionEnabled(false)` at start-up);
    Crashlytics is not added at all until Phase 3, which is where collection is
    switched on and the opt-out becomes live. PRD §13.1 is the per-phase table
    and the privacy screen is its reader-facing copy — neither is allowed to
-   run ahead of the other. Across every phase: no PII, no free text, no
+   run ahead of the other, so the screen is rewritten in the same change that
+   ships the profile, attendance and the backup. Across every phase, in
+   analytics: no PII, no free text; and everywhere: no
    advertising ID (`AD_ID` stays out of the merged manifest) and ad
    personalisation off.
    Three things stay true across both phases and are not negotiable: **no
@@ -47,7 +57,7 @@ to every session in this repository.
 ## The roadmap
 
 Phase 2 is what this build is. **Phase 3 is seven things and nothing else**
-(PRD §3.4): report an issue / feedback, points and badges, Sehaj Path and
+(PRD §3.4): report an issue / feedback, badges, Sehaj Path and
 the marker, rate the app, a digital Gurdwara visit, switching analytics
 collection on, and notifications. There is no phase after it, and the
 fifteen-item Phase 3 that used to be written down -- the iPhone app, Live
@@ -71,19 +81,28 @@ badges with no points at all, so §0 stands, and Gyani and Pracharak are
 replaced by Vichari and Satsangi (`docs/features/12-badges.md`). **D13 is
 closed:** the backend is Blaze with Cloud Functions.
 
-**Notifications are mostly already here, and two of them were broken.** Five
-local reminder kinds ship -- `amritVela`, `evening`, `bedtime`, `simran`,
-`gurpurab` -- so the daily reminder and the Gurpurab alert are built. The
-per-goal reminder is **not**: `ReminderIds.goal()` and its channel exist, but
-nothing ever writes a reminder row for a goal, so none is ever planned. See
-the two bugs under "Known gaps" below before believing any claim that a
-notification works.
+**Badges are fully specified and designed** (2026-10-08), ahead of the rest
+of Phase 3: ten badges counted in days from the Diary's own rows, **Nitnemi
+counts the five morning banis** (`default_slot` = `morning`), a new badge is
+announced by an **in-app bottom sheet, never a notification**, and the
+screens are designs 95–99 — the sheet (1C), the Badges page (2A), one badge
+(3B), the profile's Badges section (4B, replacing 33) and the menu's navy
+header with the earned set under the name and city (5C, replacing 37).
 
-Only two things anybody has asked for genuinely need a push: being added to a
-sangat, and the group's daily digest. **Both are now buildable** -- the
-project is on Blaze and a Cloud Function is the sender. Every notification
-that must reach *everybody* still has to stay local, because somebody who
-never joins the sangat has no account and no token.
+**Notifications are specified** (`docs/features/02-notifications.md`,
+2026-10-07) as a closed list: Amrit Vela at 04:00, a reminder per goal item
+at its own time, Gurpurabs at 06:00 and other Sikh events at 07:00 on the
+day, a hazri nudge at 07:00 with no goal and no hazri, and three pushes by
+Cloud Function -- the Sangat at 21:00, new members to a group's creator, a
+group ending. **Reminders are on by default** and Android's permission prompt
+comes at app start. The Rehras, Kirtan Sohila and Daily Simran reminders the
+code still ships are removed by that file (N-2, open), and a badge or a met
+goal is an in-app sheet, not a notification. The code today has five local
+kinds -- `amritVela`, `evening`, `bedtime`, `simran`, `gurpurab` -- and no
+per-goal reminder; see the two bugs under "Known gaps" before believing any
+claim that a notification works. Every notification that must reach
+*everybody* stays local, because somebody with no profile and no group has no
+token.
 
 ## The feature specifications
 
@@ -93,6 +112,15 @@ never joins the sangat has no account and no token.
 deciding "were the goals met" differently, hazri hidden behind the sangat
 because nobody had written down that it is local, a Gurpurab reminder firing
 nightly because nobody had written down what should make it fire.
+
+**All twelve files exist** (2026-10-08), written with the owner on
+2026-10-07 and 2026-10-08, so the owner's condition -- *nothing is
+implemented until every feature has its technical specification* -- is met.
+`docs/PRD.md` §3.5 summarises every one of them, and §15.1 (and
+`docs/features/README.md`) is the order to build in: platform,
+notifications, goals and diary, accounts, backup, sangat and admin, simran,
+today and nitnem, badges, first run. Each file's open questions have a
+default the build follows; PRD §18 lists them.
 
 **Read the file for a feature before changing it, and change the file in the
 same commit when the behaviour changes.** Each one carries numbered rules that
@@ -115,6 +143,34 @@ Two cost facts worth knowing before touching the backend: **Firestore cannot
 be spend-capped** -- it is not a cappable service, and it is the largest cost
 driver -- and **costs record up to 24 hours late**, so the cap lags reality by
 a day. `maxInstances` is the real protection; the cap is the last line.
+
+## The designs
+
+`design/canvas.html` is **every screen on one page, by feature**, each marked
+*new*, *current*, *superseded* or *reference*, with the feature file it
+follows and, for a superseded one, what replaced it. It opens on "Current
+only". It is published as an artifact at
+<https://claude.ai/artifact/Fz2WJs5tPF9nUWPgkgBkR8>; republish it after
+changing it, with every new or changed `design/html/` file. PRD Appendix A.2
+is the same list in text, generated from it.
+
+The Phase 2 screens are **drawn by `tools/design/build_phase2.py`**, never by
+hand: edit the generator, run it, then `python3 tools/design/check_structure.py`.
+Numbers 62–84 belong to the superseded Phase 3 set and are not reused.
+
+Chosen by the owner, 2026-10-07 and 2026-10-08, from three or four options
+each:
+
+| Feature | Designs | Choice |
+|---|---|---|
+| Today | 85, 86 | App bar D (navy, Today only) and streak option 3 (the week strip) |
+| Diary | 87 | Streak option 2: now and longest |
+| Simran | 88, 89, 90 | The screen as it ships, with design 29's threads; a web of threads without a profile |
+| First run | 91, 92, 93, 94 | Android's splash only; Welcome option D, "a day with Hazri" |
+| Badges | 95, 96, 97, 98, 99 | 1C sheet, 2A page, 3B one badge, 4B profile section, 5C menu header |
+
+Screens drawn before their feature file (goals, sangat, account) are marked
+current with a note that the file wins where they differ.
 
 ## Layout
 
@@ -291,6 +347,38 @@ timings and verify the alignment acoustically.
 
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.
+
+## Where the specifications overtake the code
+
+"Known gaps" below describes **the code on this branch as it is**. The
+feature files written on 2026-10-07 and 2026-10-08 change several of the
+things it describes; those are targets for the build, not bugs to patch in
+place:
+
+- **The sangat code is removed and rebuilt** (`01-accounts.md` W2,
+  `08-sangat.md`): three built-in groups and private custom groups, each with
+  one goal and an end date, all through the `api` Function. The listing
+  procedure, the invite rules, the counted-on-read totals and the join banner
+  below all go with it.
+- **Diary sync is replaced by the weekly backup** (`10-backup.md`), only with
+  a profile, with no switch.
+- **Goals become one goal of items** (`04-goals.md`, `user.db` schema 5):
+  `verdictOn` replaces `GoalCalculator.outcomeOn`, `forgetGoal` and
+  `archiveGoal` go, every paath is a row, and goal reminders are derived from
+  items.
+- **Today gets the navy app bar** (`05-today.md` T11) -- so "no brand bar"
+  below now describes every tab but Today -- plus the streak card; the join
+  banner goes and elder Today stops being a fork.
+- **The globe's legend is You, Live and Here today**, refreshed every 2
+  minutes, placed by the profile's city with attendance once a day
+  (`07-simran.md`); "in the sangat" and the 45-second presence read go.
+- **The Gurpurab reminder fires at 06:00 on the day**, not 20:00 the evening
+  before, and the Rehras, Kirtan Sohila and Daily Simran reminders go
+  (`02-notifications.md`).
+- **There is one city, the profile's**; the Settings city goes, and without a
+  profile nothing guesses one (`03-first-run.md` CY1–CY3).
+- **First run is Android's splash, Welcome, Language, How you read**; the
+  branded splash and the reminders step go (`03-first-run.md` F1–F2).
 
 ## Known gaps in this build
 
