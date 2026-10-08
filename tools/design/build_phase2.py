@@ -2433,6 +2433,142 @@ def simran_no_profile() -> str:
     return simran_sky("noprofile")
 
 
+# ------------------------------------------------ first run (03-first-run.md)
+
+def steps(at: int) -> str:
+    """Language, then How you read; the current step long. Welcome has none:
+    it is one screen, "no carousel, no dots" (03-first-run.md F2)."""
+    return ('<div class="row" style="gap:6px">' + "".join(
+        f'<div style="height:6px;border-radius:3px;width:{28 if i == at else 12}px;'
+        f'background:{"var(--kesri)" if i <= at else "var(--rule)"}"></div>'
+        for i in range(2)) + '</div>')
+
+
+PROMISES = ('<div class="row" style="justify-content:center;gap:12px;font-size:12px;'
+            'color:var(--muted);font-weight:600"><div>Works offline</div><div>·</div>'
+            '<div>No login</div><div>·</div><div>No ads on Gurbani</div></div>')
+
+
+def system_splash() -> str:
+    """Android's own splash (03-first-run.md F1): the mark on #0C0F24, nothing else.
+
+    The SplashScreen API draws it while the app starts and takes it away at
+    the first frame. There is no second, branded splash and no fixed hold.
+    """
+    return f"""
+<div style="position:absolute;inset:0;background:#0C0F24;display:flex;
+  align-items:center;justify-content:center">
+  <div style="width:160px;height:160px;border-radius:80px;display:flex;
+    align-items:center;justify-content:center">{app_mark(112, "#F3EFE6", "#F2A24E")}</div>
+</div>
+"""
+
+
+def welcome() -> str:
+    """Welcome (03-first-run.md F2): what hazri means, in three lines, and Begin."""
+    lines = "".join(
+        f'<div class="row" style="gap:12px;align-items:flex-start">'
+        f'<div style="width:30px;height:30px;border-radius:15px;flex:none;background:var(--kesriSoft);'
+        f'color:var(--kesriInk);display:flex;align-items:center;justify-content:center">'
+        f'{icon(ic, 16)}</div><div style="font-size:15.5px;line-height:1.45;color:var(--ink2);'
+        f'padding-top:3px">{t}</div></div>'
+        for ic, t in [("check", "Hazri means being present. Each day you turn up, it is marked."),
+                      ("nitnem", "Read or listen to your Nitnem, with the line you are on lit."),
+                      ("simran", "One paath, or five minutes of Simran, marks your hazri.")])
+    return f"""
+<div class="col" style="height:100%;padding:40px 24px 30px">
+  <div class="col" style="gap:10px;margin-top:62px">
+    {app_mark(72)}
+    <div class="disp" style="font-size:44px;font-weight:700;line-height:1.05;margin-top:6px">Hazri</div>
+    <div class="row" style="gap:12px;align-items:baseline;color:var(--ink2)">
+      <div class="gur" style="font-size:20px;font-weight:600">ਹਾਜ਼ਰੀ</div>
+      <div class="dev" style="font-size:20px;font-weight:600">हाज़री</div></div>
+  </div>
+  <div class="col" style="gap:16px;margin-top:34px">{lines}</div>
+  <div style="flex:1"></div>
+  <div style="margin-bottom:14px">{PROMISES}</div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">Begin</div>
+</div>
+"""
+
+
+def setup_language() -> str:
+    """Language (03-first-run.md F2). Applies the moment it is tapped."""
+    def option(name, sub, cls, on):
+        mark = (f'<div style="width:24px;height:24px;border-radius:12px;background:var(--kesri);'
+                f'display:flex;align-items:center;justify-content:center;color:#fff">{icon("check", 16)}</div>'
+                if on else '<div style="width:24px;height:24px;border-radius:12px;border:2px solid var(--rule)"></div>')
+        ring = "box-shadow:inset 0 0 0 2px var(--kesri)" if on else "box-shadow:var(--shadow)"
+        return (f'<div class="row" style="gap:14px;padding:16px 18px;border-radius:18px;min-height:72px;'
+                f'background:var(--card);{ring}"><div class="col" style="flex:1">'
+                f'<div class="{cls}" style="font-size:22px;font-weight:700;line-height:1.3">{name}</div>'
+                f'<div style="font-size:13px;color:var(--muted)">{sub}</div></div>{mark}</div>')
+    return f"""
+<div class="col" style="height:100%;padding:40px 24px 30px">
+  {steps(0)}
+  <div class="col" style="gap:8px;margin-top:40px">
+    <div class="row" style="gap:10px">{app_mark(36)}
+      <div class="disp" style="font-size:22px;font-weight:700">Hazri</div></div>
+    <div class="disp" style="font-size:28px;font-weight:700;line-height:1.2;margin-top:18px">
+      Choose your language</div>
+    <div style="font-size:14.5px;color:var(--muted)">You can change it any time in Settings.</div>
+  </div>
+  <div class="col" style="gap:10px;margin-top:24px">
+    {option("ਪੰਜਾਬੀ", "Punjabi", "gur", False)}
+    {option("हिन्दी", "Hindi", "dev", False)}
+    {option("English", "English", "", True)}
+  </div>
+  <div style="flex:1"></div>
+  <div style="margin-bottom:14px">{PROMISES}</div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">Continue</div>
+</div>
+"""
+
+
+def setup_reading() -> str:
+    """How you read (03-first-run.md F2, F8): script and size against a real
+    line, elder mode as one option, Skip allowed. The line is the one design 06
+    shows, from Japji Sahib in content.db."""
+    def script(label, text, cls, on):
+        ring = "box-shadow:inset 0 0 0 2px var(--kesri)" if on else "box-shadow:var(--shadow)"
+        return (f'<div class="col" style="gap:2px;padding:12px 16px;border-radius:16px;'
+                f'background:var(--card);{ring}"><div style="font-size:12px;color:var(--muted);'
+                f'font-weight:700">{label}</div><div class="{cls}" style="font-size:19px;'
+                f'line-height:1.6;font-weight:500">{text}</div></div>')
+    return f"""
+<div class="col" style="height:100%;padding:40px 24px 30px;gap:16px">
+  <div class="row" style="justify-content:space-between">{steps(1)}
+    <div style="font-size:15px;font-weight:700;color:var(--ink2)">Skip</div></div>
+  <div class="disp" style="font-size:28px;font-weight:700;line-height:1.2;margin-top:10px">
+    How do you like to read Gurbani?</div>
+  <div class="col" style="gap:10px">
+    {script("GURMUKHI", "ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥", "gur", True)}
+    {script("हिन्दी · DEVANAGARI", "आदि सचु जुगादि सचु ॥", "dev", False)}
+    {script("ROMAN", "aad sach jugaad sach ||", "", False)}
+  </div>
+  <div class="card col" style="padding:14px 16px;gap:10px">
+    <div class="row" style="justify-content:space-between;font-size:14px;font-weight:600">
+      <div>Text size</div><div style="color:var(--muted)">Standard</div></div>
+    <div class="row" style="gap:12px"><div style="font-size:13px;font-weight:700;color:var(--muted)">A</div>
+      <div style="flex:1;height:4px;border-radius:2px;background:var(--rule);position:relative">
+        <div style="width:45%;height:4px;border-radius:2px;background:var(--kesri)"></div>
+        <div style="position:absolute;left:45%;top:-8px;width:20px;height:20px;margin-left:-10px;
+          border-radius:10px;background:var(--card);box-shadow:0 0 0 2px var(--kesri)"></div></div>
+      <div style="font-size:22px;font-weight:700;color:var(--muted)">A</div></div>
+    <div class="row" style="gap:12px;border-top:1px solid var(--rule);padding-top:10px">
+      <div class="col" style="flex:1"><div style="font-size:15px;font-weight:600">Elder mode</div>
+        <div style="font-size:12.5px;color:var(--muted)">Larger text and simpler screens</div></div>
+      <div style="width:48px;height:28px;border-radius:14px;background:var(--card2);padding:4px;
+        flex:none;display:flex"><div style="width:20px;height:20px;border-radius:10px;
+        background:var(--muted)"></div></div></div>
+  </div>
+  <div style="font-size:13px;color:var(--ink2)">Bani versions follow the SGPC Rehat Maryada.</div>
+  <div style="flex:1"></div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">Done</div>
+</div>
+"""
+
+
 def sync_states() -> str:
     states = [
         ("check", "Synced", "Everything is up to date · 2 minutes ago",
@@ -2562,6 +2698,10 @@ SCREENS = [
     ("88-Simran", "Simran — at rest", simran_rest),
     ("89-SimranSitting", "Simran — a sitting running", simran_sitting),
     ("90-SimranNoProfile", "Simran — no profile", simran_no_profile),
+    ("91-SystemSplash", "First run — Android's splash", system_splash),
+    ("92-Welcome", "First run — Welcome", welcome),
+    ("93-SetupLanguage", "First run — Language", setup_language),
+    ("94-SetupReading", "First run — How you read", setup_reading),
 ]
 
 

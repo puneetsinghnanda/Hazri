@@ -65,6 +65,23 @@ is ever held in front of anybody for a fixed time.
 - **Language:** ਪੰਜਾਬੀ / हिन्दी / English. Applies the moment it is tapped, which is also the demonstration.
 - **How you read:** script and text size, shown against a real line of Gurbani from `content.db`. Elder mode is offered here as one obvious option ("Larger text and simpler screens").
 
+Drawn as designs 91 (Android's splash), 92 (Welcome), 93 (Language) and 94
+(How you read), 2026-10-08. The app's name on every one of them is Hazri
+(`appName`, `appNameNative`); designs 02-08 are the Phase 1 set and say
+"Ang Sang", and are superseded.
+
+| Key | English |
+| --- | --- |
+| `welcomeLine1` | Hazri means being present. Each day you turn up, it is marked. |
+| `welcomeLine2` | Read or listen to your Nitnem, with the line you are on lit. |
+| `welcomeLine3` | One paath, or five minutes of Simran, marks your hazri. |
+| `welcomeBegin` | Begin |
+| `setupLanguageNote` | You can change it any time in Settings. |
+| `elderModeSetup` | Larger text and simpler screens |
+
+Punjabi and Hindi are drafted with the implementation and verified by the
+owner (`01-accounts.md` §13.9).
+
 Then Today. That is the whole of setup, and it needs no network.
 
 **F3. The profile is never part of setup.** Today shows the greeting `Welcome`
