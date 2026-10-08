@@ -127,7 +127,6 @@ collects nothing.
 | Habit | Share of active days with hazri | ≥ 60 % |
 | Retention | Day-30 retention | ≥ 25 % |
 | Follow-along | Share of bani sessions with audio | ≥ 40 % |
-| Togetherness | Share of weekly active readers in a Sangat group | ≥ 20 % |
 | Quality | Crash-free users | ≥ 99.5 % |
 | Store | Play rating | ≥ 4.6 |
 
