@@ -1,198 +1,25 @@
 rules_version = '2';
 
-// Hazri — Firestore security rules.
+// Hazri — Firestore security rules (ARCHITECTURE §5.11, 01-accounts §10.1).
 //
-// These are the app's real defence, not App Check and not the API key. The
-// key in google-services.json ships inside every copy of the app and is not
-// a secret; anybody can extract it and talk to this project directly. What
-// stops them reading the whole user table is this file.
+// No client touches Firestore. Every read and write goes through the `api`
+// Cloud Function with the Admin SDK, which these rules do not apply to; the
+// scheduled and triggered Functions likewise. So the rules deny everything,
+// to everybody, on every path.
 //
-// App Check is not set up at all in Phase 2. Registering its Play Integrity
-// provider requires a SHA-256 certificate fingerprint, there is no keystore
-// yet, and Play Integrity cannot issue a token for an app that did not come
-// from Play in any case — so it waits for Phase 3. Until then these rules are
-// the ONLY thing standing between a curious person and everybody else's data.
-// They are written as if that will always be true.
+// PUBLISHING. This file does nothing until it is deployed:
+//   firebase deploy --only firestore
+// (or pasted into the console, Firestore Database -> Rules -> Publish). The
+// text in the console, not this text, is what is enforced.
 //
-// PUBLISHING. This file does nothing until it is pasted into the Firebase
-// console (Firestore Database -> Rules -> Publish), or pushed with the
-// Firebase CLI. Editing it here changes nothing in the project, and the
-// failure is quiet: writes are answered and refused, which reads exactly
-// like being offline. That cost an afternoon once. If a change to this file
-// does not seem to take effect, check the console's Rules tab first -- the
-// text there, not this text, is what is enforced.
-//
-// Shape: deny everything, then open the narrowest possible doors.
+// Publishing it turns off every direct read and write the older app build
+// makes (users/{uid}, the old groups, presence, content/vichar), so it goes
+// live together with the app build that talks to the api Function instead
+// (PRD §11.4 step 4).
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // ---------------------------------------------------------------- deny
-    // Anything not matched below is refused. Every rule after this is an
-    // exception that has to earn itself.
     match /{document=**} {
       allow read, write: if false;
-    }
-
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function isSelf(uid) {
-      return signedIn() && request.auth.uid == uid;
-    }
-
-    // Fields a client may never set on itself. Counts that decide a shared
-    // goal are written by trusted code, never by the phone claiming them.
-    function noPrivilegedFields() {
-      return !request.resource.data.keys().hasAny(['role', 'verified', 'groupTotal']);
-    }
-
-    // -------------------------------------------------------------- people
-    // Your own profile. Readable only by you: the sangat never needs to read
-    // a person row, because everything it shows comes from the aggregates
-    // below. A name inside a group is carried on the membership document,
-    // which is scoped to that group.
-    match /users/{uid} {
-      allow read: if isSelf(uid);
-      allow create: if isSelf(uid)
-                    && noPrivilegedFields()
-                    && request.resource.data.keys().hasOnly(
-                         ['name', 'email', 'phone', 'city', 'lat', 'lon',
-                          'createdAt', 'updatedAt', 'showName']);
-      allow update: if isSelf(uid) && noPrivilegedFields();
-      allow delete: if isSelf(uid);
-
-      // The diary, only if sync is on. Nobody else, ever — not another
-      // member, not a group admin. This is the most private data in the app.
-      match /diary/{day} {
-        allow read, write: if isSelf(uid);
-      }
-    }
-
-    // -------------------------------------------------------------- sangat
-    // A group is readable by its members. Membership is a document under the
-    // group whose id is the member's uid, so "am I a member" is one get()
-    // rather than a scan.
-    function isMember(groupId) {
-      return signedIn() && exists(
-        /databases/$(database)/documents/groups/$(groupId)/members/$(request.auth.uid));
-    }
-
-    function isAdmin(groupId) {
-      return isMember(groupId) && get(
-        /databases/$(database)/documents/groups/$(groupId)/members/$(request.auth.uid)
-      ).data.role == 'admin';
-    }
-
-    match /groups/{groupId} {
-      // `get` and `list` are split on purpose, and the split is what makes an
-      // invite work at all.
-      //
-      // A group id is a twenty-character Firestore id that nobody can guess,
-      // and it IS the invite: the link is the id with a prefix, and the code
-      // is the id itself. So knowing the id has to be enough to read the
-      // group -- otherwise joining is impossible. `join` reads the group
-      // before writing a membership row, and with `read` gated on
-      // `isMember` that read was refused for the one person who needs it: a
-      // newcomer holding the code. Every group made in the app is private
-      // (`listed` is forced false on create and pinned on update), so no
-      // invite code could ever work. The app reported it as "something went
-      // wrong at our end", which was true, and here it is.
-      //
-      // `list` stays shut. A query returns groups whose ids the caller does
-      // NOT know, so leaving it open would let anybody walk the whole table
-      // and read every group's name and goal. Only listed groups may be
-      // found that way, and nothing in the app queries this collection
-      // today: `watchMine` reads by id from the account's own `groups`
-      // array.
-      allow get: if signedIn();
-      allow list: if signedIn() && resource.data.listed == true;
-      allow create: if signedIn()
-                    && request.resource.data.createdBy == request.auth.uid
-                    && request.resource.data.listed == false;
-
-      // `listingRequested` is the maker asking to be listed. It is a request,
-      // not a setting: it is written on create and an admin may set it on
-      // update, and it changes nothing by itself. `listed` is what the app
-      // reads, and only we can set that -- after reading the name.
-
-      // `listed` is the one field an admin may NOT set. The name of a listed
-      // group is read by people who never met the person who chose it, so it
-      // is reviewed before it appears; if an admin could flip this, the
-      // review would be a suggestion. It is changed by us, out of band.
-      allow update: if isAdmin(groupId)
-                    && request.resource.data.listed == resource.data.listed
-                    && request.resource.data.createdBy == resource.data.createdBy;
-      allow delete: if isAdmin(groupId);
-
-      // Who is in it, and how much each has done. You write your own row and
-      // nobody else's, which is what stops a member inflating a neighbour.
-      match /members/{uid} {
-        allow read: if isMember(groupId);
-
-        // The person who made the group is its admin; everybody else joins as
-        // a member. Reading `createdBy` off the group is what makes that safe
-        // to say from the phone: a second person cannot claim it.
-        allow create: if isSelf(uid)
-                      && (request.resource.data.role == 'member'
-                          || (request.resource.data.role == 'admin'
-                              && get(/databases/$(database)/documents/groups/$(groupId))
-                                   .data.createdBy == request.auth.uid));
-        // Your own row, and your own role stays as it is. `count` is what a
-        // member adds to; nobody can edit anybody else's.
-        allow update: if isSelf(uid)
-                      && request.resource.data.role == resource.data.role;
-        // Leave a group yourself, or be removed by an admin.
-        allow delete: if isSelf(uid) || isAdmin(groupId);
-      }
-    }
-
-    // ---------------------------------------------------------- presence
-    // The globe on Simran: how many are sitting today, and roughly where.
-    //
-    // Keyed by CITY, never by person. One document per city per day means the
-    // globe costs a read per active city rather than a read per member, which
-    // is the difference between a bill of a few hundred rupees and one of
-    // several lakh. It also means the globe cannot identify anybody: there is
-    // no uid in here, no name, and no finer position than the city somebody
-    // chose themselves.
-    //
-    // A phone may only ever add one. `request.resource.data.count` is
-    // evaluated after the increment, so `== resource.data.count + 1` pins it
-    // to exactly that, and the city's position cannot be moved on the way
-    // past. Somebody determined could still call it repeatedly; that is a
-    // Cloud Function's job and Spark has none, so Phase 2 accepts it. What it
-    // does not accept is one write setting the counter to a million.
-    match /presence/{day}/cities/{cityId} {
-      allow read: if signedIn();
-      allow create: if signedIn()
-                    && request.resource.data.count == 1
-                    && request.resource.data.keys().hasOnly(
-                         ['city', 'lat', 'lon', 'count']);
-      allow update: if signedIn()
-                    && request.resource.data.count == resource.data.count + 1
-                    && request.resource.data.city == resource.data.city
-                    && request.resource.data.lat == resource.data.lat
-                    && request.resource.data.lon == resource.data.lon;
-      allow delete: if false;
-    }
-
-    // ---------------------------------------------------------- aggregates
-    // What the globe and the group totals read: a handful of documents a
-    // scheduled job writes, never one document per person. This is the
-    // difference between a bill of a few hundred rupees a month and one of
-    // several lakh, so the rule says out loud that no client may write here.
-    match /aggregates/{doc} {
-      allow read: if signedIn();
-      allow write: if false;
-    }
-
-    // ------------------------------------------------------------- content
-    // Seeded groups people can join, and the Vichar index once it is served
-    // rather than bundled. Read-only to everybody; written by us.
-    match /content/{doc=**} {
-      allow read: if signedIn();
-      allow write: if false;
     }
   }
 }

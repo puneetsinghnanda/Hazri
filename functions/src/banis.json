@@ -1,0 +1,65 @@
+[
+ {
+  "id": "JAPJ",
+  "en": "Japji Sahib",
+  "pa": "ਜਪੁ ਜੀ ਸਾਹਿਬ",
+  "hi": "जपु जी साहिब",
+  "defaultSlot": "morning"
+ },
+ {
+  "id": "JAAP",
+  "en": "Jaap Sahib",
+  "pa": "ਜਾਪੁ ਸਾਹਿਬ",
+  "hi": "जापु साहिब",
+  "defaultSlot": "morning"
+ },
+ {
+  "id": "TVPS",
+  "en": "Tav Prasad Savaiye",
+  "pa": "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵਯੇ (ਸ੍ਰਾਵਗ ਸੁਧ)",
+  "hi": "त्व प्रसादि सवये (स्रावग सुध)",
+  "defaultSlot": "morning"
+ },
+ {
+  "id": "CHAU",
+  "en": "Chaupai Sahib",
+  "pa": "ਚੌਪਈ ਸਾਹਿਬ (ਟ:)",
+  "hi": "चौपई साहिब (ट:)",
+  "defaultSlot": "morning"
+ },
+ {
+  "id": "ANND",
+  "en": "Anand Sahib",
+  "pa": "ਅਨੰਦੁ ਸਾਹਿਬ",
+  "hi": "अनंदु साहिब",
+  "defaultSlot": "morning"
+ },
+ {
+  "id": "REHR",
+  "en": "Rehras Sahib",
+  "pa": "ਰਹਰਾਸਿ ਸਾਹਿਬ (ਸ:)",
+  "hi": "रहरासि साहिब (स:)",
+  "defaultSlot": "evening"
+ },
+ {
+  "id": "SOHL",
+  "en": "Kirtan Sohila",
+  "pa": "ਸੋਹਿਲਾ ਸਾਹਿਬ",
+  "hi": "सोहिला साहिब",
+  "defaultSlot": "bedtime"
+ },
+ {
+  "id": "ARDS",
+  "en": "Ardas",
+  "pa": "ਅਰਦਾਸ",
+  "hi": "अरदास",
+  "defaultSlot": "none"
+ },
+ {
+  "id": "SUKH",
+  "en": "Sukhmani Sahib",
+  "pa": "ਸੁਖਮਨੀ ਸਾਹਿਬ",
+  "hi": "सुखमनी साहिब",
+  "defaultSlot": "none"
+ }
+]

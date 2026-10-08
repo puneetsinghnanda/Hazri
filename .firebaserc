@@ -1,5 +1,13 @@
 {
   "projects": {
     "default": "hazri-dfcc1"
+  },
+  "targets": {
+    "hazri-dfcc1": {
+      "hosting": {
+        "public": ["hazri-dfcc1"],
+        "admin": ["hazri-admin"]
+      }
+    }
   }
 }

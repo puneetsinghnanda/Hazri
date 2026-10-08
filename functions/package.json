@@ -1,0 +1,43 @@
+{
+  "name": "hazri-functions",
+  "private": true,
+  "description": "Hazri server: the api Function and the scheduled and triggered Functions (docs/ARCHITECTURE.md §6, §7)",
+  "main": "lib/index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\" && tsc -p tsconfig.json --noEmit",
+    "test": "jest --selectProjects unit",
+    "test:emulator": "jest --selectProjects emulator --runInBand",
+    "test:all": "jest --runInBand",
+    "gen": "node scripts/gen-notif-strings.mjs && node scripts/gen-cities.mjs && python3 scripts/gen_banis.py",
+    "serve": "npm run build && firebase emulators:start --only functions,firestore",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "compression": "1.8.1",
+    "cors": "2.8.5",
+    "express": "4.21.2",
+    "firebase-admin": "13.10.0",
+    "firebase-functions": "6.6.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "4.0.1",
+    "@types/compression": "1.8.1",
+    "@types/cors": "2.8.19",
+    "@types/express": "4.17.23",
+    "@types/jest": "29.5.14",
+    "@types/node": "20.19.9",
+    "@types/supertest": "6.0.3",
+    "@typescript-eslint/eslint-plugin": "8.38.0",
+    "@typescript-eslint/parser": "8.38.0",
+    "eslint": "8.57.1",
+    "firebase": "11.10.0",
+    "jest": "29.7.0",
+    "supertest": "7.1.4",
+    "ts-jest": "29.4.0",
+    "typescript": "5.8.3"
+  }
+}

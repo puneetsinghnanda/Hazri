@@ -1,0 +1,462 @@
+[
+ {
+  "id": "new_delhi",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "amritsar",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "ludhiana",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "jalandhar",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "chandigarh",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "patiala",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "bathinda",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "mohali",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "pathankot",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "hoshiarpur",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "moga",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "firozpur",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "anandpur_sahib",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "mumbai",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "pune",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "bengaluru",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "hyderabad",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "chennai",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "kolkata",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "ahmedabad",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "jaipur",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "lucknow",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "kanpur",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "nagpur",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "indore",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "bhopal",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "patna",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "nanded",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "dehradun",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "jammu",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "srinagar",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "shimla",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "gurugram",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "noida",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "surat",
+  "country": "IN",
+  "state": null
+ },
+ {
+  "id": "karachi",
+  "country": "PK",
+  "state": null
+ },
+ {
+  "id": "lahore",
+  "country": "PK",
+  "state": null
+ },
+ {
+  "id": "nankana_sahib",
+  "country": "PK",
+  "state": null
+ },
+ {
+  "id": "kathmandu",
+  "country": "NP",
+  "state": null
+ },
+ {
+  "id": "london",
+  "country": "GB",
+  "state": null
+ },
+ {
+  "id": "birmingham",
+  "country": "GB",
+  "state": null
+ },
+ {
+  "id": "leicester",
+  "country": "GB",
+  "state": null
+ },
+ {
+  "id": "wolverhampton",
+  "country": "GB",
+  "state": null
+ },
+ {
+  "id": "southall",
+  "country": "GB",
+  "state": null
+ },
+ {
+  "id": "glasgow",
+  "country": "GB",
+  "state": null
+ },
+ {
+  "id": "manchester",
+  "country": "GB",
+  "state": null
+ },
+ {
+  "id": "toronto",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "brampton",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "mississauga",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "surrey_bc",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "vancouver",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "abbotsford",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "calgary",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "edmonton",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "montreal",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "winnipeg",
+  "country": "CA",
+  "state": null
+ },
+ {
+  "id": "new_york",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "fresno",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "bakersfield",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "yuba_city",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "san_jose",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "los_angeles",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "seattle",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "chicago",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "houston",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "dallas",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "phoenix",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "washington_dc",
+  "country": "US",
+  "state": null
+ },
+ {
+  "id": "melbourne",
+  "country": "AU",
+  "state": null
+ },
+ {
+  "id": "sydney",
+  "country": "AU",
+  "state": null
+ },
+ {
+  "id": "brisbane",
+  "country": "AU",
+  "state": null
+ },
+ {
+  "id": "perth",
+  "country": "AU",
+  "state": null
+ },
+ {
+  "id": "adelaide",
+  "country": "AU",
+  "state": null
+ },
+ {
+  "id": "auckland",
+  "country": "NZ",
+  "state": null
+ },
+ {
+  "id": "wellington",
+  "country": "NZ",
+  "state": null
+ },
+ {
+  "id": "singapore",
+  "country": "SG",
+  "state": null
+ },
+ {
+  "id": "kuala_lumpur",
+  "country": "MY",
+  "state": null
+ },
+ {
+  "id": "bangkok",
+  "country": "TH",
+  "state": null
+ },
+ {
+  "id": "hong_kong",
+  "country": "HK",
+  "state": null
+ },
+ {
+  "id": "dubai",
+  "country": "AE",
+  "state": null
+ },
+ {
+  "id": "abu_dhabi",
+  "country": "AE",
+  "state": null
+ },
+ {
+  "id": "muscat",
+  "country": "OM",
+  "state": null
+ },
+ {
+  "id": "nairobi",
+  "country": "KE",
+  "state": null
+ },
+ {
+  "id": "johannesburg",
+  "country": "ZA",
+  "state": null
+ },
+ {
+  "id": "frankfurt",
+  "country": "DE",
+  "state": null
+ },
+ {
+  "id": "milan",
+  "country": "IT",
+  "state": null
+ },
+ {
+  "id": "rome",
+  "country": "IT",
+  "state": null
+ },
+ {
+  "id": "paris",
+  "country": "FR",
+  "state": null
+ },
+ {
+  "id": "madrid",
+  "country": "ES",
+  "state": null
+ },
+ {
+  "id": "amsterdam",
+  "country": "NL",
+  "state": null
+ },
+ {
+  "id": "oslo",
+  "country": "NO",
+  "state": null
+ },
+ {
+  "id": "stockholm",
+  "country": "SE",
+  "state": null
+ }
+]
