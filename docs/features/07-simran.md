@@ -95,12 +95,13 @@ Each counted user is drawn exactly once:
 - **DR3. Three dots in one city** sit side by side so none hides another: Here today 1.5 radii west of the city's point, Live 1.5 radii east, and You on the point itself, drawn last.
 - **DR4. Legend:** `simranLegendYou` (orange), `simranLegendLive` (green), `simranLegendHere` (blue), in that order.
 - **DR5. Presence line:** `globeLiveCount` with the snapshot's total `live`.
-- **DR6. Threads** (owner, 2026-10-08, from design 29): a thread runs from your dot to every other dot drawn on the visible side of the globe, green and blue alike. Each is a quadratic curve bowed sideways by 14% of its length, kesri (`#F2A24E`), 0.7 logical px wide at 28% opacity, drawn under the dots. A thread to a dot on the far side is not drawn (SZ2). With at most two dots per city on the list, there are never more than about 190 threads, so they are always drawn. Without a profile there is no dot to start from and so no threads (NP2). They do not move except with the globe.
+- **DR6. Threads** (owner, 2026-10-08, from design 29): a thread runs from your dot to every other dot drawn on the visible side of the globe, green and blue alike. Each is a quadratic curve bowed sideways by 14% of its length, kesri (`#F2A24E`), 0.7 logical px wide at 28% opacity, drawn under the dots. A thread to a dot on the far side is not drawn (SZ2). With at most two dots per city on the list, there are never more than about 190 threads, so they are always drawn. Without a profile there is no dot to start from, so DR7 draws the threads instead. They do not move except with the globe.
+- **DR7. Threads without a profile** (owner, 2026-10-08): every dot is still connected. The threads join all the dots into one web: the shortest tree that reaches every dot (each dot linked to the web by its shortest great-circle link, Prim's algorithm), plus a thread from each dot to its 2 nearest. Each pair is drawn once, in the style of DR6, and only when both ends are on the visible side. The web is computed when a snapshot arrives, never per frame; with about 184 dots it is under 600 threads.
 
 ### 4.4a Without a profile
 
 - **NP1.** Somebody without a profile sees the globe exactly as everybody else does: the snapshot is fetched (4.3) and every green and blue dot drawn, with nobody taken off for themselves, because they are not counted.
-- **NP2.** There is no orange dot and no attendance call.
+- **NP2.** There is no orange dot and no attendance call. The threads are drawn as a web joining all the dots (DR7).
 - **NP3.** A banner under the legend reads `globeProfileBanner`. Tapping it opens Profile Setup (`01-accounts.md` §8.5). It is not dismissible, and it goes as soon as a profile exists, at which point the orange dot appears and attendance is marked (AT2).
 
 ### 4.5 Dot size
@@ -240,14 +241,14 @@ Unchanged layout (0.2), drawn as designs 88, 89 and 90. The legend shows the thr
 | G-15 | 20,000 attendances in 5 minutes | — | Each writes only its own profile; the next snapshot counts them |
 | G-16 | Reduced motion on | Simran open | Your dot does not blink; nothing else changes |
 | G-17 | Profile in Amritsar; dots in Delhi, Southall and Toronto, Toronto on the far side | Simran open | Two threads from Amritsar, to Delhi and Southall; none to Toronto |
-| G-18 | No profile | Simran open | No threads |
+| G-18 | No profile; dots in Europe, the Gulf and India | Simran open | One web of threads joining every visible dot; Europe is linked to the Gulf, not left on its own |
 | G-19 | The globe is turned by hand | — | The threads turn with it; one whose far end goes over the horizon disappears |
 
 ## 10. Acceptance checklist
 
 - [ ] Unit: the count split of 2.1 for you inside and outside a city, live and not live.
 - [ ] Unit: SZ1 radii, including a snapshot where every count is equal.
-- [ ] Widget: DR6 threads to every visible dot, none to the far side, none without a profile.
+- [ ] Widget: DR6 threads to every visible dot, none to the far side. Unit: DR7's web reaches every dot (one connected component) and draws each pair once.
 - [ ] Unit: AT1 calls at most once per `dayIst`, sets the flag only on success, and AT2 never calls without a profile.
 - [ ] Unit: SM1 length from the goal, else 5.
 - [ ] Backend (emulator): attendance statuses and idempotence, and that it leaves `updatedAt` alone; the snapshot counts live and counted correctly across a day change; `GLOBE_NOT_READY` before the first build.
@@ -269,7 +270,7 @@ Unchanged layout (0.2), drawn as designs 88, 89 and 90. The legend shows the thr
 | S-8 | Old "sitting now" and "sat today" | **Decided 2026-10-07:** removed |
 | S-9 | Somebody without a profile | **Decided 2026-10-07:** sees everybody else on the globe, has no orange dot, is not counted, and gets a banner to create a profile (4.4a) |
 | S-10 | The profile's city comes from the app's list of 92 cities | **Decided 2026-10-07:** yes; somebody whose city is not on it picks the nearest. Cities are added through `tools/content_pipeline/cities.json`. |
-| S-11 | Connecting lines on the globe | **Decided 2026-10-08:** yes, design 29's threads from your dot to every other (DR6) |
+| S-11 | Connecting lines on the globe | **Decided 2026-10-08:** yes, design 29's threads from your dot to every other (DR6); without a profile, a web joining all the dots (DR7) |
 
 ## 12. Out of scope
 

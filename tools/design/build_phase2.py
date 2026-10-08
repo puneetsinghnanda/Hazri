@@ -2242,8 +2242,8 @@ def sky_globe(size: int, you: bool = True) -> str:
 
     Dots follow 07-simran.md DR1-DR4: orange for you (with its halo), green
     for Live, blue for Here today. The threads of design 29 run from your dot
-    to every other (DR6). Without a profile there is no orange dot and so no
-    threads.
+    to every other (DR6). Without a profile there is no orange dot, so every
+    dot is joined into one web instead (DR7).
     """
     kind = {"you": "you", "today": "live", "member": "here"}
     pts = []
@@ -2276,9 +2276,48 @@ def sky_globe(size: int, you: bool = True) -> str:
         '</radialGradient></defs>'
         '<circle cx="160" cy="160" r="200" fill="url(#glow)"/>'
         '<circle cx="160" cy="160" r="150" fill="url(#sea)"/>'
-        f'{grid}{coast}{threads() if you else ""}'
+        f'{grid}{coast}{threads() if you else web()}'
         '<circle cx="160" cy="160" r="149.5" fill="none" stroke="#7FC4FF" stroke-width="2" opacity=".85"/>'
         f'{"".join(pts)}</svg>')
+
+
+def web(k: int = 2) -> str:
+    """Without a profile: one web joining every dot (07-simran.md DR7).
+
+    The shortest tree that reaches every dot, so no cluster is left on its
+    own, plus each dot's k nearest. Distances are great-circle, each pair is
+    drawn once, and only when both ends are on the visible side -- the same
+    rule a thread from your dot follows.
+    """
+    others = [(lat, lon) for lat, lon, kind in PEOPLE if kind != "you"]
+
+    def gc(a, b):
+        p1, l1, p2, l2 = map(math.radians, (a[0], a[1], b[0], b[1]))
+        return math.acos(max(-1.0, min(1.0, math.sin(p1) * math.sin(p2)
+                                       + math.cos(p1) * math.cos(p2) * math.cos(l1 - l2))))
+    pairs = set()
+    # Prim's tree: every dot joins the web by its shortest link to it.
+    inside, rest = {0}, set(range(1, len(others)))
+    while rest:
+        _, i, j = min((gc(others[i], others[j]), i, j) for i in inside for j in rest)
+        pairs.add((min(i, j), max(i, j)))
+        inside.add(j)
+        rest.discard(j)
+    for i, a in enumerate(others):
+        near = sorted((gc(a, b), j) for j, b in enumerate(others) if j != i)[:k]
+        for _, j in near:
+            pairs.add((min(i, j), max(i, j)))
+    out = []
+    for i, j in sorted(pairs):
+        p, q = project(*others[i]), project(*others[j])
+        if p is None or q is None:
+            continue
+        mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
+        dx, dy = q[0] - p[0], q[1] - p[1]
+        cx, cy = mx - dy * 0.14, my + dx * 0.14
+        out.append(f'<path d="M{p[0]:.1f} {p[1]:.1f} Q{cx:.1f} {cy:.1f} {q[0]:.1f} {q[1]:.1f}" '
+                   f'fill="none" stroke="#F2A24E" stroke-width="0.7" opacity="0.28"/>')
+    return "".join(out)
 
 
 def stars() -> str:
