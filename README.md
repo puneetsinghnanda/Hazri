@@ -76,13 +76,15 @@ step by step ([`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) §11 lists what).
 ```
 lib/                      the Flutter app (feature-first: data / domain / ui)
 assets/                   content.db, the recitations, fonts, the globe outline
-content/source/           the reviewed source files every line of Gurbani comes from
+content/source/           the reviewed source files every line of Gurbani comes from,
+                          and timings/, the locked alignments
 tools/content_pipeline/   builds assets/content/content.db
 tools/design/             generates the Phase 2 screens in design/html/
+tools/audio_pipeline/     builds the recitations and their timings
 design/                   tokens.json, every screen in light and dark, canvas.html
 public/                   Firebase Hosting: /verify, /j/<code>, assetlinks.json
 docs/                     PRD, architecture, feature specifications
-audio/, timings/          recitation tooling and the locked alignments
+audio/                    how to rebuild and check the recitations
 ```
 
 ## Building
