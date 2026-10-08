@@ -730,6 +730,8 @@ Calls refresh() (GET /profile) in initState and again every time a route pushed 
 
 **Edit profile** *(added, §13 D11)*: when ProfileLoaded, a button `profileEditButton` opens the Edit Profile screen (§13.8).
 
+**Badges** *(added 2026-10-08)*: when ProfileLoaded, a Badges section sits under the profile card and before the Email row (design 98). Its content and taps are `12-badges.md` UI5; the menu header's row of badges is UI6.
+
 ### 8.8 Email Exists dialog and restore request (Req 8)
 
 - Title: Email already registered

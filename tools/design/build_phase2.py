@@ -2597,6 +2597,230 @@ def setup_reading() -> str:
 """
 
 
+# ------------------------------------------- badges, chosen 2026-10-08 (12-badges.md)
+
+# (name, Gurmukhi, what it marks, how it is earned, earned on, icon path)
+BADGES = [
+    ("Jigyasu", "ਜਿਗਿਆਸੂ", "The seeker", "Your first hazri", "28 Aug 2026",
+     "M3 17h18M7 17a5 5 0 0 1 10 0M12 7v3M6.5 10.5l1.5 1.5M17.5 10.5L16 12"),
+    ("Shardhalu", "ਸ਼ਰਧਾਲੂ", "Coming back with shardha", "Hazri on 7 days", "3 Sep 2026",
+     "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"),
+    ("Abhyasi", "ਅਭਿਆਸੀ", "One who practises", "Hazri on 40 days", "7 Oct 2026",
+     "M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4"),
+    ("Nitnemi", "ਨਿਤਨੇਮੀ", "Keeps the Nitnem", "The five morning banis on 40 days", "8 Oct 2026",
+     "M12 6.5C10.5 5.2 8 4.5 4 4.5v13c4 0 6.5.7 8 2 1.5-1.3 4-2 8-2v-13c-4 0-6.5.7-8 2zM12 6.5v13"),
+    ("Simrani", "ਸਿਮਰਨੀ", "Settled in Simran", "Simran of 5 minutes or more on 108 days", "",
+     "M12 4a8 8 0 1 1-.01 0M12 20v2.5"),
+    ("Paathi", "ਪਾਠੀ", "Has read every bani through", "Every bani read through once", "",
+     "M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11M13 4v6l2-1.5L17 10V4"),
+    ("Sevadar", "ਸੇਵਾਦਾਰ", "Sewa in the sangat", "3 sangat goals reached with you", "",
+     "M3 15h4l3 2h6a2 2 0 0 0 0-4h-3M12 10.5s-3-1.9-3-4.2A1.8 1.8 0 0 1 12 5a1.8 1.8 0 0 1 3 1.3c0 2.3-3 4.2-3 4.2z"),
+    ("Gursikh", "ਗੁਰਸਿੱਖ", "The whole of it, held over months",
+     "Nitnemi, Simrani, Paathi and hazri on 180 days", "",
+     "M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8"
+     "M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"),
+    ("Satsangi", "ਸਤਿਸੰਗੀ", "Brought others into the sangat", "5 people joined groups you created", "",
+     "M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6.5 20a5.5 5.5 0 0 1 11 0M5 11.5a2.2 2.2 0 1 0 0-4.4"
+     "M2 17.5a4 4 0 0 1 3-3.6M19 11.5a2.2 2.2 0 1 1 0-4.4M22 17.5a4 4 0 0 0-3-3.6"),
+    ("Vichari", "ਵੀਚਾਰੀ", "The long road", "Hazri on 365 days", "",
+     "M3 19l6-8 4 5 3-3 5 6zM16 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"),
+]
+LIT = "radial-gradient(circle at 35% 30%,#F7B76A,#D9730D 70%)"
+
+
+def emblem(d: str, size: int, earned: bool, ring: str | None = None) -> str:
+    """A badge: kesri with a white mark when earned, grey with a grey mark when not."""
+    if ring is None:
+        ring = "0 0 0 3px var(--kesriSoft)" if earned else "inset 0 0 0 1.5px var(--rule)"
+    bg = LIT if earned else "var(--card2)"
+    ink = "#fff" if earned else "var(--muted)"
+    icon_px = round(size * 0.48)
+    return (f'<div style="width:{size}px;height:{size}px;flex:none;border-radius:{size // 2}px;'
+            f'background:{bg};box-shadow:{ring};display:flex;align-items:center;justify-content:center">'
+            f'<svg width="{icon_px}" height="{icon_px}" viewBox="0 0 24 24" fill="none" stroke="{ink}" '
+            f'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{d}"/></svg></div>')
+
+
+def today_backdrop() -> str:
+    """Today, dimmed, under a sheet or the menu."""
+    return """
+<style>.band{background:#262C63}.app.dark .band{background:var(--card2)}</style>
+<div class="band" style="position:absolute;left:0;right:0;top:0;height:190px;border-radius:0 0 28px 28px"></div>
+<div style="position:absolute;left:20px;right:20px;top:158px;height:74px;border-radius:20px;
+  background:linear-gradient(135deg,var(--kesri),#B8560A)"></div>
+<div style="position:absolute;left:20px;right:20px;top:246px;height:82px;border-radius:20px;background:var(--card)"></div>
+<div style="position:absolute;left:20px;right:20px;top:342px;height:150px;border-radius:20px;background:var(--card)"></div>
+<div style="position:absolute;inset:0;background:var(--scrim)"></div>"""
+
+
+def badge_earned() -> str:
+    """A badge is earned: option 1C, the compact sheet with the set (12-badges.md AN1)."""
+    name, pa, marks, rule, date, d = BADGES[2]
+    strip = "".join(
+        f'<div style="aspect-ratio:1;border-radius:50%;background:{LIT if b[4] else "var(--card2)"};'
+        f'box-shadow:{"0 0 0 2px var(--kesriSoft)" if b[4] else "inset 0 0 0 1px var(--rule)"};'
+        f'display:flex;align-items:center;justify-content:center"><svg width="16" height="16" '
+        f'viewBox="0 0 24 24" fill="none" stroke="{"#fff" if b[4] else "var(--muted)"}" stroke-width="2" '
+        f'stroke-linecap="round" stroke-linejoin="round"><path d="{b[5]}"/></svg></div>' for b in BADGES)
+    return f"""
+{today_backdrop()}
+<div class="col" style="position:absolute;left:0;right:0;bottom:0;background:var(--card);
+  border-radius:28px 28px 0 0;padding:12px 22px 30px;gap:16px">
+  <div class="row" style="justify-content:center"><div style="width:40px;height:4px;border-radius:2px;background:var(--rule)"></div></div>
+  <div class="row" style="gap:16px;margin-top:8px">
+    {emblem(d, 84, True, "0 0 0 5px var(--kesriSoft)")}
+    <div class="col">
+      <div class="eyebrow" style="color:var(--kesriInk);font-weight:700">New badge</div>
+      <div class="row" style="gap:8px;align-items:baseline;flex-wrap:wrap">
+        <div class="disp" style="font-size:25px;font-weight:700;line-height:1.15">{name}</div>
+        <div class="gur" style="font-size:18px;font-weight:600;color:var(--kesriInk)">{pa}</div></div>
+      <div style="font-size:14px;color:var(--ink2);line-height:1.4">{marks}: {rule.lower()}</div>
+    </div>
+  </div>
+  <div class="col" style="gap:10px;padding:14px;border-radius:18px;background:var(--bg)">
+    <div class="row" style="justify-content:space-between;font-size:13.5px;font-weight:700">
+      <span>Your badges</span><span style="color:var(--muted);font-weight:600">4 of 10</span></div>
+    <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:6px">{strip}</div>
+  </div>
+  <div class="row" style="gap:10px;margin-top:6px">
+    <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2)">Done</div>
+    <div class="btn" style="flex:1.4;background:var(--primary);color:var(--onPrimary)">See all badges</div>
+  </div>
+</div>
+"""
+
+
+def badges_page() -> str:
+    """The Badges page: option 2A, two columns, earned in colour (12-badges.md UI2)."""
+    cards = ""
+    for name, pa, marks, rule, date, d in BADGES:
+        e = bool(date)
+        cards += (
+            f'<div class="col" style="align-items:center;text-align:center;gap:4px;padding:14px 12px;'
+            f'border-radius:18px;background:{"var(--card)" if e else "var(--card2)"};'
+            f'box-shadow:{"var(--shadow)" if e else "none"}">'
+            f'{emblem(d, 56, e, "0 0 0 3px var(--kesriSoft)" if e else "none")}'
+            f'<div class="gur" style="margin-top:4px;font-size:16px;font-weight:600;'
+            f'color:{"var(--ink)" if e else "var(--muted)"}">{pa}</div>'
+            f'<div style="font-size:14px;font-weight:700;color:{"var(--ink)" if e else "var(--muted)"}">{name}</div>'
+            f'<div style="font-size:12px;color:var(--muted);line-height:1.35">{rule}</div>'
+            f'<div style="margin-top:2px;font-size:11.5px;font-weight:700;'
+            f'color:{"var(--kesriInk)" if e else "var(--muted)"}">{"Earned " + date if e else "Not yet"}</div></div>')
+    return f"""
+<div class="pad col" style="gap:14px;padding:20px 18px 0">
+  {header("Badges", "4 of 10 earned · Hazri on 41 days")}
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">{cards}</div>
+</div>
+"""
+
+
+def badge_detail() -> str:
+    """One badge, opened: option 3B, a full page (12-badges.md UI4)."""
+    name, pa, marks, rule, date, d = BADGES[3]
+    card = "padding:16px;border-radius:20px;background:var(--card);box-shadow:var(--shadow);gap:4px"
+    side = ('<a style="display:flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;'
+            'border-radius:14px;background:var(--card);color:var(--ink2);font-size:14px;font-weight:600">')
+    return f"""
+<div class="col" style="height:100%">
+  <div class="col" style="align-items:center;gap:4px;padding:20px 18px 28px;
+    background:radial-gradient(90% 80% at 50% 100%,var(--kesriSoft),var(--bg))">
+    <div class="row" style="align-self:stretch;justify-content:space-between">
+      <div style="width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+        background:var(--card);box-shadow:var(--shadow)">{icon("back", 20)}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--kesriInk)">Badge 4 of 10</div>
+      <div style="width:40px"></div></div>
+    <div style="margin-top:22px">{emblem(d, 128, True, "0 0 0 7px var(--card),0 16px 34px rgba(217,115,13,.35)")}</div>
+    <div class="gur" style="margin-top:18px;font-size:30px;font-weight:600;line-height:1.3">{pa}</div>
+    <div class="disp" style="font-size:21px;font-weight:700;line-height:1">{name}</div>
+    <div class="chip" style="margin-top:10px;background:var(--card);color:var(--kesriInk)">Earned {date}</div>
+  </div>
+  <div class="col" style="gap:12px;padding:4px 18px 0">
+    <div class="col" style="{card}"><div class="eyebrow">What it marks</div>
+      <div style="font-size:15.5px;line-height:1.45">{marks}.</div></div>
+    <div class="col" style="{card}"><div class="eyebrow">How it is earned</div>
+      <div style="font-size:15.5px;line-height:1.45">Japji Sahib, Jaap Sahib, Tav Prasad Savaiye, Chaupai Sahib
+        and Anand Sahib, all five on the same day, on 40 days. The days need not be in a row.</div></div>
+  </div>
+  <div style="flex:1"></div>
+  <div class="row" style="justify-content:space-between;padding:0 18px 30px">
+    {side}{icon("back", 16)}Abhyasi</a>
+    {side}Simrani<div style="transform:rotate(180deg)">{icon("back", 16)}</div></a>
+  </div>
+</div>
+"""
+
+
+def profile_badges() -> str:
+    """The Profile with its Badges section: option 4B (12-badges.md UI1)."""
+    grid = "".join(
+        f'<div class="col" style="align-items:center;gap:4px">{emblem(b[5], 50, bool(b[4]))}'
+        f'<div style="font-size:11.5px;font-weight:600;color:{"var(--ink)" if b[4] else "var(--muted)"}">'
+        f'{b[0]}</div></div>' for b in BADGES)
+    card = "border-radius:20px;background:var(--card);box-shadow:var(--shadow)"
+    return f"""
+<div class="pad col" style="gap:14px;padding:20px 18px 0">
+  {header("Your profile")}
+  <div class="row" style="gap:14px;padding:16px;{card}">
+    {avatar("HK", "var(--kesriSoft)", "var(--kesriInk)", 56)}
+    <div class="col" style="flex:1"><div style="font-size:18px;font-weight:700">Harpreet Kaur</div>
+      <div style="font-size:13.5px;color:var(--muted)">Amritsar, Punjab</div></div>
+    <div class="chip" style="background:var(--card2);color:var(--primary);padding:9px 14px">Edit</div>
+  </div>
+  <div class="col" style="gap:12px;padding:16px;{card}">
+    <div class="row" style="justify-content:space-between;align-items:baseline">
+      <div style="font-size:16px;font-weight:700">Badges</div>
+      <div style="font-size:14px;font-weight:700;color:var(--kesriInk)">See all 10</div></div>
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;row-gap:12px">{grid}</div>
+  </div>
+  <div class="col" style="{card}">
+    <div class="row" style="justify-content:space-between;padding:14px 16px">
+      <div class="col"><span style="font-size:12.5px;color:var(--muted)">Email</span>
+        <span style="font-size:15px">harpreet@example.com</span></div>
+      <div class="chip" style="background:var(--sageSoft);color:var(--sage)">Verified</div></div>
+    <div class="col" style="padding:14px 16px;border-top:1px solid var(--rule)">
+      <span style="font-size:12.5px;color:var(--muted)">Phone</span><span style="font-size:15px">Not added</span></div>
+  </div>
+  <div class="col" style="gap:4px;padding:14px 16px;{card}">
+    <div style="font-size:15px;font-weight:700">Backup</div>
+    <div style="font-size:13px;color:var(--muted)">Last backed up Sunday, 4 Oct</div>
+  </div>
+</div>
+"""
+
+
+def menu_badges() -> str:
+    """The menu: option 5C, a navy header with name, city and the ten badges (12-badges.md UI1)."""
+    strip = "".join(
+        f'<div style="aspect-ratio:1;border-radius:50%;background:{LIT if b[4] else "rgba(255,255,255,.08)"};'
+        f'box-shadow:{"none" if b[4] else "inset 0 0 0 1px rgba(255,255,255,.2)"};display:flex;'
+        f'align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 24 24" '
+        f'fill="none" stroke="{"#fff" if b[4] else "rgba(255,255,255,.4)"}" stroke-width="2.2" '
+        f'stroke-linecap="round" stroke-linejoin="round"><path d="{b[5]}"/></svg></div>' for b in BADGES)
+    items = "".join(
+        f'<div class="row" style="min-height:48px;font-size:15.5px;font-weight:600">{t}</div>'
+        for t in ["Your profile", "Badges", "Notifications", "Audio and voice", "Text size and script",
+                  "Language", "Privacy and my data", "About and credits"])
+    return f"""
+{today_backdrop()}
+<div class="col" style="position:absolute;left:0;top:0;bottom:0;width:304px;background:var(--card);
+  border-radius:0 24px 24px 0;overflow:hidden">
+  <div class="band col" style="color:#fff;padding:30px 18px 18px;gap:14px">
+    <div class="row" style="gap:12px">{avatar("HK", "var(--kesriSoft)", "var(--kesriInk)", 52)}
+      <div class="col"><div style="font-size:17px;font-weight:700">Harpreet Kaur</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.75)">Amritsar, Punjab</div></div></div>
+    <div class="col" style="gap:8px">
+      <div class="row" style="justify-content:space-between;font-size:12.5px;font-weight:600;
+        color:rgba(255,255,255,.8)"><span>Badges</span><span>4 of 10</span></div>
+      <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px">{strip}</div>
+    </div>
+  </div>
+  <div class="col" style="padding:10px 18px 0">{items}</div>
+  <div style="flex:1"></div>
+  <div style="padding:0 18px 24px;font-size:12px;color:var(--muted)">Hazri 2.0 · No ads on Gurbani, ever</div>
+</div>
+"""
+
+
 def sync_states() -> str:
     states = [
         ("check", "Synced", "Everything is up to date · 2 minutes ago",
@@ -2730,6 +2954,11 @@ SCREENS = [
     ("92-Welcome", "First run — Welcome", welcome),
     ("93-SetupLanguage", "First run — Language", setup_language),
     ("94-SetupReading", "First run — How you read", setup_reading),
+    ("95-BadgeEarned", "Badges — one earned", badge_earned),
+    ("96-Badges", "Badges — all ten", badges_page),
+    ("97-BadgeDetail", "Badges — one, opened", badge_detail),
+    ("98-ProfileBadges", "Profile — with badges", profile_badges),
+    ("99-MenuBadges", "Menu — with badges", menu_badges),
 ]
 
 

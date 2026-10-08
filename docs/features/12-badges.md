@@ -29,6 +29,10 @@ Section 12 was confirmed by the owner on 2026-10-08 unless it says otherwise.
 | BR8 | Earned badges are in the weekly backup and come back on restore | 6 |
 | BR9 | Days already in the Diary count when badges ship | 7.3 |
 | BR10 | Satsangi counts members who join groups the person created | 3, 5 |
+| BR11 | Nitnemi counts the five morning banis only | 3.1 |
+| BR12 | A badge is announced in the app, in a bottom sheet with the badge, its name and its details, and a button to all badges | 7.2 |
+| BR13 | A Badges page in the profile: earned badges in colour, the rest greyed, each with its name and how it is earned | 7.1 |
+| BR14 | Earned badges show in the left menu under the name and city | 7.1 |
 
 ## 2. The badges
 
@@ -58,7 +62,7 @@ ear before release (D11).
 | --- | --- |
 | Hazri day | A `localDate` with at least one `completions` row, or one `simranSessions` row with `durationS` ≥ 300, `deletedAt` null in both. This is `hazri(day)` of `04-goals.md` HZ1, and nothing else. |
 | Hazri count | The number of distinct hazri days. Calculated from `user.db`, never stored (BR7). |
-| Nitnem day | A `localDate` on which every bani with `category` = `nitnem` in `content.db` has at least one completion: today Japji Sahib, Jaap Sahib, Tav Prasad Savaiye, Chaupai Sahib, Anand Sahib, Rehras Sahib and Kirtan Sohila. **(BD-1)** |
+| Nitnem day | A `localDate` on which every bani with `default_slot` = `morning` in `content.db` has at least one completion: today Japji Sahib, Jaap Sahib, Tav Prasad Savaiye, Chaupai Sahib and Anand Sahib. Rehras Sahib (`evening`) and Kirtan Sohila (`bedtime`) do not take part; they make a hazri day like any bani. **(BD-1)** |
 | Simran day | A `localDate` with a `simranSessions` row of `durationS` ≥ 300 |
 | Banis completed | The distinct `baniId`s that have ever had a completion |
 | Goals reached | Sangat goals, custom or built-in, that reached `COMPLETED` while the person had a contribution of at least 1 to them (5) |
@@ -82,7 +86,7 @@ ear before release (D11).
 - **HC1. Days, not minutes.** A day counts the same however long its paath took, so an elder reading slowly, a five-minute sitting and a full Sukhmani Sahib are equal. Playback speed, audio left running and paath marked with Diary + change nothing.
 - **HC2. Every source counts.** Reader, audio, Diary + and restored rows are completions like any other (`04-goals.md` CR3, CR5). A paath read from a gutka and marked in the Diary counts.
 - **HC3. Totals, never runs.** Every count is a total over all time. Days need not be in a row, a missed day resets nothing, and no grace period exists or is needed. The Diary streak is separate (`09-diary.md`) and no badge ever reads it.
-- **HC4. Ardas and Sukhmani Sahib** make a hazri day like any completion (`04-goals.md` HZ1). They do not make a Nitnem day, because they are not `nitnem` banis; both count toward `PAATHI`.
+- **HC4. Ardas and Sukhmani Sahib** make a hazri day like any completion (`04-goals.md` HZ1). They do not make a Nitnem day, because they are not morning banis; both count toward `PAATHI`. Nor do Rehras Sahib and Kirtan Sohila (BD-1).
 - **HC5. New banis.** If `content.db` gains a bani, `PAATHI` then needs it too for anybody who has not yet earned the badge. Nobody loses it (4.3).
 - **HC6. Order.** A badge needs nothing but its own rule; only `GURSIKH` names other badges. Somebody who never joins the sangat can earn eight of the ten.
 
@@ -170,17 +174,24 @@ Profile needed. Reads `badgeFacts/{callerMemberKey}`: one read.
 
 ## 7. In the app
 
-### 7.1 The Badges screen
+### 7.1 Where badges are seen
 
-- **UI1. Where.** A row under the Diary's streak card, `badgesRow` ("{earned} of 10 badges"), opens the Badges screen. The menu also lists it. Today does not show badges.
-- **UI2. Layout.** A header line `badgesHazriCount` ("Hazri on {count} days"), then the ten badges in the order of Section 2, two per row. An earned badge: its emblem in kesri, the Gurmukhi name large, the transliterated name, and `badgeEarnedOn` with the date. A badge not earned: its emblem in outline, the name, and what it marks (Section 2).
-- **UI3. No progress meters.** No bar, percentage or "12 days to go" on any badge. What a badge marks is said; how far away it is, is not (owner, 2026-10-08).
-- **UI4. Detail.** Tapping a badge opens a sheet with its name in the reader's script, what it marks, the rule in plain words (`badgeRule{Id}`), and the date if earned.
-- **UI5. Never on a Gurbani screen.** No badge, sheet or count appears on the reader, the player or the Simran sitting (PRD §0, §8 "no badges on this screen, ever").
+Chosen by the owner on 2026-10-08 from four options a screen (BD-12). The
+designs are `design/html/95-*` to `99-*`; this section wins where they differ.
+
+- **UI1. Three ways in, none on Today.** The profile's Badges section (UI5), the menu header (UI6) and the menu row `badgesTitle` all open the Badges page (UI2). The earned sheet's `badgeEarnedSee` opens it too (AN1). Today does not show badges, and the Diary has no badges row.
+- **UI2. The Badges page** (design 96, option 2A). A pushed screen titled `badgesTitle`, under it `badgesSummary` ("{earned} of 10 earned · Hazri on {count} days"), then the ten badges in the order of Section 2, **two per row**. Each card holds the emblem, the name in the reader's script large, the transliterated name, the rule `badgeRule{Id}`, and either `badgeEarnedOn` with the date or `badgeNotYet` ("Not yet").
+  - **Earned** badges are in colour: the kesri emblem, the card in `card`, the name in `ink`.
+  - **Not earned** badges are greyed: the emblem in outline on `card2`, the name and rule in `muted`. They still show the name and how to earn it, so the page is the one place every badge is explained.
+- **UI3. No progress meters.** No bar, percentage or "12 days to go" on any badge, on any screen. What a badge marks and how it is earned are said; how far away it is, is not (owner, 2026-10-08).
+- **UI4. One badge** (design 97, option 3B). Tapping a card on UI2 or UI5 pushes a full page, not a sheet: `badgeNumber` ("Badge {n} of 10"), the emblem at 128 dp, the name in the reader's script and transliterated, then the chip `badgeEarnedOn` or `badgeNotYet`, then two cards: `badgeWhatItMarks` with `badgeMarks{Id}`, and `badgeHowEarned` with `badgeHow{Id}`. At the foot, the previous and next badge by name, in the order of Section 2. For `NITNEMI`, `badgeHow{Id}` takes the five bani names from `content.db` (rule 3), never from the ARB file.
+- **UI5. In the profile** (design 98, option 4B). The profile screen (`01-accounts.md`) carries a Badges section under the profile card, before email, phone and backup: the heading `badgesTitle`, the link `badgesSeeAll` ("See all 10"), and all ten emblems five to a row with their names, earned in colour and the rest greyed. A tap on an emblem opens UI4; See all opens UI2. Design 98 replaces design 33.
+- **UI6. In the menu** (design 99, option 5C). The menu's header is navy (`#262C63`, `card2` in dark) and holds the avatar, the name and the city as today, then `badgesMenuCount` ("Badges" … "{earned} of 10") and the ten emblems in one row, earned in kesri, the rest outlined. The whole block opens UI2. Below it, `badgesTitle` is a menu row after Your profile. Design 99 replaces design 37. With no profile the header has no name or city (`01-accounts.md`) and still shows the row of ten.
+- **UI7. Never on a Gurbani screen.** No badge, sheet or count appears on the reader, the player or the Simran sitting (PRD §0, §8 "no badges on this screen, ever").
 
 ### 7.2 When a badge is earned
 
-- **AN1. One quiet sheet, once.** A badge whose `announcedAt` is null is shown in a bottom sheet the next time the app is on a screen that is not a Gurbani screen (UI5): the emblem, `badgeEarnedTitle` ("{name}"), what it marks, and `badgeEarnedDone` ("Done") and `badgeEarnedSee` ("See badges"). `announcedAt` is set when the sheet is shown.
+- **AN1. One quiet sheet, once** (design 95, option 1C). A badge whose `announcedAt` is null is shown in a bottom sheet the next time the app is on a screen that is not a Gurbani screen (UI7). The sheet is compact: the emblem, the eyebrow `badgeEarnedNew` ("New badge"), the name transliterated and in the reader's script, `badgeMarks{Id}` with the rule, then `badgeEarnedYours` ("Your badges") with `{earned} of 10` and the row of ten emblems, the new one ringed, and two buttons: `badgeEarnedDone` ("Done") and `badgeEarnedSee` ("See all badges"), which opens UI2. `announcedAt` is set when the sheet is shown. It is in the app, never a system notification (AN3, BD-11).
 - **AN2. One at a time.** If several are waiting, one sheet shows the highest in the order of Section 2 and marks the rest announced.
 - **AN3. No system notification.** A badge is always earned while the app is open, so the sheet is the announcement. `02-notifications.md` stays a closed list; PRD §3.7's `badge` row is this sheet.
 - **AN4. No sound, no confetti, no vibration.**
@@ -195,14 +206,21 @@ Profile needed. Reads `badgeFacts/{callerMemberKey}`: one read.
 | Key | English |
 | --- | --- |
 | `badgesTitle` | Badges |
-| `badgesRow` | {earned} of 10 badges |
-| `badgesHazriCount` | Hazri on {count} days |
+| `badgesSummary` | {earned} of 10 earned · Hazri on {count} days |
+| `badgesSeeAll` | See all 10 |
+| `badgesMenuCount` | {earned} of 10 |
 | `badgeEarnedOn` | Earned {date} |
-| `badgeEarnedTitle` | {name} |
+| `badgeNotYet` | Not yet |
+| `badgeNumber` | Badge {n} of 10 |
+| `badgeWhatItMarks` | What it marks |
+| `badgeHowEarned` | How it is earned |
+| `badgeEarnedNew` | New badge |
+| `badgeEarnedYours` | Your badges |
 | `badgeEarnedDone` | Done |
-| `badgeEarnedSee` | See badges |
+| `badgeEarnedSee` | See all badges |
 | `badgeMarks{Id}` | What it marks, Section 2, one key per badge |
-| `badgeRule{Id}` | JIGYASU: Your first hazri. SHARDHALU: Hazri on 7 days. ABHYASI: Hazri on 40 days. NITNEMI: All seven Nitnem banis on 40 days. SIMRANI: Simran of 5 minutes or more on 108 days. PAATHI: Every bani in Hazri read through at least once. SEVADAR: 3 sangat goals reached that you took part in. GURSIKH: Nitnemi, Simrani and Paathi, and hazri on 180 days. SATSANGI: 5 people joined groups you created. VICHARI: Hazri on 365 days. |
+| `badgeHow{Id}` | The rule in full for UI4, one key per badge, ending "The days need not be in a row." where it counts days. NITNEMI: "{banis}, all five on the same day, on 40 days. The days need not be in a row.", `{banis}` filled from `content.db` |
+| `badgeRule{Id}` | JIGYASU: Your first hazri. SHARDHALU: Hazri on 7 days. ABHYASI: Hazri on 40 days. NITNEMI: The five morning banis on 40 days. SIMRANI: Simran of 5 minutes or more on 108 days. PAATHI: Every bani read through once. SEVADAR: 3 sangat goals reached with you. GURSIKH: Nitnemi, Simrani, Paathi and hazri on 180 days. SATSANGI: 5 people joined groups you created. VICHARI: Hazri on 365 days. |
 
 The badge names themselves are the Gurmukhi, Devanagari and Latin of Section 2, chosen by the reader's language and script.
 
@@ -213,7 +231,9 @@ The badge names themselves are the Gurmukhi, Devanagari and Latin of Section 2, 
 | B-1 | Fresh install | First Japji Sahib read | `JIGYASU` earned; its sheet shows when the reader is closed |
 | B-2 | Hazri on 39 days, then a week away | Hazri again | `ABHYASI` earned; the week away cost nothing |
 | B-3 | Hazri on 40 days | A Diary − takes it to 39 | `ABHYASI` stays |
-| B-4 | 35 Nitnem days; today Japji to Anand and Rehras done | Kirtan Sohila read at night | Today becomes a Nitnem day; at 40 such days `NITNEMI` is earned |
+| B-4 | 39 Nitnem days; today Japji, Jaap, Tav Prasad Savaiye and Chaupai done | Anand Sahib read | Today is the 40th Nitnem day; `NITNEMI` is earned |
+| B-4a | Today all seven Nitnem banis but Chaupai Sahib done | — | Not a Nitnem day: Rehras Sahib and Kirtan Sohila do not stand in for a morning bani |
+| B-4b | Today the five morning banis done, Rehras Sahib and Kirtan Sohila not | — | A Nitnem day |
 | B-5 | Only Sukhmani Sahib read on a day | — | A hazri day; not a Nitnem day |
 | B-6 | Simran of 4 minutes on 200 days | — | No simran days; no `SIMRANI` |
 | B-7 | Everything but Ardas completed | Ardas read | `PAATHI` earned |
@@ -226,6 +246,10 @@ The badge names themselves are the Gurmukhi, Devanagari and Latin of Section 2, 
 | B-14 | Restore of a profile with 5 badges | Restore finishes | Five badges, original dates, no sheet |
 | B-15 | Three badges earned by one action | — | One sheet, for the highest |
 | B-16 | Reading in the reader | A badge is earned | Nothing shows until the reader is left |
+| B-16a | `ABHYASI` waiting to be announced | Today is shown | The sheet of design 95; See all badges opens the Badges page |
+| B-16b | Four badges earned | The Badges page is opened | Four cards in colour with their dates; six greyed with their names, rules and "Not yet" |
+| B-16c | A greyed badge on the Badges page | Tapped | Its full page, with how it is earned and "Not yet"; no meter |
+| B-16d | Four badges earned | The menu is opened | The ten emblems under the name and city, four in kesri; a tap opens the Badges page |
 | B-17 | `content.db` adds a tenth bani | Somebody without `PAATHI` | Needs the new bani too; anybody who has it keeps it |
 | B-18 | 365 hazri days, never opened meanings | — | `VICHARI` earned |
 
@@ -237,7 +261,9 @@ The badge names themselves are the Gurmukhi, Devanagari and Latin of Section 2, 
 - [ ] Unit: AN2 announces only the highest; LS2 on first run.
 - [ ] Unit: restore merge keeps the earlier `earnedOn` and never announces (BB3, BB4).
 - [ ] Backend (emulator): `badgeGoalReached` idempotent, never writes its trigger, stops at 3; join adds to `joins` once per person per group, stops at 5; `u_` facts adopted on profile creation.
-- [ ] Widget: the Badges screen has no progress meter (UI3); nothing about badges on the reader, player or sitting (UI5).
+- [ ] Widget: no progress meter on the page, the badge page, the profile or the menu (UI3); nothing about badges on the reader, player or sitting (UI7).
+- [ ] Widget: earned cards in colour, the rest greyed with name and rule (UI2); the menu header and the profile section both open the page (UI5, UI6).
+- [ ] Unit: a Nitnem day needs exactly the `default_slot` = `morning` banis (B-4, B-4a, B-4b).
 - [ ] `l10n_test` covers every key of 7.4 in `pa`, `hi`, `en`.
 
 ## 10. Dependencies
@@ -255,7 +281,7 @@ The badge names themselves are the Gurmukhi, Devanagari and Latin of Section 2, 
 
 | # | Question | Decision |
 | --- | --- | --- |
-| BD-1 | What counts as a Nitnem day for `NITNEMI` | **Open.** Written as all seven `nitnem` banis on one day. Alternatives: the five morning banis only, or any one Nitnem bani (the Diary streak's rule, `streak.dart`). |
+| BD-1 | What counts as a Nitnem day for `NITNEMI` | **Decided 2026-10-08:** the five morning banis only, those with `default_slot` = `morning` in `content.db` |
 | BD-2 | Points, or minutes of bani recited | **Decided 2026-10-08:** neither. Days and milestones from existing data. Resolves PRD D14: §0 stands, and §3.2 is "Badges" |
 | BD-3 | Names | **Decided 2026-10-08:** Vichari replaces Gyani; Satsangi replaces Pracharak. Resolves the name question of D11; spellings still want a native ear |
 | BD-4 | Thresholds | **Decided 2026-10-08:** 1, 7, 40, 40, 108, all banis, 3, 180, 5, 365 |
@@ -265,4 +291,5 @@ The badge names themselves are the Gurmukhi, Devanagari and Latin of Section 2, 
 | BD-8 | Satsangi's measure | **Decided 2026-10-08:** people who joined groups you created |
 | BD-9 | Existing users | **Decided 2026-10-08:** past days count; only the highest badge earned is announced |
 | BD-10 | Vichari and meanings | **Decided 2026-10-08:** no condition on meanings; hazri on 365 days |
-| BD-11 | How a badge is announced | **Proposed, for the owner:** one in-app sheet, never a system notification (AN1–AN4), since a badge is only ever earned while the app is open |
+| BD-11 | How a badge is announced | **Decided 2026-10-08:** in the app, in a bottom sheet with the badge, its name and details and a button to all badges; never a system notification (AN1–AN4) |
+| BD-12 | The designs | **Decided 2026-10-08** from four options a screen: the earned sheet 1C (design 95), the Badges page 2A (96), one badge 3B (97), the profile 4B (98), the menu 5C (99). 98 replaces 33 and 99 replaces 37 |
