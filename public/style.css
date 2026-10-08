@@ -112,7 +112,7 @@ p { margin: 0 0 14px; color: var(--ink2); }
   word-break: normal;
 }
 
-button {
+button, a.button {
   appearance: none;
   width: 100%;
   border: 0;
@@ -122,6 +122,10 @@ button {
   color: var(--on-primary);
   font: 600 16px/1 system-ui, sans-serif;
   cursor: pointer;
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
 }
 
 button:active { opacity: 0.85; }

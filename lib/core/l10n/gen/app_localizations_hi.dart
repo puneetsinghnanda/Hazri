@@ -2931,4 +2931,227 @@ class LHi extends L {
 
   @override
   String get backupSectionTitle => 'बैकअप';
+
+  @override
+  String get sangatMyGroups => 'मेरे ग्रुप';
+
+  @override
+  String get sangatBuiltInGroups => 'संगत में जुड़ें';
+
+  @override
+  String get sangatEndedHeading => 'समाप्त';
+
+  @override
+  String get sangatCreate => 'ग्रुप बनाएँ';
+
+  @override
+  String get sangatJoinWithCode => 'कोड से जुड़ें';
+
+  @override
+  String get sangatJoin => 'जुड़ें';
+
+  @override
+  String get sangatLeave => 'छोड़ें';
+
+  @override
+  String get sangatCreateNeedsProfile =>
+      'अपना ग्रुप शुरू करने के लिए अपनी प्रोफ़ाइल बनाएँ।';
+
+  @override
+  String sangatLimitReached(int limit) {
+    return 'आपके $limit चल रहे ग्रुप हैं। और शुरू करने के लिए support@hazri.me पर लिखें।';
+  }
+
+  @override
+  String get sangatGroupName => 'ग्रुप का नाम';
+
+  @override
+  String get sangatGoalBani => 'एक बाणी के पाठ';
+
+  @override
+  String get sangatGoalSimran => 'नाम सिमरन';
+
+  @override
+  String get sangatGoalTarget => 'लक्ष्य';
+
+  @override
+  String get sangatGoalEnds => 'समाप्ति';
+
+  @override
+  String sangatGoalSummaryBani(int target, String bani, String date) {
+    return '$date तक $target $bani';
+  }
+
+  @override
+  String sangatGoalSummarySimran(int target, int minutes, String date) {
+    return '$date तक $minutes मिनट के $target सिमरन';
+  }
+
+  @override
+  String sangatProgress(int total, int target, int pct) {
+    return '$target में से $total · $pct%';
+  }
+
+  @override
+  String sangatToday(int count) {
+    return 'आज $count';
+  }
+
+  @override
+  String sangatDaysLeft(int days) {
+    return '$days दिन बाक़ी';
+  }
+
+  @override
+  String sangatEndedOn(String date) {
+    return '$date को समाप्त';
+  }
+
+  @override
+  String sangatMembers(int count) {
+    return '$count सदस्य';
+  }
+
+  @override
+  String sangatMoreMembers(int count) {
+    return '$count और सदस्य';
+  }
+
+  @override
+  String get sangatAnonymousName => 'संगत सदस्य';
+
+  @override
+  String get sangatCreatorLabel => 'यह ग्रुप शुरू किया';
+
+  @override
+  String get sangatShareInvite => 'निमंत्रण भेजें';
+
+  @override
+  String sangatInviteMessage(
+    String group,
+    int target,
+    String goal,
+    String date,
+    String link,
+    String code,
+  ) {
+    return 'हाज़री पर \"$group\" में जुड़ें: $date तक मिलकर $target $goal। $link खोलें या ऐप में कोड $code लिखें।';
+  }
+
+  @override
+  String get sangatResetCode => 'निमंत्रण कोड नया करें';
+
+  @override
+  String get sangatPasteCode => 'कोड चिपकाएँ';
+
+  @override
+  String get sangatCodeInvalid => 'यह कोड मान्य नहीं है। नया निमंत्रण माँगें।';
+
+  @override
+  String get sangatGroupFull => 'यह ग्रुप भर गया है।';
+
+  @override
+  String get sangatGroupEnded => 'यह ग्रुप समाप्त हो गया है।';
+
+  @override
+  String get sangatChangeEndDate => 'समाप्ति की तारीख़ बदलें';
+
+  @override
+  String get sangatRemoveMember => 'ग्रुप से हटाएँ';
+
+  @override
+  String get sangatDeleteGroup => 'ग्रुप मिटाएँ';
+
+  @override
+  String get sangatReport => 'ग्रुप की शिकायत करें';
+
+  @override
+  String get sangatReportReasonOffensive => 'आपत्तिजनक नाम';
+
+  @override
+  String get sangatReportReasonSpam => 'स्पैम';
+
+  @override
+  String get sangatReportReasonOffTopic => 'सिखी के बारे में नहीं';
+
+  @override
+  String get sangatReportReasonOther => 'अन्य';
+
+  @override
+  String get sangatReportSent => 'धन्यवाद। हम इसे देखेंगे।';
+
+  @override
+  String sangatUpdatedAt(String time) {
+    return '$time को ताज़ा किया';
+  }
+
+  @override
+  String get sangatOffline => 'अभी संगत से जुड़ नहीं पा रहे';
+
+  @override
+  String get sangatGoalTitle => 'लक्ष्य तय करें';
+
+  @override
+  String get sangatMinutes => 'हर सिमरन के मिनट';
+
+  @override
+  String get sangatCreateAction => 'बनाएँ';
+
+  @override
+  String get sangatGoalOnce =>
+      'लक्ष्य बाद में बदला नहीं जा सकता; सिर्फ़ समाप्ति की तारीख़।';
+
+  @override
+  String get sangatNameRequired => 'कृपया ग्रुप का नाम लिखें';
+
+  @override
+  String get sangatTargetInvalid => '1 से 10,00,000 तक संख्या लिखें';
+
+  @override
+  String get sangatMinutesInvalid => '5 से 120 मिनट लिखें';
+
+  @override
+  String get sangatChooseBani => 'बाणी चुनें';
+
+  @override
+  String get sangatNoGoalYet => 'अभी कोई लक्ष्य नहीं';
+
+  @override
+  String get sangatJoinTitle => 'ग्रुप में जुड़ें';
+
+  @override
+  String get sangatCodeLabel => 'निमंत्रण कोड';
+
+  @override
+  String sangatLeaveConfirm(String group) {
+    return '$group छोड़ना है? आपका योगदान इसके कुल में रहेगा।';
+  }
+
+  @override
+  String sangatDeleteConfirm(String group) {
+    return '$group मिटाना है? यह ग्रुप और इसमें सब कुछ हटा देता है।';
+  }
+
+  @override
+  String sangatRemoveConfirm(String name) {
+    return '$name को ग्रुप से हटाना है? उनका योगदान रहेगा।';
+  }
+
+  @override
+  String get sangatReportNote => 'नोट (वैकल्पिक)';
+
+  @override
+  String get sangatReportSend => 'भेजें';
+
+  @override
+  String get sangatLeft => 'छोड़ दिया';
+
+  @override
+  String get sangatYou => 'आप';
+
+  @override
+  String get sangatNoGroups => 'आप अभी किसी ग्रुप में नहीं हैं।';
+
+  @override
+  String get sangatJoinFromInvite => 'आपको एक ग्रुप का निमंत्रण है।';
 }

@@ -10,6 +10,7 @@ class ApiException implements Exception {
     this.fields = const {},
     this.retryAfterSeconds,
     this.purpose,
+    this.limit,
   });
 
   final int statusCode;
@@ -26,6 +27,9 @@ class ApiException implements Exception {
 
   /// Only for token errors: `VERIFY_EMAIL`, `RESTORE` or `CHANGE_EMAIL`.
   final String? purpose;
+
+  /// Only for `GROUP_LIMIT_REACHED`: the caller's limit (08-sangat CG5).
+  final int? limit;
 
   /// Parses the error body, or describes the status alone when the body is
   /// not the common shape (a proxy page, an empty 502).
@@ -44,6 +48,7 @@ class ApiException implements Exception {
           : const {},
       retryAfterSeconds: (error['retryAfterSeconds'] as num?)?.toInt(),
       purpose: error['purpose'] as String?,
+      limit: (error['limit'] as num?)?.toInt(),
     );
   }
 

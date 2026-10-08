@@ -12,6 +12,9 @@ abstract interface class SystemSettings {
   /// Whether battery optimisation is off for Hazri, or null when unknown
   /// (02-notifications DP4).
   Future<bool?> ignoringBatteryOptimizations();
+
+  /// Google Play's install referrer string, or null (08-sangat IV6).
+  Future<String?> installReferrer();
 }
 
 class AndroidSystemSettings implements SystemSettings {
@@ -35,6 +38,17 @@ class AndroidSystemSettings implements SystemSettings {
   Future<bool?> ignoringBatteryOptimizations() async {
     try {
       return await _channel.invokeMethod<bool>('ignoringBatteryOptimizations');
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
+    }
+  }
+
+  @override
+  Future<String?> installReferrer() async {
+    try {
+      return await _channel.invokeMethod<String>('installReferrer');
     } on PlatformException {
       return null;
     } on MissingPluginException {

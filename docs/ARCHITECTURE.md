@@ -630,6 +630,8 @@ language's defaults, and re-plans notifications (`02-notifications.md` CM6).
 | --- | --- | --- |
 | `backup_last_at_v1` | shared_preferences | Watermark, UTC ISO string |
 | `backup_running_since_v1` | shared_preferences | `startedAt` of a backup in progress (BK7) |
+| `sangat_member_v1` | shared_preferences | Whether this install belongs to an active Sangat group, from the last 7.1/7.2 answer; turns the outbox on (08-sangat §5.1). Added 2026-10-08 |
+| `install_referrer_read_v1`, `sangat_pending_code_v1` | shared_preferences | The Play install referrer was read (IV6), and the invite code it carried, kept until setup is done. Added 2026-10-08 |
 | `backup_next_due_v1` | shared_preferences | When the weekly job is next due, local ISO string; an app open after it runs the catch-up (BK2). Added 2026-10-08 |
 
 No `user.db` table is added. Every backed-up row already has `id`, `updatedAt` and, for diary rows, `deletedAt` (`04-goals.md` §5.1).
@@ -1727,6 +1729,11 @@ Shown only when Android does not hand the link to the app (app not installed, or
 - A single-page app in TypeScript, built with Vite, using the Firebase JS SDK for Auth only. All data goes through the `api` function; Firestore rules still deny every client.
 - English only: it has one user.
 - Deployed with `firebase deploy --only hosting:admin`, by hand, like the public site.
+- **As built (2026-10-08):** `admin/`, vanilla TypeScript with Vite and the
+  Firebase JS SDK's Auth. Its Firebase web config (`apiKey`, `appId`) comes
+  from `admin/.env.local`, made from `admin/.env.example`; the API base is
+  `https://hazri-dfcc1.web.app/api/v1/admin` (cross-origin, allowed by
+  `ADMIN_ORIGINS` in `functions/src/config.ts`).
 
 
 ## 9. Deployment

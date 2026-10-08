@@ -2940,4 +2940,228 @@ class LEn extends L {
 
   @override
   String get backupSectionTitle => 'Backup';
+
+  @override
+  String get sangatMyGroups => 'My groups';
+
+  @override
+  String get sangatBuiltInGroups => 'Join the sangat';
+
+  @override
+  String get sangatEndedHeading => 'Ended';
+
+  @override
+  String get sangatCreate => 'Create group';
+
+  @override
+  String get sangatJoinWithCode => 'Join with a code';
+
+  @override
+  String get sangatJoin => 'Join';
+
+  @override
+  String get sangatLeave => 'Leave';
+
+  @override
+  String get sangatCreateNeedsProfile =>
+      'Create your profile to start a group of your own.';
+
+  @override
+  String sangatLimitReached(int limit) {
+    return 'You have $limit active groups. To start more, write to support@hazri.me.';
+  }
+
+  @override
+  String get sangatGroupName => 'Group name';
+
+  @override
+  String get sangatGoalBani => 'Paath of one bani';
+
+  @override
+  String get sangatGoalSimran => 'Naam Simran';
+
+  @override
+  String get sangatGoalTarget => 'Target';
+
+  @override
+  String get sangatGoalEnds => 'Ends on';
+
+  @override
+  String sangatGoalSummaryBani(int target, String bani, String date) {
+    return '$target $bani by $date';
+  }
+
+  @override
+  String sangatGoalSummarySimran(int target, int minutes, String date) {
+    return '$target sittings of $minutes min by $date';
+  }
+
+  @override
+  String sangatProgress(int total, int target, int pct) {
+    return '$total of $target · $pct%';
+  }
+
+  @override
+  String sangatToday(int count) {
+    return '$count today';
+  }
+
+  @override
+  String sangatDaysLeft(int days) {
+    return '$days days left';
+  }
+
+  @override
+  String sangatEndedOn(String date) {
+    return 'Ended on $date';
+  }
+
+  @override
+  String sangatMembers(int count) {
+    return '$count members';
+  }
+
+  @override
+  String sangatMoreMembers(int count) {
+    return '$count more members';
+  }
+
+  @override
+  String get sangatAnonymousName => 'Sangat member';
+
+  @override
+  String get sangatCreatorLabel => 'Started this group';
+
+  @override
+  String get sangatShareInvite => 'Share invite';
+
+  @override
+  String sangatInviteMessage(
+    String group,
+    int target,
+    String goal,
+    String date,
+    String link,
+    String code,
+  ) {
+    return 'Join \"$group\" on Hazri: $target $goal together by $date. Tap $link or enter code $code in the app.';
+  }
+
+  @override
+  String get sangatResetCode => 'Reset invite code';
+
+  @override
+  String get sangatPasteCode => 'Paste code';
+
+  @override
+  String get sangatCodeInvalid =>
+      'This code isn\'t valid. Ask for a new invite.';
+
+  @override
+  String get sangatGroupFull => 'This group is full.';
+
+  @override
+  String get sangatGroupEnded => 'This group has ended.';
+
+  @override
+  String get sangatChangeEndDate => 'Change end date';
+
+  @override
+  String get sangatRemoveMember => 'Remove from group';
+
+  @override
+  String get sangatDeleteGroup => 'Delete group';
+
+  @override
+  String get sangatReport => 'Report group';
+
+  @override
+  String get sangatReportReasonOffensive => 'Offensive name';
+
+  @override
+  String get sangatReportReasonSpam => 'Spam';
+
+  @override
+  String get sangatReportReasonOffTopic => 'Not about Sikhi';
+
+  @override
+  String get sangatReportReasonOther => 'Other';
+
+  @override
+  String get sangatReportSent => 'Thank you. We\'ll look into it.';
+
+  @override
+  String sangatUpdatedAt(String time) {
+    return 'Updated $time';
+  }
+
+  @override
+  String get sangatOffline => 'Can\'t reach the sangat right now';
+
+  @override
+  String get sangatGoalTitle => 'Set the goal';
+
+  @override
+  String get sangatMinutes => 'Minutes per sitting';
+
+  @override
+  String get sangatCreateAction => 'Create';
+
+  @override
+  String get sangatGoalOnce =>
+      'The goal can\'t be changed later; only its end date can.';
+
+  @override
+  String get sangatNameRequired => 'Please enter a group name';
+
+  @override
+  String get sangatTargetInvalid => 'Enter a number from 1 to 1,000,000';
+
+  @override
+  String get sangatMinutesInvalid => 'Enter 5 to 120 minutes';
+
+  @override
+  String get sangatChooseBani => 'Choose a bani';
+
+  @override
+  String get sangatNoGoalYet => 'No goal yet';
+
+  @override
+  String get sangatJoinTitle => 'Join a group';
+
+  @override
+  String get sangatCodeLabel => 'Invite code';
+
+  @override
+  String sangatLeaveConfirm(String group) {
+    return 'Leave $group? What you contributed stays in its total.';
+  }
+
+  @override
+  String sangatDeleteConfirm(String group) {
+    return 'Delete $group? This removes it and everything in it.';
+  }
+
+  @override
+  String sangatRemoveConfirm(String name) {
+    return 'Remove $name from the group? What they contributed stays.';
+  }
+
+  @override
+  String get sangatReportNote => 'A note (optional)';
+
+  @override
+  String get sangatReportSend => 'Send';
+
+  @override
+  String get sangatLeft => 'Left';
+
+  @override
+  String get sangatYou => 'You';
+
+  @override
+  String get sangatNoGroups => 'You are not in any group yet.';
+
+  @override
+  String get sangatJoinFromInvite => 'You have an invite to a group.';
 }

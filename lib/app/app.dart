@@ -10,6 +10,9 @@ import '../core/theme/hazri_theme.dart';
 import '../features/reminders/data/reminders_controller.dart';
 import '../features/backup/data/backup_controller.dart';
 import '../features/profile/data/profile_controller.dart';
+import '../features/sangat/data/sangat_controller.dart';
+import '../features/sangat/data/sangat_device.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'router.dart';
 
 class HazriApp extends ConsumerStatefulWidget {
@@ -26,11 +29,21 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     WidgetsBinding.instance.addObserver(this);
     // Keeps the weekly backup in step with the profile from the first frame.
     ref.read(backupControllerProvider);
+    // The Sangat: the outbox flag, its sender, the push token, and a
+    // reconnect sending what waited offline (08-sangat §5.1, K13).
+    ref.read(sangatMemberProvider);
+    ref.read(sangatDeviceProvider);
+    _online = Connectivity().onConnectivityChanged.listen((r) {
+      if (!r.contains(ConnectivityResult.none)) unawaited(ref.read(outboxSenderProvider).send());
+    });
     _replan();
   }
 
+  StreamSubscription<List<ConnectivityResult>>? _online;
+
   @override
   void dispose() {
+    _online?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -51,7 +64,13 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
         unawaited(ref.read(backupControllerProvider).onProfileLoaded());
       }
       await ref.read(userRepositoryProvider).closeGoalIfBlank();
+      unawaited(ref.read(outboxSenderProvider).send());
+      unawaited(ref.read(sangatDeviceProvider).sync());
+      await ref.read(installInviteProvider).readOnce();
       if (!ref.read(settingsProvider).onboardingDone) return;
+      // IV6: an invite carried through the Play install, once setup is done.
+      final code = await ref.read(installInviteProvider).take();
+      if (code != null) ref.read(routerProvider).push(Routes.sangatJoin(code));
       await ref.read(reminderSchedulerProvider).reschedule();
     });
   }

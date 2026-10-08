@@ -1673,5 +1673,198 @@
   },
   "restoreNothing": "There is no backup to restore yet",
   "restoreButton": "Restore",
-  "backupSectionTitle": "Backup"
+  "backupSectionTitle": "Backup",
+  "sangatMyGroups": "My groups",
+  "sangatBuiltInGroups": "Join the sangat",
+  "sangatEndedHeading": "Ended",
+  "sangatCreate": "Create group",
+  "sangatJoinWithCode": "Join with a code",
+  "sangatJoin": "Join",
+  "sangatLeave": "Leave",
+  "sangatCreateNeedsProfile": "Create your profile to start a group of your own.",
+  "sangatLimitReached": "You have {limit} active groups. To start more, write to support@hazri.me.",
+  "@sangatLimitReached": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatGroupName": "Group name",
+  "sangatGoalBani": "Paath of one bani",
+  "sangatGoalSimran": "Naam Simran",
+  "sangatGoalTarget": "Target",
+  "sangatGoalEnds": "Ends on",
+  "sangatGoalSummaryBani": "{target} {bani} by {date}",
+  "@sangatGoalSummaryBani": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      },
+      "bani": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatGoalSummarySimran": "{target} sittings of {minutes} min by {date}",
+  "@sangatGoalSummarySimran": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatProgress": "{total} of {target} · {pct}%",
+  "@sangatProgress": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      },
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatToday": "{count} today",
+  "@sangatToday": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatDaysLeft": "{days} days left",
+  "@sangatDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatEndedOn": "Ended on {date}",
+  "@sangatEndedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatMembers": "{count} members",
+  "@sangatMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatMoreMembers": "{count} more members",
+  "@sangatMoreMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatAnonymousName": "Sangat member",
+  "sangatCreatorLabel": "Started this group",
+  "sangatShareInvite": "Share invite",
+  "sangatInviteMessage": "Join \"{group}\" on Hazri: {target} {goal} together by {date}. Tap {link} or enter code {code} in the app.",
+  "@sangatInviteMessage": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      },
+      "target": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "link": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatResetCode": "Reset invite code",
+  "sangatPasteCode": "Paste code",
+  "sangatCodeInvalid": "This code isn't valid. Ask for a new invite.",
+  "sangatGroupFull": "This group is full.",
+  "sangatGroupEnded": "This group has ended.",
+  "sangatChangeEndDate": "Change end date",
+  "sangatRemoveMember": "Remove from group",
+  "sangatDeleteGroup": "Delete group",
+  "sangatReport": "Report group",
+  "sangatReportReasonOffensive": "Offensive name",
+  "sangatReportReasonSpam": "Spam",
+  "sangatReportReasonOffTopic": "Not about Sikhi",
+  "sangatReportReasonOther": "Other",
+  "sangatReportSent": "Thank you. We'll look into it.",
+  "sangatUpdatedAt": "Updated {time}",
+  "@sangatUpdatedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatOffline": "Can't reach the sangat right now",
+  "sangatGoalTitle": "Set the goal",
+  "sangatMinutes": "Minutes per sitting",
+  "sangatCreateAction": "Create",
+  "sangatGoalOnce": "The goal can't be changed later; only its end date can.",
+  "sangatNameRequired": "Please enter a group name",
+  "sangatTargetInvalid": "Enter a number from 1 to 1,000,000",
+  "sangatMinutesInvalid": "Enter 5 to 120 minutes",
+  "sangatChooseBani": "Choose a bani",
+  "sangatNoGoalYet": "No goal yet",
+  "sangatJoinTitle": "Join a group",
+  "sangatCodeLabel": "Invite code",
+  "sangatLeaveConfirm": "Leave {group}? What you contributed stays in its total.",
+  "@sangatLeaveConfirm": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatDeleteConfirm": "Delete {group}? This removes it and everything in it.",
+  "@sangatDeleteConfirm": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatRemoveConfirm": "Remove {name} from the group? What they contributed stays.",
+  "@sangatRemoveConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatReportNote": "A note (optional)",
+  "sangatReportSend": "Send",
+  "sangatLeft": "Left",
+  "sangatYou": "You",
+  "sangatNoGroups": "You are not in any group yet.",
+  "sangatJoinFromInvite": "You have an invite to a group."
 }

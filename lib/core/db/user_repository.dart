@@ -132,6 +132,50 @@ class UserRepository {
 
   void _changed() => onChanged?.call();
 
+  /// 08-sangat §5.1: queue every paath and sitting, and every undo, for the
+  /// Sangat. Set while the person belongs to at least one active group;
+  /// otherwise nothing is queued.
+  bool queueForSangat = false;
+
+  /// Called after a row is queued, so the sender can go at once.
+  void Function()? onOutbox;
+
+  Future<void> _queue({
+    required String id,
+    required String kind,
+    String? baniId,
+    int? durationS,
+    required String source,
+    required DateTime at,
+    required bool retract,
+  }) async {
+    if (!queueForSangat) return;
+    await _db.into(_db.sangatOutbox).insertOnConflictUpdate(SangatOutboxCompanion.insert(
+          id: id,
+          kind: kind,
+          baniId: Value(baniId),
+          durationS: Value(durationS),
+          source: source,
+          at: at,
+          retracted: Value(retract),
+          createdAt: _nowUtc,
+        ));
+    onOutbox?.call();
+  }
+
+  /// The queue, oldest first, for the sender.
+  Future<List<OutboxRow>> outbox({int limit = 200}) => (_db.select(_db.sangatOutbox)
+        ..orderBy([(o) => OrderingTerm(expression: o.createdAt)])
+        ..limit(limit))
+      .get();
+
+  /// Rows the server confirmed.
+  Future<void> clearOutbox(Iterable<OutboxRow> rows) => _db.batch((b) {
+        for (final r in rows) {
+          b.deleteWhere(_db.sangatOutbox, ($SangatOutboxTable o) => o.id.equals(r.id) & o.retracted.equals(r.retracted));
+        }
+      });
+
   // ---------------------------------------------------------------- progress
 
   Future<ReadingProgressData?> progressFor(String baniVersionId) =>
@@ -203,6 +247,14 @@ class UserRepository {
       updatedAt: now,
     );
     final saved = await _db.into(_db.completions).insertReturning(row);
+    await _queue(
+      id: saved.id,
+      kind: 'BANI',
+      baniId: baniId,
+      source: UpperSnake.encode(source),
+      at: saved.completedAt,
+      retract: false,
+    );
     _changed();
     return saved;
   }
@@ -221,6 +273,15 @@ class UserRepository {
     final now = _nowUtc;
     await (_db.update(_db.completions)..where((c) => c.id.equals(row.id)))
         .write(CompletionsCompanion(deletedAt: Value(now), updatedAt: Value(now)));
+    // CT5: taken back from every group it counted in.
+    await _queue(
+      id: row.id,
+      kind: 'BANI',
+      baniId: row.baniId,
+      source: UpperSnake.encode(row.source),
+      at: row.completedAt,
+      retract: true,
+    );
     _changed();
     return row;
   }
@@ -263,6 +324,14 @@ class UserRepository {
             updatedAt: now,
           ),
         );
+    await _queue(
+      id: saved.id,
+      kind: 'SIMRAN',
+      durationS: saved.durationS,
+      source: UpperSnake.encode(source),
+      at: saved.startedAt,
+      retract: false,
+    );
     _changed();
     return saved;
   }
@@ -279,6 +348,14 @@ class UserRepository {
     final now = _nowUtc;
     await (_db.update(_db.simranSessions)..where((s) => s.id.equals(row.id)))
         .write(SimranSessionsCompanion(deletedAt: Value(now), updatedAt: Value(now)));
+    await _queue(
+      id: row.id,
+      kind: 'SIMRAN',
+      durationS: row.durationS,
+      source: UpperSnake.encode(row.source),
+      at: row.startedAt,
+      retract: true,
+    );
     _changed();
     return row;
   }

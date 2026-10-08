@@ -5294,6 +5294,385 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Backup'**
   String get backupSectionTitle;
+
+  /// No description provided for @sangatMyGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'My groups'**
+  String get sangatMyGroups;
+
+  /// No description provided for @sangatBuiltInGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the sangat'**
+  String get sangatBuiltInGroups;
+
+  /// No description provided for @sangatEndedHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get sangatEndedHeading;
+
+  /// No description provided for @sangatCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create group'**
+  String get sangatCreate;
+
+  /// No description provided for @sangatJoinWithCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Join with a code'**
+  String get sangatJoinWithCode;
+
+  /// No description provided for @sangatJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get sangatJoin;
+
+  /// No description provided for @sangatLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get sangatLeave;
+
+  /// No description provided for @sangatCreateNeedsProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your profile to start a group of your own.'**
+  String get sangatCreateNeedsProfile;
+
+  /// No description provided for @sangatLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {limit} active groups. To start more, write to support@hazri.me.'**
+  String sangatLimitReached(int limit);
+
+  /// No description provided for @sangatGroupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get sangatGroupName;
+
+  /// No description provided for @sangatGoalBani.
+  ///
+  /// In en, this message translates to:
+  /// **'Paath of one bani'**
+  String get sangatGoalBani;
+
+  /// No description provided for @sangatGoalSimran.
+  ///
+  /// In en, this message translates to:
+  /// **'Naam Simran'**
+  String get sangatGoalSimran;
+
+  /// No description provided for @sangatGoalTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Target'**
+  String get sangatGoalTarget;
+
+  /// No description provided for @sangatGoalEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends on'**
+  String get sangatGoalEnds;
+
+  /// No description provided for @sangatGoalSummaryBani.
+  ///
+  /// In en, this message translates to:
+  /// **'{target} {bani} by {date}'**
+  String sangatGoalSummaryBani(int target, String bani, String date);
+
+  /// No description provided for @sangatGoalSummarySimran.
+  ///
+  /// In en, this message translates to:
+  /// **'{target} sittings of {minutes} min by {date}'**
+  String sangatGoalSummarySimran(int target, int minutes, String date);
+
+  /// No description provided for @sangatProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} of {target} · {pct}%'**
+  String sangatProgress(int total, int target, int pct);
+
+  /// No description provided for @sangatToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} today'**
+  String sangatToday(int count);
+
+  /// No description provided for @sangatDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days left'**
+  String sangatDaysLeft(int days);
+
+  /// No description provided for @sangatEndedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended on {date}'**
+  String sangatEndedOn(String date);
+
+  /// No description provided for @sangatMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members'**
+  String sangatMembers(int count);
+
+  /// No description provided for @sangatMoreMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more members'**
+  String sangatMoreMembers(int count);
+
+  /// No description provided for @sangatAnonymousName.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangat member'**
+  String get sangatAnonymousName;
+
+  /// No description provided for @sangatCreatorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Started this group'**
+  String get sangatCreatorLabel;
+
+  /// No description provided for @sangatShareInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Share invite'**
+  String get sangatShareInvite;
+
+  /// No description provided for @sangatInviteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Join \"{group}\" on Hazri: {target} {goal} together by {date}. Tap {link} or enter code {code} in the app.'**
+  String sangatInviteMessage(
+    String group,
+    int target,
+    String goal,
+    String date,
+    String link,
+    String code,
+  );
+
+  /// No description provided for @sangatResetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset invite code'**
+  String get sangatResetCode;
+
+  /// No description provided for @sangatPasteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste code'**
+  String get sangatPasteCode;
+
+  /// No description provided for @sangatCodeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This code isn\'t valid. Ask for a new invite.'**
+  String get sangatCodeInvalid;
+
+  /// No description provided for @sangatGroupFull.
+  ///
+  /// In en, this message translates to:
+  /// **'This group is full.'**
+  String get sangatGroupFull;
+
+  /// No description provided for @sangatGroupEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'This group has ended.'**
+  String get sangatGroupEnded;
+
+  /// No description provided for @sangatChangeEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Change end date'**
+  String get sangatChangeEndDate;
+
+  /// No description provided for @sangatRemoveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from group'**
+  String get sangatRemoveMember;
+
+  /// No description provided for @sangatDeleteGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete group'**
+  String get sangatDeleteGroup;
+
+  /// No description provided for @sangatReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report group'**
+  String get sangatReport;
+
+  /// No description provided for @sangatReportReasonOffensive.
+  ///
+  /// In en, this message translates to:
+  /// **'Offensive name'**
+  String get sangatReportReasonOffensive;
+
+  /// No description provided for @sangatReportReasonSpam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam'**
+  String get sangatReportReasonSpam;
+
+  /// No description provided for @sangatReportReasonOffTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'Not about Sikhi'**
+  String get sangatReportReasonOffTopic;
+
+  /// No description provided for @sangatReportReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get sangatReportReasonOther;
+
+  /// No description provided for @sangatReportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you. We\'ll look into it.'**
+  String get sangatReportSent;
+
+  /// No description provided for @sangatUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {time}'**
+  String sangatUpdatedAt(String time);
+
+  /// No description provided for @sangatOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t reach the sangat right now'**
+  String get sangatOffline;
+
+  /// No description provided for @sangatGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set the goal'**
+  String get sangatGoalTitle;
+
+  /// No description provided for @sangatMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes per sitting'**
+  String get sangatMinutes;
+
+  /// No description provided for @sangatCreateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get sangatCreateAction;
+
+  /// No description provided for @sangatGoalOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'The goal can\'t be changed later; only its end date can.'**
+  String get sangatGoalOnce;
+
+  /// No description provided for @sangatNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a group name'**
+  String get sangatNameRequired;
+
+  /// No description provided for @sangatTargetInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number from 1 to 1,000,000'**
+  String get sangatTargetInvalid;
+
+  /// No description provided for @sangatMinutesInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 5 to 120 minutes'**
+  String get sangatMinutesInvalid;
+
+  /// No description provided for @sangatChooseBani.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a bani'**
+  String get sangatChooseBani;
+
+  /// No description provided for @sangatNoGoalYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No goal yet'**
+  String get sangatNoGoalYet;
+
+  /// No description provided for @sangatJoinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a group'**
+  String get sangatJoinTitle;
+
+  /// No description provided for @sangatCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code'**
+  String get sangatCodeLabel;
+
+  /// No description provided for @sangatLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave {group}? What you contributed stays in its total.'**
+  String sangatLeaveConfirm(String group);
+
+  /// No description provided for @sangatDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {group}? This removes it and everything in it.'**
+  String sangatDeleteConfirm(String group);
+
+  /// No description provided for @sangatRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the group? What they contributed stays.'**
+  String sangatRemoveConfirm(String name);
+
+  /// No description provided for @sangatReportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A note (optional)'**
+  String get sangatReportNote;
+
+  /// No description provided for @sangatReportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get sangatReportSend;
+
+  /// No description provided for @sangatLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get sangatLeft;
+
+  /// No description provided for @sangatYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get sangatYou;
+
+  /// No description provided for @sangatNoGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not in any group yet.'**
+  String get sangatNoGroups;
+
+  /// No description provided for @sangatJoinFromInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'You have an invite to a group.'**
+  String get sangatJoinFromInvite;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

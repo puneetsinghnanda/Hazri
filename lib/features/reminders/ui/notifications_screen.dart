@@ -8,7 +8,7 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/notification_access.dart';
-import '../../sangat/data/membership.dart';
+import '../../sangat/data/sangat_controller.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/notification_switches.dart';
 import '../data/reminder_service.dart';

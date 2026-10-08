@@ -472,6 +472,13 @@ has that the target replaces, and PRD §11 says which step removes each:
   because drift keeps seconds; a repeat row is harmless (BK8). `workmanager`
   is the one native dependency this step adds, and only CI's Gradle build can
   show whether it compiles against the app's Android setup.
+- **The Sangat is rebuilt (PRD §11 step 6)** on the `api` Function: built-in
+  groups with Join/Leave, custom groups with one goal, invites by link or
+  code, the outbox in `user.db` (queued only while `sangat_member_v1` says
+  the install is in a group), reports, and the push token with a profile and
+  a group. The install referrer is read in `MainActivity.kt` with Google's
+  `installreferrer` library directly: the Flutter plugin for it uses the
+  `kotlinOptions` block Kotlin 2.4 rejects. The admin website is `admin/`.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own

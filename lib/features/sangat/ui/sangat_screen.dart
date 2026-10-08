@@ -1,40 +1,170 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/menu_sheet.dart';
+import '../../../app/router.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
+import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../../core/widgets/tab_header.dart';
+import '../../profile/data/profile_controller.dart';
+import '../../profile/ui/messages.dart';
+import '../data/sangat_api.dart';
+import '../data/sangat_controller.dart';
+import '../domain/sangat_models.dart';
+import 'sangat_widgets.dart';
 
-/// The Sangat tab while the Sangat is being rebuilt (PRD §11.4, steps 4–6).
-///
-/// The old Sangat wrote Firestore straight from the phone, which the
-/// deny-all rules of step 4 refuse. Until the new one arrives in step 6 the
-/// tab says the one true thing it can — the Sangat cannot be reached — and
-/// nothing else in the app depends on it (rule 4: the Sangat is opt-in).
-class SangatScreen extends StatelessWidget {
+/// The Sangat tab (08-sangat §8.1): my groups, Create and Join, then the
+/// built-in groups. The copy on the phone shows first (§5.2).
+class SangatScreen extends ConsumerStatefulWidget {
   const SangatScreen({super.key});
+
+  @override
+  ConsumerState<SangatScreen> createState() => _SangatScreenState();
+}
+
+class _SangatScreenState extends ConsumerState<SangatScreen> {
+  final _busy = <String>{};
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
+  }
+
+  Future<void> _refresh() async {
+    await ref.read(sangatListsProvider.notifier).refresh();
+    await ref.read(outboxSenderProvider).send();
+  }
+
+  Future<void> _toggle(SangatGroup g) async {
+    final l = L.of(context);
+    final api = ref.read(sangatApiProvider);
+    setState(() => _busy.add(g.groupId));
+    try {
+      if (g.isMember) {
+        await api.leave(g.groupId);
+      } else {
+        await api.joinBuiltIn(g.groupId);
+        await ref.read(sangatListsProvider.notifier).setMember(true);
+      }
+      await _refresh();
+    } on Object catch (e) {
+      if (mounted) ProfileMessages.snack(context, ProfileMessages.of(l, e));
+    } finally {
+      if (mounted) setState(() => _busy.remove(g.groupId));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
+    final view = ref.watch(sangatListsProvider);
+    final lists = view?.value;
+    final mine = lists?.mine ?? const <SangatGroup>[];
+    final active = mine.where((g) => g.isActive).toList();
+    final ended = mine.where((g) => !g.isActive).toList();
+    final hasProfile = ref.watch(profileControllerProvider) is ProfileLoaded;
+
     return Scaffold(
       backgroundColor: c.bg,
       body: SafeArea(
-        child: ListView(
-          children: [
-            TabHeader(title: l.sangatTitle, onMenu: () => showMenuSheet(context)),
-            Padding(
-              padding: const EdgeInsets.all(HazriSize.gutter),
-              child: HazriCard(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  l.sangatUnavailable,
-                  style: HazriText.body.copyWith(color: c.ink2),
+        bottom: false,
+        child: PhoneWidth(
+          child: RefreshIndicator(
+            onRefresh: _refresh,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 24),
+              children: [
+                TabHeader(title: l.sangatTitle, onMenu: () => showMenuSheet(context)),
+                UpdatedLine(savedAt: view?.savedAt, offline: view?.offline ?? false),
+                if (view == null || (view.offline && lists == null))
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: view == null
+                        ? const Center(child: Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator()))
+                        : HazriCard(child: Text(l.sangatOffline, style: HazriText.body.copyWith(color: c.ink2))),
+                  ),
+                Eyebrow(l.sangatMyGroups),
+                const SizedBox(height: 8),
+                if (mine.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(l.sangatNoGroups, style: HazriText.bodySmall.copyWith(color: c.muted)),
+                  ),
+                for (final g in active)
+                  GroupTile(group: g, onTap: () => context.push(Routes.sangatGroup(g.groupId))),
+                Row(
+                  children: [
+                    Expanded(
+                      child: PrimaryButton(
+                        label: l.sangatCreate,
+                        icon: HazriIconData.sparkle,
+                        onPressed: () => hasProfile ? context.push(Routes.sangatCreate) : _needsProfile(context),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: PrimaryButton(
+                        label: l.sangatJoinWithCode,
+                        secondary: true,
+                        onPressed: () => context.push(Routes.sangatJoin()),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+                if (ended.isNotEmpty) ...[
+                  const SizedBox(height: 18),
+                  Eyebrow(l.sangatEndedHeading),
+                  const SizedBox(height: 8),
+                  for (final g in ended)
+                    GroupTile(group: g, onTap: () => context.push(Routes.sangatGroup(g.groupId))),
+                ],
+                const SizedBox(height: 18),
+                Eyebrow(l.sangatBuiltInGroups),
+                const SizedBox(height: 8),
+                for (final g in lists?.builtIn ?? const <SangatGroup>[])
+                  GroupTile(
+                    group: g,
+                    onTap: g.isMember ? () => context.push(Routes.sangatGroup(g.groupId)) : null,
+                    trailing: _busy.contains(g.groupId)
+                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
+                        : TextButton(
+                            onPressed: () => _toggle(g),
+                            child: Text(g.isMember ? l.sangatLeave : l.sangatJoin),
+                          ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// CG1: Create without a profile shows the profile prompt.
+  void _needsProfile(BuildContext context) {
+    final l = L.of(context);
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (sheet) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(l.sangatCreateNeedsProfile, style: HazriText.body),
+            const SizedBox(height: 16),
+            PrimaryButton(
+              label: l.profileBannerTitle,
+              onPressed: () {
+                Navigator.of(sheet).pop();
+                context.push(Routes.profileSetup);
+              },
             ),
           ],
         ),
@@ -42,3 +172,4 @@ class SangatScreen extends StatelessWidget {
     );
   }
 }
+

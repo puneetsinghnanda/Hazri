@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.view.WindowCompat
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
 import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -44,8 +46,48 @@ class MainActivity : AudioServiceActivity() {
                         val pm = getSystemService(POWER_SERVICE) as PowerManager
                         result.success(pm.isIgnoringBatteryOptimizations(packageName))
                     }
+                    // 08-sangat IV6: the Play install referrer, once. Answers
+                    // null when Play has none or the service is missing.
+                    "installReferrer" -> readInstallReferrer(result)
                     else -> result.notImplemented()
                 }
             }
+    }
+
+    private fun readInstallReferrer(result: MethodChannel.Result) {
+        val client = InstallReferrerClient.newBuilder(this).build()
+        var answered = false
+        fun answer(value: String?) {
+            if (answered) return
+            answered = true
+            runOnUiThread { result.success(value) }
+            try {
+                client.endConnection()
+            } catch (_: Exception) {
+            }
+        }
+        try {
+            client.startConnection(object : InstallReferrerStateListener {
+                override fun onInstallReferrerSetupFinished(responseCode: Int) {
+                    if (responseCode == InstallReferrerClient.InstallReferrerResponse.OK) {
+                        answer(
+                            try {
+                                client.installReferrer.installReferrer
+                            } catch (_: Exception) {
+                                null
+                            },
+                        )
+                    } else {
+                        answer(null)
+                    }
+                }
+
+                override fun onInstallReferrerServiceDisconnected() {
+                    answer(null)
+                }
+            })
+        } catch (_: Exception) {
+            answer(null)
+        }
     }
 }

@@ -9,7 +9,7 @@ final _handled = <String>{};
 
 /// The in-app route for an incoming https link, or null for a normal app
 /// location. `/verify?token=` → the Link Result screen, once per token; the
-/// invite path `/j/<groupId>` is handled by the Sangat ([sangatInviteRoute]);
+/// invite path `/j/<code>` → the Sangat's Join screen (08-sangat IV5);
 /// any other link on our hosts opens Today.
 ///
 /// Depending on the engine, the link arrives as the whole URL or as its path
@@ -25,10 +25,10 @@ String? incomingLinkRoute(Uri uri) {
     if (token.isNotEmpty && !_handled.add(token)) return '/today';
     return '/link-result?token=${Uri.encodeQueryComponent(token)}';
   }
-  final invite = sangatInviteRoute?.call(uri);
-  if (invite != null) return invite;
+  // IV5: /j/{code} opens Join with the code filled in.
+  if (path.startsWith('/j/')) {
+    final code = path.substring(3).split('/').first;
+    if (code.isNotEmpty) return '/sangat-join?code=${Uri.encodeQueryComponent(code)}';
+  }
   return '/today';
 }
-
-/// Set by the Sangat (step 6) to claim `/j/<groupId>` links.
-String? Function(Uri uri)? sangatInviteRoute;

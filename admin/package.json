@@ -1,0 +1,18 @@
+{
+  "name": "hazri-admin",
+  "private": true,
+  "description": "The Hazri admin website (docs/features/11-admin.md). One user; English only.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "firebase": "11.10.0"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3",
+    "vite": "6.3.5"
+  }
+}

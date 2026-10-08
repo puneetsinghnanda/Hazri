@@ -32,6 +32,9 @@ import '../features/profile/ui/link_result_screen.dart';
 import '../features/profile/ui/profile_edit_screen.dart';
 import '../features/profile/ui/profile_screen.dart';
 import '../features/profile/ui/profile_setup_screen.dart';
+import '../features/sangat/ui/create_group_screen.dart';
+import '../features/sangat/ui/group_screen.dart';
+import '../features/sangat/ui/join_screen.dart';
 import 'shell.dart';
 
 /// Named routes, so no screen has to spell a path out by hand.
@@ -62,8 +65,12 @@ abstract final class Routes {
   static const about = '/about';
   static const privacy = '/privacy';
 
-  /// The Sangat tab. Rebuilt in step 6 (PRD §11.4).
+  /// The Sangat tab (08-sangat §8).
   static const sangat = '/sangat';
+  static const sangatCreate = '/sangat-create';
+  static String sangatJoin([String? code]) =>
+      code == null ? '/sangat-join' : '/sangat-join?code=${Uri.encodeQueryComponent(code)}';
+  static String sangatGroup(String id, {bool share = false}) => '/sangat-group/$id${share ? '?share=1' : ''}';
   static const licences = '/licences';
 
   /// The profile (`01-accounts.md` §8, ARCHITECTURE §2.4).
@@ -178,6 +185,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const NotificationDiagnosticsScreen(),
       ),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
+      GoRoute(path: Routes.sangatCreate, builder: (_, _) => const CreateGroupScreen()),
+      GoRoute(
+        path: '/sangat-join',
+        builder: (_, state) => JoinScreen(code: state.uri.queryParameters['code']),
+      ),
+      GoRoute(
+        path: '/sangat-group/:id',
+        builder: (_, state) => GroupScreen(
+          groupId: state.pathParameters['id']!,
+          offerShare: state.uri.queryParameters['share'] == '1',
+        ),
+      ),
       GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen()),
       GoRoute(path: Routes.profileSetup, builder: (_, _) => const ProfileSetupScreen()),
       GoRoute(path: Routes.profileEdit, builder: (_, _) => const ProfileEditScreen()),

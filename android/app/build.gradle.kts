@@ -118,6 +118,10 @@ kotlin {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    // Google Play's Install Referrer, read once on first launch for an
+    // invite's code (08-sangat IV6). MainActivity calls it directly rather
+    // than through a plugin.
+    implementation("com.android.installreferrer:installreferrer:2.2")
 }
 
 flutter {

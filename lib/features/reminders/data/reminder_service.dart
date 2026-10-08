@@ -293,6 +293,23 @@ class ReminderService {
     }
   }
 
+  /// A Sangat push that arrived while the app was open: Android shows a
+  /// notification message only in the background, so the app shows it here
+  /// on the same channel (02-notifications §6.1).
+  Future<void> showPush({required String title, required String body, String? route, required String channelName}) async {
+    if (!_ready) return;
+    await _plugin.show(
+      title.hashCode ^ body.hashCode,
+      title,
+      body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(NotificationKind.sangat.channelId, channelName,
+            category: AndroidNotificationCategory.social),
+      ),
+      payload: NotificationPayload(route: route ?? '/sangat').encode(),
+    );
+  }
+
   Future<void> cancelAll() => _plugin.cancelAll();
 
   Future<int> pendingCount() async => (await _plugin.pendingNotificationRequests()).length;

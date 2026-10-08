@@ -20,6 +20,7 @@ import 'features/library/data/api_library_repository.dart';
 import 'features/library/data/library_repository.dart';
 import 'features/backup/data/backup_scheduler.dart';
 import 'features/backup/data/backup_worker.dart';
+import 'features/sangat/data/sangat_device.dart';
 import 'package:workmanager/workmanager.dart';
 
 Future<void> main() async {
@@ -72,6 +73,7 @@ Future<void> main() async {
         audioHandlerProvider.overrideWithValue(audio),
         backendProvider.overrideWithValue(backend),
         backupSchedulerProvider.overrideWithValue(backupScheduler),
+        if (backend.isUp) pushTokensProvider.overrideWithValue(FirebasePushTokens()),
         // With Firebase up, the install signs in anonymously and every server
         // call goes through the `api` Function (ARCHITECTURE §6). Without it,
         // the offline defaults stand and the app is the app on the phone.

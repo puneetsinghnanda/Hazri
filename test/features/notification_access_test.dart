@@ -17,6 +17,9 @@ class FakeSystemSettings implements SystemSettings {
 
   @override
   Future<bool?> ignoringBatteryOptimizations() async => null;
+
+  @override
+  Future<String?> installReferrer() async => null;
 }
 
 /// The lock-screen controls are the playback service's notification, so this is

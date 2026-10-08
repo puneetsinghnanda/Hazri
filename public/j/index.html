@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Join a sangat — Hazri</title>
+<!-- IV5: so the link previews in chat apps. -->
+<meta property="og:title" content="Join a sangat on Hazri">
+<meta property="og:description" content="You have been invited to a Hazri sangat group. Tap to join with the code.">
+<meta property="og:site_name" content="Hazri">
+<meta property="og:type" content="website">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -43,11 +48,19 @@
     </button>
   </div>
 
+  <p>
+    <a class="button" id="play" href="https://play.google.com/store/apps/details?id=app.hazri">
+      <span data-lang="pa">ਹਾਜ਼ਰੀ ਲਓ</span>
+      <span data-lang="hi">हाज़री पाएँ</span>
+      <span data-lang="en">Get Hazri</span>
+    </a>
+  </p>
+
   <div data-lang="pa">
     <h2>ਹਜ਼ਰੀ ਵਿੱਚ</h2>
     <ol>
       <li>ਹਜ਼ਰੀ ਖੋਲ੍ਹੋ।</li>
-      <li>ਸੰਗਤ &rarr; ਸੰਗਤ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ।</li>
+      <li>ਸੰਗਤ &rarr; ਕੋਡ ਨਾਲ ਜੁੜੋ।</li>
       <li>ਕੋਡ ਪੇਸਟ ਕਰੋ।</li>
     </ol>
   </div>
@@ -55,7 +68,7 @@
     <h2>हज़री में</h2>
     <ol>
       <li>हज़री खोलें।</li>
-      <li>संगत &rarr; संगत में शामिल हों।</li>
+      <li>संगत &rarr; कोड से जुड़ें।</li>
       <li>कोड पेस्ट करें।</li>
     </ol>
   </div>
@@ -63,7 +76,7 @@
     <h2>In Hazri</h2>
     <ol>
       <li>Open Hazri.</li>
-      <li>Sangat &rarr; Join a sangat.</li>
+      <li>Sangat &rarr; Join with a code.</li>
       <li>Paste the code.</li>
     </ol>
   </div>
@@ -102,12 +115,20 @@
 <script src="/lang.js"></script>
 <script>
 (function () {
-  // The same rule the app uses (groupIdFromInvite): the last non-empty path
-  // segment, with any query or fragment a messaging app bolted on removed.
-  // Both sides being forgiving in the same way is what stops an invite that
-  // reads fine on a phone being refused by the app.
+  // 08-sangat IV5: /j/{code}. The page never calls the API; it shows the
+  // code, and the Play button carries it in the install referrer (IV6) so a
+  // first launch can offer to join.
   var parts = location.pathname.split('/').filter(function (p) { return p !== ''; });
-  var id = parts.length > 1 ? parts[parts.length - 1] : '';
+  var raw = parts.length > 1 ? decodeURIComponent(parts[parts.length - 1]) : '';
+  var norm = raw.toUpperCase().replace(/[\s-]/g, '');
+  var id = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{8}$/.test(norm)
+    ? norm.slice(0, 4) + '-' + norm.slice(4)
+    : raw;
+  if (id) {
+    document.getElementById('play').href =
+      'https://play.google.com/store/apps/details?id=app.hazri&referrer=' +
+      encodeURIComponent('sangat_code=' + norm);
+  }
 
   document.getElementById('has-id').hidden = !id;
   document.getElementById('no-id').hidden = !!id;
