@@ -18,6 +18,9 @@ import 'core/backend/api_client.dart';
 import 'core/backend/auth_service.dart';
 import 'features/library/data/api_library_repository.dart';
 import 'features/library/data/library_repository.dart';
+import 'features/backup/data/backup_scheduler.dart';
+import 'features/backup/data/backup_worker.dart';
+import 'package:workmanager/workmanager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +34,17 @@ Future<void> main() async {
   // it fails the app is Phase 1's app (CLAUDE.md rule 4).
   final backend = FirebaseBackend();
   await backend.start();
+
+  // The weekly backup's background entry point (10-backup §8.1).
+  var backupScheduler = const NoBackupScheduler() as BackupScheduler;
+  if (backend.isUp) {
+    try {
+      await Workmanager().initialize(backupCallbackDispatcher);
+      backupScheduler = WorkmanagerBackupScheduler();
+    } on Exception catch (e) {
+      debugPrint('Hazri: WorkManager unavailable, no weekly backup ($e)');
+    }
+  }
 
   final prefs = await SharedPreferences.getInstance();
   final contentDb = await ContentDb.open();
@@ -57,6 +71,7 @@ Future<void> main() async {
         reminderServiceProvider.overrideWithValue(reminders),
         audioHandlerProvider.overrideWithValue(audio),
         backendProvider.overrideWithValue(backend),
+        backupSchedulerProvider.overrideWithValue(backupScheduler),
         // With Firebase up, the install signs in anonymously and every server
         // call goes through the `api` Function (ARCHITECTURE §6). Without it,
         // the offline defaults stand and the app is the app on the phone.

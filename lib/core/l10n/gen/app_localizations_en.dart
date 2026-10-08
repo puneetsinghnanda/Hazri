@@ -1736,7 +1736,9 @@ class LEn extends L {
       'Open the email on this phone, copy the whole link and paste it here.';
 
   @override
-  String get restoreDone => 'Your account is back';
+  String restoreDone(int count) {
+    return 'Restored $count entries';
+  }
 
   @override
   String get restoreDiaryNote =>
@@ -2897,4 +2899,45 @@ class LEn extends L {
   @override
   String get privacyGlobe =>
       'The globe shows a city and a count, never a name. Nothing is sold or shared with anyone.';
+
+  @override
+  String backupLastLine(String date) {
+    return 'Last backed up $date';
+  }
+
+  @override
+  String get backupNever => 'Not backed up yet';
+
+  @override
+  String get backupStale => 'Not backed up for over two weeks';
+
+  @override
+  String get backupNowButton => 'Back up now';
+
+  @override
+  String get backupDone => 'Backed up';
+
+  @override
+  String get restoreDataButton => 'Restore my goals and diary';
+
+  @override
+  String get restoreConfirmTitle => 'Restore from backup?';
+
+  @override
+  String get restoreConfirmBody =>
+      'This adds your goals and diary from the backup to this phone. Nothing already on this phone is removed.';
+
+  @override
+  String restoreAsOf(String date) {
+    return 'Backup from $date. Anything after that is not included.';
+  }
+
+  @override
+  String get restoreNothing => 'There is no backup to restore yet';
+
+  @override
+  String get restoreButton => 'Restore';
+
+  @override
+  String get backupSectionTitle => 'Backup';
 }

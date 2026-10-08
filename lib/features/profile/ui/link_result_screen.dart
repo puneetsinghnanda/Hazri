@@ -12,6 +12,7 @@ import '../../settings/ui/screen_scaffold.dart';
 import '../data/profile_api.dart';
 import '../data/profile_controller.dart';
 import '../domain/profile.dart';
+import '../../backup/ui/backup_section.dart';
 import 'email_sent_screen.dart';
 import 'messages.dart';
 
@@ -27,7 +28,7 @@ class LinkResultScreen extends ConsumerStatefulWidget {
   ConsumerState<LinkResultScreen> createState() => _LinkResultScreenState();
 }
 
-enum _Button { home, sendNew, tryAgain, retry }
+enum _Button { home, sendNew, tryAgain, retry, restoreData }
 
 class _Outcome {
   const _Outcome(this.title, this.message, this.buttons);
@@ -56,8 +57,9 @@ class _LinkResultScreenState extends ConsumerState<LinkResultScreen> {
       final r = await ref.read(profileApiProvider).verifyToken(widget.token);
       if (r.profile != null) await controller.setProfile(r.profile!);
       out = switch (r.result) {
-        'PROFILE_RESTORED' => _Outcome(
-            l.linkRestoredTitle, l.linkRestored(r.profile?.name ?? ''), const [_Button.home]),
+        // 10-backup §8.3: the data restore is offered straight away.
+        'PROFILE_RESTORED' => _Outcome(l.linkRestoredTitle, l.linkRestored(r.profile?.name ?? ''),
+            const [_Button.restoreData, _Button.home]),
         'EMAIL_ALREADY_VERIFIED' =>
           _Outcome(l.linkEmailVerifiedTitle, l.linkEmailAlreadyVerified, const [_Button.home]),
         'EMAIL_CHANGED' => _Outcome(l.linkEmailVerifiedTitle, l.linkEmailChanged, const [_Button.home]),
@@ -158,6 +160,7 @@ class _LinkResultScreenState extends ConsumerState<LinkResultScreen> {
                   onPressed: () => context.pushReplacement(Routes.profileSetup),
                 ),
               _Button.retry => PrimaryButton(label: l.profileRetry, onPressed: _check),
+              _Button.restoreData => const RestoreDataButton(),
             },
             const SizedBox(height: 12),
           ],

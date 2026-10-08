@@ -297,10 +297,12 @@ Future<void> migrateToV5(UserDb db, Migrator m) async {
           seriesId: id,
           itemType: isSimran ? ItemType.simran : ItemType.bani,
           baniId: Value(isSimran ? null : baniId),
-          timesPerDay: isSimran ? 1 : times,
-          simranMinutes: Value(isSimran ? (minutes ?? 5) : null),
+          // Clamped into 04-goals §3's ranges, which the backup validates:
+          // one row out of range would refuse every backup after it.
+          timesPerDay: isSimran ? 1 : times.clamp(1, 11),
+          simranMinutes: Value(isSimran ? (minutes ?? 5).clamp(5, 120) : null),
           durationType: type,
-          durationDays: Value(type == DurationType.days ? days : null),
+          durationDays: Value(type == DurationType.days ? (days ?? 1).clamp(1, 365) : null),
           startDate: start,
           endDate: Value(endDate),
           removedOn: Value(removedOn),

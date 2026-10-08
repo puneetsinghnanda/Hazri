@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,6 +8,8 @@ import '../core/l10n/gen/app_localizations.dart';
 import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_theme.dart';
 import '../features/reminders/data/reminders_controller.dart';
+import '../features/backup/data/backup_controller.dart';
+import '../features/profile/data/profile_controller.dart';
 import 'router.dart';
 
 class HazriApp extends ConsumerStatefulWidget {
@@ -20,6 +24,8 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // Keeps the weekly backup in step with the profile from the first frame.
+    ref.read(backupControllerProvider);
     _replan();
   }
 
@@ -40,6 +46,10 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
   /// the rolling reminder window.
   void _replan() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // BK2: a Sunday missed while the phone was off runs now.
+      if (ref.read(profileControllerProvider) is ProfileLoaded) {
+        unawaited(ref.read(backupControllerProvider).onProfileLoaded());
+      }
       await ref.read(userRepositoryProvider).closeGoalIfBlank();
       if (!ref.read(settingsProvider).onboardingDone) return;
       await ref.read(reminderSchedulerProvider).reschedule();

@@ -1734,7 +1734,9 @@ class LPa extends L {
       'ਇਸੇ ਫ਼ੋਨ ਉੱਤੇ ਈਮੇਲ ਖੋਲ੍ਹੋ, ਪੂਰਾ ਲਿੰਕ ਕਾਪੀ ਕਰੋ ਤੇ ਇੱਥੇ ਪਾਓ।';
 
   @override
-  String get restoreDone => 'ਤੁਹਾਡਾ ਖਾਤਾ ਵਾਪਸ ਆ ਗਿਆ';
+  String restoreDone(int count) {
+    return '$count ਇੰਦਰਾਜ ਵਾਪਸ ਆਏ';
+  }
 
   @override
   String get restoreDiaryNote =>
@@ -2894,4 +2896,45 @@ class LPa extends L {
   @override
   String get privacyGlobe =>
       'ਗਲੋਬ ਸ਼ਹਿਰ ਅਤੇ ਗਿਣਤੀ ਦਿਖਾਉਂਦਾ ਹੈ, ਕਦੇ ਨਾਮ ਨਹੀਂ। ਕੁਝ ਵੀ ਵੇਚਿਆ ਜਾਂ ਕਿਸੇ ਨਾਲ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।';
+
+  @override
+  String backupLastLine(String date) {
+    return 'ਆਖਰੀ ਬੈਕਅੱਪ $date';
+  }
+
+  @override
+  String get backupNever => 'ਹਾਲੇ ਬੈਕਅੱਪ ਨਹੀਂ ਹੋਇਆ';
+
+  @override
+  String get backupStale => 'ਦੋ ਹਫ਼ਤਿਆਂ ਤੋਂ ਵੱਧ ਸਮੇਂ ਤੋਂ ਬੈਕਅੱਪ ਨਹੀਂ ਹੋਇਆ';
+
+  @override
+  String get backupNowButton => 'ਹੁਣੇ ਬੈਕਅੱਪ ਕਰੋ';
+
+  @override
+  String get backupDone => 'ਬੈਕਅੱਪ ਹੋ ਗਿਆ';
+
+  @override
+  String get restoreDataButton => 'ਮੇਰੇ ਟੀਚੇ ਅਤੇ ਡਾਇਰੀ ਵਾਪਸ ਲਿਆਓ';
+
+  @override
+  String get restoreConfirmTitle => 'ਬੈਕਅੱਪ ਤੋਂ ਵਾਪਸ ਲਿਆਈਏ?';
+
+  @override
+  String get restoreConfirmBody =>
+      'ਇਹ ਬੈਕਅੱਪ ਵਿੱਚੋਂ ਤੁਹਾਡੇ ਟੀਚੇ ਅਤੇ ਡਾਇਰੀ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਜੋੜਦਾ ਹੈ। ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਪਹਿਲਾਂ ਤੋਂ ਪਿਆ ਕੁਝ ਵੀ ਹਟਾਇਆ ਨਹੀਂ ਜਾਂਦਾ।';
+
+  @override
+  String restoreAsOf(String date) {
+    return '$date ਦਾ ਬੈਕਅੱਪ। ਉਸ ਤੋਂ ਬਾਅਦ ਦਾ ਕੁਝ ਵੀ ਇਸ ਵਿੱਚ ਨਹੀਂ ਹੈ।';
+  }
+
+  @override
+  String get restoreNothing => 'ਹਾਲੇ ਵਾਪਸ ਲਿਆਉਣ ਲਈ ਕੋਈ ਬੈਕਅੱਪ ਨਹੀਂ';
+
+  @override
+  String get restoreButton => 'ਵਾਪਸ ਲਿਆਓ';
+
+  @override
+  String get backupSectionTitle => 'ਬੈਕਅੱਪ';
 }

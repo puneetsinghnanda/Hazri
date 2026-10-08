@@ -1733,7 +1733,9 @@ class LHi extends L {
       'इसी फ़ोन पर ईमेल खोलें, पूरा लिंक कॉपी करें और यहाँ डालें।';
 
   @override
-  String get restoreDone => 'आपका खाता वापस आ गया';
+  String restoreDone(int count) {
+    return '$count प्रविष्टियाँ वापस आईं';
+  }
 
   @override
   String get restoreDiaryNote =>
@@ -2888,4 +2890,45 @@ class LHi extends L {
   @override
   String get privacyGlobe =>
       'ग्लोब शहर और गिनती दिखाता है, कभी नाम नहीं। कुछ भी बेचा या किसी से साझा नहीं किया जाता।';
+
+  @override
+  String backupLastLine(String date) {
+    return 'आख़िरी बैकअप $date';
+  }
+
+  @override
+  String get backupNever => 'अभी बैकअप नहीं हुआ';
+
+  @override
+  String get backupStale => 'दो हफ़्ते से ज़्यादा समय से बैकअप नहीं हुआ';
+
+  @override
+  String get backupNowButton => 'अभी बैकअप करें';
+
+  @override
+  String get backupDone => 'बैकअप हो गया';
+
+  @override
+  String get restoreDataButton => 'मेरे लक्ष्य और डायरी वापस लाएँ';
+
+  @override
+  String get restoreConfirmTitle => 'बैकअप से वापस लाएँ?';
+
+  @override
+  String get restoreConfirmBody =>
+      'यह बैकअप से आपके लक्ष्य और डायरी इस फ़ोन में जोड़ता है। इस फ़ोन पर पहले से मौजूद कुछ भी हटाया नहीं जाता।';
+
+  @override
+  String restoreAsOf(String date) {
+    return '$date का बैकअप। उसके बाद का कुछ भी इसमें शामिल नहीं है।';
+  }
+
+  @override
+  String get restoreNothing => 'अभी वापस लाने के लिए कोई बैकअप नहीं';
+
+  @override
+  String get restoreButton => 'वापस लाएँ';
+
+  @override
+  String get backupSectionTitle => 'बैकअप';
 }

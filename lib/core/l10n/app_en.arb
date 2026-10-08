@@ -928,7 +928,7 @@
   "restoreSendLink": "Send me the link",
   "restorePasteLabel": "Paste the link from the email",
   "restorePasteHint": "Open the email on this phone, copy the whole link and paste it here.",
-  "restoreDone": "Your account is back",
+  "restoreDone": "Restored {count} entries",
   "restoreDiaryNote": "Your diary comes back only if sync was on. With sync off, your groups and goals are kept and the diary stays on the phone that wrote it.",
   "restoreOpenToday": "Open Today",
   "linkProblemTitle": "That link did not work",
@@ -1640,5 +1640,38 @@
   "privacyGroupCounts": "Each paath or sitting that counts toward your groups",
   "privacyGroupName": "Your name, shown only to the members of your groups",
   "privacyGroupToken": "This phone's notification token, language and time zone, for the group's notifications",
-  "privacyGlobe": "The globe shows a city and a count, never a name. Nothing is sold or shared with anyone."
+  "privacyGlobe": "The globe shows a city and a count, never a name. Nothing is sold or shared with anyone.",
+  "backupLastLine": "Last backed up {date}",
+  "@backupLastLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "backupNever": "Not backed up yet",
+  "backupStale": "Not backed up for over two weeks",
+  "backupNowButton": "Back up now",
+  "backupDone": "Backed up",
+  "restoreDataButton": "Restore my goals and diary",
+  "restoreConfirmTitle": "Restore from backup?",
+  "restoreConfirmBody": "This adds your goals and diary from the backup to this phone. Nothing already on this phone is removed.",
+  "restoreAsOf": "Backup from {date}. Anything after that is not included.",
+  "@restoreAsOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@restoreDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restoreNothing": "There is no backup to restore yet",
+  "restoreButton": "Restore",
+  "backupSectionTitle": "Backup"
 }

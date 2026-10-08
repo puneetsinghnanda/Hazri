@@ -465,6 +465,13 @@ has that the target replaces, and PRD §11 says which step removes each:
   `BREVO_API_KEY` is set as a Functions secret; the app says so rather than
   calling it a network failure. The profile's own links need only the
   Anonymous provider, so the Email/Password provider can be switched off.
+- **The weekly backup is built (PRD §11 step 5)**: a one-off WorkManager job
+  `weekly-backup` re-enqueued for each Sunday 00:00 plus jitter, a catch-up
+  at app open, Back up now and Restore on the Profile screen, and Restore
+  offered right after a profile restore. The watermark compares with `>=`
+  because drift keeps seconds; a repeat row is harmless (BK8). `workmanager`
+  is the one native dependency this step adds, and only CI's Gradle build can
+  show whether it compiles against the app's Android setup.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own

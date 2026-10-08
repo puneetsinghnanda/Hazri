@@ -3222,8 +3222,8 @@ abstract class L {
   /// No description provided for @restoreDone.
   ///
   /// In en, this message translates to:
-  /// **'Your account is back'**
-  String get restoreDone;
+  /// **'Restored {count} entries'**
+  String restoreDone(int count);
 
   /// No description provided for @restoreDiaryNote.
   ///
@@ -5222,6 +5222,78 @@ abstract class L {
   /// In en, this message translates to:
   /// **'The globe shows a city and a count, never a name. Nothing is sold or shared with anyone.'**
   String get privacyGlobe;
+
+  /// No description provided for @backupLastLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backed up {date}'**
+  String backupLastLine(String date);
+
+  /// No description provided for @backupNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Not backed up yet'**
+  String get backupNever;
+
+  /// No description provided for @backupStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Not backed up for over two weeks'**
+  String get backupStale;
+
+  /// No description provided for @backupNowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get backupNowButton;
+
+  /// No description provided for @backupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backed up'**
+  String get backupDone;
+
+  /// No description provided for @restoreDataButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore my goals and diary'**
+  String get restoreDataButton;
+
+  /// No description provided for @restoreConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from backup?'**
+  String get restoreConfirmTitle;
+
+  /// No description provided for @restoreConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This adds your goals and diary from the backup to this phone. Nothing already on this phone is removed.'**
+  String get restoreConfirmBody;
+
+  /// No description provided for @restoreAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup from {date}. Anything after that is not included.'**
+  String restoreAsOf(String date);
+
+  /// No description provided for @restoreNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no backup to restore yet'**
+  String get restoreNothing;
+
+  /// No description provided for @restoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restoreButton;
+
+  /// No description provided for @backupSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get backupSectionTitle;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

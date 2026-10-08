@@ -630,6 +630,7 @@ language's defaults, and re-plans notifications (`02-notifications.md` CM6).
 | --- | --- | --- |
 | `backup_last_at_v1` | shared_preferences | Watermark, UTC ISO string |
 | `backup_running_since_v1` | shared_preferences | `startedAt` of a backup in progress (BK7) |
+| `backup_next_due_v1` | shared_preferences | When the weekly job is next due, local ISO string; an app open after it runs the catch-up (BK2). Added 2026-10-08 |
 
 No `user.db` table is added. Every backed-up row already has `id`, `updatedAt` and, for diary rows, `deletedAt` (`04-goals.md` §5.1).
 

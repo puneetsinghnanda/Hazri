@@ -30,4 +30,10 @@ abstract final class AppConfig {
   static const verifyEmailTokenTtl = Duration(hours: 24);
   static const restoreTokenTtl = Duration(hours: 1);
   static const emailCooldown = Duration(seconds: 60);
+
+  // 10-backup §4.5.
+  static const backupJitterMinutes = 60;
+  static const backupMaxRowsPerRequest = 2000;
+  static const backupStaleDays = 14;
+  static const restorePageWeeks = 26;
 }
