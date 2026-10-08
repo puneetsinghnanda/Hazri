@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
-import 'package:hazri/features/sangat/data/account_repository.dart';
-import 'package:hazri/features/sangat/data/presence_repository.dart';
-import 'package:hazri/features/sangat/domain/sangat_account.dart';
-import 'package:hazri/features/sangat/domain/simran_presence.dart';
+import 'package:hazri/features/simran/data/presence_repository.dart';
+import 'package:hazri/features/simran/domain/simran_presence.dart';
 import 'package:hazri/features/simran/ui/simran_globe.dart';
 import 'package:hazri/features/simran/ui/simran_screen.dart';
 
 import '../app_harness.dart';
-import '../fake_account_repository.dart';
-
-const _account = SangatAccount(
-  id: 'uid-1',
-  name: 'Harjit Singh',
-  city: 'Amritsar',
-  email: 'harjit@example.com',
-);
 
 const _cities = [
   PresenceCity(id: 'amritsar', name: 'Amritsar', lat: 31.63, lon: 74.87, count: 12),
@@ -50,15 +40,11 @@ void main() {
   Future<L> pump(
     WidgetTester tester, {
     required SangatPresence presence,
-    SangatAccount? signedIn = _account,
     Locale locale = const Locale('en'),
   }) async {
-    final account = FakeAccountRepository(account: signedIn);
-    addTearDown(account.dispose);
     final app = await TestApp.create(
       prefs: {'onboarding_done': true},
       extra: [
-        accountRepositoryProvider.overrideWithValue(account),
         presenceRepositoryProvider.overrideWithValue(_FakePresence(presence)),
       ],
     );

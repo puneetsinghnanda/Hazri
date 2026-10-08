@@ -59,15 +59,4 @@ void main() {
           '${offences.join('\n')}',
     );
   });
-
-  test('the email link is still what the app signs in with', () {
-    // The inverse. If this stops being true, the test above is guarding a
-    // door in a wall that is no longer there.
-    final repository = File(
-      'lib/features/sangat/data/firebase_account_repository.dart',
-    ).readAsStringSync();
-
-    expect(repository, contains('EmailAuthProvider.credentialWithLink'));
-    expect(repository, contains('sendSignInLinkToEmail'));
-  });
 }

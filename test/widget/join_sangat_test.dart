@@ -31,13 +31,6 @@ void main() {
     return L.delegate.load(locale);
   }
 
-  testWidgets('the join banner is offered to somebody with no account',
-      (tester) async {
-    final l = await pump(tester);
-    expect(find.text(l.sangatBannerTitle), findsOneWidget);
-    expect(find.text(l.sangatBannerCta), findsOneWidget);
-  });
-
   testWidgets('Today lays out with no account and no server', (tester) async {
     await pump(tester);
     // No account, no backend: the default repository reports nothing and the

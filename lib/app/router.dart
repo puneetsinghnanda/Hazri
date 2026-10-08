@@ -6,18 +6,7 @@ import '../core/settings/settings_controller.dart';
 import '../features/about/ui/about_screen.dart';
 import '../features/about/ui/licences_screen.dart';
 import '../features/about/ui/privacy_screen.dart';
-import '../features/sangat/data/link_diagnostics.dart';
-import '../features/sangat/domain/incoming_link.dart';
-import '../features/sangat/ui/account_screen.dart';
-import '../features/sangat/ui/create_group_screen.dart';
-import '../features/sangat/ui/group_goal_screen.dart';
-import '../features/sangat/ui/group_invite_screen.dart';
-import '../features/sangat/ui/group_screen.dart';
-import '../features/sangat/ui/join_by_link_screen.dart';
-import '../features/sangat/ui/restore_screen.dart';
 import '../features/sangat/ui/sangat_screen.dart';
-import '../features/sangat/ui/join_sangat_screen.dart';
-import '../features/sangat/ui/verify_email_screen.dart';
 import '../features/diary/ui/diary_day_screen.dart';
 import '../features/diary/ui/diary_screen.dart';
 import '../features/goals/ui/goals_screen.dart';
@@ -34,7 +23,6 @@ import '../features/reminders/data/reminder_service.dart';
 import '../features/reminders/ui/battery_help_screen.dart';
 import '../features/reminders/ui/notifications_screen.dart';
 import '../features/settings/ui/settings_screen.dart';
-import '../features/sync/ui/sync_screen.dart';
 import '../features/simran/ui/simran_screen.dart';
 import '../features/today/ui/today_screen.dart';
 import 'shell.dart';
@@ -67,34 +55,8 @@ abstract final class Routes {
   static const about = '/about';
   static const privacy = '/privacy';
 
-  /// Diary sync (design 49).
-  static const sync = '/sync';
-
-  /// Joining the sangat (design 32). Pushed from the sheet, never a tab: the
-  /// sangat is opt-in and nothing routes here on its own.
-  static const sangatJoin = '/sangat/join';
-
-  /// The account (design 33), and the verification behind it (design 34).
-  /// Nothing else in the app links to [verifyEmail]: asking somebody to
-  /// confirm an address belongs here and only here.
-  /// Coming back to an account on a new phone (designs 53, 54, 52). The
-  /// address is passed along so somebody who just typed it does not type it
-  /// again.
-  static String restore({String? email}) =>
-      email == null ? '/restore' : '/restore?email=${Uri.encodeComponent(email)}';
-
-  static const account = '/account';
-  static const verifyEmail = '/account/verify';
-
-  /// The Sangat tab, and everything under it. A group id is opaque and comes
-  /// from Firestore, so it is never composed by hand.
+  /// The Sangat tab. Rebuilt in step 6 (PRD §11.4).
   static const sangat = '/sangat';
-  static const createGroup = '/sangat/create';
-  static const joinByLink = '/sangat/link';
-
-  static String group(String id) => '/sangat/g/$id';
-  static String groupGoal(String id) => '/sangat/g/$id/goal';
-  static String groupInvite(String id) => '/sangat/g/$id/invite';
   static const licences = '/licences';
   static const batteryHelp = '/reminders-help';
 
@@ -187,72 +149,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.goals, builder: (_, _) => const GoalsScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
       GoRoute(path: Routes.privacy, builder: (_, _) => const PrivacyScreen()),
-      GoRoute(path: Routes.sync, builder: (_, _) => const SyncScreen()),
       GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),
-      GoRoute(path: Routes.sangatJoin, builder: (_, _) => const JoinSangatScreen()),
-      GoRoute(path: Routes.createGroup, builder: (_, _) => const CreateGroupScreen()),
-      GoRoute(
-        path: Routes.joinByLink,
-        builder: (_, state) =>
-            JoinByLinkScreen(arrivedWith: state.uri.queryParameters['code']),
-      ),
-      GoRoute(
-        path: '/sangat/g/:id',
-        builder: (_, state) => GroupScreen(groupId: state.pathParameters['id']!),
-      ),
-      GoRoute(
-        path: '/sangat/g/:id/goal',
-        builder: (_, state) => GroupGoalScreen(groupId: state.pathParameters['id']!),
-      ),
-      GoRoute(
-        path: '/sangat/g/:id/invite',
-        builder: (_, state) => GroupInviteScreen(groupId: state.pathParameters['id']!),
-      ),
-      GoRoute(
-        path: '/restore',
-        builder: (_, state) =>
-            RestoreScreen(email: state.uri.queryParameters['email']),
-      ),
-      GoRoute(path: Routes.account, builder: (_, _) => const AccountScreen()),
-      GoRoute(
-        path: Routes.verifyEmail,
-        builder: (_, state) =>
-            VerifyEmailScreen(arrivedWith: state.uri.queryParameters['link']),
-      ),
       GoRoute(path: Routes.licences, builder: (_, _) => const LicencesScreen()),
       GoRoute(path: Routes.notifications, builder: (_, _) => const NotificationsScreen()),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
     ],
     redirect: (context, state) {
-      // A link Android handed us, before anything else decides where to go.
-      //
-      // Before the onboarding gate on purpose. The one moment a tapped link
-      // matters most is somebody restoring on a new phone, and that phone has
-      // not been set up -- so a gate that sends every unfinished install to
-      // the intro would swallow exactly the link it was opened for.
-      // Recorded before anything acts on it, so the record survives a
-      // redirect that goes wrong as well as one that goes right.
-      ref.read(linkDiagnosticsProvider).record(state.uri.toString());
-
-      final incoming = IncomingLink.from(state.uri);
-      switch (incoming) {
-        case SignInLink(url: final url):
-          return '${Routes.verifyEmail}?link=${Uri.encodeQueryComponent(url)}';
-        case InviteLink(groupId: final id):
-          return '${Routes.joinByLink}?code=${Uri.encodeQueryComponent(id)}';
-        case NotOurLink():
-          // An https link on one of our hosts that is neither: the privacy
-          // page, the site root, a link whose query was stripped in transit.
-          // The intent-filter deliberately claims the whole host, so all of
-          // them arrive here, and go_router has no route for any of their
-          // paths -- it would answer with "no routes for location" and the
-          // raw URL, which is what a reader saw once already.
-          //
-          // Opening the app is the only sensible answer. The reader tapped a
-          // Hazri link and got Hazri.
-          if (state.uri.hasScheme && state.uri.scheme.startsWith('http')) {
-            return Routes.today;
-          }
+      // An https link on one of our hosts that no route claims opens the
+      // app rather than go_router's "no routes for location" page. The
+      // verification, restore and invite links get their own handling with
+      // the profile (step 4) and the Sangat (step 6).
+      if (state.uri.hasScheme && state.uri.scheme.startsWith('http')) {
+        return Routes.today;
       }
 
       final settings = ref.read(settingsProvider);

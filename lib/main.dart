@@ -14,17 +14,8 @@ import 'core/settings/settings_controller.dart';
 import 'features/audio/data/audio_controller.dart';
 import 'features/audio/data/audio_handler.dart';
 import 'features/reminders/data/reminder_service.dart';
-import 'features/sangat/data/link_diagnostics.dart';
-import 'features/sangat/data/account_repository.dart';
 import 'features/library/data/firebase_library_repository.dart';
 import 'features/library/data/library_repository.dart';
-import 'features/sangat/data/firebase_account_repository.dart';
-import 'features/sync/data/diary_sync.dart';
-import 'features/sync/data/firebase_diary_sync.dart';
-import 'features/sangat/data/firebase_group_repository.dart';
-import 'features/sangat/data/firebase_presence_repository.dart';
-import 'features/sangat/data/group_repository.dart';
-import 'features/sangat/data/presence_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,33 +55,9 @@ Future<void> main() async {
         reminderServiceProvider.overrideWithValue(reminders),
         audioHandlerProvider.overrideWithValue(audio),
         backendProvider.overrideWithValue(backend),
-        // Only if the backend actually came up. Where it did not, the default
-        // NoAccountRepository stands and the app is Phase 1's app.
-        if (backend.isUp)
-          accountRepositoryProvider.overrideWithValue(
-            FirebaseAccountRepository(
-              verificationUrl: kVerificationUrl,
-              onAuthState: LinkDiagnostics(prefs).recordAuth,
-            ),
-          ),
-        if (backend.isUp)
-          groupRepositoryProvider.overrideWithValue(FirebaseGroupRepository()),
-        if (backend.isUp)
-          presenceRepositoryProvider
-              .overrideWithValue(FirebasePresenceRepository()),
         if (backend.isUp)
           libraryRepositoryProvider
               .overrideWithValue(FirebaseLibraryRepository()),
-        if (backend.isUp)
-          diarySyncProvider.overrideWith(
-            (ref) => FirebaseDiarySync(
-              repo: ref.watch(userRepositoryProvider),
-              // Read through the provider on every call, so turning sync off
-              // stops it now rather than after the next restart.
-              enabled: () => ref.read(settingsProvider).diarySync,
-              wifiOnly: () => ref.read(settingsProvider).syncWifiOnly,
-            ),
-          ),
       ],
       child: const HazriApp(),
     ),

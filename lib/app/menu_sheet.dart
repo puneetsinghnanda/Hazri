@@ -8,7 +8,6 @@ import '../core/theme/hazri_text.dart';
 import '../core/theme/icon_data.dart';
 import '../core/widgets/app_icon.dart';
 import '../core/widgets/surfaces.dart';
-import '../features/sangat/data/account_repository.dart';
 import '../features/today/ui/help_sheet.dart';
 import 'router.dart';
 
@@ -31,7 +30,6 @@ class _MenuSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
-    final account = ref.watch(sangatAccountProvider).value;
 
     void go(String route) {
       Navigator.of(context).pop();
@@ -62,55 +60,6 @@ class _MenuSheet extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              // The account sits at the top, as design 37 has it, and is the
-              // way in for somebody who has joined. For everybody else it is
-              // the invitation, and it is the only sangat-shaped thing in
-              // this sheet.
-              HazriCard(
-                colour: c.card2,
-                onTap: () => go(account == null ? Routes.sangatJoin : Routes.account),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration:
-                          BoxDecoration(color: c.kesriSoft, shape: BoxShape.circle),
-                      alignment: Alignment.center,
-                      child: account == null
-                          ? AppIcon(HazriIconData.sangat, size: 20, color: c.kesriInk)
-                          : Text(
-                              _initials(account.name),
-                              style: HazriText.captionStrong.copyWith(color: c.kesriInk),
-                            ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            account?.name.isNotEmpty == true
-                                ? account!.name
-                                : l.sangatSheetTitle,
-                            style: HazriText.bodyStrong.copyWith(color: c.ink),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            account == null ? l.sangatBannerBody : account.city,
-                            style: HazriText.caption.copyWith(color: c.muted),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 14),
               HazriCard(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -165,14 +114,6 @@ class _MenuSheet extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  static String _initials(String name) {
-    final words = name.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
-    if (words.isEmpty) return '';
-    String first(String w) => String.fromCharCodes(w.runes.take(1));
-    if (words.length == 1) return first(words.first).toUpperCase();
-    return (first(words.first) + first(words.last)).toUpperCase();
   }
 }
 

@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../sangat/domain/simran_presence.dart';
+import '../domain/simran_presence.dart';
 import '../domain/world_outline.dart';
 
 /// The globe: the earth seen from space, with a light where somebody is

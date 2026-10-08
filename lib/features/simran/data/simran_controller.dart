@@ -8,7 +8,7 @@ import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../audio/data/audio_controller.dart';
-import '../../sangat/data/presence_repository.dart';
+import '../data/presence_repository.dart';
 
 /// A Simran session in progress (PRD 1.13).
 class SimranSession {

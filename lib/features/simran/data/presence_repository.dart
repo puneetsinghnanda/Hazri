@@ -4,7 +4,6 @@ import '../../../core/db/content_db.dart';
 import '../../../core/db/content_repository.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../domain/simran_presence.dart';
-import 'account_repository.dart';
 
 /// Who is sitting in simran today, and where.
 ///
@@ -48,11 +47,9 @@ final presenceRepositoryProvider =
     Provider<PresenceRepository>((ref) => const NoPresenceRepository());
 
 /// Today's presence, or nothing for somebody who has not joined.
-final simranPresenceProvider = FutureProvider<SangatPresence>((ref) {
-  final account = ref.watch(sangatAccountProvider).value;
-  if (account == null) return Future.value(SangatPresence.empty);
-  return ref.watch(presenceRepositoryProvider).today();
-});
+final simranPresenceProvider = FutureProvider<SangatPresence>(
+  (ref) => ref.watch(presenceRepositoryProvider).today(),
+);
 
 /// What design 29's globe draws: today's presence with this person's own city
 /// always lit.

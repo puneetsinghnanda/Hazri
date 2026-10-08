@@ -3,19 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
-import 'package:hazri/features/sangat/data/account_repository.dart';
-import 'package:hazri/features/sangat/domain/sangat_account.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
 
 import '../app_harness.dart';
-import '../fake_account_repository.dart';
-
-const _account = SangatAccount(
-  id: 'uid-1',
-  name: 'Harjit Singh',
-  city: 'Amritsar',
-  email: 'harjit@example.com',
-);
 
 /// Designs 58 and 59 on Today.
 ///
@@ -29,15 +19,11 @@ void main() {
 
   Future<L> pump(
     WidgetTester tester, {
-    SangatAccount? signedIn,
     Locale locale = const Locale('en'),
   }) async {
-    final account = FakeAccountRepository(account: signedIn);
-    addTearDown(account.dispose);
     app = await TestApp.create(
       prefs: {'onboarding_done': true},
       now: DateTime(2026, 11, 20, 9, 0),
-      extra: [accountRepositoryProvider.overrideWithValue(account)],
     );
     addTearDown(app.dispose);
     usePhoneFrame(tester);
@@ -56,20 +42,20 @@ void main() {
   });
 
   testWidgets('and so does somebody who has', (tester) async {
-    final l = await pump(tester, signedIn: _account);
+    final l = await pump(tester);
     expect(find.text(l.sangatBannerTitle), findsNothing);
     expect(find.text(l.hazriNotYet), findsOneWidget);
   });
 
   testWidgets('a day with nothing done says "not yet", never "missed"',
       (tester) async {
-    final l = await pump(tester, signedIn: _account);
+    final l = await pump(tester);
     expect(find.text(l.hazriNotYet), findsOneWidget);
     expect(find.text(l.hazriHow), findsOneWidget);
   });
 
   testWidgets('one completed bani marks the hazri and says so', (tester) async {
-    final l = await pump(tester, signedIn: _account);
+    final l = await pump(tester);
     await app.container.read(userRepositoryProvider).logCompletion(
           baniId: 'japji',
           slot: BaniSlotValue.morning,
@@ -87,7 +73,7 @@ void main() {
   for (final locale in [const Locale('en'), const Locale('pa'), const Locale('hi')]) {
     testWidgets('the banner does not overflow in ${locale.languageCode}',
         (tester) async {
-      await pump(tester, signedIn: _account, locale: locale);
+      await pump(tester, locale: locale);
       expect(tester.takeException(), isNull);
     });
   }
