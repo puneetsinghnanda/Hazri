@@ -68,9 +68,21 @@ class LibraryEntry {
         place.toLowerCase().contains(q);
   }
 
-  static LibraryEntry? fromFirestore(String id, Map<String, Object?> data) {
+  /// One entry as `GET /api/v1/vichar/entries` returns it: `facts` is an
+  /// ordered list of `{label, value}`, so the source decides the order.
+  static LibraryEntry? fromJson(Map<String, Object?> data) {
+    final id = data['id'] as String?;
     final title = (data['title'] as String?)?.trim();
-    if (title == null || title.isEmpty) return null;
+    if (id == null || title == null || title.isEmpty) return null;
+    final facts = <String, String>{};
+    final raw = data['facts'];
+    if (raw is List) {
+      for (final f in raw) {
+        if (f is Map && f['label'] is String && f['value'] is String) {
+          facts[f['label'] as String] = f['value'] as String;
+        }
+      }
+    }
     return LibraryEntry(
       id: id,
       kind: EntryKind.parse(data['kind'] as String?),
@@ -79,12 +91,10 @@ class LibraryEntry {
       body: (data['body'] as String?) ?? '',
       minutes: ((data['minutes'] as num?) ?? 0).toInt(),
       place: (data['place'] as String?) ?? '',
-      facts: {
-        for (final e in ((data['facts'] as Map<Object?, Object?>?) ?? const {}).entries)
-          if (e.key is String && e.value is String) e.key! as String: e.value! as String,
-      },
+      facts: facts,
     );
   }
+
 
   @override
   bool operator ==(Object other) => other is LibraryEntry && other.id == id;

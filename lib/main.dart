@@ -14,7 +14,9 @@ import 'core/settings/settings_controller.dart';
 import 'features/audio/data/audio_controller.dart';
 import 'features/audio/data/audio_handler.dart';
 import 'features/reminders/data/reminder_service.dart';
-import 'features/library/data/firebase_library_repository.dart';
+import 'core/backend/api_client.dart';
+import 'core/backend/auth_service.dart';
+import 'features/library/data/api_library_repository.dart';
 import 'features/library/data/library_repository.dart';
 
 Future<void> main() async {
@@ -55,9 +57,15 @@ Future<void> main() async {
         reminderServiceProvider.overrideWithValue(reminders),
         audioHandlerProvider.overrideWithValue(audio),
         backendProvider.overrideWithValue(backend),
+        // With Firebase up, the install signs in anonymously and every server
+        // call goes through the `api` Function (ARCHITECTURE §6). Without it,
+        // the offline defaults stand and the app is the app on the phone.
         if (backend.isUp)
-          libraryRepositoryProvider
-              .overrideWithValue(FirebaseLibraryRepository()),
+          authServiceProvider.overrideWithValue(FirebaseAuthService()),
+        if (backend.isUp)
+          libraryRepositoryProvider.overrideWith(
+            (ref) => ApiLibraryRepository(ref.watch(apiClientProvider)),
+          ),
       ],
       child: const HazriApp(),
     ),
