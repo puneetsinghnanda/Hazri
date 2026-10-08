@@ -1,0 +1,132 @@
+# Deploying the Phase 2 backend by hand
+
+No workflow deploys anything to Firebase. CI checks the Functions and builds
+the admin site and the APK; everything below is run by hand, from a clone of
+this branch, by somebody signed in to the Firebase CLI as an owner of
+`hazri-dfcc1`.
+
+**Order matters.** The new APK talks only to the `api` Function, through the
+Hosting rewrite `/api/**`. Until steps 4 to 6 are done, the app still reads,
+plays, keeps the diary and badges (all on the phone), but the profile, the
+sangat and the globe say they cannot reach the server.
+
+## 0. Once, on the machine
+
+```bash
+npm install -g firebase-tools        # 13.x or later
+firebase login
+firebase use hazri-dfcc1             # .firebaserc already names it
+```
+
+Node 20 is what the Functions run on (`functions/package.json` `engines`).
+
+## 1. The admin Hosting site
+
+```bash
+firebase hosting:sites:create hazri-admin
+```
+
+`.firebaserc` already maps the `admin` target to `hazri-admin`.
+
+## 2. Google sign-in for the admin site
+
+Firebase console → Authentication:
+
+1. **Sign-in method** → add **Google**, enable it. Keep **Anonymous** on: every
+   phone signs in with it.
+2. **Settings → Authorized domains** → add `hazri-admin.web.app` and
+   `hazri-admin.firebaseapp.com`.
+
+Project settings → Your apps → **Add app → Web**, name it "Hazri admin". Then:
+
+```bash
+cp admin/env.example admin/.env.local   # git ignores .env.local
+```
+
+and fill `VITE_FIREBASE_API_KEY` and `VITE_FIREBASE_APP_ID` from the web
+app's config. Only `ADMIN_EMAIL` in `functions/src/config.ts` is let in.
+
+## 3. The email secret
+
+The `api` Function declares `BREVO_API_KEY` as a secret, so **the deploy
+fails if the secret does not exist**. Until the Brevo account is ready, set
+a placeholder; the server treats `{{...}}` as "not configured" and the app
+says that email is not set up yet (503 `EMAIL_NOT_CONFIGURED`).
+
+```bash
+firebase functions:secrets:set BREVO_API_KEY     # paste {{BREVO_API_KEY}} for now
+```
+
+When Brevo is ready:
+
+1. Verify the sender address (or its domain) in Brevo.
+2. Put it in `functions/src/config.ts`: `EMAIL_FROM` and `EMAIL_FROM_NAME`,
+   commit.
+3. `firebase functions:secrets:set BREVO_API_KEY` with the real key.
+4. Redeploy the Functions (step 5). A new secret version is only picked up
+   by a deploy.
+
+## 4. Firestore rules and indexes
+
+```bash
+firebase deploy --only firestore
+```
+
+The rules deny every client read and write: from this build on, only the
+Functions touch Firestore. **This stops older APKs' sangat and globe**, which
+wrote Firestore directly, so publish it together with the new APK. Check the
+console's Rules tab against `firestore.rules` afterwards (CLAUDE.md:
+the failure mode is quiet).
+
+## 5. The Functions
+
+```bash
+cd functions && npm ci && cd ..
+firebase deploy --only functions
+```
+
+The first deploy may ask to enable Cloud Scheduler, Eventarc and Secret
+Manager APIs; say yes. It deploys `api` (HTTPS, public invoker),
+the scheduled `sangatTotals`, `sangatRollover`, `sangatDispatch` and
+`buildGlobeSnapshot`, and the Firestore triggers `sangatProfileSync`,
+`sangatMilestone` and `badgeGoalReached`, all in `asia-south1` with
+`maxInstances: 10`.
+
+Smoke test: every route needs a Firebase ID token, so a bare request
+should be refused with 401, which proves the Function is up and answering.
+
+```bash
+curl -si https://hazri-dfcc1.web.app/api/v1/profile | head -1   # after step 6
+```
+
+## 6. The public Hosting site
+
+```bash
+firebase deploy --only hosting:public
+```
+
+This carries the `/api/**` rewrite the app calls, `/verify`, `/j/<code>`
+with its Play link and preview tags, and `.well-known/assetlinks.json`.
+
+## 7. The admin site
+
+```bash
+cd admin && npm ci && npm run build && cd ..
+firebase deploy --only hosting:admin
+```
+
+Open <https://hazri-admin.web.app>, sign in with the admin Google account.
+
+## 8. The built-in groups
+
+In the admin site, create the three built-in groups (`08-sangat.md`) and
+press **Start** on each. Until then the Sangat tab lists none.
+
+## 9. Afterwards
+
+- **Email/Password provider:** the new profile flow sends its own links and
+  needs only Anonymous. Turn Email/Password off once no installed build
+  still uses the old verification (CLAUDE.md, Known gaps).
+- **Backups:** point-in-time recovery and scheduled Firestore backups are
+  switched on in the console (owner, 2026-10-08).
+- **Budget:** the ₹2,000/month cap stays; `maxInstances` is the real limit.
