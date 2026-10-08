@@ -96,159 +96,11 @@ Fixed business constants (put in both config files where used):
 
 ## 3. Architecture and tech stack
 
-The app never reads or writes Firestore directly. All data access goes through one HTTPS Cloud Function (api) that uses the Admin SDK; Firestore security rules deny all client access.
-
-```text
-[Flutter Android app]
-| Firebase Anonymous Auth -> ID token
-| HTTPS Authorization: Bearer <ID token>
-v
-[Firebase Hosting https://{{FIREBASE_PROJECT_ID}}.web.app]
-|-- /api/** -> rewrite -> Cloud Function "api" (asia-south1, Express)
-|-- /verify -> static fallback page (verify/index.html)
-|-- /.well-known/assetlinks.json -> Android App Links verification
-v
-[Cloud Function "api"] --Admin SDK--> [Firestore (asia-south1)]
-|-- writes docs to "mail" collection
-v
-[Trigger Email extension] --SMTP--> user inbox
-
-User taps link in email -> Android opens app via App Link -> app calls POST /api/v1/tokens/verify
-```
-
-### 3.1 Backend stack
-
-- Firebase Cloud Functions 2nd gen, Node.js 20, TypeScript.
-
-- Packages: firebase-functions, firebase-admin, express.
-
-- One exported function: export const api = onRequest({ region: "asia-south1" }, app); where app is the Express app.
-
-- Express routes are mounted with the full /api/v1 prefix (Hosting forwards the full path).
-
-- Firestore in Native mode, location asia-south1.
-
-- Firebase Authentication with only the **Anonymous** provider enabled.
-
-- Email delivery: official Firebase Extension **Trigger Email from Firestore** (firebase/firestore-send-email), collection name mail, configured with {{SMTP_CONNECTION_URI}} and {{EMAIL_FROM}}.
-
-- Firebase Hosting serves the API rewrite, the fallback page and assetlinks.json.
-
-### 3.2 App stack
-
-- Flutter (stable channel), Android only, minSdkVersion 24. *(Amended, §13 D4.)*
-
-- Packages: firebase_core, firebase_auth, http, shared_preferences, app_links, flutter_riverpod.
-
-- State management: Riverpod Notifier / NotifierProvider only.
-
-- Navigation: the app's existing go_router. *(Amended, §13 D3: the PRD's Navigator 1.0 calls below are read as their go_router equivalents.)*
-
-- Firebase configured with FlutterFire CLI (flutterfire configure), producing lib/firebase_options.dart.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §1.2** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §3"), so a reference to this section still finds it.
 
 ## 4. Firestore DB schema
 
-Five collections. Only the Cloud Function writes them. All timestamps are Firestore Timestamp; createdAt/updatedAt use FieldValue.serverTimestamp(), expiry comparisons use Timestamp.now() inside the function.
-
-### 4.1 profiles/{profileId}
-
-profileId = Firestore auto-generated ID.
-
-| Field                    | Type      | Nullable | Rule                                          |
-|--------------------------|-----------|----------|-----------------------------------------------|
-| profileId                | string    | no       | Same as document ID                           |
-| ownerUid                 | string    | no       | Anonymous uid that currently owns the profile |
-| name                     | string    | no       | Normalized per Section 5                      |
-| email                    | string    | no       | Trimmed, as entered (case kept)               |
-| emailNormalized          | string    | no       | Trimmed + lowercased                          |
-| phone                    | string    | yes      | Normalised per Section 5 (§13 D2), or null    |
-| cityId                   | string    | no       | A city ID from the app's city list (§13 D9). Replaces the free-text city. |
-| lastSeenDay              | string    | yes      | IST day of the last attendance; written only by the attendance call, which leaves updatedAt alone (§13 D10) |
-| emailVerified            | boolean   | no       | false on create                               |
-| emailVerifiedAt          | timestamp | yes      | null until verified                           |
-| createdAt                | timestamp | no       | Server timestamp                              |
-| updatedAt                | timestamp | no       | Server timestamp on every write               |
-| restoredAt               | timestamp | yes      | null; set on each successful restore          |
-| emailQuota.lastSentAt    | timestamp | yes      | Last verification or restore email queued     |
-| emailQuota.windowStartAt | timestamp | yes      | Start of current 24 h window                  |
-| emailQuota.countInWindow | number    | no       | 0 on create                                   |
-
-### 4.2 emailIndex/{emailHash}
-
-Guarantees one profile per email. emailHash = lowercase hex SHA-256 of emailNormalized.
-
-| Field     | Type      | Rule                         |
-|-----------|-----------|------------------------------|
-| profileId | string    | Profile that owns this email |
-| createdAt | timestamp | Server timestamp             |
-
-### 4.3 owners/{uid}
-
-Guarantees one profile per install. Document ID = anonymous uid.
-
-| Field     | Type      | Rule                      |
-|-----------|-----------|---------------------------|
-| profileId | string    | Profile owned by this uid |
-| createdAt | timestamp | Server timestamp          |
-
-### 4.4 verificationTokens/{tokenHash}
-
-tokenHash = lowercase hex SHA-256 of the raw token. The raw token is never stored.
-
-| Field           | Type      | Rule                                  |
-|-----------------|-----------|---------------------------------------|
-| tokenHash       | string    | Same as document ID                   |
-| profileId       | string    | Target profile                        |
-| purpose         | string    | VERIFY_EMAIL or RESTORE_PROFILE       |
-| requestingUid   | string    | uid that requested the email          |
-| emailNormalized | string    | Email the link was sent to            |
-| status          | string    | ACTIVE, USED or SUPERSEDED            |
-| createdAt       | timestamp | Server timestamp                      |
-| expiresAt       | timestamp | now + TTL for the purpose (Section 2) |
-| usedAt          | timestamp | null until used                       |
-| usedByUid       | string    | null until used                       |
-
-A token is **expired** when Timestamp.now() \>= expiresAt. Status is not changed to express expiry.
-
-### 4.5 mail/{autoId}
-
-Format required by the Trigger Email extension. The function only creates these documents.
-
-| Field           | Type   | Rule                      |
-|-----------------|--------|---------------------------|
-| to              | string | profile.email (as stored) |
-| message.subject | string | From Section 7.1          |
-| message.text    | string | From Section 7.1          |
-| message.html    | string | From Section 7.1          |
-
-The extension adds a delivery field itself. The app never reads mail.
-
-### 4.6 Indexes (firestore.indexes.json)
-
-```json
-{
-"indexes": [
-{
-"collectionGroup": "verificationTokens",
-"queryScope": "COLLECTION",
-"fields": [
-{ "fieldPath": "profileId", "order": "ASCENDING" },
-{ "fieldPath": "purpose", "order": "ASCENDING" },
-{ "fieldPath": "status", "order": "ASCENDING" }
-]
-},
-{
-"collectionGroup": "verificationTokens",
-"queryScope": "COLLECTION",
-"fields": [
-{ "fieldPath": "profileId", "order": "ASCENDING" },
-{ "fieldPath": "status", "order": "ASCENDING" }
-]
-}
-],
-"fieldOverrides": []
-}
-```
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.4** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §4"), so a reference to this section still finds it.
 
 ## 5. Field validation and normalization
 
@@ -284,194 +136,7 @@ Rules:
 
 ## 6. Backend REST API
 
-Six endpoints under API_BASE_URL (https://{{FIREBASE_PROJECT_ID}}.web.app/api/v1). All request and response bodies are JSON (Content-Type: application/json).
-
-### 6.0 Common rules
-
-**Authentication middleware (all endpoints):** read header Authorization: Bearer \<idToken\>; verify with admin.auth().verifyIdToken(idToken); set callerUid = decoded.uid. Missing or invalid → 401 UNAUTHENTICATED.
-
-**Error body (every non-2xx):**
-
-```json
-{ "error": { "code": "ERROR_CODE", "message": "Human readable text", "fields": { "name": "..." }, "retryAfterSeconds": 42, "purpose": "VERIFY_EMAIL" } }
-```
-
-fields only for VALIDATION_ERROR; retryAfterSeconds only for RATE_LIMITED; purpose only for token errors. Omit keys that do not apply.
-
-**Profile DTO (returned wherever profile appears):**
-
-```json
-{ "profileId": "abc", "name": "Harpreet Kaur", "email": "Harpreet@Example.com", "phone": "+919876543210", "cityId": "amritsar", "emailVerified": false, "createdAt": "2026-09-28T10:00:00.000Z" }
-```
-
-phone may be null. Never return ownerUid, emailNormalized, emailQuota or token data.
-
-**Unexpected exceptions:** log with logger.error, respond 500 INTERNAL with message Something went wrong.
-
-**Email quota check** (used by 6.3 and 6.4, evaluated inside the transaction on the target profile's emailQuota, now = Timestamp.now()):
-
-1.  If lastSentAt != null and now - lastSentAt \< 60 s → 429 RATE_LIMITED, retryAfterSeconds = 60 - elapsed (rounded up).
-
-2.  If windowStartAt == null or now - windowStartAt \>= 86400 s → the new window starts: windowStartAt = now, countInWindow = 1.
-
-3.  Else if countInWindow \>= 5 → 429 RATE_LIMITED, retryAfterSeconds = 86400 - (now - windowStartAt) (rounded up).
-
-4.  Else countInWindow = countInWindow + 1.
-
-5.  Always set lastSentAt = now when the send proceeds.
-
-**Token creation** (used by 6.3 and 6.4): rawToken = crypto.randomBytes(32).toString("base64url") (43 characters); tokenHash = sha256Hex(rawToken); link = VERIFY_LINK_BASE + "?token=" + rawToken. Before creating, in the same transaction, query verificationTokens where profileId == X, purpose == P, status == "ACTIVE" and set each to SUPERSEDED. Only the newest link for a purpose works.
-
-### 6.1 GET /api/v1/profile — read caller's profile (Req 6, 9)
-
-Logic: read owners/{callerUid}. If missing → 404. Else read profiles/{profileId} and return it. If the profile document is missing or its ownerUid != callerUid, delete owners/{callerUid} and return 404.
-
-| Status | Body                                       |
-|--------|--------------------------------------------|
-| 200    | { "profile": \<Profile DTO\> }             |
-| 404    | error NO_PROFILE, message No profile found |
-| 401    | error UNAUTHENTICATED                      |
-
-### 6.2 POST /api/v1/profile — create profile (Req 2, 3, 8)
-
-Request: { "name": "...", "email": "...", "phone": "9876543210" \| "" \| null, "cityId": "..." }
-
-Logic:
-
-1.  Normalize and validate per Section 5. Any failure → 400 VALIDATION_ERROR with every failing field in fields (key = field name, value = the Section 5 message).
-
-2.  Compute emailNormalized and emailHash.
-
-3.  In one Firestore transaction: read owners/{callerUid} → exists → 409 PROFILE_ALREADY_EXISTS. Read emailIndex/{emailHash} → exists → 409 EMAIL_EXISTS. Else create profiles/{newId} (Section 4.1 defaults), emailIndex/{emailHash}, owners/{callerUid}.
-
-4.  Return 201 with the new profile (read it back after commit so timestamps are resolved).
-
-| Status    | Body                                                                          |
-|-----------|-------------------------------------------------------------------------------|
-| 201       | { "profile": \<Profile DTO\> }                                                |
-| 400       | error VALIDATION_ERROR + fields                                               |
-| 409       | error EMAIL_EXISTS, message An account with this email already exists         |
-| 409       | error PROFILE_ALREADY_EXISTS, message A profile already exists on this device |
-| 401 / 500 | per 6.0                                                                       |
-
-EMAIL_EXISTS must not return any data of the existing profile.
-
-### 6.3 POST /api/v1/profile/verification-email — send verify link (Req 4)
-
-Request body: {}.
-
-Logic, in one transaction: read owners/{callerUid} → missing → 404 NO_PROFILE. Read the profile. If emailVerified == true → 409 EMAIL_ALREADY_VERIFIED. Run the quota check. Supersede active VERIFY_EMAIL tokens, create the new token doc (purpose VERIFY_EMAIL, requestingUid = callerUid, TTL 86400 s), update emailQuota and updatedAt, create the mail doc with template 7.1-A.
-
-| Status    | Body                                                                                         |
-|-----------|----------------------------------------------------------------------------------------------|
-| 200       | { "result": "VERIFICATION_EMAIL_SENT", "email": "\<profile.email\>", "cooldownSeconds": 60 } |
-| 404       | error NO_PROFILE                                                                             |
-| 409       | error EMAIL_ALREADY_VERIFIED, message Your email is already verified                         |
-| 429       | error RATE_LIMITED, message Please wait before requesting another email + retryAfterSeconds  |
-| 401 / 500 | per 6.0                                                                                      |
-
-### 6.4 POST /api/v1/profile/restore-request — send restore link (Req 8)
-
-Request: { "email": "..." }
-
-Logic:
-
-1.  Validate email per Section 5 → failure → 400 VALIDATION_ERROR (fields.email).
-
-2.  In one transaction: read owners/{callerUid} → exists → 409 DEVICE_HAS_PROFILE. Read emailIndex/{emailHash} → missing → 404 EMAIL_NOT_FOUND. Read the profile. Run the quota check. Supersede active RESTORE_PROFILE tokens for that profile, create the token (purpose RESTORE_PROFILE, requestingUid = callerUid, TTL 3600 s), update emailQuota and updatedAt, create the mail doc with template 7.1-B addressed to the stored profile.email.
-
-| Status    | Body                                                                                    |
-|-----------|-----------------------------------------------------------------------------------------|
-| 200       | { "result": "RESTORE_EMAIL_SENT", "email": "\<profile.email\>", "cooldownSeconds": 60 } |
-| 400       | error VALIDATION_ERROR                                                                  |
-| 404       | error EMAIL_NOT_FOUND, message No account found for this email                          |
-| 409       | error DEVICE_HAS_PROFILE, message A profile already exists on this device               |
-| 429       | error RATE_LIMITED + retryAfterSeconds                                                  |
-| 401 / 500 | per 6.0                                                                                 |
-
-### 6.5 POST /api/v1/tokens/verify — consume a link (Req 4, 5, 8)
-
-Request: { "token": "\<rawToken\>" }
-
-Logic:
-
-1.  If token is not a string matching ^\[A-Za-z0-9\_-\]{43}\$ → 400 INVALID_REQUEST.
-
-2.  tokenHash = sha256Hex(token). In one transaction read verificationTokens/{tokenHash}.
-
-3.  Missing, or status == SUPERSEDED → 404 TOKEN_INVALID (include purpose when the doc exists).
-
-4.  Read profiles/{token.profileId} (always exists; no delete feature).
-
-5.  **If purpose == VERIFY_EMAIL:**
-
-    - status == USED: if profile emailVerified == true → 200 EMAIL_ALREADY_VERIFIED; else 409 TOKEN_ALREADY_USED.
-
-    - Expired → 410 TOKEN_EXPIRED.
-
-    - Profile emailNormalized != token.emailNormalized → 404 TOKEN_INVALID.
-
-    - Else set profile emailVerified = true, emailVerifiedAt = serverTimestamp (only if currently null), updatedAt; set token status = USED, usedAt, usedByUid = callerUid. Commit, then return 200 EMAIL_VERIFIED.
-
-    - isOwner = (profile.ownerUid == callerUid). Include profile only when isOwner is true.
-
-6.  **If purpose == RESTORE_PROFILE:**
-
-    - status == USED → 409 TOKEN_ALREADY_USED.
-
-    - Expired → 410 TOKEN_EXPIRED.
-
-    - Profile emailNormalized != token.emailNormalized → 404 TOKEN_INVALID.
-
-    - token.requestingUid != callerUid → 403 RESTORE_WRONG_DEVICE.
-
-    - owners/{callerUid} exists → 409 DEVICE_HAS_PROFILE.
-
-    - Else: oldUid = profile.ownerUid; delete owners/{oldUid}; create owners/{callerUid}; update profile ownerUid = callerUid, emailVerified = true, emailVerifiedAt (only if null), restoredAt, updatedAt; set this token USED, usedAt, usedByUid; set every other ACTIVE token of this profile (any purpose) to SUPERSEDED. Commit, then return 200 PROFILE_RESTORED with profile.
-
-| Status    | Body                                                                                                                    |
-|-----------|-------------------------------------------------------------------------------------------------------------------------|
-| 200       | { "result": "EMAIL_VERIFIED", "purpose": "VERIFY_EMAIL", "isOwner": true, "profile": \<DTO, only if isOwner\> }         |
-| 200       | { "result": "EMAIL_ALREADY_VERIFIED", "purpose": "VERIFY_EMAIL", "isOwner": bool, "profile": \<DTO, only if isOwner\> } |
-| 200       | { "result": "PROFILE_RESTORED", "purpose": "RESTORE_PROFILE", "isOwner": true, "profile": \<DTO\> }                     |
-| 400       | error INVALID_REQUEST, message Invalid link                                                                             |
-| 404       | error TOKEN_INVALID, message This link is invalid or has been replaced by a newer link                                  |
-| 409       | error TOKEN_ALREADY_USED, message This link has already been used                                                       |
-| 410       | error TOKEN_EXPIRED, message This link has expired                                                                      |
-| 403       | error RESTORE_WRONG_DEVICE, message Open this link on the phone where you requested the restore                         |
-| 409       | error DEVICE_HAS_PROFILE                                                                                                |
-| 401 / 500 | per 6.0                                                                                                                 |
-
-Note: clicking a restore link proves ownership of the email, so it also sets emailVerified = true. After a restore, the old install loses access; its next GET returns 404 (Section 9).
-
-### 6.6 PATCH /api/v1/profile/email — change unverified email (Req 10)
-
-The email can be changed only while emailVerified == false. A successful change also sends a verification link to the new email, so the quota check applies to the change itself.
-
-Request: { "email": "\<new email\>" }
-
-Logic (Firestore transactions must do all reads before any write):
-
-1.  Normalize and validate email per Section 5 → failure → 400 VALIDATION_ERROR (fields.email).
-
-2.  In one transaction, reads: owners/{callerUid} → missing → 404 NO_PROFILE. Read the profile. emailVerified == true → 409 EMAIL_ALREADY_VERIFIED. New emailNormalized equals the profile's emailNormalized → 400 EMAIL_UNCHANGED. Read emailIndex/{newEmailHash} → exists → 409 EMAIL_EXISTS. Run the quota check (6.0). Query all ACTIVE tokens of this profile (any purpose).
-
-3.  Same transaction, writes: delete emailIndex/{oldEmailHash}; create emailIndex/{newEmailHash} (profileId, createdAt); update profile email (trimmed), emailNormalized, emailQuota, updatedAt (emailVerified stays false); set every queried ACTIVE token to SUPERSEDED; create a new VERIFY_EMAIL token for the new email (requestingUid = callerUid, TTL 86400 s); create the mail doc with template 7.1-A addressed to the new email.
-
-4.  Return 200 with the updated profile (read back after commit).
-
-| Status    | Body                                                                             |
-|-----------|----------------------------------------------------------------------------------|
-| 200       | { "result": "EMAIL_CHANGED", "profile": \<Profile DTO\>, "cooldownSeconds": 60 } |
-| 400       | error VALIDATION_ERROR + fields.email                                            |
-| 400       | error EMAIL_UNCHANGED, message This is already your email                        |
-| 404       | error NO_PROFILE                                                                 |
-| 409       | error EMAIL_ALREADY_VERIFIED, message A verified email can't be changed          |
-| 409       | error EMAIL_EXISTS, message An account with this email already exists            |
-| 429       | error RATE_LIMITED + retryAfterSeconds                                           |
-| 401 / 500 | per 6.0                                                                          |
-
-The old email is released at once: another install may create a profile with it. Links sent to the old email stop working (superseded, and 6.5 checks emailNormalized).
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §6.1** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §6"), so a reference to this section still finds it.
 
 ## 7. Emails and Android App Links
 
@@ -515,48 +180,15 @@ This link expires in 1 hour. If you did not request this, ignore this email and 
 
 ### 7.2 Digital Asset Links (hosting/public/.well-known/assetlinks.json)
 
-```json
-[
-{
-"relation": ["delegate_permission/common.handle_all_urls"],
-"target": {
-"namespace": "android_app",
-"package_name": "{{ANDROID_PACKAGE_NAME}}",
-"sha256_cert_fingerprints": ["<release signing SHA-256>"]
-}
-}
-]
-```
-
-*(Amended: only the release signing fingerprint is published, §13 D6.)*
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §8.1** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §7.2"), so a reference to this section still finds it.
 
 ### 7.3 Android intent filter (inside the main \<activity\> of AndroidManifest.xml)
 
-```xml
-<meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
-<intent-filter android:autoVerify="true">
-<action android:name="android.intent.action.VIEW" />
-<category android:name="android.intent.category.DEFAULT" />
-<category android:name="android.intent.category.BROWSABLE" />
-<data android:scheme="https" android:host="{{FIREBASE_PROJECT_ID}}.web.app" android:pathPrefix="/verify" />
-</intent-filter>
-```
-
-The main activity keeps android:launchMode="singleTask" and the default taskAffinity. The \<application\> tag keeps android:allowBackup="true". *(Amended, §13 D5 and D7.)*
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §8.2** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §7.3"), so a reference to this section still finds it.
 
 ### 7.4 Browser fallback page (hosting/public/verify/index.html)
 
-Shown only when Android does not hand the link to the app (app not installed, or link opened on a computer). It never calls the API.
-
-- Title and heading: Open this link in the app
-
-- Paragraph: Open this link on the Android phone where the app is installed.
-
-- Button Open in app: href is built by inline JavaScript from location.search as intent://{{FIREBASE_PROJECT_ID}}.web.app/verify\<location.search\>#Intent;scheme=https;package={{ANDROID_PACKAGE_NAME}};end.
-
-- Link Get the app on Google Play → https://play.google.com/store/apps/details?id={{ANDROID_PACKAGE_NAME}}.
-
-- Self-contained HTML, inline CSS, no external resources.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §8.3** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §7.4"), so a reference to this section still finds it.
 
 ## 8. Flutter app implementation
 
@@ -564,63 +196,11 @@ The app keeps one Riverpod ProfileController as the only source of profile state
 
 ### 8.1 File structure
 
-```text
-lib/
-main.dart # init Firebase, ProviderScope, MaterialApp, routes, navigatorKey
-firebase_options.dart # generated by flutterfire configure
-config/app_config.dart # Section 2 values
-models/profile.dart # Profile (fromJson/toJson of Profile DTO)
-models/api_exception.dart # ApiException, NetworkException
-validation/validators.dart # Section 5
-services/auth_service.dart # ensureSignedIn(), getIdToken()
-services/api_client.dart # HTTP + auth header + 401 retry + timeout
-services/profile_api.dart # one method per endpoint in Section 6
-services/profile_cache.dart # shared_preferences read/write/clear
-services/deep_link_service.dart # app_links listener -> navigation
-state/profile_controller.dart # ProfileState + ProfileController (Notifier)
-screens/home_screen.dart
-screens/profile_setup_screen.dart
-screens/profile_screen.dart
-screens/email_sent_screen.dart
-screens/link_result_screen.dart
-widgets/profile_banner.dart
-widgets/change_email_dialog.dart
-util/messages.dart # shared error strings (8.10)
-
-functions/src/
-index.ts app.ts config.ts auth.ts errors.ts validation.ts quota.ts tokens.ts email.ts routes/profile.ts routes/tokens.ts
-
-hosting/public/
-.well-known/assetlinks.json verify/index.html
-```
-
-Named routes: / HomeScreen, /profile-setup ProfileSetupScreen, /profile ProfileScreen, /email-sent EmailSentScreen (argument EmailSentArgs{purpose, email, cooldownSeconds}), /link-result LinkResultScreen (argument String token).
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §2.4** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §8.1"), so a reference to this section still finds it.
 
 ### 8.2 Services and local cache
 
-**AuthService.ensureSignedIn():** if FirebaseAuth.instance.currentUser == null, call signInAnonymously(). Called before every API request. **getIdToken(forceRefresh)** returns currentUser!.getIdToken(forceRefresh).
-
-**ApiClient.request(method, path, body):**
-
-1.  ensureSignedIn(), then get the ID token.
-
-2.  Send with headers Authorization: Bearer \<token\> and Content-Type: application/json, timeout 15 s.
-
-3.  On 401: get token with forceRefresh: true, retry once. A second 401 throws ApiException.
-
-4.  2xx → return decoded JSON. Non-2xx → throw ApiException(statusCode, code, message, fields, retryAfterSeconds, purpose) parsed from the error body.
-
-5.  SocketException, TimeoutException, http.ClientException, or FirebaseAuthException with code network-request-failed → throw NetworkException.
-
-6.  No other automatic retries.
-
-**ProfileCache** (shared_preferences key profile_cache_v1), value = JSON of the Profile DTO plus ownerUid:
-
-- write(profile): stores DTO + ownerUid = currentUser.uid.
-
-- read(): returns null and deletes the key if missing, not valid JSON, or ownerUid != currentUser?.uid.
-
-- clear(): removes the key.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §2.5** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §8.2"), so a reference to this section still finds it.
 
 ### 8.3 ProfileController and app startup (Req 1, 9)
 
@@ -916,62 +496,19 @@ Every row below must behave exactly as stated; each is already implied by Sectio
 
 ### 10.1 firestore.rules — deny all client access
 
-```text
-rules_version = '2';
-service cloud.firestore {
-match /databases/{database}/documents {
-match /{document=**} {
-allow read, write: if false;
-}
-}
-}
-```
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.11** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §10.1"), so a reference to this section still finds it.
 
 ### 10.2 firebase.json
 
-The ignore list must not contain \*\*/.\*, otherwise .well-known/assetlinks.json is not deployed.
-
-```json
-{
-"firestore": { "rules": "firestore.rules", "indexes": "firestore.indexes.json" },
-"functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs20" }],
-"hosting": {
-"public": "hosting/public",
-"ignore": ["firebase.json", "**/node_modules/**"],
-"rewrites": [
-{ "source": "/api/**", "function": { "functionId": "api", "region": "asia-south1" } },
-{ "source": "/verify", "destination": "/verify/index.html" }
-],
-"headers": [
-{ "source": "/.well-known/assetlinks.json", "headers": [{ "key": "Content-Type", "value": "application/json" }] }
-]
-}
-}
-```
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.12** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §10.2"), so a reference to this section still finds it.
 
 ### 10.3 Android build settings
 
-- android/app/build.gradle(.kts): minSdk = 24; applicationId = "{{ANDROID_PACKAGE_NAME}}". *(Amended, §13 D4.)*
-
-- AndroidManifest.xml: \<uses-permission android:name="android.permission.INTERNET" /\>, android:allowBackup="true", plus Section 7.3. *(Amended, §13 D5.)*
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §8.4** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §10.3"), so a reference to this section still finds it.
 
 ### 10.4 Deployment steps (developer, in this order)
 
-1.  Create the Firebase project; set Firestore location asia-south1; enable Authentication → Anonymous.
-
-2.  Upgrade to the Blaze plan (required for Cloud Functions and extensions).
-
-3.  Install extension firebase/firestore-send-email: collection mail, SMTP URI {{SMTP_CONNECTION_URI}}, default FROM {{EMAIL_FROM}}.
-
-4.  Run flutterfire configure for Android.
-
-5.  Fill assetlinks.json fingerprints (./gradlew signingReport for debug/upload; Play Console → App integrity for Play signing).
-
-6.  firebase deploy --only firestore,functions,hosting.
-
-7.  Check https://{{FIREBASE_PROJECT_ID}}.web.app/.well-known/assetlinks.json returns the JSON.
-
-8.  Install the app and run adb shell pm get-app-links {{ANDROID_PACKAGE_NAME}}; the host must show verified.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §9.2** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("01-accounts §10.4"), so a reference to this section still finds it.
 
 ## 11. Acceptance checklist
 
@@ -1101,7 +638,7 @@ Settled 2026-10-05, question by question:
 | **Diary sync** (`lib/features/sync/`, 498 lines) | **Stays** with the sangat's removal, and is then replaced by the weekly backup (`10-backup.md`). |
 | **The globe and presence** (Simran tab) | **Comes out.** Separate logic to follow. |
 | **The Vichar library** | **Moves behind the new API.** No direct client read survives. |
-| **`docs/PRD.md` §13.1 and the privacy screen** | **Will change.** The two are one promise and are rewritten together. |
+| **`docs/PRD.md` §8 (then §13.1) and the privacy screen** | **Will change.** The two are one promise and are rewritten together. |
 | **Today's banners** (join banner, hazri banner) | Separate logic to follow. |
 
 What this touches outside `lib/features/sangat/` (28 files, 5,352 lines):

@@ -201,15 +201,7 @@ Action: "Open Sangat". The expanded A carries a progress bar of the group's perc
 
 ### 6.1 Identifiers and channels
 
-| Kind | Reminder ID | Channel ID | Channel name key |
-| --- | --- | --- | --- |
-| Amrit Vela | `amrit-vela` | `amrit_vela` | `notifChannelAmritVela` (Amrit Vela) |
-| Goal bani | `goal-item:{itemId}` | `goal_reminders` | `notifChannelGoals` (Goal reminders) |
-| Gurpurab and events | `event:{eventId}` | `sikh_calendar` | `notifChannelCalendar` (Gurpurab and Sikh events) |
-| Hazri nudge | `hazri-nudge` | `hazri_nudge` | `notifChannelHazri` (Hazri reminder) |
-| Sangat | (push) | `sangat` | `notifChannelSangat` (Sangat) |
-
-On upgrade the old channels `nitnem_reminders`, `daily_simran`, `gurpurab` and `paath_goals` are deleted, so system settings shows only these five. The old rows `slot:evening`, `slot:bedtime` and `simran` are removed (10.1).
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §4.1** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("02-notifications §6.1"), so a reference to this section still finds it.
 
 ### 6.2 Planner
 
@@ -241,31 +233,11 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 
 ### 8.1 Device tokens
 
-- **FT1.** The app uses `firebase_messaging`. It registers a token only when the person has a profile **and** belongs to at least one group, and removes it when they leave their last group, switch Sangat notifications off, or lose the profile (`markNone()`).
-- **FT2.** `POST /api/v1/devices/fcm-token` with `{ "token": "...", "locale": "pa", "tz": "Asia/Kolkata" }`, also called on `onTokenRefresh`, on a language change and on a time-zone change. `DELETE /api/v1/devices/fcm-token` removes it. Both follow `01-accounts.md` §6.0 and return `404 NO_PROFILE` without a profile.
-- **FT3.** A profile restore (`01-accounts.md` §6.5) deletes the old uid's token document, so the old phone stops receiving.
-
-`fcmTokens/{uid}`, written only by the `api` function:
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `profileId` | string | no | Owner of the uid (`owners/{uid}`) |
-| `token` | string | no | The FCM registration token |
-| `locale` | string | no | `pa`, `hi` or `en` |
-| `tz` | string | no | IANA time zone of the phone |
-| `utcOffsetMin` | number | no | The zone's current UTC offset in minutes, refreshed with each call, used to find who is at 21:00 |
-| `updatedAt` | timestamp | no | Server timestamp |
-
-Index: `utcOffsetMin` ascending, for the hourly dispatcher.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.10** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("02-notifications §8.1"), so a reference to this section still finds it.
 
 ### 8.2 Functions
 
-All Functions follow `00-platform.md` §0.1: `maxInstances: 10`, `minInstances: 0`, idempotent, never writing the document that triggers them.
-
-| Function | Trigger | Does |
-| --- | --- | --- |
-| `sangatDispatch` | Cloud Scheduler, every hour at :00 | Finds tokens whose local time is now 21:00 and sends each member the digest (5.5-A, C in the final two days, or F for a group that has ended) for each of their groups (SG2, SG4, SG8). At 20:00 local, sends creators 5.5-E for members who joined since the last run (SG7). Also delivers milestone notices waiting for a member's 07:00 (SG3). |
-| `sangatMilestone` | Firestore `onDocumentUpdated` on the group's progress document, which the Sangat feature's counting Function maintains | When the percentage crosses 25, 50, 75 or 100, creates `sangatNotices/{groupId}_{goalId}_{milestone}` with create-if-absent (so it is sent once), then sends 5.5-B or D at once to members whose local time is 07:00–20:59, and leaves the rest for `sangatDispatch`. |
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §7.2** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("02-notifications §8.2"), so a reference to this section still finds it.
 
 ### 8.3 The message
 
@@ -277,13 +249,7 @@ All Functions follow `00-platform.md` §0.1: `maxInstances: 10`, `minInstances: 
 
 ### 8.4 Cost
 
-| Item | Firestore |
-| --- | --- |
-| Token registration | 2 reads + 1 write per change (profile and owner check, then the token) |
-| Hourly dispatch | 1 query over the tokens at 21:00 that hour, plus 1 read per group they belong to |
-| Milestone | 1 read of the group's members' tokens + 1 create per milestone |
-
-FCM itself does not bill.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §7.3** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("02-notifications §8.4"), so a reference to this section still finds it.
 
 ## 9. Notifications screen
 

@@ -31,9 +31,7 @@ the owner.
 
 ## 3. Build
 
-- A single-page app in TypeScript, built with Vite, using the Firebase JS SDK for Auth only. All data goes through the `api` function; Firestore rules still deny every client.
-- English only: it has one user.
-- Deployed with `firebase deploy --only hosting:admin`, by hand, like the public site.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §8.5** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("11-admin §3"), so a reference to this section still finds it.
 
 ## 4. Pages
 
@@ -73,24 +71,7 @@ Figures are counted with `count()` aggregations when the page opens and when the
 
 ## 5. API
 
-All under `/api/v1/admin`, admin-only (AC3), following `01-accounts.md` §6.0.
-
-| Method and path | Does |
-| --- | --- |
-| `GET /dashboard` | The figures of 4.1 |
-| `GET /groups?kind=&status=` | Groups for 4.2 and 4.3, 50 at a time with a cursor |
-| `POST /groups/built-in` | Create a built-in group `{ names, goalTemplate }` |
-| `PATCH /groups/{groupId}` | Edit names or goal template; set `status` `ACTIVE` or `DISABLED` |
-| `POST /groups/{groupId}/start` | Start a built-in group's first goal |
-| `DELETE /groups/{groupId}` | Delete a group `{ confirmName }` |
-| `GET /groups/{groupId}/history` | Past goals |
-| `GET /reports?status=` | Reports, newest first |
-| `PATCH /reports/{reportId}` | `{ status: "DISMISSED" \| "ACTIONED" }` |
-| `GET /people?email=` | The profile of 4.4 |
-| `PUT /people/{profileId}/group-limit` | `{ limit }` |
-| `GET /banis` | Bani IDs and names for the goal form |
-
-Errors: `403 NOT_ADMIN`, `404 NOT_FOUND`, `400 VALIDATION_ERROR`, `409 CONFIRM_MISMATCH`.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §6.6** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("11-admin §5"), so a reference to this section still finds it.
 
 ## 6. Strings
 

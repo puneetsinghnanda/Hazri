@@ -37,12 +37,12 @@ system in [`design/`](design).
 - **Hukamnama.** `HukamnamaSource` has only an `Unconfigured` implementation, so
   this build makes **no network requests at all** — `INTERNET` is removed from
   the merged manifest. The screen, the 30-day cache and the share card are
-  built and wired; adding a permitted provider is one class (PRD §18, D4).
+  built and wired; adding a permitted provider is one class (PRD v1.0 §18, D4; superseded).
 - **Calendar coverage.** The Nanakshahi Sangrand dates are derived from the
   supplied SGPC source and cover **all of Nanakshahi 558 — 14 March 2026 to
   13 March 2027**. Outside that range the app says the calendar has not
   shipped that far rather than computing a date it cannot vouch for; 559 has
-  to be added before March 2027 (PRD §18, D8).
+  to be added before March 2027 (PRD §14).
 
 ## Getting a test APK
 
@@ -79,4 +79,4 @@ which records each source in the database so About can credit it:
 | Fonts | Mukta, Baloo Paaji 2, Noto Serif Gurmukhi, Noto Serif Devanagari — SIL OFL |
 
 Scholar review of the Gurmukhi and Devanagari text is still required before any
-public release (PRD §16).
+public release (PRD §13).

@@ -83,6 +83,12 @@ Once building starts, feature order is not preference, it is dependency:
 10. **03-first-run** — last, because it introduces everything else and should
    be designed once the rest has stopped moving.
 
-All twelve files now exist (2026-10-08), so the condition above is met. The
-summary of all of them is `docs/PRD.md` §3.5, and the build order is also
-§15.1 there.
+All twelve files now exist (2026-10-08), so the condition above is met.
+
+**Since 2026-10-08 these files sit under the PRD.** `docs/PRD.md` (v2.0)
+covers every feature, the decisions and the implementation plan (§11), and
+**wins where it and a file disagree**; both are then fixed in the same
+commit. These files keep the numbered rules, the exact strings, the
+scenarios and the acceptance checklists. **Schema, storage, APIs and
+Functions moved to `docs/ARCHITECTURE.md`**; each file keeps a pointer where
+the section was, and the moved text keeps the file's numbering.

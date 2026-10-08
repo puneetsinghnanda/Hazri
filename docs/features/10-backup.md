@@ -121,133 +121,15 @@ Put these in `lib/config/app_config.dart` and `functions/src/config.ts`.
 
 ## 5. Server schema (Firestore, `asia-south1`)
 
-### 5.1 Conventions
-
-The same as the Profile PRD (`01-accounts.md` §4): only the Cloud Function reads and writes these documents, field names are camelCase, enums are UPPER_SNAKE, and server times are Firestore `Timestamp`s set with `FieldValue.serverTimestamp()`. Row fields copy the local columns of `04-goals.md` §5 one to one, with DATETIME values as Firestore `Timestamp`s and `YYYY-MM-DD` dates as strings.
-
-Everything sits under the owning profile, so a profile restore (which moves `ownerUid`) carries the backup with it and nothing has to be re-keyed.
-
-**Why weeks, not one document per row:** Firestore bills reads and writes per document, and reads are the meter that matters (`00-platform.md` §0.3). A year of diary is 52 documents to restore rather than several thousand, and a weekly backup writes one or two week documents rather than one per paath.
-
-### 5.2 Paths
-
-```text
-profiles/{profileId}
-  backupMeta/manifest
-  backupGoals/{goalId}
-  backupWeeks/{weekId}
-  backupBadges/all          (12-badges.md §6.2)
-```
-
-### 5.3 `profiles/{profileId}/backupMeta/manifest`
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `lastBackupAt` | timestamp | yes | Server time the last backup request completed. Null before the first. |
-| `lastBackupUid` | string | yes | uid that made it |
-| `goalIds` | array of string | no | Every `backupGoals` document ID |
-| `weeks` | map of `weekId` → number | no | Row count per week document |
-| `rowCount` | number | no | Total rows across all documents |
-| `schemaVersion` | number | no | 1 |
-| `updatedAt` | timestamp | no | Server timestamp on every write |
-
-### 5.4 `profiles/{profileId}/backupGoals/{goalId}`
-
-One document per goal, holding the goal and all its items.
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `goal` | map | no | The `goals` row: `id`, `startDate`, `completedOn`, `createdAt`, `updatedAt` |
-| `items` | map of `itemId` → map | no | Each `goalItems` row with every column of `04-goals.md` §5.3 |
-| `serverUpdatedAt` | timestamp | no | Server timestamp on every write |
-
-### 5.5 `profiles/{profileId}/backupWeeks/{weekId}`
-
-One document per week that has any diary row. `weekId` is the Sunday of the row's `localDate`.
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `weekId` | string | no | Same as the document ID |
-| `completions` | map of `id` → map | no | `completions` rows whose `localDate` falls in the week: `id`, `localDate`, `baniId`, `slot`, `source`, `completedAt`, `updatedAt`, `deletedAt` |
-| `simranSessions` | map of `id` → map | no | `simranSessions` rows in the week: `id`, `localDate`, `startedAt`, `durationS`, `completed`, `count`, `source`, `updatedAt`, `deletedAt` |
-| `serverUpdatedAt` | timestamp | no | Server timestamp on every write |
-
-A busy week holds a few hundred rows of about 200 bytes each, far below Firestore's 1 MiB document limit. The function refuses a write that would take a document over 900 KB (`413 BACKUP_TOO_LARGE`, 6.2).
-
-### 5.6 Indexes and rules
-
-No composite index is needed: every read is by document ID. The rules stay deny-all (`01-accounts.md` §10.1).
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.7** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("10-backup §5"), so a reference to this section still finds it.
 
 ## 6. API
 
-All endpoints are under `API_BASE_URL` (`/api/v1`) and follow `01-accounts.md` §6.0: Bearer ID token, the error body, `401 UNAUTHENTICATED` and `500 INTERNAL`. Every endpoint first reads `owners/{callerUid}`; when it is missing, or its profile's `ownerUid` is not the caller, it returns `404 NO_PROFILE`.
-
-### 6.1 `GET /api/v1/backup/manifest`
-
-Returns the manifest, or an empty one when no backup exists yet. 2 reads (owner and manifest).
-
-| Status | Body |
-| --- | --- |
-| 200 | `{ "lastBackupAt": "2026-10-04T00:31:12.000Z" \| null, "goalIds": [...], "weeks": { "2026-09-27": 41 }, "rowCount": 412 }` |
-| 404 | `NO_PROFILE` |
-
-### 6.2 `POST /api/v1/backup`
-
-Request:
-
-```json
-{
-  "goals": [ { "goal": { ... }, "items": [ { ... } ] } ],
-  "completions": [ { ... } ],
-  "simranSessions": [ { ... } ],
-  "badges": [ { ... } ],
-  "final": true
-}
-```
-
-Logic:
-
-1. Validate. Every row has a UUID `id` and the fields of `04-goals.md` §5 with their types and enum values. More than `BACKUP_MAX_ROWS_PER_REQUEST` rows, or any invalid row, returns `400 VALIDATION_ERROR` with `fields` naming the first bad row, and nothing is written.
-2. Rate limit: over `BACKUP_RATE_LIMIT` returns `429 RATE_LIMITED` with `retryAfterSeconds`.
-3. Group the rows by target document: one per goal, and one per `weekId`.
-4. For each target document, in a transaction: read it, merge every row by BK9, refuse with `413 BACKUP_TOO_LARGE` if the result would exceed 900 KB, and write it.
-5. Update the manifest: `goalIds`, `weeks` row counts, `rowCount`, `updatedAt`. When `final` is true, also set `lastBackupAt` and `lastBackupUid`.
-
-| Status | Body |
-| --- | --- |
-| 200 | `{ "result": "BACKUP_SAVED", "rowsReceived": 412, "documentsWritten": 3, "lastBackupAt": "..." \| null }` (`lastBackupAt` only when `final` is true) |
-| 400 | `VALIDATION_ERROR` + `fields` |
-| 404 | `NO_PROFILE` |
-| 413 | `BACKUP_TOO_LARGE`, message `This week's backup is too large` |
-| 429 | `RATE_LIMITED` + `retryAfterSeconds` |
-
-### 6.3 `GET /api/v1/backup/goals`
-
-Returns every `backupGoals` document: `{ "goals": [ { "goal": {...}, "items": [...] } ] }`. One read per goal.
-
-### 6.4 `GET /api/v1/backup/weeks?from={weekId}&limit={n}`
-
-Returns up to `n` week documents (`n` ≤ `RESTORE_PAGE_WEEKS`), oldest first, starting at `from`: `{ "weeks": [ { "weekId": "...", "completions": [...], "simranSessions": [...] } ], "next": "{weekId}" | null }`. The app pages until `next` is null.
-
-### 6.4a `GET /api/v1/backup/badges`
-
-Returns `{ "badges": [ ... ] }` from `backupBadges/all`, one read. The restore calls it after the weeks; merging and the rule that a restore never announces a badge are `12-badges.md` §6.3.
-
-### 6.5 Cost per user
-
-| Operation | Firestore reads | Firestore writes |
-| --- | --- | --- |
-| A normal weekly backup (one week and one goal changed) | 2 + 2 documents read for the merge | 3 (week, goal, manifest) |
-| Restore of one year | 2 + goals + 52 | none |
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §6.4** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("10-backup §6"), so a reference to this section still finds it.
 
 ## 7. Local storage on the phone
 
-| Key | Where | Meaning |
-| --- | --- | --- |
-| `backup_last_at_v1` | shared_preferences | Watermark, UTC ISO string |
-| `backup_running_since_v1` | shared_preferences | `startedAt` of a backup in progress (BK7) |
-
-No `user.db` table is added. Every backed-up row already has `id`, `updatedAt` and, for diary rows, `deletedAt` (`04-goals.md` §5.1).
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §3.9.2** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("10-backup §7"), so a reference to this section still finds it.
 
 ## 8. App behaviour
 

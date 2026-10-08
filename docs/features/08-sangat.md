@@ -141,136 +141,15 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 ## 5. On the phone
 
-### 5.1 Paath waiting to be sent (`sangatOutbox`, in `user.db`)
-
-Every completion and every sitting is added to the outbox when it is recorded, and a retraction is added when one is undone, unless the person belongs to no group (then nothing is queued). The app sends the outbox when it starts, on resume, when the network returns, and right after adding to it. The server works out which groups each one counts for.
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `id` | TEXT (PK) | no | The completion's or sitting's `id` (`04-goals.md` §5.4–5.5) |
-| `kind` | TEXT | no | `BANI` or `SIMRAN` |
-| `baniId` | TEXT | yes | For `BANI` |
-| `durationS` | INTEGER | yes | For `SIMRAN` |
-| `source` | TEXT | no | The row's `source` |
-| `at` | DATETIME | no | `completedAt` or `startedAt`, UTC |
-| `action` | TEXT | no | `ADD` or `RETRACT` |
-| `createdAt` | DATETIME | no | UTC |
-
-A row is deleted when the server confirms it. Sending the same row twice changes nothing on the server (7.12). An `ADD` and a `RETRACT` of the same `id` still waiting are both sent, in order.
-
-### 5.2 Read-only copy of what the server sent
-
-The app keeps the last response of 7.1, 7.2 and 7.3 for each group (shared preferences, key `sangat_cache_v1`, JSON). Opening a screen shows the copy at once with `sangatUpdatedAt`, asks the server, and replaces it with the reply. Offline, the copy stays with its time. The phone never edits it; it is cleared on `markNone()` (`01-accounts.md` §8.3) when the person had no memberships without a profile.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §3.5** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("08-sangat §5"), so a reference to this section still finds it.
 
 ## 6. Server schema (Firestore, `asia-south1`)
 
-Only the Cloud Functions read and write these. Conventions as `01-accounts.md` §4.
-
-**Member key.** `p_{profileId}` for a member with a profile, `u_{uid}` for one without.
-
-### 6.1 `groups/{groupId}`
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `kind` | string | no | `BUILT_IN` or `CUSTOM` |
-| `name` | string | yes | Custom groups: as entered |
-| `names` | map | yes | Built-in groups: `{ en, pa, hi }` |
-| `creatorKey` | string | yes | Custom groups: `p_{profileId}` |
-| `status` | string | no | `ACTIVE`, `INACTIVE` or `DISABLED` |
-| `endedOn` | string | yes | `dayIst` it became inactive |
-| `endReason` | string | yes | `TARGET_MET`, `END_DATE` or `ADMIN` |
-| `currentGoalId` | string | yes | Null until a goal is set |
-| `memberCount` | number | no | Active members, kept by the server |
-| `inviteCode` | string | yes | Custom groups: current code |
-| `inviteExpiresAt` | timestamp | yes | Custom groups |
-| `goalTemplate` | map | yes | Built-in groups: `{ type, baniId, simranMinutes, target, lengthDays }` for resets |
-| `createdAt` / `updatedAt` | timestamp | no | Server timestamps |
-
-### 6.2 `groups/{groupId}/goals/{goalId}`
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `type` | string | no | `BANI` or `SIMRAN` |
-| `baniId` | string | yes | `BANI` |
-| `simranMinutes` | number | yes | `SIMRAN`, 5–120 |
-| `target` | number | no | 1–1,000,000 |
-| `startDay` / `endDay` | string | no | `dayIst`; at most 365 days inclusive |
-| `status` | string | no | `ACTIVE`, `COMPLETED` (target met) or `EXPIRED` |
-| `total` | number | no | Kept by the server (6.4) |
-| `completedAt` | timestamp | yes | When the target was met |
-| `sequence` | number | no | 1 for the first goal; built-in resets count up |
-| `createdAt` | timestamp | no | Server timestamp |
-
-### 6.3 `groups/{groupId}/members/{memberKey}`
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `memberKey` | string | no | Same as the document ID |
-| `name` | string | yes | Profile name; null for `u_` members. Updated when the profile name changes. |
-| `role` | string | no | `CREATOR` or `MEMBER` |
-| `status` | string | no | `ACTIVE`, `LEFT` or `REMOVED` |
-| `joinedDay` | string | no | `dayIst` of the latest join |
-| `contribution` | number | no | Count toward the current goal, kept by the server |
-| `sortName` | string | no | Lowercased name, or `~` for `u_` members so they sort last |
-| `updatedAt` | timestamp | no | Server timestamp |
-
-Contributions to earlier goals of a built-in group are kept in `groups/{groupId}/goals/{goalId}/members/{memberKey}` `{ contribution }`, written when the goal ends.
-
-### 6.4 Totals
-
-- `contributions/{memberKey}_{id}`: one document per received outbox row: `{ memberKey, kind, baniId, durationS, source, day, at, retracted, countedIn: [ "groupId/goalId", ... ] }`. It makes sending idempotent and lets a retraction find what to take back.
-- A custom group's goal `total` and the member's `contribution` are incremented in the same transaction as the contribution document.
-- A built-in goal could receive thousands of writes a minute, past Firestore's limit of about one write a second on one document. Its total is kept in 20 shards, `groups/{groupId}/goals/{goalId}/shards/{0..19}` `{ count }`, each contribution incrementing one chosen at random, and the scheduled Function `sangatTotals` adds them into `total` once a minute.
-- Diary cap (CT4): `contributionCaps/{memberKey}_{groupId}_{dayIst}` `{ diaryCount }` is read and incremented in the same transaction.
-
-### 6.5 Other collections
-
-| Collection | Document | Fields |
-| --- | --- | --- |
-| `inviteCodes/{code}` | One per live code | `groupId`, `expiresAt` |
-| `memberships/{memberKey}` | One per member key | `groupIds` (array of active memberships), `updatedAt`: answers "my groups" in one read |
-| `groupLimits/{profileId}` | Only where the admin raised it | `limit`, `setBy`, `updatedAt` |
-| `badgeFacts/{memberKey}` | One per member key with a fact | `goalsReached`, `joins`, `updatedAt`: the two Sangat facts for Sevadar and Satsangi (`12-badges.md` §5), added 2026-10-08 |
-| `groupReports/{groupId}_{memberKey}` | One per reporter per group | `groupId`, `memberKey`, `reason`, `note`, `status` (`OPEN`, `ACTIONED`, `DISMISSED`), `createdAt` |
-
-### 6.6 Indexes
-
-- `members` (collection group): `status` ascending, `sortName` ascending, for the member list.
-- `groups`: `kind` ascending, `status` ascending, for the built-in list and the admin website.
-- `groupReports`: `status` ascending, `createdAt` descending.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.6** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("08-sangat §6"), so a reference to this section still finds it.
 
 ## 7. API
 
-All under `/api/v1/sangat`, following `01-accounts.md` §6.0. Every endpoint works with an anonymous ID token unless it says it needs a profile. Errors use the shared error body; codes are listed per endpoint.
-
-| # | Method and path | Body | Does | Errors |
-| --- | --- | --- | --- | --- |
-| 7.1 | `GET /groups/mine` | — | Active and inactive groups of the caller's member key, with name, goal, total, percentage, days left | — |
-| 7.2 | `GET /groups/built-in` | — | The built-in groups with names in all three languages, current goal, total, member count, and whether the caller is a member | — |
-| 7.3 | `GET /groups/{groupId}` | — | Group, current goal, today's total, member count, the first 50 members (VS4), and the caller's role. Members only for custom groups. | `404 GROUP_NOT_FOUND` (also for a disabled group or a non-member) |
-| 7.4 | `POST /groups` | `{ name }` | Creates a custom group with the caller as creator. Needs a profile. | `400 VALIDATION_ERROR`, `404 NO_PROFILE`, `409 GROUP_LIMIT_REACHED` |
-| 7.5 | `POST /groups/{groupId}/goal` | `{ type, baniId?, simranMinutes?, target, endDay }` | Sets the goal once. Creator only. | `400 VALIDATION_ERROR`, `403 NOT_CREATOR`, `409 GOAL_ALREADY_SET` |
-| 7.6 | `PATCH /groups/{groupId}/goal` | `{ endDay }` | Changes the end day (CG4, CG7). Creator only. | `400 VALIDATION_ERROR`, `403 NOT_CREATOR`, `409 GROUP_INACTIVE` |
-| 7.7 | `DELETE /groups/{groupId}` | — | Deletes when the creator is the only member (CG8) | `403 NOT_CREATOR`, `409 GROUP_HAS_MEMBERS` |
-| 7.8 | `POST /join` | `{ code }` | Joins by invite (IV8) | `404 CODE_INVALID`, `409 GROUP_FULL`, `409 GROUP_INACTIVE` |
-| 7.9 | `POST /groups/{groupId}/join` and `POST /groups/{groupId}/leave` | — | Joins or leaves a built-in group; leave also works for custom-group members other than the creator | `404 GROUP_NOT_FOUND`, `409 CREATOR_CANNOT_LEAVE` |
-| 7.10 | `DELETE /groups/{groupId}/members/{memberKey}` | — | Removes a member (MB4). Creator only. | `403 NOT_CREATOR`, `404 MEMBER_NOT_FOUND` |
-| 7.11 | `POST /groups/{groupId}/invite` | `{ reset?: true }` | Returns `{ code, link, expiresAt }`, making a new code when expired or when the creator asks to reset | `403 NOT_CREATOR` (reset only), `409 GROUP_INACTIVE` |
-| 7.12 | `POST /contributions` | `{ items: [ { id, kind, baniId?, durationS?, source, at, action } ] }`, at most 200 | For each item not seen before: finds the caller's active groups whose goal it matches (CT1–CT4, CT7), records it (6.4) and updates totals. A `RETRACT` takes back what its `ADD` counted. Returns the ids processed. | `400 VALIDATION_ERROR` |
-| 7.13 | `POST /groups/{groupId}/report` | `{ reason, note? }` | Stores the report and emails support (RP1–RP3) | `400 VALIDATION_ERROR`, `404 GROUP_NOT_FOUND` |
-
-Success bodies return the same shapes the app caches (5.2). Profile creation (`01-accounts.md` §6.2) gains one step: within its transaction, every `u_{callerUid}` membership, contribution, cap and `badgeFacts` document is rewritten under `p_{profileId}` (MB2, `12-badges.md` SF3). Joining (7.8) also records the join for the creator's Satsangi badge (`12-badges.md` SF2), and `badgeGoalReached` runs when a goal is completed (SF1).
-
-### 7.14 Scheduled and triggered Functions
-
-All follow `00-platform.md` §0.1 (`maxInstances: 10`, idempotent, never writing their own trigger).
-
-| Function | Trigger | Does |
-| --- | --- | --- |
-| `sangatTotals` | Every minute | Adds each active built-in goal's shards into `total`; marks a goal `COMPLETED` when `total` reaches `target` |
-| `sangatRollover` | 00:05 IST daily | Expires goals past `endDay`; makes custom groups `INACTIVE` (CG6); starts the next goal of each built-in group whose goal completed or expired (BI4) |
-| `sangatProfileSync` | Profile name change | Updates `name` and `sortName` on that member's rows |
-| `sangatMilestone`, `sangatDispatch` | As `02-notifications.md` §8.2 | Sangat notifications |
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §6.3** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("08-sangat §7"), so a reference to this section still finds it.
 
 ## 8. App behaviour
 

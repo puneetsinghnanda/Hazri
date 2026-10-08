@@ -1,7 +1,21 @@
 # Hazri — working rules
 
-These are the implementation rules from the PRD (`docs/PRD.md` §0). They apply
-to every session in this repository.
+These are the implementation rules from the PRD (`docs/PRD.md` §0.3). They
+apply to every session in this repository.
+
+**The documents** (2026-10-08):
+
+| Document | Holds |
+|---|---|
+| `docs/PRD.md` (v2.0) | The product, every feature and its decided behaviour, privacy, and the implementation plan (§11). **Wins over everything below** |
+| `docs/features/NN-*.md` | Per feature: numbered rules, exact strings, scenarios, acceptance |
+| `docs/ARCHITECTURE.md` | **The one home for structure and data**: the app's layers, every `content.db` and `user.db` table, preferences and local flags, Firestore, the API, the Functions, deployment, cost |
+| `design/canvas.html` | Every screen, marked new, current or superseded |
+
+The decisions of 2026-10-07 and 2026-10-08 are final and override anything
+written before them. PRD v1.0 (Phase 1) was replaced, not edited; it is in
+git history and is not a reference.
+
 
 1. **The design files are the visual spec, not code to port.**
    `design/html/NN-*.{light,dark}.html` are 390 x 844 CSS px = 390 x 844 dp.
@@ -10,10 +24,12 @@ to every session in this repository.
    is mirrored in `lib/core/theme/`. **Only screens marked *new* or *current*
    on `design/canvas.html` are the spec**; a *superseded* one is history (see
    "The designs" below).
-2. **Behaviour comes from the PRD and `docs/features/`.** Where a design and
-   either disagree, the written behaviour wins; where the PRD and a feature
-   file disagree, the feature file wins. Note the conflict in the PR
-   description.
+2. **Behaviour comes from the PRD and `docs/features/`; data from
+   `docs/ARCHITECTURE.md`.** Where a design and the written behaviour
+   disagree, the writing wins. **Where the PRD and a feature file disagree,
+   the PRD wins** and both are fixed in the same commit; a change to a table,
+   key, collection or endpoint is made in `ARCHITECTURE.md`. Note any
+   conflict in the PR description.
 3. **Never create, paraphrase, auto-translate or AI-generate Gurbani text,
    Gurbani audio, meanings, or images of the Gurus.** Every line of Gurbani and
    every meaning in the app comes from `content/source/` through
@@ -23,7 +39,7 @@ to every session in this repository.
    ever.** Phase 1 goes further: it makes no network requests at all and
    `INTERNET` is removed from the merged manifest. **Phase 2 restores
    `INTERNET`** and adds Firebase. What it may then send is a closed list,
-   each item named by a feature file (PRD §13.1): the anonymous sign-in; **a
+   each item named by a feature file (PRD §8): the anonymous sign-in; **a
    profile the person chooses to make** (name, email, city, phone if given)
    with its verification and restore mail; with a profile, the **daily
    attendance mark** and the **weekly backup**; for a Sangat member, their
@@ -31,7 +47,7 @@ to every session in this repository.
    everything goes through the `api` Cloud Function. **Firebase Analytics ships in Phase 2 with collection off and
    sends nothing** (`setAnalyticsCollectionEnabled(false)` at start-up);
    Crashlytics is not added at all until Phase 3, which is where collection is
-   switched on and the opt-out becomes live. PRD §13.1 is the per-phase table
+   switched on and the opt-out becomes live. PRD §8 is the per-phase table
    and the privacy screen is its reader-facing copy — neither is allowed to
    run ahead of the other, so the screen is rewritten in the same change that
    ships the profile, attendance and the backup. Across every phase, in
@@ -49,7 +65,7 @@ to every session in this repository.
    missing or untranslated key.
 6. **Keep platform-specific code behind interfaces** so a second platform
    would need new adapters, not rewrites (`HukamnamaSource`,
-   `ReminderService`). **iOS is off the roadmap** (PRD §17.2, 2026-09-22);
+   `ReminderService`). **iOS is off the roadmap** (PRD §2.4, 2026-09-22);
    the discipline stays because it is also what makes these parts testable,
    and the 60-pending reminder cap inherited from iOS stays with it.
 7. Every change ends with `flutter analyze` clean and `flutter test` passing.
@@ -57,7 +73,7 @@ to every session in this repository.
 ## The roadmap
 
 Phase 2 is what this build is. **Phase 3 is seven things and nothing else**
-(PRD §3.4): report an issue / feedback, badges, Sehaj Path and
+(PRD §2.3): report an issue / feedback, badges, Sehaj Path and
 the marker, rate the app, a digital Gurdwara visit, switching analytics
 collection on, and notifications. There is no phase after it, and the
 fifteen-item Phase 3 that used to be written down -- the iPhone app, Live
@@ -77,7 +93,7 @@ in §3.4 would be a new one.
 
 One of the seven is still blocked on a decision, not on code: which Sehaj
 Path is meant (D12). **D11 and D14 were decided on 2026-10-08**: 3.2 is
-badges with no points at all, so §0 stands, and Gyani and Pracharak are
+badges with no points at all, so PRD §1.3 stands, and Gyani and Pracharak are
 replaced by Vichari and Satsangi (`docs/features/12-badges.md`). **D13 is
 closed:** the backend is Blaze with Cloud Functions.
 
@@ -106,7 +122,7 @@ token.
 
 ## The feature specifications
 
-`docs/features/` is the behaviour spec, one file per feature, written
+`docs/features/` holds the rules of each feature, one file per feature, written
 2026-09-26 after a fortnight in which every defect turned out to be a
 **specification** failure showing up as a code failure: three screens each
 deciding "were the goals met" differently, hazri hidden behind the sangat
@@ -116,11 +132,14 @@ nightly because nobody had written down what should make it fire.
 **All twelve files exist** (2026-10-08), written with the owner on
 2026-10-07 and 2026-10-08, so the owner's condition -- *nothing is
 implemented until every feature has its technical specification* -- is met.
-`docs/PRD.md` §3.5 summarises every one of them, and §15.1 (and
-`docs/features/README.md`) is the order to build in: platform,
-notifications, goals and diary, accounts, backup, sangat and admin, simran,
-today and nitnem, badges, first run. Each file's open questions have a
-default the build follows; PRD §18 lists them.
+`docs/PRD.md` §4 covers every one of them, and **PRD §11 is the
+implementation plan** — the order (platform, notifications, goals and diary,
+profile, backup, sangat and admin, simran, today and nitnem, badges, first
+run), what each step adds, removes, migrates and deploys, and when it is
+done. Each file's open questions have a default the build follows; PRD §14
+lists them. **Schema and storage sections were moved out of the files into
+`docs/ARCHITECTURE.md`** on 2026-10-08, word for word, keeping their
+numbering, with a pointer left where each was.
 
 **Read the file for a feature before changing it, and change the file in the
 same commit when the behaviour changes.** Each one carries numbered rules that
@@ -151,7 +170,7 @@ a day. `maxInstances` is the real protection; the cap is the last line.
 follows and, for a superseded one, what replaced it. It opens on "Current
 only". It is published as an artifact at
 <https://claude.ai/artifact/Fz2WJs5tPF9nUWPgkgBkR8>; republish it after
-changing it, with every new or changed `design/html/` file. PRD Appendix A.2
+changing it, with every new or changed `design/html/` file. PRD Appendix A
 is the same list in text, generated from it.
 
 The Phase 2 screens are **drawn by `tools/design/build_phase2.py`**, never by
@@ -189,6 +208,7 @@ lib/
                 each: data/ (repos, controllers) domain/ (models, logic) ui/
 tools/content_pipeline/   builds assets/content/content.db
 content/source/           the reviewed source files the pipeline reads
+docs/                     PRD.md, ARCHITECTURE.md, features/ (one file per feature)
 design/                   tokens.json, screens.json, HTML specs, PNG renders
                           canvas.html: every screen on one page, by feature
 public/                   Firebase Hosting: /verify and /j/<groupId>
@@ -353,7 +373,8 @@ the app. Add the credit to `voice` in the content pipeline when one is agreed.
 "Known gaps" below describes **the code on this branch as it is**. The
 feature files written on 2026-10-07 and 2026-10-08 change several of the
 things it describes; those are targets for the build, not bugs to patch in
-place:
+place. `docs/ARCHITECTURE.md` §11 is the full list of what today's code
+has that the target replaces, and PRD §11 says which step removes each:
 
 - **The sangat code is removed and rebuilt** (`01-accounts.md` W2,
   `08-sangat.md`): three built-in groups and private custom groups, each with
@@ -492,7 +513,7 @@ place:
 - **The Vichar library is empty until entries are published.** Nothing in it
   is written in Dart -- see `docs/vichar-content.md` for the document shape.
   This is rule 3 applied past Gurbani to everything the app says about Sikhi.
-- **Analytics ships with collection off** and sends nothing (PRD §13.1). The
+- **Analytics ships with collection off** and sends nothing (PRD §8). The
   Settings switch is present and inert, and says so. Do not wire it up
   without also rewriting the privacy screen; the two are one promise.
 - **Around a hundred and fifty Punjabi and Hindi UI strings added in Phase 2
@@ -660,7 +681,7 @@ place:
   your own disk through a file picker -- no APK, no CI, no upload -- and shows
   which line the timings put under the voice, with its exact start time.
 
-- **The daily Hukamnama is gone**, replaced by ਅੱਜ ਦਾ ਵਿਚਾਰ (PRD 1.11): 200
+- **The daily Hukamnama is gone**, replaced by ਅੱਜ ਦਾ ਵਿਚਾਰ (PRD §4.15): 200
   bundled lines from Sri Guru Granth Sahib Ji, one a day by date, shareable as
   text or as an image. It needs no network, which is what the Hukamnama did
   need. The dataset carries no Ang numbers and the app does not invent one.
@@ -674,5 +695,5 @@ place:
 - **Ten of the 147 event names have Punjabi and none has Hindi.** The names
   live in `content.db`, not in the ARB files, so `l10n_test` cannot see the
   gap and does not fail on it. Anything that shows an event name to a reader
-  -- PRD §3.7's Sikhi-event notification above all -- needs those names
+  -- PRD §4.10's Sikh-event notification above all -- needs those names
   first, or it says an English sentence to somebody who chose Punjabi.

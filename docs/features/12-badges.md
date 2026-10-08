@@ -1,14 +1,14 @@
 # 12. Badges
 
-Written 2026-10-08 with Puneet Singh Nanda. It is PRD §3.2, "Points and
-badges", as decided that day: **badges, and no points.** It resolves PRD
+Written 2026-10-08 with Puneet Singh Nanda. It is PRD §4.14 (Phase 3 item 3.2, once "Points and
+badges"), as decided that day: **badges, and no points.** It resolves PRD
 decisions D11 (the names) and D14 (points and Gurbani), and every decision in
 Section 12 was confirmed by the owner on 2026-10-08 unless it says otherwise.
 
 ## 0. Implementation directive (mandatory, read first)
 
 1. **No inference.** Every rule, threshold, field and endpoint comes from this document.
-2. **No points, ever.** No score, no XP, no total, no exchange rate between banis. PRD §0's "No points or XP for Gurbani" stays true as written.
+2. **No points, ever.** No score, no XP, no total, no exchange rate between banis. PRD §1.3's "No points or XP for Gurbani" stays true as written.
 3. **Derived, never a second record of practice.** Every badge is a rule over rows that already exist: `completions` and `simranSessions` (`04-goals.md` §5), and two Sangat facts the server already holds (5). Nothing counts paath beside the Diary. The only new stored data is which badges were earned and when (4).
 4. **Nothing is ever taken away.** No decay, no expiry, no reset. A missed day costs nothing.
 5. **Never a ranking.** No leaderboard, no comparison with anybody, no "ahead of others".
@@ -51,7 +51,7 @@ Section 12 was confirmed by the owner on 2026-10-08 unless it says otherwise.
 
 Names a person receives from the community, not from an app, are excluded on
 purpose: Khalsa, Sant, Brahmgyani, Granthi, Bhai Sahib, and now Gyani and
-Pracharak (PRD §3.2, D11). The Gurmukhi and Devanagari spellings want a native
+Pracharak (PRD §4.14, D11). The Gurmukhi and Devanagari spellings want a native
 ear before release (D11).
 
 ## 3. When each badge is earned
@@ -94,15 +94,7 @@ ear before release (D11).
 
 ### 4.1 Table `badges` (`user.db`, schema version 6)
 
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `badgeId` | TEXT (PK) | no | One of Section 2 |
-| `earnedOn` | TEXT | no | `YYYY-MM-DD`, the local date the app first found the rule met |
-| `announcedAt` | DATETIME | yes | UTC; when its sheet was shown (7.2), or when it was marked as never to be shown (7.3, 6) |
-| `createdAt` | DATETIME | no | UTC |
-| `updatedAt` | DATETIME | no | UTC, every write |
-
-Migration 5 → 6 creates the table empty. Nothing else changes.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §3.6** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("12-badges §4.1"), so a reference to this section still finds it.
 
 ### 4.2 Evaluation
 
@@ -124,31 +116,15 @@ it.
 
 ### 5.1 Server: `badgeFacts/{memberKey}`
 
-| Field | Type | Rule |
-| --- | --- | --- |
-| `goalsReached` | array of string | `"{groupId}/{goalId}"` of each goal reached (3.1). Stops growing at 3, which is all a badge needs. |
-| `joins` | array of string | `"{groupId}/{memberKey}"` of each first join to a custom group this member created. Stops growing at 5. |
-| `updatedAt` | timestamp | Server timestamp |
-
-Arrays of keys, not counters, so a retried write adds nothing twice.
-
-- **SF1. Goals reached.** A Firestore-triggered Function, `badgeGoalReached`, runs when a goal's `status` becomes `COMPLETED` (`08-sangat.md` §6.2). It reads the goal's members with `contribution` ≥ 1 (for a built-in group, the per-goal member documents written when the goal ends, §6.3 there), and adds the goal key to each one's `goalsReached` with `arrayUnion`, skipping any already holding 3. It writes only `badgeFacts`, never the goal it was triggered by, and is idempotent (`00-platform.md` Functions contract).
-- **SF2. Joins.** `POST /api/v1/sangat/join` (`08-sangat.md` 7.8) gains one step in its transaction: when a member document is created for the first time in a custom group, the creator's `badgeFacts.joins` gets `"{groupId}/{memberKey}"` by `arrayUnion`, unless it already holds 5. A member who leaves and joins again is the same key and adds nothing.
-- **SF3. Adoption.** When a profile is created, `badgeFacts/u_{uid}` is merged into `badgeFacts/p_{profileId}` in the same transaction as the other `u_` documents (`08-sangat.md` MB2, `01-accounts.md` §13 D12).
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.8** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("12-badges §5.1"), so a reference to this section still finds it.
 
 ### 5.2 API: `GET /api/v1/badges/sangat`
 
-Profile needed. Reads `badgeFacts/{callerMemberKey}`: one read.
-
-| Status | Body |
-| --- | --- |
-| 200 | `{ "goalsReached": 2, "joins": 5 }` (array lengths; 0 when the document does not exist) |
-| 404 | `NO_PROFILE` |
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §6.5** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("12-badges §5.2"), so a reference to this section still finds it.
 
 ### 5.3 On the phone
 
-- **SF4.** The app calls 5.2 when the Sangat tab opens and once a day at app start, only in `ProfileLoaded` and only while `SEVADAR` or `SATSANGI` is not yet earned. Once both are earned it never calls again.
-- **SF5.** The response is cached in shared_preferences (`badge_sangat_facts_v1`) and fed to `evaluateBadges()`. A failed call changes nothing and is not shown.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §3.9.3** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("12-badges §5.3"), so a reference to this section still finds it.
 
 ## 6. Backup and restore
 
@@ -161,9 +137,7 @@ Profile needed. Reads `badgeFacts/{callerMemberKey}`: one read.
 
 ### 6.2 Server
 
-`profiles/{profileId}/backupBadges/all`: one document, `{ badges: { [badgeId]: row }, serverUpdatedAt }`. Ten rows at most. The server merge for a badge keeps the earlier `earnedOn`, and `announcedAt` when either side has one.
-
-`GET /api/v1/backup/badges` returns `{ "badges": [ ... ] }`, one read.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.9** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("12-badges §6.2"), so a reference to this section still finds it.
 
 ### 6.3 Restore
 
@@ -187,13 +161,13 @@ designs are `design/html/95-*` to `99-*`; this section wins where they differ.
 - **UI4. One badge** (design 97, option 3B). Tapping a card on UI2 or UI5 pushes a full page, not a sheet: `badgeNumber` ("Badge {n} of 10"), the emblem at 128 dp, the name in the reader's script and transliterated, then the chip `badgeEarnedOn` or `badgeNotYet`, then two cards: `badgeWhatItMarks` with `badgeMarks{Id}`, and `badgeHowEarned` with `badgeHow{Id}`. At the foot, the previous and next badge by name, in the order of Section 2. For `NITNEMI`, `badgeHow{Id}` takes the five bani names from `content.db` (rule 3), never from the ARB file.
 - **UI5. In the profile** (design 98, option 4B). The profile screen (`01-accounts.md`) carries a Badges section under the profile card, before email, phone and backup: the heading `badgesTitle`, the link `badgesSeeAll` ("See all 10"), and all ten emblems five to a row with their names, earned in colour and the rest greyed. A tap on an emblem opens UI4; See all opens UI2. Design 98 replaces design 33.
 - **UI6. In the menu** (design 99, option 5C). The menu's header is navy (`#262C63`, `card2` in dark) and holds the avatar, the name and the city as today, then `badgesMenuCount` ("Badges" … "{earned} of 10") and the ten emblems in one row, earned in kesri, the rest outlined. The whole block opens UI2. Below it, `badgesTitle` is a menu row after Your profile. Design 99 replaces design 37. With no profile the header has no name or city (`01-accounts.md`) and still shows the row of ten.
-- **UI7. Never on a Gurbani screen.** No badge, sheet or count appears on the reader, the player or the Simran sitting (PRD §0, §8 "no badges on this screen, ever").
+- **UI7. Never on a Gurbani screen.** No badge, sheet or count appears on the reader, the player or the Simran sitting (PRD §1.3, §4.5 "never a badge on this screen").
 
 ### 7.2 When a badge is earned
 
 - **AN1. One quiet sheet, once** (design 95, option 1C). A badge whose `announcedAt` is null is shown in a bottom sheet the next time the app is on a screen that is not a Gurbani screen (UI7). The sheet is compact: the emblem, the eyebrow `badgeEarnedNew` ("New badge"), the name transliterated and in the reader's script, `badgeMarks{Id}` with the rule, then `badgeEarnedYours` ("Your badges") with `{earned} of 10` and the row of ten emblems, the new one ringed, and two buttons: `badgeEarnedDone` ("Done") and `badgeEarnedSee` ("See all badges"), which opens UI2. `announcedAt` is set when the sheet is shown. It is in the app, never a system notification (AN3, BD-11).
 - **AN2. One at a time.** If several are waiting, one sheet shows the highest in the order of Section 2 and marks the rest announced.
-- **AN3. No system notification.** A badge is always earned while the app is open, so the sheet is the announcement. `02-notifications.md` stays a closed list; PRD §3.7's `badge` row is this sheet.
+- **AN3. No system notification.** A badge is always earned while the app is open, so the sheet is the announcement. `02-notifications.md` stays a closed list; PRD §4.10's "a badge earned is an in-app sheet".
 - **AN4. No sound, no confetti, no vibration.**
 
 ### 7.3 When badges ship
@@ -282,7 +256,7 @@ The badge names themselves are the Gurmukhi, Devanagari and Latin of Section 2, 
 | # | Question | Decision |
 | --- | --- | --- |
 | BD-1 | What counts as a Nitnem day for `NITNEMI` | **Decided 2026-10-08:** the five morning banis only, those with `default_slot` = `morning` in `content.db` |
-| BD-2 | Points, or minutes of bani recited | **Decided 2026-10-08:** neither. Days and milestones from existing data. Resolves PRD D14: §0 stands, and §3.2 is "Badges" |
+| BD-2 | Points, or minutes of bani recited | **Decided 2026-10-08:** neither. Days and milestones from existing data. Resolves PRD D14: §1.3 stands, and item 3.2 is "Badges" |
 | BD-3 | Names | **Decided 2026-10-08:** Vichari replaces Gyani; Satsangi replaces Pracharak. Resolves the name question of D11; spellings still want a native ear |
 | BD-4 | Thresholds | **Decided 2026-10-08:** 1, 7, 40, 40, 108, all banis, 3, 180, 5, 365 |
 | BD-5 | Missed days | **Decided 2026-10-08:** totals, never runs; nothing resets; no grace needed |

@@ -1,204 +1,28 @@
-# 0. Platform: the backend, the data, and how we stop shipping broken things
+# 0. Platform: how we stop shipping broken things
 
-What every other file assumes. Decided 2026-09-26, updated the same day once
-Blaze was live.
+What every other file assumes. Decided 2026-09-26. Since 2026-10-08 the
+backend, data and cost model are in `docs/ARCHITECTURE.md`; this file keeps
+the testing rules every feature is held to, and the platform decisions.
 
 ---
 
-## 0.1 The backend is Blaze, and it is live
+## 0.1 to 0.4: moved to `docs/ARCHITECTURE.md`
 
-**Firebase project `hazri-dfcc1`, Blaze plan, active.** Spark is what made a
-long list of things impossible, and each one had been sitting in "Known gaps"
-being explained away on screen instead of built.
+On 2026-10-08 the backend, the data model and the cost model moved to
+[`docs/ARCHITECTURE.md`](../ARCHITECTURE.md), the one home for how Hazri is
+built and where its data lives:
 
-| Was impossible on Spark | Now |
+| Was here | Now |
 |---|---|
-| Any push notification at all | FCM with a Cloud Function sender |
-| A group total nobody can forge | A Function maintains it; every member can write the group document, so a client-written counter could always be a lie |
-| "Who is sitting right now" | Presence with a heartbeat and a server-side sweep |
-| Approving a listed group | A callable, not a console edit |
-| A daily digest at a fixed hour | A scheduled Function |
+| 0.1 The backend is Blaze; the spend controls; the Functions contract (FN1–FN6) | ARCHITECTURE §5.1–5.3 |
+| 0.1 "Functions to write" (`onMemberWrite`, `setRole`, `approveListing`, `expirePresence`, `healAdminless`, …) | **Retired.** That list belonged to the sangat design the specifications of 2026-10-07 replaced; the current Functions are ARCHITECTURE §7 |
+| 0.2 Firestore, as it stands (`users/{uid}`, `users/{uid}/diary`, `presence/{day}/cities`, …) | **Retired** with that design; every current collection is ARCHITECTURE §5.1 |
+| 0.3 The cost model is the data model (M1–M3) | ARCHITECTURE §10.1 |
+| 0.4 Derived, never stored twice | ARCHITECTURE §10.2 |
 
-**This closes D13** (what sends a push). Blaze and Cloud Functions; the Vercel
-cron alternative is dropped, along with the service-account key it would have
-needed off-device.
-
-**What does not change.** Rule 4 holds in full: no ads, no third-party
-tracking, no advertising ID, no PII, and no free text except where the reader
-typed it and pressed send (§3.1 feedback). The sangat stays opt-in. Nothing a
-reader needs to read a bani, hear it, see the calendar or write the diary may
-require the network.
-
-### The spend controls, as configured
-
-| Control | Value |
-|---|---|
-| Spend cap | **₹2,000 / month**, Firebase-generated caps per cappable service |
-| Cappable services | Cloud Run, Cloud Run Functions, Gemini API, Vertex AI |
-| Project budget alert | `Firebase Project hazri-dfcc1`, monthly, 50 / 90 / 100% |
-| Expected actual spend | **₹0.** The free allowance does not go away on Blaze |
-
-Three things about that cap which matter more than the number:
-
-**C1 — Firestore cannot be capped.** It is not in the cappable list, and it is
-our largest cost driver by a distance. The only protection there is the data
-model (§0.3) and the budget *alert*.
-
-**C2 — costs record up to 24 hours late**, so a cap can lag reality by a day.
-A Function in a write-trigger-write loop could burn for hours before anything
-pauses. **The cap is the last line, not the first.**
-
-**C3 — a cap that trips takes the app's server side offline.** Pre-release
-that is the right trade. After launch it is not, and it becomes an alert plus
-a phone call instead.
-
-**Gemini API and Vertex AI are disabled** (2026-09-26). Nothing in this
-repository references either — no Gemini, no Vertex, no `generativelanguage`,
-no `aiplatform`. They were the two most expensive things that could possibly
-have run on this project, and disabling them removes the whole category rather
-than alerting after the fact. **Do not re-enable either without a decision
-recorded here**; two of the four generated spend caps now guard services that
-cannot run.
-
-### The Functions contract — the real first line of defence
-
-Every Cloud Function in this project:
-
-**FN1 — `maxInstances: 10`.** Caps how wide a runaway can fan out. There is no
-workload here that needs more.
-
-**FN2 — `minInstances: 0`.** Min-instances is the only way to be billed while
-nothing is happening.
-
-**FN3 — never write to what triggers you** without a guard that provably
-terminates. A Firestore-triggered Function that writes to its own trigger
-collection is the loop that generates the horror stories. Where a Function
-must write back, it writes to a *different* document and checks for a no-op
-before writing.
-
-**FN4 — idempotent, always.** Functions retry. A Function that maintains a
-counter must be safe to run twice on the same event; recompute from source
-rather than incrementing blind.
-
-**FN5 — same region as Firestore, which is `asia-south1` (Mumbai).**
-Firestore Native, single-region. A database's location is permanent, so it
-picks the Functions region and not the other way round.
-
-**It was `asia-south2` (Delhi) until 2026-09-26, and that was a dead end.**
-Worth keeping the finding, because the documentation does not make it obvious
-and somebody will be tempted by Delhi again. `asia-south2` has Eventarc, Cloud
-Run and Cloud Functions — but **not the Firestore event provider**:
-
-```
-$ gcloud eventarc providers list --location=asia-south2
-cloudaudit, workflows, clouddeploy, datastream, redis,
-metastore, cloudfunctions, gkebackup, eventarc        <- no firestore
-
-$ gcloud eventarc providers list --location=asia-south1 | grep firestore
-firestore.googleapis.com                              <- present
-```
-
-A Firestore trigger must live in the same location as the database, so with
-the database in `asia-south2` **no Firestore-triggered Function can exist at
-all**. This is a regional gap, not a project misconfiguration, and the docs do
-not make it obvious: Eventarc "being available" in a region is not the same as
-the Firestore provider being available there.
-
-**Resolved by moving the database**, the same day, while it still held nothing
-but test rows. The alternatives — a scheduled reconcile instead of triggers,
-or callables with a reconcile as backstop — were both workable and both worse,
-and the window for moving cheaply closes the moment there are real readers.
-
-The move, for the record: delete protection was already off, so it was
-`databases delete`, then `databases create --location=asia-south1`. **The ID
-`(default)` is not reusable immediately** — the create fails with
-`FAILED_PRECONDITION ... retry in N seconds` for about five minutes. Wait and
-retry; do not reach for a different database name.
-
-**FN6 — every Function has an emulator test, including being run twice.**
-
-### Functions to write
-
-| Function | Trigger | Does |
-|---|---|---|
-| `onMemberWrite` | `groups/{g}/members/{uid}` write | Maintains `memberCount` and `total`; pushes P1, P3, P5 |
-| `setRole` | Callable | Promote/demote, admin-only, enforces "a group always has an admin" |
-| `removeMember` | Callable | Admin-only |
-| `approveListing` | Callable | Owner-only; flips `listed` after review |
-| `dailyDigest` | Scheduled | One push per group per member timezone |
-| `expirePresence` | Scheduled, 5 min | Clears stale "sitting now" heartbeats |
-| `healAdminless` | Scheduled, daily | Promotes the earliest-joined member of a group with no admin |
-| `onVerified` | Auth / callable | Sets `verified`; a client that can write it can claim anyone's email |
-| `onFeedback` | `feedback/{id}` create | Notifies the owner (§3.1) |
-
-## 0.2 Firestore, as it stands
-
-The collections already deployed and governed by `firestore.rules`:
-
-```
-users/{uid}                      name, city, email, verified
-users/{uid}/diary/{day}          the diary backup — a copy, never the truth
-groups/{groupId}                 name, kind, goal, listed, listingRequested
-groups/{groupId}/members/{uid}   name, count, role (admin | member)
-presence/{day}/cities/{cityId}   city, lat, lon, count
-aggregates/{doc}                 server-written only, no client may write
-content/{doc=**}                 the Vichar library; any signed-in phone reads
-```
-
-Being added:
-
-```
-groups/{groupId}                 + memberCount, total   (Function-maintained)
-presence/{day}/cities/{cityId}   + sittingNow           (Function-maintained)
-presence/{day}/cities/{c}/live/{uid}   beatAt           (client heartbeat)
-users/{uid}/tokens/{token}       an FCM registration token per device
-feedback/{id}                    §3.1; write-only to the reader, read to owner
-```
-
-**A deletion leaves nothing behind.** A subcollection does not go with its
-parent, so deleting an account must explicitly remove `diary`, `tokens` and
-every membership row. A Function finishes what the client could not reach.
-
-**What the backups actually cover.** Point-in-time recovery and the daily
-backups protect *Firestore*: accounts, groups, memberships, presence and the
-Vichar library. They do **not** protect the diary in the general case, because
-the diary's truth is `user.db` on the phone and Firestore holds a copy only
-for somebody who turned sync on. Do not let this be mistaken for the diary
-being safe; the phone's own backup is what covers that, and P5 is still open.
-
-## 0.3 The cost model is the data model
-
-Firestore bills per document read. Every design choice below exists for that
-reason and must not be undone for convenience:
-
-| Screen | Reads | Why it is that shape |
-|---|---|---|
-| Today, Nitnem, Diary, the reader | **0** | Entirely from `user.db`. The network may improve them; it may never be required |
-| Simran globe | 1 aggregation + ≤300 docs | **One document per city per day, not per person.** At a hundred thousand readers, per-person would be a hundred thousand reads every time somebody opened Simran |
-| A group | 1 group doc | Not an aggregation over members. This is what the maintained `total` is for |
-| The sangat tab | 1 per group joined | Read by id from the account's own array; the collection is never queried |
-
-**Three rules that follow:**
-
-**M1 — if it can be answered from `user.db`, it must be.** Anything that
-breaks with the radio off, and is not the sangat, is a bug.
-
-**M2 — never query a collection where a document id is known.** `list` is shut
-in the rules for exactly this reason; `get` by id is what the app does.
-
-**M3 — a counter a client can write is a counter a client can forge.** Every
-shared number is either Function-maintained or aggregated, never client-set.
-
-## 0.4 Derived, never stored twice
-
-Hazri is derived from completions and sittings. Goal outcomes are derived from
-goals and ticks. Streaks are derived from completions. **None of them gets a
-column.** The one time this was violated in spirit — three screens each
-deriving "goals met" their own way — produced the defect that started this
-whole exercise.
-
-Where something is expensive to derive it is cached with the inputs it came
-from, and invalidated by them. It is never written as a second truth.
+What still holds from 0.1, unchanged: the project is `hazri-dfcc1` on Blaze;
+Blaze closed D13; rule 4 holds in full; nothing a reader needs to read a
+bani, hear it, see the calendar or keep the diary may require the network.
 
 ## 0.5 How we stop shipping broken things
 
@@ -242,6 +66,6 @@ fixes went out on reasoning alone and not one of them could have worked.
 | P7 | Firestore triggers impossible in `asia-south2` | **Closed 2026-09-26** by moving the database to `asia-south1`. No data was migrated: there were no users |
 | P3 | Emulator in CI | Yes. Rules are security, and untested rules shipped the invite bug |
 | P4 | Disable Gemini and Vertex APIs | **Closed 2026-09-26.** Both disabled |
-| P5 | Does diary sync default on? | **Open, deferred to the implementation discussion.** The owner wants sync; what is undecided is whether it is on by default, which is a rule-4 question (the sangat is opt-in) and a trust question (the diary is the most personal thing in the app). Settle it in `09-diary.md` before the sync work starts |
+| P5 | Does diary sync default on? | **Closed 2026-10-07.** Diary sync is replaced by the weekly backup, which runs whenever a profile exists, with no switch (`10-backup.md` B-3, `09-diary.md` Y-4) |
 | P6 | Firestore backups | **Reopened.** PITR and the 90-day daily backups were configured on the `asia-south2` database and went with it. They are per-database and must be set again on the new one: PITR at 7 days (Firestore's maximum), daily backups at 90 days. PITR's earliest version time is the moment it is enabled, so the window fills out over the following week. A restore creates a **new** database — it cannot be done in place |
 | P8 | `firestore.rules` republished on the new database | **Closed 2026-09-26.** Worth keeping the reason: a new database starts in **locked mode**, every read and write refused, and the app reports that as `SangatRefused` rather than as offline |

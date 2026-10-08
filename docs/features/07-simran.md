@@ -113,93 +113,19 @@ Each counted user is drawn exactly once:
 
 - **PV1.** Attendance stores one more field on the profile, the last day it was marked (`lastSeenDay`, 5.2). No device data and no position finer than the profile's city.
 - **PV2.** The snapshot holds city totals only. No uid, profile ID or name ever leaves the server through it.
-- **PV3.** Only people who created a profile are on the globe, and they gave their city when they did. The privacy screen and PRD §13.1 still change to say that the profile's city is shown on the globe as a count and that the day of the last visit is recorded.
+- **PV3.** Only people who created a profile are on the globe, and they gave their city when they did. The privacy screen and PRD §8 (then §13.1) still change to say that the profile's city is shown on the globe as a count and that the day of the last visit is recorded.
 
 ## 5. Server schema (Firestore, `asia-south1`)
 
-Only the Cloud Function reads and writes these. Conventions as `01-accounts.md` §4: camelCase, server timestamps, rules deny all.
-
-### 5.1 City reference
-
-`tools/content_pipeline/cities.json`, the source of the app's `city` table, gains a `state` field: an ISO 3166-2 subdivision code such as `IN-DL` or `CA-BC`. The pipeline writes it into `content.db` as `state_code`, and also writes `functions/src/cities.json` (id, country, state) so the app and the server read one list. Every city in it must have a state; the pipeline fails otherwise.
-
-### 5.2 Fields on `profiles/{profileId}`
-
-No new collection. Two fields of the profile (`01-accounts.md` §4.1, amended by §13 D9 and D10) carry everything:
-
-| Field | Type | Nullable | Rule |
-| --- | --- | --- | --- |
-| `cityId` | string | no | A `cities.json` id, set at creation, changed only by a profile update |
-| `lastSeenDay` | string | yes | `dayIst` of the last attendance; null until the first. Written only by 6.1, which does not change `updatedAt`. |
-
-### 5.3 Index
-
-```json
-{ "collectionGroup": "profiles", "queryScope": "COLLECTION",
-  "fields": [ { "fieldPath": "cityId", "order": "ASCENDING" },
-              { "fieldPath": "lastSeenDay", "order": "ASCENDING" } ] }
-```
-
-### 5.4 `presenceSnapshot/current`
-
-One document, rebuilt by the scheduled function `buildGlobeSnapshot` every `GLOBE_SNAPSHOT_SECONDS`:
-
-1. For each city in `cities.json`, two `count()` aggregation queries on `profiles`: `cityId == city` (counted) and `cityId == city && lastSeenDay == today` (live).
-2. Cities with a counted total of 0 are left out.
-3. The result is written as below. It replaces the previous document.
-
-| Field | Type | Rule |
-| --- | --- | --- |
-| `day` | string | `dayIst` it was built for |
-| `builtAt` | timestamp | Server time |
-| `live` | number | Total live users |
-| `counted` | number | Total counted users |
-| `countries` | map | `{ "IN": { "l": 480, "c": 950, "s": { "IN-DL": { "l": 25, "c": 40, "k": { "new_delhi": [25, 40] } } } } }`: `l` live, `c` counted, `s` states, `k` cities as `[live, counted]` |
-
-Counting on a schedule rather than keeping counters means no document is written by more than one attendance, so a burst at Amrit Vela cannot run into Firestore's per-document write limit, and the numbers can never drift.
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §5.5** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("07-simran §5"), so a reference to this section still finds it.
 
 ## 6. API
 
-Both endpoints follow `01-accounts.md` §6.0 (Bearer ID token, error body, `401`, `500`).
-
-### 6.1 `POST /api/v1/presence/attendance`
-
-Request body: `{}`.
-
-1. Read `owners/{callerUid}`; missing → `404 NO_PROFILE`. Read the profile.
-2. If `lastSeenDay` is already today, return 200 without writing.
-3. Otherwise set `lastSeenDay` = today. `updatedAt` is not changed.
-
-| Status | Body |
-| --- | --- |
-| 200 | `{ "result": "ATTENDANCE_MARKED", "day": "2026-10-07" }` |
-| 404 | `NO_PROFILE` |
-
-Cost: 2 reads and at most 1 write per user per day. The app's local flag (AT1) means a second call that day is not made at all.
-
-### 6.2 `GET /api/v1/presence/globe`
-
-Returns the snapshot of 5.4 exactly as stored, with `builtAt` as an ISO string. A function instance keeps the snapshot in memory for `GLOBE_CACHE_SECONDS`, so the endpoint reads Firestore at most once a minute per instance, at most 10 instances (`00-platform.md` §0.1), whatever the number of viewers. City names and positions are never sent: the app has them in `content.db`.
-
-| Status | Body |
-| --- | --- |
-| 200 | The snapshot, gzip-compressed |
-| 503 | `GLOBE_NOT_READY` when no snapshot has been built yet |
-
-### 6.3 Cost
-
-| Item | Firestore cost |
-| --- | --- |
-| Attendance | 2 reads + ≤ 1 write per user per day |
-| Snapshot | 2 aggregations per city every 2 minutes (each 1 read per 1,000 users matched, minimum 1): about 2 × cities × 720 reads a day |
-| Globe reads | ≤ 10 instances × 1 read a minute |
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §6.2** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("07-simran §6"), so a reference to this section still finds it.
 
 ## 7. Local storage on the phone
 
-| Key | Meaning |
-| --- | --- |
-| `presence_attendance_v1` | `dayIst` of the last successful attendance (AT1) |
-| `presence_snapshot_v1` | The last snapshot received, so the globe draws at once on the next open (GB3) |
+> **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §3.9.1** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("07-simran §7"), so a reference to this section still finds it.
 
 ## 8. App behaviour
 
