@@ -207,8 +207,13 @@ observe:
 | 6 | Paathi | ਪਾਠੀ | Reads the longer paaths through, Sukhmani included. |
 | 7 | Sevadar | ਸੇਵਾਦਾਰ | Sewa in the sangat: a group kept going, a paath logged for it. |
 | 8 | Gursikh | ਗੁਰਸਿੱਖ | The whole of it held together over months. |
-| 9 | Pracharak | ਪ੍ਰਚਾਰਕ | Brought others: invites accepted, a sangat that grew. |
-| 10 | Gyani | ਗਿਆਨੀ | The long road — the banis read with their meanings, over a year. |
+| 9 | Satsangi | ਸਤਿਸੰਗੀ | Brought others: people who joined groups they created. |
+| 10 | Vichari | ਵੀਚਾਰੀ | The long road: hazri on 365 days. |
+
+*Decided 2026-10-08* (`docs/features/12-badges.md`): **badges, no points**, so
+§0 stands as written and D14 is resolved by honouring it; Gyani and Pracharak
+are replaced by Vichari and Satsangi; every badge is earned by days and
+milestones counted from the Diary's own rows, never minutes.
 
 Gyani and Pracharak were asked for by the owner and are the two most likely
 to draw an objection, because both name a real role somebody earns from the
@@ -304,7 +309,7 @@ has to be local, by construction.
 | 5 | You were added to a sangat | **push** | not built. Needs a sender |
 | 6 | The day's sangat goal, consolidated | **push** | not built. Needs a sender and a schedule |
 | 7 | Your goals for the day are done | local | not built — and see below |
-| 8 | A badge earned | local | not built; gated on 3.2 and D11 |
+| 8 | A badge earned | local | not built; an in-app sheet, not a system notification, is proposed (`12-badges.md` AN1–AN4, BD-11) |
 
 *7 is the one to reconsider.* The person is holding the phone at the moment
 their last goal completes — they tapped the thing that completed it. A
@@ -1117,10 +1122,10 @@ Two things it left behind are still live and are **not** to be undone:
 | D8 | ~~Full SGPC 558 calendar data~~ — **done**: `calendar_event` holds the full Nanakshahi year 558, 14 Mar 2026 – 13 Mar 2027, 147 events. 559 is still outstanding, as are the Punjabi and Hindi event names (10 of 147 have Punjabi, none has Hindi) | 559 before Mar 2027; the names before §3.7 item 4 | Roll forward a year at a time from the SGPC source |
 | D9 | Paathi display name/credit | M10 | "[Paathi name]" placeholder |
 | D10 | Report an error | — | Phase 3 (confirmed by owner) — now 3.1, with Feedback |
-| D11 | **The ten badge names** (§3.2) — whether Gyani and Pracharak are names an app may hand out, and the Gurmukhi and Devanagari spellings of all ten | Before 3.2 is built | Ask a Sikh reader before the screen is designed, not after |
+| D11 | **The ten badge names** (§3.2) — whether Gyani and Pracharak are names an app may hand out, and the Gurmukhi and Devanagari spellings of all ten | Before 3.2 is built | **Names decided 2026-10-08:** Vichari and Satsangi replace Gyani and Pracharak (`12-badges.md` BD-3). The spellings still want a Sikh reader's ear |
 | D12 | **Which Sehaj Path** (§3.3) — the marker alone, or the full 1430 Angs in the app | Before 3.3 is scoped | The marker. The full text is a content programme gated on D1 |
 | D13 | ~~What sends a push (§3.7)~~ — **closed 2026-09-26: Blaze with Cloud Functions**, live on `hazri-dfcc1` with a ₹2,000/month spend cap. The Vercel alternative is dropped, and with it the service-account key it needed off-device | — | — |
-| D14 | **Points and Gurbani** (§3.2) — whether §0's "No points or XP for Gurbani" is honoured by scoring only non-Gurbani activity, or amended | Before 3.2 is built (blocker) | Honour it: score simran, sewa and diary days, never a bani read |
+| D14 | **Points and Gurbani** (§3.2) — whether §0's "No points or XP for Gurbani" is honoured by scoring only non-Gurbani activity, or amended | Before 3.2 is built (blocker) | **Decided 2026-10-08:** honoured by having no points at all; badges count days and milestones (`12-badges.md` BD-2) |
 
 ---
 

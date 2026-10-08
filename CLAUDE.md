@@ -65,10 +65,11 @@ them and nothing should. Anything reconciling the two branches takes the
 Phase 2 fixes and leaves that set behind; a design set for the seven items
 in §3.4 would be a new one.
 
-Three of the seven are blocked on a decision, not on code: the badge names
-(D11), which Sehaj Path is meant (D12), and whether a points system may score
-Gurbani when §0 says it may not (D14, a blocker on 3.2). **D13 is closed:**
-the backend is Blaze with Cloud Functions.
+One of the seven is still blocked on a decision, not on code: which Sehaj
+Path is meant (D12). **D11 and D14 were decided on 2026-10-08**: 3.2 is
+badges with no points at all, so §0 stands, and Gyani and Pracharak are
+replaced by Vichari and Satsangi (`docs/features/12-badges.md`). **D13 is
+closed:** the backend is Blaze with Cloud Functions.
 
 **Notifications are mostly already here, and two of them were broken.** Five
 local reminder kinds ship -- `amritVela`, `evening`, `bedtime`, `simran`,

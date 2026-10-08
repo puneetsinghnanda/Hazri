@@ -17,6 +17,7 @@ behaviour has to survive.
 | 9 | Diary | [`09-diary.md`](09-diary.md) |
 | 10 | Weekly backup and restore | [`10-backup.md`](10-backup.md) |
 | 11 | Admin website | [`11-admin.md`](11-admin.md) |
+| 12 | Badges | [`12-badges.md`](12-badges.md) |
 
 `00-platform.md` holds what they all share: the backend, the data model, and
 the testing rule that comes out of how this went wrong.

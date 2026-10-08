@@ -52,6 +52,7 @@ Once a week the app sends the server every row that changed since the last backu
 | `goalItems` | `04-goals.md` §5.3 | Inside its goal's document (5.4) |
 | `completions` | `04-goals.md` §5.4 | `backupWeeks/{weekId}` (5.5) |
 | `simranSessions` | `04-goals.md` §5.5 | `backupWeeks/{weekId}` (5.5) |
+| `badges` | `12-badges.md` §4.1 | `backupBadges/all` (`12-badges.md` §6.2), added 2026-10-08 |
 
 ### 3.2 Not copied by this feature
 
@@ -135,6 +136,7 @@ profiles/{profileId}
   backupMeta/manifest
   backupGoals/{goalId}
   backupWeeks/{weekId}
+  backupBadges/all          (12-badges.md §6.2)
 ```
 
 ### 5.3 `profiles/{profileId}/backupMeta/manifest`
@@ -198,6 +200,7 @@ Request:
   "goals": [ { "goal": { ... }, "items": [ { ... } ] } ],
   "completions": [ { ... } ],
   "simranSessions": [ { ... } ],
+  "badges": [ { ... } ],
   "final": true
 }
 ```
@@ -225,6 +228,10 @@ Returns every `backupGoals` document: `{ "goals": [ { "goal": {...}, "items": [.
 ### 6.4 `GET /api/v1/backup/weeks?from={weekId}&limit={n}`
 
 Returns up to `n` week documents (`n` ≤ `RESTORE_PAGE_WEEKS`), oldest first, starting at `from`: `{ "weeks": [ { "weekId": "...", "completions": [...], "simranSessions": [...] } ], "next": "{weekId}" | null }`. The app pages until `next` is null.
+
+### 6.4a `GET /api/v1/backup/badges`
+
+Returns `{ "badges": [ ... ] }` from `backupBadges/all`, one read. The restore calls it after the weeks; merging and the rule that a restore never announces a badge are `12-badges.md` §6.3.
 
 ### 6.5 Cost per user
 

@@ -230,6 +230,7 @@ Contributions to earlier goals of a built-in group are kept in `groups/{groupId}
 | `inviteCodes/{code}` | One per live code | `groupId`, `expiresAt` |
 | `memberships/{memberKey}` | One per member key | `groupIds` (array of active memberships), `updatedAt`: answers "my groups" in one read |
 | `groupLimits/{profileId}` | Only where the admin raised it | `limit`, `setBy`, `updatedAt` |
+| `badgeFacts/{memberKey}` | One per member key with a fact | `goalsReached`, `joins`, `updatedAt`: the two Sangat facts for Sevadar and Satsangi (`12-badges.md` §5), added 2026-10-08 |
 | `groupReports/{groupId}_{memberKey}` | One per reporter per group | `groupId`, `memberKey`, `reason`, `note`, `status` (`OPEN`, `ACTIONED`, `DISMISSED`), `createdAt` |
 
 ### 6.6 Indexes
@@ -258,7 +259,7 @@ All under `/api/v1/sangat`, following `01-accounts.md` §6.0. Every endpoint wor
 | 7.12 | `POST /contributions` | `{ items: [ { id, kind, baniId?, durationS?, source, at, action } ] }`, at most 200 | For each item not seen before: finds the caller's active groups whose goal it matches (CT1–CT4, CT7), records it (6.4) and updates totals. A `RETRACT` takes back what its `ADD` counted. Returns the ids processed. | `400 VALIDATION_ERROR` |
 | 7.13 | `POST /groups/{groupId}/report` | `{ reason, note? }` | Stores the report and emails support (RP1–RP3) | `400 VALIDATION_ERROR`, `404 GROUP_NOT_FOUND` |
 
-Success bodies return the same shapes the app caches (5.2). Profile creation (`01-accounts.md` §6.2) gains one step: within its transaction, every `u_{callerUid}` membership, contribution and cap document is rewritten under `p_{profileId}` (MB2).
+Success bodies return the same shapes the app caches (5.2). Profile creation (`01-accounts.md` §6.2) gains one step: within its transaction, every `u_{callerUid}` membership, contribution, cap and `badgeFacts` document is rewritten under `p_{profileId}` (MB2, `12-badges.md` SF3). Joining (7.8) also records the join for the creator's Satsangi badge (`12-badges.md` SF2), and `badgeGoalReached` runs when a goal is completed (SF1).
 
 ### 7.14 Scheduled and triggered Functions
 
