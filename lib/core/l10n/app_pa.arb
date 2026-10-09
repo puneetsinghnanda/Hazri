@@ -1015,5 +1015,6 @@
   "sangatProgressMinutes": "{target} ਮਿੰਟ ਵਿੱਚੋਂ {total} · {pct}%",
   "sangatTodayMinutes": "ਅੱਜ {count} ਮਿੰਟ",
   "sangatGoalTargetMinutes": "ਟੀਚਾ, ਨਾਮ ਸਿਮਰਨ ਦੇ ਮਿੰਟਾਂ ਵਿੱਚ",
-  "readerStartAgainNote": "ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ ਤੁਹਾਨੂੰ ਪਹਿਲੀ ਪੰਕਤੀ ’ਤੇ ਲੈ ਜਾਂਦਾ ਹੈ ਅਤੇ ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉਹ ਮਿਟਾ ਦਿੰਦਾ ਹੈ।"
+  "readerStartAgainNote": "ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ ਤੁਹਾਨੂੰ ਪਹਿਲੀ ਪੰਕਤੀ ’ਤੇ ਲੈ ਜਾਂਦਾ ਹੈ ਅਤੇ ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉਹ ਮਿਟਾ ਦਿੰਦਾ ਹੈ।",
+  "goalPlayNow": "ਹੁਣੇ ਚਲਾਓ"
 }

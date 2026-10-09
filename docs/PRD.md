@@ -1275,7 +1275,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `15-ReaderHindiScrolled` | Reader in Hindi, scrolled away | current |  |
 | `16-ReaderNight` | Reader, Amrit Vela dark | current |  |
 | `48-ReaderComplete` | Reader, complete | current |  |
-| `17-Player` | Full-screen player | current |  |
+| `17-Player` | Full-screen player | superseded | No full-screen player (PRD 4.6, D15); the paathi is uncredited |
 | `18-BackgroundPlayback` | Notification and lock screen | current |  |
 
 **Goals** — `04-goals.md`
@@ -1284,7 +1284,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `19-PaathGoals` | Paath goals | current |  |
 | `47-AddGoal` | Add a goal | current |  |
-| `42-LogPaath` | Log a paath | current |  |
+| `42-LogPaath` | Log a paath | superseded | No manual logging: paath count from completions and the Diary + (04-goals CR1-CR4, 08-sangat CT1) |
 | `20-AddGoal` | Add a paath goal, Phase 1 | superseded | Replaced by 47 |
 
 **Simran** — `07-simran.md`

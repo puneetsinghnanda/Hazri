@@ -6015,6 +6015,12 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Start again takes you to the first line and clears where you left off.'**
   String get readerStartAgainNote;
+
+  /// No description provided for @goalPlayNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Play now'**
+  String get goalPlayNow;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

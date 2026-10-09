@@ -56,37 +56,24 @@ class NitnemScreen extends ConsumerWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 20),
             children: [
+              // Design 12: the version line once, under the title, and the
+              // audio chip to the right.
               TabHeader(
                 title: l.nitnemTitle,
                 subtitle: l.nitnemVersionLine,
                 onMenu: () => showMenuSheet(context),
-              ),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      l.nitnemVersionLine,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: HazriText.bodySmall.copyWith(color: c.muted),
-                    ),
+                trailing: Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 6),
+                  child: HazriChip(
+                    icon: hasAnyAudio ? HazriIconData.check : HazriIconData.headphones,
+                    label: hasAnyAudio ? l.nitnemAudioSavedOffline : l.nitnemAudioNotAvailable,
+                    background: hasAnyAudio ? c.sageSoft : c.card2,
+                    foreground: hasAnyAudio ? c.sage : c.muted,
+                    minHeight: 30,
                   ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: HazriChip(
-                      icon: HazriIconData.headphones,
-                      label: hasAnyAudio
-                          ? l.nitnemAudioSavedOffline
-                          : l.nitnemAudioNotAvailable,
-                      background: hasAnyAudio ? c.sageSoft : c.card2,
-                      foreground: hasAnyAudio ? c.sage : c.muted,
-                      minHeight: 30,
-                    ),
-                  ),
-                ],
+                ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 10),
               const _GoalsSummaryCard(),
               const SizedBox(height: 14),
               for (final slot in [
@@ -130,10 +117,15 @@ class _GoalsSummaryCard extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
-            AppIcon(HazriIconData.flag, size: 20, color: c.muted),
-            const SizedBox(width: 12),
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(color: c.kesriSoft, borderRadius: BorderRadius.circular(12)),
+              child: Center(child: AppIcon(HazriIconData.sparkle, size: 20, color: c.kesriInk)),
+            ),
+            const SizedBox(width: 14),
             Expanded(
-              child: Text(l.goalsSetOne, style: HazriText.body.copyWith(color: c.ink2)),
+              child: Text(l.goalsSetOne, style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 16)),
             ),
             AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
           ],
@@ -143,22 +135,25 @@ class _GoalsSummaryCard extends ConsumerWidget {
 
     return HazriCard(
       onTap: () => context.push(Routes.goals),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
-          ProgressRing(
-            size: 38,
-            progress: summary.total == 0 ? 0 : summary.doneToday / summary.total,
-            done: summary.doneToday == summary.total,
+          // Design 12: a soft kesri square with the goal mark.
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(color: c.kesriSoft, borderRadius: BorderRadius.circular(12)),
+            child: Center(child: AppIcon(HazriIconData.sparkle, size: 20, color: c.kesriInk)),
           ),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l.goalsSummaryCard, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+                Text(l.goalsSummaryCard, style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 16)),
                 Text(
                   l.goalsSummaryLine(summary.doneToday, summary.total),
-                  style: HazriText.bodySmall.copyWith(color: c.muted),
+                  style: HazriText.caption.copyWith(color: c.muted),
                 ),
               ],
             ),
@@ -192,58 +187,68 @@ class _Section extends ConsumerWidget {
     final playable = ref.watch(audioTracksProvider).value ?? const {};
     final canPlayAll = ref.watch(audioHandlerProvider) != null &&
         banis.where((b) => playable.containsKey(b.id)).length > 1;
+    final icon = switch (slot) {
+      BaniSlot.morning => HazriIconData.sunArc,
+      BaniSlot.evening => HazriIconData.sunset,
+      BaniSlot.bedtime => HazriIconData.moon,
+      BaniSlot.none => HazriIconData.book,
+    };
+    // Design 12: the slot's header sits inside its card, with its icon, and
+    // Play all is a navy pill.
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
-            child: Row(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: HazriCard(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
+                AppIcon(icon, size: 22, color: c.kesriInk),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title, style: HazriText.sectionTitle.copyWith(color: c.ink)),
+                      Text(title, style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 16)),
                       if (subtitle != null)
-                        Text(
-                          subtitle!,
-                          style: HazriText.caption.copyWith(color: c.muted),
-                        ),
+                        Text(subtitle!, style: HazriText.caption.copyWith(color: c.muted, fontSize: 12)),
                     ],
                   ),
                 ),
                 if (canPlayAll)
-                  HazriChip(
-                    icon: HazriIconData.play,
-                    label: l.nitnemPlayAll,
-                    background: c.kesriSoft,
-                    foreground: c.kesriInk,
-                    minHeight: 34,
-                    onTap: () => ref
-                        .read(playbackControllerProvider)
-                        .playSlot(slot, language: l.localeName),
+                  Material(
+                    color: c.primary,
+                    shape: const StadiumBorder(),
+                    child: InkWell(
+                      customBorder: const StadiumBorder(),
+                      onTap: () => ref.read(playbackControllerProvider).playSlot(slot, language: l.localeName),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: SizedBox(
+                          height: 36,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AppIcon(HazriIconData.play, size: 14, color: c.onPrimary),
+                              const SizedBox(width: 8),
+                              Text(l.nitnemPlayAll,
+                                  style: HazriText.captionStrong.copyWith(color: c.onPrimary, fontSize: 13)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
               ],
             ),
-          ),
-          HazriCard(
-            padding: EdgeInsets.zero,
-            child: Column(
-              children: [
-                for (var i = 0; i < banis.length; i++) ...[
-                  BaniRow(bani: banis[i]),
-                  if (i != banis.length - 1)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 64),
-                      child: Divider(height: 1, color: c.rule),
-                    ),
-                ],
-              ],
-            ),
-          ),
-        ],
+            const SizedBox(height: 10),
+            for (final b in banis) ...[
+              Divider(height: 1, color: c.rule),
+              BaniRow(bani: b),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -269,12 +274,20 @@ class BaniRow extends ConsumerWidget {
         : (resume.lineIdx / bani.lineCount).clamp(0.0, 1.0);
 
     // A bani whose text has not shipped says so; otherwise the row shows where
-    // the reader left off, or how long the bani takes.
+    // the reader left off (design 12: "2:04 in", in kesri, from the saved
+    // audio position, or the line when it was read without audio), or how
+    // long the bani takes.
     final String trailing;
+    var resuming = false;
     if (!bani.hasText) {
       trailing = l.comingSoonShort;
+    } else if (!doneToday && resume != null && resume.audioPosMs > 0) {
+      final s = resume.audioPosMs ~/ 1000;
+      trailing = l.nitnemResumeAt('${s ~/ 60}:${(s % 60).toString().padLeft(2, '0')}');
+      resuming = true;
     } else if (!doneToday && resume != null && resume.lineIdx > 0) {
       trailing = l.nitnemLineOf(resume.lineIdx + 1, bani.lineCount);
+      resuming = true;
     } else {
       trailing = l.minutes(bani.estMinutes);
     }
@@ -283,39 +296,46 @@ class BaniRow extends ConsumerWidget {
       opacity: bani.hasText ? 1 : 0.55,
       child: InkWell(
         onTap: () => context.push(Routes.reader(bani.slug)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          child: Row(
-            children: [
-              ProgressRing(size: 34, progress: fraction, done: doneToday),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      bani.name(l.localeName),
-                      style: HazriText.bodyStrong.copyWith(color: c.ink),
-                    ),
-                    Text(
-                      bani.nativeName,
-                      style: HazriText.gurmukhi(14).copyWith(color: c.muted, height: 1.4),
-                    ),
-                  ],
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 60),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                ProgressRing(size: 36, strokeWidth: 4, progress: fraction, done: doneToday),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bani.name(l.localeName),
+                        style: HazriText.body.copyWith(color: c.ink, fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        bani.nativeName,
+                        style: HazriText.gurmukhi(14).copyWith(color: c.ink2, height: 1.4),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 96),
-                child: Text(
-                  trailing,
-                  maxLines: 2,
-                  textAlign: TextAlign.end,
-                  overflow: TextOverflow.ellipsis,
-                  style: HazriText.caption.copyWith(color: c.muted),
+                const SizedBox(width: 8),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 96),
+                  child: Text(
+                    trailing,
+                    maxLines: 2,
+                    textAlign: TextAlign.end,
+                    overflow: TextOverflow.ellipsis,
+                    style: resuming
+                        ? HazriText.captionStrong.copyWith(color: c.kesriInk)
+                        : HazriText.caption.copyWith(color: c.muted),
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 6),
+                AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
+              ],
+            ),
           ),
         ),
       ),

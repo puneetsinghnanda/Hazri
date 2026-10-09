@@ -18,8 +18,6 @@ import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../data/today_controller.dart';
 import '../../../app/menu_sheet.dart';
-import '../../hazri/data/hazri_controller.dart';
-import '../../hazri/ui/goal_complete_sheet.dart';
 import '../../hazri/ui/hazri_banner.dart';
 import '../domain/today_state.dart';
 import '../../diary/ui/diary_screen.dart' show nitnemStreakProvider;
@@ -41,24 +39,6 @@ class TodayScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Design 61, on the day the last goal is ticked and once on that day.
-    // It follows the state rather than the tap, because the tick can happen
-    // in the reader or the diary rather than here.
-    //
-    // Registered **before** the elder-mode return, not after it. It used to
-    // sit below, so an elder-mode phone never subscribed and the sheet that
-    // marks a finished day never appeared on it at all.
-    ref.listen(goalsAllDoneTodayProvider, (was, isNow) {
-      if (!isNow || (was ?? false)) return;
-      final cue = ref.read(goalCompleteCueProvider);
-      final today = ref.read(clockProvider).today();
-      if (!cue.shouldShowFor(today)) return;
-      cue.markShown(today);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) showGoalCompleteSheet(context);
-      });
-    });
-
     // T5: elder mode is a mode, not a screen. Sizes come from the elder
     // theme; the secondary cards (Vichar, Gurpurab) step aside.
     final elder = ref.watch(settingsProvider.select((s) => s.elderMode));

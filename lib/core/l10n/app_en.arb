@@ -2020,5 +2020,6 @@
     }
   },
   "sangatGoalTargetMinutes": "Target, in minutes of Naam Simran",
-  "readerStartAgainNote": "Start again takes you to the first line and clears where you left off."
+  "readerStartAgainNote": "Start again takes you to the first line and clears where you left off.",
+  "goalPlayNow": "Play now"
 }

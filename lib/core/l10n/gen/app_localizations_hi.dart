@@ -3356,4 +3356,7 @@ class LHi extends L {
   @override
   String get readerStartAgainNote =>
       'फिर से शुरू करें आपको पहली पंक्ति पर ले जाता है और जहाँ आपने छोड़ा था उसे मिटा देता है।';
+
+  @override
+  String get goalPlayNow => 'अभी चलाएँ';
 }

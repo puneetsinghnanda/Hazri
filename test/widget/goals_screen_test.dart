@@ -29,7 +29,7 @@ void main() {
     await tester.pumpWidget(app.wrapRouted(const GoalsScreen()));
     await settle(tester);
     final l = await L.delegate.load(const Locale('en'));
-    expect(find.text(l.goalTimesOfTarget(0, 2)), findsOneWidget);
+    expect(find.text(l.goalStatusProgress(0, 2)), findsOneWidget);
 
     // What the reader and the player both do when a bani finishes.
     await tester.runAsync(() => app.container.read(userRepositoryProvider).logCompletion(
@@ -40,6 +40,6 @@ void main() {
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
     await settle(tester);
 
-    expect(find.text(l.goalTimesOfTarget(1, 2)), findsOneWidget);
+    expect(find.text(l.goalStatusProgress(1, 2)), findsOneWidget);
   });
 }

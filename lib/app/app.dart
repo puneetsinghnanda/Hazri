@@ -7,6 +7,9 @@ import '../core/db/user_repository.dart';
 import '../core/l10n/gen/app_localizations.dart';
 import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_theme.dart';
+import '../core/time/clock.dart';
+import '../features/hazri/data/hazri_controller.dart';
+import '../features/hazri/ui/goal_complete_sheet.dart';
 import '../features/reminders/data/reminders_controller.dart';
 import '../features/backup/data/backup_controller.dart';
 import '../features/profile/data/profile_controller.dart';
@@ -38,6 +41,21 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     ref.listenManual(pendingBadgeProvider, (_, _) => _announceBadge());
     ref.listenManual(simranSessionProvider, (_, s) {
       if (!s.active) _announceBadge();
+    });
+    // Design 61, once on the day the last goal item is met, over whatever is
+    // showing (05-today T9: "from wherever the last item was met"). It
+    // follows the state rather than a tap, because the paath that meets it
+    // can be in the reader, the player or the Diary.
+    ref.listenManual(goalsAllDoneTodayProvider, (was, isNow) {
+      if (!isNow || (was ?? false)) return;
+      final cue = ref.read(goalCompleteCueProvider);
+      final today = ref.read(clockProvider).today();
+      if (!cue.shouldShowFor(today)) return;
+      cue.markShown(today);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final context = rootNavigatorKey.currentContext;
+        if (context != null && context.mounted) showGoalCompleteSheet(context);
+      });
     });
     // Keeps the weekly backup in step with the profile from the first frame.
     ref.read(backupControllerProvider);

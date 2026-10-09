@@ -77,7 +77,9 @@ class TabHeader extends StatelessWidget {
               ),
             ),
           ),
-          if (trailing != null) trailing!,
+          // The trailing chip gives way to the title on a narrow screen or a
+          // long translation; its label ellipsises.
+          if (trailing != null) Flexible(child: trailing!),
         ],
       ),
     );

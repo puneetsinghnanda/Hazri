@@ -3373,4 +3373,7 @@ class LEn extends L {
   @override
   String get readerStartAgainNote =>
       'Start again takes you to the first line and clears where you left off.';
+
+  @override
+  String get goalPlayNow => 'Play now';
 }

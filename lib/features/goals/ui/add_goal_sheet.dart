@@ -9,6 +9,8 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
+import '../../../core/theme/icon_data.dart';
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../reminders/ui/time_wheel.dart';
@@ -232,9 +234,11 @@ class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
               _editing != null && editingName != null ? l.goalEditTitle(editingName) : l.goalAddTitle,
               style: HazriText.display22.copyWith(color: c.ink),
             ),
+            // Design 47's subtitle.
+            Text(l.goalSimranOrBani, style: HazriText.caption.copyWith(color: c.muted, fontSize: 13)),
             const SizedBox(height: 16),
             if (_editing == null) ...[
-              Text(l.goalChoose, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+              Eyebrow(l.goalChoose),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -252,7 +256,7 @@ class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
               const SizedBox(height: 18),
             ],
             if (_isSimran) ...[
-              Text(l.goalMinutesLabel, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+              Eyebrow(l.goalMinutesLabel),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -270,7 +274,7 @@ class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
                 ],
               ),
             ] else if (_choice != null) ...[
-              Text(l.goalTimesPerDay, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+              Eyebrow(l.goalTimesPerDay),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -292,7 +296,7 @@ class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
             ],
             if (_choice != null) ...[
               const SizedBox(height: 18),
-              Text(l.goalDuration, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+              Eyebrow(l.goalDuration),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -346,10 +350,30 @@ class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
                 ),
               ],
               const SizedBox(height: 18),
-              Row(
+              // Design 47: the reminder as a card row with its bell.
+              Container(
+                padding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
+                decoration: BoxDecoration(
+                  color: c.bg,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: c.rule),
+                ),
+                child: Row(
                 children: [
+                  AppIcon(HazriIconData.bell, size: 20, color: c.kesriInk),
+                  const SizedBox(width: 12),
                   Expanded(
-                    child: Text(l.goalReminder, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l.goalReminder, style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 14)),
+                        if (_remind)
+                          Text(
+                            l.goalReminderEveryDayAt(dates.time(DateTime(2000, 1, 1, _time.hour, _time.minute))),
+                            style: HazriText.caption.copyWith(color: c.muted),
+                          ),
+                      ],
+                    ),
                   ),
                   Switch(
                     value: _remind,
@@ -362,6 +386,7 @@ class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
                     }),
                   ),
                 ],
+              ),
               ),
               if (_remind) ...[
                 const SizedBox(height: 8),
