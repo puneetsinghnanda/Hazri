@@ -1,4 +1,5 @@
 import { BrevoMailer, isPlaceholder, MailerNotConfiguredError } from '../../src/email/mailer';
+import { EMAIL_FROM, EMAIL_FROM_NAME, SUPPORT_EMAIL } from '../../src/config';
 import { escapeHtml, restoreProfileTemplate, verifyEmailTemplate } from '../../src/email/templates';
 import { fill, groupNameFor, renderSangat, unitFor } from '../../src/notifications/render';
 import { chooseDigest, heldForThisMorning, isDaytime, milestonesCrossed } from '../../src/notifications/rules';
@@ -61,10 +62,19 @@ describe('Brevo mailer (W6)', () => {
     expect(JSON.parse(calls[0].init.body)).toEqual({
       sender: { email: 'no-reply@hazri.me', name: 'Hazri' },
       to: [{ email: 'a@b.co' }],
+      replyTo: { email: SUPPORT_EMAIL },
       subject: 'S',
       textContent: 'T',
       htmlContent: '<p>H</p>',
     });
+  });
+  it('ships a real sender on the authenticated domain, never a placeholder', () => {
+    // Brevo refuses a sender outside an authenticated domain, and the
+    // failure only shows up as a verification mail that never arrives.
+    expect(isPlaceholder(EMAIL_FROM)).toBe(false);
+    expect(isPlaceholder(EMAIL_FROM_NAME)).toBe(false);
+    expect(EMAIL_FROM.endsWith('@hazri.me')).toBe(true);
+    expect(SUPPORT_EMAIL.endsWith('@hazri.me')).toBe(true);
   });
   it('rejects on a provider error', async () => {
     const mailer = new BrevoMailer(() => 'k', async () => ({ ok: false, status: 401, text: async () => 'unauthorized' }));

@@ -2,7 +2,7 @@
 // with the key in Secret Manager. Behind an interface so tests and a future
 // provider need no change to the routes.
 import { logger } from 'firebase-functions';
-import { BREVO_API_URL, EMAIL_FROM, EMAIL_FROM_NAME } from '../config';
+import { BREVO_API_URL, EMAIL_FROM, EMAIL_FROM_NAME, SUPPORT_EMAIL } from '../config';
 
 export interface MailMessage {
   to: string;
@@ -42,6 +42,7 @@ export class BrevoMailer implements Mailer {
     private readonly apiKey: () => string | undefined,
     private readonly fetchImpl: FetchLike = (url, init) => fetch(url, init),
     private readonly from = { email: EMAIL_FROM, name: EMAIL_FROM_NAME },
+    private readonly replyTo = SUPPORT_EMAIL,
   ) {}
 
   configured(): boolean {
@@ -68,6 +69,8 @@ export class BrevoMailer implements Mailer {
       body: JSON.stringify({
         sender: { email: this.from.email, name: this.from.name },
         to: [{ email: msg.to }],
+        // noreply@ has no mailbox; a reply reaches a person.
+        replyTo: { email: this.replyTo },
         subject: msg.subject,
         textContent: msg.text,
         htmlContent: msg.html,

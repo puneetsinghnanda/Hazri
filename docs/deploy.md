@@ -61,13 +61,19 @@ says that email is not set up yet (503 `EMAIL_NOT_CONFIGURED`).
 firebase functions:secrets:set BREVO_API_KEY     # paste {{BREVO_API_KEY}} for now
 ```
 
-When Brevo is ready:
+Brevo (done 2026-10-09 except the key):
 
-1. Verify the sender address (or its domain) in Brevo.
-2. Put it in `functions/src/config.ts`: `EMAIL_FROM` and `EMAIL_FROM_NAME`,
-   commit.
-3. `firebase functions:secrets:set BREVO_API_KEY` with the real key.
-4. Redeploy the Functions (step 5). A new secret version is only picked up
+1. `hazri.me` is authenticated in Brevo (Brevo code and DKIM at Namecheap);
+   the sender is `noreply@hazri.me`, "Hazri", set in `functions/src/config.ts`,
+   with `Reply-To: support@hazri.me`, which Namecheap forwards to the owner.
+2. In Brevo: **Transactional → Settings**, turn click and open tracking
+   off. A tracked link is rewritten through Brevo, so the verification link
+   opens a browser instead of the app, and it is third-party tracking.
+3. **Security → Authorised IPs**: blocking of unknown IPs off. Cloud
+   Functions have no fixed address.
+4. `firebase functions:secrets:set BREVO_API_KEY` with the API key
+   (`xkeysib-...`, not the SMTP key).
+5. Redeploy the Functions (step 5). A new secret version is only picked up
    by a deploy.
 
 ## 4. Firestore rules and indexes

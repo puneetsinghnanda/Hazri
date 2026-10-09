@@ -15,10 +15,11 @@ export const VERIFY_LINK_BASE = `${HOSTING_ORIGIN}/verify`;
 export const INVITE_LINK_BASE = `${HOSTING_ORIGIN}/j`;
 
 // Email (01-accounts.md §13.3 W6: Brevo through its API, key in Secret Manager).
-// PLACEHOLDERS: the owner supplies the sender. Until then sending still works
-// once BREVO_API_KEY is set, but Brevo refuses an unverified sender.
-export const EMAIL_FROM = '{{EMAIL_FROM}}';
-export const EMAIL_FROM_NAME = '{{EMAIL_FROM_NAME}}';
+// hazri.me was authenticated in Brevo on 2026-10-09 (DKIM and the Brevo code
+// at Namecheap), so this sender needs no mailbox. Replies go to SUPPORT_EMAIL,
+// which forwards to the owner.
+export const EMAIL_FROM = 'noreply@hazri.me';
+export const EMAIL_FROM_NAME = 'Hazri';
 export const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 export const BREVO_SECRET_NAME = 'BREVO_API_KEY';
 export const SUPPORT_EMAIL = 'support@hazri.me';
