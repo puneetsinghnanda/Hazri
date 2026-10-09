@@ -209,7 +209,7 @@ class _SimranSky extends ConsumerWidget {
                 // No side padding on the column: the globe takes the whole
                 // width and each text block gutters itself, so the earth is
                 // as wide as the phone rather than as wide as a paragraph.
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 14),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 14),
                 child: Column(
                   children: [
                     _gutter(_Header(
@@ -423,6 +423,9 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = L.of(context);
     return Row(
+      // The buttons hold the place Today's menu has; the wordmark, which is
+      // taller than they are, hangs from the same line.
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _DarkButton(
           icon: HazriIconData.menu,
@@ -579,15 +582,14 @@ class _DarkButton extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-        button: true,
-        label: tooltip,
+  Widget build(BuildContext context) => Tooltip(
+        message: tooltip,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(13),
           child: Container(
-            width: 40,
-            height: 40,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.09),
               borderRadius: BorderRadius.circular(13),
