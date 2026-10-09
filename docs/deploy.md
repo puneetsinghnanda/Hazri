@@ -22,11 +22,15 @@ Node 20 is what the Functions run on (`functions/package.json` `engines`).
 
 ## 1. The admin Hosting site
 
+Done 2026-10-09. `hazri-admin` is taken by another Firebase project (site
+ids are global), so the site is **`hazri-admin-d4b72`**:
+
 ```bash
-firebase hosting:sites:create hazri-admin
+firebase hosting:sites:create hazri-admin-d4b72
 ```
 
-`.firebaserc` already maps the `admin` target to `hazri-admin`.
+`.firebaserc` maps the `admin` target to it, and `ADMIN_ORIGINS` in
+`functions/src/config.ts` lets it call the `api` Function.
 
 ## 2. Google sign-in for the admin site
 
@@ -34,8 +38,8 @@ Firebase console → Authentication:
 
 1. **Sign-in method** → add **Google**, enable it. Keep **Anonymous** on: every
    phone signs in with it.
-2. **Settings → Authorized domains** → add `hazri-admin.web.app` and
-   `hazri-admin.firebaseapp.com`.
+2. **Settings → Authorized domains** → add `hazri-admin-d4b72.web.app` and
+   `hazri-admin-d4b72.firebaseapp.com`.
 
 Project settings → Your apps → **Add app → Web**, name it "Hazri admin". Then:
 
@@ -115,7 +119,7 @@ cd admin && npm ci && npm run build && cd ..
 firebase deploy --only hosting:admin
 ```
 
-Open <https://hazri-admin.web.app>, sign in with the admin Google account.
+Open <https://hazri-admin-d4b72.web.app>, sign in with the admin Google account.
 
 ## 8. The built-in groups
 

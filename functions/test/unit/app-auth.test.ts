@@ -87,11 +87,11 @@ describe('admin access (11-admin AC3, §8)', () => {
   it('CORS preflight is answered for the admin site', async () => {
     const res = await request(app)
       .options('/api/v1/admin/dashboard')
-      .set('Origin', 'https://hazri-admin.web.app')
+      .set('Origin', 'https://hazri-admin-d4b72.web.app')
       .set('Access-Control-Request-Method', 'GET')
       .set('Access-Control-Request-Headers', 'authorization');
     expect(res.status).toBe(204);
-    expect(res.headers['access-control-allow-origin']).toBe('https://hazri-admin.web.app');
+    expect(res.headers['access-control-allow-origin']).toBe('https://hazri-admin-d4b72.web.app');
   });
   it('isAdminToken', () => {
     expect(isAdminToken(tokens.admin)).toBe(true);

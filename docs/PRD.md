@@ -761,7 +761,7 @@ system font scale is respected up to 1.3×.
 **Purpose.** One person runs the built-in groups, acts on reports and helps
 people. *Rules: `11-admin.md`. Data: ARCHITECTURE §6.6, §8.5.*
 
-- A separate site, `hazri-admin.web.app`, linked from nowhere. **Google
+- A separate site, `hazri-admin-d4b72.web.app`, linked from nowhere. **Google
   sign-in, on this site only**, accepted for the one admin email; the server
   checks it on every request. Any other account can do nothing.
 - **Dashboard:** opened the app today, total and new profiles, active custom
@@ -1079,7 +1079,7 @@ The order is dependency, not preference: each step needs the ones before it.
 - *App:* the Sangat tab, Create, Set goal, Join, Group, Invite and Report; the
   outbox and its flush; the invite link page `public/j/`; the install
   referrer; `firebase_messaging` and the Sangat notifications.
-- *Admin:* the `hazri-admin` site — Google sign-in for the admin email,
+- *Admin:* the `hazri-admin-d4b72` site — Google sign-in for the admin email,
   dashboard, built-in groups, reports, people, the audit log; create and
   start the three built-in groups.
 - *Done when:* `08-sangat.md` §12, `02-notifications.md` §11 and

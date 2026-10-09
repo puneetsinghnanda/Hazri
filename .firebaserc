@@ -6,7 +6,7 @@
     "hazri-dfcc1": {
       "hosting": {
         "public": ["hazri-dfcc1"],
-        "admin": ["hazri-admin"]
+        "admin": ["hazri-admin-d4b72"]
       }
     }
   }

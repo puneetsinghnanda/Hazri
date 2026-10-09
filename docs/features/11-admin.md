@@ -23,7 +23,7 @@ the owner.
 
 ## 2. Access
 
-- **AC1.** The website is a separate Firebase Hosting site in the same project, `hazri-admin.web.app`. Nothing links to it from the app or the public site.
+- **AC1.** The website is a separate Firebase Hosting site in the same project, `hazri-admin-d4b72.web.app`. Nothing links to it from the app or the public site.
 - **AC2.** Sign-in is Firebase Authentication with the **Google** provider, on the website only.
 - **AC3.** Every request to `/api/v1/admin/*` carries the ID token. The `api` function accepts it only when all of these hold: the token is valid; `firebase.sign_in_provider` is `google.com`; `email_verified` is true; and `email` equals `ADMIN_EMAIL` in `functions/src/config.ts`, which is `puneetsingh1802@gmail.com`. Otherwise `403 NOT_ADMIN`.
 - **AC4.** Any other Google account that signs in sees `adminNotAllowed` and can do nothing.

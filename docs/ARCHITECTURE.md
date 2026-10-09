@@ -47,7 +47,7 @@ and the build plan.
 | Firestore | Native mode, `asia-south1`. **No client access at all**: rules deny everything; only the Functions read and write it | — |
 | Firebase Cloud Messaging | Sangat pushes only | — |
 | Firebase Hosting, site `hazri-dfcc1` | `/api/**` rewrite to `api`, `/verify`, `/j/<code>`, `/.well-known/assetlinks.json` | `public/` (the profile spec writes `hosting/public/`; the repository's folder is `public/`) |
-| Firebase Hosting, site `hazri-admin` | The admin website | A separate source folder, named when it is built |
+| Firebase Hosting, site `hazri-admin-d4b72` | The admin website | A separate source folder, named when it is built |
 | Mail | Brevo or similar through its API, key in Secret Manager (`01-accounts.md` W6; the PRD text's Trigger Email extension is superseded by W6) | — |
 | Firebase Analytics | In the build with collection **off**; sends nothing in Phase 2 | — |
 

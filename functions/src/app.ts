@@ -20,7 +20,7 @@ export function createApp(deps: Deps): express.Express {
   app.disable('x-powered-by');
   app.set('etag', false);
 
-  // The admin website is a different origin (hazri-admin.web.app) calling
+  // The admin website is a different origin (hazri-admin-d4b72.web.app) calling
   // https://hazri-dfcc1.web.app/api/v1/admin/*.
   app.use('/api/v1/admin', cors({ origin: ADMIN_ORIGINS, methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'], maxAge: 3600 }));
 

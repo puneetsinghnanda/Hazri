@@ -26,8 +26,8 @@ export const SUPPORT_EMAIL = 'support@hazri.me';
 // Admin website (11-admin.md AC3).
 export const ADMIN_EMAIL = 'puneetsingh1802@gmail.com';
 export const ADMIN_ORIGINS = [
-  'https://hazri-admin.web.app',
-  'https://hazri-admin.firebaseapp.com',
+  'https://hazri-admin-d4b72.web.app',
+  'https://hazri-admin-d4b72.firebaseapp.com',
   'http://localhost:5173',
 ];
 
