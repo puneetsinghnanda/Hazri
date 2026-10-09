@@ -100,6 +100,13 @@ void main() {
       expect(manifest, contains('com.google.firebase.messaging.default_notification_icon'),
           reason: 'a Sangat push shown by Android itself needs the same icon');
     });
+
+    test('a Sangat push lands on the high-importance channel the server names', () {
+      final messenger = File('functions/src/notifications/messenger.ts').readAsStringSync();
+      expect(manifest, contains('android:value="sangat_v2"'),
+          reason: 'the old "sangat" channel is deleted; a push naming it falls back to this one');
+      expect(messenger, contains("channelId: 'sangat_v2'"));
+    });
   });
 
   group('permissions', () {

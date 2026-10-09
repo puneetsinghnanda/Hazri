@@ -678,13 +678,24 @@ scheduled notification can ever appear (CLAUDE.md, "Known gaps").
 
 | Kind | Reminder ID | Channel ID | Channel name key |
 | --- | --- | --- | --- |
-| Amrit Vela | `amrit-vela` | `amrit_vela` | `notifChannelAmritVela` (Amrit Vela) |
-| Goal bani | `goal-item:{itemId}` | `goal_reminders` | `notifChannelGoals` (Goal reminders) |
-| Gurpurab and events | `event:{eventId}` | `sikh_calendar` | `notifChannelCalendar` (Gurpurab and Sikh events) |
-| Hazri nudge | `hazri-nudge` | `hazri_nudge` | `notifChannelHazri` (Hazri reminder) |
-| Sangat | (push) | `sangat` | `notifChannelSangat` (Sangat) |
+| Amrit Vela | `amrit-vela` | `amrit_vela` (Android: `amrit_vela_v2`) | `notifChannelAmritVela` (Amrit Vela) |
+| Goal bani | `goal-item:{itemId}` | `goal_reminders` (Android: `goal_reminders_v2`) | `notifChannelGoals` (Goal reminders) |
+| Gurpurab and events | `event:{eventId}` | `sikh_calendar` (Android: `sikh_calendar_v2`) | `notifChannelCalendar` (Gurpurab and Sikh events) |
+| Hazri nudge | `hazri-nudge` | `hazri_nudge` (Android: `hazri_nudge_v2`) | `notifChannelHazri` (Hazri reminder) |
+| Sangat | (push) | `sangat` (Android: `sangat_v2`) | `notifChannelSangat` (Sangat) |
 
-On upgrade the old channels `nitnem_reminders`, `daily_simran`, `gurpurab` and `paath_goals` are deleted, so system settings shows only these five. The old rows `slot:evening`, `slot:bedtime` and `simran` are removed (10.1).
+On upgrade the old channels `nitnem_reminders`, `daily_simran`, `gurpurab` and `paath_goals` are deleted, so system settings shows only these five.
+
+**Every channel is high importance** (2026-10-09), so a notification shows as
+a pop-up and not only in the shade. The five were first created at default
+importance, which plays the sound and shows nothing on screen; the reader
+heard every test notification and saw none. Android keeps a channel's
+importance once created, so the posted channels moved to `<id>_v2`
+(`NotificationKind.androidChannelId`) and the five first ids are deleted on
+upgrade. The plain id stays the kind's name here and the key of its switch
+(`notif_on_<id>`, §3.8), so nobody's switches reset. The manifest's FCM
+default channel is `sangat_v2`, so a push from a Function still naming
+`sangat` lands there too. The old rows `slot:evening`, `slot:bedtime` and `simran` are removed (10.1).
 
 
 ## 5. Server: the Firebase project and Firestore

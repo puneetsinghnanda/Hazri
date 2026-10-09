@@ -20,8 +20,15 @@ enum NotificationKind {
 
   const NotificationKind(this.channelId);
 
-  /// The Android notification channel (§6.1).
+  /// The kind's name in ARCHITECTURE §4.1, and the key of its switch
+  /// (`notif_on_<channelId>`, §3.8).
   final String channelId;
+
+  /// The Android channel it is posted on. The first channels were created at
+  /// default importance, which sounds but never shows a pop-up, and Android
+  /// keeps a channel's importance once it exists, so the reminders moved to
+  /// new channels at high importance (2026-10-09, ARCHITECTURE §4.1).
+  String get androidChannelId => '${channelId}_v2';
 }
 
 /// A button on a notification (§5.6). [route] is opened when it is tapped;

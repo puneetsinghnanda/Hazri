@@ -34,7 +34,7 @@ export class FcmMessenger implements Messenger {
         chunk.map((m) => ({
           token: m.token,
           notification: { title: m.title, body: m.body },
-          android: { priority: 'normal' as const, notification: { channelId: 'sangat' } },
+          android: { priority: 'normal' as const, notification: { channelId: 'sangat_v2' } },
           data: m.data,
         })),
       );

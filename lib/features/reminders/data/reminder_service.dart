@@ -17,9 +17,31 @@ final reminderServiceProvider = Provider<ReminderService>(
 /// What a notification asks the app to open when tapped.
 typedef ReminderTapHandler = void Function(String route);
 
-/// The channels of Hazri before 2026-10-07, deleted on upgrade so system
-/// settings shows only the five of 02-notifications §6.1.
-const _oldChannels = ['nitnem_reminders', 'daily_simran', 'gurpurab', 'paath_goals'];
+/// The channels of Hazri before 2026-10-07, and the five of ARCHITECTURE
+/// §4.1 as first created at default importance (until 2026-10-09), deleted on
+/// upgrade so system settings shows only the current five.
+final _oldChannels = [
+  'nitnem_reminders',
+  'daily_simran',
+  'gurpurab',
+  'paath_goals',
+  for (final k in NotificationKind.values) k.channelId,
+];
+
+/// Every Hazri notification shows as a pop-up, not only in the shade: a
+/// reminder nobody sees is no reminder (ARCHITECTURE §4.1).
+const _importance = Importance.high;
+const _priority = Priority.high;
+
+/// The current Android channel for one named in a payload: a snooze planned
+/// by an older build names a channel that has since been deleted, and posting
+/// to it would bring it back at its old importance.
+String _currentChannel(String? id) =>
+    NotificationKind.values
+        .where((k) => k.channelId == id || k.androidChannelId == id)
+        .firstOrNull
+        ?.androidChannelId ??
+    NotificationKind.goalBani.androidChannelId;
 
 /// What travels with a notification so a tap, an action or a snooze can act
 /// on it without the planner: the route, and for a snooze the text to re-send.
@@ -112,8 +134,10 @@ Future<void> onNotificationActionInBackground(NotificationResponse response) asy
     tz.TZDateTime.now(tz.local).add(const Duration(minutes: 15)),
     NotificationDetails(
       android: AndroidNotificationDetails(
-        p.channel ?? NotificationKind.goalBani.channelId,
+        _currentChannel(p.channel),
         p.channelName ?? 'Hazri',
+        importance: _importance,
+        priority: _priority,
         category: AndroidNotificationCategory.reminder,
         actions: [
           for (final a in open)
@@ -221,7 +245,8 @@ class ReminderService {
     // shows by itself lands on its own channel (the manifest names it), and
     // each switch in system settings is there before its first notification.
     for (final e in channelNames.entries) {
-      await _android?.createNotificationChannel(AndroidNotificationChannel(e.key.channelId, e.value));
+      await _android?.createNotificationChannel(
+          AndroidNotificationChannel(e.key.androidChannelId, e.value, importance: _importance));
     }
     await _plugin.cancelAll();
     final exact = await canScheduleExact();
@@ -235,10 +260,10 @@ class ReminderService {
     final progress = n.progress;
     return NotificationDetails(
       android: AndroidNotificationDetails(
-        n.kind.channelId,
+        n.kind.androidChannelId,
         channelName,
-        importance: Importance.defaultImportance,
-        priority: Priority.defaultPriority,
+        importance: _importance,
+        priority: _priority,
         category: AndroidNotificationCategory.reminder,
         styleInformation: BigTextStyleInformation(n.body),
         showProgress: progress != null && progress.$2 > 0,
@@ -261,7 +286,7 @@ class ReminderService {
         route: n.route,
         title: n.title,
         body: n.body,
-        channel: n.kind.channelId,
+        channel: n.kind.androidChannelId,
         channelName: channelName,
         actions: [for (final a in n.actions) (id: a.id, label: a.label, route: a.route)],
       ).encode();
@@ -314,8 +339,8 @@ class ReminderService {
       title,
       body,
       NotificationDetails(
-        android: AndroidNotificationDetails(NotificationKind.sangat.channelId, channelName,
-            category: AndroidNotificationCategory.social),
+        android: AndroidNotificationDetails(NotificationKind.sangat.androidChannelId, channelName,
+            importance: _importance, priority: _priority, category: AndroidNotificationCategory.social),
       ),
       payload: NotificationPayload(route: route ?? '/sangat').encode(),
     );

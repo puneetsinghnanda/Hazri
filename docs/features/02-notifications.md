@@ -244,7 +244,7 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 ### 8.3 The message
 
 - **FM1.** The text is rendered on the server in each recipient's `locale`, so Android shows it even when the app is not running. The server's copy of the strings (`functions/src/notifications/{en,pa,hi}.json`) is generated from the `notifSangat*` and `notifActionOpenSangat` keys of the ARB files at build time; the ARB files stay the single source.
-- **FM2.** Payload: `notification { title, body }`, `android { channelId: "sangat", priority: "normal" }`, `data { kind, groupId, route: "/sangat/{groupId}" }`. Sent with `sendEach` in batches of at most 500.
+- **FM2.** Payload: `notification { title, body }`, `android { channelId: "sangat_v2", priority: "normal" }` (the high-importance channel, ARCHITECTURE §4.1), `data { kind, groupId, route: "/sangat/{groupId}" }`. Sent with `sendEach` in batches of at most 500.
 - **FM3.** In the foreground the app shows the same notification itself (FCM does not display foreground messages on its own).
 - **FM4.** A token that FCM reports as unregistered or invalid is deleted at once; nothing is retried.
 - **FM5.** No member names, profile IDs or emails are ever in a payload; only the group name, counts and the bani name.
