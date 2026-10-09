@@ -25,7 +25,7 @@ void main() {
         'isMember': member,
         'role': member ? 'MEMBER' : null,
         'goal': {
-          'goalId': 'g0001', 'type': 'SIMRAN', 'simranMinutes': 11, 'target': 1000, 'startDay': '2026-10-01',
+          'goalId': 'g0001', 'type': 'SIMRAN', 'simranMinutes': null, 'target': 1000, 'startDay': '2026-10-01',
           'endDay': '2026-10-31', 'status': 'ACTIVE', 'total': 250, 'pct': 25, 'todayTotal': 9, 'daysLeft': 23,
         },
       };
@@ -53,6 +53,13 @@ void main() {
     expect(find.text(l.sangatJoin), findsOneWidget);
     expect(find.text(l.sangatNoGroups), findsOneWidget);
     expect(find.text(l.sangatCreate), findsOneWidget);
+  });
+
+  testWidgets('SG-1: a Simran goal reads in minutes of Naam Simran', (tester) async {
+    await boot(tester, const SangatScreen());
+    expect(find.textContaining('1000 minutes of Naam Simran by'), findsOneWidget);
+    expect(find.textContaining('250 of 1000 min · 25%'), findsOneWidget);
+    expect(find.textContaining('sittings'), findsNothing);
   });
 
   testWidgets('S-2: Join a built-in group → member, and the outbox turns on', (tester) async {

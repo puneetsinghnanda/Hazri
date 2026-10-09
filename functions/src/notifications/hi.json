@@ -1,10 +1,13 @@
 {
   "notifSangatDigestTitle": "{group}: आज {count} पाठ",
   "notifSangatDigestBody": "मिलकर {target} {bani} का {pct}% पूरा। हर पाठ इसमें जुड़ता है।",
+  "notifSangatDigestTitleSimran": "{group}: आज {count} मिनट नाम सिमरन",
+  "notifSangatDigestBodySimran": "मिलकर {target} मिनट का {pct}% पूरा। सिमरन का हर मिनट इसमें जुड़ता है।",
   "notifSangatMilestoneTitle": "{group} ने {pct}% पूरा किया",
   "notifSangatMilestoneBody": "{target} {bani} में से {done}, {daysLeft} दिन बाकी।",
   "notifSangatFinalTitle": "{group} के लिए {daysLeft} दिन बाकी",
   "notifSangatFinalBody": "लक्ष्य तक {remaining} पाठ। आज का आपका पाठ इसे नज़दीक लाता है।",
+  "notifSangatFinalBodySimran": "लक्ष्य तक {remaining} मिनट। आज का आपका सिमरन इसे नज़दीक लाता है।",
   "notifSangatCompleteTitle": "{group} ने लक्ष्य पूरा किया",
   "notifSangatCompleteBody": "{target} {bani}, मिलकर। वाहिगुरु जी का खालसा, वाहिगुरु जी की फ़तह।",
   "notifSangatJoinedTitle": "{name} {group} में शामिल हुए",
@@ -13,7 +16,7 @@
   "notifSangatJoinedManyBody": "आपकी संगत बढ़ रही है: अब {count} सदस्य।",
   "notifSangatEndedTitle": "{group} समाप्त हो गया",
   "notifSangatEndedBody": "मिलकर: {target} {bani} में से {total}। इसका हिस्सा बनने के लिए धन्यवाद।",
-  "notifSangatSimranUnit": "नाम सिमरन की बैठकें",
+  "notifSangatSimranUnit": "मिनट नाम सिमरन",
   "notifSangatSomeone": "एक संगत सदस्य",
   "notifActionOpenSangat": "संगत खोलें"
 }

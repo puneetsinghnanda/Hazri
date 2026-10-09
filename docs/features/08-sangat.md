@@ -17,7 +17,7 @@ of this file entirely, and with it the old sangat code (`01-accounts.md`
 
 ## 1. Overview and requirement traceability
 
-A Sangat group is a set of people working together toward one shared goal with an end date: so many paath of one bani, or so many sittings of Naam Simran. There are two kinds. **Built-in groups** are set up by the owner in the admin website (`11-admin.md`) and anybody can join or leave them. **Custom groups** are created by people with a profile for their family, Gurdwara or circle; they are private and joined only through an invite.
+A Sangat group is a set of people working together toward one shared goal with an end date: so many paath of one bani, or so many minutes of Naam Simran. There are two kinds. **Built-in groups** are set up by the owner in the admin website (`11-admin.md`) and anybody can join or leave them. **Custom groups** are created by people with a profile for their family, Gurdwara or circle; they are private and joined only through an invite.
 
 | Req # | Requirement (owner, 2026-10-07) | Where |
 | --- | --- | --- |
@@ -26,7 +26,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 | K3 | Built-in groups are configured in an admin website, not in the app | 4.1, `11-admin.md` |
 | K4 | Creating a custom group needs a profile; joining one does not | 4.2, 4.3 |
 | K5 | Custom groups are private, joined by invite link or code, with no approval | 4.3, 4.4 |
-| K6 | Each group has one goal for its whole life: one bani, or Naam Simran with a sitting length, a target and an end date of at most 365 days | 4.2, 4.5 |
+| K6 | Each group has one goal for its whole life: one bani, or minutes of Naam Simran, with a target and an end date of at most 365 days | 4.2, 4.5 |
 | K7 | A group becomes inactive when its target is met or its end date passes, and keeps its history | 4.2 |
 | K8 | A creator may have 5 active custom groups; support can raise it | 4.2, `11-admin.md` |
 | K9 | Invites are shared through any app with a link and a code; the code lasts 30 days; installing from the link joins automatically | 4.4 |
@@ -44,8 +44,8 @@ A Sangat group is a set of people working together toward one shared goal with a
 | Custom group | A group created in the app by a person with a profile. Private: it never appears in any list except its members' own. |
 | Creator | The person who created a custom group. Built-in groups have no creator. |
 | Member | Somebody who has joined a group. With a profile they are identified by their profile; without one, by their install's anonymous uid (4.3). |
-| Goal | The group's one target: `BANI` (N paath of one bani) or `SIMRAN` (N sittings of at least M minutes). |
-| Contribution | One completed paath of the goal's bani, or one Naam Simran sitting of at least the goal's minutes, by a member, counted toward the goal (4.5) |
+| Goal | The group's one target: `BANI` (N paath of one bani) or `SIMRAN` (N minutes of Naam Simran, SG-1). |
+| Contribution | One completed paath of the goal's bani (counting one), or one Naam Simran sitting (counting its whole minutes), by a member, counted toward the goal (4.5) |
 | Group day | The calendar day in India Standard Time, the same for every group and member (owner, 2026-10-07). `dayIst` = `YYYY-MM-DD`. |
 | Active / inactive | A group whose goal is running, or one that has ended. An inactive group can still be opened and read. |
 | Disabled | A group the admin switched off after a report. It cannot be opened or joined. |
@@ -72,7 +72,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 - **BI1.** The three built-in groups at launch are Amrit Vela Sangat (ਅੰਮ੍ਰਿਤ ਵੇਲਾ ਸੰਗਤ, अमृत वेला संगत), Simran Sangat (ਸਿਮਰਨ ਸੰਗਤ, सिमरन संगत) and Sukhmani Sahib Sangat (ਸੁਖਮਨੀ ਸਾਹਿਬ ਸੰਗਤ, सुखमनी साहिब संगत). Their names are set in the admin website. More can be added there later.
 - **BI2.** Nobody is a member until they join. Every user sees the list of built-in groups with Join or Leave, with or without a profile.
-- **BI3.** Each has one goal at a time, set in the admin website: a bani or Naam Simran with minutes, a target, and a length in days.
+- **BI3.** Each has one goal at a time, set in the admin website: a bani or Naam Simran, a target (paath, or minutes for Naam Simran), and a length in days.
 - **BI4. Reset.** When the target is met, or when the end day passes unmet, the next group day a new goal starts with the same bani or minutes, target and length. The finished goal stays as history, with its total and every member's contribution.
 - **BI5.** No member limit. Leaving and joining again is allowed at any time.
 
@@ -80,7 +80,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 - **CG1. Creating** needs a profile (`ProfileLoaded`). Without one, Create shows the profile banner of `07-simran.md` NP3 with `sangatCreateNeedsProfile`.
 - **CG2. Name:** 1–64 characters after trimming, any script. It is shown to members only.
-- **CG3. Goal straight after.** Creating a group leads at once to setting its goal: `BANI` with a bani from `content.db`, or `SIMRAN` with minutes (default 5); a target; and an end day from today (IST) to today + 364. The start day is the day the goal is set. A group with no goal yet can be shared but counts nothing.
+- **CG3. Goal straight after.** Creating a group leads at once to setting its goal: `BANI` with a bani from `content.db`, or `SIMRAN` (minutes of Naam Simran); a target; and an end day from today (IST) to today + 364. The start day is the day the goal is set. A group with no goal yet can be shared but counts nothing.
 - **CG4. One goal for life.** The goal's type, bani, minutes and target cannot change. Only the end day can be changed, by the creator, to any day from today to start + 364.
 - **CG5. Limit.** A creator may have at most their limit of **active** custom groups (default 5). Inactive groups do not count. Over the limit, Create shows `sangatLimitReached` with the support address.
 - **CG6. Inactive** when the target is met (at once, mid-day) or after the end day has passed. An inactive group is read-only: its goal, total, history and every member's contribution stay and can be opened. It cannot be joined, and nothing more counts toward it.
@@ -113,7 +113,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 ### 4.5 Counting
 
-- **CT1. What counts.** For a `BANI` goal, every completion of that bani (`04-goals.md` §5.4). For a `SIMRAN` goal, every sitting of at least the goal's minutes (`04-goals.md` §5.5), counting as one (SG-1).
+- **CT1. What counts.** For a `BANI` goal, every completion of that bani (`04-goals.md` §5.4). For a `SIMRAN` goal, every sitting (`04-goals.md` §5.5), counting its whole minutes: a 7 min 59 s sitting adds 7, and one under a minute adds nothing (SG-1). Retracting a sitting takes back what it added.
 - **CT2. When.** A contribution counts when its group day falls between the goal's start and end day, on or after the day the member joined, while the member is a member and the group is active.
 - **CT3. Every group.** One paath counts once in every group the member belongs to whose goal it matches (owner, 2026-10-07).
 - **CT4. Diary cap.** Completions and sittings added with the Diary "+" (`source` = `DIARY`) count at most `DIARY_DAILY_CAP` per member per group per group day; the rest are accepted and ignored for the group. The Diary itself is not capped (owner, 2026-10-07).
@@ -163,7 +163,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 | Screen | Contents |
 | --- | --- |
-| Create group | Name field (64), then Set goal: Bani or Naam Simran; bani picker from `content.db` or minutes (5–120, default 5); target; end date (up to 365 days). Then Share invite. |
+| Create group | Name field (64), then Set goal: Bani or Naam Simran; bani picker from `content.db` (none for Naam Simran); target (paath, or minutes of Naam Simran); end date (up to 365 days). Then Share invite. |
 | Join | Code field (`XXXX-XXXX`), "Paste code", Join. Filled automatically from an App Link or the install referrer. |
 | Group | VS3 and VS4. Menu: Share invite; for the creator also Change end date, Reset invite code, Remove member (on a member row), Delete (CG8); for others Leave; for all Report. |
 | Report | The four reasons, the note for Other, Send. |
@@ -188,9 +188,13 @@ A Sangat group is a set of people working together toward one shared goal with a
 | `sangatGoalTarget` | Target |
 | `sangatGoalEnds` | Ends on |
 | `sangatGoalSummaryBani` | {target} {bani} by {date} |
-| `sangatGoalSummarySimran` | {target} sittings of {minutes} min by {date} |
+| `sangatGoalSummarySimran` | {target} minutes of Naam Simran by {date} |
+| `sangatSimranMinutesUnit` | minutes of Naam Simran |
+| `sangatGoalTargetMinutes` | Target, in minutes of Naam Simran |
 | `sangatProgress` | {total} of {target} · {pct}% |
 | `sangatToday` | {count} today |
+| `sangatProgressMinutes` | {total} of {target} min · {pct}% |
+| `sangatTodayMinutes` | {count} min today |
 | `sangatDaysLeft` | {days} days left |
 | `sangatEndedOn` | Ended on {date} |
 | `sangatMembers` | {count} members |
@@ -225,7 +229,7 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 | # | Given | When | Then |
 | --- | --- | --- | --- |
 | S-1 | No profile | Opens Sangat | Built-in groups with Join; Create shows the profile banner |
-| S-2 | No profile | Joins Simran Sangat | Member as "Sangat member"; sittings of at least its minutes count |
+| S-2 | No profile | Joins Simran Sangat | Member as "Sangat member"; every sitting adds its minutes |
 | S-3 | S-2 | Creates a profile | Memberships and contributions move to the profile; the row shows the name |
 | S-4 | Profile | Creates "Gill Parivar", goal 5,000 Japji Sahib by 31 Dec | Group active; Share invite offered |
 | S-5 | Five active custom groups | Creates a sixth | `GROUP_LIMIT_REACHED` |
@@ -239,7 +243,7 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 | S-13 | Japji read offline | Signal returns | Outbox sent; totals rise once |
 | S-14 | S-13 sent twice after a lost reply | — | Counted once |
 | S-15 | Diary "−" on a counted Japji | — | Taken back from each group |
-| S-16 | Simran group of 11 min | A 7-minute sitting | Not counted; Hazri still marked |
+| S-16 | A Simran group | A 7-minute sitting, then a 40-second one | 7 minutes added, then nothing; Hazri marked by the first |
 | S-17 | Target reached at 14:00 | — | Goal completed; custom group inactive at once; later paath not counted |
 | S-18 | Built-in goal met on the 10th | 00:05 IST on the 11th | New goal with the same settings; the old one in history |
 | S-19 | Built-in goal ends unmet | Next day | Same reset |
@@ -273,7 +277,7 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 
 | # | Question | Decision |
 | --- | --- | --- |
-| SG-1 | Does a Simran goal count sittings or total minutes? | **Decided 2026-10-07:** sittings of at least the goal's minutes (CT1) |
+| SG-1 | Does a Simran goal count sittings or total minutes? | **Decided 2026-10-09 (owner), replacing 2026-10-07:** total minutes of Naam Simran; every sitting adds its whole minutes and a goal has no sitting length (CT1). The 2026-10-07 answer was sittings of at least the goal's minutes |
 | SG-2 | Built-in groups and their names | **Decided 2026-10-07:** three, named as in BI1; Daily Nitnem Sangat removed |
 | — | Every other rule | Decided by the owner on 2026-10-07 |
 

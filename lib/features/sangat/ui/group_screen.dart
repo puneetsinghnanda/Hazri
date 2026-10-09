@@ -174,10 +174,10 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                         style: HazriText.bodyStrong.copyWith(color: c.ink)),
                     if (goal != null) ...[
                       const SizedBox(height: 4),
-                      Text(l.sangatProgress(goal.total, goal.target, goal.pct),
+                      Text(goalProgress(l, goal),
                           style: HazriText.caption.copyWith(color: c.ink2)),
                       Text(
-                        '${l.sangatToday(goal.todayTotal)} · ${goalWhen(context, g)}',
+                        '${goal.isSimran ? l.sangatTodayMinutes(goal.todayTotal) : l.sangatToday(goal.todayTotal)} · ${goalWhen(context, g)}',
                         style: HazriText.caption.copyWith(color: c.muted),
                       ),
                       Text(
@@ -204,6 +204,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
               for (final m in g.members)
                 _MemberRow(
                   member: m,
+                  minutes: g.goal?.isSimran ?? false,
                   canRemove: g.isCreator && !m.isCreator && !m.hasLeft && g.isActive,
                   onRemove: () async {
                     final name = m.name ?? l.sangatAnonymousName;
@@ -228,9 +229,12 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
 /// VS4, VS5, VS6: a name and a contribution; no rank, nobody marked as
 /// behind.
 class _MemberRow extends StatelessWidget {
-  const _MemberRow({required this.member, required this.canRemove, required this.onRemove});
+  const _MemberRow({required this.member, required this.canRemove, required this.onRemove, this.minutes = false});
 
   final SangatMember member;
+
+  /// A Naam Simran goal: the contribution is minutes.
+  final bool minutes;
   final bool canRemove;
   final VoidCallback onRemove;
 
@@ -255,7 +259,7 @@ class _MemberRow extends StatelessWidget {
               ],
             ),
           ),
-          Text('${member.contribution}', style: HazriText.bodyStrong.copyWith(color: c.ink)),
+          Text(minutes ? l.goalSimranMinutes(member.contribution) : '${member.contribution}', style: HazriText.bodyStrong.copyWith(color: c.ink)),
           if (canRemove)
             IconButton(
               tooltip: l.sangatRemoveMember,

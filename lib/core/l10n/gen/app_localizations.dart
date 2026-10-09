@@ -5298,8 +5298,8 @@ abstract class L {
   /// No description provided for @sangatGoalSummarySimran.
   ///
   /// In en, this message translates to:
-  /// **'{target} sittings of {minutes} min by {date}'**
-  String sangatGoalSummarySimran(int target, int minutes, String date);
+  /// **'{target} minutes of Naam Simran by {date}'**
+  String sangatGoalSummarySimran(int target, String date);
 
   /// No description provided for @sangatProgress.
   ///
@@ -5470,12 +5470,6 @@ abstract class L {
   /// **'Set the goal'**
   String get sangatGoalTitle;
 
-  /// No description provided for @sangatMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'Minutes per sitting'**
-  String get sangatMinutes;
-
   /// No description provided for @sangatCreateAction.
   ///
   /// In en, this message translates to:
@@ -5499,12 +5493,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Enter a number from 1 to 1,000,000'**
   String get sangatTargetInvalid;
-
-  /// No description provided for @sangatMinutesInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter 5 to 120 minutes'**
-  String get sangatMinutesInvalid;
 
   /// No description provided for @sangatChooseBani.
   ///
@@ -5997,6 +5985,30 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Larger text and simpler screens'**
   String get elderModeSetup;
+
+  /// No description provided for @sangatSimranMinutesUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes of Naam Simran'**
+  String get sangatSimranMinutesUnit;
+
+  /// No description provided for @sangatProgressMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} of {target} min · {pct}%'**
+  String sangatProgressMinutes(int total, int target, int pct);
+
+  /// No description provided for @sangatTodayMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min today'**
+  String sangatTodayMinutes(int count);
+
+  /// No description provided for @sangatGoalTargetMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Target, in minutes of Naam Simran'**
+  String get sangatGoalTargetMinutes;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

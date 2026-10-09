@@ -1,4 +1,4 @@
-import { countDecision, matchesGoal, parseOutboxItem, groupDayOf, capDocId } from '../../src/sangat/counting';
+import { amountFor, countDecision, matchesGoal, parseOutboxItem, groupDayOf, capDocId } from '../../src/sangat/counting';
 import { formatInviteCode, generateInviteCode, inviteLink, normalizeInviteCode } from '../../src/sangat/invite';
 import { contributionFor, daysLeftOf, goalIdFor, pctOf, sortNameOf } from '../../src/sangat/model';
 import { factCounts, factWouldGrow, mergeFactArrays } from '../../src/badges/facts';
@@ -6,7 +6,7 @@ import { INVITE_CODE_ALPHABET } from '../../src/config';
 import type { MemberDoc } from '../../src/sangat/model';
 
 const japjiGoal = { type: 'BANI' as const, baniId: 'JAPJ', simranMinutes: null, startDay: '2026-10-01', endDay: '2026-10-31', status: 'ACTIVE' as const };
-const simranGoal = { type: 'SIMRAN' as const, baniId: null, simranMinutes: 11, startDay: '2026-10-01', endDay: '2026-10-31', status: 'ACTIVE' as const };
+const simranGoal = { type: 'SIMRAN' as const, baniId: null, simranMinutes: null, startDay: '2026-10-01', endDay: '2026-10-31', status: 'ACTIVE' as const };
 const member = { status: 'ACTIVE' as const, joinedDay: '2026-10-05' };
 const active = { status: 'ACTIVE' as const };
 const japji = { kind: 'BANI' as const, baniId: 'JAPJ', durationS: null, source: 'READER' };
@@ -17,10 +17,14 @@ describe('counting (08-sangat CT1–CT9)', () => {
     expect(matchesGoal({ ...japji, baniId: 'JAAP' }, japjiGoal)).toBe(false);
     expect(matchesGoal({ kind: 'SIMRAN', baniId: null, durationS: 3600 }, japjiGoal)).toBe(false);
   });
-  it('CT1/S-16: a sitting counts only at the goal minutes', () => {
-    expect(matchesGoal({ kind: 'SIMRAN', baniId: null, durationS: 7 * 60 }, simranGoal)).toBe(false);
-    expect(matchesGoal({ kind: 'SIMRAN', baniId: null, durationS: 11 * 60 }, simranGoal)).toBe(true);
-    expect(matchesGoal({ kind: 'SIMRAN', baniId: null, durationS: 11 * 60 - 1 }, simranGoal)).toBe(false);
+  it('CT1/SG-1: a Simran goal counts the whole minutes of every sitting', () => {
+    expect(amountFor({ kind: 'SIMRAN', baniId: null, durationS: 7 * 60 }, simranGoal)).toBe(7);
+    expect(amountFor({ kind: 'SIMRAN', baniId: null, durationS: 11 * 60 - 1 }, simranGoal)).toBe(10);
+    expect(amountFor({ kind: 'SIMRAN', baniId: null, durationS: 59 }, simranGoal)).toBe(0);
+    expect(matchesGoal({ kind: 'SIMRAN', baniId: null, durationS: 59 }, simranGoal)).toBe(false);
+    expect(matchesGoal({ kind: 'SIMRAN', baniId: null, durationS: 60 }, simranGoal)).toBe(true);
+    expect(amountFor({ kind: 'BANI', baniId: 'JAPJ', durationS: null }, simranGoal)).toBe(0);
+    expect(amountFor({ kind: 'BANI', baniId: 'JAPJ', durationS: null }, japjiGoal)).toBe(1);
   });
   const base = { item: japji, day: '2026-10-08', group: active, goal: japjiGoal, member, diaryCount: 0 };
   it('counts in the ordinary case', () => {

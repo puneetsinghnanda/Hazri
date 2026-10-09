@@ -15,15 +15,19 @@ import '../../profile/ui/messages.dart';
 import '../data/sangat_api.dart';
 import '../domain/sangat_models.dart';
 
-/// "5,000 Japji Sahib by 31 Dec" or "108 sittings of 11 min by 31 Dec".
+/// "5,000 Japji Sahib by 31 Dec" or "100,000 minutes of Naam Simran by 31 Dec".
 String goalSummary(BuildContext context, WidgetRef ref, SangatGoal g) {
   final l = L.of(context);
   final date = HazriDates.of(context).shortDate(parseLocalDateKey(g.endDay));
-  if (g.isSimran) return l.sangatGoalSummarySimran(g.target, g.simranMinutes ?? 5, date);
+  if (g.isSimran) return l.sangatGoalSummarySimran(g.target, date);
   final banis = ref.watch(banisProvider).value ?? const <Bani>[];
   final bani = banis.where((b) => b.id == g.baniId).firstOrNull?.name(l.localeName) ?? g.baniId ?? '';
   return l.sangatGoalSummaryBani(g.target, bani, date);
 }
+
+/// "40 of 100 · 40%", or "400 of 1,000 min · 40%" for Naam Simran.
+String goalProgress(L l, SangatGoal g) =>
+    g.isSimran ? l.sangatProgressMinutes(g.total, g.target, g.pct) : l.sangatProgress(g.total, g.target, g.pct);
 
 /// The goal's state in one line: days left, or the day it ended (VS1, VS3).
 String goalWhen(BuildContext context, SangatGroup group) {
@@ -73,7 +77,7 @@ class GroupTile extends ConsumerWidget {
                       style: HazriText.caption.copyWith(color: c.ink2)),
                   if (g != null)
                     Text(
-                      '${l.sangatProgress(g.total, g.target, g.pct)} · ${goalWhen(context, group)}',
+                      '${goalProgress(l, g)} · ${goalWhen(context, group)}',
                       style: HazriText.caption.copyWith(color: c.muted),
                     ),
                   if (group.isBuiltIn)
@@ -101,7 +105,7 @@ Future<void> shareInvite(BuildContext context, WidgetRef ref, SangatGroup group)
     final goal = g == null
         ? ''
         : g.isSimran
-            ? '${l.sangatGoalSimran} (${l.goalSimranMinutes(g.simranMinutes ?? 5)})'
+            ? l.sangatSimranMinutesUnit
             : banis.where((b) => b.id == g.baniId).firstOrNull?.name(l.localeName) ?? '';
     await Share.share(l.sangatInviteMessage(
       group.displayName(l.localeName),

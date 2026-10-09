@@ -100,7 +100,7 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 - **SG6.** The group goal itself (what is counted, when "today" ends for a group) is defined by `08-sangat.md`. "Today" for a group is the IST day (`08-sangat.md` CT9).
 - **SG7. New members** (added 2026-10-07): once a day at 20:00 in the creator's own time, the creator of a custom group gets 5.5-E for the people who joined since the last one. Not sent on a day nobody joined. Built-in groups send none.
 - **SG8. Group ended** (added 2026-10-07): when a custom group becomes inactive by its end date, every member gets 5.5-F at their next 21:00, instead of that day's digest. A group that met its target gets 5.5-D instead.
-- **SG9. Simran goals:** where a message says `{bani}`, a Naam Simran goal uses `notifSangatSimranUnit` instead.
+- **SG9. Simran goals:** where a message says `{bani}`, a Naam Simran goal uses `notifSangatSimranUnit` instead. A Simran goal counts minutes (`08-sangat.md` SG-1, 2026-10-09), so the digest and the final-days body, which say "paath", use their `...Simran` variants.
 
 ### 4.6 Rules for every local notification
 
@@ -177,7 +177,9 @@ Actions: Sun "Begin 5 min" and "Later"; Wed "Set a goal" and "Begin 5 min"; Fri 
 | `notifSangatJoined` (E) | 20:00, one person joined | **{name} joined {group}** / Your sangat is growing: {count} members now. | **{name} {group} ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਏ** / ਤੁਹਾਡੀ ਸੰਗਤ ਵਧ ਰਹੀ ਹੈ: ਹੁਣ {count} ਮੈਂਬਰ। | **{name} {group} में शामिल हुए** / आपकी संगत बढ़ रही है: अब {count} सदस्य। |
 | `notifSangatJoinedMany` (E) | 20:00, several joined | **{name} and {others} more joined {group}** / Your sangat is growing: {count} members now. | **{name} ਅਤੇ {others} ਹੋਰ {group} ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਏ** / ਤੁਹਾਡੀ ਸੰਗਤ ਵਧ ਰਹੀ ਹੈ: ਹੁਣ {count} ਮੈਂਬਰ। | **{name} और {others} अन्य {group} में शामिल हुए** / आपकी संगत बढ़ रही है: अब {count} सदस्य। |
 | `notifSangatEnded` (F) | Next 21:00 after the end date | **{group} has ended** / Together: {total} of {target} {bani}. Thank you for being part of it. | **{group} ਸਮਾਪਤ ਹੋ ਗਿਆ** / ਮਿਲ ਕੇ: {target} {bani} ਵਿੱਚੋਂ {total}। ਇਸ ਦਾ ਹਿੱਸਾ ਬਣਨ ਲਈ ਧੰਨਵਾਦ। | **{group} समाप्त हो गया** / मिलकर: {target} {bani} में से {total}। इसका हिस्सा बनने के लिए धन्यवाद। |
-| `notifSangatSimranUnit` | In place of `{bani}` for Simran goals | sittings of Naam Simran | ਨਾਮ ਸਿਮਰਨ ਦੀਆਂ ਬੈਠਕਾਂ | नाम सिमरन की बैठकें |
+| `notifSangatSimranUnit` | In place of `{bani}` for Simran goals | minutes of Naam Simran | ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ | मिनट नाम सिमरन |
+| `notifSangatDigestSimran` (A) | Daily, 21:00, Simran goal | **{group}: {count} minutes of Naam Simran today** / Together you're at {pct}% of {target} minutes. Every minute of Simran adds to it. | **{group}: ਅੱਜ {count} ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ** / ਮਿਲ ਕੇ {target} ਮਿੰਟ ਦਾ {pct}% ਪੂਰਾ। ਸਿਮਰਨ ਦਾ ਹਰ ਮਿੰਟ ਇਸ ਵਿੱਚ ਜੁੜਦਾ ਹੈ। | **{group}: आज {count} मिनट नाम सिमरन** / मिलकर {target} मिनट का {pct}% पूरा। सिमरन का हर मिनट इसमें जुड़ता है। |
+| `notifSangatFinalBodySimran` (C) | Last 2 days, Simran goal (title as C) | {remaining} minutes to the goal. Your Simran today brings it closer. | ਟੀਚੇ ਤੱਕ {remaining} ਮਿੰਟ। ਅੱਜ ਦਾ ਤੁਹਾਡਾ ਸਿਮਰਨ ਇਸ ਨੂੰ ਨੇੜੇ ਲਿਆਉਂਦਾ ਹੈ। | लक्ष्य तक {remaining} मिनट। आज का आपका सिमरन इसे नज़दीक लाता है। |
 
 `{name}` is the member's profile name, or `notifSangatSomeone` ("A Sangat member" / ਇੱਕ ਸੰਗਤ ਮੈਂਬਰ / एक संगत सदस्य) for a member without a profile.
 

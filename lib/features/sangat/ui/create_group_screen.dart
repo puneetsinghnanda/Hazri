@@ -38,7 +38,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   final _form = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _target = TextEditingController();
-  final _minutes = TextEditingController(text: '5');
   bool _simran = false;
   String? _baniId;
   late DateTime _end = istToday().add(const Duration(days: 39));
@@ -49,7 +48,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   void dispose() {
     _name.dispose();
     _target.dispose();
-    _minutes.dispose();
     super.dispose();
   }
 
@@ -65,7 +63,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         group.groupId,
         type: _simran ? 'SIMRAN' : 'BANI',
         baniId: _simran ? null : _baniId,
-        simranMinutes: _simran ? int.parse(_minutes.text) : null,
         target: int.parse(_target.text),
         endDay: localDateKey(_end),
       );
@@ -123,19 +120,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 onSelectionChanged: _busy ? null : (s) => setState(() => _simran = s.first),
               ),
               const SizedBox(height: 12),
-              if (_simran)
-                TextFormField(
-                  controller: _minutes,
-                  enabled: !_busy,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(labelText: l.sangatMinutes),
-                  validator: (v) {
-                    final m = int.tryParse(v ?? '');
-                    return m == null || m < 5 || m > 120 ? l.sangatMinutesInvalid : null;
-                  },
-                )
-              else
+              // A Naam Simran goal counts minutes (08-sangat SG-1), so it
+              // needs no bani and no sitting length: only its target.
+              if (!_simran)
                 DropdownButtonFormField<String>(
                   initialValue: _baniId,
                   isExpanded: true,
@@ -151,7 +138,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 enabled: !_busy,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: InputDecoration(labelText: l.sangatGoalTarget),
+                decoration: InputDecoration(labelText: _simran ? l.sangatGoalTargetMinutes : l.sangatGoalTarget),
                 validator: (v) {
                   final t = int.tryParse(v ?? '');
                   return t == null || t < 1 || t > 1000000 ? l.sangatTargetInvalid : null;

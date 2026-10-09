@@ -2939,8 +2939,8 @@ class LPa extends L {
   }
 
   @override
-  String sangatGoalSummarySimran(int target, int minutes, String date) {
-    return '$date ਤੱਕ $minutes ਮਿੰਟ ਦੇ $target ਸਿਮਰਨ';
+  String sangatGoalSummarySimran(int target, String date) {
+    return '$date ਤੱਕ $target ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ';
   }
 
   @override
@@ -3048,9 +3048,6 @@ class LPa extends L {
   String get sangatGoalTitle => 'ਟੀਚਾ ਤੈਅ ਕਰੋ';
 
   @override
-  String get sangatMinutes => 'ਹਰ ਸਿਮਰਨ ਦੇ ਮਿੰਟ';
-
-  @override
   String get sangatCreateAction => 'ਬਣਾਓ';
 
   @override
@@ -3062,9 +3059,6 @@ class LPa extends L {
 
   @override
   String get sangatTargetInvalid => '1 ਤੋਂ 10,00,000 ਤੱਕ ਗਿਣਤੀ ਲਿਖੋ';
-
-  @override
-  String get sangatMinutesInvalid => '5 ਤੋਂ 120 ਮਿੰਟ ਲਿਖੋ';
 
   @override
   String get sangatChooseBani => 'ਬਾਣੀ ਚੁਣੋ';
@@ -3349,4 +3343,20 @@ class LPa extends L {
 
   @override
   String get elderModeSetup => 'ਵੱਡੇ ਅੱਖਰ ਅਤੇ ਸੌਖੀਆਂ ਸਕ੍ਰੀਨਾਂ';
+
+  @override
+  String get sangatSimranMinutesUnit => 'ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ';
+
+  @override
+  String sangatProgressMinutes(int total, int target, int pct) {
+    return '$target ਮਿੰਟ ਵਿੱਚੋਂ $total · $pct%';
+  }
+
+  @override
+  String sangatTodayMinutes(int count) {
+    return 'ਅੱਜ $count ਮਿੰਟ';
+  }
+
+  @override
+  String get sangatGoalTargetMinutes => 'ਟੀਚਾ, ਨਾਮ ਸਿਮਰਨ ਦੇ ਮਿੰਟਾਂ ਵਿੱਚ';
 }

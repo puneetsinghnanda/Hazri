@@ -17,9 +17,9 @@ export interface TokenDoc {
   groupIds?: string[];
 }
 
-function push(t: TokenDoc, kind: SangatKind, groupId: string, values: Record<string, string | number>): PushMessage {
+function push(t: TokenDoc, kind: SangatKind, groupId: string, values: Record<string, string | number>, simran = false): PushMessage {
   const locale = asLocale(t.locale);
-  const { title, body } = renderSangat(kind, locale, values);
+  const { title, body } = renderSangat(kind, locale, values, simran);
   // FM2 data; FM5: no member names, profile ids or emails beyond the text of 5.5-E.
   return { token: t.token, title, body, data: { kind: `SANGAT_${kind.toUpperCase()}`, groupId, route: `/sangat/${groupId}` } };
 }
@@ -199,10 +199,11 @@ export async function runSangatDispatch(db: Firestore, messenger: Messenger, now
       const choice = chooseDigest(group, goal, localDate);
       if (!choice) continue;
       const base = { group: groupNameFor(group, locale), target: goal.target, bani: unitFor(goal, locale) };
+      const simran = goal.type === 'SIMRAN';
       if (choice.kind === 'Digest') {
-        messages.push(push(t, 'Digest', groupId, { ...base, count: choice.count, pct: pctOf(goal.total, goal.target) }));
+        messages.push(push(t, 'Digest', groupId, { ...base, count: choice.count, pct: pctOf(goal.total, goal.target) }, simran));
       } else if (choice.kind === 'Final') {
-        messages.push(push(t, 'Final', groupId, { ...base, daysLeft: choice.daysLeft, remaining: choice.remaining }));
+        messages.push(push(t, 'Final', groupId, { ...base, daysLeft: choice.daysLeft, remaining: choice.remaining }, simran));
       } else {
         messages.push(push(t, 'Ended', groupId, { ...base, total: goal.total }));
       }

@@ -2942,8 +2942,8 @@ class LEn extends L {
   }
 
   @override
-  String sangatGoalSummarySimran(int target, int minutes, String date) {
-    return '$target sittings of $minutes min by $date';
+  String sangatGoalSummarySimran(int target, String date) {
+    return '$target minutes of Naam Simran by $date';
   }
 
   @override
@@ -3052,9 +3052,6 @@ class LEn extends L {
   String get sangatGoalTitle => 'Set the goal';
 
   @override
-  String get sangatMinutes => 'Minutes per sitting';
-
-  @override
   String get sangatCreateAction => 'Create';
 
   @override
@@ -3066,9 +3063,6 @@ class LEn extends L {
 
   @override
   String get sangatTargetInvalid => 'Enter a number from 1 to 1,000,000';
-
-  @override
-  String get sangatMinutesInvalid => 'Enter 5 to 120 minutes';
 
   @override
   String get sangatChooseBani => 'Choose a bani';
@@ -3359,4 +3353,20 @@ class LEn extends L {
 
   @override
   String get elderModeSetup => 'Larger text and simpler screens';
+
+  @override
+  String get sangatSimranMinutesUnit => 'minutes of Naam Simran';
+
+  @override
+  String sangatProgressMinutes(int total, int target, int pct) {
+    return '$total of $target min · $pct%';
+  }
+
+  @override
+  String sangatTodayMinutes(int count) {
+    return '$count min today';
+  }
+
+  @override
+  String get sangatGoalTargetMinutes => 'Target, in minutes of Naam Simran';
 }

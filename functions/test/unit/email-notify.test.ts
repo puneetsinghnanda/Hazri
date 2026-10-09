@@ -96,8 +96,20 @@ describe('Sangat push strings (02-notifications §5.5, FM1)', () => {
     expect(renderSangat('Digest', 'pa', v).title).toBe('Gill Parivar: ਅੱਜ 128 ਪਾਠ');
     expect(fill('{a} {b}', { a: 1 })).toBe('1 {b}');
   });
-  it('a Simran goal says sittings (SG9); bani names come from content.db', () => {
-    expect(unitFor({ type: 'SIMRAN' }, 'en')).toBe('sittings of Naam Simran');
+  it('a Simran goal says minutes (SG9, SG-1); bani names come from content.db', () => {
+    expect(unitFor({ type: 'SIMRAN' }, 'en')).toBe('minutes of Naam Simran');
+    const v = { group: 'Simran Sangat', count: 340, pct: 12, target: 100000, bani: unitFor({ type: 'SIMRAN' }, 'en') };
+    expect(renderSangat('Digest', 'en', v, true)).toEqual({
+      title: 'Simran Sangat: 340 minutes of Naam Simran today',
+      body: "Together you're at 12% of 100000 minutes. Every minute of Simran adds to it.",
+    });
+    // No Simran variant for a milestone: the shared text, with the unit.
+    expect(renderSangat('Milestone', 'en', { ...v, done: 50000, daysLeft: 9 }, true).body).toBe(
+      '50000 of 100000 minutes of Naam Simran, with 9 days to go.',
+    );
+    expect(renderSangat('Final', 'pa', { ...v, daysLeft: 2, remaining: 600 }, true).body).toBe(
+      'ਟੀਚੇ ਤੱਕ 600 ਮਿੰਟ। ਅੱਜ ਦਾ ਤੁਹਾਡਾ ਸਿਮਰਨ ਇਸ ਨੂੰ ਨੇੜੇ ਲਿਆਉਂਦਾ ਹੈ।',
+    );
     expect(unitFor({ type: 'BANI', baniId: 'JAPJ' }, 'en')).toBe('Japji Sahib');
     expect(unitFor({ type: 'BANI', baniId: 'JAPJ' }, 'pa')).toBe('ਜਪੁ ਜੀ ਸਾਹਿਬ');
     expect(groupNameFor({ names: { en: 'Simran Sangat', pa: 'ਸਿਮਰਨ ਸੰਗਤ', hi: 'सिमरन संगत' } }, 'hi')).toBe('सिमरन संगत');

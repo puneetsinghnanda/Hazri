@@ -210,7 +210,7 @@ merged.
 | **Goal** | Every goal item in scope that day met (its bani × its times a day; Simran for its minutes) | A goal the reader set | Today's goal widget; the Diary's green dot |
 | **Nitnem streak** | Consecutive days with a Nitnem bani; grace days silent | Nothing | Today's streak card from 2 days; the Diary's now-and-longest card |
 | **Badges** | Totals of days and milestones, never runs | Nothing (two need a profile) | The profile, the menu, the Badges page |
-| **Sangat** | Each paath of a group's bani, or sitting of its minutes, counted toward the group | Joining a group | The Sangat tab |
+| **Sangat** | Each paath of a group's bani, or each minute of Naam Simran for a Simran group, counted toward the group | Joining a group | The Sangat tab |
 
 All of them read the same rows — `completions` and `simranSessions` in
 `user.db` — through one function each, so no two screens can disagree. A
@@ -604,8 +604,8 @@ before the file, which wins where they differ. Data: ARCHITECTURE §3.5, §5.6,
 §6.3.*
 
 - **A group has one goal for life:** so many paath of one bani, or so many
-  Naam Simran sittings of at least M minutes (5–120), with a target (1 to
-  1,000,000) and an end day within 365 days. "Today" for a group is the IST
+  minutes of Naam Simran (every sitting adds its minutes; decided
+  2026-10-09), with a target (1 to 1,000,000) and an end day within 365 days. "Today" for a group is the IST
   day.
 - **Three built-in groups** — Amrit Vela Sangat, Simran Sangat, Sukhmani
   Sahib Sangat — run from the admin website. Anybody joins or leaves, with or

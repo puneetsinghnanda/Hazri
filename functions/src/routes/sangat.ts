@@ -4,7 +4,7 @@ import type { DocumentReference, Firestore, Transaction } from 'firebase-admin/f
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
 import { callerUid } from '../auth';
-import { BADGE_JOINS_CAP, CONTRIBUTIONS_MAX_PER_REQUEST, CUSTOM_GROUP_MAX_MEMBERS, CUSTOM_GROUPS_ACTIVE_DEFAULT, GOAL_DAYS_MAX, GOAL_TARGET_MAX, GOAL_TARGET_MIN, GROUP_NAME_MAX, INVITE_CODE_TTL_DAYS, MEMBER_LIST_SIZE, REPORT_NOTE_MAX, SIMRAN_MINUTES_DEFAULT, SIMRAN_MINUTES_MAX, SIMRAN_MINUTES_MIN, SUPPORT_EMAIL } from '../config';
+import { BADGE_JOINS_CAP, CONTRIBUTIONS_MAX_PER_REQUEST, CUSTOM_GROUP_MAX_MEMBERS, CUSTOM_GROUPS_ACTIVE_DEFAULT, GOAL_DAYS_MAX, GOAL_TARGET_MAX, GOAL_TARGET_MIN, GROUP_NAME_MAX, INVITE_CODE_TTL_DAYS, MEMBER_LIST_SIZE, REPORT_NOTE_MAX, SUPPORT_EMAIL } from '../config';
 import type { Deps } from '../deps';
 import { reportTemplate } from '../email/templates';
 import { ApiError, Errors } from '../errors';
@@ -133,17 +133,13 @@ export function parseGoalInput(
   const type = body.type;
   if (type !== 'BANI' && type !== 'SIMRAN') fields.type = 'Choose a bani or Naam Simran';
   let baniId: string | null = null;
-  let simranMinutes: number | null = null;
+  const simranMinutes: number | null = null;
   if (type === 'BANI') {
     if (!isBaniId(body.baniId)) fields.baniId = 'Choose a bani';
     else baniId = body.baniId;
   }
-  if (type === 'SIMRAN') {
-    const m = body.simranMinutes === undefined || body.simranMinutes === null ? SIMRAN_MINUTES_DEFAULT : body.simranMinutes;
-    if (typeof m !== 'number' || !Number.isInteger(m) || m < SIMRAN_MINUTES_MIN || m > SIMRAN_MINUTES_MAX) {
-      fields.simranMinutes = `Minutes must be ${SIMRAN_MINUTES_MIN}–${SIMRAN_MINUTES_MAX}`;
-    } else simranMinutes = m;
-  }
+  // A Simran goal counts minutes of Naam Simran (SG-1), so any
+  // `simranMinutes` an older app sends is ignored rather than refused.
   const target = body.target;
   if (typeof target !== 'number' || !Number.isInteger(target) || target < GOAL_TARGET_MIN || target > GOAL_TARGET_MAX) {
     fields.target = `Target must be ${GOAL_TARGET_MIN}–${GOAL_TARGET_MAX.toLocaleString('en-US')}`;

@@ -214,8 +214,26 @@ describeEmu('sangat (08-sangat §7)', () => {
     expect(admin.body.reports[0]).toMatchObject({ groupId: id, groupName: 'Gill Parivar', reportsForGroup: 1, reason: 'OTHER' });
   });
 
+  it('a Simran goal counts minutes: a sitting adds its whole minutes, a retraction takes them back (SG-1)', async () => {
+    await createProfile(h, 'creator');
+    const { id } = await customGroup(h, 'creator', { type: 'SIMRAN', target: 20, endDay: '2026-10-31' });
+    const sit = (n: number, durationS: number, action = 'ADD') =>
+      ({ id: uuid(100 + n), kind: 'SIMRAN', durationS, source: 'TIMER', at: '2026-10-08T01:00:00Z', action });
+    await h.as('creator').post('/api/v1/sangat/contributions', { items: [sit(1, 7 * 60 + 59)] });
+    let goal = (await h.as('creator').get(`/api/v1/sangat/groups/${id}`)).body.group.goal;
+    expect(goal).toMatchObject({ total: 7, todayTotal: 7, simranMinutes: null });
+    await h.as('creator').post('/api/v1/sangat/contributions', { items: [sit(1, 7 * 60 + 59, 'RETRACT')] });
+    goal = (await h.as('creator').get(`/api/v1/sangat/groups/${id}`)).body.group.goal;
+    expect(goal.total).toBe(0);
+    await h.as('creator').post('/api/v1/sangat/contributions', { items: [sit(2, 15 * 60), sit(3, 6 * 60)] });
+    const group = (await h.as('creator').get(`/api/v1/sangat/groups/${id}`)).body.group;
+    expect(group).toMatchObject({ status: 'INACTIVE', endReason: 'TARGET_MET', goal: { total: 21, status: 'COMPLETED' } });
+    expect(group.members[0].contribution).toBe(21);
+  });
+
   it('sangatRollover twice: expiry, inactive custom group, built-in reset with history (CG6, BI4, S-18, S-19, S-20)', async () => {
-    const builtIn = await builtInGroup(h, { type: 'SIMRAN', simranMinutes: 5, target: 2, lengthDays: 3 });
+    // Two 5-minute sittings are 10 minutes of Naam Simran (SG-1).
+    const builtIn = await builtInGroup(h, { type: 'SIMRAN', target: 10, lengthDays: 3 });
     await createProfile(h, 'creator');
     const { id } = await customGroup(h, 'creator', { type: 'BANI', baniId: 'JAPJ', target: 10, endDay: '2026-10-08' });
     await h.as('m1').post(`/api/v1/sangat/groups/${builtIn}/join`);
@@ -223,14 +241,14 @@ describeEmu('sangat (08-sangat §7)', () => {
     await h.as('m1').post('/api/v1/sangat/contributions', { items: [sit(1, '2026-10-08T01:00:00Z'), sit(2, '2026-10-08T02:00:00Z')] });
     await runSangatTotals(h.db, h.clock.now());
     const goalBefore = (await h.as('m1').get(`/api/v1/sangat/groups/${builtIn}`)).body.group.goal;
-    expect(goalBefore).toMatchObject({ status: 'COMPLETED', total: 2 });
+    expect(goalBefore).toMatchObject({ status: 'COMPLETED', total: 10 });
     // badgeGoalReached, twice (SF1, FN6).
     await runBadgeGoalReached(h.db, builtIn, goalBefore.goalId, 'ACTIVE', 'COMPLETED');
     await runBadgeGoalReached(h.db, builtIn, goalBefore.goalId, 'ACTIVE', 'COMPLETED');
     expect((await h.db.doc('badgeFacts/u_m1').get()).get('goalsReached')).toEqual([`${builtIn}/${goalBefore.goalId}`]);
 
     // Admin edits the template mid-goal: the next goal uses it (AW-5).
-    await h.admin().patch(`/api/v1/admin/groups/${builtIn}`, { goalTemplate: { type: 'SIMRAN', simranMinutes: 5, target: 7, lengthDays: 3 } });
+    await h.admin().patch(`/api/v1/admin/groups/${builtIn}`, { goalTemplate: { type: 'SIMRAN', target: 7, lengthDays: 3 } });
 
     h.clock.set('2026-10-08T18:35:00Z'); // 00:05 IST on the 9th
     const first = await runSangatRollover(h.db, h.clock.now());
@@ -244,8 +262,8 @@ describeEmu('sangat (08-sangat §7)', () => {
     expect(next.goal).toMatchObject({ goalId: 'g0002', sequence: 2, target: 7, startDay: '2026-10-09', endDay: '2026-10-11', total: 0 });
     expect(next.members[0].contribution).toBe(0);
     const history = await h.admin().get(`/api/v1/admin/groups/${builtIn}/history`);
-    expect(history.body.goals).toEqual([expect.objectContaining({ goalId: 'g0001', total: 2, memberCount: 1, status: 'COMPLETED' })]);
-    expect((await h.db.doc(`groups/${builtIn}/goals/g0001/members/u_m1`).get()).get('contribution')).toBe(2);
+    expect(history.body.goals).toEqual([expect.objectContaining({ goalId: 'g0001', total: 10, memberCount: 1, status: 'COMPLETED' })]);
+    expect((await h.db.doc(`groups/${builtIn}/goals/g0001/members/u_m1`).get()).get('contribution')).toBe(10);
   });
 
   it('Satsangi joins: once per person per group, never the creator, stop at 5 (SF2, B-10, B-11)', async () => {

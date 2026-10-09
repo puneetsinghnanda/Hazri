@@ -4,7 +4,7 @@ import type { DocumentReference, DocumentSnapshot, Firestore, Transaction } from
 import { FieldPath, FieldValue } from 'firebase-admin/firestore';
 import { BUILT_IN_SHARDS } from '../config';
 import { dayIst } from '../time';
-import { capDocId, contributionDocId, countDecision, groupDayOf, OutboxItem } from './counting';
+import { amountFor, capDocId, contributionDocId, countDecision, groupDayOf, OutboxItem } from './counting';
 import type { GoalDoc, GroupDoc, MemberDoc } from './model';
 
 type Rand = (n: number) => number;
@@ -22,15 +22,19 @@ interface Target {
   capRef: DocumentReference | null;
 }
 
-/** Adds (or takes back, with delta -1) one count on a goal: shard for built-in, goal for custom (§6.4). */
-function bumpGoal(tx: Transaction, t: Target, day: string, delta: 1 | -1, rand: Rand, now: Date): void {
+/**
+ * Adds (or takes back, with a negative delta) a paath's amount on a goal:
+ * one for a bani, its minutes for Naam Simran (CT1). Shard for built-in, goal
+ * for custom (§6.4).
+ */
+function bumpGoal(tx: Transaction, t: Target, day: string, delta: number, rand: Rand, now: Date): void {
   const inc = FieldValue.increment(delta);
   if (t.group.kind === 'BUILT_IN') {
     const shard = t.goalRef.collection('shards').doc(String(rand(BUILT_IN_SHARDS)));
     tx.set(shard, { count: inc, days: { [day]: inc } }, { merge: true });
     return;
   }
-  const completes = delta === 1 && t.goal.total + 1 >= t.goal.target;
+  const completes = delta > 0 && t.goal.total + delta >= t.goal.target;
   if (!completes) {
     tx.update(t.goalRef, new FieldPath('total'), inc, new FieldPath('dayTotals', day), inc);
   } else {
@@ -55,12 +59,12 @@ function bumpGoal(tx: Transaction, t: Target, day: string, delta: 1 | -1, rand: 
   }
 }
 
-function bumpMember(tx: Transaction, t: Target, delta: 1 | -1): void {
+function bumpMember(tx: Transaction, t: Target, delta: number): void {
   if (!t.member) return;
   if (t.member.contributionGoalId === t.goalId) {
     tx.update(t.memberRef, { contribution: FieldValue.increment(delta), updatedAt: FieldValue.serverTimestamp() });
-  } else if (delta === 1) {
-    tx.update(t.memberRef, { contribution: 1, contributionGoalId: t.goalId, updatedAt: FieldValue.serverTimestamp() });
+  } else if (delta > 0) {
+    tx.update(t.memberRef, { contribution: delta, contributionGoalId: t.goalId, updatedAt: FieldValue.serverTimestamp() });
   }
 }
 
@@ -133,8 +137,9 @@ export async function processItem(
       for (const t of targets) {
         const d = countDecision({ item, day, group: t.group, goal: t.goal, member: t.member, diaryCount: caps.get(t.groupId) ?? 0 });
         if (!d.counts) continue;
-        bumpGoal(tx, t, day, 1, rand, now);
-        bumpMember(tx, t, 1);
+        const amount = amountFor(item, t.goal);
+        bumpGoal(tx, t, day, amount, rand, now);
+        bumpMember(tx, t, amount);
         if (t.capRef) {
           tx.set(
             t.capRef,
@@ -194,8 +199,18 @@ export async function processItem(
     }
     for (const t of targets) {
       if (t.goal.status !== 'ACTIVE') continue; // CT7: a finished goal is history
-      bumpGoal(tx, t, cDay, -1, rand, now);
-      bumpMember(tx, t, -1);
+      // The amount its ADD counted, from what the ADD recorded.
+      const amount = amountFor(
+        {
+          kind: existing.get('kind') as OutboxItem['kind'],
+          baniId: (existing.get('baniId') as string | null) ?? null,
+          durationS: (existing.get('durationS') as number | null) ?? null,
+        },
+        t.goal,
+      );
+      if (amount === 0) continue;
+      bumpGoal(tx, t, cDay, -amount, rand, now);
+      bumpMember(tx, t, -amount);
       if (t.capRef) tx.set(t.capRef, { diaryCount: FieldValue.increment(-1) }, { merge: true });
     }
     tx.update(ref, { retracted: true, retractedAt: FieldValue.serverTimestamp() });

@@ -35,14 +35,12 @@ class SangatApi {
     String id, {
     required String type,
     String? baniId,
-    int? simranMinutes,
     required int target,
     required String endDay,
   }) async =>
       _group(await _api.post('$_p/groups/$id/goal', {
         'type': type,
         'baniId': ?baniId,
-        'simranMinutes': ?simranMinutes,
         'target': target,
         'endDay': endDay,
       }));

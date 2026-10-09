@@ -1687,13 +1687,10 @@
       }
     }
   },
-  "sangatGoalSummarySimran": "{target} sittings of {minutes} min by {date}",
+  "sangatGoalSummarySimran": "{target} minutes of Naam Simran by {date}",
   "@sangatGoalSummarySimran": {
     "placeholders": {
       "target": {
-        "type": "int"
-      },
-      "minutes": {
         "type": "int"
       },
       "date": {
@@ -1805,12 +1802,10 @@
   },
   "sangatOffline": "Can't reach the sangat right now",
   "sangatGoalTitle": "Set the goal",
-  "sangatMinutes": "Minutes per sitting",
   "sangatCreateAction": "Create",
   "sangatGoalOnce": "The goal can't be changed later; only its end date can.",
   "sangatNameRequired": "Please enter a group name",
   "sangatTargetInvalid": "Enter a number from 1 to 1,000,000",
-  "sangatMinutesInvalid": "Enter 5 to 120 minutes",
   "sangatChooseBani": "Choose a bani",
   "sangatNoGoalYet": "No goal yet",
   "sangatJoinTitle": "Join a group",
@@ -2000,5 +1995,29 @@
   "welcomeStreakSub": "Kept in your diary",
   "welcomeBegin": "Begin",
   "setupLanguageNote": "You can change it any time in Settings.",
-  "elderModeSetup": "Larger text and simpler screens"
+  "elderModeSetup": "Larger text and simpler screens",
+  "sangatSimranMinutesUnit": "minutes of Naam Simran",
+  "sangatProgressMinutes": "{total} of {target} min · {pct}%",
+  "@sangatProgressMinutes": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      },
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatTodayMinutes": "{count} min today",
+  "@sangatTodayMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatGoalTargetMinutes": "Target, in minutes of Naam Simran"
 }

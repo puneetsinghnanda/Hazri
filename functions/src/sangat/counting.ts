@@ -50,11 +50,21 @@ export function groupDayOf(item: OutboxItem): string {
   return dayIst(item.at);
 }
 
+/**
+ * CT1: how much one paath adds to a goal, or 0 when it does not match. A
+ * `BANI` goal counts paath of its bani, one each. A `SIMRAN` goal counts
+ * minutes of Naam Simran: every sitting adds its whole minutes (SG-1,
+ * decided 2026-10-09), so a sitting under a minute adds nothing.
+ */
+export function amountFor(item: Pick<OutboxItem, 'kind' | 'baniId' | 'durationS'>, goal: Pick<GoalDoc, 'type' | 'baniId'>): number {
+  if (goal.type === 'BANI') return item.kind === 'BANI' && item.baniId !== null && item.baniId === goal.baniId ? 1 : 0;
+  if (item.kind !== 'SIMRAN' || item.durationS === null) return 0;
+  return Math.floor(item.durationS / 60);
+}
+
 /** CT1: does this paath match the goal? */
-export function matchesGoal(item: Pick<OutboxItem, 'kind' | 'baniId' | 'durationS'>, goal: Pick<GoalDoc, 'type' | 'baniId' | 'simranMinutes'>): boolean {
-  if (goal.type === 'BANI') return item.kind === 'BANI' && item.baniId !== null && item.baniId === goal.baniId;
-  const minutes = goal.simranMinutes ?? 0;
-  return item.kind === 'SIMRAN' && item.durationS !== null && item.durationS >= minutes * 60;
+export function matchesGoal(item: Pick<OutboxItem, 'kind' | 'baniId' | 'durationS'>, goal: Pick<GoalDoc, 'type' | 'baniId'>): boolean {
+  return amountFor(item, goal) > 0;
 }
 
 export type NotCounted =
@@ -76,7 +86,7 @@ export function countDecision(args: {
   item: Pick<OutboxItem, 'kind' | 'baniId' | 'durationS' | 'source'>;
   day: string;
   group: Pick<GroupDoc, 'status'>;
-  goal: Pick<GoalDoc, 'type' | 'baniId' | 'simranMinutes' | 'startDay' | 'endDay' | 'status'> | null;
+  goal: Pick<GoalDoc, 'type' | 'baniId' | 'startDay' | 'endDay' | 'status'> | null;
   member: Pick<MemberDoc, 'status' | 'joinedDay'> | null;
   diaryCount: number;
 }): { counts: true } | { counts: false; why: NotCounted } {

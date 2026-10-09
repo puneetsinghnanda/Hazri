@@ -897,7 +897,7 @@
   "sangatGoalTarget": "ਟੀਚਾ",
   "sangatGoalEnds": "ਸਮਾਪਤੀ",
   "sangatGoalSummaryBani": "{date} ਤੱਕ {target} {bani}",
-  "sangatGoalSummarySimran": "{date} ਤੱਕ {minutes} ਮਿੰਟ ਦੇ {target} ਸਿਮਰਨ",
+  "sangatGoalSummarySimran": "{date} ਤੱਕ {target} ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ",
   "sangatProgress": "{target} ਵਿੱਚੋਂ {total} · {pct}%",
   "sangatToday": "ਅੱਜ {count}",
   "sangatDaysLeft": "{days} ਦਿਨ ਬਾਕੀ",
@@ -925,12 +925,10 @@
   "sangatUpdatedAt": "{time} ਨੂੰ ਤਾਜ਼ਾ ਕੀਤਾ",
   "sangatOffline": "ਹੁਣੇ ਸੰਗਤ ਨਾਲ ਜੁੜ ਨਹੀਂ ਹੋ ਰਿਹਾ",
   "sangatGoalTitle": "ਟੀਚਾ ਤੈਅ ਕਰੋ",
-  "sangatMinutes": "ਹਰ ਸਿਮਰਨ ਦੇ ਮਿੰਟ",
   "sangatCreateAction": "ਬਣਾਓ",
   "sangatGoalOnce": "ਟੀਚਾ ਬਾਅਦ ਵਿੱਚ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ; ਸਿਰਫ਼ ਸਮਾਪਤੀ ਦੀ ਤਾਰੀਖ਼।",
   "sangatNameRequired": "ਕਿਰਪਾ ਕਰਕੇ ਗਰੁੱਪ ਦਾ ਨਾਮ ਲਿਖੋ",
   "sangatTargetInvalid": "1 ਤੋਂ 10,00,000 ਤੱਕ ਗਿਣਤੀ ਲਿਖੋ",
-  "sangatMinutesInvalid": "5 ਤੋਂ 120 ਮਿੰਟ ਲਿਖੋ",
   "sangatChooseBani": "ਬਾਣੀ ਚੁਣੋ",
   "sangatNoGoalYet": "ਹਾਲੇ ਕੋਈ ਟੀਚਾ ਨਹੀਂ",
   "sangatJoinTitle": "ਗਰੁੱਪ ਵਿੱਚ ਜੁੜੋ",
@@ -1012,5 +1010,9 @@
   "welcomeStreakSub": "ਤੁਹਾਡੀ ਡਾਇਰੀ ਵਿੱਚ ਦਰਜ",
   "welcomeBegin": "ਸ਼ੁਰੂ ਕਰੋ",
   "setupLanguageNote": "ਤੁਸੀਂ ਇਸ ਨੂੰ ਕਦੇ ਵੀ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਬਦਲ ਸਕਦੇ ਹੋ।",
-  "elderModeSetup": "ਵੱਡੇ ਅੱਖਰ ਅਤੇ ਸੌਖੀਆਂ ਸਕ੍ਰੀਨਾਂ"
+  "elderModeSetup": "ਵੱਡੇ ਅੱਖਰ ਅਤੇ ਸੌਖੀਆਂ ਸਕ੍ਰੀਨਾਂ",
+  "sangatSimranMinutesUnit": "ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ",
+  "sangatProgressMinutes": "{target} ਮਿੰਟ ਵਿੱਚੋਂ {total} · {pct}%",
+  "sangatTodayMinutes": "ਅੱਜ {count} ਮਿੰਟ",
+  "sangatGoalTargetMinutes": "ਟੀਚਾ, ਨਾਮ ਸਿਮਰਨ ਦੇ ਮਿੰਟਾਂ ਵਿੱਚ"
 }

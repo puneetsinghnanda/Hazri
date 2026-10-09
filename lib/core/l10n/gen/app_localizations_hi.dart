@@ -2933,8 +2933,8 @@ class LHi extends L {
   }
 
   @override
-  String sangatGoalSummarySimran(int target, int minutes, String date) {
-    return '$date तक $minutes मिनट के $target सिमरन';
+  String sangatGoalSummarySimran(int target, String date) {
+    return '$date तक $target मिनट नाम सिमरन';
   }
 
   @override
@@ -3042,9 +3042,6 @@ class LHi extends L {
   String get sangatGoalTitle => 'लक्ष्य तय करें';
 
   @override
-  String get sangatMinutes => 'हर सिमरन के मिनट';
-
-  @override
   String get sangatCreateAction => 'बनाएँ';
 
   @override
@@ -3056,9 +3053,6 @@ class LHi extends L {
 
   @override
   String get sangatTargetInvalid => '1 से 10,00,000 तक संख्या लिखें';
-
-  @override
-  String get sangatMinutesInvalid => '5 से 120 मिनट लिखें';
 
   @override
   String get sangatChooseBani => 'बाणी चुनें';
@@ -3342,4 +3336,20 @@ class LHi extends L {
 
   @override
   String get elderModeSetup => 'बड़े अक्षर और आसान स्क्रीन';
+
+  @override
+  String get sangatSimranMinutesUnit => 'मिनट नाम सिमरन';
+
+  @override
+  String sangatProgressMinutes(int total, int target, int pct) {
+    return '$target मिनट में से $total · $pct%';
+  }
+
+  @override
+  String sangatTodayMinutes(int count) {
+    return 'आज $count मिनट';
+  }
+
+  @override
+  String get sangatGoalTargetMinutes => 'लक्ष्य, नाम सिमरन के मिनटों में';
 }

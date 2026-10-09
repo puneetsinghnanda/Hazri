@@ -84,7 +84,7 @@ const fig = (n: number, label: string) => `<div class="card fig"><b>${n.toLocale
 function goalText(g: Group): string {
   const c = g.currentGoal;
   if (!c) return '<span class="muted">No goal running</span>';
-  const what = c.type === 'SIMRAN' ? `sittings of ${c.simranMinutes} min` : esc(c.baniId);
+  const what = c.type === 'SIMRAN' ? 'minutes of Naam Simran' : esc(banis.find((b) => b.id === c.baniId)?.nameEn ?? c.baniId);
   return `${c.total.toLocaleString('en-IN')} of ${c.target.toLocaleString('en-IN')} ${what} · ${c.pct}% · ${esc(c.startDay)} → ${esc(c.endDay)}`;
 }
 
@@ -108,8 +108,14 @@ async function loadBanis(): Promise<Bani[]> {
   return banis;
 }
 
+/** The value of the Bani list that means a Naam Simran goal, counted in minutes (08-sangat SG-1). */
+const SIMRAN = 'SIMRAN';
+
 function templateForm(t: Template | null, names: Group['names']): string {
-  const opts = banis.map((b) => `<option value="${esc(b.id)}" ${t?.baniId === b.id ? 'selected' : ''}>${esc(b.nameEn)}</option>`).join('');
+  const opts = [
+    ...banis.map((b) => `<option value="${esc(b.id)}" ${t?.type === 'BANI' && t.baniId === b.id ? 'selected' : ''}>${esc(b.nameEn)}</option>`),
+    `<option value="${SIMRAN}" ${t?.type === 'SIMRAN' ? 'selected' : ''}>Naam Simran</option>`,
+  ].join('');
   return `
     <div class="row">
       <label><span>Name (English)</span><input id="en" maxlength="64" value="${esc(names?.en)}"></label>
@@ -117,23 +123,21 @@ function templateForm(t: Template | null, names: Group['names']): string {
       <label><span>Name (Hindi)</span><input id="hi" maxlength="64" value="${esc(names?.hi)}"></label>
     </div>
     <div class="row">
-      <label><span>Goal</span><select id="type"><option value="BANI">Bani</option><option value="SIMRAN" ${t?.type === 'SIMRAN' ? 'selected' : ''}>Naam Simran</option></select></label>
       <label><span>Bani</span><select id="bani">${opts}</select></label>
-      <label><span>Minutes (5–120)</span><input id="minutes" type="number" min="5" max="120" value="${t?.simranMinutes ?? 5}"></label>
-      <label><span>Target (1–1,000,000)</span><input id="target" type="number" min="1" max="1000000" value="${t?.target ?? 1000}"></label>
+      <label><span>Target (1–1,000,000): paath, or minutes for Naam Simran</span><input id="target" type="number" min="1" max="1000000" value="${t?.target ?? 1000}"></label>
       <label><span>Length in days (1–365)</span><input id="length" type="number" min="1" max="365" value="${t?.lengthDays ?? 30}"></label>
     </div>`;
 }
 
 function readForm(): { names: { en: string; pa: string; hi: string }; goalTemplate: Template } {
   const v = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim();
-  const type = v('type') as 'BANI' | 'SIMRAN';
+  const simran = v('bani') === SIMRAN;
   return {
     names: { en: v('en'), pa: v('pa'), hi: v('hi') },
     goalTemplate: {
-      type,
-      baniId: type === 'BANI' ? v('bani') : null,
-      simranMinutes: type === 'SIMRAN' ? Number(v('minutes')) : null,
+      type: simran ? 'SIMRAN' : 'BANI',
+      baniId: simran ? null : v('bani'),
+      simranMinutes: null,
       target: Number(v('target')),
       lengthDays: Number(v('length')),
     },

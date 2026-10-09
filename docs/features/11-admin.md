@@ -52,7 +52,7 @@ Figures are counted with `count()` aggregations when the page opens and when the
 ### 4.2 Built-in groups
 
 - List of built-in groups with status, member count and current goal.
-- **Create** and **Edit**: names in English, Punjabi and Hindi (each 1–64 characters); the goal template: Bani (from the bani list of `content.db`, served by the API) or Naam Simran with minutes (5–120); target (1–1,000,000); length in days (1–365).
+- **Create** and **Edit**: names in English, Punjabi and Hindi (each 1–64 characters); the goal template: one list, the banis of `content.db` (served by the API) and **Naam Simran**, which counts minutes (`08-sangat.md` SG-1); target (1–1,000,000: paath, or minutes for Naam Simran); length in days (1–365).
 - **Start** creates the first goal from today (IST). Editing the template changes the **next** goal, never the running one.
 - **History**: past goals with dates, total, target and member count.
 - **Disable / enable**: a disabled built-in group disappears from the app; it keeps its data.

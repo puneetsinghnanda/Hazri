@@ -1,10 +1,13 @@
 {
   "notifSangatDigestTitle": "{group}: {count} paath today",
   "notifSangatDigestBody": "Together you're at {pct}% of {target} {bani}. Every paath adds to it.",
+  "notifSangatDigestTitleSimran": "{group}: {count} minutes of Naam Simran today",
+  "notifSangatDigestBodySimran": "Together you're at {pct}% of {target} minutes. Every minute of Simran adds to it.",
   "notifSangatMilestoneTitle": "{group} has reached {pct}%",
   "notifSangatMilestoneBody": "{done} of {target} {bani}, with {daysLeft} days to go.",
   "notifSangatFinalTitle": "{daysLeft} days left for {group}",
   "notifSangatFinalBody": "{remaining} paath to the goal. Your paath today brings it closer.",
+  "notifSangatFinalBodySimran": "{remaining} minutes to the goal. Your Simran today brings it closer.",
   "notifSangatCompleteTitle": "{group} reached its goal",
   "notifSangatCompleteBody": "{target} {bani}, together. Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh.",
   "notifSangatJoinedTitle": "{name} joined {group}",
@@ -13,7 +16,7 @@
   "notifSangatJoinedManyBody": "Your sangat is growing: {count} members now.",
   "notifSangatEndedTitle": "{group} has ended",
   "notifSangatEndedBody": "Together: {total} of {target} {bani}. Thank you for being part of it.",
-  "notifSangatSimranUnit": "sittings of Naam Simran",
+  "notifSangatSimranUnit": "minutes of Naam Simran",
   "notifSangatSomeone": "A Sangat member",
   "notifActionOpenSangat": "Open Sangat"
 }

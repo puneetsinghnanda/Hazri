@@ -30,16 +30,22 @@ function str(locale: Locale, key: string): string {
 
 export type SangatKind = 'Digest' | 'Milestone' | 'Final' | 'Complete' | 'Joined' | 'JoinedMany' | 'Ended';
 
-/** Title and body of `notifSangat<Kind>` in a locale. */
+/**
+ * Title and body of `notifSangat<Kind>` in a locale. A Simran goal counts
+ * minutes, not paath (08-sangat SG-1), so where a `...Simran` variant exists
+ * (the digest and the final days) it is used instead.
+ */
 export function renderSangat(
   kind: SangatKind,
   locale: Locale,
   values: Record<string, string | number>,
+  simran = false,
 ): { title: string; body: string } {
-  return {
-    title: fill(str(locale, `notifSangat${kind}Title`), values),
-    body: fill(str(locale, `notifSangat${kind}Body`), values),
+  const pick = (part: 'Title' | 'Body') => {
+    const key = `notifSangat${kind}${part}`;
+    return simran && TABLES.en[`${key}Simran`] !== undefined ? str(locale, `${key}Simran`) : str(locale, key);
   };
+  return { title: fill(pick('Title'), values), body: fill(pick('Body'), values) };
 }
 
 export interface GoalLike {

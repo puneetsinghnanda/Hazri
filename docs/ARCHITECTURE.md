@@ -1005,7 +1005,7 @@ Only the Cloud Functions read and write these. Conventions as `01-accounts.md` �
 | `memberCount` | number | no | Active members, kept by the server |
 | `inviteCode` | string | yes | Custom groups: current code |
 | `inviteExpiresAt` | timestamp | yes | Custom groups |
-| `goalTemplate` | map | yes | Built-in groups: `{ type, baniId, simranMinutes, target, lengthDays }` for resets |
+| `goalTemplate` | map | yes | Built-in groups: `{ type, baniId, target, lengthDays }` for resets (`simranMinutes` null) |
 | `createdAt` / `updatedAt` | timestamp | no | Server timestamps |
 
 #### 08-sangat §6.2 `groups/{groupId}/goals/{goalId}`
@@ -1014,7 +1014,7 @@ Only the Cloud Functions read and write these. Conventions as `01-accounts.md` �
 | --- | --- | --- | --- |
 | `type` | string | no | `BANI` or `SIMRAN` |
 | `baniId` | string | yes | `BANI` |
-| `simranMinutes` | number | yes | `SIMRAN`, 5–120 |
+| `simranMinutes` | number | yes | Always null since 2026-10-09: a `SIMRAN` goal counts minutes, every sitting adding its whole minutes (`08-sangat.md` SG-1). `total`, `dayTotals` and a member's `contribution` are then minutes |
 | `target` | number | no | 1–1,000,000 |
 | `startDay` / `endDay` | string | no | `dayIst`; at most 365 days inclusive |
 | `status` | string | no | `ACTIVE`, `COMPLETED` (target met) or `EXPIRED` |
@@ -1477,7 +1477,7 @@ All under `/api/v1/sangat`, following `01-accounts.md` §6.0. Every endpoint wor
 | 7.2 | `GET /groups/built-in` | — | The built-in groups with names in all three languages, current goal, total, member count, and whether the caller is a member | — |
 | 7.3 | `GET /groups/{groupId}` | — | Group, current goal, today's total, member count, the first 50 members (VS4), and the caller's role. Members only for custom groups. | `404 GROUP_NOT_FOUND` (also for a disabled group or a non-member) |
 | 7.4 | `POST /groups` | `{ name }` | Creates a custom group with the caller as creator. Needs a profile. | `400 VALIDATION_ERROR`, `404 NO_PROFILE`, `409 GROUP_LIMIT_REACHED` |
-| 7.5 | `POST /groups/{groupId}/goal` | `{ type, baniId?, simranMinutes?, target, endDay }` | Sets the goal once. Creator only. | `400 VALIDATION_ERROR`, `403 NOT_CREATOR`, `409 GOAL_ALREADY_SET` |
+| 7.5 | `POST /groups/{groupId}/goal` | `{ type, baniId?, target, endDay }` (a `simranMinutes` from an older app is ignored) | Sets the goal once. Creator only. | `400 VALIDATION_ERROR`, `403 NOT_CREATOR`, `409 GOAL_ALREADY_SET` |
 | 7.6 | `PATCH /groups/{groupId}/goal` | `{ endDay }` | Changes the end day (CG4, CG7). Creator only. | `400 VALIDATION_ERROR`, `403 NOT_CREATOR`, `409 GROUP_INACTIVE` |
 | 7.7 | `DELETE /groups/{groupId}` | — | Deletes when the creator is the only member (CG8) | `403 NOT_CREATOR`, `409 GROUP_HAS_MEMBERS` |
 | 7.8 | `POST /join` | `{ code }` | Joins by invite (IV8) | `404 CODE_INVALID`, `409 GROUP_FULL`, `409 GROUP_INACTIVE` |
