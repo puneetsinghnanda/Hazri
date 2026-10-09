@@ -3369,4 +3369,8 @@ class LEn extends L {
 
   @override
   String get sangatGoalTargetMinutes => 'Target, in minutes of Naam Simran';
+
+  @override
+  String get readerStartAgainNote =>
+      'Start again takes you to the first line and clears where you left off.';
 }

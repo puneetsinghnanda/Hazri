@@ -90,6 +90,9 @@ class GurbaniLineView extends StatelessWidget {
       ],
     );
 
+    // Every line is inset 14 inside a list padded 14, so the highlight can
+    // reach out to the list's edge without a negative margin (which Container
+    // refuses, in a debug build with an assertion).
     final padded = isCurrent
         ? Container(
             decoration: BoxDecoration(
@@ -97,10 +100,9 @@ class GurbaniLineView extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            margin: const EdgeInsets.symmetric(horizontal: -14),
             child: body,
           )
-        : body;
+        : Padding(padding: const EdgeInsets.symmetric(horizontal: 14), child: body);
 
     return Semantics(
       label: line.textFor(settings.script),

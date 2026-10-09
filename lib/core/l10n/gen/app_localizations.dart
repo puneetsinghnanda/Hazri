@@ -6009,6 +6009,12 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Target, in minutes of Naam Simran'**
   String get sangatGoalTargetMinutes;
+
+  /// No description provided for @readerStartAgainNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Start again takes you to the first line and clears where you left off.'**
+  String get readerStartAgainNote;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

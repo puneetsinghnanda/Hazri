@@ -3359,4 +3359,8 @@ class LPa extends L {
 
   @override
   String get sangatGoalTargetMinutes => 'ਟੀਚਾ, ਨਾਮ ਸਿਮਰਨ ਦੇ ਮਿੰਟਾਂ ਵਿੱਚ';
+
+  @override
+  String get readerStartAgainNote =>
+      'ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ ਤੁਹਾਨੂੰ ਪਹਿਲੀ ਪੰਕਤੀ ’ਤੇ ਲੈ ਜਾਂਦਾ ਹੈ ਅਤੇ ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉਹ ਮਿਟਾ ਦਿੰਦਾ ਹੈ।';
 }

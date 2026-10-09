@@ -368,7 +368,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       child: ScrollablePositionedList.builder(
                         itemScrollController: _scroller,
                         itemPositionsListener: _itemPositions,
-                        padding: const EdgeInsets.fromLTRB(28, 8, 28, 40),
+                        padding: const EdgeInsets.fromLTRB(14, 8, 14, 40),
                         itemCount: lines.length + 1,
                         itemBuilder: (context, i) {
                           if (i == lines.length) {
@@ -685,7 +685,8 @@ class _EndOfBaniCard extends ConsumerWidget {
     final markedByThis = hazri.isMarked && hazri.baniId == bani.id && mine != null && hazri.markedAt == mine;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 24, bottom: 8),
+      // 14 in from the list's own 14, where the lines' text starts.
+      padding: const EdgeInsets.fromLTRB(14, 24, 14, 8),
       child: HazriCard(
         border: Border.all(color: c.sage, width: 1.5),
         padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
@@ -756,12 +757,19 @@ class _EndOfBaniCard extends ConsumerWidget {
             const SizedBox(height: 14),
             Row(
               children: [
+                // Design 48: Start again is the main action.
                 Expanded(
                   child: PrimaryButton(
                     label: l.readerStartAgain,
-                    secondary: true,
-                    onPressed: () =>
-                        context.pushReplacement(Routes.reader(bani.slug)),
+                    icon: HazriIconData.chevronLeft,
+                    onPressed: () async {
+                      // From the first line, with where it was left cleared;
+                      // otherwise the reader reopens at the end it just reached.
+                      await ref.read(userRepositoryProvider).clearProgress(bani.versionId!);
+                      if (context.mounted) {
+                        context.pushReplacement(Routes.reader(bani.slug, line: 0));
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -769,17 +777,25 @@ class _EndOfBaniCard extends ConsumerWidget {
                   child: next != null
                       ? PrimaryButton(
                           label: l.readerNextBani,
+                          secondary: true,
                           onPressed: () =>
                               context.pushReplacement(Routes.reader(next.slug)),
                         )
                       : PrimaryButton(
                           label: l.readerCompleteBackToNitnem,
+                          secondary: true,
                           onPressed: () => context.canPop()
                               ? context.pop()
                               : context.go(Routes.nitnem),
                         ),
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              l.readerStartAgainNote,
+              textAlign: TextAlign.center,
+              style: HazriText.caption.copyWith(color: c.muted),
             ),
           ],
         ),

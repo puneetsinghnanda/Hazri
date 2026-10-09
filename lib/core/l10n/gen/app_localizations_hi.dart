@@ -3352,4 +3352,8 @@ class LHi extends L {
 
   @override
   String get sangatGoalTargetMinutes => 'लक्ष्य, नाम सिमरन के मिनटों में';
+
+  @override
+  String get readerStartAgainNote =>
+      'फिर से शुरू करें आपको पहली पंक्ति पर ले जाता है और जहाँ आपने छोड़ा था उसे मिटा देता है।';
 }
