@@ -79,7 +79,8 @@ describeEmu('weekly backup (10-backup §6)', () => {
       final: true,
     };
     const first = await h.as('u1').post('/api/v1/backup', body);
-    expect(first.body).toEqual({ result: 'BACKUP_SAVED', rowsReceived: 7, documentsWritten: 6, lastBackupAt: '2026-10-08T06:00:00.000Z' });
+    // The goal, two weeks, the badges and the manifest.
+    expect(first.body).toEqual({ result: 'BACKUP_SAVED', rowsReceived: 7, documentsWritten: 5, lastBackupAt: '2026-10-08T06:00:00.000Z' });
     const before = await snapshotOf(h, p.profileId);
     const second = await h.as('u1').post('/api/v1/backup', body);
     expect(second.body.documentsWritten).toBe(1); // the manifest only
@@ -98,7 +99,11 @@ describeEmu('weekly backup (10-backup §6)', () => {
     const weeks = (await h.as('u1').get('/api/v1/backup/weeks?limit=1')).body;
     expect(weeks.weeks).toHaveLength(1);
     expect(weeks.weeks[0].weekId).toBe('2026-09-27');
-    expect(weeks.weeks[0].completions).toEqual([completion(3, '2026-09-30', undefined, '2026-10-02T00:00:00.000Z'), completion(2, '2026-10-01')]);
+    // A restore merges by id, so the order inside a week carries no meaning.
+    expect(weeks.weeks[0].completions).toHaveLength(2);
+    expect(weeks.weeks[0].completions).toEqual(
+      expect.arrayContaining([completion(3, '2026-09-30', undefined, '2026-10-02T00:00:00.000Z'), completion(2, '2026-10-01')]),
+    );
     expect(weeks.next).toBe('2026-10-04');
     const page2 = (await h.as('u1').get(`/api/v1/backup/weeks?from=${weeks.next}&limit=26`)).body;
     expect(page2.next).toBeNull();
@@ -136,7 +141,9 @@ describeEmu('weekly backup (10-backup §6)', () => {
     expect(tooBig.status).toBe(413);
     expect(tooBig.body.error).toEqual({ code: 'BACKUP_TOO_LARGE', message: "This week's backup is too large" });
 
-    for (let i = 0; i < 17; i++) await h.as('u1').post('/api/v1/backup', {});
+    // The 400 is refused before the rate limit; the 200 and the 413 count, so
+    // 18 more make 20 and the 21st is refused.
+    for (let i = 0; i < 18; i++) await h.as('u1').post('/api/v1/backup', {});
     const limited = await h.as('u1').post('/api/v1/backup', {});
     expect(limited.status).toBe(429);
     expect(limited.body.error.retryAfterSeconds).toBeGreaterThan(0);
@@ -187,7 +194,9 @@ describeEmu('presence (07-simran §6)', () => {
       r.on('end', () => cb(null, Buffer.concat(chunks)));
     });
     expect(res.headers['content-encoding']).toBe('gzip');
-    const body = JSON.parse(gunzipSync(res.body as Buffer).toString('utf8'));
+    // supertest may already have unzipped it; the header says what was sent.
+    const raw = res.body as Buffer;
+    const body = JSON.parse((raw[0] === 0x1f && raw[1] === 0x8b ? gunzipSync(raw) : raw).toString('utf8'));
     expect(body).toMatchObject({ day: '2026-10-08', live: 1, counted: 3, builtAt: expect.stringMatching(/Z$/) });
     expect(body.countries.IN.s['IN-XX'].k).toEqual({ new_delhi: [1, 2], amritsar: [0, 1] });
 

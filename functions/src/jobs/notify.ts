@@ -228,7 +228,9 @@ export async function runSangatDispatch(db: Firestore, messenger: Messenger, now
         const since = fresh?.joinNoticeAt ?? fresh?.createdAt ?? Timestamp.fromMillis(0);
         const q = groupRef.collection('members').where('joinedAt', '>', since).orderBy('joinedAt');
         const rows = (await tx.get(q)).docs.map((m) => m.data() as MemberDoc).filter((m) => m.status === 'ACTIVE' && m.role === 'MEMBER');
-        tx.update(groupRef, { joinNoticeAt: Timestamp.fromDate(at) });
+        // `now`, not the hour's start: a join between :00 and this run is in
+        // this notice and must not be in tomorrow's as well.
+        tx.update(groupRef, { joinNoticeAt: Timestamp.fromDate(now) });
         return { rows, memberCount: fresh?.memberCount ?? group.memberCount };
       });
       if (joined.rows.length === 0) continue;

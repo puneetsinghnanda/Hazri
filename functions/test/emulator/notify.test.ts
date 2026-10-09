@@ -6,10 +6,14 @@ async function groupWithMembers(h: Harness) {
   await createProfile(h, 'creator', { email: 'c@example.com', name: 'Gurdev Singh' });
   const g = await h.as('creator').post('/api/v1/sangat/groups', { name: 'Gill Parivar' });
   const id = g.body.group.groupId as string;
+  h.clock.advance(60); // members join after the group exists, as they do on a real clock
   await h.as('creator').post(`/api/v1/sangat/groups/${id}/goal`, { type: 'BANI', baniId: 'JAPJ', target: 100, endDay: '2026-10-31' });
   const delhi = await createProfile(h, 'delhi', { email: 'd@example.com', name: 'Delhi Member' });
   const london = await createProfile(h, 'london', { email: 'l@example.com', name: 'London Member' });
-  for (const u of ['delhi', 'london']) await h.as(u).post('/api/v1/sangat/join', { code: g.body.group.invite.code });
+  for (const u of ['delhi', 'london']) {
+    h.clock.advance(1); // Delhi joins first, so Delhi is the name the creator hears
+    await h.as(u).post('/api/v1/sangat/join', { code: g.body.group.invite.code });
+  }
   await h.as('delhi').post('/api/v1/devices/fcm-token', { token: 'tok-delhi', locale: 'pa', tz: 'Asia/Kolkata' });
   await h.as('london').post('/api/v1/devices/fcm-token', { token: 'tok-london', locale: 'en', tz: 'Europe/London' });
   return { id, delhi, london };
@@ -35,13 +39,15 @@ describeEmu('Sangat pushes (02-notifications §8)', () => {
     expect(h.messenger.sent[0]).toMatchObject({
       token: 'tok-london',
       title: 'Gill Parivar has reached 50%',
-      body: '50 of 100 Japji Sahib, with 23 days to go.',
+      // Days left count today (the 8th, IST) through the 31st, as the app shows them.
+      body: '50 of 100 Japji Sahib, with 24 days to go.',
       data: { kind: 'SANGAT_MILESTONE', groupId: id, route: `/sangat/${id}` },
     });
 
-    // Delhi's 07:00 (01:30 UTC next day): the held notice is delivered by the dispatcher.
+    // Delhi's 07:00 hour, as the hourly run at 02:00 UTC (07:30 IST) sees it:
+    // the held notice is delivered by the dispatcher.
     h.messenger.sent.length = 0;
-    const morning = await runSangatDispatch(h.db, h.messenger, new Date('2026-10-09T01:30:00Z'));
+    const morning = await runSangatDispatch(h.db, h.messenger, new Date('2026-10-09T02:00:00Z'));
     expect(morning.sent).toBe(1);
     expect(h.messenger.sent[0]).toMatchObject({ token: 'tok-delhi', title: 'Gill Parivar ਨੇ 50% ਪੂਰਾ ਕੀਤਾ' });
   });
