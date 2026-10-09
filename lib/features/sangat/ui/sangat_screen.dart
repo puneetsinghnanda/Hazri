@@ -29,20 +29,48 @@ class SangatScreen extends ConsumerStatefulWidget {
   ConsumerState<SangatScreen> createState() => _SangatScreenState();
 }
 
-class _SangatScreenState extends ConsumerState<SangatScreen> {
+class _SangatScreenState extends ConsumerState<SangatScreen> with WidgetsBindingObserver {
   final _busy = <String>{};
+  bool _visible = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // The shell keeps the tab built when another is showing, with tickers
+    // off; refresh each time it comes into view, not only the first time,
+    // or a paath read on another tab never shows here.
+    final visible = TickerMode.valuesOf(context).enabled;
+    if (visible == _visible) return;
+    _visible = visible;
+    if (visible) WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _visible) unawaited(_refresh());
   }
 
   Future<void> _refresh() async {
+    if (!mounted) return;
     // 12-badges SF4: the Sangat facts when the tab opens.
     unawaited(ref.read(badgeControllerProvider).refreshFacts());
-    await ref.read(sangatListsProvider.notifier).refresh();
+    // What waited in the outbox goes first, so the totals that come back
+    // already hold it.
     await ref.read(outboxSenderProvider).send();
+    if (!mounted) return;
+    await ref.read(sangatListsProvider.notifier).refresh();
   }
 
   Future<void> _toggle(SangatGroup g) async {

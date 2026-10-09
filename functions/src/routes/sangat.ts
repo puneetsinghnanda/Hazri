@@ -1,7 +1,7 @@
 // Sangat endpoints (08-sangat §7, ARCHITECTURE §6.3), all under /api/v1/sangat.
 import { Router } from 'express';
 import type { DocumentReference, Firestore, Transaction } from 'firebase-admin/firestore';
-import { FieldValue, Timestamp } from 'firebase-admin/firestore';
+import { AggregateField, FieldPath, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
 import { callerUid } from '../auth';
 import { BADGE_JOINS_CAP, CONTRIBUTIONS_MAX_PER_REQUEST, CUSTOM_GROUP_MAX_MEMBERS, CUSTOM_GROUPS_ACTIVE_DEFAULT, GOAL_DAYS_MAX, GOAL_TARGET_MAX, GOAL_TARGET_MIN, GROUP_NAME_MAX, INVITE_CODE_TTL_DAYS, MEMBER_LIST_SIZE, REPORT_NOTE_MAX, SUPPORT_EMAIL } from '../config';
@@ -58,6 +58,25 @@ async function readGoal(groupRef: DocumentReference, goalId: string | null, tx?:
   return snap.exists ? { id: goalId, doc: snap.data() as GoalDoc } : null;
 }
 
+/**
+ * A goal as the app shows it. A running built-in goal counts into shards and
+ * sangatTotals folds them into `total` once a minute (§7.14), so a paath read
+ * a moment ago would not show yet; here the shards are summed at read time
+ * instead, two aggregation reads (one for the total, one for today).
+ */
+async function readGoalForDisplay(groupRef: DocumentReference, g: GroupDoc, today: string) {
+  const goal = await readGoal(groupRef, g.currentGoalId);
+  if (!goal || g.kind !== 'BUILT_IN' || goal.doc.status !== 'ACTIVE') return goal;
+  const shards = groupRef.collection('goals').doc(goal.id).collection('shards');
+  const sumOf = async (field: string | FieldPath) =>
+    Math.max(0, (await shards.aggregate({ s: AggregateField.sum(field) }).get()).data().s ?? 0);
+  const [total, day] = await Promise.all([sumOf('count'), sumOf(new FieldPath('days', today))]);
+  return {
+    id: goal.id,
+    doc: { ...goal.doc, total: Math.max(total, goal.doc.total), dayTotals: { ...(goal.doc.dayTotals ?? {}), [today]: day } },
+  };
+}
+
 function validInvite(g: GroupDoc, nowMs: number): boolean {
   return !!g.inviteCode && !!g.inviteExpiresAt && g.inviteExpiresAt.toMillis() > nowMs;
 }
@@ -74,7 +93,7 @@ export async function groupDetail(db: Firestore, groupId: string, caller: Sangat
   const isMember = me?.status === 'ACTIVE';
   if (g.kind === 'CUSTOM' && !isMember) throw groupNotFound(); // members only
   const today = dayIst(now);
-  const goal = await readGoal(groupRef, g.currentGoalId);
+  const goal = await readGoalForDisplay(groupRef, g, today);
   // VS4: profiles first, alphabetically, then "Sangat member" rows ('~' sorts last).
   const [rows, all] = await Promise.all([
     groupRef.collection('members').orderBy('sortName').limit(MEMBER_LIST_SIZE).get(),
@@ -175,7 +194,7 @@ export function sangatRouter(deps: Deps): Router {
         if (!snap.exists) continue;
         const g = snap.data() as GroupDoc;
         if (g.status === 'DISABLED') continue; // RP4
-        const goal = await readGoal(groupRef, g.currentGoalId);
+        const goal = await readGoalForDisplay(groupRef, g, today);
         const role: Role = g.creatorKey === caller.memberKey ? 'CREATOR' : 'MEMBER';
         groups.push(groupSummaryDto(groupId, g, goal, today, { isMember: true, role }));
       }
@@ -200,7 +219,7 @@ export function sangatRouter(deps: Deps): Router {
       for (const d of snap.docs) {
         const g = d.data() as GroupDoc;
         if (!g.currentGoalId) continue; // not started yet in the admin website
-        const goal = await readGoal(d.ref, g.currentGoalId);
+        const goal = await readGoalForDisplay(d.ref, g, today);
         groups.push(groupSummaryDto(d.id, g, goal, today, { isMember: mine.has(d.id), role: mine.has(d.id) ? 'MEMBER' : null }));
       }
       groups.sort((a, b) => (a.names?.en ?? '').localeCompare(b.names?.en ?? ''));

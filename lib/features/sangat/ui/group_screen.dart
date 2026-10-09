@@ -42,6 +42,9 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
   }
 
   Future<void> _refresh() async {
+    // The outbox first, so the group comes back with this phone's paath in it.
+    await ref.read(outboxSenderProvider).send();
+    if (!mounted) return;
     final ok = await ref.read(sangatGroupProvider(widget.groupId).notifier).refresh();
     if (!ok && mounted) setState(() => _gone = true);
   }

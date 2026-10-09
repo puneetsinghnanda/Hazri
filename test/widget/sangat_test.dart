@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hazri/core/db/user_db.dart';
+import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/sangat/data/sangat_controller.dart';
 import 'package:hazri/features/sangat/ui/join_screen.dart';
@@ -60,6 +62,20 @@ void main() {
     expect(find.textContaining('1000 minutes of Naam Simran by'), findsOneWidget);
     expect(find.textContaining('250 of 1000 min · 25%'), findsOneWidget);
     expect(find.textContaining('sittings'), findsNothing);
+  });
+
+  testWidgets('a paath waiting in the outbox is sent before the totals are read', (tester) async {
+    await boot(tester, const SizedBox());
+    final repo = app.container.read(userRepositoryProvider)..queueForSangat = true;
+    await tester.runAsync(() => repo.logCompletion(
+          baniId: 'JAPJ', slot: BaniSlotValue.morning, source: CompletionSource.reader));
+    server.requests.clear();
+    await tester.pumpWidget(app.wrapRouted(const SangatScreen()));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 300)));
+    await settle(tester);
+    final post = server.requests.indexOf('POST /sangat/contributions');
+    expect(post, isNot(-1));
+    expect(post, lessThan(server.requests.indexOf('GET /sangat/groups/built-in')));
   });
 
   testWidgets('S-2: Join a built-in group → member, and the outbox turns on', (tester) async {

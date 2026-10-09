@@ -214,6 +214,21 @@ describeEmu('sangat (08-sangat §7)', () => {
     expect(admin.body.reports[0]).toMatchObject({ groupId: id, groupName: 'Gill Parivar', reportsForGroup: 1, reason: 'OTHER' });
   });
 
+  it('a built-in group shows a paath at once, before sangatTotals has run (§7.14)', async () => {
+    const id = await builtInGroup(h, { type: 'BANI', baniId: 'JAPJ', target: 100, lengthDays: 30 });
+    await h.as('m1').post(`/api/v1/sangat/groups/${id}/join`);
+    await h.as('m1').post('/api/v1/sangat/contributions', {
+      items: [{ id: uuid(300), kind: 'BANI', baniId: 'JAPJ', source: 'READER', at: '2026-10-08T01:00:00Z', action: 'ADD' }],
+    });
+    const detail = (await h.as('m1').get(`/api/v1/sangat/groups/${id}`)).body.group;
+    expect(detail.goal).toMatchObject({ total: 1, todayTotal: 1 });
+    expect(detail.members[0].contribution).toBe(1);
+    const listed = (await h.as('m1').get('/api/v1/sangat/groups/built-in')).body.groups[0];
+    expect(listed.goal).toMatchObject({ total: 1, todayTotal: 1 });
+    const mine = (await h.as('m1').get('/api/v1/sangat/groups/mine')).body.groups[0];
+    expect(mine).toMatchObject({ isMember: true, goal: { total: 1 } });
+  });
+
   it('a Simran goal counts minutes: a sitting adds its whole minutes, a retraction takes them back (SG-1)', async () => {
     await createProfile(h, 'creator');
     const { id } = await customGroup(h, 'creator', { type: 'SIMRAN', target: 20, endDay: '2026-10-31' });

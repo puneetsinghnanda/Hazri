@@ -210,7 +210,13 @@ class OutboxSender {
     _soon = Timer(const Duration(seconds: 2), () => unawaited(send()));
   }
 
-  Future<void> send() async {
+  /// Sends what is queued. A call while a send is running waits for that
+  /// one, so "send, then refresh" never refreshes ahead of the rows.
+  Future<void> send() => _inFlight ??= _send().whenComplete(() => _inFlight = null);
+
+  Future<void>? _inFlight;
+
+  Future<void> _send() async {
     if (_sending) return;
     _sending = true;
     final repo = _ref.read(userRepositoryProvider);
