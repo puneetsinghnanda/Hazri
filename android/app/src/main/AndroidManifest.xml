@@ -143,6 +143,23 @@
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
             android:exported="false" />
 
+        <!-- Runs a notification button pressed while the app is closed: the
+             Snooze on a goal reminder. The plugin README asks for it. -->
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
+            android:exported="false" />
+
+        <!-- A Sangat push that arrives in the background is shown by Android
+             itself, with these: the status-bar icon (the launcher icon is
+             adaptive and not a valid small icon everywhere) and the Sangat
+             channel. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="sangat" />
+
         <!-- Re-schedules the rolling reminder window after a reboot, a clock
              change or a time-zone change. -->
         <receiver

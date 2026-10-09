@@ -69,6 +69,37 @@ void main() {
       expect(manifest, contains('android.intent.action.BOOT_COMPLETED'));
       expect(manifest, contains('android.intent.action.TIMEZONE_CHANGED'));
     });
+
+    test('and the one that runs a button pressed with the app closed (Snooze)', () {
+      expect(
+        manifest,
+        contains('com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver'),
+        reason: 'the plugin README: needed for notification actions',
+      );
+    });
+  });
+
+  group('release build of the reminders', () {
+    final rules = File('android/app/proguard-rules.pro').readAsStringSync();
+
+    test('R8 keeps the Gson type information the alarm receiver reads', () {
+      // The plugin stores each scheduled reminder as Gson JSON and reads it
+      // back with a TypeToken when the alarm fires. Without these, R8 strips
+      // the generic signature, the read throws inside the receiver, and no
+      // reminder is ever shown in a release build, silently.
+      expect(rules, contains('-keepattributes Signature'));
+      expect(rules, contains('class com.google.gson.reflect.TypeToken'));
+      expect(rules, contains('class * extends com.google.gson.reflect.TypeToken'));
+    });
+
+    test('the status-bar icon is a plain drawable, not the adaptive launcher icon', () {
+      final service = File('lib/features/reminders/data/reminder_service.dart').readAsStringSync();
+      expect(service, isNot(contains("'@mipmap/ic_launcher'")),
+          reason: 'an adaptive icon is not a valid small icon on every Android version');
+      expect(service, contains("'@drawable/ic_notification'"));
+      expect(manifest, contains('com.google.firebase.messaging.default_notification_icon'),
+          reason: 'a Sangat push shown by Android itself needs the same icon');
+    });
   });
 
   group('permissions', () {

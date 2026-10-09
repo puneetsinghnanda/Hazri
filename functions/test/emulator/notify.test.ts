@@ -41,7 +41,7 @@ describeEmu('Sangat pushes (02-notifications §8)', () => {
       title: 'Gill Parivar has reached 50%',
       // Days left count today (the 8th, IST) through the 31st, as the app shows them.
       body: '50 of 100 Japji Sahib, with 24 days to go.',
-      data: { kind: 'SANGAT_MILESTONE', groupId: id, route: `/sangat/${id}` },
+      data: { kind: 'SANGAT_MILESTONE', groupId: id, route: `/sangat-group/${id}` },
     });
 
     // Delhi's 07:00 hour, as the hourly run at 02:00 UTC (07:30 IST) sees it:

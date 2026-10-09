@@ -24,6 +24,12 @@ abstract interface class PushTokens {
 
   /// Pushes that arrive while the app is open: (title, body, route).
   Stream<(String, String, String?)> get onForeground;
+
+  /// The route of a push tapped while the app was in the background.
+  Stream<String> get onOpened;
+
+  /// The route of the push whose tap launched the app, once.
+  Future<String?> initialRoute();
 }
 
 class NoPushTokens implements PushTokens {
@@ -34,6 +40,10 @@ class NoPushTokens implements PushTokens {
   Stream<String> get onRefresh => const Stream.empty();
   @override
   Stream<(String, String, String?)> get onForeground => const Stream.empty();
+  @override
+  Stream<String> get onOpened => const Stream.empty();
+  @override
+  Future<String?> initialRoute() async => null;
 }
 
 class FirebasePushTokens implements PushTokens {
@@ -54,6 +64,21 @@ class FirebasePushTokens implements PushTokens {
   Stream<(String, String, String?)> get onForeground => FirebaseMessaging.onMessage
       .where((m) => m.notification != null)
       .map((m) => (m.notification!.title ?? '', m.notification!.body ?? '', m.data['route'] as String?));
+
+  @override
+  Stream<String> get onOpened => FirebaseMessaging.onMessageOpenedApp
+      .map((m) => m.data['route'] as String?)
+      .where((r) => r != null)
+      .cast<String>();
+
+  @override
+  Future<String?> initialRoute() async {
+    try {
+      return (await FirebaseMessaging.instance.getInitialMessage())?.data['route'] as String?;
+    } on Object {
+      return null;
+    }
+  }
 }
 
 /// Overridden in `main()` with [FirebasePushTokens].
@@ -68,10 +93,27 @@ class SangatDevice {
   final Ref _ref;
   StreamSubscription<String>? _refresh;
   StreamSubscription<(String, String, String?)>? _foreground;
+  StreamSubscription<String>? _opened;
   bool? _saved;
 
   void start() {
     final push = _ref.read(pushTokensProvider);
+    // A tapped Sangat push opens its group, through the same handler a
+    // tapped reminder uses (the router's, or held until the router exists).
+    void open(String route) {
+      final reminders = _ref.read(reminderServiceProvider);
+      final go = reminders.onTap;
+      if (go == null) {
+        reminders.pendingPayload = route;
+      } else {
+        go(route);
+      }
+    }
+
+    _opened ??= push.onOpened.listen(open);
+    unawaited(push.initialRoute().then((r) {
+      if (r != null) open(r);
+    }));
     _refresh ??= push.onRefresh.listen((_) => unawaited(sync(force: true)));
     _foreground ??= push.onForeground.listen((m) async {
       final l = await L.delegate.load(_ref.read(settingsProvider).locale);
@@ -107,6 +149,7 @@ class SangatDevice {
   }
 
   void dispose() {
+    _opened?.cancel();
     _refresh?.cancel();
     _foreground?.cancel();
   }

@@ -158,7 +158,9 @@ class ReminderService {
 
     await _plugin.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        // A plain white drawable: the launcher icon is adaptive, which is not
+        // a valid status-bar icon on every Android version.
+        android: AndroidInitializationSettings('@drawable/ic_notification'),
       ),
       onDidReceiveNotificationResponse: _handleResponse,
       onDidReceiveBackgroundNotificationResponse: onNotificationActionInBackground,
@@ -215,6 +217,12 @@ class ReminderService {
     required Map<NotificationKind, String> channelNames,
   }) async {
     if (!_ready) return;
+    // Every channel exists from the first plan, so a Sangat push Android
+    // shows by itself lands on its own channel (the manifest names it), and
+    // each switch in system settings is there before its first notification.
+    for (final e in channelNames.entries) {
+      await _android?.createNotificationChannel(AndroidNotificationChannel(e.key.channelId, e.value));
+    }
     await _plugin.cancelAll();
     final exact = await canScheduleExact();
     for (final n in planned) {
@@ -286,8 +294,11 @@ class ReminderService {
           payload: _payload(n, channelName));
     } else {
       final at = tz.TZDateTime.now(tz.local).add(after);
+      // Exact only when Android allows it: Android 14 denies it by default,
+      // and asking for exact without it throws.
+      final exact = await canScheduleExact();
       await _plugin.zonedSchedule(n.notificationId, n.title, n.body, at, _details(n, channelName),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: exact ? AndroidScheduleMode.exactAllowWhileIdle : AndroidScheduleMode.inexactAllowWhileIdle,
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
           payload: _payload(n, channelName));
     }

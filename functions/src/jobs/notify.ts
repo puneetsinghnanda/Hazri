@@ -21,7 +21,7 @@ function push(t: TokenDoc, kind: SangatKind, groupId: string, values: Record<str
   const locale = asLocale(t.locale);
   const { title, body } = renderSangat(kind, locale, values, simran);
   // FM2 data; FM5: no member names, profile ids or emails beyond the text of 5.5-E.
-  return { token: t.token, title, body, data: { kind: `SANGAT_${kind.toUpperCase()}`, groupId, route: `/sangat/${groupId}` } };
+  return { token: t.token, title, body, data: { kind: `SANGAT_${kind.toUpperCase()}`, groupId, route: `/sangat-group/${groupId}` } };
 }
 
 /** Sends, then deletes every token FCM reports as unregistered or invalid (FM4). */
