@@ -84,7 +84,7 @@ figcaption{display:flex;flex-direction:column;gap:3px;width:calc(390px * var(--s
 <div class="wrap">
   <header>
     <h1>Hazri Screens</h1>
-    <p class="lede">Every design screen in <code>design/html/</code>, grouped by feature, at 390 × 844 dp. Screens marked <b>New</b> were chosen or drawn on 7 and 8 October 2026. <b>Superseded</b> screens are hidden; Include superseded shows them, each with a note naming what replaces it. Where a screen and a spec in <code>docs/features/</code> disagree, the spec wins.</p>
+    <p class="lede">Every design screen in <code>design/html/</code>, grouped by feature, at 390 × 844 dp. Screens marked <b>New</b> were chosen or drawn on 7, 8 and 10 October 2026. <b>Superseded</b> screens are hidden; Include superseded shows them, each with a note naming what replaces it. Where a screen and a spec in <code>docs/features/</code> disagree, the spec wins.</p>
   </header>
 
   <div class="bar" role="toolbar" aria-label="View">
@@ -174,10 +174,12 @@ const SECTIONS = [
       ['21-DailySimran', 'Daily Simran, Phase 1', 'superseded', 'Replaced by 88 and 89'],
     ]},
   { id: 'sangat', name: 'Sangat', spec: '08-sangat.md',
-    note: 'Drawn before 08-sangat.md of 7 October 2026; the spec wins where they differ.',
+    note: '102 and 103 chosen 10 October 2026 from four and eight options. The rest were drawn before 08-sangat.md of 7 October 2026; the spec wins where they differ.',
     screens: [
-      ['38-SangatHome', 'Sangat', 'current', ''],
-      ['31-GroupDetail', 'Group, shared goal', 'current', ''],
+      ['102-SangatHome', 'Sangat, dashboard tiles', 'new', 'Option C: dashboard tiles (owner, 2026-10-10). Create group and Join group tiles, my groups as 2 x 2 tiles with a ring each, then the built-in groups full width with Join or Leave. 08-sangat.md 8.1, VS1, VS2'],
+      ['103-BuiltInGroup', 'A built-in group', 'new', 'Option H: ring in a navy band, timeline below (owner, 2026-10-10). Started, today and ends on a white card over the band; figure tiles; Sit for Naam Simran; members A to Z. 08-sangat.md VS3, VS4'],
+      ['38-SangatHome', 'Sangat', 'superseded', 'Replaced by 102'],
+      ['31-GroupDetail', 'Group, shared goal', 'current', 'A custom group. A built-in group is 103'],
       ['39-CreateGroup', 'Create a group', 'current', ''],
       ['40-SetGoal', 'Shared goal', 'current', ''],
       ['41-Invite', 'Invite', 'current', ''],
@@ -203,20 +205,22 @@ const SECTIONS = [
       ['23-Notifications', 'Reminder notifications, Phase 1', 'superseded', 'Messages are 02-notifications.md section 5'],
     ]},
   { id: 'badges', name: 'Badges', spec: '12-badges.md',
-    note: 'Chosen 8 October 2026 from four options a screen: the sheet 1C, the page 2A, one badge 3B, the profile 4B, the menu 5C. No points; earned badges in colour, the rest greyed with how to earn them.',
+    note: 'Chosen 8 October 2026 from four options a screen: the sheet 1C, the page 2A, one badge 3B, the profile 4B (replaced by 100 on 10 October), the menu 5C. No points; earned badges in colour, the rest greyed with how to earn them.',
     screens: [
       ['95-BadgeEarned', 'A badge earned', 'new', 'Option 1C: a bottom sheet over Today with the badge, its name and the set of ten; Done and See all badges. 12-badges.md UI1, UI2'],
       ['96-Badges', 'Badges, all ten', 'new', 'Option 2A: a two-column grid, earned in colour with the date, the rest greyed with how to earn them. UI3'],
       ['97-BadgeDetail', 'One badge, opened', 'new', 'Option 3B: a full page with what it marks and how it is earned; previous and next. UI4'],
-      ['98-ProfileBadges', 'Your profile, with badges', 'new', 'Option 4B: a Badges section under the profile card, all ten, See all opens 96. UI5'],
+      ['98-ProfileBadges', 'Your profile, with badges', 'superseded', 'Replaced by 100'],
       ['99-MenuBadges', 'Menu, with badges', 'new', 'Option 5C: the earned set under name and city in a navy header; Badges is a menu row. UI6'],
     ]},
   { id: 'settings', name: 'Menu, settings and account', spec: '01-accounts.md',
-    note: 'Account screens were drawn before 01-accounts.md; the spec wins where they differ.',
+    note: '100 and 101 chosen 10 October 2026 from four options each. The older account screens were drawn before 01-accounts.md; the spec wins where they differ.',
     screens: [
+      ['100-Profile', 'Your profile, identity card and badge shelf', 'new', 'Option D: identity card and badge shelf (owner, 2026-10-10). Name, city, verified email and three figures on a navy card; all ten badges on two shelves, See all opens 96; Edit profile and Back up now. 01-accounts.md 8.7, 12-badges.md UI5'],
+      ['101-EditProfile', 'Edit profile', 'new', 'Option C: outlined fields with sunrise preview (owner, 2026-10-10). Today in the chosen city with sunrise and sunset, then Name, City and Email with Change email in the card; Save changes. 01-accounts.md 13.8'],
       ['37-SettingsMenu', 'Menu', 'superseded', 'Replaced by 99'],
       ['27-Settings', 'Settings', 'current', ''],
-      ['33-Account', 'Your account', 'superseded', 'Replaced by 98'],
+      ['33-Account', 'Your account', 'superseded', 'Replaced by 98, now 100'],
       ['34-VerifyEmail', 'Verify your email', 'current', ''],
       ['35-PrivacyData', 'Privacy and my data', 'current', ''],
       ['49-Sync', 'Sync', 'superseded', 'No sync switch; a weekly backup runs with a profile. 10-backup.md'],

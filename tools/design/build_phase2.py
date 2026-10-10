@@ -79,6 +79,16 @@ ICONS = {
     "clock": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.4 2"/>',
     "phone": '<rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 18.6h3"/>',
     "share": '<circle cx="17" cy="6" r="2.4"/><circle cx="7" cy="12" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M9.2 10.9l5.6-3.3M9.2 13.1l5.6 3.3"/>',
+    # added 2026-10-10 for the profile and sangat screens, 100-103
+    "edit": '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+    "verified": '<path d="M12 3l2.4 1.8 3 .2.9 2.9 2.2 2-1 2.8 1 2.9-2.2 2-.9 2.9-3 .2L12 21l-2.4-1.8-3-.2-.9-2.9-2.2-2 1-2.9-1-2.8 2.2-2 .9-2.9 3-.2z"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/>',
+    "cloud": '<path d="M7 18.5a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 8.6a4 4 0 0 1-.5 7.9"/><path d="M12 12v8M9 15l3-3 3 3"/>',
+    "restore": '<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/><path d="M12 8v4l3 2"/>',
+    "shield": '<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 10"/>',
+    "code": '<rect x="3" y="6" width="18" height="12" rx="3"/><path d="M7 12h.01M10.5 12h.01M14 12h.01M17.5 12h.01"/>',
+    "more": '<circle cx="12" cy="5.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="18.5" r="1.3" fill="currentColor"/>',
+    "sunrise": '<path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 4v4M9.5 6.5L12 4l2.5 2.5"/>',
+    "sunset": '<path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 4v4M9.5 5.5L12 8l2.5-2.5"/>',
 }
 
 
@@ -2821,6 +2831,347 @@ def menu_badges() -> str:
 """
 
 
+# ------------------------------- profile and sangat, chosen 2026-10-10
+# 01-accounts.md (100, 101) and 08-sangat.md (102, 103), each picked by the
+# owner from four or more options. Sample person: Harpreet Kaur, Ludhiana.
+
+# Neela is the light theme's primary, but the dark theme's primary is kesri,
+# so a navy line, icon or link needs a colour of its own in dark: the canvas's
+# own --neela for dark (#C9CCF2). `--edge` is an outlined field's border,
+# darker than `--rule` so the field reads at 3:1.
+SHARED_STYLE = """
+<style>
+.app{--neela:#262C63;--edge:#C9C9D6;--plank:#DCDBE7}
+.app.dark{--neela:#C9CCF2;--edge:#3D4372;--plank:#2A2F55}
+.band{background:#262C63}.app.dark .band{background:var(--card2)}
+.idcard{background:linear-gradient(150deg,#2E3577 0%,#262C63 55%,#1A1E48 100%);
+  box-shadow:0 14px 30px rgba(38,44,99,.28)}
+.app.dark .idcard{background:linear-gradient(150deg,#2A3170 0%,#1F2447 55%,#161A37 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+</style>"""
+
+ON_BAND = ('width:44px;height:44px;border-radius:13px;flex:none;display:flex;'
+           'align-items:center;justify-content:center;background:rgba(255,255,255,.12);color:#fff')
+
+
+def chev(size: int = 18) -> str:
+    """A forward chevron: the back arrow, turned round, as the set draws it."""
+    return (f'<div style="color:var(--muted);transform:rotate(180deg);flex:none">'
+            f'{icon("back", size)}</div>')
+
+
+def ringed(pct: float, size: int, stroke: int, centre: str,
+           colour: str = "var(--kesri)", track: str = "var(--rule)") -> str:
+    """`ring` with something written in the middle of it."""
+    return (f'<div style="position:relative;width:{size}px;height:{size}px;flex:none">'
+            f'{ring(pct, size, stroke, colour, track)}'
+            f'<div style="position:absolute;inset:0;display:flex;flex-direction:column;'
+            f'align-items:center;justify-content:center">{centre}</div></div>')
+
+
+def tab_header(title: str) -> str:
+    """A tab's own header: the menu button, the tab's name, a line under it."""
+    return (f'<div style="padding:16px 18px 12px;border-bottom:1px solid var(--rule)">'
+            f'{header(title, left="menu")}</div>')
+
+
+def soft_chip(label: str, kind: str = "sage", ic: str | None = None) -> str:
+    bg, fg = {"sage": ("var(--sageSoft)", "var(--sage)"),
+              "kesri": ("var(--kesriSoft)", "var(--kesriInk)"),
+              "soft": ("var(--card2)", "var(--ink2)")}[kind]
+    return (f'<div class="chip" style="background:{bg};color:{fg};padding:4px 10px;'
+            f'font-size:12.5px;font-weight:700;gap:5px;flex:none">'
+            + (icon(ic, 14) if ic else "") + f'{label}</div>')
+
+
+PRIVACY = ("Your email is never shown to anyone in the app. Your city is one dot "
+           "on the Simran globe, and nothing finer.")
+
+
+def profile_card() -> str:
+    """The Profile: option D, an identity card and a badge shelf (01-accounts.md 8.7)."""
+    arc = ('<svg width="230" height="140" viewBox="0 0 230 140" style="position:absolute;'
+           'right:-40px;top:-6px;display:block">'
+           '<path d="M10 135A105 105 0 0 1 220 135" fill="none" stroke="rgba(255,255,255,.08)" '
+           'stroke-width="18"/><path d="M65 135A50 50 0 0 1 165 135Z" '
+           'fill="rgba(242,162,78,.16)"/></svg>')
+    stat = lambda n, l: (
+        f'<div class="col" style="flex:1"><div class="disp" style="font-size:22px;'
+        f'font-weight:700;line-height:1.05">{n}</div><div style="font-size:12px;'
+        f'color:rgba(255,255,255,.8);font-weight:600">{l}</div></div>')
+    line = lambda ic, text: (
+        f'<div class="row" style="gap:5px;font-size:14px;color:rgba(255,255,255,.85)">'
+        f'{icon(ic, 15)}{text}</div>')
+    idcard = f"""
+  <div class="idcard col" style="position:relative;overflow:hidden;border-radius:24px;
+    padding:18px 18px 16px;color:#fff;gap:14px">
+    {arc}
+    <div class="row" style="gap:8px;position:relative">{app_mark(26, "#fff", "#F2A24E")}
+      <div class="disp" style="font-size:17px;font-weight:700">Hazri</div></div>
+    <div class="col" style="position:relative">
+      <div class="disp" style="font-size:30px;font-weight:700;line-height:1.05">Harpreet Kaur</div>
+      <div style="padding-top:4px">{line("pin", "Ludhiana, Punjab")}</div>
+      <div class="row" style="gap:4px">{line("mail", "harpreet@example.com")}
+        <div class="row" style="gap:3px;color:#9FE3BF;font-weight:700;font-size:12.5px;
+          padding-left:4px">{icon("check", 13)}Verified</div></div>
+    </div>
+    <div class="row" style="gap:10px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);
+      position:relative">{stat("86", "days of Hazri")}{stat("12", "in a row")}{stat("4", "badges")}</div>
+  </div>"""
+
+    def shelf(start: int) -> str:
+        cells = "".join(
+            f'<div class="col" style="align-items:center;gap:4px;min-height:44px">'
+            f'{emblem(b[5], 46, bool(b[4]))}<div style="font-size:11.5px;font-weight:600;'
+            f'color:{"var(--ink)" if b[4] else "var(--ink2)"}">{b[0]}</div></div>'
+            for b in BADGES[start:start + 5])
+        return (f'<div class="col"><div style="display:grid;grid-template-columns:'
+                f'repeat(5,minmax(0,1fr));gap:4px;padding:0 4px 8px">{cells}</div>'
+                f'<div style="height:8px;border-radius:4px;background:linear-gradient('
+                f'180deg,var(--card2),var(--plank));box-shadow:0 3px 6px rgba(27,29,58,.08)">'
+                f'</div></div>')
+    return f"""
+{SHARED_STYLE}
+<div class="col" style="gap:12px;padding:16px 16px 0">
+  {header("Your profile")}
+  {idcard}
+  <div class="card col" style="padding:6px 14px 16px;gap:10px">
+    <div class="row" style="justify-content:space-between;min-height:44px">
+      <div style="font-size:16px;font-weight:700">Badges</div>
+      <div style="font-size:14px;font-weight:700;color:var(--kesriInk)">See all 10</div></div>
+    {shelf(0)}
+    {shelf(5)}
+  </div>
+  <div class="row" style="gap:10px">
+    <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary)">
+      {icon("edit", 19)}<div>Edit profile</div></div>
+    <div class="btn" style="flex:1;background:var(--card2);color:var(--neela)">
+      {icon("cloud", 19)}<div>Back up now</div></div>
+  </div>
+  <div style="padding:0 4px;font-size:13px;color:var(--ink2)">
+    Last backed up Sunday, 4 Oct · Phone not provided</div>
+  <div class="row" style="justify-content:center;gap:6px;min-height:44px;color:var(--neela);
+    font-weight:600;font-size:14px">{icon("restore", 17)}Restore my goals and diary</div>
+  <div class="row" style="align-items:flex-start;gap:8px;padding:0 4px;margin-top:-4px;
+    font-size:12.5px;line-height:1.4;color:var(--ink2)">
+    <div style="color:var(--sage);padding-top:1px">{icon("shield", 16)}</div>
+    <div>{PRIVACY}</div></div>
+</div>
+"""
+
+
+def outlined(label: str, inner: str, focus: bool = False) -> str:
+    """A Material outlined field: the label sits on the border."""
+    edge = "var(--neela)" if focus else "var(--edge)"
+    return (f'<div style="position:relative">'
+            f'<div style="position:absolute;left:12px;top:-9px;background:var(--card);'
+            f'padding:0 5px;font-size:12.5px;font-weight:700;line-height:18px;'
+            f'color:{"var(--neela)" if focus else "var(--ink2)"}">{label}</div>'
+            f'<div class="row" style="min-height:56px;border:{2 if focus else 1.5}px solid {edge};'
+            f'border-radius:14px;gap:10px;padding:0 6px 0 14px">{inner}</div></div>')
+
+
+def edit_profile() -> str:
+    """Edit profile: option C, outlined fields with a sunrise preview (01-accounts.md 13.8)."""
+    help_ = lambda t, extra="": (f'<div style="font-size:12.5px;color:var(--ink2);'
+                                 f'line-height:1.4;{extra}">{t}</div>')
+    sun = lambda ic, label, time, bg, fg: (
+        f'<div class="row" style="flex:1;gap:10px;background:{bg};border-radius:14px;'
+        f'padding:10px 12px"><div style="color:{fg}">{icon(ic, 22)}</div>'
+        f'<div class="col"><div style="font-size:12px;color:{fg};font-weight:700">{label}</div>'
+        f'<div class="disp" style="font-size:20px;font-weight:700;line-height:1.1">{time}</div>'
+        f'</div></div>')
+    value = lambda t: f'<div style="flex:1;min-width:0;font-size:16px">{t}</div>'
+    return f"""
+{SHARED_STYLE}
+<div class="col" style="gap:14px;padding:16px 16px 0">
+  {header("Edit profile")}
+  <div class="card col" style="padding:14px;gap:10px">
+    <div class="row" style="justify-content:space-between">
+      <div style="font-size:15px;font-weight:700">Today in Ludhiana</div>
+      {soft_chip("Changed from Amritsar", "kesri")}</div>
+    <div class="row" style="gap:10px">
+      {sun("sunrise", "Sunrise", "6:22 AM", "var(--kesriSoft)", "var(--kesriInk)")}
+      {sun("sunset", "Sunset", "5:53 PM", "var(--card2)", "var(--neela)")}
+    </div>
+    {help_("Your sunrise times on Today and your dot on the Simran globe follow it.")}
+  </div>
+  <div class="card col" style="padding:22px 14px 16px;gap:20px">
+    {outlined("Name", value("Harpreet Kaur"))}
+    {help_("2 to 50 letters. Spaces, full stops, apostrophes and hyphens are fine.",
+           "margin-top:-12px;padding-left:4px")}
+    {outlined("City", f'<div style="color:var(--neela)">{icon("pin", 19)}</div>'
+              + value("Ludhiana, Punjab")
+              + f'<div style="color:var(--ink2);padding-right:8px">{icon("search", 18)}</div>',
+              focus=True)}
+    {outlined("Email",
+              '<div style="flex:1;min-width:0;font-size:15.5px;white-space:nowrap;overflow:hidden;'
+              'text-overflow:ellipsis">harpreet@example.com</div>'
+              f'<div style="color:var(--sage)">{icon("verified", 18)}</div>'
+              '<div class="row" style="min-height:44px;padding:0 10px;border-radius:10px;'
+              'background:var(--kesriSoft);color:var(--kesriInk);font-size:13.5px;'
+              'font-weight:700;flex:none">Change email</div>')}
+    {help_("A new email takes over only once you confirm it from the link we send.",
+           "margin-top:-12px;padding-left:4px")}
+  </div>
+</div>
+<div style="position:absolute;left:16px;right:16px;bottom:26px">
+  {primary("Save changes", "check")}
+</div>
+"""
+
+
+# Sample groups, not real figures.
+MY_GROUPS = [
+    ("Gill Parivar", "3,412 of 5,000", "83 days left", 0.68, "sangat"),
+    ("Simran Sangat", "212,480 of 500,000 min", "22 days left", 0.42, "simran"),
+    ("Model Town Sangat", "297 of 1,100", "37 days left", 0.27, "sangat"),
+    ("Gurpurab Simran", "3,000 of 3,000 min", "Ended on 5 Oct", 1.0, None),
+]
+BUILT_IN = [
+    ("sunrise", "Amrit Vela Sangat", "100,000 Japji Sahib by 31 Oct", "4,982 members", False),
+    ("simran", "Simran Sangat", "500,000 minutes of Naam Simran by 31 Oct", "2,418 members", True),
+    ("nitnem", "Sukhmani Sahib Sangat", "10,000 Sukhmani Sahib by 31 Oct", "1,306 members", False),
+]
+
+
+def tinted(ic: str, size: int, radius: int = 12) -> str:
+    return (f'<div style="width:{size}px;height:{size}px;border-radius:{radius}px;flex:none;'
+            f'background:var(--card2);color:var(--teal);display:flex;align-items:center;'
+            f'justify-content:center">{icon(ic, round(size * 0.5))}</div>')
+
+
+def sangat_tiles() -> str:
+    """The Sangat tab: option C, dashboard tiles (08-sangat.md 8.1, VS1, VS2)."""
+    action = lambda ic, label, sub, bg, fg: (
+        f'<div class="row" style="flex:1;min-height:72px;border-radius:20px;padding:12px 14px;'
+        f'gap:12px;background:{bg};color:{fg};box-shadow:var(--shadow)">'
+        f'<div style="width:36px;height:36px;flex:none;border-radius:12px;'
+        f'background:rgba(255,255,255,.16);display:flex;align-items:center;'
+        f'justify-content:center">{icon(ic, 20)}</div>'
+        f'<div class="col"><div style="font-size:16px;font-weight:700;line-height:1.3">{label}</div>'
+        f'<div style="font-size:12.5px;opacity:.9;line-height:1.35">{sub}</div></div></div>')
+    tiles = ""
+    for name, prog, left, pct, ic in MY_GROUPS:
+        done = pct >= 1
+        corner = tinted(ic, 28, 9) if ic else soft_chip("Ended", "soft")
+        tiles += (
+            f'<div class="card col" style="padding:11px 12px;gap:5px;min-height:124px">'
+            f'<div class="row" style="justify-content:space-between;align-items:flex-start">'
+            f'{ringed(pct, 46, 6, f"<div style=\'font-size:11px;font-weight:700\'>{round(pct * 100)}%</div>", "var(--sage)" if done else "var(--kesri)")}'
+            f'{corner}</div>'
+            f'<div style="font-size:14.5px;font-weight:700;line-height:1.2">{name}</div>'
+            f'<div style="font-size:12px;color:var(--ink2);line-height:1.3">{prog}<br>{left}</div>'
+            f'</div>')
+    rows = ""
+    for k, (ic, name, goal, members, joined) in enumerate(BUILT_IN):
+        btn = ('<div class="row" style="min-height:44px;min-width:72px;justify-content:center;'
+               'padding:0 16px;border-radius:999px;font-size:14px;font-weight:700;flex:none;'
+               + ('box-shadow:inset 0 0 0 1.5px var(--rule);color:var(--ink2)">Leave' if joined else
+                  'background:var(--kesriSoft);color:var(--kesriInk)">Join') + '</div>')
+        rows += (
+            f'<div class="row" style="gap:12px;padding:8px 12px 8px 14px;'
+            f'{"border-top:1px solid var(--rule)" if k else ""}">{tinted(ic, 38)}'
+            f'<div class="col" style="flex:1;min-width:0">'
+            f'<div style="font-size:14.5px;font-weight:700;line-height:1.3">{name}</div>'
+            f'<div style="font-size:12.5px;color:var(--ink2);line-height:1.35;white-space:nowrap;'
+            f'overflow:hidden;text-overflow:ellipsis">{goal}</div>'
+            f'<div style="font-size:12.5px;color:var(--ink2);line-height:1.35">{members}</div>'
+            f'</div>{btn}</div>')
+    return f"""
+{SHARED_STYLE}
+{tab_header("Sangat")}
+<div class="col" style="gap:10px;padding:12px 16px 0">
+  <div class="row" style="gap:10px">
+    {action("plus", "Create group", "One goal, an end date", "var(--primary)", "var(--onPrimary)")}
+    {action("code", "Join group", "With a link or code", "var(--kesriSoft)", "var(--kesriInk)")}
+  </div>
+  <div class="eyebrow" style="padding:2px 4px 0;color:var(--ink2);font-weight:700">My groups</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">{tiles}</div>
+  <div class="eyebrow" style="padding:2px 4px 0;color:var(--ink2);font-weight:700">Join the sangat</div>
+  <div class="card col">{rows}</div>
+</div>
+{nav("sangat")}
+"""
+
+
+def built_in_group() -> str:
+    """A built-in group: option H, the ring in a navy band, a timeline below (08-sangat.md VS3, VS4)."""
+    centre = ('<div class="disp" style="font-size:28px;font-weight:700;line-height:1">212,480</div>'
+              '<div style="font-size:12px;color:rgba(255,255,255,.85);font-weight:600">of 500,000 min</div>'
+              '<div class="disp" style="font-size:17px;font-weight:700;color:#F2A24E;padding-top:2px">42%</div>')
+
+    def node(dot: str, t1: str, t2: str, align: str, here: bool = False) -> str:
+        text = {"flex-start": "left", "center": "center", "flex-end": "right"}[align]
+        return (f'<div class="col" style="flex:1;gap:6px;align-items:{align}">'
+                f'<div style="width:18px;height:18px;border-radius:9px;{dot}"></div>'
+                f'<div style="font-size:13px;font-weight:700;text-align:{text};'
+                f'color:{"var(--kesriInk)" if here else "var(--ink)"}">{t1}</div>'
+                f'<div style="font-size:12px;line-height:1.25;text-align:{text};'
+                f'color:{"var(--kesriInk)" if here else "var(--ink2)"}">{t2}</div></div>')
+
+    def figure(n: str, label: str, yours: bool = False) -> str:
+        return (f'<div class="card col" style="border-radius:18px;padding:10px 12px">'
+                f'<div class="disp" style="font-size:22px;font-weight:700;line-height:1.1;'
+                f'{"color:var(--kesriInk)" if yours else ""}">{n}<span style="font-size:13px;'
+                f'font-weight:600"> min</span></div>'
+                f'<div style="font-size:12px;color:var(--ink2);font-weight:600;line-height:1.25">'
+                f'{label}</div></div>')
+    members = "".join(
+        f'<div class="row" style="justify-content:space-between;min-height:44px;padding:0 16px;'
+        f'font-size:15px;{"border-top:1px solid var(--rule)" if i else ""}">'
+        f'<div style="font-weight:600">{n}</div>'
+        f'<div style="color:var(--ink2);font-weight:600">{v}</div></div>'
+        for i, (n, v) in enumerate([("Amandeep Singh", "240 min"), ("Baljit Kaur", "95 min"),
+                                    ("Charanjit Singh", "410 min")]))
+    return f"""
+{SHARED_STYLE}
+<div class="band col" style="gap:10px;padding:16px 18px 44px;color:#fff;border-radius:0 0 28px 28px">
+  <div class="row" style="gap:10px">
+    <div style="{ON_BAND}">{icon("back", 20)}</div>
+    <div class="col" style="flex:1">
+      <div class="disp" style="font-size:22px;font-weight:700;line-height:1.1">Simran Sangat</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,.82)">Built-in group · 2,418 members</div>
+    </div>
+    <div style="{ON_BAND}">{icon("more", 20)}</div>
+  </div>
+  <div class="row" style="justify-content:center">
+    {ringed(0.42, 150, 13, centre, "#F2A24E", "rgba(255,255,255,.16)")}</div>
+  <div style="font-size:14.5px;font-weight:600;text-align:center;color:rgba(255,255,255,.92)">
+    500,000 minutes of Naam Simran by 31 Oct</div>
+</div>
+<div class="col" style="gap:10px;padding:0 16px;margin-top:-28px">
+  <div class="card col" style="padding:12px 16px 14px;gap:10px">
+    <div class="row" style="justify-content:space-between;align-items:baseline">
+      <div class="eyebrow" style="color:var(--ink2);font-weight:700">This goal</div>
+      <div style="font-size:12.5px;color:var(--ink2);font-weight:600">Day 10 of 31</div></div>
+    <div class="row" style="position:relative;align-items:flex-start">
+      <div style="position:absolute;left:9px;right:9px;top:8px;height:2px;background:var(--rule)"></div>
+      <div style="position:absolute;left:9px;width:calc(50% - 9px);top:8px;height:2px;
+        background:var(--neela)"></div>
+      {node("background:var(--neela);position:relative", "1 Oct", "Started", "flex-start")}
+      {node("background:var(--kesri);box-shadow:0 0 0 4px var(--kesriSoft);position:relative",
+            "Today", "22 days left", "center", True)}
+      {node("background:var(--card);box-shadow:inset 0 0 0 2px var(--edge);position:relative",
+            "31 Oct", "Ends; new goal 1 Nov", "flex-end")}
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+    {figure("6,930", "Sangat today")}{figure("15", "Yours today", True)}
+    {figure("186", "Yours toward the goal", True)}</div>
+  {primary("Sit for Naam Simran", "simran")}
+  <div class="card col">
+    <div class="row" style="justify-content:space-between;align-items:baseline;padding:12px 16px 6px">
+      <div class="eyebrow" style="color:var(--ink2);font-weight:700">Members</div>
+      <div style="font-size:13px;color:var(--ink2);font-weight:600">2,418 · A to Z</div></div>
+    {members}
+    <div style="padding:8px 16px 12px;border-top:1px solid var(--rule);font-size:13.5px;
+      color:var(--ink2);font-weight:600">and 2,415 more</div>
+  </div>
+</div>
+"""
+
+
 def sync_states() -> str:
     states = [
         ("check", "Synced", "Everything is up to date · 2 minutes ago",
@@ -2959,6 +3310,10 @@ SCREENS = [
     ("97-BadgeDetail", "Badges — one, opened", badge_detail),
     ("98-ProfileBadges", "Profile — with badges", profile_badges),
     ("99-MenuBadges", "Menu — with badges", menu_badges),
+    ("100-Profile", "Profile — identity card and badge shelf", profile_card),
+    ("101-EditProfile", "Edit profile — with the sunrise preview", edit_profile),
+    ("102-SangatHome", "Sangat — dashboard tiles", sangat_tiles),
+    ("103-BuiltInGroup", "Built-in group — ring and timeline", built_in_group),
 ]
 
 

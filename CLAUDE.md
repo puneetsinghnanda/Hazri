@@ -187,6 +187,7 @@ each:
 | Simran | 88, 89, 90 | The screen as it ships, with design 29's threads; a web of threads without a profile |
 | First run | 91, 92, 93, 94 | Android's splash only; Welcome option D, "a day with Hazri" |
 | Badges | 95, 96, 97, 98, 99 | 1C sheet, 2A page, 3B one badge, 4B profile section, 5C menu header |
+| Profile and Sangat (2026-10-10) | 100, 101, 102, 103 | Profile D (identity card and badge shelf, replaces 98), Edit profile C (Today in your city, then one card of fields), Sangat C (dashboard tiles, built-ins as rows), group H (ring in a navy band, timeline, Sit for the paath) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.

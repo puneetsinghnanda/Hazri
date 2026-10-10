@@ -839,6 +839,7 @@ by `tools/design/check_structure.py`. Appendix A is the full index.
 | 2026-10-08 | Simran | The screen as it ships, with design 29's threads; a web of threads without a profile | 88, 89, 90 |
 | 2026-10-08 | First run | Android's splash only; Welcome option D, "a day with Hazri" | 91–94 |
 | 2026-10-08 | Badges | 1C sheet, 2A page, 3B one badge, 4B profile section, 5C menu header | 95–99 |
+| 2026-10-10 | Profile and Sangat | Profile D, identity card and badge shelf (replaces 98); Edit profile C, Today in your city then one card of fields; Sangat C, dashboard tiles with the built-ins as rows; group H, the ring in a navy band, the current goal as a timeline, Sit for the paath | 100–103 |
 
 Screens drawn before their feature file — Goals (19, 47, 42), the Sangat
 (38, 31, 39, 40, 41, 52, 32, 36) and the account screens (34, 35) — are
@@ -1301,8 +1302,10 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `38-SangatHome` | Sangat | current |  |
-| `31-GroupDetail` | Group, shared goal | current |  |
+| `102-SangatHome` | Sangat, dashboard tiles | **new** | Option C: dashboard tiles (owner, 2026-10-10). Create group and Join group tiles, my groups as 2 x 2 tiles with a ring each, then the built-in groups full width with Join or Leave. 08-sangat.md 8.1, VS1, VS2 |
+| `103-BuiltInGroup` | A built-in group | **new** | Option H: ring in a navy band, timeline below (owner, 2026-10-10). Started, today and ends on a white card over the band; figure tiles; Sit for Naam Simran; members A to Z. 08-sangat.md VS3, VS4 |
+| `38-SangatHome` | Sangat | superseded | Replaced by 102 |
+| `31-GroupDetail` | Group, shared goal | current | A custom group. A built-in group is 103 |
 | `39-CreateGroup` | Create a group | current |  |
 | `40-SetGoal` | Shared goal | current |  |
 | `41-Invite` | Invite | current |  |
@@ -1338,16 +1341,18 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `95-BadgeEarned` | A badge earned | **new** | Option 1C: a bottom sheet over Today with the badge, its name and the set of ten; Done and See all badges. 12-badges.md UI1, UI2 |
 | `96-Badges` | Badges, all ten | **new** | Option 2A: a two-column grid, earned in colour with the date, the rest greyed with how to earn them. UI3 |
 | `97-BadgeDetail` | One badge, opened | **new** | Option 3B: a full page with what it marks and how it is earned; previous and next. UI4 |
-| `98-ProfileBadges` | Your profile, with badges | **new** | Option 4B: a Badges section under the profile card, all ten, See all opens 96. UI5 |
+| `98-ProfileBadges` | Your profile, with badges | superseded | Replaced by 100 |
 | `99-MenuBadges` | Menu, with badges | **new** | Option 5C: the earned set under name and city in a navy header; Badges is a menu row. UI6 |
 
 **Menu, settings and account** — `01-accounts.md`
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
+| `100-Profile` | Your profile, identity card and badge shelf | **new** | Option D: identity card and badge shelf (owner, 2026-10-10). Name, city, verified email and three figures on a navy card; all ten badges on two shelves, See all opens 96; Edit profile and Back up now. 01-accounts.md 8.7, 12-badges.md UI5 |
+| `101-EditProfile` | Edit profile | **new** | Option C: outlined fields with sunrise preview (owner, 2026-10-10). Today in the chosen city with sunrise and sunset, then Name, City and Email with Change email in the card; Save changes. 01-accounts.md 13.8 |
 | `37-SettingsMenu` | Menu | superseded | Replaced by 99 |
 | `27-Settings` | Settings | current |  |
-| `33-Account` | Your account | superseded | Replaced by 98 |
+| `33-Account` | Your account | superseded | Replaced by 98, now 100 |
 | `34-VerifyEmail` | Verify your email | current |  |
 | `35-PrivacyData` | Privacy and my data | current |  |
 | `49-Sync` | Sync | superseded | No sync switch; a weekly backup runs with a profile. 10-backup.md |
