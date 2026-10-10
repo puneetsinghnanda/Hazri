@@ -461,6 +461,35 @@ abstract final class ReminderPlanner {
     }
   }
 
+  /// Every id [notificationIdFor] can return is below this; a snooze copy
+  /// ([snoozeBit]) and the diagnostics test ([diagnosticId]) are above it, so
+  /// a re-plan never touches them.
+  static const plannedIdLimit = 100000 * 400;
+
+  static bool isPlannedId(int id) => id < plannedIdLimit;
+
+  /// Set on a snoozed copy's id (§6.3).
+  static const snoozeBit = 0x40000000;
+
+  /// "Send one now" and "Send one in two minutes" (DP4).
+  static const diagnosticId = 0x20000000;
+
+  /// Today's goal reminders, and their snoozed copies, for the items already
+  /// met: one still showing is taken away (GR2, RM3).
+  static Set<int> metToday(PlannerInput input) {
+    final today = DateTime(input.now.year, input.now.month, input.now.day);
+    final key = localDateKey(today);
+    return {
+      for (final i in input.items)
+        if (i.reminderTime != null &&
+            inScope(i, key) &&
+            itemMet(i, input.todayCompletions, input.todaySittings)) ...[
+          notificationIdFor('goal-item:${i.id}', today),
+          notificationIdFor('goal-item:${i.id}', today) ^ snoozeBit,
+        ],
+    };
+  }
+
   /// A small, stable integer per reminder per day.
   static int notificationIdFor(String reminderId, DateTime at) {
     final dayOfYear = DateTime(at.year, at.month, at.day).difference(DateTime(at.year)).inDays;

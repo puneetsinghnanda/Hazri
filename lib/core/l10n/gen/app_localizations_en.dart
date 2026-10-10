@@ -2085,12 +2085,12 @@ class LEn extends L {
 
   @override
   String notifAv4Title(int streak) {
-    return 'Day $streak of your Nitnem';
+    return 'Day $streak of your Hazri';
   }
 
   @override
   String notifAv4Body(int streak) {
-    return '$streak mornings in a row. Today\'s is waiting.';
+    return '$streak days in a row. Today\'s is waiting.';
   }
 
   @override
@@ -2511,7 +2511,7 @@ class LEn extends L {
   String get diaryStreakLongest => 'your longest';
 
   @override
-  String get todayStreakCaption => 'days of Nitnem in a row';
+  String get todayStreakCaption => 'days of Hazri in a row';
 
   @override
   String get actionAdd => 'Add';

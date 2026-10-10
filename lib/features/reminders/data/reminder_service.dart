@@ -128,7 +128,7 @@ Future<void> onNotificationActionInBackground(NotificationResponse response) asy
     actions: open,
   );
   await plugin.zonedSchedule(
-    (response.id ?? 0) ^ 0x40000000,
+    (response.id ?? 0) ^ ReminderPlanner.snoozeBit,
     p.title,
     p.body,
     tz.TZDateTime.now(tz.local).add(const Duration(minutes: 15)),
@@ -235,10 +235,18 @@ class ReminderService {
   Future<bool> canScheduleExact() async =>
       await _android?.canScheduleExactNotifications() ?? true;
 
-  /// Replaces the whole pending schedule with [planned].
+  /// Replaces the planned part of the pending schedule with [planned], and
+  /// takes away the notifications in [dismiss] if they are showing.
+  ///
+  /// Never `cancelAll`: that also takes every notification off the screen,
+  /// and a re-plan follows every write. "Send one now" was shown and gone
+  /// within half a second, the two-minute test and a snooze were deleted
+  /// before they fired, and opening the app cleared a delivered Amrit Vela
+  /// (2026-10-10).
   Future<void> replaceSchedule(
     List<PlannedNotification> planned, {
     required Map<NotificationKind, String> channelNames,
+    Set<int> dismiss = const {},
   }) async {
     if (!_ready) return;
     // Every channel exists from the first plan, so a Sangat push Android
@@ -248,7 +256,16 @@ class ReminderService {
       await _android?.createNotificationChannel(
           AndroidNotificationChannel(e.key.androidChannelId, e.value, importance: _importance));
     }
-    await _plugin.cancelAll();
+    // A pending planned id that is not planned again is cancelled; one that
+    // is planned again is replaced by zonedSchedule under the same id. Only
+    // pending ones: today's that already fired stay where they are.
+    final keep = {for (final n in planned) n.notificationId};
+    for (final p in await _plugin.pendingNotificationRequests()) {
+      if (ReminderPlanner.isPlannedId(p.id) && !keep.contains(p.id)) await _plugin.cancel(p.id);
+    }
+    for (final id in dismiss) {
+      await _plugin.cancel(id);
+    }
     final exact = await canScheduleExact();
     for (final n in planned) {
       await _schedule(n, channelNames[n.kind] ?? 'Hazri', exact: exact);
@@ -314,15 +331,16 @@ class ReminderService {
   /// Diagnostics: shows [n] now, or in two minutes (DP4).
   Future<void> sendTest(PlannedNotification n, String channelName, {Duration? after}) async {
     if (!_ready) return;
+    const id = ReminderPlanner.diagnosticId;
     if (after == null) {
-      await _plugin.show(n.notificationId, n.title, n.body, _details(n, channelName),
+      await _plugin.show(id, n.title, n.body, _details(n, channelName),
           payload: _payload(n, channelName));
     } else {
       final at = tz.TZDateTime.now(tz.local).add(after);
       // Exact only when Android allows it: Android 14 denies it by default,
       // and asking for exact without it throws.
       final exact = await canScheduleExact();
-      await _plugin.zonedSchedule(n.notificationId, n.title, n.body, at, _details(n, channelName),
+      await _plugin.zonedSchedule(id, n.title, n.body, at, _details(n, channelName),
           androidScheduleMode: exact ? AndroidScheduleMode.exactAllowWhileIdle : AndroidScheduleMode.inexactAllowWhileIdle,
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
           payload: _payload(n, channelName));

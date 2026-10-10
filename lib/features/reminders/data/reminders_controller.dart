@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/content_db.dart' show BaniSlot;
 import '../../../core/db/content_repository.dart';
-import '../../../core/db/user_db.dart';
 import '../../../core/db/user_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
@@ -13,6 +12,7 @@ import '../../../core/time/clock.dart';
 import '../../../core/time/solar.dart';
 import '../../gurpurab/domain/calendar_display.dart';
 import '../../nitnem/domain/bani.dart';
+import '../../goals/domain/day_verdict.dart';
 import '../domain/reminder_plan.dart';
 import '../../profile/data/profile_controller.dart';
 import 'notification_switches.dart';
@@ -103,7 +103,8 @@ class ReminderScheduler {
     final input = await buildInput();
     final l = await L.delegate.load(_ref.read(settingsProvider).locale);
     final planned = ReminderPlanner.plan(l, input);
-    await service.replaceSchedule(planned, channelNames: channelNames(l));
+    await service.replaceSchedule(planned,
+        channelNames: channelNames(l), dismiss: ReminderPlanner.metToday(input));
   }
 
   static Map<NotificationKind, String> channelNames(L l) => {
@@ -139,9 +140,9 @@ class ReminderScheduler {
         ),
     ];
 
-    // CM4: the streak through today, only once today's Nitnem is done.
-    final nitnemToday = todayCompletions.any((c) => c.slot != BaniSlotValue.none);
-    final streak = nitnemToday ? (await repo.nitnemStreak()).current : null;
+    // CM4: the streak through today, only once today's hazri is marked.
+    final hazriToday = hazriFrom(todayCompletions, rows.sittings);
+    final streak = hazriToday ? (await repo.hazriStreak()).current : null;
 
     // AV4 and the Friday nudge: only with a profile (CY3).
     final profile = _ref.read(profileProvider);

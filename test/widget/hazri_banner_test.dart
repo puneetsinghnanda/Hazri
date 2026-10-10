@@ -3,7 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
+import 'package:hazri/core/settings/settings_controller.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
+import 'package:hazri/features/vichar/ui/vichar_card.dart';
 
 import '../app_harness.dart';
 
@@ -67,6 +69,50 @@ void main() {
     // rebuilt before the row exists.
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
     await settle(tester);
+    expect(find.text(l.hazriMarked), findsOneWidget);
+  });
+
+  Future<void> markHazri(WidgetTester tester) async {
+    await app.container.read(userRepositoryProvider).logCompletion(
+          baniId: 'japji',
+          slot: BaniSlotValue.morning,
+          source: CompletionSource.reader,
+          on: DateTime(2026, 11, 20, 5, 52),
+        );
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+    await settle(tester);
+  }
+
+  testWidgets('T1a: a marked banner closes for the day and the cards move up', (tester) async {
+    final l = await pump(tester);
+    expect(find.byTooltip(l.actionClose), findsNothing, reason: 'never closed before it is marked');
+    await markHazri(tester);
+    final goalsBefore = tester.getTopLeft(find.byType(VicharCard)).dy;
+
+    await tester.tap(find.byTooltip(l.actionClose));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 160));
+    final midway = tester.getTopLeft(find.byType(VicharCard)).dy;
+    await settle(tester);
+
+    expect(find.text(l.hazriMarked), findsNothing);
+    final goalsAfter = tester.getTopLeft(find.byType(VicharCard)).dy;
+    expect(goalsAfter, lessThan(goalsBefore));
+    expect(midway, inExclusiveRange(goalsAfter, goalsBefore), reason: 'it moves, not jumps');
+    expect(app.container.read(sharedPreferencesProvider).getString('hazri_banner_closed_v1'), '2026-11-20');
+  });
+
+  testWidgets('T1a: closed yesterday, the banner is back today', (tester) async {
+    app = await TestApp.create(
+      prefs: {'onboarding_done': true, 'hazri_banner_closed_v1': '2026-11-19'},
+      now: DateTime(2026, 11, 20, 9, 0),
+    );
+    addTearDown(app.dispose);
+    usePhoneFrame(tester);
+    await tester.pumpWidget(app.wrapRouted(const TodayScreen()));
+    await settle(tester);
+    await markHazri(tester);
+    final l = await L.delegate.load(const Locale('en'));
     expect(find.text(l.hazriMarked), findsOneWidget);
   });
 

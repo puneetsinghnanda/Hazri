@@ -116,6 +116,7 @@ class FakeReminderService extends ReminderService {
   Future<void> replaceSchedule(
     List<PlannedNotification> planned, {
     required Map<NotificationKind, String> channelNames,
+    Set<int> dismiss = const {},
   }) async {
     scheduled
       ..clear()

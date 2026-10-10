@@ -2080,12 +2080,12 @@ class LPa extends L {
 
   @override
   String notifAv4Title(int streak) {
-    return 'ਤੁਹਾਡੇ ਨਿਤਨੇਮ ਦਾ ਦਿਨ $streak';
+    return 'ਤੁਹਾਡੀ ਹਾਜ਼ਰੀ ਦਾ ਦਿਨ $streak';
   }
 
   @override
   String notifAv4Body(int streak) {
-    return 'ਲਗਾਤਾਰ $streak ਸਵੇਰਾਂ। ਅੱਜ ਦੀ ਉਡੀਕ ਹੈ।';
+    return 'ਲਗਾਤਾਰ $streak ਦਿਨ। ਅੱਜ ਦੀ ਉਡੀਕ ਹੈ।';
   }
 
   @override
@@ -2506,7 +2506,7 @@ class LPa extends L {
   String get diaryStreakLongest => 'ਤੁਹਾਡਾ ਸਭ ਤੋਂ ਲੰਬਾ';
 
   @override
-  String get todayStreakCaption => 'ਲਗਾਤਾਰ ਨਿਤਨੇਮ ਦੇ ਦਿਨ';
+  String get todayStreakCaption => 'ਲਗਾਤਾਰ ਹਾਜ਼ਰੀ ਦੇ ਦਿਨ';
 
   @override
   String get actionAdd => 'ਜੋੜੋ';

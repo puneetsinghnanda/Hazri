@@ -62,8 +62,10 @@ CT5); the Diary still shows every one.
 **D8. Grace days are silent.** Granted automatically, two a month, never
 announced, never a prompt, never something to spend deliberately. Unchanged.
 
-**D9. The streak counts nitnem.** A bani of slot `none` (Ardas, Sukhmani Sahib)
-marks hazri and does not extend the nitnem streak (`06-nitnem.md` B3).
+**D9. The streak counts hazri** (owner, 2026-10-10; it counted Nitnem before).
+A day counts when its hazri is marked (`04-goals.md` §4.6, `hazriFrom`): any
+paath, Ardas and Sukhmani Sahib included, or 5 minutes of Naam Simran. Today
+says "days of Hazri in a row" (`05-today.md` T12).
 
 **D10. Everything works offline.** The Diary reads and writes only `user.db`.
 
@@ -73,7 +75,7 @@ changes what it has (RS3, RS4). There is no diary sync switch and no per-day
 sync any more.
 
 **D12. The streak card** (owner, 2026-10-07: canvas option Diary 2). One
-function, `nitnemStreak(day)`, returns `current` (consecutive Nitnem days
+function, `hazriStreak(day)`, returns `current` (consecutive hazri days
 ending on `day`, or on the day before when `day` has none yet, with grace
 days counted as they are now, D8) and `longest` (the longest such run in the history on the
 phone). Today's card (`05-today.md` T12) and this one both call it.

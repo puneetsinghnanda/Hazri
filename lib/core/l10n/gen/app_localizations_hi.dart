@@ -2079,12 +2079,12 @@ class LHi extends L {
 
   @override
   String notifAv4Title(int streak) {
-    return 'आपके नितनेम का दिन $streak';
+    return 'आपकी हाज़िरी का दिन $streak';
   }
 
   @override
   String notifAv4Body(int streak) {
-    return 'लगातार $streak सुबहें। आज की प्रतीक्षा है।';
+    return 'लगातार $streak दिन। आज की प्रतीक्षा है।';
   }
 
   @override
@@ -2502,7 +2502,7 @@ class LHi extends L {
   String get diaryStreakLongest => 'आपका सबसे लंबा';
 
   @override
-  String get todayStreakCaption => 'लगातार नितनेम के दिन';
+  String get todayStreakCaption => 'लगातार हाज़िरी के दिन';
 
   @override
   String get actionAdd => 'जोड़ें';

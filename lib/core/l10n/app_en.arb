@@ -1125,7 +1125,7 @@
   },
   "notifAv3Title": "The sangat is waking up",
   "notifAv3Body": "Mark your Hazri with Sangat. Begin now.",
-  "notifAv4Title": "Day {streak} of your Nitnem",
+  "notifAv4Title": "Day {streak} of your Hazri",
   "@notifAv4Title": {
     "placeholders": {
       "streak": {
@@ -1133,7 +1133,7 @@
       }
     }
   },
-  "notifAv4Body": "{streak} mornings in a row. Today's is waiting.",
+  "notifAv4Body": "{streak} days in a row. Today's is waiting.",
   "@notifAv4Body": {
     "placeholders": {
       "streak": {
@@ -1449,7 +1449,7 @@
   "diaryAddRemove": "Add or take away",
   "diaryStreakNow": "days in a row now",
   "diaryStreakLongest": "your longest",
-  "todayStreakCaption": "days of Nitnem in a row",
+  "todayStreakCaption": "days of Hazri in a row",
   "actionAdd": "Add",
   "profileWelcome": "Welcome",
   "profileWelcomeName": "Welcome, {name}",

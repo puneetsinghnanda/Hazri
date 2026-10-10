@@ -78,9 +78,11 @@ class _ShareChoicesState extends ConsumerState<_ShareChoices> {
       final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
       if (bytes == null) return;
 
-      final dir = await getTemporaryDirectory();
-      final file = await File.fromUri(Uri.file('${dir.path}/vichar.png'))
-          .writeAsBytes(bytes.buffer.asUint8List(), flush: true);
+      final file = await writeShareImage(
+        await getTemporaryDirectory(),
+        bytes.buffer.asUint8List(),
+        DateTime.now(),
+      );
 
       if (!mounted) return;
       await Share.shareXFiles([XFile(file.path)],
@@ -152,6 +154,27 @@ class _ShareChoicesState extends ConsumerState<_ShareChoices> {
       ],
     );
   }
+}
+
+/// Writes the card under a name of its own and removes the earlier ones.
+///
+/// It was always `vichar.png`, and Android's share sheet keeps the preview it
+/// made for a name: a phone that had shared the first, dark card went on
+/// previewing that one while the cream card went out (2026-10-10). A new
+/// name every time means the preview is drawn from the file being sent.
+Future<File> writeShareImage(Directory dir, List<int> png, DateTime now) async {
+  for (final old in dir.listSync().whereType<File>()) {
+    final name = old.uri.pathSegments.last;
+    if (name.startsWith('vichar') && name.endsWith('.png')) {
+      try {
+        old.deleteSync();
+      } on FileSystemException {
+        // Still open in another app; the next share tries again.
+      }
+    }
+  }
+  return File.fromUri(Uri.file('${dir.path}/vichar-${now.millisecondsSinceEpoch}.png'))
+      .writeAsBytes(png, flush: true);
 }
 
 /// The picture that goes out, laid out at 360 x 450 and rendered at 3x.

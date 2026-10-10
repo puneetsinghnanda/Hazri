@@ -88,6 +88,10 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   /// The recitation is loaded once per visit to this screen.
   bool _prepared = false;
 
+  /// Set by Start again: this screen is leaving for the first line, and must
+  /// not write its own end-of-bani position back as it goes.
+  bool _restarting = false;
+
   @override
   void initState() {
     super.initState();
@@ -240,7 +244,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
 
   void _saveProgress() {
     final versionId = _versionId;
-    if (versionId == null) return;
+    if (versionId == null || _restarting) return;
     // The audio position moves even when the page does not, so progress is
     // written whenever either has changed.
     final player = _player;
@@ -251,6 +255,24 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     _lastSavedLine = _topLine;
     _lastSavedAudioMs = audioMs;
     unawaited(_repo.saveProgress(versionId, _topLine, audioPosMs: audioMs));
+  }
+
+  /// Start again (design 48): the first line, and the recitation back at
+  /// 0:00 and paused, with where it was left cleared. The scrubber used to
+  /// stay at the end, because the new screen finds the bani already loaded
+  /// and has no position to seek to (2026-10-10).
+  Future<void> _startAgain() async {
+    final versionId = _versionId;
+    if (versionId == null) return;
+    _restarting = true;
+    _saveTimer?.cancel();
+    final player = _player;
+    if (player != null && player.currentSlug == widget.slug) {
+      await player.pause();
+      await player.seek(Duration.zero);
+    }
+    await _repo.clearProgress(versionId);
+    if (mounted) context.pushReplacement(Routes.reader(widget.slug, line: 0));
   }
 
   /// Jumps to the resume point, or the line a deep link asked for.
@@ -372,7 +394,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                         itemCount: lines.length + 1,
                         itemBuilder: (context, i) {
                           if (i == lines.length) {
-                            return _EndOfBaniCard(bani: bani);
+                            return _EndOfBaniCard(bani: bani, onStartAgain: _startAgain);
                           }
                           final line = lines[i];
                           final isCurrent = line.idx == _followLine;
@@ -661,9 +683,10 @@ class _LegendRow extends ConsumerWidget {
 /// paath is what actually marked the day — saying it under the third bani of
 /// the morning would be flattering somebody with a fact about breakfast.
 class _EndOfBaniCard extends ConsumerWidget {
-  const _EndOfBaniCard({required this.bani});
+  const _EndOfBaniCard({required this.bani, required this.onStartAgain});
 
   final Bani bani;
+  final VoidCallback onStartAgain;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -759,17 +782,11 @@ class _EndOfBaniCard extends ConsumerWidget {
               children: [
                 // Design 48: Start again is the main action.
                 Expanded(
+                  // No icon: with one, the label had no room and read
+                  // "Start ag..." (2026-10-10).
                   child: PrimaryButton(
                     label: l.readerStartAgain,
-                    icon: HazriIconData.chevronLeft,
-                    onPressed: () async {
-                      // From the first line, with where it was left cleared;
-                      // otherwise the reader reopens at the end it just reached.
-                      await ref.read(userRepositoryProvider).clearProgress(bani.versionId!);
-                      if (context.mounted) {
-                        context.pushReplacement(Routes.reader(bani.slug, line: 0));
-                      }
-                    },
+                    onPressed: onStartAgain,
                   ),
                 ),
                 const SizedBox(width: 10),

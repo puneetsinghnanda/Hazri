@@ -15,9 +15,11 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const channel = MethodChannel('dexterous.com/flutter/local_notifications');
   late List<MethodCall> calls;
+  late List<Map<String, Object?>> pending;
 
   setUp(() {
     calls = [];
+    pending = [];
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     AndroidFlutterLocalNotificationsPlugin.registerWith();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, (call) async {
@@ -26,6 +28,7 @@ void main() {
         'initialize' => true,
         'canScheduleExactNotifications' => false,
         'getNotificationAppLaunchDetails' => <String, Object?>{'notificationLaunchedApp': false},
+        'pendingNotificationRequests' => pending,
         _ => null,
       };
     });
@@ -104,5 +107,48 @@ void main() {
     final p = args(shown)['platformSpecifics']! as Map<Object?, Object?>;
     expect(p['channelId'], NotificationKind.sangat.androidChannelId);
     expect(p['importance'], high);
+  });
+
+  test('a re-plan leaves the test, a snooze and what is showing alone', () async {
+    final service = ReminderService();
+    await service.init();
+    await service.sendTest(plan.first, 'Amrit Vela');
+    await service.sendTest(plan.first, 'Amrit Vela', after: const Duration(minutes: 2));
+
+    final stale = ReminderPlanner.notificationIdFor('goal-item:9', DateTime.now().add(const Duration(days: 1)));
+    final kept = plan.first.notificationId;
+    final snoozed = stale ^ ReminderPlanner.snoozeBit;
+    Map<String, Object?> req(int id) => {'id': id, 'title': 't', 'body': 'b', 'payload': ''};
+    pending = [req(ReminderPlanner.diagnosticId), req(snoozed), req(stale), req(kept)];
+    calls.clear();
+
+    await service.replaceSchedule(plan, channelNames: names);
+
+    expect(calls.map((c) => c.method), isNot(contains('cancelAll')),
+        reason: 'cancelAll took "Send one now" off the screen half a second after it showed');
+    final cancelled = [
+      for (final c in calls)
+        if (c.method == 'cancel') args(c)['id'],
+    ];
+    expect(cancelled, [stale], reason: 'only a planned id that is no longer planned');
+  });
+
+  test('a met goal item\'s reminder showing today is taken away (GR2)', () async {
+    final service = ReminderService();
+    await service.init();
+    calls.clear();
+    await service.replaceSchedule(plan, channelNames: names, dismiss: {123, 123 ^ ReminderPlanner.snoozeBit});
+    final cancelled = [
+      for (final c in calls)
+        if (c.method == 'cancel') args(c)['id'],
+    ];
+    expect(cancelled, unorderedEquals([123, 123 ^ ReminderPlanner.snoozeBit]));
+  });
+
+  test('every planned id is below the test and snooze ids', () {
+    expect(ReminderPlanner.isPlannedId(ReminderPlanner.notificationIdFor('zzzzzzzzzzzz', DateTime(2026, 12, 31))),
+        isTrue);
+    expect(ReminderPlanner.isPlannedId(ReminderPlanner.diagnosticId), isFalse);
+    expect(ReminderPlanner.isPlannedId(1 ^ ReminderPlanner.snoozeBit), isFalse);
   });
 }

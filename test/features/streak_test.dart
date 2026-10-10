@@ -13,7 +13,7 @@ void main() {
 
   test('no Nitnem days means no streak, and nothing is scolded', () {
     final r = StreakCalculator.compute(
-      nitnemDays: const {},
+      countedDays: const {},
       existingGraceDays: const {},
       today: today,
     );
@@ -24,7 +24,7 @@ void main() {
 
   test('an unbroken run ending today counts every day', () {
     final r = StreakCalculator.compute(
-      nitnemDays: daysBack(today, 11),
+      countedDays: daysBack(today, 11),
       existingGraceDays: const {},
       today: today,
     );
@@ -34,7 +34,7 @@ void main() {
 
   test('a run ending yesterday still stands: today is not over', () {
     final r = StreakCalculator.compute(
-      nitnemDays: daysBack(today.subtract(const Duration(days: 1)), 5),
+      countedDays: daysBack(today.subtract(const Duration(days: 1)), 5),
       existingGraceDays: const {},
       today: today,
     );
@@ -43,7 +43,7 @@ void main() {
 
   test('a run that ended two days ago is broken', () {
     final r = StreakCalculator.compute(
-      nitnemDays: daysBack(today.subtract(const Duration(days: 2)), 5),
+      countedDays: daysBack(today.subtract(const Duration(days: 2)), 5),
       existingGraceDays: const {},
       today: today,
     );
@@ -53,7 +53,7 @@ void main() {
   test('one missed day is bridged by a grace day, which is reported back', () {
     // Days 0..10 kept, except day 3.
     final r = StreakCalculator.compute(
-      nitnemDays: daysBack(today, 11, skip: {3}),
+      countedDays: daysBack(today, 11, skip: {3}),
       existingGraceDays: const {},
       today: today,
     );
@@ -65,7 +65,7 @@ void main() {
 
   test('a month gives two grace days and no more', () {
     final r = StreakCalculator.compute(
-      nitnemDays: daysBack(today, 11, skip: {3, 5, 7}),
+      countedDays: daysBack(today, 11, skip: {3, 5, 7}),
       existingGraceDays: const {},
       today: today,
     );
@@ -79,7 +79,7 @@ void main() {
   test('grace already granted is not granted twice', () {
     final already = {localDateKey(DateTime(2026, 9, 9))};
     final r = StreakCalculator.compute(
-      nitnemDays: daysBack(today, 11, skip: {3}),
+      countedDays: daysBack(today, 11, skip: {3}),
       existingGraceDays: already,
       today: today,
     );
@@ -94,7 +94,7 @@ void main() {
     final oct2 = DateTime(2026, 10, 2);
     final days = daysBack(oct2, 10, skip: {3});
     final r = StreakCalculator.compute(
-      nitnemDays: days,
+      countedDays: days,
       existingGraceDays: const {},
       today: oct2,
     );
@@ -109,7 +109,7 @@ void main() {
 
   test('a fresh install does not spend grace on the empty past', () {
     final r = StreakCalculator.compute(
-      nitnemDays: {localDateKey(today)},
+      countedDays: {localDateKey(today)},
       existingGraceDays: const {},
       today: today,
     );
@@ -119,7 +119,7 @@ void main() {
 
   test('a day already forgiven keeps the run anchored when today is empty', () {
     final r = StreakCalculator.compute(
-      nitnemDays: daysBack(today.subtract(const Duration(days: 1)), 4),
+      countedDays: daysBack(today.subtract(const Duration(days: 1)), 4),
       existingGraceDays: {localDateKey(today)},
       today: today,
     );

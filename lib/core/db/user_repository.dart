@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/diary/domain/streak.dart';
 import '../../features/goals/domain/day_verdict.dart';
+import '../../features/goals/domain/goal_constants.dart';
 import '../time/clock.dart';
 import 'user_db.dart';
 
@@ -304,6 +305,9 @@ class UserRepository {
 
   Future<List<SimranSession>> allSittings() =>
       (_db.select(_db.simranSessions)..where((s) => s.deletedAt.isNull())).get();
+
+  Stream<List<SimranSession>> watchSittings() =>
+      (_db.select(_db.simranSessions)..where((s) => s.deletedAt.isNull())).watch();
 
   Stream<List<SimranSession>> watchSittingsOn(DateTime date) {
     final key = localDateKey(date);
@@ -685,17 +689,23 @@ class UserRepository {
 
   // ------------------------------------------------------------------ streak
 
-  /// `nitnemStreak(today)`: the run now and the longest (09-diary D12),
-  /// persisting any grace days the current run spends (D8).
-  Future<NitnemStreak> nitnemStreak() async {
+  /// `hazriStreak(today)`: the run of hazri days now and the longest
+  /// (09-diary D12), persisting any grace days the current run spends (D8).
+  ///
+  /// A hazri day is any paath or 5 minutes of Naam Simran (`hazriFrom`), so
+  /// Ardas, Sukhmani Sahib and a sitting count; before 2026-10-10 only a
+  /// Nitnem bani did (D9).
+  Future<HazriStreak> hazriStreak() async {
     final completions = await allCompletions();
-    final nitnemDays = <String>{
-      for (final c in completions)
-        if (c.slot != BaniSlotValue.none) c.localDate,
+    final sittings = await allSittings();
+    final hazriDays = <String>{
+      for (final c in completions) c.localDate,
+      for (final s in sittings)
+        if (s.durationS >= GoalConstants.hazriSimranMinSeconds) s.localDate,
     };
     final grace = await _db.select(_db.graceDays).get();
     final result = StreakCalculator.compute(
-      nitnemDays: nitnemDays,
+      countedDays: hazriDays,
       existingGraceDays: {for (final g in grace) g.localDate},
       today: _clock.today(),
     );
@@ -708,11 +718,11 @@ class UserRepository {
       for (final g in grace) g.localDate,
       for (final d in result.graceUsed) localDateKey(d),
     };
-    final longest = StreakCalculator.longest(nitnemDays: nitnemDays, graceDays: allGrace);
-    return NitnemStreak(
+    final longest = StreakCalculator.longest(countedDays: hazriDays, graceDays: allGrace);
+    return HazriStreak(
       current: result.days,
       longest: math.max(longest, result.days),
-      days: {...nitnemDays},
+      days: {...hazriDays},
     );
   }
 
@@ -767,15 +777,15 @@ class MonthRows {
 
 /// The two numbers of the streak cards (05-today T12, 09-diary D12).
 @immutable
-class NitnemStreak {
-  const NitnemStreak({required this.current, required this.longest, this.days = const {}});
+class HazriStreak {
+  const HazriStreak({required this.current, required this.longest, this.days = const {}});
 
-  static const zero = NitnemStreak(current: 0, longest: 0);
+  static const zero = HazriStreak(current: 0, longest: 0);
 
   final int current;
   final int longest;
 
-  /// Every Nitnem day, so the week strip can light its dots.
+  /// Every hazri day, so the week strip can light its dots.
   final Set<String> days;
 }
 

@@ -240,16 +240,29 @@ void main() {
   });
 
   group('the streak (09-diary D12)', () {
-    test('counts Nitnem days only; Sukhmani marks hazri and not the streak (D9)', () async {
+    test('counts hazri days: Sukhmani and a 5-minute sitting extend it (D9)', () async {
       for (var day = 1; day <= 3; day++) {
         clock.instant = d(10, day);
         await read('JAPJ');
       }
       clock.instant = d(10, 4);
       await repo.logCompletion(baniId: 'SUKH', slot: BaniSlotValue.none, source: CompletionSource.reader);
-      final s = await repo.nitnemStreak();
-      expect(s.current, 3);
-      expect(s.longest, 3);
+      clock.instant = d(10, 5);
+      await sit(300);
+      final s = await repo.hazriStreak();
+      expect(s.current, 5);
+      expect(s.longest, 5);
+    });
+
+    test('a sitting under 5 minutes marks no hazri and does not count (D9)', () async {
+      clock.instant = d(10, 1);
+      await read('JAPJ');
+      clock.instant = d(10, 2);
+      await read('JAPJ');
+      clock.instant = d(10, 3);
+      await sit(299);
+      // Day 3 has no hazri: the run is the one ending yesterday.
+      expect((await repo.hazriStreak()).current, 2);
     });
 
     test('longest outlives a broken run', () async {
@@ -261,7 +274,7 @@ void main() {
         clock.instant = d(9, day);
         await read('JAPJ');
       }
-      final s = await repo.nitnemStreak();
+      final s = await repo.hazriStreak();
       expect(s.current, 2);
       expect(s.longest, 4);
     });

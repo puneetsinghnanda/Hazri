@@ -29,10 +29,16 @@ final diaryMonthRowsProvider = StreamProvider<MonthRows>(
 
 /// The streak card's two numbers (D12), recomputed whenever a completion is
 /// written.
-final nitnemStreakProvider = FutureProvider<NitnemStreak>((ref) async {
+final hazriStreakProvider = FutureProvider<HazriStreak>((ref) async {
   ref.watch(_completionsTick);
-  return ref.watch(userRepositoryProvider).nitnemStreak();
+  // A sitting of 5 minutes marks hazri too (D9).
+  ref.watch(_sittingsTick);
+  return ref.watch(userRepositoryProvider).hazriStreak();
 });
+
+final _sittingsTick = StreamProvider<int>(
+  (ref) => ref.watch(userRepositoryProvider).watchSittings().map((s) => s.length),
+);
 
 final _completionsTick = StreamProvider<int>(
   (ref) => ref.watch(userRepositoryProvider).watchCompletions().map((c) => c.length),
@@ -46,7 +52,7 @@ final firstRecordedDayProvider = FutureProvider<String?>((ref) async {
 
 /// Grace days spent, for the grid's quiet label (Y-j).
 final graceDaysProvider = FutureProvider<Set<String>>((ref) async {
-  await ref.watch(nitnemStreakProvider.future);
+  await ref.watch(hazriStreakProvider.future);
   return ref.watch(userRepositoryProvider).graceDayKeys();
 });
 
@@ -64,7 +70,7 @@ class DiaryScreen extends ConsumerWidget {
     final dates = HazriDates.of(context);
     final month = ref.watch(diaryMonthProvider);
     final rows = ref.watch(diaryMonthRowsProvider).value;
-    final streak = ref.watch(nitnemStreakProvider).value ?? NitnemStreak.zero;
+    final streak = ref.watch(hazriStreakProvider).value ?? HazriStreak.zero;
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -144,7 +150,7 @@ class DiaryScreen extends ConsumerWidget {
 class DiaryStreakCard extends StatelessWidget {
   const DiaryStreakCard({super.key, required this.streak});
 
-  final NitnemStreak streak;
+  final HazriStreak streak;
 
   @override
   Widget build(BuildContext context) {

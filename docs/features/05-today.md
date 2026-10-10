@@ -42,8 +42,8 @@ call to action does not know about goals.
 | --- | --- | --- | --- |
 | 1 | App bar: menu, the Hazri mark and name, a person icon opening `/profile`; under them the greeting (`Welcome, {name}` in `ProfileLoaded`, else `Welcome`) and the date | Always | T11, T8, `01-accounts.md` §8.4 |
 | 2 | `ProfileBanner`: "Set up your profile" | Only in `ProfileNone` or `ProfileUnavailable`. Not dismissible | `01-accounts.md` §8.4 |
-| 3 | Hazri banner | Always | T1 |
-| 4 | Streak card | When the Nitnem streak is 2 days or more | T12 |
+| 3 | Hazri banner | Always, unless marked and closed for the day | T1, T1a |
+| 4 | Streak card | When the hazri streak is 2 days or more | T12 |
 | 5 | Set Goal card, or the goal widget | Always, one or the other | `04-goals.md` §7.1 |
 | 6 | Call to action | When `content.db` has a bani to offer | T4 |
 | 7 | Vichar card | When the dataset has a line for the date | T6 |
@@ -58,7 +58,14 @@ menu (`08-sangat.md` §8.1).
 no profile, the profile banner sit above it. It reads only
 `hazri(today)` (`04-goals.md` HZ1–HZ4: any completion, or a sitting of 300
 seconds or more). It needs no profile, no network and no goal, and it is never
-hidden.
+hidden before it is marked.
+
+**T1a. A marked banner can be closed for the day** (owner, 2026-10-10). Once
+today's hazri is marked the banner carries a close button (`actionClose`).
+Closing it folds the banner away in about 300 ms and the cards below move up
+with it; the day is kept in `hazri_banner_closed_v1` (a local date key), so it
+stays closed through restarts that day. The next day it is back, unmarked. An
+unmarked banner has no close button.
 
 **T2. One banner of each kind, none stacking.** The profile banner shows only
 without a profile and goes the moment one exists. The join-the-sangat banner is
@@ -118,11 +125,11 @@ other tab keeps its own tab header.
 
 **T12. The streak card** (owner, 2026-10-07: canvas option Streak 3). Under the
 hazri banner, a card with the number of days (`todayStreakDays`, e.g. "12") over
-`todayStreakCaption` ("days of Nitnem in a row"), and a strip of the last seven
+`todayStreakCaption` ("days of Hazri in a row", owner 2026-10-10), and a strip of the last seven
 days: a weekday initial over a dot, saffron for a day that counts toward the
 streak and unlit otherwise, today's dot ringed. Tapping it opens the Diary.
 
-- The number is `current` from `nitnemStreak(today)` (`09-diary.md` D12), the same function the Diary uses.
+- The number is `current` from `hazriStreak(today)` (`09-diary.md` D12), the same function the Diary uses.
 - The card is shown only when `current` is 2 or more. Below that it is not shown at all: no "0 days", no "1 day", and nothing said when a streak ends.
 - A grace day keeps the count going and its dot is unlit, saying nothing (`09-diary.md` D8).
 - Today's dot lights the moment today's Nitnem is done; until then the count is the streak through yesterday.
@@ -180,7 +187,7 @@ streak and unlit otherwise, today's dot ringed. Tapping it opens the Diary.
 | --- | --- |
 | `appBarTitle` | Hazri |
 | `todayStreakDays` | {count} (the number alone, formatted for the language) |
-| `todayStreakCaption` | days of Nitnem in a row |
+| `todayStreakCaption` | days of Hazri in a row |
 
 Punjabi and Hindi are drafted with the implementation and verified by the
 owner (`01-accounts.md` §13.9).

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/content_repository.dart';
@@ -5,6 +7,7 @@ import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
 import 'package:hazri/features/vichar/ui/vichar_card.dart';
 import 'package:hazri/features/vichar/ui/vichar_screen.dart';
+import 'package:hazri/features/vichar/ui/vichar_share.dart';
 
 import '../app_harness.dart';
 
@@ -74,5 +77,22 @@ void main() {
     await settle(tester);
     expect(find.textContaining('Hukamnama'), findsNothing);
     expect(find.byType(VicharCard), findsOneWidget);
+  });
+
+  test('every share is a new file, and the old ones go', () async {
+    // Android previews a name it has seen from its cache: the same name every
+    // time showed the first, dark card while the cream one was sent.
+    final dir = await Directory.systemTemp.createTemp('vichar');
+    addTearDown(() => dir.delete(recursive: true));
+    File('${dir.path}/vichar.png').writeAsBytesSync([1]);
+    File('${dir.path}/other.png').writeAsBytesSync([1]);
+
+    final a = await writeShareImage(dir, [2], DateTime(2026, 10, 10, 9));
+    final b = await writeShareImage(dir, [3], DateTime(2026, 10, 10, 9, 1));
+
+    expect(a.path, isNot(b.path));
+    final names = dir.listSync().map((f) => f.uri.pathSegments.last).toSet();
+    expect(names, {b.uri.pathSegments.last, 'other.png'});
+    expect(b.readAsBytesSync(), [3]);
   });
 }

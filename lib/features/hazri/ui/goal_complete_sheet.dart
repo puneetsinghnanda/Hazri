@@ -12,7 +12,7 @@ import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_mark.dart';
-import '../../diary/ui/diary_screen.dart' show nitnemStreakProvider;
+import '../../diary/ui/diary_screen.dart' show hazriStreakProvider;
 import '../../goals/data/goals_controller.dart';
 import '../../nitnem/domain/bani.dart';
 import '../data/hazri_controller.dart';
@@ -54,7 +54,7 @@ class _GoalComplete extends ConsumerWidget {
     final items = ref.watch(itemsInScopeTodayProvider);
     final rows = ref.watch(todayRowsProvider).value;
     final banis = ref.watch(banisProvider).value ?? const <Bani>[];
-    final streak = ref.watch(nitnemStreakProvider).value?.current ?? 0;
+    final streak = ref.watch(hazriStreakProvider).value?.current ?? 0;
     final date = [dates.longDate(now), ?nanakshahi?.labelWithYear(l.localeName)].join('  ·  ');
 
     // Each item met today: a bani with the time of its latest paath, Simran

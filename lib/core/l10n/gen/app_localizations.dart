@@ -3828,13 +3828,13 @@ abstract class L {
   /// No description provided for @notifAv4Title.
   ///
   /// In en, this message translates to:
-  /// **'Day {streak} of your Nitnem'**
+  /// **'Day {streak} of your Hazri'**
   String notifAv4Title(int streak);
 
   /// No description provided for @notifAv4Body.
   ///
   /// In en, this message translates to:
-  /// **'{streak} mornings in a row. Today\'s is waiting.'**
+  /// **'{streak} days in a row. Today\'s is waiting.'**
   String notifAv4Body(int streak);
 
   /// No description provided for @notifAv5Title.
@@ -4536,7 +4536,7 @@ abstract class L {
   /// No description provided for @todayStreakCaption.
   ///
   /// In en, this message translates to:
-  /// **'days of Nitnem in a row'**
+  /// **'days of Hazri in a row'**
   String get todayStreakCaption;
 
   /// No description provided for @actionAdd.

@@ -166,7 +166,7 @@ lib/
     widgets/           AppMark, ProgressRing, cards, chips, buttons
   features/<feature>/
     data/              repositories and controllers
-    domain/            models and pure logic (verdictOn, nitnemStreak, evaluateBadges, ReminderPlanner)
+    domain/            models and pure logic (verdictOn, hazriStreak, evaluateBadges, ReminderPlanner)
     ui/                screens and widgets
 ```
 
@@ -179,7 +179,7 @@ thing lives in exactly one place:
 | Question | The one function | Spec |
 |---|---|---|
 | Was today hazri? Were the goals met? | `verdictOn(day, items, completions, sittings)` | `04-goals.md` §4.6 |
-| How long is the Nitnem streak? | `nitnemStreak(day)` → `current`, `longest` | `09-diary.md` D12 |
+| How long is the hazri streak? | `hazriStreak(day)` → `current`, `longest` | `09-diary.md` D9, D12 |
 | Which badges are earned? | `evaluateBadges()` | `12-badges.md` §4.2 |
 | What notifications are due? | `ReminderPlanner.plan(...)` | `02-notifications.md` §6.2 |
 | Who is on the globe, in which colour? | The snapshot split of `07-simran.md` §2.1 | `07-simran.md` |
@@ -599,6 +599,7 @@ added. The *Phase 2* column is the target.
 | `analytics_enabled` | bool | false | Kept, never written in Phase 2 |
 | `goal_complete_sheet_shown_on` | date | — | Kept (`04-goals.md` CE1) |
 | `notif_on_amrit_vela`, `notif_on_goal_reminders`, `notif_on_sikh_calendar`, `notif_on_hazri_nudge`, `notif_on_sangat` | bool | true | **New.** One switch per kind, keyed by its channel (`02-notifications.md` CM7) |
+| `hazri_banner_closed_v1` | String | — | **New** (2026-10-10). The local date the marked hazri banner was closed on (`05-today.md` T1a) |
 | `city_id` | String | `new_delhi` | **Removed.** One city, the profile's; none without a profile (`03-first-run.md` CY1–CY3) |
 | `simran_minutes` | int | 5 | **Removed.** The sitting is 5 minutes or the goal item's minutes (`07-simran.md` S-7) |
 | `exact_alarm_asked` | bool | false | **Removed.** Exact alarms are never asked (`02-notifications.md` DP2) |

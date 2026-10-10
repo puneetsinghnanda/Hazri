@@ -67,7 +67,7 @@ Around it:
   for as long as they choose, and Naam Simran by the minute — judged
   separately from hazri.
 - **A Diary** of every day: hazri and goal at a glance, every paath listed,
-  and the Nitnem streak, told gently.
+  and the hazri streak, told gently.
 - **Simran** with a globe of the sangat: everybody with a profile, by city,
   and who has opened the app today.
 - **The Sangat**: groups working together toward one shared goal — three
@@ -208,7 +208,7 @@ merged.
 |---|---|---|---|
 | **Hazri** | One completed bani, or one Naam Simran sitting of 5 minutes or more, on a local day | Nothing: no goal, no profile, no network | Today's hazri banner; the Diary's orange dot |
 | **Goal** | Every goal item in scope that day met (its bani × its times a day; Simran for its minutes) | A goal the reader set | Today's goal widget; the Diary's green dot |
-| **Nitnem streak** | Consecutive days with a Nitnem bani; grace days silent | Nothing | Today's streak card from 2 days; the Diary's now-and-longest card |
+| **Hazri streak** | Consecutive days with hazri marked (any paath, or 5 minutes of Naam Simran; owner 2026-10-10); grace days silent | Nothing | Today's streak card from 2 days; the Diary's now-and-longest card |
 | **Badges** | Totals of days and milestones, never runs | Nothing (two need a profile) | The profile, the menu, the Badges page |
 | **Sangat** | Each paath of a group's bani, or each minute of Naam Simran for a Simran group, counted toward the group | Joining a group | The Sangat tab |
 
@@ -500,9 +500,9 @@ running), 90 (no profile). Data: ARCHITECTURE §5.5, §6.2.*
   at most 3 Diary additions a day per group (D7).
 - **The streak card** (design 87, option 2, chosen 2026-10-07): **days in a
   row now** in saffron, a rule, **your longest**. When "now" is under 2 only
-  "longest" shows; when both are, no card. From `nitnemStreak(day)`, the same
-  function Today's card calls. Ardas and Sukhmani Sahib mark hazri and do not
-  extend the Nitnem streak (D9, D12).
+  "longest" shows; when both are, no card. From `hazriStreak(day)`, the same
+  function Today's card calls. It counts hazri days, so Ardas, Sukhmani Sahib
+  and a 5-minute sitting extend it (D9, D12; owner, 2026-10-10).
 - **Grace days** — two a month — are granted silently and never mentioned
   (D8).
 - No diary-sync switch: the weekly backup replaces it (D11). Everything works
@@ -1034,7 +1034,7 @@ The order is dependency, not preference: each step needs the ones before it.
   `completions` and `simranSessions` with `source`, `updatedAt`,
   `deletedAt`; `goal_ticks` folded in and dropped; the `reminders` table
   dropped. A migration test on real-shaped v4 rows.
-- *Add:* `verdictOn`, `nitnemStreak`, `completeBani` as the only insert path;
+- *Add:* `verdictOn`, `hazriStreak`, `completeBani` as the only insert path;
   the Goals screen, the Add goal and Edit item sheets, the goal-complete
   sheet; the Diary month with two dots and the streak card (87); the day
   screen with + and − (56); goal-bani reminders.
@@ -1151,7 +1151,7 @@ and which step removes it.
 ## 12. Testing
 
 - **Unit:** every numbered rule at its boundary and one past it, from rows in
-  an in-memory `user.db`; `verdictOn`, `nitnemStreak`, `evaluateBadges`, the
+  an in-memory `user.db`; `verdictOn`, `hazriStreak`, `evaluateBadges`, the
   notification planner; solar times, the Nanakshahi date, the timing lookup.
 - **Agreement:** one test feeds Today, Goals, the Diary grid and the day
   screen the same rows and checks they agree.

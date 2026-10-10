@@ -20,8 +20,8 @@ import '../data/today_controller.dart';
 import '../../../app/menu_sheet.dart';
 import '../../hazri/ui/hazri_banner.dart';
 import '../domain/today_state.dart';
-import '../../diary/ui/diary_screen.dart' show nitnemStreakProvider;
-import '../../../core/db/user_repository.dart' show NitnemStreak;
+import '../../diary/ui/diary_screen.dart' show hazriStreakProvider;
+import '../../../core/db/user_repository.dart' show HazriStreak;
 import '../../../core/widgets/app_mark.dart';
 import 'package:intl/intl.dart';
 import '../../goals/data/goals_controller.dart';
@@ -45,7 +45,7 @@ class TodayScreen extends ConsumerWidget {
     final c = context.colors;
     final profile = ref.watch(profileControllerProvider);
     final hasBanner = profile is ProfileNone || profile is ProfileUnavailable;
-    final streak = ref.watch(nitnemStreakProvider).value;
+    final streak = ref.watch(hazriStreakProvider).value;
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -168,7 +168,7 @@ class _TodayAppBar extends ConsumerWidget {
 class _StreakCard extends ConsumerWidget {
   const _StreakCard({required this.streak});
 
-  final NitnemStreak streak;
+  final HazriStreak streak;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

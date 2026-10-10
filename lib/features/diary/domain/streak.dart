@@ -11,7 +11,7 @@ class StreakResult {
     required this.graceLeftThisMonth,
   });
 
-  /// Consecutive Nitnem days, ending today or yesterday.
+  /// Consecutive hazri days, ending today or yesterday.
   final int days;
 
   /// Missed days the streak forgave, oldest first. These are persisted so the
@@ -24,8 +24,8 @@ class StreakResult {
 
 /// The gentle streak and its grace days (PRD 1.9).
 ///
-/// A Nitnem day is any day with at least one completed Nitnem bani. The streak
-/// is the run of Nitnem days ending today or yesterday; a single missed day
+/// A day counts when it has hazri (09-diary D9, since 2026-10-10). The streak
+/// is the run of such days ending today or yesterday; a single missed day
 /// inside the run is bridged by a grace day if that day's calendar month still
 /// has one of its two left. Grace days bridge a gap but do not add to the
 /// count, and nothing here ever produces a warning.
@@ -36,7 +36,7 @@ abstract final class StreakCalculator {
   static const int _maxLookbackDays = 3650;
 
   static StreakResult compute({
-    required Set<String> nitnemDays,
+    required Set<String> countedDays,
     required Set<String> existingGraceDays,
     required DateTime today,
   }) {
@@ -56,9 +56,9 @@ abstract final class StreakCalculator {
     // The streak may end today or yesterday; anything older is broken. Today
     // is never forgiven on the fly -- the day is not over yet.
     final DateTime cursor0;
-    if (nitnemDays.contains(todayKey) || existingGraceDays.contains(todayKey)) {
+    if (countedDays.contains(todayKey) || existingGraceDays.contains(todayKey)) {
       cursor0 = today;
-    } else if (nitnemDays.contains(localDateKey(yesterday))) {
+    } else if (countedDays.contains(localDateKey(yesterday))) {
       cursor0 = yesterday;
     } else {
       return StreakResult(days: 0, graceUsed: const [], graceLeftThisMonth: graceLeft());
@@ -70,7 +70,7 @@ abstract final class StreakCalculator {
 
     for (var i = 0; i < _maxLookbackDays; i++) {
       final key = localDateKey(cursor);
-      if (nitnemDays.contains(key)) {
+      if (countedDays.contains(key)) {
         days++;
       } else if (existingGraceDays.contains(key)) {
         // Already forgiven on an earlier run: the run continues.
@@ -78,10 +78,10 @@ abstract final class StreakCalculator {
         final m = key.substring(0, 7);
         final spent = used[m] ?? 0;
         if (spent >= gracePerMonth) break;
-        // Only bridge a gap that has a Nitnem day before it, so a fresh install
+        // Only bridge a gap that has a counted day before it, so a fresh install
         // does not spend grace on the empty past.
         final before = localDateKey(cursor.subtract(const Duration(days: 1)));
-        if (!nitnemDays.contains(before)) break;
+        if (!countedDays.contains(before)) break;
         used[m] = spent + 1;
         granted.add(cursor);
       }
@@ -95,19 +95,19 @@ abstract final class StreakCalculator {
     );
   }
 
-  /// The longest run in the history on the phone (09-diary D12): Nitnem days
+  /// The longest run in the history on the phone (09-diary D12): counted days
   /// in a row, with a granted grace day bridging a gap without adding to the
   /// count, exactly as the current run is counted.
-  static int longest({required Set<String> nitnemDays, required Set<String> graceDays}) {
-    if (nitnemDays.isEmpty) return 0;
-    final sorted = nitnemDays.toList()..sort();
+  static int longest({required Set<String> countedDays, required Set<String> graceDays}) {
+    if (countedDays.isEmpty) return 0;
+    final sorted = countedDays.toList()..sort();
     var best = 0;
     var run = 0;
     var cursor = parseLocalDateKey(sorted.first);
     final end = parseLocalDateKey(sorted.last);
     while (!cursor.isAfter(end)) {
       final key = localDateKey(cursor);
-      if (nitnemDays.contains(key)) {
+      if (countedDays.contains(key)) {
         run++;
         if (run > best) best = run;
       } else if (!graceDays.contains(key)) {
