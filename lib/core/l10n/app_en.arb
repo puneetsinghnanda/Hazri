@@ -2130,5 +2130,32 @@
         "type": "String"
       }
     }
-  }
+  },
+  "profileYourTitle": "Your profile",
+  "profileStatHazriDays": "{count, plural, =1{day of Hazri} other{days of Hazri}}",
+  "profileStatInARow": "in a row",
+  "profileStatBadges": "{count, plural, =1{badge earned} other{badges earned}}",
+  "profilePhoneNotProvided": "Phone not provided",
+  "profilePrivacyLine": "Your email is never shown to anyone in the app. Your city is one dot on the Simran globe, and nothing finer.",
+  "profileEditTodayIn": "Today in {city}",
+  "@profileEditTodayIn": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "profileEditChangedFrom": "Changed from {city}",
+  "@profileEditChangedFrom": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "profileEditSunrise": "Sunrise",
+  "profileEditSunset": "Sunset",
+  "profileEditCityHelp": "Your sunrise times on Today and your dot on the Simran globe follow it.",
+  "profileEditNameHelp": "2 to 50 letters. Spaces, full stops, apostrophes and hyphens are fine.",
+  "profileEditEmailHelp": "A new email takes over only once you confirm it from the link we send."
 }

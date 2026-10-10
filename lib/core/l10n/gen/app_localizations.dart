@@ -6165,6 +6165,84 @@ abstract class L {
   /// In en, this message translates to:
   /// **'and {count} more'**
   String sangatAndMore(String count);
+
+  /// No description provided for @profileYourTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile'**
+  String get profileYourTitle;
+
+  /// No description provided for @profileStatHazriDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{day of Hazri} other{days of Hazri}}'**
+  String profileStatHazriDays(num count);
+
+  /// No description provided for @profileStatInARow.
+  ///
+  /// In en, this message translates to:
+  /// **'in a row'**
+  String get profileStatInARow;
+
+  /// No description provided for @profileStatBadges.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{badge earned} other{badges earned}}'**
+  String profileStatBadges(num count);
+
+  /// No description provided for @profilePhoneNotProvided.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone not provided'**
+  String get profilePhoneNotProvided;
+
+  /// No description provided for @profilePrivacyLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is never shown to anyone in the app. Your city is one dot on the Simran globe, and nothing finer.'**
+  String get profilePrivacyLine;
+
+  /// No description provided for @profileEditTodayIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Today in {city}'**
+  String profileEditTodayIn(String city);
+
+  /// No description provided for @profileEditChangedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed from {city}'**
+  String profileEditChangedFrom(String city);
+
+  /// No description provided for @profileEditSunrise.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
+  String get profileEditSunrise;
+
+  /// No description provided for @profileEditSunset.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset'**
+  String get profileEditSunset;
+
+  /// No description provided for @profileEditCityHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Your sunrise times on Today and your dot on the Simran globe follow it.'**
+  String get profileEditCityHelp;
+
+  /// No description provided for @profileEditNameHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'2 to 50 letters. Spaces, full stops, apostrophes and hyphens are fine.'**
+  String get profileEditNameHelp;
+
+  /// No description provided for @profileEditEmailHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A new email takes over only once you confirm it from the link we send.'**
+  String get profileEditEmailHelp;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

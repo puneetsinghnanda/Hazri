@@ -1040,5 +1040,18 @@
   "sangatSitFor": "{paath} के लिए बैठें",
   "sangatMembersHeading": "सदस्य",
   "sangatMembersAtoZ": "{count} · वर्णक्रम में",
-  "sangatAndMore": "और {count} अन्य"
+  "sangatAndMore": "और {count} अन्य",
+  "profileYourTitle": "आपकी प्रोफ़ाइल",
+  "profileStatHazriDays": "{count, plural, =1{दिन हाज़िरी} other{दिन हाज़िरी}}",
+  "profileStatInARow": "लगातार",
+  "profileStatBadges": "{count, plural, =1{बैज मिला} other{बैज मिले}}",
+  "profilePhoneNotProvided": "फ़ोन नहीं दिया",
+  "profilePrivacyLine": "आपका ईमेल ऐप में कभी किसी को नहीं दिखाया जाता। आपका शहर सिमरन ग्लोब पर बस एक बिंदु है, इससे ज़्यादा कुछ नहीं।",
+  "profileEditTodayIn": "आज {city} में",
+  "profileEditChangedFrom": "{city} से बदला",
+  "profileEditSunrise": "सूर्योदय",
+  "profileEditSunset": "सूर्यास्त",
+  "profileEditCityHelp": "आज स्क्रीन पर सूर्योदय के समय और सिमरन ग्लोब पर आपका बिंदु इसी शहर के हिसाब से चलते हैं।",
+  "profileEditNameHelp": "2 से 50 अक्षर। स्पेस, पूर्ण विराम, एपॉस्ट्रॉफ़ी और हाइफ़न चल सकते हैं।",
+  "profileEditEmailHelp": "नया ईमेल तभी लागू होता है जब आप हमारे भेजे लिंक से उसकी पुष्टि करते हैं।"
 }

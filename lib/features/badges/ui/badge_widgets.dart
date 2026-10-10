@@ -154,7 +154,10 @@ Future<void> showBadgeEarnedSheet(BuildContext context, BadgeId badge) => showMo
       },
     );
 
-/// UI5, design 98: the profile's Badges section, all ten five to a row.
+/// UI5, design 100 (owner 2026-10-10, replacing 98): the profile's Badges
+/// card. All ten stand five to a row on two shelves, with their names,
+/// earned in kesri and the rest grey; a tap opens the badge (UI4), "See all
+/// 10" the Badges page (UI2).
 class ProfileBadgesSection extends ConsumerWidget {
   const ProfileBadgesSection({super.key});
 
@@ -163,44 +166,109 @@ class ProfileBadgesSection extends ConsumerWidget {
     final c = context.colors;
     final l = L.of(context);
     final earned = earnedIds(ref.watch(earnedBadgesProvider).value ?? const []);
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: HazriCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
+
+    Widget cell(BadgeId b) {
+      final on = earned.contains(b);
+      return Semantics(
+        button: true,
+        label: on ? b.latin : '${b.latin}, ${l.badgeNotYet}',
+        excludeSemantics: true,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => context.push(Routes.badge(b.id)),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(l.badgesTitle, style: HazriText.bodyStrong.copyWith(color: c.ink)),
-                const Spacer(),
-                TextButton(onPressed: () => context.push(Routes.badges), child: Text(l.badgesSeeAll)),
-              ],
-            ),
-            GridView.count(
-              crossAxisCount: 5,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: 0.72,
-              children: [
-                for (final b in BadgeId.values)
-                  InkWell(
-                    onTap: () => context.push(Routes.badge(b.id)),
-                    child: Column(
-                      children: [
-                        BadgeEmblem(badge: b, earned: earned.contains(b), size: 46),
-                        const SizedBox(height: 4),
-                        Text(b.latin,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: HazriText.caption.copyWith(
-                                fontSize: 10.5, color: earned.contains(b) ? c.ink : c.muted)),
-                      ],
+                BadgeEmblem(badge: b, earned: on, size: 46),
+                const SizedBox(height: 4),
+                // One line, held to one height, so the names line up on the
+                // shelf even where a long one is scaled down to fit.
+                SizedBox(
+                  height: 15,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      b.latin,
+                      maxLines: 1,
+                      style: HazriText.caption.copyWith(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        height: 1.3,
+                        color: on ? c.ink : c.ink2,
+                      ),
                     ),
                   ),
+                ),
               ],
             ),
-          ],
+          ),
         ),
+      );
+    }
+
+    Widget shelf(List<BadgeId> row) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  for (var i = 0; i < row.length; i++) ...[
+                    if (i > 0) const SizedBox(width: 4),
+                    Expanded(child: cell(row[i])),
+                  ],
+                ],
+              ),
+            ),
+            // The shelf the five stand on.
+            DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [c.card2, Color.alphaBlend(c.ink.withValues(alpha: 0.06), c.card2)],
+                ),
+                boxShadow: const [BoxShadow(color: Color(0x141B1D3A), blurRadius: 6, offset: Offset(0, 3))],
+              ),
+              child: const SizedBox(height: 8),
+            ),
+          ],
+        );
+
+    const all = BadgeId.values;
+    return HazriCard(
+      padding: const EdgeInsets.fromLTRB(14, 6, 14, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(l.badgesTitle, style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 16)),
+              ),
+              TextButton(
+                onPressed: () => context.push(Routes.badges),
+                style: TextButton.styleFrom(
+                  foregroundColor: c.kesriInk,
+                  minimumSize: const Size(0, 44),
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                ),
+                child: Text(
+                  l.badgesSeeAll,
+                  style: HazriText.bodySmall.copyWith(fontSize: 14, fontWeight: FontWeight.w700, color: c.kesriInk),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          shelf(all.sublist(0, 5)),
+          const SizedBox(height: 10),
+          shelf(all.sublist(5)),
+        ],
       ),
     );
   }

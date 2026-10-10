@@ -9,6 +9,7 @@ import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
+import 'profile_icons.dart';
 
 /// The offline city picker of Profile Setup and Edit profile
 /// (`01-accounts.md` §13 D9, `03-first-run.md` CY1). The list ships with the
@@ -114,7 +115,7 @@ class _CityPickerSheetState extends ConsumerState<_CityPickerSheet> {
                     fillColor: c.card2,
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(12),
-                      child: AppIcon(HazriIconData.eye, size: 20, color: c.muted),
+                      child: AppIcon(ProfileIcons.search, size: 20, color: c.muted),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(HazriRadius.button),

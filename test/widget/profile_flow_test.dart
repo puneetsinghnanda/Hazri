@@ -115,7 +115,9 @@ void main() {
       expect(find.text(l.profileNotVerified), findsOneWidget);
       expect(find.text(l.profileChangeEmail), findsOneWidget);
       expect(find.text(l.profileConfirmEmail), findsOneWidget);
-      expect(find.text(l.profileNotProvided), findsOneWidget);
+      // Design 100: the phone is said on the backup line.
+      expect(find.textContaining(l.profilePhoneNotProvided), findsOneWidget);
+      expect(find.text(l.profileYourTitle), findsOneWidget);
     });
 
     testWidgets('verified: no Change email under the row, no Confirm button', (tester) async {

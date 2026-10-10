@@ -296,21 +296,21 @@ Calls refresh() (GET /profile) in initState and again every time a route pushed 
 
 - ProfileLoading (no cache) → centered CircularProgressIndicator.
 
-- ProfileLoaded → rows: Name, Email, Phone (value or Not provided), City, Email status = Verified (green, Icons.verified) or Not verified (orange). While a refresh is running show a LinearProgressIndicator at the top.
+- ProfileLoaded → the layout of design 100 ("identity card and badge shelf", chosen by the owner 2026-10-10, replacing 98), titled `profileYourTitle` (Your profile). From the top: a navy identity card with the Hazri mark, the name, the city with a pin, and the email with its state (`profileVerified` in green with a tick, or `profileNotVerified` in saffron), then under a rule three numbers: days of Hazri in all (`profileStatHazriDays`, every day that counts for hazri, `09-diary`), days in a row now (`profileStatInARow`, the current hazri streak) and badges earned (`profileStatBadges`); the Badges card (below); `profileEditButton` and `backupNowButton` side by side; one quiet line, the backup's line (`10-backup.md` §8.2) and the phone after a middle dot (the number, or `profilePhoneNotProvided`); `restoreDataButton` as a text button; and the privacy line `profilePrivacyLine` with a shield. While a refresh is running show a LinearProgressIndicator at the top.
 
   - isStale == true after the refresh finished → banner text Showing saved details. Couldn't refresh your email status. with button Retry → refresh().
 
-  - emailVerified == false → button Confirm my email → POST /profile/verification-email: 200 → /email-sent (VERIFY_EMAIL); 409 EMAIL_ALREADY_VERIFIED → refresh(); 429 → rate-limit SnackBar; 404 NO_PROFILE → markNone(); network/other → matching SnackBar.
+  - emailVerified == false → button Confirm my email, inside the identity card under the email → POST /profile/verification-email: 200 → /email-sent (VERIFY_EMAIL); 409 EMAIL_ALREADY_VERIFIED → refresh(); 429 → rate-limit SnackBar; 404 NO_PROFILE → markNone(); network/other → matching SnackBar.
 
 - ProfileNone → text No profile found and button Set up profile → /profile-setup.
 
 - ProfileUnavailable → text Couldn't load your profile. with buttons Retry (→ refresh()) and Set up profile (→ /profile-setup).
 
-**Change email (Req 10):** when ProfileLoaded and emailVerified == false, show a TextButton labelled Change email directly under the Email row. It opens the Change Email dialog (8.11). Hidden when the email is verified. *(Amended: a verified email is changed through Edit profile, §13 D11.)*
+**Change email (Req 10):** when ProfileLoaded and emailVerified == false, show a TextButton labelled Change email directly under the email, beside Confirm my email in the identity card. It opens the Change Email dialog (8.11). Hidden when the email is verified. *(Amended: a verified email is changed through Edit profile, §13 D11.)*
 
 **Edit profile** *(added, §13 D11)*: when ProfileLoaded, a button `profileEditButton` opens the Edit Profile screen (§13.8).
 
-**Badges** *(added 2026-10-08)*: when ProfileLoaded, a Badges section sits under the profile card and before the Email row (design 98). Its content and taps are `12-badges.md` UI5; the menu header's row of badges is UI6.
+**Badges** *(added 2026-10-08; design 100 from 2026-10-10)*: when ProfileLoaded, the Badges card sits under the identity card and above the buttons. Its content and taps are `12-badges.md` UI5; the menu header's row of badges is UI6.
 
 ### 8.8 Email Exists dialog and restore request (Req 8)
 
@@ -684,7 +684,11 @@ A-1 it has no task to match against, and the affinity is the missing line.
 
 ### 13.8 Edit profile (D11)
 
-**Screen.** `/profile-edit`, opened from the Profile screen in `ProfileLoaded`. App bar `profileEditTitle`. Three fields, pre-filled: Name (validated as §5), City (the same picker as §8.5) and Email (read-only text with a `profileChangeEmail` button under it). Button `profileEditSave`, enabled only when the name or city differs from the profile.
+**Screen.** `/profile-edit`, opened from the Profile screen in `ProfileLoaded`. App bar `profileEditTitle`. The layout is design 101 (chosen by the owner 2026-10-10):
+
+1. A first card, `profileEditTodayIn` with the city chosen in the field below: today's sunrise and sunset there (`profileEditSunrise`, `profileEditSunset`), worked out on the phone with the same `SolarService` as Today, so it needs no network; the chip `profileEditChangedFrom` with the saved city, shown only while the field differs from the saved city; and `profileEditCityHelp`.
+2. A second card with three outlined fields, labels on the border, pre-filled: Name (validated as §5, helper `profileEditNameHelp`), City (the same picker as §8.5) and Email (read-only: the address, a small green verified mark when it is verified, and `profileChangeEmail` inside the same row), with `profileEditEmailHelp` under it. A verified email carries no warning; a pending change shows `profileEmailPending` quietly under the address.
+3. Button `profileEditSave` at the foot, enabled only when the name or city differs from the profile.
 
 **Name and city: `PATCH /api/v1/profile`.** Request `{ "name"?: "...", "cityId"?: "..." }`.
 
@@ -700,11 +704,13 @@ A-1 it has no task to match against, and the affinity is the missing line.
     2. Until the link is opened, `email`, `emailVerified` and restore all stay on the old address.
     3. `POST /api/v1/tokens/verify` with a `CHANGE_EMAIL` token: if it is still the newest and `pendingEmailNormalized` matches, set `email` and `emailNormalized` to the pending address, delete the old `emailIndex` document, clear the pending fields, keep `emailVerified` = true, set `emailVerifiedAt`, supersede every other ACTIVE token, and return `200 { "result": "EMAIL_CHANGED", "purpose": "CHANGE_EMAIL", "isOwner": ..., "profile": <DTO if owner> }`. Expired, used or replaced links behave as §6.5.
     4. A second change request before the first is confirmed releases the first reserved `emailIndex` document and replaces the pending address.
-    5. The Profile screen shows `profileEmailPending` with the pending address under the Email row until it is confirmed.
+    5. The Profile screen shows `profileEmailPending` with the pending address under the email in the identity card until it is confirmed.
 
 **New profile fields:** `pendingEmail` and `pendingEmailNormalized` (string, nullable, null when nothing is pending). The DTO gains `pendingEmail`.
 
-**Strings:** `profileEditButton` Edit profile · `profileEditTitle` Edit profile · `profileEditSave` Save changes · `profileChangeEmail` Change email · `profileEmailPending` Waiting for you to confirm {email} · `profileUpdated` Profile updated.
+**Strings:** `profileEditButton` Edit profile · `profileEditTitle` Edit profile · `profileEditSave` Save changes · `profileChangeEmail` Change email · `profileEmailPending` Waiting for you to confirm {email} · `profileUpdated` Profile updated · `profileEditTodayIn` Today in {city} · `profileEditChangedFrom` Changed from {city} · `profileEditSunrise` Sunrise · `profileEditSunset` Sunset · `profileEditCityHelp` Your sunrise times on Today and your dot on the Simran globe follow it. · `profileEditNameHelp` 2 to 50 letters. Spaces, full stops, apostrophes and hyphens are fine. · `profileEditEmailHelp` A new email takes over only once you confirm it from the link we send.
+
+**Profile screen strings (design 100):** `profileYourTitle` Your profile · `profileStatHazriDays` day / days of Hazri · `profileStatInARow` in a row · `profileStatBadges` badge / badges earned · `profilePhoneNotProvided` Phone not provided · `profilePrivacyLine` Your email is never shown to anyone in the app. Your city is one dot on the Simran globe, and nothing finer.
 
 **Scenarios**
 
