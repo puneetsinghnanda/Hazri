@@ -45,6 +45,10 @@ class HazriDates {
   String time(DateTime d) =>
       DateFormat(use24Hour ? 'HH:mm' : 'h:mm a', _intlLocale).format(d);
 
+  /// "8:00:15 PM" or "20:00:15", for Diagnostics, where seconds matter.
+  String timeSeconds(DateTime d) =>
+      DateFormat(use24Hour ? 'HH:mm:ss' : 'h:mm:ss a', _intlLocale).format(d);
+
   /// "8 PM" or "20:00" — the compact form used on the day arc.
   String timeCompact(DateTime d) {
     if (use24Hour) return DateFormat('HH:mm', _intlLocale).format(d);

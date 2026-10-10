@@ -3531,4 +3531,38 @@ class LEn extends L {
   @override
   String get profileEditEmailHelp =>
       'A new email takes over only once you confirm it from the link we send.';
+
+  @override
+  String get notifDiagProbeHeading => 'Alarm test';
+
+  @override
+  String get notifDiagProbeExact => 'Android alarm';
+
+  @override
+  String get notifDiagProbeClock => 'Alarm-clock alarm';
+
+  @override
+  String get notifDiagProbeButton => 'Test two alarms in about a minute';
+
+  @override
+  String get notifDiagProbeNever => 'Not tried yet';
+
+  @override
+  String notifDiagProbeWaiting(String set) {
+    return 'Set for $set · not arrived yet';
+  }
+
+  @override
+  String notifDiagProbeArrived(String set, String arrived) {
+    return 'Set for $set · arrived $arrived';
+  }
+
+  @override
+  String get notifDiagProbeTitle => 'Hazri alarm test';
+
+  @override
+  String get notifDiagBatteryAllow => 'Let Hazri run in the background';
+
+  @override
+  String get notifDiagRefresh => 'Refresh';
 }

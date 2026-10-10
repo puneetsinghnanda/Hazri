@@ -2157,5 +2157,32 @@
   "profileEditSunset": "Sunset",
   "profileEditCityHelp": "Your sunrise times on Today and your dot on the Simran globe follow it.",
   "profileEditNameHelp": "2 to 50 letters. Spaces, full stops, apostrophes and hyphens are fine.",
-  "profileEditEmailHelp": "A new email takes over only once you confirm it from the link we send."
+  "profileEditEmailHelp": "A new email takes over only once you confirm it from the link we send.",
+  "notifDiagProbeHeading": "Alarm test",
+  "notifDiagProbeExact": "Android alarm",
+  "notifDiagProbeClock": "Alarm-clock alarm",
+  "notifDiagProbeButton": "Test two alarms in about a minute",
+  "notifDiagProbeNever": "Not tried yet",
+  "notifDiagProbeWaiting": "Set for {set} · not arrived yet",
+  "@notifDiagProbeWaiting": {
+    "placeholders": {
+      "set": {
+        "type": "String"
+      }
+    }
+  },
+  "notifDiagProbeArrived": "Set for {set} · arrived {arrived}",
+  "@notifDiagProbeArrived": {
+    "placeholders": {
+      "set": {
+        "type": "String"
+      },
+      "arrived": {
+        "type": "String"
+      }
+    }
+  },
+  "notifDiagProbeTitle": "Hazri alarm test",
+  "notifDiagBatteryAllow": "Let Hazri run in the background",
+  "notifDiagRefresh": "Refresh"
 }

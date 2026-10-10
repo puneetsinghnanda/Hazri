@@ -6243,6 +6243,66 @@ abstract class L {
   /// In en, this message translates to:
   /// **'A new email takes over only once you confirm it from the link we send.'**
   String get profileEditEmailHelp;
+
+  /// No description provided for @notifDiagProbeHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm test'**
+  String get notifDiagProbeHeading;
+
+  /// No description provided for @notifDiagProbeExact.
+  ///
+  /// In en, this message translates to:
+  /// **'Android alarm'**
+  String get notifDiagProbeExact;
+
+  /// No description provided for @notifDiagProbeClock.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm-clock alarm'**
+  String get notifDiagProbeClock;
+
+  /// No description provided for @notifDiagProbeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Test two alarms in about a minute'**
+  String get notifDiagProbeButton;
+
+  /// No description provided for @notifDiagProbeNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Not tried yet'**
+  String get notifDiagProbeNever;
+
+  /// No description provided for @notifDiagProbeWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Set for {set} · not arrived yet'**
+  String notifDiagProbeWaiting(String set);
+
+  /// No description provided for @notifDiagProbeArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Set for {set} · arrived {arrived}'**
+  String notifDiagProbeArrived(String set, String arrived);
+
+  /// No description provided for @notifDiagProbeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazri alarm test'**
+  String get notifDiagProbeTitle;
+
+  /// No description provided for @notifDiagBatteryAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Let Hazri run in the background'**
+  String get notifDiagBatteryAllow;
+
+  /// No description provided for @notifDiagRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get notifDiagRefresh;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

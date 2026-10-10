@@ -8,6 +8,7 @@ import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/notification_access.dart';
+import '../../../core/platform/alarm_probe.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/reminder_service.dart';
 import '../data/reminders_controller.dart';
@@ -25,6 +26,7 @@ class _Diagnosis {
     required this.pending,
     required this.next,
     required this.last,
+    this.probe,
   });
 
   final bool allowed;
@@ -33,6 +35,9 @@ class _Diagnosis {
   final int pending;
   final List<PlannedNotification> next;
   final String? last;
+
+  /// DP6: the probe alarms set without the plugin.
+  final AlarmProbeResults? probe;
 }
 
 final _diagnosisProvider = FutureProvider.autoDispose<_Diagnosis>((ref) async {
@@ -45,6 +50,7 @@ final _diagnosisProvider = FutureProvider.autoDispose<_Diagnosis>((ref) async {
     pending: await service.pendingCount(),
     next: [for (final n in service.lastPlan) if (n.at.isAfter(now)) n].take(3).toList(),
     last: await service.lastShownTitle(),
+    probe: await ref.read(alarmProbeProvider).results(),
   );
 });
 
@@ -58,6 +64,13 @@ class NotificationDiagnosticsScreen extends ConsumerWidget {
     final d = ref.watch(_diagnosisProvider).value;
     final dates = HazriDates.of(context);
     String yesNo(bool? v) => v == null ? '—' : (v ? l.yes : l.no);
+    String probeLine(DateTime? set, DateTime? fired) {
+      if (set == null) return l.notifDiagProbeNever;
+      final setAt = dates.timeSeconds(set);
+      return fired == null || fired.isBefore(set.subtract(const Duration(seconds: 5)))
+          ? l.notifDiagProbeWaiting(setAt)
+          : l.notifDiagProbeArrived(setAt, dates.timeSeconds(fired));
+    }
 
     Future<void> send({Duration? after}) async {
       final scheduler = ref.read(reminderSchedulerProvider);
@@ -114,7 +127,36 @@ class NotificationDiagnosticsScreen extends ConsumerWidget {
           label: l.notifDiagSendSoon,
           onPressed: () => send(after: const Duration(minutes: 2)),
         ),
+        // DP6: alarms set straight through Android, to tell a phone that
+        // drops Hazri's alarms from a fault in the plugin's path.
+        SettingsSection(
+          title: l.notifDiagProbeHeading,
+          children: [
+            SettingsRow(title: l.notifDiagProbeExact, subtitle: probeLine(d?.probe?.plannedExact, d?.probe?.firedExact)),
+            SettingsRow(title: l.notifDiagProbeClock, subtitle: probeLine(d?.probe?.plannedClock, d?.probe?.firedClock)),
+          ],
+        ),
+        const SizedBox(height: 12),
+        PrimaryButton(
+          label: l.notifDiagProbeButton,
+          secondary: true,
+          onPressed: () async {
+            final probe = ref.read(alarmProbeProvider);
+            await probe.schedule('exact', seconds: 60, title: l.notifDiagProbeTitle, body: l.notifDiagProbeExact);
+            await probe.schedule('clock', seconds: 90, title: l.notifDiagProbeTitle, body: l.notifDiagProbeClock);
+            ref.invalidate(_diagnosisProvider);
+          },
+        ),
+        if (d?.batteryExempt == false) ...[
+          const SizedBox(height: 10),
+          PrimaryButton(
+            label: l.notifDiagBatteryAllow,
+            secondary: true,
+            onPressed: () => ref.read(alarmProbeProvider).openBatterySettings(),
+          ),
+        ],
         const SizedBox(height: 10),
+        TextButton(onPressed: () => ref.invalidate(_diagnosisProvider), child: Text(l.notifDiagRefresh)),
         Text(l.notifNoAds, style: HazriText.caption.copyWith(color: c.muted)),
       ],
     );

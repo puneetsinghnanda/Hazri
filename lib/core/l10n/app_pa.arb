@@ -1053,5 +1053,15 @@
   "profileEditSunset": "ਸੂਰਜ ਡੁੱਬਣਾ",
   "profileEditCityHelp": "ਅੱਜ ਸਕ੍ਰੀਨ ਉੱਤੇ ਸੂਰਜ ਚੜ੍ਹਨ ਦੇ ਸਮੇਂ ਅਤੇ ਸਿਮਰਨ ਗਲੋਬ ਉੱਤੇ ਤੁਹਾਡਾ ਬਿੰਦੂ ਇਸੇ ਸ਼ਹਿਰ ਮੁਤਾਬਕ ਚੱਲਦੇ ਹਨ।",
   "profileEditNameHelp": "2 ਤੋਂ 50 ਅੱਖਰ। ਖਾਲੀ ਥਾਂ, ਬਿੰਦੀ, ਅਪੌਸਟ੍ਰੌਫ਼ੀ ਅਤੇ ਹਾਈਫ਼ਨ ਚੱਲਦੇ ਹਨ।",
-  "profileEditEmailHelp": "ਨਵੀਂ ਈਮੇਲ ਤਦ ਹੀ ਲਾਗੂ ਹੁੰਦੀ ਹੈ ਜਦੋਂ ਤੁਸੀਂ ਸਾਡੇ ਭੇਜੇ ਲਿੰਕ ਤੋਂ ਉਸ ਦੀ ਪੁਸ਼ਟੀ ਕਰਦੇ ਹੋ।"
+  "profileEditEmailHelp": "ਨਵੀਂ ਈਮੇਲ ਤਦ ਹੀ ਲਾਗੂ ਹੁੰਦੀ ਹੈ ਜਦੋਂ ਤੁਸੀਂ ਸਾਡੇ ਭੇਜੇ ਲਿੰਕ ਤੋਂ ਉਸ ਦੀ ਪੁਸ਼ਟੀ ਕਰਦੇ ਹੋ।",
+  "notifDiagProbeHeading": "ਅਲਾਰਮ ਜਾਂਚ",
+  "notifDiagProbeExact": "Android ਅਲਾਰਮ",
+  "notifDiagProbeClock": "ਅਲਾਰਮ-ਘੜੀ ਵਾਲਾ ਅਲਾਰਮ",
+  "notifDiagProbeButton": "ਲਗਭਗ ਇੱਕ ਮਿੰਟ ਵਿੱਚ ਦੋ ਅਲਾਰਮ ਜਾਂਚੋ",
+  "notifDiagProbeNever": "ਅਜੇ ਜਾਂਚ ਨਹੀਂ ਕੀਤੀ",
+  "notifDiagProbeWaiting": "{set} ਲਈ ਲਗਾਇਆ · ਅਜੇ ਨਹੀਂ ਪਹੁੰਚਿਆ",
+  "notifDiagProbeArrived": "{set} ਲਈ ਲਗਾਇਆ · {arrived} ਨੂੰ ਪਹੁੰਚਿਆ",
+  "notifDiagProbeTitle": "ਹਾਜ਼ਰੀ ਅਲਾਰਮ ਜਾਂਚ",
+  "notifDiagBatteryAllow": "ਹਾਜ਼ਰੀ ਨੂੰ ਪਿਛੋਕੜ ਵਿੱਚ ਚੱਲਣ ਦਿਓ",
+  "notifDiagRefresh": "ਤਾਜ਼ਾ ਕਰੋ"
 }

@@ -3514,4 +3514,38 @@ class LHi extends L {
   @override
   String get profileEditEmailHelp =>
       'नया ईमेल तभी लागू होता है जब आप हमारे भेजे लिंक से उसकी पुष्टि करते हैं।';
+
+  @override
+  String get notifDiagProbeHeading => 'अलार्म जाँच';
+
+  @override
+  String get notifDiagProbeExact => 'Android अलार्म';
+
+  @override
+  String get notifDiagProbeClock => 'अलार्म-घड़ी वाला अलार्म';
+
+  @override
+  String get notifDiagProbeButton => 'लगभग एक मिनट में दो अलार्म जाँचें';
+
+  @override
+  String get notifDiagProbeNever => 'अभी जाँच नहीं की';
+
+  @override
+  String notifDiagProbeWaiting(String set) {
+    return '$set के लिए लगाया · अभी नहीं पहुँचा';
+  }
+
+  @override
+  String notifDiagProbeArrived(String set, String arrived) {
+    return '$set के लिए लगाया · $arrived पर पहुँचा';
+  }
+
+  @override
+  String get notifDiagProbeTitle => 'हाज़िरी अलार्म जाँच';
+
+  @override
+  String get notifDiagBatteryAllow => 'हाज़िरी को बैकग्राउंड में चलने दें';
+
+  @override
+  String get notifDiagRefresh => 'रीफ़्रेश करें';
 }

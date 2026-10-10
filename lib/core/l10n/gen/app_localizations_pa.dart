@@ -3521,4 +3521,38 @@ class LPa extends L {
   @override
   String get profileEditEmailHelp =>
       'ਨਵੀਂ ਈਮੇਲ ਤਦ ਹੀ ਲਾਗੂ ਹੁੰਦੀ ਹੈ ਜਦੋਂ ਤੁਸੀਂ ਸਾਡੇ ਭੇਜੇ ਲਿੰਕ ਤੋਂ ਉਸ ਦੀ ਪੁਸ਼ਟੀ ਕਰਦੇ ਹੋ।';
+
+  @override
+  String get notifDiagProbeHeading => 'ਅਲਾਰਮ ਜਾਂਚ';
+
+  @override
+  String get notifDiagProbeExact => 'Android ਅਲਾਰਮ';
+
+  @override
+  String get notifDiagProbeClock => 'ਅਲਾਰਮ-ਘੜੀ ਵਾਲਾ ਅਲਾਰਮ';
+
+  @override
+  String get notifDiagProbeButton => 'ਲਗਭਗ ਇੱਕ ਮਿੰਟ ਵਿੱਚ ਦੋ ਅਲਾਰਮ ਜਾਂਚੋ';
+
+  @override
+  String get notifDiagProbeNever => 'ਅਜੇ ਜਾਂਚ ਨਹੀਂ ਕੀਤੀ';
+
+  @override
+  String notifDiagProbeWaiting(String set) {
+    return '$set ਲਈ ਲਗਾਇਆ · ਅਜੇ ਨਹੀਂ ਪਹੁੰਚਿਆ';
+  }
+
+  @override
+  String notifDiagProbeArrived(String set, String arrived) {
+    return '$set ਲਈ ਲਗਾਇਆ · $arrived ਨੂੰ ਪਹੁੰਚਿਆ';
+  }
+
+  @override
+  String get notifDiagProbeTitle => 'ਹਾਜ਼ਰੀ ਅਲਾਰਮ ਜਾਂਚ';
+
+  @override
+  String get notifDiagBatteryAllow => 'ਹਾਜ਼ਰੀ ਨੂੰ ਪਿਛੋਕੜ ਵਿੱਚ ਚੱਲਣ ਦਿਓ';
+
+  @override
+  String get notifDiagRefresh => 'ਤਾਜ਼ਾ ਕਰੋ';
 }

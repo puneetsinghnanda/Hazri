@@ -145,6 +145,12 @@
 
         <!-- Runs a notification button pressed while the app is closed: the
              Snooze on a goal reminder. The plugin README asks for it. -->
+        <!-- Diagnostics (02-notifications DP6): an alarm set without the
+             plugin, to tell a phone that drops alarms from a plugin fault. -->
+        <receiver
+            android:name=".AlarmProbeReceiver"
+            android:exported="false" />
+
         <receiver
             android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
             android:exported="false" />

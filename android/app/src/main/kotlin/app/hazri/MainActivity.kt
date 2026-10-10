@@ -46,6 +46,35 @@ class MainActivity : AudioServiceActivity() {
                         val pm = getSystemService(POWER_SERVICE) as PowerManager
                         result.success(pm.isIgnoringBatteryOptimizations(packageName))
                     }
+                    // 02-notifications DP6: probe alarms set straight
+                    // through Android, and what became of them.
+                    "probeAlarm" -> {
+                        val at = AlarmProbeReceiver.schedule(
+                            this,
+                            call.argument<String>("kind") ?: "exact",
+                            call.argument<Int>("seconds") ?: 60,
+                            call.argument<String>("title") ?: "Hazri",
+                            call.argument<String>("body") ?: "",
+                        )
+                        result.success(at)
+                    }
+                    "probeResults" -> result.success(AlarmProbeReceiver.results(this))
+                    // DP6: the system list where Hazri's battery
+                    // optimisation is switched off. The list, not the one-tap
+                    // request, which Play reserves for a few kinds of app.
+                    "openBatterySettings" -> {
+                        val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                        try {
+                            startActivity(intent)
+                            result.success(true)
+                        } catch (_: Exception) {
+                            startActivity(
+                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    .setData(android.net.Uri.parse("package:$packageName")),
+                            )
+                            result.success(true)
+                        }
+                    }
                     // 08-sangat IV6: the Play install referrer, once. Answers
                     // null when Play has none or the service is missing.
                     "installReferrer" -> readInstallReferrer(result)

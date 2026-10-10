@@ -109,6 +109,13 @@ void main() {
     });
   });
 
+  test('DP6: the alarm-test receiver is declared and not exported', () {
+    expect(manifest, contains('android:name=".AlarmProbeReceiver"'));
+    final kotlin = File('android/app/src/main/kotlin/app/hazri/AlarmProbe.kt').readAsStringSync();
+    expect(kotlin, contains('class AlarmProbeReceiver'));
+    expect(kotlin, contains('setAlarmClock'));
+  });
+
   group('permissions', () {
     test('reminders can ask to notify and to be on time', () {
       expect(manifest, contains('android.permission.POST_NOTIFICATIONS'));

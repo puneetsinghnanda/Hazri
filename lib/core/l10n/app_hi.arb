@@ -1053,5 +1053,15 @@
   "profileEditSunset": "सूर्यास्त",
   "profileEditCityHelp": "आज स्क्रीन पर सूर्योदय के समय और सिमरन ग्लोब पर आपका बिंदु इसी शहर के हिसाब से चलते हैं।",
   "profileEditNameHelp": "2 से 50 अक्षर। स्पेस, पूर्ण विराम, एपॉस्ट्रॉफ़ी और हाइफ़न चल सकते हैं।",
-  "profileEditEmailHelp": "नया ईमेल तभी लागू होता है जब आप हमारे भेजे लिंक से उसकी पुष्टि करते हैं।"
+  "profileEditEmailHelp": "नया ईमेल तभी लागू होता है जब आप हमारे भेजे लिंक से उसकी पुष्टि करते हैं।",
+  "notifDiagProbeHeading": "अलार्म जाँच",
+  "notifDiagProbeExact": "Android अलार्म",
+  "notifDiagProbeClock": "अलार्म-घड़ी वाला अलार्म",
+  "notifDiagProbeButton": "लगभग एक मिनट में दो अलार्म जाँचें",
+  "notifDiagProbeNever": "अभी जाँच नहीं की",
+  "notifDiagProbeWaiting": "{set} के लिए लगाया · अभी नहीं पहुँचा",
+  "notifDiagProbeArrived": "{set} के लिए लगाया · {arrived} पर पहुँचा",
+  "notifDiagProbeTitle": "हाज़िरी अलार्म जाँच",
+  "notifDiagBatteryAllow": "हाज़िरी को बैकग्राउंड में चलने दें",
+  "notifDiagRefresh": "रीफ़्रेश करें"
 }
