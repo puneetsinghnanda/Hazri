@@ -3367,4 +3367,88 @@ class LHi extends L {
   String playerQueuePosition(String slot, int index, int count) {
     return '$slot · $count में से $index';
   }
+
+  @override
+  String get sangatCreateSub => 'एक लक्ष्य, एक आख़िरी तारीख़';
+
+  @override
+  String get sangatJoinGroupTile => 'ग्रुप से जुड़ें';
+
+  @override
+  String get sangatJoinGroupSub => 'लिंक या कोड से';
+
+  @override
+  String sangatTotalOf(String total, String target) {
+    return '$target में से $total';
+  }
+
+  @override
+  String sangatTotalOfMinutes(String total, String target) {
+    return '$target मिनट में से $total';
+  }
+
+  @override
+  String sangatOfTarget(String target) {
+    return '$target में से';
+  }
+
+  @override
+  String sangatOfTargetMinutes(String target) {
+    return '$target मिनट में से';
+  }
+
+  @override
+  String get sangatBuiltInKind => 'साझा ग्रुप';
+
+  @override
+  String get sangatGroupMenu => 'ग्रुप मेन्यू';
+
+  @override
+  String get sangatThisGoal => 'यह लक्ष्य';
+
+  @override
+  String sangatDayOf(int day, int days) {
+    return '$days में से दिन $day';
+  }
+
+  @override
+  String get sangatStarted => 'शुरू हुआ';
+
+  @override
+  String get sangatEnds => 'समाप्ति';
+
+  @override
+  String sangatEndsNewGoal(String date) {
+    return 'समाप्ति; नया लक्ष्य $date से';
+  }
+
+  @override
+  String get sangatFigureSangatToday => 'आज संगत';
+
+  @override
+  String get sangatFigureYoursToday => 'आज आपके';
+
+  @override
+  String get sangatFigureYoursGoal => 'लक्ष्य की ओर आपके';
+
+  @override
+  String get sangatMinUnit => 'मिनट';
+
+  @override
+  String sangatSitFor(String paath) {
+    return '$paath के लिए बैठें';
+  }
+
+  @override
+  String get sangatMembersHeading => 'सदस्य';
+
+  @override
+  String sangatMembersAtoZ(String count) {
+    return '$count · वर्णक्रम में';
+  }
+
+  @override
+  String sangatAndMore(String count) {
+    return 'और $count अन्य';
+  }
 }

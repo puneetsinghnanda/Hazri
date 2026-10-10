@@ -5,7 +5,9 @@ import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/sangat/data/sangat_controller.dart';
 import 'package:hazri/features/sangat/ui/join_screen.dart';
+import 'package:hazri/core/theme/hazri_text.dart';
 import 'package:hazri/features/sangat/ui/sangat_screen.dart';
+import 'package:hazri/features/sangat/ui/sangat_widgets.dart';
 
 import '../app_harness.dart';
 import '../features/profile/profile_fakes.dart';
@@ -58,10 +60,62 @@ void main() {
   });
 
   testWidgets('SG-1: a Simran goal reads in minutes of Naam Simran', (tester) async {
+    server.on('GET', '/sangat/groups/mine', 200, {'groups': [builtIn(member: true)]});
     await boot(tester, const SangatScreen());
+    // The built-in row's goal line, and the tile's total of target.
     expect(find.textContaining('1000 minutes of Naam Simran by'), findsOneWidget);
-    expect(find.textContaining('250 of 1000 min · 25%'), findsOneWidget);
+    expect(find.text('250 of 1,000 min'), findsOneWidget);
+    expect(find.text('25%'), findsOneWidget);
     expect(find.textContaining('sittings'), findsNothing);
+  });
+
+  testWidgets('design 102: a built-in group is a full-width row with Join, then Leave', (tester) async {
+    await boot(tester, const SangatScreen());
+    final row = find.byType(BuiltInGroupRow);
+    expect(row, findsOneWidget);
+    // The phone is 390 wide and the tab's gutter is 20 a side.
+    expect(tester.getSize(row).width, closeTo(390 - 2 * HazriSize.gutter, 0.5));
+    expect(find.descendant(of: row, matching: find.text(l.sangatJoin)), findsOneWidget);
+    expect(find.descendant(of: row, matching: find.text('120 members')), findsOneWidget);
+  });
+
+  testWidgets('design 102: Create group and Join group sit side by side', (tester) async {
+    await boot(tester, const SangatScreen());
+    final create = tester.getRect(find.widgetWithText(SangatActionTile, l.sangatCreate));
+    final join = tester.getRect(find.widgetWithText(SangatActionTile, l.sangatJoinGroupTile));
+    expect(create.top, closeTo(join.top, 0.5));
+    expect(create.height, closeTo(join.height, 0.5));
+    expect(create.right, lessThan(join.left));
+    expect(find.text(l.sangatJoinGroupSub), findsOneWidget);
+  });
+
+  testWidgets('VS1, design 102: my groups are a 2 x 2 grid, an ended one last and marked', (tester) async {
+    Map<String, Object?> custom(String id, String name, {String status = 'ACTIVE'}) => {
+          'groupId': id, 'kind': 'CUSTOM', 'name': name, 'status': status, 'memberCount': 4, 'isMember': true,
+          'role': 'MEMBER', 'endedOn': status == 'ACTIVE' ? null : '2026-10-05',
+          'goal': {
+            'goalId': 'g$id', 'type': 'BANI', 'baniId': 'JAPJ', 'target': 100, 'startDay': '2026-09-01',
+            'endDay': status == 'ACTIVE' ? '2026-12-31' : '2026-10-05',
+            'status': status == 'ACTIVE' ? 'ACTIVE' : 'COMPLETED', 'total': status == 'ACTIVE' ? 40 : 100,
+            'pct': status == 'ACTIVE' ? 40 : 100, 'todayTotal': 2, 'daysLeft': 80,
+          },
+        };
+    server.on('GET', '/sangat/groups/mine', 200, {
+      'groups': [custom('a', 'Gill Parivar Ended', status: 'INACTIVE'), custom('b', 'Gill Parivar'), builtIn(member: true)],
+    });
+    await boot(tester, const SangatScreen());
+    final tiles = find.byType(GroupGridTile);
+    expect(tiles, findsNWidgets(3));
+    final first = tester.getRect(tiles.at(0));
+    final second = tester.getRect(tiles.at(1));
+    final third = tester.getRect(tiles.at(2));
+    expect(first.top, closeTo(second.top, 0.5));
+    expect(third.top, greaterThan(first.bottom));
+    // Active first; the ended group last, with Ended on it.
+    expect(find.descendant(of: tiles.at(2), matching: find.text('Gill Parivar Ended')), findsOneWidget);
+    expect(find.descendant(of: tiles.at(2), matching: find.text(l.sangatEndedHeading)), findsOneWidget);
+    expect(find.descendant(of: tiles.at(0), matching: find.text('40 of 100')), findsOneWidget);
+    expect(find.descendant(of: tiles.at(0), matching: find.text(l.sangatDaysLeft(80))), findsOneWidget);
   });
 
   testWidgets('a paath waiting in the outbox is sent before the totals are read', (tester) async {

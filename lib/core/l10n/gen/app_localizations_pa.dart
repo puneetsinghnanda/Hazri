@@ -3374,4 +3374,88 @@ class LPa extends L {
   String playerQueuePosition(String slot, int index, int count) {
     return '$slot · $count ਵਿੱਚੋਂ $index';
   }
+
+  @override
+  String get sangatCreateSub => 'ਇੱਕ ਟੀਚਾ, ਇੱਕ ਆਖਰੀ ਤਾਰੀਖ';
+
+  @override
+  String get sangatJoinGroupTile => 'ਗਰੁੱਪ ਵਿੱਚ ਜੁੜੋ';
+
+  @override
+  String get sangatJoinGroupSub => 'ਲਿੰਕ ਜਾਂ ਕੋਡ ਨਾਲ';
+
+  @override
+  String sangatTotalOf(String total, String target) {
+    return '$target ਵਿੱਚੋਂ $total';
+  }
+
+  @override
+  String sangatTotalOfMinutes(String total, String target) {
+    return '$target ਮਿੰਟ ਵਿੱਚੋਂ $total';
+  }
+
+  @override
+  String sangatOfTarget(String target) {
+    return '$target ਵਿੱਚੋਂ';
+  }
+
+  @override
+  String sangatOfTargetMinutes(String target) {
+    return '$target ਮਿੰਟ ਵਿੱਚੋਂ';
+  }
+
+  @override
+  String get sangatBuiltInKind => 'ਸਾਂਝਾ ਗਰੁੱਪ';
+
+  @override
+  String get sangatGroupMenu => 'ਗਰੁੱਪ ਮੀਨੂ';
+
+  @override
+  String get sangatThisGoal => 'ਇਹ ਟੀਚਾ';
+
+  @override
+  String sangatDayOf(int day, int days) {
+    return '$days ਵਿੱਚੋਂ ਦਿਨ $day';
+  }
+
+  @override
+  String get sangatStarted => 'ਸ਼ੁਰੂ ਹੋਇਆ';
+
+  @override
+  String get sangatEnds => 'ਸਮਾਪਤੀ';
+
+  @override
+  String sangatEndsNewGoal(String date) {
+    return 'ਸਮਾਪਤੀ; ਨਵਾਂ ਟੀਚਾ $date ਤੋਂ';
+  }
+
+  @override
+  String get sangatFigureSangatToday => 'ਅੱਜ ਸੰਗਤ';
+
+  @override
+  String get sangatFigureYoursToday => 'ਅੱਜ ਤੁਹਾਡੇ';
+
+  @override
+  String get sangatFigureYoursGoal => 'ਟੀਚੇ ਵੱਲ ਤੁਹਾਡੇ';
+
+  @override
+  String get sangatMinUnit => 'ਮਿੰਟ';
+
+  @override
+  String sangatSitFor(String paath) {
+    return '$paath ਲਈ ਬੈਠੋ';
+  }
+
+  @override
+  String get sangatMembersHeading => 'ਮੈਂਬਰ';
+
+  @override
+  String sangatMembersAtoZ(String count) {
+    return '$count · ਵਰਣਮਾਲਾ ਅਨੁਸਾਰ';
+  }
+
+  @override
+  String sangatAndMore(String count) {
+    return 'ਅਤੇ $count ਹੋਰ';
+  }
 }

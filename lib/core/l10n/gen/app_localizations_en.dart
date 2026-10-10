@@ -3384,4 +3384,88 @@ class LEn extends L {
   String playerQueuePosition(String slot, int index, int count) {
     return '$slot · $index of $count';
   }
+
+  @override
+  String get sangatCreateSub => 'One goal, an end date';
+
+  @override
+  String get sangatJoinGroupTile => 'Join group';
+
+  @override
+  String get sangatJoinGroupSub => 'With a link or code';
+
+  @override
+  String sangatTotalOf(String total, String target) {
+    return '$total of $target';
+  }
+
+  @override
+  String sangatTotalOfMinutes(String total, String target) {
+    return '$total of $target min';
+  }
+
+  @override
+  String sangatOfTarget(String target) {
+    return 'of $target';
+  }
+
+  @override
+  String sangatOfTargetMinutes(String target) {
+    return 'of $target min';
+  }
+
+  @override
+  String get sangatBuiltInKind => 'Built-in group';
+
+  @override
+  String get sangatGroupMenu => 'Group menu';
+
+  @override
+  String get sangatThisGoal => 'This goal';
+
+  @override
+  String sangatDayOf(int day, int days) {
+    return 'Day $day of $days';
+  }
+
+  @override
+  String get sangatStarted => 'Started';
+
+  @override
+  String get sangatEnds => 'Ends';
+
+  @override
+  String sangatEndsNewGoal(String date) {
+    return 'Ends; new goal starts $date';
+  }
+
+  @override
+  String get sangatFigureSangatToday => 'Sangat today';
+
+  @override
+  String get sangatFigureYoursToday => 'Yours today';
+
+  @override
+  String get sangatFigureYoursGoal => 'Yours toward the goal';
+
+  @override
+  String get sangatMinUnit => 'min';
+
+  @override
+  String sangatSitFor(String paath) {
+    return 'Sit for $paath';
+  }
+
+  @override
+  String get sangatMembersHeading => 'Members';
+
+  @override
+  String sangatMembersAtoZ(String count) {
+    return '$count · A to Z';
+  }
+
+  @override
+  String sangatAndMore(String count) {
+    return 'and $count more';
+  }
 }

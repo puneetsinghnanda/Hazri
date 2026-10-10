@@ -110,4 +110,8 @@ abstract final class HazriIconData {
   static const String copy = '<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>';
   /// `flag` — 24dp outline, stroke 1.8 (design/html)
   static const String flag = '<path d="M5 21V4.5"/><path d="M5 4.5h11l-2 4 2 4H5"/>';
+  /// `plus` — 24dp outline, stroke 1.8 (design 102, Create group)
+  static const String plus = '<path d="M12 5v14M5 12h14"/>';
+  /// `code` — 24dp outline, stroke 1.8 (design 102, Join group)
+  static const String code = '<rect x="3" y="6" width="18" height="12" rx="3"/><path d="M7 12h.01M10.5 12h.01M14 12h.01M17.5 12h.01"/>';
 }
