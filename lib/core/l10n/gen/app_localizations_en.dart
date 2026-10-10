@@ -3384,4 +3384,67 @@ class LEn extends L {
   String playerQueuePosition(String slot, int index, int count) {
     return '$slot · $index of $count';
   }
+
+  @override
+  String get profileYourTitle => 'Your profile';
+
+  @override
+  String profileStatHazriDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'days of Hazri',
+      one: 'day of Hazri',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileStatInARow => 'in a row';
+
+  @override
+  String profileStatBadges(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'badges earned',
+      one: 'badge earned',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profilePhoneNotProvided => 'Phone not provided';
+
+  @override
+  String get profilePrivacyLine =>
+      'Your email is never shown to anyone in the app. Your city is one dot on the Simran globe, and nothing finer.';
+
+  @override
+  String profileEditTodayIn(String city) {
+    return 'Today in $city';
+  }
+
+  @override
+  String profileEditChangedFrom(String city) {
+    return 'Changed from $city';
+  }
+
+  @override
+  String get profileEditSunrise => 'Sunrise';
+
+  @override
+  String get profileEditSunset => 'Sunset';
+
+  @override
+  String get profileEditCityHelp =>
+      'Your sunrise times on Today and your dot on the Simran globe follow it.';
+
+  @override
+  String get profileEditNameHelp =>
+      '2 to 50 letters. Spaces, full stops, apostrophes and hyphens are fine.';
+
+  @override
+  String get profileEditEmailHelp =>
+      'A new email takes over only once you confirm it from the link we send.';
 }

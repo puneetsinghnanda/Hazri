@@ -550,9 +550,9 @@ Data: ARCHITECTURE §4, §5.10, §7.2.*
 **Purpose.** An optional profile — no login, no password — that puts the
 reader on the globe, lets them create groups, and lets them restore their
 data on a new phone. *Rules: `01-accounts.md` (the owner's Profile PRD with
-the amendments of §13). Screens: 98 (profile, with badges), 34 (verify
-email), 35 (privacy and my data); Profile setup and Edit profile follow the
-file. Data: ARCHITECTURE §2.4–2.5, §5.4, §6.1.*
+the amendments of §13). Screens: 100 (profile, with badges), 101 (edit
+profile), 34 (verify email), 35 (privacy and my data); Profile setup follows
+the file. Data: ARCHITECTURE §2.4–2.5, §5.4, §6.1.*
 
 - **Every install signs in anonymously and silently.** The reader never sees
   a login screen.
@@ -569,9 +569,14 @@ file. Data: ARCHITECTURE §2.4–2.5, §5.4, §6.1.*
 - **Edit profile:** name, city and email; the phone number is not editable. A
   verified email changes only when the new address is confirmed, and the old
   one keeps restoring until then (D11, E-1).
-- **The profile screen** (design 98, option 4B): the profile card with
-  **Edit**; the **Badges** section (§4.14); email, phone and verification;
-  **Back up now** and **Restore my data**, with the last backup's date.
+- **The profile screen** (design 100, owner 2026-10-10, replacing 98): a
+  navy identity card with name, city, email and its verification, and three
+  numbers -- days of Hazri, days in a row, badges earned; the **Badges**
+  shelf (§4.14); **Edit profile** and **Back up now** side by side; the last
+  backup's date and the phone on one line; **Restore my data**.
+- **Edit profile** (design 101, owner 2026-10-10): today's sunrise and
+  sunset in the chosen city first, with what it was changed from; then name,
+  city and the email with **Change email** in its row.
 - **Profile creation adopts** the install's Sangat memberships and badge facts
   (D12, `12-badges.md` SF3).
 - **Not built:** deleting a profile, a password, any other sign-in.
@@ -681,7 +686,7 @@ Screens: 95–99. Data: ARCHITECTURE §3.6, §5.8–5.9, §6.5.*
 | 95 | 1C | **A badge earned:** a compact bottom sheet in the app — the badge, "New badge", its name and what it marks, "Your badges n of 10" with the ten (the new one ringed), **Done** and **See all badges**. Once, the next time a non-Gurbani screen is open. **Never a system notification** |
 | 96 | 2A | **Badges:** "n of 10 earned · Hazri on N days", two per row; earned ones in colour with their date, the rest greyed with their name, how to earn them and "Not yet" |
 | 97 | 3B | **One badge:** a full page — "Badge n of 10", the badge, the Earned chip or "Not yet", *What it marks*, *How it is earned* (for Nitnemi the five bani names from `content.db`), previous and next |
-| 98 | 4B | **In the profile:** a Badges section under the profile card, all ten five to a row, "See all 10" |
+| 98 | 4B | **In the profile:** a Badges section under the profile card, all ten five to a row, "See all 10". **Replaced on 2026-10-10 by design 100**, the same ten on two shelves of five under a navy identity card (§4.11) |
 | 99 | 5C | **In the menu:** a navy header with the avatar, name and city, "Badges n of 10" and the row of ten; Badges is also a menu row |
 
 No progress meters anywhere. No badge on Today, on the reader, the player or

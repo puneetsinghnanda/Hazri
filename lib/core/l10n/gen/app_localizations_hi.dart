@@ -3367,4 +3367,67 @@ class LHi extends L {
   String playerQueuePosition(String slot, int index, int count) {
     return '$slot · $count में से $index';
   }
+
+  @override
+  String get profileYourTitle => 'आपकी प्रोफ़ाइल';
+
+  @override
+  String profileStatHazriDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'दिन हाज़िरी',
+      one: 'दिन हाज़िरी',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileStatInARow => 'लगातार';
+
+  @override
+  String profileStatBadges(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'बैज मिले',
+      one: 'बैज मिला',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profilePhoneNotProvided => 'फ़ोन नहीं दिया';
+
+  @override
+  String get profilePrivacyLine =>
+      'आपका ईमेल ऐप में कभी किसी को नहीं दिखाया जाता। आपका शहर सिमरन ग्लोब पर बस एक बिंदु है, इससे ज़्यादा कुछ नहीं।';
+
+  @override
+  String profileEditTodayIn(String city) {
+    return 'आज $city में';
+  }
+
+  @override
+  String profileEditChangedFrom(String city) {
+    return '$city से बदला';
+  }
+
+  @override
+  String get profileEditSunrise => 'सूर्योदय';
+
+  @override
+  String get profileEditSunset => 'सूर्यास्त';
+
+  @override
+  String get profileEditCityHelp =>
+      'आज स्क्रीन पर सूर्योदय के समय और सिमरन ग्लोब पर आपका बिंदु इसी शहर के हिसाब से चलते हैं।';
+
+  @override
+  String get profileEditNameHelp =>
+      '2 से 50 अक्षर। स्पेस, पूर्ण विराम, एपॉस्ट्रॉफ़ी और हाइफ़न चल सकते हैं।';
+
+  @override
+  String get profileEditEmailHelp =>
+      'नया ईमेल तभी लागू होता है जब आप हमारे भेजे लिंक से उसकी पुष्टि करते हैं।';
 }

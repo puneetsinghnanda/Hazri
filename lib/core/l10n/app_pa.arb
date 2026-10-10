@@ -1018,5 +1018,18 @@
   "readerStartAgainNote": "ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ ਤੁਹਾਨੂੰ ਪਹਿਲੀ ਪੰਕਤੀ ’ਤੇ ਲੈ ਜਾਂਦਾ ਹੈ ਅਤੇ ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉਹ ਮਿਟਾ ਦਿੰਦਾ ਹੈ।",
   "goalPlayNow": "ਹੁਣੇ ਚਲਾਓ",
   "notifExactAllow": "ਸਮੇਂ ਸਿਰ ਯਾਦ-ਦਹਾਨੀਆਂ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ",
-  "playerQueuePosition": "{slot} · {count} ਵਿੱਚੋਂ {index}"
+  "playerQueuePosition": "{slot} · {count} ਵਿੱਚੋਂ {index}",
+  "profileYourTitle": "ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ",
+  "profileStatHazriDays": "{count, plural, =1{ਦਿਨ ਹਾਜ਼ਰੀ} other{ਦਿਨ ਹਾਜ਼ਰੀ}}",
+  "profileStatInARow": "ਲਗਾਤਾਰ",
+  "profileStatBadges": "{count, plural, =1{ਬੈਜ ਮਿਲਿਆ} other{ਬੈਜ ਮਿਲੇ}}",
+  "profilePhoneNotProvided": "ਫ਼ੋਨ ਨਹੀਂ ਦਿੱਤਾ",
+  "profilePrivacyLine": "ਤੁਹਾਡੀ ਈਮੇਲ ਐਪ ਵਿੱਚ ਕਦੇ ਕਿਸੇ ਨੂੰ ਨਹੀਂ ਦਿਖਾਈ ਜਾਂਦੀ। ਤੁਹਾਡਾ ਸ਼ਹਿਰ ਸਿਮਰਨ ਗਲੋਬ ਉੱਤੇ ਸਿਰਫ਼ ਇੱਕ ਬਿੰਦੂ ਹੈ, ਇਸ ਤੋਂ ਵੱਧ ਕੁਝ ਨਹੀਂ।",
+  "profileEditTodayIn": "ਅੱਜ {city} ਵਿੱਚ",
+  "profileEditChangedFrom": "{city} ਤੋਂ ਬਦਲਿਆ",
+  "profileEditSunrise": "ਸੂਰਜ ਚੜ੍ਹਨਾ",
+  "profileEditSunset": "ਸੂਰਜ ਡੁੱਬਣਾ",
+  "profileEditCityHelp": "ਅੱਜ ਸਕ੍ਰੀਨ ਉੱਤੇ ਸੂਰਜ ਚੜ੍ਹਨ ਦੇ ਸਮੇਂ ਅਤੇ ਸਿਮਰਨ ਗਲੋਬ ਉੱਤੇ ਤੁਹਾਡਾ ਬਿੰਦੂ ਇਸੇ ਸ਼ਹਿਰ ਮੁਤਾਬਕ ਚੱਲਦੇ ਹਨ।",
+  "profileEditNameHelp": "2 ਤੋਂ 50 ਅੱਖਰ। ਖਾਲੀ ਥਾਂ, ਬਿੰਦੀ, ਅਪੌਸਟ੍ਰੌਫ਼ੀ ਅਤੇ ਹਾਈਫ਼ਨ ਚੱਲਦੇ ਹਨ।",
+  "profileEditEmailHelp": "ਨਵੀਂ ਈਮੇਲ ਤਦ ਹੀ ਲਾਗੂ ਹੁੰਦੀ ਹੈ ਜਦੋਂ ਤੁਸੀਂ ਸਾਡੇ ਭੇਜੇ ਲਿੰਕ ਤੋਂ ਉਸ ਦੀ ਪੁਸ਼ਟੀ ਕਰਦੇ ਹੋ।"
 }

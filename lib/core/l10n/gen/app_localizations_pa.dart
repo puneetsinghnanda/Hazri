@@ -3374,4 +3374,67 @@ class LPa extends L {
   String playerQueuePosition(String slot, int index, int count) {
     return '$slot · $count ਵਿੱਚੋਂ $index';
   }
+
+  @override
+  String get profileYourTitle => 'ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ';
+
+  @override
+  String profileStatHazriDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ਦਿਨ ਹਾਜ਼ਰੀ',
+      one: 'ਦਿਨ ਹਾਜ਼ਰੀ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileStatInARow => 'ਲਗਾਤਾਰ';
+
+  @override
+  String profileStatBadges(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ਬੈਜ ਮਿਲੇ',
+      one: 'ਬੈਜ ਮਿਲਿਆ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profilePhoneNotProvided => 'ਫ਼ੋਨ ਨਹੀਂ ਦਿੱਤਾ';
+
+  @override
+  String get profilePrivacyLine =>
+      'ਤੁਹਾਡੀ ਈਮੇਲ ਐਪ ਵਿੱਚ ਕਦੇ ਕਿਸੇ ਨੂੰ ਨਹੀਂ ਦਿਖਾਈ ਜਾਂਦੀ। ਤੁਹਾਡਾ ਸ਼ਹਿਰ ਸਿਮਰਨ ਗਲੋਬ ਉੱਤੇ ਸਿਰਫ਼ ਇੱਕ ਬਿੰਦੂ ਹੈ, ਇਸ ਤੋਂ ਵੱਧ ਕੁਝ ਨਹੀਂ।';
+
+  @override
+  String profileEditTodayIn(String city) {
+    return 'ਅੱਜ $city ਵਿੱਚ';
+  }
+
+  @override
+  String profileEditChangedFrom(String city) {
+    return '$city ਤੋਂ ਬਦਲਿਆ';
+  }
+
+  @override
+  String get profileEditSunrise => 'ਸੂਰਜ ਚੜ੍ਹਨਾ';
+
+  @override
+  String get profileEditSunset => 'ਸੂਰਜ ਡੁੱਬਣਾ';
+
+  @override
+  String get profileEditCityHelp =>
+      'ਅੱਜ ਸਕ੍ਰੀਨ ਉੱਤੇ ਸੂਰਜ ਚੜ੍ਹਨ ਦੇ ਸਮੇਂ ਅਤੇ ਸਿਮਰਨ ਗਲੋਬ ਉੱਤੇ ਤੁਹਾਡਾ ਬਿੰਦੂ ਇਸੇ ਸ਼ਹਿਰ ਮੁਤਾਬਕ ਚੱਲਦੇ ਹਨ।';
+
+  @override
+  String get profileEditNameHelp =>
+      '2 ਤੋਂ 50 ਅੱਖਰ। ਖਾਲੀ ਥਾਂ, ਬਿੰਦੀ, ਅਪੌਸਟ੍ਰੌਫ਼ੀ ਅਤੇ ਹਾਈਫ਼ਨ ਚੱਲਦੇ ਹਨ।';
+
+  @override
+  String get profileEditEmailHelp =>
+      'ਨਵੀਂ ਈਮੇਲ ਤਦ ਹੀ ਲਾਗੂ ਹੁੰਦੀ ਹੈ ਜਦੋਂ ਤੁਸੀਂ ਸਾਡੇ ਭੇਜੇ ਲਿੰਕ ਤੋਂ ਉਸ ਦੀ ਪੁਸ਼ਟੀ ਕਰਦੇ ਹੋ।';
 }

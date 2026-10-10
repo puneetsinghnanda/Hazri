@@ -5,29 +5,32 @@ import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/time/date_format.dart';
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../profile/ui/messages.dart';
+import '../../profile/ui/profile_icons.dart';
 import '../data/backup_controller.dart';
 import '../data/backup_service.dart';
 
-/// The Profile screen's backup block (`10-backup.md` §8.2), shown only with
-/// a profile.
-class BackupSection extends ConsumerStatefulWidget {
-  const BackupSection({super.key});
+// The Profile screen's backup pieces (`10-backup.md` §8.2), shown only with
+// a profile. Design 100 sets them apart: Back up now beside Edit profile,
+// the last backup as a quiet line, Restore as a text button under it.
 
-  @override
-  ConsumerState<BackupSection> createState() => _BackupSectionState();
-}
+/// While a backup started by hand is running, Restore waits.
+final _backupRunningProvider = StateProvider.autoDispose<bool>((ref) => false);
 
-class _BackupSectionState extends ConsumerState<BackupSection> {
-  bool _busy = false;
+/// `backupNowButton` (BK3): runs a backup at once, with progress, then
+/// `backupDone`.
+class BackupNowButton extends ConsumerWidget {
+  const BackupNowButton({super.key});
 
-  Future<void> _backup() async {
+  Future<void> _backup(BuildContext context, WidgetRef ref) async {
     final l = L.of(context);
-    setState(() => _busy = true);
+    final running = ref.read(_backupRunningProvider.notifier);
+    running.state = true;
     final outcome = await ref.read(backupControllerProvider).runNow();
-    if (!mounted) return;
-    setState(() => _busy = false);
+    if (!context.mounted) return;
+    running.state = false;
     ProfileMessages.snack(context, switch (outcome) {
       BackupSaved() => l.backupDone,
       BackupFailed(:final error) => ProfileMessages.of(l, error),
@@ -37,48 +40,65 @@ class _BackupSectionState extends ConsumerState<BackupSection> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = L.of(context);
+    if (ref.watch(_backupRunningProvider)) {
+      return const SizedBox(
+        height: HazriSize.buttonMinHeight,
+        child: Center(child: SizedBox.square(dimension: 24, child: CircularProgressIndicator(strokeWidth: 2.5))),
+      );
+    }
+    return PrimaryButton(
+      label: l.backupNowButton,
+      icon: ProfileIcons.cloud,
+      secondary: true,
+      onPressed: () => _backup(context, ref),
+    );
+  }
+}
+
+/// `backupLastLine`, `backupNever` or `backupStale` (ST1), with [suffix]
+/// after a middle dot.
+class BackupStatusLine extends ConsumerWidget {
+  const BackupStatusLine({super.key, this.suffix});
+
+  final String? suffix;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
     final dates = HazriDates.of(context);
     final status = ref.watch(backupStatusProvider);
     final last = status.lastAt;
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: HazriCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Eyebrow(l.backupSectionTitle),
-            const SizedBox(height: 6),
-            Text(
-              status.stale
-                  ? l.backupStale
-                  : last == null
-                      ? l.backupNever
-                      : l.backupLastLine('${dates.shortDate(last.toLocal())}, ${dates.time(last.toLocal())}'),
-              style: HazriText.bodySmall.copyWith(color: status.stale ? c.kesriInk : c.ink2),
-            ),
-            const SizedBox(height: 12),
-            _busy
-                ? const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()))
-                : PrimaryButton(label: l.backupNowButton, secondary: true, onPressed: _backup),
-            const SizedBox(height: 10),
-            RestoreDataButton(enabled: !_busy),
-          ],
-        ),
+    final line = status.stale
+        ? l.backupStale
+        : last == null
+            ? l.backupNever
+            : l.backupLastLine('${dates.shortDate(last.toLocal())}, ${dates.time(last.toLocal())}');
+    final style = HazriText.bodySmall.copyWith(fontSize: 13, color: c.ink2);
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: line, style: status.stale ? style.copyWith(color: c.kesriInk) : null),
+          if (suffix != null) TextSpan(text: ' · $suffix'),
+        ],
       ),
+      style: style,
     );
   }
 }
 
 /// `restoreDataButton` (RS1): asks first, saying how old the copy is (RS8),
 /// then restores with progress and says how many entries came back.
+///
+/// [quiet] draws it as the Profile screen's text button (design 100); the
+/// Link Result screen keeps the full-width one.
 class RestoreDataButton extends ConsumerStatefulWidget {
-  const RestoreDataButton({super.key, this.enabled = true});
+  const RestoreDataButton({super.key, this.enabled = true, this.quiet = false});
 
   final bool enabled;
+  final bool quiet;
 
   @override
   ConsumerState<RestoreDataButton> createState() => _RestoreDataButtonState();
@@ -120,13 +140,46 @@ class _RestoreDataButtonState extends ConsumerState<RestoreDataButton> {
 
   @override
   Widget build(BuildContext context) {
+    final c = context.colors;
     final l = L.of(context);
-    return _busy
-        ? const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()))
-        : PrimaryButton(
-            label: l.restoreDataButton,
-            secondary: true,
-            onPressed: widget.enabled ? _restore : null,
-          );
+    final enabled = widget.enabled && !ref.watch(_backupRunningProvider);
+    if (_busy) {
+      return const Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
+    }
+    if (!widget.quiet) {
+      return PrimaryButton(
+        label: l.restoreDataButton,
+        secondary: true,
+        onPressed: enabled ? _restore : null,
+      );
+    }
+    final fg = c.primary;
+    return Center(
+      child: TextButton(
+        onPressed: enabled ? _restore : null,
+        style: TextButton.styleFrom(
+          foregroundColor: fg,
+          minimumSize: const Size(0, 44),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppIcon(ProfileIcons.restore, size: 17, color: enabled ? fg : c.muted),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                l.restoreDataButton,
+                style: HazriText.bodySmall.copyWith(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: enabled ? fg : c.muted,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
