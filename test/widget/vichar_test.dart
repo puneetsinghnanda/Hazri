@@ -2,6 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hazri/core/theme/hazri_theme.dart';
+import 'package:hazri/core/widgets/app_icon.dart';
+import 'package:hazri/core/theme/icon_data.dart';
+import 'package:hazri/app/router.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hazri/core/db/content_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
@@ -94,5 +100,31 @@ void main() {
     final names = dir.listSync().map((f) => f.uri.pathSegments.last).toSet();
     expect(names, {b.uri.pathSegments.last, 'other.png'});
     expect(b.readAsBytesSync(), [3]);
+  });
+
+  testWidgets('Explore opens the day\'s line in full, and the card has no chevron', (tester) async {
+    usePhoneFrame(tester);
+    final router = GoRouter(routes: [
+      GoRoute(path: '/', builder: (_, _) => const Scaffold(body: VicharCard())),
+      GoRoute(path: Routes.vichar, builder: (_, _) => const Scaffold(body: Text('vichar screen'))),
+    ]);
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: app.container,
+      child: MaterialApp.router(
+        localizationsDelegates: L.localizationsDelegates,
+        supportedLocales: L.supportedLocales,
+        theme: HazriTheme.light(),
+        routerConfig: router,
+      ),
+    ));
+    await settle(tester);
+    final l = await L.delegate.load(const Locale('en'));
+    expect(
+      find.byWidgetPredicate((w) => w is AppIcon && w.data == HazriIconData.chevronRight),
+      findsNothing,
+    );
+    await tester.tap(find.text(l.vicharExplore));
+    await settle(tester);
+    expect(find.text('vichar screen'), findsOneWidget);
   });
 }

@@ -68,7 +68,8 @@ class VicharCard extends ConsumerWidget {
                   ],
                 ),
               ),
-              AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
+              // No chevron (owner, 2026-10-10): Explore below says where the
+              // card goes, and the arrow was a second way to say it.
             ],
           ),
           const SizedBox(height: 14),
@@ -88,10 +89,9 @@ class VicharCard extends ConsumerWidget {
                 child: PrimaryButton(
                   label: l.vicharExplore,
                   secondary: true,
-                  // Explore means the library, which is what the word was
-                  // always promising. The day's line in full is one tap into
-                  // the card itself.
-                  onPressed: () => context.push(Routes.library),
+                  // Explore opens the day's line in full, as a tap on the card
+                  // does (owner, 2026-10-10).
+                  onPressed: () => context.push(Routes.vichar),
                 ),
               ),
               const SizedBox(width: 10),

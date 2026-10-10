@@ -6,11 +6,7 @@ import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/surfaces.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../app/router.dart';
-import '../../../core/theme/icon_data.dart';
-import '../../../core/widgets/app_icon.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import 'vichar_share.dart';
 
@@ -55,29 +51,6 @@ class VicharScreen extends ConsumerWidget {
         PrimaryButton(
           label: l.shareCardShare,
           onPressed: () => showVicharShareSheet(context, vichar),
-        ),
-        const SizedBox(height: 18),
-        // The library is a different thing from the day's line, and this is
-        // the only door to it. Design 43's own header is a back chevron.
-        HazriCard(
-          colour: context.colors.card2,
-          onTap: () => context.push(Routes.library),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(l.libraryMoreToRead,
-                        style: HazriText.bodyStrong.copyWith(color: c.ink)),
-                    Text(l.librarySubtitle,
-                        style: HazriText.caption.copyWith(color: c.muted)),
-                  ],
-                ),
-              ),
-              AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
-            ],
-          ),
         ),
       ],
     );

@@ -23,7 +23,7 @@ Top to bottom (`today_screen.dart`):
    Shown to everybody.
 3. `_GoalsCard` (design 30): "n of m done today" across all goals, with a
    ring; `_NoGoalsCard` when there are none.
-4. The Vichar card: ਅੱਜ ਦਾ ਵਿਚਾਰ, the day's line, share and Explore.
+4. The Vichar card: ਅੱਜ ਦਾ ਵਿਚਾਰ, the day's line, share and Explore, which opens the day's line in full (owner, 2026-10-10; it used to open the library).
 5. The Nitnem call to action: Start or Continue, naming the bani and its
    minutes, opening the reader at the saved line.
 6. The Gurpurab card when one is near.

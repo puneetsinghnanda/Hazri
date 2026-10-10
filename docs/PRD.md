@@ -702,8 +702,10 @@ the Punjabi meaning until a reviewed Hindi one exists. The dataset has no Ang
 numbers and none is invented.
 
 - **Today card:** "Today's Vichar", "Sri Guru Granth Sahib Ji", the line, its
-  meaning, **Explore** (the library) and **Share**; tapping opens the Vichar
-  screen (the line, the Punjabi and English meanings, Share, "More to read").
+  meaning, **Explore** and **Share**, with no chevron; Explore or a tap on the
+  card opens the Vichar screen (the line, the Punjabi and English meanings,
+  Share). There is no "More to read" on it: the library is reached from the
+  menu (owner, 2026-10-10).
 - **Share:** as text (line, meaning, attribution, "Read daily on Hazri"), or as
   an image (1080 × 1350, its own paper palette with a kesri border and ੴ, the
   same in either theme).
