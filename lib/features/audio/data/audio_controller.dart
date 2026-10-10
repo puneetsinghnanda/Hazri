@@ -2,17 +2,20 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/router.dart';
 import '../../../core/db/content_db.dart' show AudioTrackRow, BaniSlot;
 import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_db.dart' show CompletionSource;
+import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
 import '../../nitnem/data/complete_bani.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../simran/domain/simran_track.dart';
 import '../domain/paath_player.dart';
+import '../domain/timings.dart';
 import 'audio_handler.dart';
 import 'notification_access.dart';
 
@@ -161,12 +164,35 @@ class PlaybackController {
     if (player == null) return false;
     final banis = await _ref.read(contentRepositoryProvider).banis();
     final tracks = await _ref.read(audioTracksProvider.future);
-    final queue = <PaathTrack>[
+    final found = <PaathTrack>[
       for (final b in banis)
         if (b.defaultSlot == slot)
           if (_trackFor(b, tracks, language) case final t?) t,
     ];
-    if (queue.isEmpty) return false;
+    if (found.isEmpty) return false;
+    // Design 18: "Morning Nitnem · 1 of 5" under each bani's name.
+    final l = await L.delegate.load(Locale(language));
+    final slotName = switch (slot) {
+      BaniSlot.morning => l.playerMorningNitnem,
+      BaniSlot.evening => l.slotEvening,
+      BaniSlot.bedtime => l.slotBedtime,
+      BaniSlot.none => null,
+    };
+    final queue = [
+      for (final (i, t) in found.indexed)
+        slotName == null || found.length < 2
+            ? t
+            : PaathTrack(
+                baniId: t.baniId,
+                slug: t.slug,
+                title: t.title,
+                nativeTitle: t.nativeTitle,
+                assetPath: t.assetPath,
+                duration: t.duration,
+                route: t.route,
+                subtitle: l.playerQueuePosition(slotName, i + 1, found.length),
+              ),
+    ];
     _askForLockScreen();
     await player.setQueue(queue);
     await player.setSpeed(_ref.read(settingsProvider).speed);
@@ -238,3 +264,51 @@ class FollowState {
     attached: attached ?? this.attached,
   );
 }
+
+/// Design 18's lock screen: the line being recited, under the bani's name.
+///
+/// Follows the position the way the reader does, from the bani's timings in
+/// content.db, and hands the handler the Gurmukhi of the current line; the
+/// handler publishes only a change. Rule 3: the line is content.db's,
+/// verbatim. Started once from the app.
+final nowSayingProvider = Provider<void>((ref) {
+  final handler = ref.watch(audioHandlerProvider);
+  if (handler == null) return;
+  String? trackFor;
+  ({BaniTimings timings, Map<int, String> lines})? loaded;
+  var loading = false;
+
+  Future<void> load(String baniId) async {
+    loading = true;
+    try {
+      final row = (await ref.read(audioTracksProvider.future))[baniId];
+      final timings = row == null ? null : await ref.read(baniTimingsProvider(row.id).future);
+      final lines = row == null ? null : await ref.read(baniLinesProvider(row.baniVersionId).future);
+      loaded = timings == null || lines == null
+          ? null
+          : (timings: timings, lines: {for (final l in lines) l.idx: l.gurmukhi});
+    } on Object catch (e) {
+      debugPrint('Hazri audio: no line for the lock screen ($e)');
+      loaded = null;
+    } finally {
+      loading = false;
+    }
+  }
+
+  ref.listen<AsyncValue<Duration>>(positionProvider, (_, next) {
+    final position = next.value;
+    final track = handler.currentTrack;
+    if (position == null || track == null) return;
+    if (track.baniId != trackFor) {
+      trackFor = track.baniId;
+      loaded = null;
+      handler.setSaying(null);
+      unawaited(load(track.baniId));
+      return;
+    }
+    final l = loaded;
+    if (l == null || loading) return;
+    final i = l.timings.indexAt(position);
+    handler.setSaying(i < 0 ? null : l.lines[l.timings.lines[i].line]);
+  });
+});

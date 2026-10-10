@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../domain/paath_player.dart';
 
@@ -86,6 +89,7 @@ class HazriAudioHandler extends BaseAudioHandler
         androidNotificationIcon: 'drawable/ic_notification',
       ),
     );
+    await handler._writeArt();
     await handler._configureSession();
     return handler;
   }
@@ -144,6 +148,7 @@ class HazriAudioHandler extends BaseAudioHandler
 
     _player.currentIndexStream.listen((index) {
       if (index != null && index >= 0 && index < _tracks.length) {
+        _saying = null; // a new bani: its own lines from here
         mediaItem.add(_mediaItemFor(_tracks[index]));
       }
     });
@@ -223,16 +228,50 @@ class HazriAudioHandler extends BaseAudioHandler
     );
   }
 
+  /// The sunrise mark on Neela, as a file the media session can load
+  /// (design 18). Null until written, and in tests.
+  Uri? _art;
+
+  /// The line being recited, from the timings (design 18's lock screen).
+  String? _saying;
+
   MediaItem _mediaItemFor(PaathTrack t) => MediaItem(
     id: t.slug,
     title: t.title,
-    // The Gurmukhi name rides along as the album line, as the design shows in
-    // the notification and on the lock screen (Design 18).
+    // Android shows the title and the artist line: the bani, then the line
+    // being recited, or before one is known "Morning Nitnem · 1 of 5" or the
+    // Gurmukhi name (design 18).
+    artist: _saying ?? t.subtitle ?? t.nativeTitle,
     album: t.nativeTitle,
-    artist: 'Hazri',
+    artUri: _art,
     duration: t.duration,
     extras: {'route': t.route},
   );
+
+  /// Puts [line] under the bani's name in the notification and on the lock
+  /// screen; null goes back to the subtitle. Only a change is published.
+  void setSaying(String? line) {
+    if (line == _saying) return;
+    _saying = line;
+    final t = currentTrack;
+    if (t != null) mediaItem.add(_mediaItemFor(t));
+  }
+
+  /// Writes the artwork where the media session can read it.
+  Future<void> _writeArt() async {
+    try {
+      final bytes = await rootBundle.load('assets/images/media_art.png');
+      final dir = await getApplicationSupportDirectory();
+      final file = File('${dir.path}/media_art.png');
+      if (!file.existsSync() || file.lengthSync() != bytes.lengthInBytes) {
+        await file.writeAsBytes(bytes.buffer.asUint8List(), flush: true);
+      }
+      _art = Uri.file(file.path);
+    } on Object catch (e) {
+      // No artwork is a plainer notification, never a broken one.
+      debugPrint('Hazri audio: no artwork ($e)');
+    }
+  }
 
   /// Loads a queue and parks it at [startIndex], without starting playback.
   @override
@@ -240,6 +279,7 @@ class HazriAudioHandler extends BaseAudioHandler
     _tracks
       ..clear()
       ..addAll(tracks);
+    _saying = null;
     _reportedComplete.clear();
     queue.add([for (final t in tracks) _mediaItemFor(t)]);
 

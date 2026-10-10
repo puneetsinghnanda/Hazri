@@ -4152,7 +4152,7 @@ abstract class L {
   /// No description provided for @notifExactNote.
   ///
   /// In en, this message translates to:
-  /// **'Without the \"Alarms and reminders\" permission, Android may deliver a reminder a few minutes late.'**
+  /// **'Reminders can arrive late, sometimes by hours, until Android allows Hazri \"Alarms & reminders\".'**
   String get notifExactNote;
 
   /// No description provided for @notifNoAds.
@@ -6021,6 +6021,18 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Play now'**
   String get goalPlayNow;
+
+  /// No description provided for @notifExactAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow on-time reminders'**
+  String get notifExactAllow;
+
+  /// No description provided for @playerQueuePosition.
+  ///
+  /// In en, this message translates to:
+  /// **'{slot} · {index} of {count}'**
+  String playerQueuePosition(String slot, int index, int count);
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

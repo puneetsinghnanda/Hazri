@@ -235,6 +235,11 @@ class ReminderService {
   Future<bool> canScheduleExact() async =>
       await _android?.canScheduleExactNotifications() ?? true;
 
+  /// Opens Android's "Alarms & reminders" for Hazri (DP2).
+  Future<void> requestExactAlarms() async {
+    await _android?.requestExactAlarmsPermission();
+  }
+
   /// Replaces the planned part of the pending schedule with [planned], and
   /// takes away the notifications in [dismiss] if they are showing.
   ///

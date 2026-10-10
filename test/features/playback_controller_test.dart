@@ -165,6 +165,17 @@ void main() {
       expect(player.isPlaying, isTrue);
     });
 
+    test('design 18: each bani of the queue says where it is, under its name', () async {
+      await controller().playSlot(BaniSlot.morning, language: 'en');
+      expect(player.queued.first.subtitle, 'Morning Nitnem · 1 of 5');
+      expect(player.queued.last.subtitle, 'Morning Nitnem · 5 of 5');
+    });
+
+    test('a queue of one has no "1 of 1"', () async {
+      await controller().playSlot(BaniSlot.bedtime, language: 'en');
+      expect(player.queued.single.subtitle, isNull);
+    });
+
     test('the bedtime slot plays Sohila', () async {
       // This used to assert the opposite: the slot had no recitation to play.
       expect(await controller().playSlot(BaniSlot.bedtime, language: 'en'), isTrue);

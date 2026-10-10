@@ -706,7 +706,7 @@
   "notifKindHazriSub": "सुबह 7:00, सिर्फ़ जब कोई लक्ष्य न हो और हाज़री अभी न लगी हो",
   "notifKindSangat": "संगत",
   "notifKindSangatSub": "आपके समूह रात 9:00 बजे, और उनके पड़ाव",
-  "notifExactNote": "\"अलार्म और रिमाइंडर\" की अनुमति के बिना, एंड्रॉइड कोई रिमाइंडर कुछ मिनट देर से दे सकता है।",
+  "notifExactNote": "जब तक Android हाज़िरी को \"अलार्म और रिमाइंडर\" की अनुमति नहीं देता, रिमाइंडर देर से आ सकते हैं, कभी-कभी घंटों तक।",
   "notifNoAds": "हाज़री कभी वह नहीं भेजती जो आपने नहीं माँगा, और कभी कोई विज्ञापन नहीं।",
   "notifDiagnostics": "जाँच",
   "notifDiagnosticsSub": "यह फ़ोन रिमाइंडर के बारे में क्या कहता है",
@@ -1016,5 +1016,7 @@
   "sangatTodayMinutes": "आज {count} मिनट",
   "sangatGoalTargetMinutes": "लक्ष्य, नाम सिमरन के मिनटों में",
   "readerStartAgainNote": "फिर से शुरू करें आपको पहली पंक्ति पर ले जाता है और जहाँ आपने छोड़ा था उसे मिटा देता है।",
-  "goalPlayNow": "अभी चलाएँ"
+  "goalPlayNow": "अभी चलाएँ",
+  "notifExactAllow": "समय पर रिमाइंडर की अनुमति दें",
+  "playerQueuePosition": "{slot} · {count} में से {index}"
 }

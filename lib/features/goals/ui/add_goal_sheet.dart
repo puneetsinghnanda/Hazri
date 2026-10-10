@@ -13,6 +13,7 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../nitnem/domain/bani.dart';
+import '../../reminders/ui/exact_alarm_card.dart';
 import '../../reminders/ui/time_wheel.dart';
 import '../data/goals_controller.dart';
 import '../domain/goal_constants.dart';
@@ -391,6 +392,8 @@ class _GoalItemSheetState extends ConsumerState<_GoalItemSheet> {
               if (_remind) ...[
                 const SizedBox(height: 8),
                 TimeWheel(value: _time, onChanged: (v) => setState(() => _time = v)),
+                // DP2: a reminder time is what exact alarms are for.
+                const ExactAlarmCard(padding: EdgeInsets.only(top: 10)),
               ],
             ],
             if (_error != null) ...[

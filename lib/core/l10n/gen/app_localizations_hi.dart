@@ -2277,7 +2277,7 @@ class LHi extends L {
 
   @override
   String get notifExactNote =>
-      '\"अलार्म और रिमाइंडर\" की अनुमति के बिना, एंड्रॉइड कोई रिमाइंडर कुछ मिनट देर से दे सकता है।';
+      'जब तक Android हाज़िरी को \"अलार्म और रिमाइंडर\" की अनुमति नहीं देता, रिमाइंडर देर से आ सकते हैं, कभी-कभी घंटों तक।';
 
   @override
   String get notifNoAds =>
@@ -3359,4 +3359,12 @@ class LHi extends L {
 
   @override
   String get goalPlayNow => 'अभी चलाएँ';
+
+  @override
+  String get notifExactAllow => 'समय पर रिमाइंडर की अनुमति दें';
+
+  @override
+  String playerQueuePosition(String slot, int index, int count) {
+    return '$slot · $count में से $index';
+  }
 }

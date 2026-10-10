@@ -11,6 +11,7 @@ class PaathTrack {
     required this.assetPath,
     required this.duration,
     required this.route,
+    this.subtitle,
   });
 
   final String baniId;
@@ -25,6 +26,11 @@ class PaathTrack {
   /// Where the mini player goes when tapped. Usually the reader for this bani,
   /// but Naam Simran has no reader and belongs on its own screen.
   final String route;
+
+  /// The line under the bani's name in the notification and on the lock
+  /// screen while nothing is being recited yet: "Morning Nitnem · 1 of 5"
+  /// when it is one of a queue, else the Gurmukhi name (design 18).
+  final String? subtitle;
 }
 
 /// The commands the app issues to whatever is playing the paath.

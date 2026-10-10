@@ -1296,7 +1296,7 @@
   "notifKindHazriSub": "At 7:00 AM, only with no goal and no Hazri yet",
   "notifKindSangat": "Sangat",
   "notifKindSangatSub": "Your groups at 9:00 PM, and their milestones",
-  "notifExactNote": "Without the \"Alarms and reminders\" permission, Android may deliver a reminder a few minutes late.",
+  "notifExactNote": "Reminders can arrive late, sometimes by hours, until Android allows Hazri \"Alarms & reminders\".",
   "notifNoAds": "Hazri never sends anything you did not ask for, and never an advertisement.",
   "notifDiagnostics": "Diagnostics",
   "notifDiagnosticsSub": "What this phone says about reminders",
@@ -2021,5 +2021,20 @@
   },
   "sangatGoalTargetMinutes": "Target, in minutes of Naam Simran",
   "readerStartAgainNote": "Start again takes you to the first line and clears where you left off.",
-  "goalPlayNow": "Play now"
+  "goalPlayNow": "Play now",
+  "notifExactAllow": "Allow on-time reminders",
+  "playerQueuePosition": "{slot} · {index} of {count}",
+  "@playerQueuePosition": {
+    "placeholders": {
+      "slot": {
+        "type": "String"
+      },
+      "index": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

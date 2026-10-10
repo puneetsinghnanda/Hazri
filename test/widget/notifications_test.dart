@@ -55,4 +55,28 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('DP2: without exact alarms the screen asks for them, and the card goes once allowed',
+      (tester) async {
+    app = await TestApp.create(prefs: {'onboarding_done': true});
+    addTearDown(app.dispose);
+    app.reminders.exactAlarmsGranted = false;
+    usePhoneFrame(tester);
+    await tester.pumpWidget(app.wrapRouted(const NotificationsScreen()));
+    await settle(tester);
+    final l = await L.delegate.load(const Locale('en'));
+
+    expect(find.text(l.notifExactNote), findsOneWidget);
+    await tester.tap(find.text(l.notifExactAllow));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+    await settle(tester);
+
+    expect(app.reminders.exactRequests, 1);
+    expect(find.text(l.notifExactAllow), findsNothing);
+  });
+
+  testWidgets('DP2: with exact alarms allowed nothing is asked', (tester) async {
+    final l = await pump(tester);
+    expect(find.text(l.notifExactAllow), findsNothing);
+  });
 }

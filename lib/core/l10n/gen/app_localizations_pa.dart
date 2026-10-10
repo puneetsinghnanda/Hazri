@@ -2281,7 +2281,7 @@ class LPa extends L {
 
   @override
   String get notifExactNote =>
-      '\"ਅਲਾਰਮ ਅਤੇ ਰਿਮਾਈਂਡਰ\" ਦੀ ਇਜਾਜ਼ਤ ਤੋਂ ਬਿਨਾਂ, ਐਂਡਰਾਇਡ ਕੋਈ ਯਾਦ ਕੁਝ ਮਿੰਟ ਦੇਰੀ ਨਾਲ ਦੇ ਸਕਦਾ ਹੈ।';
+      'ਜਦ ਤੱਕ Android ਹਾਜ਼ਰੀ ਨੂੰ \"ਅਲਾਰਮ ਅਤੇ ਰੀਮਾਈਂਡਰ\" ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਦਿੰਦਾ, ਯਾਦ-ਦਹਾਨੀਆਂ ਦੇਰ ਨਾਲ ਆ ਸਕਦੀਆਂ ਹਨ, ਕਈ ਵਾਰ ਘੰਟਿਆਂ ਤੱਕ।';
 
   @override
   String get notifNoAds =>
@@ -3366,4 +3366,12 @@ class LPa extends L {
 
   @override
   String get goalPlayNow => 'ਹੁਣੇ ਚਲਾਓ';
+
+  @override
+  String get notifExactAllow => 'ਸਮੇਂ ਸਿਰ ਯਾਦ-ਦਹਾਨੀਆਂ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ';
+
+  @override
+  String playerQueuePosition(String slot, int index, int count) {
+    return '$slot · $count ਵਿੱਚੋਂ $index';
+  }
 }

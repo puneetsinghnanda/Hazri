@@ -2286,7 +2286,7 @@ class LEn extends L {
 
   @override
   String get notifExactNote =>
-      'Without the \"Alarms and reminders\" permission, Android may deliver a reminder a few minutes late.';
+      'Reminders can arrive late, sometimes by hours, until Android allows Hazri \"Alarms & reminders\".';
 
   @override
   String get notifNoAds =>
@@ -3376,4 +3376,12 @@ class LEn extends L {
 
   @override
   String get goalPlayNow => 'Play now';
+
+  @override
+  String get notifExactAllow => 'Allow on-time reminders';
+
+  @override
+  String playerQueuePosition(String slot, int index, int count) {
+    return '$slot · $index of $count';
+  }
 }

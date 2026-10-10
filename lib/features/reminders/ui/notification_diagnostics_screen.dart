@@ -12,6 +12,7 @@ import '../../settings/ui/screen_scaffold.dart';
 import '../data/reminder_service.dart';
 import '../data/reminders_controller.dart';
 import '../domain/reminder_plan.dart';
+import 'exact_alarm_card.dart';
 
 /// What the phone says, so a report is "here is what Android says" rather
 /// than "it does not work" (02-notifications DP4).
@@ -80,6 +81,9 @@ class NotificationDiagnosticsScreen extends ConsumerWidget {
     return HazriScreen(
       title: l.notifDiagnostics,
       children: [
+        // Without exact alarms the two-minute test may come ten or more
+        // minutes late, which reads as "nothing arrives" (2026-10-10).
+        const ExactAlarmCard(padding: EdgeInsets.only(bottom: 12)),
         SettingsSection(
           title: l.notifDiagnosticsSub,
           children: [

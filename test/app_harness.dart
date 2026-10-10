@@ -112,6 +112,17 @@ class FakeReminderService extends ReminderService {
   @override
   Future<bool> canScheduleExact() async => exactAlarmsGranted;
 
+  /// How many times Android's "Alarms & reminders" was opened; the user
+  /// allows it there when [grantExactOnRequest] is set.
+  int exactRequests = 0;
+  bool grantExactOnRequest = true;
+
+  @override
+  Future<void> requestExactAlarms() async {
+    exactRequests++;
+    if (grantExactOnRequest) exactAlarmsGranted = true;
+  }
+
   @override
   Future<void> replaceSchedule(
     List<PlannedNotification> planned, {

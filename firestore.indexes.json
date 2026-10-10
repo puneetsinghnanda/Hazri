@@ -75,6 +75,15 @@
       ]
     },
     {
+      "collectionGroup": "contributions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "day", "order": "ASCENDING" },
+        { "fieldPath": "retracted", "order": "ASCENDING" },
+        { "fieldPath": "countedCount", "order": "ASCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "sangatNotices",
       "queryScope": "COLLECTION",
       "fields": [

@@ -11,15 +11,11 @@ import '../../audio/data/notification_access.dart';
 import '../../sangat/data/sangat_controller.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/notification_switches.dart';
-import '../data/reminder_service.dart';
 import '../data/reminders_controller.dart';
 import '../domain/reminder_plan.dart';
+import 'exact_alarm_card.dart';
 
-/// Whether Android lets Hazri deliver to the minute (DP2). Never asked for;
-/// read only to say what happens without it.
-final exactAlarmsAllowedProvider = FutureProvider<bool>(
-  (ref) => ref.read(reminderServiceProvider).canScheduleExact(),
-);
+export 'exact_alarm_card.dart' show exactAlarmsAllowedProvider;
 
 /// Design 50, as 02-notifications §9 has it: one switch per kind, the
 /// permission card, the exact-alarm note and the way into diagnostics.
@@ -31,7 +27,6 @@ class NotificationsScreen extends ConsumerWidget {
     final c = context.colors;
     final l = L.of(context);
     final allowed = ref.watch(notificationsAllowedProvider).value ?? true;
-    final exact = ref.watch(exactAlarmsAllowedProvider).value ?? true;
     final on = ref.watch(notificationSwitchesProvider);
     final member = ref.watch(sangatMemberProvider);
 
@@ -64,13 +59,7 @@ class NotificationsScreen extends ConsumerWidget {
             if (member) row(NotificationKind.sangat, l.notifKindSangat, l.notifKindSangatSub),
           ],
         ),
-        if (!exact) ...[
-          const SizedBox(height: 12),
-          HazriCard(
-            colour: c.card2,
-            child: Text(l.notifExactNote, style: HazriText.bodySmall.copyWith(color: c.ink2)),
-          ),
-        ],
+        const ExactAlarmCard(padding: EdgeInsets.only(top: 12)),
         SettingsSection(
           title: l.notifDiagnostics,
           children: [

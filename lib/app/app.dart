@@ -8,6 +8,8 @@ import '../core/l10n/gen/app_localizations.dart';
 import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_theme.dart';
 import '../core/time/clock.dart';
+import '../features/audio/data/audio_controller.dart';
+import '../features/reminders/ui/exact_alarm_card.dart';
 import '../features/hazri/data/hazri_controller.dart';
 import '../features/hazri/ui/goal_complete_sheet.dart';
 import '../features/reminders/data/reminders_controller.dart';
@@ -34,6 +36,8 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // Design 18: the line being recited on the lock screen.
+    ref.read(nowSayingProvider);
     // 12-badges AN1, UI7: a waiting badge's sheet shows when a tab is on
     // screen, never over the reader or a running Simran sitting.
     final router = ref.read(routerProvider);
@@ -102,7 +106,12 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // Coming back to the app is the cheapest moment to notice that the day, the
     // time zone or the sunrise has moved on (PRD 1.10).
-    if (state == AppLifecycleState.resumed) _replan();
+    if (state == AppLifecycleState.resumed) {
+      // Back from Android's "Alarms & reminders" (DP2): read it again, and
+      // the re-plan below schedules exact alarms from now on.
+      ref.invalidate(exactAlarmsAllowedProvider);
+      _replan();
+    }
   }
 
   /// Closes a goal whose items have all ended (04-goals BG2), then rebuilds
