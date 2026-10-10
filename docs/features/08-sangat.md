@@ -125,10 +125,10 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 ### 4.6 What members see
 
-- **VS1. My groups:** active groups first, then inactive ones under `sangatEndedHeading`. Each shows name, goal, total of target, percentage and days left.
-- **VS2. Built-in groups:** every active built-in group, with member count and Join or Leave.
-- **VS3. A group:** name; goal (bani or Naam Simran with minutes, target, start and end); total, percentage, today's total, days left or "Ended on {date}"; member count; and the member list.
-- **VS4. The member list** shows at most 50 members: those with a profile first, alphabetically by name, then "Sangat member" rows. Each row shows the name and that member's contribution to the goal. After 50, one line reads `sangatMoreMembers` ("450 more members"). No further loading.
+- **VS1. My groups:** active groups first, then inactive ones, muted and marked `sangatEndedHeading` (design 102, 2026-10-10: one grid, not a second list). Each shows its percentage in a ring, name, total of target, and days left or "Ended on {date}".
+- **VS2. Built-in groups:** every active built-in group, with its goal, member count and Join or Leave.
+- **VS3. A group:** name; goal (bani or Naam Simran with minutes, target, start and end); total, percentage, today's total, days left or "Ended on {date}"; member count; and the member list. Design 103 (2026-10-10) adds what this phone did toward the goal: **yours today**, counted on the phone from `user.db` the way the server counts it (CT1: today's paath of the goal's bani, or the whole minutes of today's sittings), and **yours toward the goal**, the member row marked `isYou`.
+- **VS4. The member list** shows at most 50 members: those with a profile first, alphabetically by name, then "Sangat member" rows. Each row shows the name and that member's contribution to the goal. After 50, one line reads `sangatAndMore` ("and 450 more"). No further loading.
 - **VS5.** Nobody is shown a position, a rank, or who has not contributed.
 - **VS6.** The creator's row carries `sangatCreatorLabel`.
 
@@ -155,9 +155,12 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 ### 8.1 Sangat tab
 
-1. **My groups** (VS1), with **Create group** and **Join with a code**.
-2. **Built-in groups** (VS2).
-3. With no network and no copy yet, `sangatOffline`.
+The tab follows **design 102** ("dashboard tiles", owner, 2026-10-10).
+
+1. **Create group** (navy, "One goal, an end date") and **Join group** (saffron, "With a link or code", opening Join) as two tiles side by side.
+2. **My groups** (VS1) as a grid two tiles wide. A tile opens the group.
+3. **Join the sangat**: the built-in groups (VS2) as full-width rows in one card, each with its icon, name, goal on one line, member count and Join or Leave. A row opens the group once joined.
+4. With no network and no copy yet, `sangatOffline`.
 
 ### 8.2 Screens
 
@@ -165,8 +168,10 @@ A Sangat group is a set of people working together toward one shared goal with a
 | --- | --- |
 | Create group | Name field (64), then Set goal: Bani or Naam Simran; bani picker from `content.db` (none for Naam Simran); target (paath, or minutes of Naam Simran); end date (up to 365 days). Then Share invite. |
 | Join | Code field (`XXXX-XXXX`), "Paste code", Join. Filled automatically from an App Link or the install referrer. |
-| Group | VS3 and VS4. Menu: Share invite; for the creator also Change end date, Reset invite code, Remove member (on a member row), Delete (CG8); for others Leave; for all Report. |
+| Group | **Design 103** ("ring in a navy band, timeline below", owner, 2026-10-10), for built-in and custom groups alike: back, the name over "Built-in group · N members" (a custom group: "N members"), the menu; the ring with total of target and percentage, and the goal under it. Then the current goal as three points -- started, today with the days left, and the end, which for a built-in group says when the next goal starts (BI4); an ended goal shows two. Then three figures: the sangat today, yours today and yours toward the goal (VS3); then **Sit for {paath}** (SC1); then the members (VS4, VS5). Menu: Share invite; for the creator also Change end date, Reset invite code, Remove member (on a member row), Delete (CG8); for others Leave; for all Report. A custom group also has Share invite as a button below the members. |
 | Report | The four reasons, the note for Other, Send. |
+
+- **SC1. Sit for {paath}.** While a member and while the goal is active, the group screen carries one primary button that starts the goal's paath: `sangatSitFor` with `sangatGoalSimran` ("Sit for Naam Simran") opens the Simran tab, as Today's Simran button does; with the bani's name from `content.db` ("Sit for Japji Sahib") it opens the reader at that bani. It is not shown to somebody who is not a member, or once the goal has ended.
 
 ### 8.3 Strings
 
@@ -219,6 +224,28 @@ A Sangat group is a set of people working together toward one shared goal with a
 | `sangatReportSent` | Thank you. We'll look into it. |
 | `sangatUpdatedAt` | Updated {time} |
 | `sangatOffline` | Can't reach the sangat right now |
+| `sangatCreateSub` | One goal, an end date |
+| `sangatJoinGroupTile` | Join group |
+| `sangatJoinGroupSub` | With a link or code |
+| `sangatTotalOf` | {total} of {target} |
+| `sangatTotalOfMinutes` | {total} of {target} min |
+| `sangatOfTarget` | of {target} |
+| `sangatOfTargetMinutes` | of {target} min |
+| `sangatBuiltInKind` | Built-in group |
+| `sangatGroupMenu` | Group menu |
+| `sangatThisGoal` | This goal |
+| `sangatDayOf` | Day {day} of {days} |
+| `sangatStarted` | Started |
+| `sangatEnds` | Ends |
+| `sangatEndsNewGoal` | Ends; new goal starts {date} |
+| `sangatFigureSangatToday` | Sangat today |
+| `sangatFigureYoursToday` | Yours today |
+| `sangatFigureYoursGoal` | Yours toward the goal |
+| `sangatMinUnit` | min |
+| `sangatSitFor` | Sit for {paath} |
+| `sangatMembersHeading` | Members |
+| `sangatMembersAtoZ` | {count} · A to Z |
+| `sangatAndMore` | and {count} more |
 
 ## 9. Notifications
 

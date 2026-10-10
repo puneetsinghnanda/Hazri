@@ -6033,6 +6033,138 @@ abstract class L {
   /// In en, this message translates to:
   /// **'{slot} · {index} of {count}'**
   String playerQueuePosition(String slot, int index, int count);
+
+  /// No description provided for @sangatCreateSub.
+  ///
+  /// In en, this message translates to:
+  /// **'One goal, an end date'**
+  String get sangatCreateSub;
+
+  /// No description provided for @sangatJoinGroupTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Join group'**
+  String get sangatJoinGroupTile;
+
+  /// No description provided for @sangatJoinGroupSub.
+  ///
+  /// In en, this message translates to:
+  /// **'With a link or code'**
+  String get sangatJoinGroupSub;
+
+  /// No description provided for @sangatTotalOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} of {target}'**
+  String sangatTotalOf(String total, String target);
+
+  /// No description provided for @sangatTotalOfMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} of {target} min'**
+  String sangatTotalOfMinutes(String total, String target);
+
+  /// No description provided for @sangatOfTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'of {target}'**
+  String sangatOfTarget(String target);
+
+  /// No description provided for @sangatOfTargetMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'of {target} min'**
+  String sangatOfTargetMinutes(String target);
+
+  /// No description provided for @sangatBuiltInKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Built-in group'**
+  String get sangatBuiltInKind;
+
+  /// No description provided for @sangatGroupMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Group menu'**
+  String get sangatGroupMenu;
+
+  /// No description provided for @sangatThisGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'This goal'**
+  String get sangatThisGoal;
+
+  /// No description provided for @sangatDayOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day} of {days}'**
+  String sangatDayOf(int day, int days);
+
+  /// No description provided for @sangatStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get sangatStarted;
+
+  /// No description provided for @sangatEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get sangatEnds;
+
+  /// No description provided for @sangatEndsNewGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends; new goal starts {date}'**
+  String sangatEndsNewGoal(String date);
+
+  /// No description provided for @sangatFigureSangatToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sangat today'**
+  String get sangatFigureSangatToday;
+
+  /// No description provided for @sangatFigureYoursToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours today'**
+  String get sangatFigureYoursToday;
+
+  /// No description provided for @sangatFigureYoursGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours toward the goal'**
+  String get sangatFigureYoursGoal;
+
+  /// No description provided for @sangatMinUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get sangatMinUnit;
+
+  /// No description provided for @sangatSitFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Sit for {paath}'**
+  String sangatSitFor(String paath);
+
+  /// No description provided for @sangatMembersHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get sangatMembersHeading;
+
+  /// No description provided for @sangatMembersAtoZ.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} · A to Z'**
+  String sangatMembersAtoZ(String count);
+
+  /// No description provided for @sangatAndMore.
+  ///
+  /// In en, this message translates to:
+  /// **'and {count} more'**
+  String sangatAndMore(String count);
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

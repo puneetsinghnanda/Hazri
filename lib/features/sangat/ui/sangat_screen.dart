@@ -20,8 +20,9 @@ import '../data/sangat_controller.dart';
 import '../domain/sangat_models.dart';
 import 'sangat_widgets.dart';
 
-/// The Sangat tab (08-sangat §8.1): my groups, Create and Join, then the
-/// built-in groups. The copy on the phone shows first (§5.2).
+/// The Sangat tab (08-sangat §8.1, design 102 "dashboard tiles"): Create
+/// and Join side by side, my groups as a 2 x 2 grid, then the built-in groups
+/// as full-width rows. The copy on the phone shows first (§5.2).
 class SangatScreen extends ConsumerStatefulWidget {
   const SangatScreen({super.key});
 
@@ -99,9 +100,11 @@ class _SangatScreenState extends ConsumerState<SangatScreen> with WidgetsBinding
     final view = ref.watch(sangatListsProvider);
     final lists = view?.value;
     final mine = lists?.mine ?? const <SangatGroup>[];
-    final active = mine.where((g) => g.isActive).toList();
-    final ended = mine.where((g) => !g.isActive).toList();
+    // VS1: active groups first, then the ones that have ended, muted.
+    final ordered = [...mine.where((g) => !groupEnded(g)), ...mine.where(groupEnded)];
     final hasProfile = ref.watch(profileControllerProvider) is ProfileLoaded;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final builtIn = lists?.builtIn ?? const <SangatGroup>[];
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -122,54 +125,77 @@ class _SangatScreenState extends ConsumerState<SangatScreen> with WidgetsBinding
                         ? const Center(child: Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator()))
                         : HazriCard(child: Text(l.sangatOffline, style: HazriText.body.copyWith(color: c.ink2))),
                   ),
-                Eyebrow(l.sangatMyGroups),
+                // Design 102: Create (navy) and Join (saffron) side by side.
+                IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: SangatActionTile(
+                          icon: HazriIconData.plus,
+                          label: l.sangatCreate,
+                          sub: l.sangatCreateSub,
+                          background: dark ? c.card2 : c.primary,
+                          foreground: Colors.white,
+                          onTap: () => hasProfile ? context.push(Routes.sangatCreate) : _needsProfile(context),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: SangatActionTile(
+                          icon: HazriIconData.code,
+                          label: l.sangatJoinGroupTile,
+                          sub: l.sangatJoinGroupSub,
+                          background: c.kesriSoft,
+                          foreground: c.kesriInk,
+                          onTap: () => context.push(Routes.sangatJoin()),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Eyebrow(l.sangatMyGroups, colour: c.ink2),
+                ),
                 const SizedBox(height: 8),
                 if (mine.isEmpty)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.fromLTRB(4, 0, 4, 10),
                     child: Text(l.sangatNoGroups, style: HazriText.bodySmall.copyWith(color: c.muted)),
+                  )
+                else
+                  TwoColumnGrid(
+                    children: [
+                      for (final g in ordered)
+                        GroupGridTile(group: g, onTap: () => context.push(Routes.sangatGroup(g.groupId))),
+                    ],
                   ),
-                for (final g in active)
-                  GroupTile(group: g, onTap: () => context.push(Routes.sangatGroup(g.groupId))),
-                Row(
-                  children: [
-                    Expanded(
-                      child: PrimaryButton(
-                        label: l.sangatCreate,
-                        icon: HazriIconData.sparkle,
-                        onPressed: () => hasProfile ? context.push(Routes.sangatCreate) : _needsProfile(context),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: PrimaryButton(
-                        label: l.sangatJoinWithCode,
-                        secondary: true,
-                        onPressed: () => context.push(Routes.sangatJoin()),
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 4),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Eyebrow(l.sangatBuiltInGroups, colour: c.ink2),
                 ),
-                if (ended.isNotEmpty) ...[
-                  const SizedBox(height: 18),
-                  Eyebrow(l.sangatEndedHeading),
-                  const SizedBox(height: 8),
-                  for (final g in ended)
-                    GroupTile(group: g, onTap: () => context.push(Routes.sangatGroup(g.groupId))),
-                ],
-                const SizedBox(height: 18),
-                Eyebrow(l.sangatBuiltInGroups),
                 const SizedBox(height: 8),
-                for (final g in lists?.builtIn ?? const <SangatGroup>[])
-                  GroupTile(
-                    group: g,
-                    onTap: g.isMember ? () => context.push(Routes.sangatGroup(g.groupId)) : null,
-                    trailing: _busy.contains(g.groupId)
-                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
-                        : TextButton(
-                            onPressed: () => _toggle(g),
-                            child: Text(g.isMember ? l.sangatLeave : l.sangatJoin),
+                if (builtIn.isNotEmpty)
+                  HazriCard(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (var i = 0; i < builtIn.length; i++)
+                          BuiltInGroupRow(
+                            group: builtIn[i],
+                            divider: i > 0,
+                            busy: _busy.contains(builtIn[i].groupId),
+                            onToggle: () => _toggle(builtIn[i]),
+                            onTap: builtIn[i].isMember
+                                ? () => context.push(Routes.sangatGroup(builtIn[i].groupId))
+                                : null,
                           ),
+                      ],
+                    ),
                   ),
               ],
             ),

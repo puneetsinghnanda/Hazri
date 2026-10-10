@@ -2036,5 +2036,99 @@
         "type": "int"
       }
     }
+  },
+  "sangatCreateSub": "One goal, an end date",
+  "sangatJoinGroupTile": "Join group",
+  "sangatJoinGroupSub": "With a link or code",
+  "sangatTotalOf": "{total} of {target}",
+  "@sangatTotalOf": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatTotalOfMinutes": "{total} of {target} min",
+  "@sangatTotalOfMinutes": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatOfTarget": "of {target}",
+  "@sangatOfTarget": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatOfTargetMinutes": "of {target} min",
+  "@sangatOfTargetMinutes": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatBuiltInKind": "Built-in group",
+  "sangatGroupMenu": "Group menu",
+  "sangatThisGoal": "This goal",
+  "sangatDayOf": "Day {day} of {days}",
+  "@sangatDayOf": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatStarted": "Started",
+  "sangatEnds": "Ends",
+  "sangatEndsNewGoal": "Ends; new goal starts {date}",
+  "@sangatEndsNewGoal": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatFigureSangatToday": "Sangat today",
+  "sangatFigureYoursToday": "Yours today",
+  "sangatFigureYoursGoal": "Yours toward the goal",
+  "sangatMinUnit": "min",
+  "sangatSitFor": "Sit for {paath}",
+  "@sangatSitFor": {
+    "placeholders": {
+      "paath": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatMembersHeading": "Members",
+  "sangatMembersAtoZ": "{count} · A to Z",
+  "@sangatMembersAtoZ": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatAndMore": "and {count} more",
+  "@sangatAndMore": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
   }
 }
