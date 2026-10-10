@@ -17,11 +17,33 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : AudioServiceActivity() {
     private val channel = "app.hazri/system"
 
+    // 02-notifications DP7: Hazri's own reminders, and the tap that opened
+    // the app from one, held until Dart asks for it.
+    private var reminders: MethodChannel? = null
+    private var launchTap: Map<String, Any?>? = null
+
+    private fun tapOf(intent: Intent?): Map<String, Any?>? {
+        if (intent?.action != Reminders.ACTION_TAP) return null
+        intent.getIntExtra(Reminders.EXTRA_ID, 0).let { if (it != 0) Reminders.dismiss(this, it) }
+        return mapOf(
+            "payload" to intent.getStringExtra(Reminders.EXTRA_PAYLOAD),
+            "action" to intent.getStringExtra(Reminders.EXTRA_ACTION),
+        )
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val tap = tapOf(intent) ?: return
+        val open = reminders
+        if (open != null) open.invokeMethod("tap", tap) else launchTap = tap
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // Android 15+ enforces edge-to-edge; opting in on every version keeps
         // one layout path, and Flutter handles the insets per screen.
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
+        tapOf(intent)?.let { launchTap = it }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
         }
@@ -29,6 +51,37 @@ class MainActivity : AudioServiceActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        reminders = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.hazri/reminders").apply {
+            setMethodCallHandler { call, result ->
+                try {
+                    when (call.method) {
+                        "schedule" -> {
+                            val args = call.arguments as Map<*, *>
+                            val json = org.json.JSONObject()
+                            for ((k, v) in args) json.put(k as String, if (v is Number && k == "at") v.toLong() else v)
+                            Reminders.schedule(this@MainActivity, json)
+                            result.success(null)
+                        }
+                        "cancel" -> {
+                            Reminders.cancel(this@MainActivity, (call.argument<Number>("id") ?: 0).toInt())
+                            result.success(null)
+                        }
+                        "dismiss" -> {
+                            Reminders.dismiss(this@MainActivity, (call.argument<Number>("id") ?: 0).toInt())
+                            result.success(null)
+                        }
+                        "pending" -> result.success(Reminders.pending(this@MainActivity))
+                        "takeLaunchTap" -> {
+                            result.success(launchTap)
+                            launchTap = null
+                        }
+                        else -> result.notImplemented()
+                    }
+                } catch (e: Exception) {
+                    result.error("reminders", e.toString(), null)
+                }
+            }
+        }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channel)
             .setMethodCallHandler { call, result ->
                 when (call.method) {

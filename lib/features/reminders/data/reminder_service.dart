@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -190,6 +191,19 @@ class ReminderService {
       onDidReceiveBackgroundNotificationResponse: onNotificationActionInBackground,
     );
 
+    // DP7: Hazri's own reminders answer taps through its own channel.
+    _native.setMethodCallHandler((call) async {
+      if (call.method == 'tap') _handleNativeTap(call.arguments);
+      return null;
+    });
+    try {
+      _handleNativeTap(await _native.invokeMethod<Object?>('takeLaunchTap'));
+    } on PlatformException catch (e) {
+      debugPrint('Hazri: no launch tap ($e)');
+    } on MissingPluginException {
+      // Tests and non-Android.
+    }
+
     final launch = await _plugin.getNotificationAppLaunchDetails();
     if (launch?.didNotificationLaunchApp ?? false) {
       final r = launch?.notificationResponse;
@@ -201,6 +215,22 @@ class ReminderService {
       await _android?.deleteNotificationChannel(id);
     }
     _ready = true;
+  }
+
+  /// A tap on one of Hazri's own reminders, or one of its buttons (DP7).
+  void _handleNativeTap(Object? arguments) {
+    if (arguments is! Map) return;
+    final raw = arguments['payload'];
+    if (raw is! String || raw.isEmpty) return;
+    final action = arguments['action'];
+    final route = NotificationPayload.decode(raw).routeFor(action is String ? action : null);
+    if (route == null) return;
+    final handler = onTap;
+    if (handler == null) {
+      pendingPayload = route;
+    } else {
+      handler(route);
+    }
   }
 
   void _handleResponse(NotificationResponse response) {
@@ -261,19 +291,24 @@ class ReminderService {
       await _android?.createNotificationChannel(
           AndroidNotificationChannel(e.key.androidChannelId, e.value, importance: _importance));
     }
-    // A pending planned id that is not planned again is cancelled; one that
-    // is planned again is replaced by zonedSchedule under the same id. Only
-    // pending ones: today's that already fired stay where they are.
-    final keep = {for (final n in planned) n.notificationId};
+    // DP7: whatever the plugin still holds from earlier builds is cancelled;
+    // its scheduled path never showed a reminder on the owner's phone.
     for (final p in await _plugin.pendingNotificationRequests()) {
-      if (ReminderPlanner.isPlannedId(p.id) && !keep.contains(p.id)) await _plugin.cancel(p.id);
+      await _plugin.cancel(p.id);
+    }
+    // A pending planned id that is not planned again is cancelled; one that
+    // is planned again is replaced under the same id. Only pending ones:
+    // today's that already fired stay where they are.
+    final keep = {for (final n in planned) n.notificationId};
+    for (final p in await _nativePending()) {
+      if (ReminderPlanner.isPlannedId(p.id) && !keep.contains(p.id)) await _nativeCall('cancel', {'id': p.id});
     }
     for (final id in dismiss) {
-      await _plugin.cancel(id);
+      await _nativeCall('cancel', {'id': id});
+      await _nativeCall('dismiss', {'id': id});
     }
-    final exact = await canScheduleExact();
     for (final n in planned) {
-      await _schedule(n, channelNames[n.kind] ?? 'Hazri', exact: exact);
+      await _schedule(n, channelNames[n.kind] ?? 'Hazri');
     }
     lastPlan = planned;
   }
@@ -313,24 +348,53 @@ class ReminderService {
         actions: [for (final a in n.actions) (id: a.id, label: a.label, route: a.route)],
       ).encode();
 
-  Future<void> _schedule(PlannedNotification n, String channelName, {required bool exact}) async {
-    final when = tz.TZDateTime.from(n.at, tz.local);
-    if (!when.isAfter(tz.TZDateTime.now(tz.local))) return;
+  /// Hazri's own scheduler (DP7): `android/.../Reminders.kt`.
+  static const _native = MethodChannel('app.hazri/reminders');
+
+  Future<void> _nativeCall(String method, Map<String, Object?> args) async {
     try {
-      await _plugin.zonedSchedule(
-        n.notificationId,
-        n.title,
-        n.body,
-        when,
-        _details(n, channelName),
-        androidScheduleMode:
-            exact ? AndroidScheduleMode.exactAllowWhileIdle : AndroidScheduleMode.inexactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-        payload: _payload(n, channelName),
-      );
-    } on Exception catch (e) {
-      debugPrint('Hazri: could not schedule ${n.reminderId}: $e');
+      await _native.invokeMethod<void>(method, args);
+    } on PlatformException catch (e) {
+      debugPrint('Hazri: reminders.$method failed ($e)');
+    } on MissingPluginException {
+      // Tests and non-Android.
     }
+  }
+
+  Future<List<({int id, DateTime at})>> _nativePending() async {
+    try {
+      final list = await _native.invokeListMethod<Map<Object?, Object?>>('pending') ?? const [];
+      return [
+        for (final m in list)
+          (id: m['id']! as int, at: DateTime.fromMillisecondsSinceEpoch(m['at']! as int)),
+      ];
+    } on PlatformException {
+      return const [];
+    } on MissingPluginException {
+      return const [];
+    }
+  }
+
+  /// What Hazri's scheduler stores for one reminder: everything the native
+  /// side needs to post it with no help from Dart.
+  Map<String, Object?> _nativeReminder(PlannedNotification n, String channelName, {int? id, DateTime? at}) {
+    final progress = n.progress;
+    return {
+      'id': id ?? n.notificationId,
+      'at': (at ?? n.at).millisecondsSinceEpoch,
+      'title': n.title,
+      'body': n.body,
+      'channelId': n.kind.androidChannelId,
+      'channelName': channelName,
+      'payload': _payload(n, channelName),
+      'progress': progress?.$1 ?? 0,
+      'maxProgress': progress?.$2 ?? 0,
+    };
+  }
+
+  Future<void> _schedule(PlannedNotification n, String channelName) async {
+    if (!n.at.isAfter(DateTime.now())) return;
+    await _nativeCall('schedule', _nativeReminder(n, channelName));
   }
 
   /// Diagnostics: shows [n] now, or in two minutes (DP4).
@@ -341,14 +405,8 @@ class ReminderService {
       await _plugin.show(id, n.title, n.body, _details(n, channelName),
           payload: _payload(n, channelName));
     } else {
-      final at = tz.TZDateTime.now(tz.local).add(after);
-      // Exact only when Android allows it: Android 14 denies it by default,
-      // and asking for exact without it throws.
-      final exact = await canScheduleExact();
-      await _plugin.zonedSchedule(id, n.title, n.body, at, _details(n, channelName),
-          androidScheduleMode: exact ? AndroidScheduleMode.exactAllowWhileIdle : AndroidScheduleMode.inexactAllowWhileIdle,
-          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-          payload: _payload(n, channelName));
+      // Through Hazri's own scheduler, as every reminder is (DP7).
+      await _nativeCall('schedule', _nativeReminder(n, channelName, id: id, at: DateTime.now().add(after)));
     }
   }
 
@@ -369,9 +427,14 @@ class ReminderService {
     );
   }
 
-  Future<void> cancelAll() => _plugin.cancelAll();
+  Future<void> cancelAll() async {
+    for (final p in await _nativePending()) {
+      await _nativeCall('cancel', {'id': p.id});
+    }
+    await _plugin.cancelAll();
+  }
 
-  Future<int> pendingCount() async => (await _plugin.pendingNotificationRequests()).length;
+  Future<int> pendingCount() async => (await _nativePending()).length;
 
   /// The most recent Hazri notification still showing, for "last delivered".
   Future<String?> lastShownTitle() async {

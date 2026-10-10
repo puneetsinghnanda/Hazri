@@ -145,6 +145,27 @@
 
         <!-- Runs a notification button pressed while the app is closed: the
              Snooze on a goal reminder. The plugin README asks for it. -->
+        <!-- Hazri's own reminders (02-notifications DP7): the alarm, the
+             buttons that do not open the app, and setting every alarm again
+             after a reboot, an update or a clock change. -->
+        <receiver
+            android:name=".ReminderReceiver"
+            android:exported="false" />
+        <receiver
+            android:name=".ReminderActionReceiver"
+            android:exported="false" />
+        <receiver
+            android:name=".ReminderBootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Diagnostics (02-notifications DP6): an alarm set without the
              plugin, to tell a phone that drops alarms from a plugin fault. -->
         <receiver

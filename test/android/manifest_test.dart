@@ -109,6 +109,20 @@ void main() {
     });
   });
 
+  test('DP7: Hazri\'s own reminder receivers are declared, and the boot one re-arms', () {
+    for (final r in ['.ReminderReceiver', '.ReminderActionReceiver', '.ReminderBootReceiver']) {
+      expect(manifest, contains('android:name="$r"'), reason: 'an alarm into a receiver that does not exist shows nothing');
+    }
+    final kotlin = File('android/app/src/main/kotlin/app/hazri/Reminders.kt').readAsStringSync();
+    expect(kotlin, contains('class ReminderReceiver'));
+    expect(kotlin, contains('class ReminderActionReceiver'));
+    expect(kotlin, contains('class ReminderBootReceiver'));
+    expect(kotlin, contains('setExactAndAllowWhileIdle'));
+    for (final a in ['BOOT_COMPLETED', 'MY_PACKAGE_REPLACED', 'TIME_SET', 'TIMEZONE_CHANGED']) {
+      expect(manifest, contains('android.intent.action.$a'));
+    }
+  });
+
   test('DP6: the alarm-test receiver is declared and not exported', () {
     expect(manifest, contains('android:name=".AlarmProbeReceiver"'));
     final kotlin = File('android/app/src/main/kotlin/app/hazri/AlarmProbe.kt').readAsStringSync();
