@@ -504,6 +504,15 @@ has that the target replaces, and PRD §11 says which step removes each:
   badge earned in the reader waits until the reader is left (UI7). The
   badge names of §2 live in `BadgeId` as proper nouns by script, like a
   bani's name; everything else is in the ARB files.
+- **Reminders are scheduled and posted by Hazri's own Android code**
+  (`android/.../Reminders.kt`, 02-notifications DP7, 2026-10-11), not by
+  `flutter_local_notifications`. On the owner's phone not one reminder the
+  plugin scheduled ever showed, with every permission granted, while an alarm
+  set straight through Android arrived to the second (Diagnostics' alarm
+  test, DP6). The plugin is kept for "Send one now", a foreground Sangat push,
+  the channels and the permissions. Confirmed on the phone 2026-10-11: the
+  two-minute test, goal reminders and their buttons all arrive. The two
+  paragraphs below describe the plugin's path and are history.
 - **`ScheduledNotificationReceiver` must be declared in the manifest, and was
   not.** That is why no reminder ever arrived, and it had nothing to do with
   the Dart. `flutter_local_notifications` declares **no receivers** in its own
