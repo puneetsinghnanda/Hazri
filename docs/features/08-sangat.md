@@ -65,6 +65,8 @@ A Sangat group is a set of people working together toward one shared goal with a
 | `MEMBER_LIST_SIZE` | 50 |
 | `DIARY_DAILY_CAP` | 3 Diary-added contributions per member per group per group day |
 | `REPORT_NOTE_MAX` | 200 characters |
+| `GROUP_GLOBE_SECONDS` | 120: how long a group's globe is kept before the server builds it again (GG6) |
+| `GROUP_ARRIVALS_MINUTES` / `GROUP_ARRIVALS_MAX` | 60 / 12: the paath a group's globe replays as light (GG4) |
 
 ## 4. Rules
 
@@ -132,6 +134,18 @@ A Sangat group is a set of people working together toward one shared goal with a
 - **VS5.** Nobody is shown a position, a rank, or who has not contributed.
 - **VS6.** The creator's row carries `sangatCreatorLabel`.
 
+### 4.6a The group's globe (owner, 2026-10-17: design option C, for custom and built-in groups alike; designs 104, 105)
+
+- **GG1. Where.** On every group screen the goal ring in the navy band wraps a small globe, in place of the big number. The total of the target and the percentage sit under the ring, then the key `sangatGlobeKey`: You · {today} today · {notYet} not yet · {cities} cities. The rest of the screen is design 103.
+- **GG2. Who is on it.** The group's active members who have a profile, by the city on their profile, as counts per city. Never a name, a member key or anything finer than a city (GG7). Members without a profile have no city and are not drawn; they are still counted in the key's "not yet" or "today".
+- **GG3. The dots.** As the Simran globe (`07-simran.md`), with its sizes (SZ1), threads and arcs (DR6–DR8), zoom (ZM1–ZM3) and tap card (TT1–TT3), but counted for this group: **green** is members who added to this goal today (their latest counted paath's group day is today, CT9); **blue** is the rest; **you** are orange on your own profile's city and come off your city's green if your own "yours today" (VS3) is above 0, else off its blue. Without a profile you are not drawn and nothing is taken off. The tap card uses `sangatGlobeTipToday` and `sangatGlobeTipNotYet`.
+- **GG4. Paath arriving as light.** The server gives the group's paath counted toward the current goal in the last `GROUP_ARRIVALS_MINUTES` minutes, newest first, at most `GROUP_ARRIVALS_MAX`, each with the city of the member who did it (none without a profile). On opening the group, the app plays them oldest first, one every 0.8 s: a point of light runs from that city into the ring's leading edge, which glows as it lands. After that, each refresh plays only the new ones. A paath with no city starts from the rim of the globe. With reduced motion on, no light runs.
+- **GG5. The line under the band.** `sangatArrivals` ("{count} paath arrived in the last hour") for a bani goal, `sangatArrivalsMinutes` ("{minutes} minutes of Naam Simran in the last hour") for a Naam Simran goal, counting what GG4 returned. Not shown when there are none.
+- **GG6. Freshness and cost.** The app fetches the group's globe on opening the group and every 2 minutes while the screen is visible, as the Simran globe does (`07-simran.md` GB1). The server keeps one globe per group and builds it again only when it is older than `GROUP_GLOBE_SECONDS`, so the cost does not grow with the number of people looking (ARCHITECTURE §5.6, §6.3 7.15).
+- **GG7. Privacy.** Counts per city only. In a small group a city with one member can point to that member, which the owner accepted on 2026-10-17; it is the same city their profile already shows on the Simran globe, now also as a member of this group. The privacy screen says so (`privacyGroupGlobe`).
+- **GG8. Offline.** The last globe is kept with the group's copy on the phone (5.2) and shown first; with none, the globe draws only you.
+- **GG9. An ended goal** keeps its globe as it was, with no arrivals and no line.
+
 ### 4.7 Reports
 
 - **RP1.** Any member can report a group from its menu with a reason: Offensive name, Spam, Not about Sikhi, or Other. Other allows an optional note of up to 200 characters.
@@ -168,7 +182,7 @@ The tab follows **design 102** ("dashboard tiles", owner, 2026-10-10).
 | --- | --- |
 | Create group | Name field (64), then Set goal: Bani or Naam Simran; bani picker from `content.db` (none for Naam Simran); target (paath, or minutes of Naam Simran); end date (up to 365 days). Then Share invite. |
 | Join | Code field (`XXXX-XXXX`), "Paste code", Join. Filled automatically from an App Link or the install referrer. |
-| Group | **Design 103** ("ring in a navy band, timeline below", owner, 2026-10-10), for built-in and custom groups alike: back, the name over "Built-in group · N members" (a custom group: "N members"), the menu; the ring with total of target and percentage, and the goal under it. Then the current goal as three points -- started, today with the days left, and the end, which for a built-in group says when the next goal starts (BI4); an ended goal shows two. Then three figures: the sangat today, yours today and yours toward the goal (VS3); then **Sit for {paath}** (SC1); then the members (VS4, VS5). Menu: Share invite; for the creator also Change end date, Reset invite code, Remove member (on a member row), Delete (CG8); for others Leave; for all Report. A custom group also has Share invite as a button below the members. |
+| Group | **Design 103** ("ring in a navy band, timeline below", owner, 2026-10-10), with **the group's globe inside the ring** (GG1–GG9, designs 104 and 105, owner, 2026-10-17), for built-in and custom groups alike: back, the name over "Built-in group · N members" (a custom group: "N members"), the menu; the ring around the globe, with total of target and percentage and the key under it, and the goal under that; the arrivals line (GG5) just below the band. Then the current goal as three points -- started, today with the days left, and the end, which for a built-in group says when the next goal starts (BI4); an ended goal shows two. Then three figures: the sangat today, yours today and yours toward the goal (VS3); then **Sit for {paath}** (SC1); then the members (VS4, VS5). Menu: Share invite; for the creator also Change end date, Reset invite code, Remove member (on a member row), Delete (CG8); for others Leave; for all Report. A custom group also has Share invite as a button below the members. |
 | Report | The four reasons, the note for Other, Send. |
 
 - **SC1. Sit for {paath}.** While a member and while the goal is active, the group screen carries one primary button that starts the goal's paath: `sangatSitFor` with `sangatGoalSimran` ("Sit for Naam Simran") opens the Simran tab, as Today's Simran button does; with the bani's name from `content.db` ("Sit for Japji Sahib") it opens the reader at that bani. It is not shown to somebody who is not a member, or once the goal has ended.
@@ -289,7 +303,8 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 ## 11. Privacy and cost
 
 - Each counted paath sends its bani or sitting length, its time and its source to the server. The privacy screen will be redesigned to say so (owner, 2026-10-07: later).
-- Reads: opening a group costs the group, its goal and up to 50 member rows (about 52 reads); the copy on the phone (5.2) is shown first and the app does not poll.
+- Reads: opening a group costs the group, its goal and up to 50 member rows (about 52 reads); the copy on the phone (5.2) is shown first and the group itself is not polled.
+- The group's globe (GG6): one read of the stored globe per fetch, and a rebuild at most every 2 minutes while somebody is looking: a custom group reads its active member rows (at most 1,000) and up to 12 recent contributions; a built-in group runs two counts per city of the reference list and the same 12 reads.
 - Writes: each paath writes one contribution document and one total per custom group it counts in; built-in groups write a shard instead.
 
 ## 12. Acceptance checklist
@@ -305,6 +320,7 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 | # | Question | Decision |
 | --- | --- | --- |
 | SG-1 | Does a Simran goal count sittings or total minutes? | **Decided 2026-10-09 (owner), replacing 2026-10-07:** total minutes of Naam Simran; every sitting adds its whole minutes and a goal has no sitting length (CT1). The 2026-10-07 answer was sittings of at least the goal's minutes |
+| SG-3 | A globe in a group | **Decided 2026-10-17:** option C for custom and built-in groups: the globe inside the goal ring, with paath arriving as light (GG1–GG9). Counts per city only, never names (GG7) |
 | SG-2 | Built-in groups and their names | **Decided 2026-10-07:** three, named as in BI1; Daily Nitnem Sangat removed |
 | — | Every other rule | Decided by the owner on 2026-10-07 |
 
@@ -314,4 +330,4 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 - Public or listed custom groups.
 - Approval of joins.
 - More than one bani per group, or changing a goal's target.
-- Groups on the Simran globe.
+- A group's members on the Simran globe: a group has its own globe (GG1), and the Simran globe stays everybody's.

@@ -3172,6 +3172,222 @@ def built_in_group() -> str:
 """
 
 
+
+def _group_globe_svg(size: int, cities, you, lon0: float, lat0: float, scale: float,
+                     arrivals=(), tip=None) -> str:
+    """The group's globe (08-sangat GG1-GG4): members by city, threads, and paath
+    arriving as light into the ring's leading edge (`tip`, in viewBox units).
+
+    cities: (lat, lon, today, not_yet). Dots sized by 07-simran SZ1 (one person
+    the size of your dot, full at 25), scaled for a globe this small.
+    """
+    global LON0, LAT0
+    saved = (LON0, LAT0)
+    LON0, LAT0 = lon0, lat0
+    try:
+        k = 300 / size
+        grid = graticule().replace('stroke="#2A3A6B" stroke-width="0.8" opacity="0.55"',
+                                   'stroke="#2F4E96" stroke-width="0.9" opacity="0.6"')
+        coast = coastline().replace('stroke="#41609E" stroke-width="1"',
+                                    'stroke="#8FD4FF" stroke-width="1.1" opacity="0.85"')
+        me = project(*you)
+        pts = [(project(lat, lon), t, n) for lat, lon, t, n in cities]
+        pts = [(p, t, n) for p, t, n in pts if p]
+
+        def radius(c: int) -> float:
+            return 4.0 if c <= 1 else 4 + 10 * math.sqrt((min(c, 25) - 1) / 24)
+
+        def arc(a, b, colour, w, op):
+            mx, my = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
+            dx, dy = b[0] - a[0], b[1] - a[1]
+            cx, cy = mx - dy * 0.14, my + dx * 0.14 - 0.11 * math.hypot(dx, dy)
+            return (f'<path d="M{a[0]:.1f} {a[1]:.1f} Q{cx:.1f} {cy:.1f} {b[0]:.1f} {b[1]:.1f}" '
+                    f'fill="none" stroke="{colour}" stroke-width="{w:.1f}" opacity="{op}"/>')
+        threads = []
+        for i, (p, _, _) in enumerate(pts):
+            for j in sorted(range(len(pts)), key=lambda m: math.dist(p, pts[m][0]))[1:3]:
+                if j > i:
+                    threads.append(arc(p, pts[j][0], "#AACDFF", 1.0 * k, 0.32))
+        if me:
+            threads += [arc(me, p, SKY["you"], 1.4 * k, 0.6) for p, _, _ in pts if math.dist(p, me) > 2]
+        dots = []
+        for (x, y), today, not_yet in pts:
+            for n, colour, side in ((not_yet, SKY["here"], -1.5), (today, SKY["live"], 1.5)):
+                if n <= 0:
+                    continue
+                r = radius(n) * scale * k
+                dots.append(f'<circle cx="{x + side * r:.1f}" cy="{y:.1f}" r="{r * 2.2:.1f}" '
+                            f'fill="{colour}" opacity=".22"/><circle cx="{x + side * r:.1f}" '
+                            f'cy="{y:.1f}" r="{r:.1f}" fill="{colour}"/>')
+        if me:
+            r = 4 * scale * k
+            dots.append(f'<circle cx="{me[0]:.1f}" cy="{me[1]:.1f}" r="{r * 3:.1f}" fill="{SKY["you"]}" '
+                        f'opacity=".25"/><circle cx="{me[0]:.1f}" cy="{me[1]:.1f}" r="{r:.1f}" '
+                        f'fill="{SKY["you"]}"/>')
+        lights = ""
+        for i, (lat, lon) in enumerate(arrivals):
+            p = project(lat, lon)
+            if not p or tip is None:
+                continue
+            d = (f'M{p[0]:.1f} {p[1]:.1f} Q{(p[0] + tip[0]) / 2 + 30:.1f} '
+                 f'{min(p[1], tip[1]) - 40:.1f} {tip[0]:.1f} {tip[1]:.1f}')
+            # A still frame shows each light part way along its path.
+            f = (i + 1) / (len(arrivals) + 1)
+            qx = (1 - f) ** 2 * p[0] + 2 * (1 - f) * f * ((p[0] + tip[0]) / 2 + 30) + f * f * tip[0]
+            qy = (1 - f) ** 2 * p[1] + 2 * (1 - f) * f * (min(p[1], tip[1]) - 40) + f * f * tip[1]
+            lights += (f'<path d="{d}" fill="none" stroke="{SKY["you"]}" stroke-width="{1.2 * k:.1f}" '
+                       f'stroke-dasharray="4 6" opacity=".5"/>'
+                       f'<circle cx="{qx:.1f}" cy="{qy:.1f}" r="{5 * k:.1f}" fill="#FFD7A3"/>')
+        return (f'<svg width="{size}" height="{size}" viewBox="10 10 300 300" style="display:block;overflow:visible">'
+                '<defs><radialGradient id="gsea"><stop offset="0" stop-color="#0B1A44"/>'
+                '<stop offset=".75" stop-color="#071232"/><stop offset="1" stop-color="#0A1F52"/></radialGradient>'
+                '<radialGradient id="gglow"><stop offset=".72" stop-color="#6FC3D3" stop-opacity=".28"/>'
+                '<stop offset="1" stop-color="#6FC3D3" stop-opacity="0"/></radialGradient></defs>'
+                '<circle cx="160" cy="160" r="196" fill="url(#gglow)"/>'
+                '<circle cx="160" cy="160" r="150" fill="url(#gsea)"/>'
+                f'{grid}{coast}{"".join(threads)}'
+                '<circle cx="160" cy="160" r="149.5" fill="none" stroke="#7FC4FF" stroke-width="2.4" opacity=".85"/>'
+                f'{"".join(dots)}{lights}</svg>')
+    finally:
+        LON0, LAT0 = saved
+
+
+def group_globe(private: bool) -> str:
+    """A group with its globe inside the goal ring, and paath arriving as light
+    (08-sangat GG1-GG9, option C, owner 2026-10-17). 104 is a private group,
+    105 a built-in one; the rest of the screen is design 103."""
+    if private:
+        name, sub, total, target, unit, pct, frac = ("Gill Parivar", "24 members", "3,412", "5,000",
+                                                     "paath", "68%", 3412 / 5000)
+        goal, key = "5,000 Japji Sahib by 8 Jan", ("10 today", "13 not yet", "7 cities")
+        arrivals_line = "3 paath arrived in the last hour"
+        cities = [(30.90, 75.85, 3, 3), (31.33, 75.58, 2, 2), (28.61, 77.21, 1, 2),
+                  (51.51, -0.38, 2, 2), (52.48, -1.90, 1, 1), (25.20, 55.27, 1, 0),
+                  (31.63, 74.87, 0, 1)]
+        arrivals = [(30.90, 75.85), (51.51, -0.38), (25.20, 55.27)]
+        view = (40.0, 30.0)
+        timeline = ("Day 61 of 144", "17 Aug", "83 days left", "8 Jan", "Ends")
+        figures = (("41", "Paath today"), ("2", "Yours today"), ("96", "Yours toward the goal"))
+        unit_suffix = ""
+        sit = ("Sit for Japji Sahib", "nitnem")
+        members = [("Harpreet Kaur", "412"), ("Gurdeep Singh", "388"), ("Simran Kaur", "260")]
+        members_head, more = "24 · A to Z", "and 21 more"
+    else:
+        name, sub, total, target, unit, pct, frac = ("Simran Sangat", "Built-in group · 2,418 members",
+                                                     "212,480", "500,000", "min", "42%", 0.42)
+        goal, key = "500,000 minutes of Naam Simran by 31 Oct", ("312 today", "2,105 not yet", "64 cities")
+        arrivals_line = "86 minutes of Naam Simran in the last hour"
+        cities = [(lat, lon, 9 if kind == "today" else 2, 14 if kind == "member" else 4)
+                  for lat, lon, kind in PEOPLE if kind != "you"]
+        arrivals = [(51.51, -0.38), (43.65, -79.38), (28.61, 77.21), (-37.81, 144.96)]
+        view = (50.0, 24.0)
+        timeline = ("Day 10 of 31", "1 Oct", "22 days left", "31 Oct", "Ends; new goal 1 Nov")
+        figures = (("6,930", "Sangat today"), ("15", "Yours today"), ("186", "Yours toward the goal"))
+        unit_suffix = '<span style="font-size:13px;font-weight:600"> min</span>'
+        sit = ("Sit for Naam Simran", "simran")
+        members = [("Amandeep Singh", "240 min"), ("Baljit Kaur", "95 min"), ("Charanjit Singh", "410 min")]
+        members_head, more = "2,418 · A to Z", "and 2,415 more"
+
+    size, ring = 190, 214
+    r = ring / 2 - 7
+    c = 2 * math.pi * r
+    tip_angle = -math.pi / 2 + 2 * math.pi * frac
+    k = 300 / size
+    tip = (10 + (ring / 2 + r * math.cos(tip_angle) - (ring - size) / 2) * k,
+           10 + (ring / 2 + r * math.sin(tip_angle) - (ring - size) / 2) * k)
+    globe_svg = _group_globe_svg(size, cities, (31.63, 74.87), view[0], view[1],
+                                 0.62 if private else 0.42, arrivals, tip)
+    glow_x, glow_y = ring / 2 + r * math.cos(tip_angle), ring / 2 + r * math.sin(tip_angle)
+
+    def node(dot: str, t1: str, t2: str, align: str, here: bool = False) -> str:
+        text = {"flex-start": "left", "center": "center", "flex-end": "right"}[align]
+        return (f'<div class="col" style="flex:1;gap:6px;align-items:{align}">'
+                f'<div style="width:18px;height:18px;border-radius:9px;{dot}"></div>'
+                f'<div style="font-size:13px;font-weight:700;text-align:{text};'
+                f'color:{"var(--kesriInk)" if here else "var(--ink)"}">{t1}</div>'
+                f'<div style="font-size:12px;line-height:1.25;text-align:{text};'
+                f'color:{"var(--kesriInk)" if here else "var(--ink2)"}">{t2}</div></div>')
+
+    def figure(n: str, label: str, yours: bool = False) -> str:
+        return (f'<div class="card col" style="border-radius:18px;padding:10px 12px">'
+                f'<div class="disp" style="font-size:22px;font-weight:700;line-height:1.1;'
+                f'{"color:var(--kesriInk)" if yours else ""}">{n}{unit_suffix}</div>'
+                f'<div style="font-size:12px;color:var(--ink2);font-weight:600;line-height:1.25">'
+                f'{label}</div></div>')
+
+    def key_dot(colour: str, label: str) -> str:
+        return (f'<div class="row" style="gap:6px"><div style="width:8px;height:8px;border-radius:4px;'
+                f'background:{colour}"></div>{label}</div>')
+    rows = "".join(
+        f'<div class="row" style="justify-content:space-between;min-height:44px;padding:0 16px;'
+        f'font-size:15px;{"border-top:1px solid var(--rule)" if i else ""}">'
+        f'<div style="font-weight:600">{n}</div>'
+        f'<div style="color:var(--ink2);font-weight:600">{v}</div></div>'
+        for i, (n, v) in enumerate(members))
+    return f"""
+{SHARED_STYLE}
+<div class="band col" style="gap:6px;padding:14px 18px 40px;color:#fff;border-radius:0 0 28px 28px">
+  <div class="row" style="gap:10px">
+    <div style="{ON_BAND}">{icon("back", 20)}</div>
+    <div class="col" style="flex:1">
+      <div class="disp" style="font-size:22px;font-weight:700;line-height:1.1">{name}</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,.82)">{sub}</div>
+    </div>
+    <div style="{ON_BAND}">{icon("more", 20)}</div>
+  </div>
+  <div class="row" style="justify-content:center">
+    <div style="position:relative;width:{ring}px;height:{ring}px">
+      <div style="position:absolute;left:{(ring - size) / 2}px;top:{(ring - size) / 2}px">{globe_svg}</div>
+      <svg width="{ring}" height="{ring}" viewBox="0 0 {ring} {ring}" style="position:absolute;inset:0;overflow:visible">
+        <g transform="rotate(-90 {ring / 2} {ring / 2})">
+          <circle cx="{ring / 2}" cy="{ring / 2}" r="{r:.1f}" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="9"/>
+          <circle cx="{ring / 2}" cy="{ring / 2}" r="{r:.1f}" fill="none" stroke="#F2A24E" stroke-width="9"
+            stroke-linecap="round" stroke-dasharray="{c * frac:.1f} {c:.1f}"/></g>
+        <circle cx="{glow_x:.1f}" cy="{glow_y:.1f}" r="9" fill="#FFD7A3" opacity=".75"/>
+      </svg>
+    </div></div>
+  <div class="row" style="justify-content:center;gap:8px;align-items:baseline">
+    <div class="disp" style="font-size:26px;font-weight:700;line-height:1">{total}</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.85);font-weight:600">of {target} {unit}</div>
+    <div class="disp" style="font-size:17px;font-weight:700;color:#F2A24E">{pct}</div></div>
+  <div class="row" style="justify-content:center;gap:12px;font-size:12.5px;color:rgba(255,255,255,.85);font-weight:600">
+    {key_dot(SKY["you"], "You")}{key_dot(SKY["live"], key[0])}{key_dot(SKY["here"], key[1])}<div>· {key[2]}</div></div>
+  <div style="font-size:14.5px;font-weight:600;text-align:center;color:rgba(255,255,255,.92)">{goal}</div>
+</div>
+<div class="col" style="gap:10px;padding:0 16px;margin-top:-28px">
+  <div class="row" style="align-self:center;gap:8px;background:var(--card);border-radius:999px;padding:7px 14px;
+    box-shadow:var(--shadow);font-size:13.5px;font-weight:600">
+    <div style="width:8px;height:8px;border-radius:4px;background:var(--kesri);box-shadow:0 0 0 4px var(--kesriSoft)"></div>
+    {arrivals_line}</div>
+  <div class="card col" style="padding:12px 16px 14px;gap:10px">
+    <div class="row" style="justify-content:space-between;align-items:baseline">
+      <div class="eyebrow" style="color:var(--ink2);font-weight:700">This goal</div>
+      <div style="font-size:12.5px;color:var(--ink2);font-weight:600">{timeline[0]}</div></div>
+    <div class="row" style="position:relative;align-items:flex-start">
+      <div style="position:absolute;left:9px;right:9px;top:8px;height:2px;background:var(--rule)"></div>
+      <div style="position:absolute;left:9px;width:calc(50% - 9px);top:8px;height:2px;
+        background:var(--neela)"></div>
+      {node("background:var(--neela);position:relative", timeline[1], "Started", "flex-start")}
+      {node("background:var(--kesri);box-shadow:0 0 0 4px var(--kesriSoft);position:relative",
+            "Today", timeline[2], "center", True)}
+      {node("background:var(--card);box-shadow:inset 0 0 0 2px var(--edge);position:relative",
+            timeline[3], timeline[4], "flex-end")}
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+    {figure(*figures[0])}{figure(figures[1][0], figures[1][1], True)}{figure(figures[2][0], figures[2][1], True)}</div>
+  {primary(sit[0], sit[1])}
+  <div class="card col">
+    <div class="row" style="justify-content:space-between;align-items:baseline;padding:12px 16px 6px">
+      <div class="eyebrow" style="color:var(--ink2);font-weight:700">Members</div>
+      <div style="font-size:13px;color:var(--ink2);font-weight:600">{members_head}</div></div>
+    {rows}
+    <div style="padding:8px 16px 12px;border-top:1px solid var(--rule);font-size:13.5px;
+      color:var(--ink2);font-weight:600">{more}</div>
+  </div>
+</div>
+"""
+
 def sync_states() -> str:
     states = [
         ("check", "Synced", "Everything is up to date · 2 minutes ago",
@@ -3314,6 +3530,8 @@ SCREENS = [
     ("101-EditProfile", "Edit profile — with the sunrise preview", edit_profile),
     ("102-SangatHome", "Sangat — dashboard tiles", sangat_tiles),
     ("103-BuiltInGroup", "Built-in group — ring and timeline", built_in_group),
+    ("104-GroupGlobe", "Private group — the globe in the ring", lambda: group_globe(True)),
+    ("105-BuiltInGroupGlobe", "Built-in group — the globe in the ring", lambda: group_globe(False)),
 ]
 
 

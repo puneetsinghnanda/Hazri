@@ -170,7 +170,7 @@ designed ahead; they are built last in the Phase 2 order (§11.3) because
 they depend on the goals schema and, for two badges, on the Sangat.
 
 **Not in Phase 2:** group chat or any free text between members; public or
-listed custom groups; join approval; groups on the globe; diary export
+listed custom groups; join approval; groups on the Simran globe (a group has its own globe, §4.13); diary export
 (Y-3); a free-text note per day; two phones sharing one profile at once;
 deleting a profile; Rehras, Kirtan Sohila and Daily Simran reminders (N-2);
 a full-screen player.
@@ -603,7 +603,7 @@ the file. Data: ARCHITECTURE §2.4–2.5, §5.4, §6.1.*
 ### 4.13 Sangat
 
 **Purpose.** People working together toward one shared goal with an end
-date. *Rules: `08-sangat.md`. Screens: 38 (Sangat), 31 (group), 39 (create),
+date. *Rules: `08-sangat.md`. Screens: 102 (Sangat), 104 and 105 (a group, with its globe), 39 (create),
 40 (set goal), 41 (invite), 52 (code problems), 32 and 36 (joining); drawn
 before the file, which wins where they differ. Data: ARCHITECTURE §3.5, §5.6,
 §6.3.*
@@ -638,6 +638,12 @@ before the file, which wins where they differ. Data: ARCHITECTURE §3.5, §5.6,
   server only (CT1–CT9).
 - **Offline:** paath waits in an outbox on the phone and is sent when the
   network returns (§5.1 of the file).
+- **Each group has its own globe** (decided 2026-10-17, designs 104 and
+  105): the goal ring wraps a small globe of the group's members, counted
+  per city -- green for those who added to the goal today, blue for the
+  rest, you in orange -- and the paath of the last hour arrive as light
+  into the ring. Counts per city only, never a name; the server keeps one
+  globe per group and rebuilds it at most every two minutes (GG1–GG9).
 - **What members see:** my groups (active first), the built-in groups, and a
   group's goal, total, percentage, today's total, days left and members with
   their contributions — never ordered by them, no rank, nobody shown as
@@ -890,8 +896,9 @@ group, except the anonymous sign-in. The closed list for Phase 2:
 **Never, in any phase:** an advertising ID (`AD_ID` removed from the merged
 manifest), ad personalisation, location (the city is chosen from a list),
 free text in analytics, anything sold or shared. The globe shows a city and
-a count, never a name; the Sangat shows a member's name only to the members
-of their group.
+a count, never a name; a group's globe shows its members the same, counted
+per city (`08-sangat.md` GG7); the Sangat shows a member's name only to the
+members of their group.
 
 ### 8.2 By phase
 
@@ -1310,9 +1317,11 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `102-SangatHome` | Sangat, dashboard tiles | **new** | Option C: dashboard tiles (owner, 2026-10-10). Create group and Join group tiles, my groups as 2 x 2 tiles with a ring each, then the built-in groups full width with Join or Leave. 08-sangat.md 8.1, VS1, VS2 |
-| `103-BuiltInGroup` | A built-in group | **new** | Option H: ring in a navy band, timeline below (owner, 2026-10-10). Started, today and ends on a white card over the band; figure tiles; Sit for Naam Simran; members A to Z. 08-sangat.md VS3, VS4 |
+| `104-GroupGlobe` | A private group, with its globe | **new** | Option C (owner, 2026-10-17): the goal ring wraps the group's globe, members as counts per city (green today, blue not yet, you orange), threads and arcs as the Simran globe; total, percentage and the key under the ring; paath of the last hour arriving as light into the ring, and the line below the band. The rest is 103. 08-sangat.md GG1-GG9 |
+| `105-BuiltInGroupGlobe` | A built-in group, with its globe | **new** | Option C for built-in groups too (owner, 2026-10-17): as 104, for Simran Sangat; minutes of Naam Simran in the last hour. 08-sangat.md GG1-GG9 |
+| `103-BuiltInGroup` | A built-in group | superseded | Replaced by 104 and 105, the globe in the ring (2026-10-17); the band below the ring, the timeline, the figures, Sit for and the members are unchanged |
 | `38-SangatHome` | Sangat | superseded | Replaced by 102 |
-| `31-GroupDetail` | Group, shared goal | current | A custom group. A built-in group is 103 |
+| `31-GroupDetail` | Group, shared goal | superseded | Replaced by 104 for a custom group (2026-10-17) |
 | `39-CreateGroup` | Create a group | current |  |
 | `40-SetGoal` | Shared goal | current |  |
 | `41-Invite` | Invite | current |  |
@@ -1395,6 +1404,8 @@ anything earlier. The feature file named holds the detail.
 | 10-07 | Today: the navy app bar (D) on Today only; the week-strip streak card (3) from 2 days; CTA puts an unmet goal before the slot's bani; no join banner | `05-today.md` |
 | 10-07 | Diary: the now-and-longest streak card (2) | `09-diary.md` |
 | 10-08 | Simran: design 29's threads back; a web of threads without a profile | `07-simran.md` S-11 |
+| 10-17 | Simran globe: dots one person the size of yours, full at 25; arcs with light; zoom; tap a dot for its city; the count matches the dots | `07-simran.md` S-12–S-15 |
+| 10-17 | A group's own globe in its goal ring, with paath arriving as light, for custom and built-in groups; counts per city only | `08-sangat.md` SG-3, GG1–GG9 |
 | 10-08 | First run: Android's splash only; Welcome option D, "a day with Hazri"; the app is named Hazri everywhere | `03-first-run.md` |
 | 10-08 | Badges, no points; ten names with Vichari and Satsangi; totals never runs; thresholds 1, 7, 40, 40, 108, all banis, 3, 180, 5, 365; recalculated, stored only when earned; in the backup; history counts | `12-badges.md` |
 | 10-08 | Nitnemi counts the five morning banis; a badge is announced by an in-app sheet; designs 1C, 2A, 3B, 4B, 5C | `12-badges.md` BD-1, BD-11, BD-12 |

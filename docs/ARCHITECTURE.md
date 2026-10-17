@@ -532,7 +532,7 @@ A row is deleted when the server confirms it. Sending the same row twice changes
 
 #### 08-sangat §5.2 Read-only copy of what the server sent
 
-The app keeps the last response of 7.1, 7.2 and 7.3 for each group (shared preferences, key `sangat_cache_v1`, JSON). Opening a screen shows the copy at once with `sangatUpdatedAt`, asks the server, and replaces it with the reply. Offline, the copy stays with its time. The phone never edits it; it is cleared on `markNone()` (`01-accounts.md` §8.3) when the person had no memberships without a profile.
+The app keeps the last response of 7.1, 7.2 and 7.3 for each group (shared preferences, key `sangat_cache_v1`, JSON), and the last 7.15 globe of each group under `sangat_globe_cache_v1` (a JSON map of group id to the reply, 08-sangat GG8). Opening a screen shows the copy at once with `sangatUpdatedAt`, asks the server, and replaces it with the reply. Offline, the copy stays with its time. The phone never edits it; it is cleared on `markNone()` (`01-accounts.md` §8.3) when the person had no memberships without a profile.
 
 ### 3.6 `user.db`: `badges` (schema 6)
 
@@ -1047,16 +1047,33 @@ Only the Cloud Functions read and write these. Conventions as `01-accounts.md` �
 | `joinedDay` | string | no | `dayIst` of the latest join |
 | `contribution` | number | no | Count toward the current goal, kept by the server |
 | `sortName` | string | no | Lowercased name, or `~` for `u_` members so they sort last |
+| `cityId` | string | yes | The member's profile city (07-simran §5.1), for the group's globe (GG2). Null for `u_` members. Set on create, join and adoption, changed with the profile's city by `sangatProfileSync`, and filled on the member's next counted paath when missing (rows from before 2026-10-17) |
+| `lastAddDay` | string | yes | `dayIst` of the member's latest counted paath toward the current goal (CT9), for the globe's green (GG3). Set in the contribution's transaction, never moved backwards; null until the first |
 | `updatedAt` | timestamp | no | Server timestamp |
 
 Contributions to earlier goals of a built-in group are kept in `groups/{groupId}/goals/{goalId}/members/{memberKey}` `{ contribution }`, written when the goal ends.
 
 #### 08-sangat §6.4 Totals
 
-- `contributions/{memberKey}_{id}`: one document per received outbox row: `{ memberKey, kind, baniId, durationS, source, day, at, retracted, countedIn: [ "groupId/goalId", ... ] }`. It makes sending idempotent and lets a retraction find what to take back.
+- `contributions/{memberKey}_{id}`: one document per received outbox row: `{ memberKey, kind, baniId, durationS, source, day, at, retracted, countedIn: [ "groupId/goalId", ... ], groupIds, countedCount, cityId, createdAt }`. `cityId` (since 2026-10-17) is the caller's profile city when it was received, or null, for the light of GG4. It makes sending idempotent and lets a retraction find what to take back.
 - A custom group's goal `total` and the member's `contribution` are incremented in the same transaction as the contribution document.
 - A built-in goal could receive thousands of writes a minute, past Firestore's limit of about one write a second on one document. Its total is kept in 20 shards, `groups/{groupId}/goals/{goalId}/shards/{0..19}` `{ count }`, each contribution incrementing one chosen at random, and the scheduled Function `sangatTotals` adds them into `total` once a minute.
 - Diary cap (CT4): `contributionCaps/{memberKey}_{groupId}_{dayIst}` `{ diaryCount }` is read and incremented in the same transaction.
+
+#### 08-sangat §6.4a `groups/{groupId}/globe/current` (2026-10-17, GG1–GG9)
+
+One document per group, built by 7.15 when it is older than `GROUP_GLOBE_SECONDS`, never by a phone.
+
+| Field | Type | Rule |
+| --- | --- | --- |
+| `goalId` | string | The goal it was built for; a different current goal makes it stale |
+| `day` | string | `dayIst` it counts "today" for |
+| `cities` | map | `cityId` → `[today, members]`: active members with that profile city, and how many of them have `lastAddDay` = `day` |
+| `unplaced` | map | `{ today, members }` for active members with no city (`u_` members, and rows not yet filled) |
+| `recent` | array | At most `GROUP_ARRIVALS_MAX` `{ cityId \| null, at, amount }`, newest first: contributions counted in `{groupId}/{goalId}` and not retracted, received in the last `GROUP_ARRIVALS_MINUTES` |
+| `builtAt` | timestamp | Server time of the build |
+
+**Building it.** A custom group reads its active member rows (at most `CUSTOM_GROUP_MAX_MEMBERS`, fields `cityId` and `lastAddDay` only). A built-in group, too large for that, runs two `count()` aggregations per city of the reference list on its active members (`cityId` =, and `cityId` = with `lastAddDay` =) and takes `unplaced` as `memberCount` less the placed. Both then read `recent` with one query on `contributions` (`groupIds` array-contains, `createdAt` ≥ now − 60 min, newest first, 3 × `GROUP_ARRIVALS_MAX`), keeping the first `GROUP_ARRIVALS_MAX` that are not retracted and whose `countedIn` holds the current goal. Two requests rebuilding at once write the same numbers (FN4).
 
 #### 08-sangat §6.5 Other collections
 
@@ -1071,6 +1088,8 @@ Contributions to earlier goals of a built-in group are kept in `groups/{groupId}
 #### 08-sangat §6.6 Indexes
 
 - `members` (collection group): `status` ascending, `sortName` ascending, for the member list.
+- `members` (collection): `status`, `cityId` and `status`, `cityId`, `lastAddDay`, ascending, for a built-in group's globe counts (6.4a).
+- `contributions`: `groupIds` array-contains, `createdAt` descending, for a group's recent arrivals (6.4a).
 - `groups`: `kind` ascending, `status` ascending, for the built-in list and the admin website.
 - `groupReports`: `status` ascending, `createdAt` descending.
 
@@ -1498,6 +1517,7 @@ All under `/api/v1/sangat`, following `01-accounts.md` §6.0. Every endpoint wor
 | 7.10 | `DELETE /groups/{groupId}/members/{memberKey}` | — | Removes a member (MB4). Creator only. | `403 NOT_CREATOR`, `404 MEMBER_NOT_FOUND` |
 | 7.11 | `POST /groups/{groupId}/invite` | `{ reset?: true }` | Returns `{ code, link, expiresAt }`, making a new code when expired or when the creator asks to reset | `403 NOT_CREATOR` (reset only), `409 GROUP_INACTIVE` |
 | 7.12 | `POST /contributions` | `{ items: [ { id, kind, baniId?, durationS?, source, at, action } ] }`, at most 200 | For each item not seen before: finds the caller's active groups whose goal it matches (CT1–CT4, CT7), records it (6.4) and updates totals. A `RETRACT` takes back what its `ADD` counted. Returns the ids processed. | `400 VALIDATION_ERROR` |
+| 7.15 | `GET /groups/{groupId}/globe` | — | The group's globe (6.4a) as `{ day, builtAt, cities: { cityId: [today, members] }, unplaced: { today, members }, recent: [ { cityId, at, amount } ] }`, building it again first when it is older than `GROUP_GLOBE_SECONDS` or was built for another goal or day. Not personalised: the app takes the caller off (GG3). Members only for custom groups, as 7.3 | `404 GROUP_NOT_FOUND` |
 | 7.13 | `POST /groups/{groupId}/report` | `{ reason, note? }` | Stores the report and emails support (RP1–RP3) | `400 VALIDATION_ERROR`, `404 GROUP_NOT_FOUND` |
 
 Success bodies return the same shapes the app caches (5.2). Profile creation (`01-accounts.md` §6.2) gains one step: within its transaction, every `u_{callerUid}` membership, contribution, cap and `badgeFacts` document is rewritten under `p_{profileId}` (MB2, `12-badges.md` SF3). Joining (7.8) also records the join for the creator's Satsangi badge (`12-badges.md` SF2), and `badgeGoalReached` runs when a goal is completed (SF1).
