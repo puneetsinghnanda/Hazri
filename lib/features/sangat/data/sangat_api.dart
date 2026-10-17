@@ -87,6 +87,10 @@ class SangatApi {
     return {for (final id in (r['processed'] as List<Object?>? ?? const [])) '$id'};
   }
 
+  /// 7.15: the group's globe (GG1–GG9), as the server sent it, so the copy
+  /// on the phone (`sangat_globe_cache_v1`) is the reply itself.
+  Future<Map<String, Object?>> globe(String id) => _api.get('$_p/groups/$id/globe');
+
   /// 7.13. [reason]: `OFFENSIVE`, `SPAM`, `OFF_TOPIC` or `OTHER`.
   Future<void> report(String id, String reason, {String? note}) =>
       _api.post('$_p/groups/$id/report', {'reason': reason, 'note': ?note});

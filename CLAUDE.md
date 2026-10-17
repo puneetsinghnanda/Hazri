@@ -479,7 +479,11 @@ has that the target replaces, and PRD §11 says which step removes each:
   groups with Join/Leave, custom groups with one goal, invites by link or
   code, the outbox in `user.db` (queued only while `sangat_member_v1` says
   the install is in a group), reports, and the push token with a profile and
-  a group. The install referrer is read in `MainActivity.kt` with Google's
+  a group. **Each group has its own globe** (08-sangat GG1-GG10,
+  designs 104/105, 2026-10-17): `GET /sangat/groups/{id}/globe`, rebuilt by
+  the server at most every 2 minutes, members as counts per city, and the
+  last hour's paath arriving as light into the goal ring. It needs the
+  Functions and five new indexes deployed by hand. The install referrer is read in `MainActivity.kt` with Google's
   `installreferrer` library directly: the Flutter plugin for it uses the
   `kotlinOptions` block Kotlin 2.4 rejects. The admin website is `admin/`.
 - **The globe follows 07-simran (PRD §11 step 7)**: one shared snapshot from

@@ -3578,4 +3578,33 @@ class LEn extends L {
   String globeTipHere(int count) {
     return '$count here today';
   }
+
+  @override
+  String sangatGlobeKey(String today, String notYet, String cities) {
+    return 'You · $today today · $notYet not yet · $cities cities';
+  }
+
+  @override
+  String sangatArrivals(String count) {
+    return '$count paath arrived in the last hour';
+  }
+
+  @override
+  String sangatArrivalsMinutes(String minutes) {
+    return '$minutes minutes of Naam Simran in the last hour';
+  }
+
+  @override
+  String sangatGlobeTipToday(int count) {
+    return '$count today';
+  }
+
+  @override
+  String sangatGlobeTipNotYet(int count) {
+    return '$count not yet';
+  }
+
+  @override
+  String get privacyGroupGlobe =>
+      'A group\'s globe shows how many of its members are in each city, never their names. In a small group, a city with one member can point to that member.';
 }

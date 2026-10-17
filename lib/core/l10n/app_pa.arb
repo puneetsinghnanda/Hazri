@@ -1066,5 +1066,11 @@
   "notifDiagRefresh": "ਤਾਜ਼ਾ ਕਰੋ",
   "globeTipYou": "ਤੁਸੀਂ ਇੱਥੇ ਹੋ",
   "globeTipLive": "ਅੱਜ {count} ਹਾਜ਼ਰ",
-  "globeTipHere": "{count} ਅੱਜ ਇੱਥੇ"
+  "globeTipHere": "{count} ਅੱਜ ਇੱਥੇ",
+  "sangatGlobeKey": "ਤੁਸੀਂ · ਅੱਜ {today} · {notYet} ਹਾਲੇ ਨਹੀਂ · {cities} ਸ਼ਹਿਰ",
+  "sangatArrivals": "ਪਿਛਲੇ ਘੰਟੇ ਵਿੱਚ {count} ਪਾਠ ਪਹੁੰਚੇ",
+  "sangatArrivalsMinutes": "ਪਿਛਲੇ ਘੰਟੇ ਵਿੱਚ {minutes} ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ",
+  "sangatGlobeTipToday": "ਅੱਜ {count}",
+  "sangatGlobeTipNotYet": "{count} ਹਾਲੇ ਨਹੀਂ",
+  "privacyGroupGlobe": "ਗਰੁੱਪ ਦਾ ਗਲੋਬ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਹਰ ਸ਼ਹਿਰ ਵਿੱਚ ਉਸਦੇ ਕਿੰਨੇ ਮੈਂਬਰ ਹਨ, ਕਦੇ ਉਹਨਾਂ ਦੇ ਨਾਮ ਨਹੀਂ। ਛੋਟੇ ਗਰੁੱਪ ਵਿੱਚ, ਇੱਕ ਮੈਂਬਰ ਵਾਲਾ ਸ਼ਹਿਰ ਉਸ ਮੈਂਬਰ ਵੱਲ ਇਸ਼ਾਰਾ ਕਰ ਸਕਦਾ ਹੈ।"
 }

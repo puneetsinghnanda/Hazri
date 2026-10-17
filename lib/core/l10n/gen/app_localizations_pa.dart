@@ -3568,4 +3568,33 @@ class LPa extends L {
   String globeTipHere(int count) {
     return '$count ਅੱਜ ਇੱਥੇ';
   }
+
+  @override
+  String sangatGlobeKey(String today, String notYet, String cities) {
+    return 'ਤੁਸੀਂ · ਅੱਜ $today · $notYet ਹਾਲੇ ਨਹੀਂ · $cities ਸ਼ਹਿਰ';
+  }
+
+  @override
+  String sangatArrivals(String count) {
+    return 'ਪਿਛਲੇ ਘੰਟੇ ਵਿੱਚ $count ਪਾਠ ਪਹੁੰਚੇ';
+  }
+
+  @override
+  String sangatArrivalsMinutes(String minutes) {
+    return 'ਪਿਛਲੇ ਘੰਟੇ ਵਿੱਚ $minutes ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ';
+  }
+
+  @override
+  String sangatGlobeTipToday(int count) {
+    return 'ਅੱਜ $count';
+  }
+
+  @override
+  String sangatGlobeTipNotYet(int count) {
+    return '$count ਹਾਲੇ ਨਹੀਂ';
+  }
+
+  @override
+  String get privacyGroupGlobe =>
+      'ਗਰੁੱਪ ਦਾ ਗਲੋਬ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਹਰ ਸ਼ਹਿਰ ਵਿੱਚ ਉਸਦੇ ਕਿੰਨੇ ਮੈਂਬਰ ਹਨ, ਕਦੇ ਉਹਨਾਂ ਦੇ ਨਾਮ ਨਹੀਂ। ਛੋਟੇ ਗਰੁੱਪ ਵਿੱਚ, ਇੱਕ ਮੈਂਬਰ ਵਾਲਾ ਸ਼ਹਿਰ ਉਸ ਮੈਂਬਰ ਵੱਲ ਇਸ਼ਾਰਾ ਕਰ ਸਕਦਾ ਹੈ।';
 }

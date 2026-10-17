@@ -6321,6 +6321,42 @@ abstract class L {
   /// In en, this message translates to:
   /// **'{count} here today'**
   String globeTipHere(int count);
+
+  /// No description provided for @sangatGlobeKey.
+  ///
+  /// In en, this message translates to:
+  /// **'You · {today} today · {notYet} not yet · {cities} cities'**
+  String sangatGlobeKey(String today, String notYet, String cities);
+
+  /// No description provided for @sangatArrivals.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} paath arrived in the last hour'**
+  String sangatArrivals(String count);
+
+  /// No description provided for @sangatArrivalsMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes of Naam Simran in the last hour'**
+  String sangatArrivalsMinutes(String minutes);
+
+  /// No description provided for @sangatGlobeTipToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} today'**
+  String sangatGlobeTipToday(int count);
+
+  /// No description provided for @sangatGlobeTipNotYet.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} not yet'**
+  String sangatGlobeTipNotYet(int count);
+
+  /// No description provided for @privacyGroupGlobe.
+  ///
+  /// In en, this message translates to:
+  /// **'A group\'s globe shows how many of its members are in each city, never their names. In a small group, a city with one member can point to that member.'**
+  String get privacyGroupGlobe;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

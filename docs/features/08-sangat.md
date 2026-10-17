@@ -145,6 +145,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 - **GG7. Privacy.** Counts per city only. In a small group a city with one member can point to that member, which the owner accepted on 2026-10-17; it is the same city their profile already shows on the Simran globe, now also as a member of this group. The privacy screen says so (`privacyGroupGlobe`).
 - **GG8. Offline.** The last globe is kept with the group's copy on the phone (5.2) and shown first; with none, the globe draws only you.
 - **GG9. An ended goal** keeps its globe as it was, with no arrivals and no line.
+- **GG10. Decided while building (2026-10-17).** The key always takes you off so its three figures add up to the members; without a profile it has no You and nothing comes off, and it shows nothing until a globe has arrived. "Cities" counts every city with members, including one the phone does not know. The phone keeps only arrivals of the last 60 minutes by its own clock, so an old copy never claims a recent paath. A paath without a city starts from the rim opposite the ring's edge.
 
 ### 4.7 Reports
 

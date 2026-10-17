@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
-import '../../../core/db/user_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
@@ -12,27 +13,17 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
-import '../../../core/widgets/progress_ring.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../profile/ui/messages.dart';
 import '../../settings/ui/screen_scaffold.dart';
+import '../data/group_globe_controller.dart';
 import '../data/sangat_api.dart';
 import '../data/sangat_controller.dart';
 import '../domain/sangat_models.dart';
 import 'create_group_screen.dart';
+import 'group_globe.dart';
 import 'sangat_widgets.dart';
-
-/// What this phone did today toward [goal], from `user.db`: paath of the
-/// goal's bani, or whole minutes of Naam Simran, each sitting counted as the
-/// server counts it (08-sangat CT1, `amountFor`).
-int yoursToday(DayRows? rows, SangatGoal goal) {
-  if (rows == null) return 0;
-  if (goal.isSimran) {
-    return rows.sittings.where((s) => s.deletedAt == null).fold(0, (sum, s) => sum + s.durationS ~/ 60);
-  }
-  return rows.completions.where((c) => c.deletedAt == null && c.baniId == goal.baniId).length;
-}
 
 /// One group (VS3, VS4) and its menu (§8.2), design 103: the ring in a navy
 /// band, the goal's timeline, three figures, Sit for the paath (SC1), and
@@ -48,20 +39,65 @@ class GroupScreen extends ConsumerStatefulWidget {
   ConsumerState<GroupScreen> createState() => _GroupScreenState();
 }
 
-class _GroupScreenState extends ConsumerState<GroupScreen> {
+class _GroupScreenState extends ConsumerState<GroupScreen> with WidgetsBindingObserver {
   bool _gone = false;
+
+  /// GG6: the group's globe on opening, then every 2 minutes while this
+  /// screen is the one showing, as the Simran globe does (07-simran GB1).
+  static const globeRefresh = Duration(minutes: 2);
+  Timer? _poll;
+  bool _visible = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // A route pushed over this one turns its tickers off; so does the poll.
+    final visible = TickerMode.valuesOf(context).enabled;
+    if (visible == _visible) return;
+    final opened = !_visible && _poll == null;
+    _visible = visible;
+    _poll?.cancel();
+    _poll = null;
+    if (!visible) return;
+    // The first fetch is _refresh's, after the outbox; coming back to the
+    // screen fetches at once.
+    if (!opened) _readGlobe();
+    _poll = Timer.periodic(globeRefresh, (_) => _readGlobe());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _visible) _readGlobe();
+  }
+
+  @override
+  void dispose() {
+    _poll?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  void _readGlobe() {
+    if (!mounted || _gone) return;
+    final life = WidgetsBinding.instance.lifecycleState;
+    if (life != null && life != AppLifecycleState.resumed) return;
+    unawaited(ref.read(groupGlobeProvider(widget.groupId).notifier).refresh());
   }
 
   Future<void> _refresh() async {
     // The outbox first, so the group comes back with this phone's paath in it.
     await ref.read(outboxSenderProvider).send();
     if (!mounted) return;
+    final globe = ref.read(groupGlobeProvider(widget.groupId).notifier).refresh();
     final ok = await ref.read(sangatGroupProvider(widget.groupId).notifier).refresh();
+    await globe;
     if (!ok && mounted) setState(() => _gone = true);
   }
 
@@ -204,6 +240,8 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           if (goal != null) ...[
+                            // GG5: hidden at 0 and once the goal has ended (GG9).
+                            if (!ended) GroupArrivalsLine(groupId: g.groupId, simran: goal.isSimran),
                             _Timeline(group: g, goal: goal),
                             const SizedBox(height: 10),
                             _Figures(group: g, goal: goal),
@@ -292,6 +330,8 @@ class _GroupBand extends ConsumerWidget {
     const white = Colors.white;
     final accent = HazriColors.dark.kesri;
     final goal = group.goal;
+    final drawing = ref.watch(groupGlobeDrawingProvider(group.groupId));
+    final key = drawing.key;
     final members = l.sangatMembers(group.memberCount);
     final sub = group.isBuiltIn ? '${l.sangatBuiltInKind} · $members' : members;
     final lang = l.localeName;
@@ -301,7 +341,7 @@ class _GroupBand extends ConsumerWidget {
         color: band,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
       ),
-      padding: EdgeInsets.fromLTRB(18, MediaQuery.paddingOf(context).top + 16, 18, 44),
+      padding: EdgeInsets.fromLTRB(18, MediaQuery.paddingOf(context).top + 16, 18, 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -338,41 +378,43 @@ class _GroupBand extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 10),
+          // GG1: the goal ring wraps the group's globe in place of the big
+          // number; the total, the percentage and the key sit under it.
           Center(
-            child: ProgressRing(
-              size: 150,
-              strokeWidth: 13,
+            child: GroupGlobeRing(
+              groupId: group.groupId,
               progress: goal == null ? 0 : (goal.pct / 100).clamp(0.0, 1.0),
               colour: accent,
-              trackColour: white.withValues(alpha: 0.16),
-              child: goal == null
-                  ? null
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(formatCount(lang, goal.total),
-                                style: HazriText.display22.copyWith(color: white, fontSize: 28, height: 1)),
-                            Text(
-                              goal.isSimran
-                                  ? l.sangatOfTargetMinutes(formatCount(lang, goal.target))
-                                  : l.sangatOfTarget(formatCount(lang, goal.target)),
-                              style: HazriText.captionStrong.copyWith(color: white.withValues(alpha: 0.85)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2),
-                              child: Text('${goal.pct}%',
-                                  style: HazriText.display22.copyWith(color: accent, fontSize: 17, height: 1.2)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
             ),
           ),
+          if (goal != null) ...[
+            const SizedBox(height: 2),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(formatCount(lang, goal.total),
+                      style: HazriText.display22.copyWith(color: white, fontSize: 26, height: 1)),
+                  const SizedBox(width: 8),
+                  Text(
+                    goal.isSimran
+                        ? l.sangatOfTargetMinutes(formatCount(lang, goal.target))
+                        : l.sangatOfTarget(formatCount(lang, goal.target)),
+                    style: HazriText.captionStrong.copyWith(color: white.withValues(alpha: 0.85), fontSize: 13),
+                  ),
+                  const SizedBox(width: 8),
+                  Text('${goal.pct}%', style: HazriText.display22.copyWith(color: accent, fontSize: 17, height: 1)),
+                ],
+              ),
+            ),
+          ],
+          if (key != null) ...[
+            const SizedBox(height: 4),
+            GroupGlobeKey(counts: key, withYou: drawing.viewer != null),
+          ],
           const SizedBox(height: 10),
           Text(
             goal == null ? l.sangatNoGoalYet : goalSummary(context, ref, goal),

@@ -3561,4 +3561,33 @@ class LHi extends L {
   String globeTipHere(int count) {
     return '$count आज यहाँ';
   }
+
+  @override
+  String sangatGlobeKey(String today, String notYet, String cities) {
+    return 'आप · आज $today · $notYet अभी नहीं · $cities शहर';
+  }
+
+  @override
+  String sangatArrivals(String count) {
+    return 'पिछले घंटे में $count पाठ पहुँचे';
+  }
+
+  @override
+  String sangatArrivalsMinutes(String minutes) {
+    return 'पिछले घंटे में $minutes मिनट नाम सिमरन';
+  }
+
+  @override
+  String sangatGlobeTipToday(int count) {
+    return 'आज $count';
+  }
+
+  @override
+  String sangatGlobeTipNotYet(int count) {
+    return '$count अभी नहीं';
+  }
+
+  @override
+  String get privacyGroupGlobe =>
+      'ग्रुप का ग्लोब दिखाता है कि हर शहर में उसके कितने सदस्य हैं, कभी उनके नाम नहीं। छोटे ग्रुप में, एक सदस्य वाला शहर उस सदस्य की ओर इशारा कर सकता है।';
 }

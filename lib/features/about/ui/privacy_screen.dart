@@ -49,6 +49,8 @@ class PrivacyScreen extends ConsumerWidget {
           l.privacyGroupCounts,
           l.privacyGroupName,
           l.privacyGroupToken,
+          // 08-sangat GG7: a group's globe, counts per city only.
+          l.privacyGroupGlobe,
         ]),
         const SizedBox(height: 18),
         HazriCard(

@@ -8,6 +8,11 @@ import '../../../core/l10n/gen/app_localizations.dart';
 import '../domain/simran_presence.dart';
 import '../domain/world_outline.dart';
 
+/// Where a point of the earth is on the globe's square right now: [at] in the
+/// widget's own coordinates, and [front] false when it is round the back, in
+/// which case [at] is the nearest point of the rim.
+typedef GlobeProjector = ({Offset at, bool front}) Function(double lat, double lon);
+
 /// The globe: the earth seen from space, with a light where somebody is
 /// sitting.
 ///
@@ -27,6 +32,9 @@ class SimranGlobe extends ConsumerStatefulWidget {
     this.youLive = false,
     this.size = 260,
     this.spinning = true,
+    this.liveTip,
+    this.hereTip,
+    this.overlay,
   });
 
   /// You, Live and Here today (07-simran §2.1).
@@ -46,6 +54,18 @@ class SimranGlobe extends ConsumerStatefulWidget {
   /// Turns slowly on its own. Off in tests and when the system asks for
   /// reduced motion.
   final bool spinning;
+
+  /// The tap card's lines for the green and the blue (TT1). Null is the
+  /// Simran tab's `globeTipLive` and `globeTipHere`; a group's globe says
+  /// "today" and "not yet" (08-sangat GG3).
+  final String Function(int count)? liveTip;
+  final String Function(int count)? hereTip;
+
+  /// Drawn over the earth and under the tap card, rebuilt as the globe turns,
+  /// with a [GlobeProjector] for where any place is at this moment. It may
+  /// reach outside the square; it takes no taps. The group screen's ring and
+  /// its arrivals (08-sangat GG1, GG4).
+  final Widget Function(BuildContext context, GlobeProjector project)? overlay;
 
   /// ZM1: how far a pinch can bring the earth in.
   static const maxZoom = 8.0;
@@ -251,6 +271,29 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
                 ),
               ),
             ),
+            if (widget.overlay != null)
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: AnimatedBuilder(
+                    animation: _spin,
+                    builder: (context, _) {
+                      final rotation = _step(_rotation, _rotationStep);
+                      final tilt = _step(_tilt, _rotationStep);
+                      return widget.overlay!(
+                        context,
+                        (lat, lon) => GlobePainter.locate(
+                          lat: lat,
+                          lon: lon,
+                          size: widget.size,
+                          zoom: _zoom,
+                          rotation: rotation,
+                          tilt: tilt,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
             if (_tipCity != null && _tipAt != null)
               _CityTip(
                 at: _tipAt!,
@@ -258,6 +301,8 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
                 name: widget.cityNames[_tipCity] ?? _tipCity!,
                 dots: [for (final d in widget.dots) if (d.cityId == _tipCity) d],
                 youLive: widget.youLive,
+                liveTip: widget.liveTip,
+                hereTip: widget.hereTip,
               ),
           ],
         ),
@@ -269,13 +314,23 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
 /// TT1–TT3: the card for one city. Your city counts you where you are: live
 /// once your attendance is marked, here today until then.
 class _CityTip extends StatelessWidget {
-  const _CityTip({required this.at, required this.bounds, required this.name, required this.dots, required this.youLive});
+  const _CityTip({
+    required this.at,
+    required this.bounds,
+    required this.name,
+    required this.dots,
+    required this.youLive,
+    this.liveTip,
+    this.hereTip,
+  });
 
   final Offset at;
   final double bounds;
   final String name;
   final List<GlobeDot> dots;
   final bool youLive;
+  final String Function(int count)? liveTip;
+  final String Function(int count)? hereTip;
 
   @override
   Widget build(BuildContext context) {
@@ -314,8 +369,8 @@ class _CityTip extends StatelessWidget {
             children: [
               Text(name, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
               if (mine) row(GlobePainter.you, l.globeTipYou),
-              if (live > 0) row(GlobePainter.live, l.globeTipLive(live)),
-              if (here > 0) row(GlobePainter.here, l.globeTipHere(here)),
+              if (live > 0) row(GlobePainter.live, (liveTip ?? l.globeTipLive)(live)),
+              if (here > 0) row(GlobePainter.here, (hereTip ?? l.globeTipHere)(here)),
             ],
           ),
         ),
@@ -733,6 +788,46 @@ class GlobePainter extends CustomPainter {
     final yt = vz * cosT - z * sinT;
     if (zt <= 0 && x * x + yt * yt <= 1) return null;
     return Offset(x * r, -yt * r);
+  }
+
+  /// Where [lat], [lon] is in a globe of [size] (see [GlobeProjector]): the
+  /// point itself on the near side, the nearest point of the rim when it is
+  /// round the back.
+  static ({Offset at, bool front}) locate({
+    required double lat,
+    required double lon,
+    required double size,
+    required double zoom,
+    required double rotation,
+    required double tilt,
+  }) {
+    const toRadians = math.pi / 180;
+    final centre = Offset(size / 2, size / 2);
+    final r = size / 2 * zoom;
+    final phi = lat * toRadians, lambda = lon * toRadians;
+    final cosR = math.cos(rotation), sinR = math.sin(rotation);
+    final cosT = math.cos(tilt), sinT = math.sin(tilt);
+    final p = project(
+      cosPhi: math.cos(phi),
+      sinPhi: math.sin(phi),
+      cosLambda: math.cos(lambda),
+      sinLambda: math.sin(lambda),
+      r: r,
+      cosR: cosR,
+      sinR: sinR,
+      cosT: cosT,
+      sinT: sinT,
+    );
+    if (p != null) return (at: centre + p, front: true);
+    // The same rotations as [project], kept for the far side.
+    final cosRot = math.cos(lambda) * cosR - math.sin(lambda) * sinR;
+    final sinRot = math.sin(lambda) * cosR + math.cos(lambda) * sinR;
+    final x = math.cos(phi) * sinRot;
+    final y = math.sin(phi), z = math.cos(phi) * cosRot;
+    final yt = y * cosT - z * sinT;
+    final len = math.sqrt(x * x + yt * yt);
+    final dir = len < 1e-9 ? const Offset(0, -1) : Offset(x / len, -yt / len);
+    return (at: centre + dir * r, front: false);
   }
 
   /// TT1: the dot under [at] in a globe of [size], placed as [paint] places

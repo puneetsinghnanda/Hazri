@@ -2201,5 +2201,52 @@
         "type": "int"
       }
     }
-  }
+  },
+  "sangatGlobeKey": "You · {today} today · {notYet} not yet · {cities} cities",
+  "@sangatGlobeKey": {
+    "placeholders": {
+      "today": {
+        "type": "String"
+      },
+      "notYet": {
+        "type": "String"
+      },
+      "cities": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatArrivals": "{count} paath arrived in the last hour",
+  "@sangatArrivals": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatArrivalsMinutes": "{minutes} minutes of Naam Simran in the last hour",
+  "@sangatArrivalsMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "sangatGlobeTipToday": "{count} today",
+  "@sangatGlobeTipToday": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sangatGlobeTipNotYet": "{count} not yet",
+  "@sangatGlobeTipNotYet": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyGroupGlobe": "A group's globe shows how many of its members are in each city, never their names. In a small group, a city with one member can point to that member."
 }
