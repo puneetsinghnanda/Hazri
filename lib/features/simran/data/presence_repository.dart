@@ -20,6 +20,11 @@ class PresenceService {
   static const kAttendance = 'presence_attendance_v1';
   static const kSnapshot = 'presence_snapshot_v1';
 
+  /// When today's mark succeeded, by the phone's clock (CT1): until a
+  /// snapshot built after it arrives, the globe still has you under Here
+  /// today.
+  static const kAttendanceAt = 'presence_attendance_at_v1';
+
   bool _calling = false;
 
   /// AT1–AT4: once per IST day, only with a profile, fire and forget. The
@@ -33,6 +38,7 @@ class PresenceService {
     _calling = true;
     try {
       await _ref.read(apiClientProvider).post('/presence/attendance', const <String, Object?>{});
+      await prefs.setString(kAttendanceAt, DateTime.now().toUtc().toIso8601String());
       await prefs.setString(kAttendance, today);
       _ref.invalidate(markedTodayProvider);
     } on ApiException catch (e) {
@@ -69,6 +75,13 @@ final presenceServiceProvider = Provider<PresenceService>(PresenceService.new);
 final markedTodayProvider = Provider<bool>(
   (ref) => ref.watch(sharedPreferencesProvider).getString(PresenceService.kAttendance) == istDay(),
 );
+
+/// When today's mark was made, or null for a mark kept before the time was.
+final markedAtProvider = Provider<DateTime?>((ref) {
+  ref.watch(markedTodayProvider);
+  return DateTime.tryParse(
+      ref.read(sharedPreferencesProvider).getString(PresenceService.kAttendanceAt) ?? '');
+});
 
 /// The globe as the screen draws it: the last snapshot, when it was fetched
 /// or saved, and whether the last fetch failed (GB3).
@@ -107,15 +120,59 @@ final cityPositionsProvider = Provider<Map<String, ({double lat, double lon})>>(
   return {for (final c in rows) c.id: (lat: c.lat, lon: c.lon)};
 });
 
-/// What the painter draws: the dots (§2.1, SZ1) and their threads (DR6,
-/// DR7), recomputed only when the snapshot, the profile or the mark change.
-final globeDrawingProvider = Provider<({List<GlobeDot> dots, List<(int, int)> threads})>((ref) {
+/// What the painter draws: the dots (§2.1, SZ1), their threads and arcs (DR6
+/// to DR8) and the live total that matches them (CT2), recomputed only when
+/// the snapshot, the profile or the mark change.
+@immutable
+class GlobeDrawing {
+  const GlobeDrawing({
+    required this.dots,
+    required this.threads,
+    required this.arcs,
+    required this.liveTotal,
+    this.youLive = false,
+  });
+
+  final List<GlobeDot> dots;
+
+  /// Your attendance is marked today, so you count as live (TT2).
+  final bool youLive;
+  final List<GlobeThread> threads;
+  final List<List<double>> arcs;
+  final int liveTotal;
+}
+
+final globeDrawingProvider = Provider<GlobeDrawing>((ref) {
   final snapshot = ref.watch(globeProvider.select((g) => g.snapshot)) ?? GlobeSnapshot.empty;
+  final marked = ref.watch(markedTodayProvider) && snapshot.day == istDay();
+  final yourCity = ref.watch(profileProvider.select((p) => p?.cityId));
+  final countedLive = yourCity != null &&
+      snapshotCountsYou(snapshot, marked: marked, markedAt: ref.watch(markedAtProvider));
   final dots = globeDots(
     snapshot,
     ref.watch(cityPositionsProvider),
-    yourCityId: ref.watch(profileProvider.select((p) => p?.cityId)),
-    markedToday: ref.watch(markedTodayProvider) && snapshot.day == istDay(),
+    yourCityId: yourCity,
+    countedLive: countedLive,
   );
-  return (dots: dots, threads: globeThreads(dots));
+  final threads = globeThreads(dots);
+  return GlobeDrawing(
+    dots: dots,
+    threads: threads,
+    arcs: globeArcs(dots, threads),
+    liveTotal: globeLiveTotal(snapshot, marked: yourCity != null && marked, countedLive: countedLive),
+    youLive: yourCity != null && marked,
+  );
+});
+
+/// City names by id, in the app's language, for the tap on a dot (TT1).
+final cityNamesProvider = Provider.family<Map<String, String>, String>((ref, lang) {
+  final rows = ref.watch(citiesProvider).value ?? const <CityRow>[];
+  return {
+    for (final c in rows)
+      c.id: switch (lang) {
+        'pa' => c.namePa.isNotEmpty ? c.namePa : c.nameEn,
+        'hi' => c.nameHi.isNotEmpty ? c.nameHi : c.nameEn,
+        _ => c.nameEn,
+      },
+  };
 });

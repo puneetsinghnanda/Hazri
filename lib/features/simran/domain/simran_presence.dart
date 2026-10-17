@@ -75,7 +75,7 @@ class GlobeDot {
   final DotKind kind;
   final int count;
 
-  /// Logical pixels (SZ1); You uses the smallest.
+  /// Logical pixels (SZ1); one person is the size of You.
   final double radius;
 
   @override
@@ -93,64 +93,79 @@ class GlobeDot {
 }
 
 /// §2.1: what one city draws for this viewer. [viewer] null: no profile, so
-/// nothing is taken off (NP1).
+/// nothing is taken off (NP1). `countedLive`: the snapshot already counts the
+/// viewer as live (CT1), so they come off the green; otherwise they are still
+/// in its blue and come off that.
 ({int you, int live, int here}) splitCity(
   int live,
   int counted, {
-  ({bool inThisCity, bool markedToday})? viewer,
+  ({bool inThisCity, bool countedLive})? viewer,
 }) {
   final here = counted - live;
   if (viewer == null || !viewer.inThisCity) return (you: 0, live: live, here: here);
-  if (viewer.markedToday) return (you: 1, live: math.max(0, live - 1), here: here);
+  if (viewer.countedLive) return (you: 1, live: math.max(0, live - 1), here: here);
   return (you: 1, live: live, here: math.max(0, here - 1));
 }
 
-const dotMinRadius = 3.0;
-const dotMaxRadius = 14.0;
+/// CT1: whether [snapshot] already counts the viewer as live. It does once
+/// their attendance is marked *and* the snapshot was built after it was: the
+/// server rebuilds every two minutes, so for a while after marking, the
+/// snapshot still has them under Here today. [markedAt] null with [marked]
+/// true is a mark from before the time was kept, long since counted.
+bool snapshotCountsYou(GlobeSnapshot snapshot, {required bool marked, DateTime? markedAt}) {
+  if (!marked) return false;
+  final built = snapshot.builtAt;
+  if (built == null || markedAt == null) return true;
+  return !built.isBefore(markedAt);
+}
 
-/// SZ1: area grows with the count; the largest green or blue dot is the
-/// maximum. Rounded to one decimal.
-double dotRadius(int count, int largest) {
-  if (count <= 0 || largest <= 0) return dotMinRadius;
-  final r = dotMinRadius + (dotMaxRadius - dotMinRadius) * math.sqrt(count / largest);
+/// DR5 as amended (CT2): the people live today, as the dots show them. The
+/// snapshot's total, plus you while it has not caught up with your mark.
+int globeLiveTotal(GlobeSnapshot snapshot, {required bool marked, required bool countedLive}) =>
+    snapshot.live + (marked && !countedLive ? 1 : 0);
+
+/// SZ1 as amended (owner, 2026-10-17): one person is the size of your dot,
+/// and a dot grows by area until `DOT_FULL_AT` people, after which it stays
+/// at the maximum. Absolute, so a quiet day does not blow single people up.
+const dotYouRadius = 4.0;
+const dotMaxRadius = 14.0;
+const dotFullAt = 25;
+
+double dotRadius(int count) {
+  if (count <= 1) return dotYouRadius;
+  final f = (math.min(count, dotFullAt) - 1) / (dotFullAt - 1);
+  final r = dotYouRadius + (dotMaxRadius - dotYouRadius) * math.sqrt(f);
   return (r * 10).roundToDouble() / 10;
 }
 
 /// Every dot of the snapshot for this viewer (DR1, DR2). [positions] maps a
 /// city id to its lat/lon from `content.db`; a city the phone does not know
-/// is skipped. [yourCityId] null without a profile; [markedToday]: this
-/// install's attendance is marked for the snapshot's day.
+/// is skipped. [yourCityId] null without a profile; [countedLive]: the
+/// snapshot already counts this viewer as live ([snapshotCountsYou]).
 List<GlobeDot> globeDots(
   GlobeSnapshot snapshot,
   Map<String, ({double lat, double lon})> positions, {
   String? yourCityId,
-  bool markedToday = false,
+  bool countedLive = false,
 }) {
-  final split = <String, ({int you, int live, int here})>{};
-  for (final e in snapshot.cities.entries) {
-    split[e.key] = splitCity(
-      e.value.live,
-      e.value.counted,
-      viewer: yourCityId == null ? null : (inThisCity: e.key == yourCityId, markedToday: markedToday),
-    );
-  }
-  var largest = 0;
-  for (final s in split.values) {
-    largest = math.max(largest, math.max(s.live, s.here));
-  }
   final dots = <GlobeDot>[];
-  for (final e in split.entries) {
+  for (final e in snapshot.cities.entries) {
     final at = positions[e.key];
     if (at == null) continue;
-    if (e.value.here > 0) {
+    final s = splitCity(
+      e.value.live,
+      e.value.counted,
+      viewer: yourCityId == null ? null : (inThisCity: e.key == yourCityId, countedLive: countedLive),
+    );
+    if (s.here > 0) {
       dots.add(GlobeDot(
           cityId: e.key, lat: at.lat, lon: at.lon, kind: DotKind.here,
-          count: e.value.here, radius: dotRadius(e.value.here, largest)));
+          count: s.here, radius: dotRadius(s.here)));
     }
-    if (e.value.live > 0) {
+    if (s.live > 0) {
       dots.add(GlobeDot(
           cityId: e.key, lat: at.lat, lon: at.lon, kind: DotKind.live,
-          count: e.value.live, radius: dotRadius(e.value.live, largest)));
+          count: s.live, radius: dotRadius(s.live)));
     }
   }
   // DR1: your dot from the profile on the phone, offline too, drawn last.
@@ -158,7 +173,7 @@ List<GlobeDot> globeDots(
   if (mine != null) {
     dots.add(GlobeDot(
         cityId: yourCityId!, lat: mine.lat, lon: mine.lon, kind: DotKind.you, count: 1,
-        radius: dotMinRadius + 1));
+        radius: dotYouRadius));
   }
   return dots;
 }
@@ -172,29 +187,36 @@ double greatCircle(double lat1, double lon1, double lat2, double lon2) {
   return 2 * math.asin(math.min(1, math.sqrt(a.toDouble())));
 }
 
-/// The threads to draw, as index pairs into [dots], each pair once.
+/// One thread: index pairs into the dots, and whether it starts at your dot.
+typedef GlobeThread = ({int a, int b, bool mine});
+
+/// The threads to draw (DR6, DR7 as amended 2026-10-17), each pair once.
 ///
-/// DR6: with a You dot, one from it to every other dot. DR7: without one, a
-/// web: Prim's shortest tree over every city plus each city's 2 nearest.
-/// Computed when a snapshot arrives, never per frame; whether a thread is on
-/// the visible side is the painter's question.
-List<(int, int)> globeThreads(List<GlobeDot> dots) {
+/// The sangat joined to itself: Prim's shortest tree over every city plus
+/// each city's two nearest, so nobody is left on their own. With a profile,
+/// a thread from your dot to every other city as well. Computed when a
+/// snapshot arrives, never per frame; whether a thread faces the viewer is
+/// the painter's question.
+List<GlobeThread> globeThreads(List<GlobeDot> dots) {
   final you = dots.indexWhere((d) => d.kind == DotKind.you);
+  final out = <GlobeThread>[];
+  final yourCity = you >= 0 ? dots[you].cityId : null;
   if (you >= 0) {
-    return [
-      for (var i = 0; i < dots.length; i++)
-        if (i != you && dots[i].cityId != dots[you].cityId) (you, i),
-    ];
+    final seen = <String>{yourCity!};
+    for (var i = 0; i < dots.length; i++) {
+      if (seen.add(dots[i].cityId)) out.add((a: you, b: i, mine: true));
+    }
   }
-  // One node per city: the web joins places, and two dots in one city are
-  // side by side already.
+  // One node per city other than yours: two dots in one city are side by
+  // side already, and yours is joined by its own threads.
   final nodes = <int>[];
   final seen = <String>{};
   for (var i = 0; i < dots.length; i++) {
+    if (dots[i].cityId == yourCity) continue;
     if (seen.add(dots[i].cityId)) nodes.add(i);
   }
   final n = nodes.length;
-  if (n < 2) return const [];
+  if (n < 2) return out;
   double dist(int a, int b) =>
       greatCircle(dots[nodes[a]].lat, dots[nodes[a]].lon, dots[nodes[b]].lat, dots[nodes[b]].lon);
 
@@ -232,7 +254,44 @@ List<(int, int)> globeThreads(List<GlobeDot> dots) {
       add(a, b);
     }
   }
-  return edges.toList();
+  out.addAll([for (final (a, b) in edges) (a: a, b: b, mine: false)]);
+  return out;
+}
+
+/// Samples along each thread as 3-D points, lifted off the surface toward the
+/// middle so a thread arcs over the earth rather than lying on it (DR8). A
+/// thread between cities further apart rises higher. Flat (x, y, z) triples,
+/// [arcSamples] + 1 points each.
+const arcSamples = 24;
+
+List<List<double>> globeArcs(List<GlobeDot> dots, List<GlobeThread> threads) {
+  const d = math.pi / 180;
+  List<double> unit(GlobeDot g) {
+    final p = g.lat * d, l = g.lon * d;
+    return [math.cos(p) * math.cos(l), math.cos(p) * math.sin(l), math.sin(p)];
+  }
+
+  return [
+    for (final t in threads)
+      () {
+        final a = unit(dots[t.a]), b = unit(dots[t.b]);
+        final w = math.acos((a[0] * b[0] + a[1] * b[1] + a[2] * b[2]).clamp(-1.0, 1.0));
+        final out = <double>[];
+        if (w < 1e-6) return out;
+        final lift = 0.03 + 0.22 * (w / math.pi);
+        final sw = math.sin(w);
+        for (var s = 0; s <= arcSamples; s++) {
+          final f = s / arcSamples;
+          final k1 = math.sin((1 - f) * w) / sw, k2 = math.sin(f * w) / sw;
+          final h = 1 + lift * math.sin(math.pi * f);
+          out
+            ..add((k1 * a[0] + k2 * b[0]) * h)
+            ..add((k1 * a[1] + k2 * b[1]) * h)
+            ..add((k1 * a[2] + k2 * b[2]) * h);
+        }
+        return out;
+      }(),
+  ];
 }
 
 /// The IST day (07-simran §2), whatever the phone's zone.

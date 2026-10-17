@@ -3565,4 +3565,17 @@ class LEn extends L {
 
   @override
   String get notifDiagRefresh => 'Refresh';
+
+  @override
+  String get globeTipYou => 'You are here';
+
+  @override
+  String globeTipLive(int count) {
+    return '$count live today';
+  }
+
+  @override
+  String globeTipHere(int count) {
+    return '$count here today';
+  }
 }

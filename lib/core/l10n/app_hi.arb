@@ -1063,5 +1063,8 @@
   "notifDiagProbeArrived": "{set} के लिए लगाया · {arrived} पर पहुँचा",
   "notifDiagProbeTitle": "हाज़िरी अलार्म जाँच",
   "notifDiagBatteryAllow": "हाज़िरी को बैकग्राउंड में चलने दें",
-  "notifDiagRefresh": "रीफ़्रेश करें"
+  "notifDiagRefresh": "रीफ़्रेश करें",
+  "globeTipYou": "आप यहाँ हैं",
+  "globeTipLive": "आज {count} हाज़िर",
+  "globeTipHere": "{count} आज यहाँ"
 }

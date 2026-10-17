@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/simran/data/presence_repository.dart';
+import 'package:hazri/features/simran/domain/simran_presence.dart';
 import 'package:hazri/features/simran/ui/simran_globe.dart';
 import 'package:hazri/features/simran/ui/simran_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,6 +77,42 @@ void main() {
     await tester.drag(find.byType(SimranGlobe), const Offset(-60, 0));
     await tester.pump();
     expect(tester.takeException(), isNull);
+  });
+
+  group('CT1, CT2 at the screen: the line counts you as the dots do', () {
+    // The owner's report of 2026-10-17: marked a minute ago, and the snapshot
+    // is from before that, so it still has you under Here today.
+    Future<void> pumpMarked(WidgetTester tester, {required Duration builtAfterMark}) async {
+      final now = DateTime.now().toUtc();
+      final day = istDay(now);
+      final markedAt = now.subtract(const Duration(minutes: 1));
+      server.on('GET', '/presence/globe', 200, {
+        ...snapshot,
+        'day': day,
+        'builtAt': markedAt.add(builtAfterMark).toIso8601String(),
+      });
+      server.on('GET', '/profile', 200, {'profile': profileJson()});
+      final app = await TestApp.create(prefs: {
+        'onboarding_done': true,
+        PresenceService.kAttendance: day,
+        PresenceService.kAttendanceAt: markedAt.toIso8601String(),
+      }, extra: server.overrides());
+      addTearDown(app.dispose);
+      usePhoneFrame(tester);
+      await tester.pumpWidget(app.wrapRouted(const SimranScreen()));
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 150)));
+      await settle(tester);
+    }
+
+    testWidgets('a snapshot from before your mark: its 30, plus you', (tester) async {
+      await pumpMarked(tester, builtAfterMark: const Duration(seconds: -30));
+      expect(find.text(l.globeLiveCount(31)), findsOneWidget);
+    });
+
+    testWidgets('a snapshot from after it already counts you: 30', (tester) async {
+      await pumpMarked(tester, builtAfterMark: const Duration(seconds: 30));
+      expect(find.text(l.globeLiveCount(30)), findsOneWidget);
+    });
   });
 
   group('attendance (AT1–AT4)', () {

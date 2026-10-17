@@ -63,7 +63,9 @@ Each counted user is drawn exactly once:
 | `GLOBE_REFRESH_SECONDS` | 120 |
 | `GLOBE_SNAPSHOT_SECONDS` | 120 (how often the server rebuilds the globe) |
 | `GLOBE_CACHE_SECONDS` | 60 (how long a function instance serves the snapshot from memory) |
-| `DOT_MIN_RADIUS_PX` / `DOT_MAX_RADIUS_PX` | 3 / 14 |
+| `DOT_YOU_RADIUS_PX` / `DOT_MAX_RADIUS_PX` | 4 / 14 (one person is the size of your dot) |
+| `DOT_FULL_AT` | 25 people: a dot this full or fuller is the maximum |
+| `GLOBE_MAX_ZOOM` | 8 |
 | `YOU_BLINK_PERIOD_MS` | 1600 |
 
 ## 4. Rules
@@ -94,9 +96,10 @@ Each counted user is drawn exactly once:
 - **DR2. Live and Here today** are drawn per city from the snapshot, with the counts of 2.1. A count of 0 draws nothing.
 - **DR3. Three dots in one city** sit side by side so none hides another: Here today 1.5 radii west of the city's point, Live 1.5 radii east, and You on the point itself, drawn last.
 - **DR4. Legend:** `simranLegendYou` (orange), `simranLegendLive` (green), `simranLegendHere` (blue), in that order.
-- **DR5. Presence line:** `globeLiveCount` with the snapshot's total `live`.
-- **DR6. Threads** (owner, 2026-10-08, from design 29): a thread runs from your dot to every other dot drawn on the visible side of the globe, green and blue alike. Each is a quadratic curve bowed sideways by 14% of its length, kesri (`#F2A24E`), 0.7 logical px wide at 28% opacity, drawn under the dots. A thread to a dot on the far side is not drawn (SZ2). With at most two dots per city on the list, there are never more than about 190 threads, so they are always drawn. Without a profile there is no dot to start from, so DR7 draws the threads instead. They do not move except with the globe.
-- **DR7. Threads without a profile** (owner, 2026-10-08): every dot is still connected. The threads join all the dots into one web: the shortest tree that reaches every dot (each dot linked to the web by its shortest great-circle link, Prim's algorithm), plus a thread from each dot to its 2 nearest. Each pair is drawn once, in the style of DR6, and only when both ends are on the visible side. The web is computed when a snapshot arrives, never per frame; with about 184 dots it is under 600 threads.
+- **DR5. Presence line:** `globeLiveCount` with the number of people live today counted the way the dots show them (CT2): the snapshot's total `live`, plus you while the snapshot has not yet caught up with your own mark.
+- **DR6. Threads from you** (owner, 2026-10-08; amended 2026-10-17): a thread runs from your dot to every other city on the globe, once per city, green and blue alike. Kesri (`#F2A24E`), 1.2 logical px at 55% opacity, drawn under the dots and over the web of DR7.
+- **DR7. The web** (owner, 2026-10-08; amended 2026-10-17 to be drawn with a profile too): every city is connected to the rest, so nobody is left on their own. With a profile, your city is joined by DR6 and left out of the web. The threads join all the dots into one web: the shortest tree that reaches every dot (each dot linked to the web by its shortest great-circle link, Prim's algorithm), plus a thread from each dot to its 2 nearest. Each pair is drawn once, pale blue (`#AACDFF`), 0.9 logical px at 30% opacity. The web is computed when a snapshot arrives, never per frame; with about 184 dots it is under 600 threads.
+- **DR8. Arcs and light** (owner, 2026-10-17, as on the website): every thread is a great-circle arc lifted off the surface, highest in the middle, rising more the further apart its ends are (3% of the radius plus 22% × the angle between them ÷ π). A sample is drawn while it faces the viewer or stands clear of the disc, so an arc to the far side climbs over the horizon and goes behind the earth. A point of light runs along every thread, each at its own pace, one lap in about six seconds; none with reduced motion on. The arcs are sampled when the snapshot arrives and only projected per frame.
 
 ### 4.4a Without a profile
 
@@ -106,8 +109,26 @@ Each counted user is drawn exactly once:
 
 ### 4.5 Dot size
 
-- **SZ1.** Radius in logical pixels = `DOT_MIN_RADIUS_PX` + (`DOT_MAX_RADIUS_PX` − `DOT_MIN_RADIUS_PX`) × √(count ÷ largest count among all green and blue dots in the snapshot), rounded to one decimal. Area therefore grows with the number of people, and the largest city always draws at the maximum.
+- **SZ1** (owner, 2026-10-17, replacing the size relative to the largest city). Radius in logical pixels = `DOT_YOU_RADIUS_PX` + (`DOT_MAX_RADIUS_PX` − `DOT_YOU_RADIUS_PX`) × √((min(count, `DOT_FULL_AT`) − 1) ÷ (`DOT_FULL_AT` − 1)), rounded to one decimal. One person is the size of your dot; area grows with the people up to 25, and stays at the maximum after that. The size is absolute, so on a quiet day single people are not drawn as large as a crowded city.
+- **SZ1a.** Dot sizes are in screen pixels and do not grow with the zoom (ZM1), so zooming in pulls neighbouring cities apart. Every city keeps its own dot at every zoom; nothing is merged (owner, 2026-10-17).
 - **SZ2.** A dot on the far side of the globe is not drawn (as now).
+
+### 4.5a Counting you (owner's report, 2026-10-17)
+
+- **CT1.** The server rebuilds the snapshot every `GLOBE_SNAPSHOT_SECONDS`, so for up to that long after your attendance is marked, the snapshot still counts you under Here today. The app keeps the time of its mark (`presence_attendance_at_v1`) and treats the snapshot as counting you live only when it was built at or after that time. Until then you come off your city's blue, not its green; after, off its green. Either way you are drawn once, as the orange dot, and nobody else is taken off. A mark kept before its time was recorded is treated as counted.
+- **CT2.** The presence line is the people live today as the dots show them: the snapshot's `live`, plus 1 for you while CT1 says the snapshot has not caught up. Green dots plus your dot always add up to it.
+
+### 4.5b Zoom (owner, 2026-10-17)
+
+- **ZM1.** Two fingers pinch the globe in, up to `GLOBE_MAX_ZOOM` × the whole earth, and back out to the whole earth. The zoomed earth is clipped to the globe's square.
+- **ZM2.** Two taps on the globe within 300 ms zoom in by 2.5 ×; from the limit, two taps return to the whole earth.
+- **ZM3.** While zoomed in, the globe does not turn on its own; one finger still turns it, at a pace that keeps the ground under the finger. Back at the whole earth, it turns on its own again.
+
+### 4.5c A tap on a dot (owner, 2026-10-17)
+
+- **TT1.** A tap on a dot shows a card beside it with the city's name in the app's language and its people: `globeTipYou` in your own city, `globeTipLive` and `globeTipHere` with their counts. Nothing about who anybody is (PV2).
+- **TT2.** In your own city you are counted where you are: live once your attendance is marked, here today until then, so the card adds up to the city's people.
+- **TT3.** The card goes after 5 seconds, on a tap elsewhere, or when the globe is turned or zoomed.
 
 ### 4.6 Privacy
 
@@ -173,7 +194,9 @@ Unchanged layout (0.2), drawn as designs 88, 89 and 90. The legend shows the thr
 ## 10. Acceptance checklist
 
 - [ ] Unit: the count split of 2.1 for you inside and outside a city, live and not live.
-- [ ] Unit: SZ1 radii, including a snapshot where every count is equal.
+- [x] Unit: SZ1 radii: one person is your size, 25 or more the maximum, a quiet day stays small.
+- [x] Unit: CT1/CT2 before and after the snapshot catches up with your mark: you drawn once, nobody else lost, the line equal to the dots.
+- [x] Widget: ZM1 pinch and its limit, ZM2 double tap in and back out, TT1–TT3 the card and its counts.
 - [ ] Widget: DR6 threads to every visible dot, none to the far side. Unit: DR7's web reaches every dot (one connected component) and draws each pair once.
 - [ ] Unit: AT1 calls at most once per `dayIst`, sets the flag only on success, and AT2 never calls without a profile.
 - [ ] Unit: SM1 length from the goal, else 5.
@@ -196,7 +219,11 @@ Unchanged layout (0.2), drawn as designs 88, 89 and 90. The legend shows the thr
 | S-8 | Old "sitting now" and "sat today" | **Decided 2026-10-07:** removed |
 | S-9 | Somebody without a profile | **Decided 2026-10-07:** sees everybody else on the globe, has no orange dot, is not counted, and gets a banner to create a profile (4.4a) |
 | S-10 | The profile's city comes from the app's list of 92 cities | **Decided 2026-10-07:** yes; somebody whose city is not on it picks the nearest. Cities are added through `tools/content_pipeline/cities.json`. |
-| S-11 | Connecting lines on the globe | **Decided 2026-10-08:** yes, design 29's threads from your dot to every other (DR6); without a profile, a web joining all the dots (DR7) |
+| S-11 | Connecting lines on the globe | **Decided 2026-10-08:** yes, design 29's threads from your dot to every other (DR6); without a profile, a web joining all the dots (DR7). **Amended 2026-10-17:** the web is drawn with a profile too, and every thread is an arc with light running along it, as on the website (DR8) |
+| S-12 | Dot size on a quiet day | **Decided 2026-10-17:** one person is the size of your dot; dots grow up to 25 people (SZ1). It used to be relative to the largest city, so a single person drew at the maximum |
+| S-13 | Zoom | **Decided 2026-10-17:** pinch and double tap; every city keeps its own dot at every zoom (ZM1–ZM3, SZ1a) |
+| S-14 | A tap on a dot | **Decided 2026-10-17:** a card with the city and its counts (TT1–TT3) |
+| S-15 | Blue dot | **Confirmed 2026-10-17:** still everybody ever counted (S-4), not only recent users |
 
 ## 12. Out of scope
 

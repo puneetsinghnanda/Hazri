@@ -3548,4 +3548,17 @@ class LHi extends L {
 
   @override
   String get notifDiagRefresh => 'रीफ़्रेश करें';
+
+  @override
+  String get globeTipYou => 'आप यहाँ हैं';
+
+  @override
+  String globeTipLive(int count) {
+    return 'आज $count हाज़िर';
+  }
+
+  @override
+  String globeTipHere(int count) {
+    return '$count आज यहाँ';
+  }
 }

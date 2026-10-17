@@ -485,8 +485,12 @@ has that the target replaces, and PRD §11 says which step removes each:
   `GET /presence/globe`, fetched on opening the tab and every 2 minutes only
   while it is visible; attendance marked once per IST day with a profile;
   You (orange, blinking), Live (green) and Here today (blue) split per §2.1;
-  dots sized by SZ1; threads from your dot (DR6) or, without a profile, a
-  web joining every dot (DR7). A sitting no longer reports to the globe. The
+  dots sized by SZ1 (one person is your dot's size, full at 25, since
+  2026-10-17); threads from your dot (DR6) and a web joining the rest (DR7),
+  as arcs with light running along them (DR8); pinch or double tap to zoom
+  (ZM1-ZM3) and tap a dot for its city (TT1-TT3). The presence line counts
+  you the way the dots do, including in the two minutes before the snapshot
+  catches up with your mark (CT1, CT2). A sitting no longer reports to the globe. The
   paragraphs further down about the 45-second presence read, "in the
   sangat", two people in one city being one dot and the headline describe
   the build before this one.

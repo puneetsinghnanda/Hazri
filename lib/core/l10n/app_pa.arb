@@ -1063,5 +1063,8 @@
   "notifDiagProbeArrived": "{set} ਲਈ ਲਗਾਇਆ · {arrived} ਨੂੰ ਪਹੁੰਚਿਆ",
   "notifDiagProbeTitle": "ਹਾਜ਼ਰੀ ਅਲਾਰਮ ਜਾਂਚ",
   "notifDiagBatteryAllow": "ਹਾਜ਼ਰੀ ਨੂੰ ਪਿਛੋਕੜ ਵਿੱਚ ਚੱਲਣ ਦਿਓ",
-  "notifDiagRefresh": "ਤਾਜ਼ਾ ਕਰੋ"
+  "notifDiagRefresh": "ਤਾਜ਼ਾ ਕਰੋ",
+  "globeTipYou": "ਤੁਸੀਂ ਇੱਥੇ ਹੋ",
+  "globeTipLive": "ਅੱਜ {count} ਹਾਜ਼ਰ",
+  "globeTipHere": "{count} ਅੱਜ ਇੱਥੇ"
 }

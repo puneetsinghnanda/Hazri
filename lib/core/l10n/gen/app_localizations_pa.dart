@@ -3555,4 +3555,17 @@ class LPa extends L {
 
   @override
   String get notifDiagRefresh => 'ਤਾਜ਼ਾ ਕਰੋ';
+
+  @override
+  String get globeTipYou => 'ਤੁਸੀਂ ਇੱਥੇ ਹੋ';
+
+  @override
+  String globeTipLive(int count) {
+    return 'ਅੱਜ $count ਹਾਜ਼ਰ';
+  }
+
+  @override
+  String globeTipHere(int count) {
+    return '$count ਅੱਜ ਇੱਥੇ';
+  }
 }

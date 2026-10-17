@@ -2184,5 +2184,22 @@
   },
   "notifDiagProbeTitle": "Hazri alarm test",
   "notifDiagBatteryAllow": "Let Hazri run in the background",
-  "notifDiagRefresh": "Refresh"
+  "notifDiagRefresh": "Refresh",
+  "globeTipYou": "You are here",
+  "globeTipLive": "{count} live today",
+  "@globeTipLive": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "globeTipHere": "{count} here today",
+  "@globeTipHere": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

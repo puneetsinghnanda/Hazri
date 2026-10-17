@@ -6303,6 +6303,24 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Refresh'**
   String get notifDiagRefresh;
+
+  /// No description provided for @globeTipYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You are here'**
+  String get globeTipYou;
+
+  /// No description provided for @globeTipLive.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} live today'**
+  String globeTipLive(int count);
+
+  /// No description provided for @globeTipHere.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} here today'**
+  String globeTipHere(int count);
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

@@ -16,7 +16,7 @@ import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../goals/data/goals_controller.dart';
 import '../data/presence_repository.dart';
-import '../domain/simran_presence.dart';
+
 import '../../today/data/today_controller.dart';
 import '../data/simran_controller.dart';
 import '../domain/simran_track.dart';
@@ -158,7 +158,7 @@ class _SimranSky extends ConsumerWidget {
     required this.onEnd,
   });
 
-  final ({List<GlobeDot> dots, List<(int, int)> threads}) drawing;
+  final GlobeDrawing drawing;
   final GlobeState globe;
   final int minutes;
   final bool doneToday;
@@ -274,6 +274,10 @@ class _SimranSky extends ConsumerWidget {
                                     child: SimranGlobe(
                                       dots: drawing.dots,
                                       threads: drawing.threads,
+                                      arcs: drawing.arcs,
+                                      youLive: drawing.youLive,
+                                      cityNames: ref.watch(cityNamesProvider(
+                                          Localizations.localeOf(context).languageCode)),
                                       size: size,
                                     ),
                                   ),
@@ -314,7 +318,7 @@ class _SimranSky extends ConsumerWidget {
                         style: HazriText.caption.copyWith(color: white55),
                       ),
                     ] else ...[
-                      _Presence(globe: globe, colour: _live),
+                      _Presence(globe: globe, live: drawing.liveTotal, colour: _live),
                     ],
                     const SizedBox(height: 8),
                     Wrap(
@@ -525,11 +529,13 @@ class _OnkarRule extends StatelessWidget {
   }
 }
 
-/// DR5: the snapshot's live total; GB3: offline with no snapshot at all.
+/// DR5 as amended (CT2): the people live today, counted the way the dots
+/// show them; GB3: offline with no snapshot at all.
 class _Presence extends StatelessWidget {
-  const _Presence({required this.globe, required this.colour});
+  const _Presence({required this.globe, required this.live, required this.colour});
 
   final GlobeState globe;
+  final int live;
   final Color colour;
 
   @override
@@ -537,7 +543,7 @@ class _Presence extends StatelessWidget {
     final l = L.of(context);
     final snapshot = globe.snapshot;
     return Text(
-      snapshot == null ? l.globeOffline : l.globeLiveCount(snapshot.live),
+      snapshot == null ? l.globeOffline : l.globeLiveCount(live),
       textAlign: TextAlign.center,
       style: SimranText.presence.copyWith(color: snapshot == null ? Colors.white : colour),
     );

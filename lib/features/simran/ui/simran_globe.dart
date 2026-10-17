@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/l10n/gen/app_localizations.dart';
 import '../domain/simran_presence.dart';
 import '../domain/world_outline.dart';
 
@@ -20,6 +22,9 @@ class SimranGlobe extends ConsumerStatefulWidget {
     super.key,
     required this.dots,
     this.threads = const [],
+    this.arcs = const [],
+    this.cityNames = const {},
+    this.youLive = false,
     this.size = 260,
     this.spinning = true,
   });
@@ -27,13 +32,23 @@ class SimranGlobe extends ConsumerStatefulWidget {
   /// You, Live and Here today (07-simran §2.1).
   final List<GlobeDot> dots;
 
-  /// Index pairs into [dots] (DR6, DR7).
-  final List<(int, int)> threads;
+  /// DR6, DR7: which dots are joined, and the 3-D samples of each (DR8).
+  final List<GlobeThread> threads;
+  final List<List<double>> arcs;
+
+  /// For the tap on a dot (TT1), in the app's language.
+  final Map<String, String> cityNames;
+
+  /// Your own attendance is marked today, so you count as live in your city.
+  final bool youLive;
   final double size;
 
   /// Turns slowly on its own. Off in tests and when the system asks for
   /// reduced motion.
   final bool spinning;
+
+  /// ZM1: how far a pinch can bring the earth in.
+  static const maxZoom = 8.0;
 
   @override
   ConsumerState<SimranGlobe> createState() => _SimranGlobeState();
@@ -52,6 +67,12 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
   late final AnimationController _pulse = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 800),
+  );
+
+  /// The light running along the threads (DR8): one lap every six seconds.
+  late final AnimationController _flow = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 6),
   );
 
   /// A quarter of a degree, which at this size is under a pixel at the
@@ -77,47 +98,97 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
   /// is not stopped at the pole, and dragging up used to do nothing at all.
   double _tilt = 0;
 
+  /// ZM1: 1 is the whole earth; a pinch brings it in to [SimranGlobe.maxZoom].
+  double _zoom = 1;
+  double _zoomAtStart = 1;
+
+  /// TT1: the city whose card is showing, and where its dot is.
+  String? _tipCity;
+  Offset? _tipAt;
+  Timer? _tipTimer;
+  ({Offset at, DateTime when})? _lastTap;
+
+  bool get _zoomed => _zoom > 1.05;
+
+  void _run(bool on) {
+    for (final c in [_pulse, _flow]) {
+      if (on && !c.isAnimating) {
+        c == _pulse ? c.repeat(reverse: true) : c.repeat();
+      } else if (!on && c.isAnimating) {
+        c.stop();
+      }
+    }
+    // ZM3: zoomed in, the earth holds still under the hand.
+    if (on && !_zoomed && !_spin.isAnimating) _spin.repeat();
+    if ((!on || _zoomed) && _spin.isAnimating) _spin.stop();
+  }
+
   @override
   void initState() {
     super.initState();
-    if (widget.spinning) {
-      _spin.repeat();
-      _pulse.repeat(reverse: true);
-    }
+    _run(widget.spinning);
   }
 
   @override
   void didUpdateWidget(SimranGlobe old) {
     super.didUpdateWidget(old);
-    if (widget.spinning && !_spin.isAnimating) {
-      _spin.repeat();
-      _pulse.repeat(reverse: true);
-    } else if (!widget.spinning && _spin.isAnimating) {
-      _spin.stop();
-      _pulse.stop();
-    }
+    _run(widget.spinning);
   }
 
   @override
   void dispose() {
+    _tipTimer?.cancel();
     _spin.dispose();
     _pulse.dispose();
+    _flow.dispose();
     super.dispose();
+  }
+
+  double get _rotation => _dragged + _spin.value * 2 * math.pi;
+
+  void _setZoom(double z) {
+    final was = _zoomed;
+    _zoom = z.clamp(1.0, SimranGlobe.maxZoom);
+    if (_zoomed && !was) {
+      // Fold the spin into the hand's turn, so stopping it moves nothing.
+      _dragged = _rotation;
+      _spin.value = 0;
+    }
+    _run(widget.spinning && !MediaQuery.disableAnimationsOf(context));
+  }
+
+  /// TT1: the dot under a tap, by where the painter puts it.
+  void _tap(Offset local) {
+    final hit = GlobePainter.dotAt(
+      dots: widget.dots,
+      at: local,
+      size: widget.size,
+      zoom: _zoom,
+      rotation: _step(_rotation, _rotationStep),
+      tilt: _step(_tilt, _rotationStep),
+    );
+    _tipTimer?.cancel();
+    setState(() {
+      _tipCity = hit?.cityId;
+      _tipAt = hit?.at;
+    });
+    if (hit != null) {
+      _tipTimer = Timer(const Duration(seconds: 5), () {
+        if (mounted) setState(() => _tipCity = null);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    if (reduceMotion && _spin.isAnimating) {
-      _spin.stop();
-      _pulse.stop();
-    }
+    if (reduceMotion) _run(false);
     final outline = ref.watch(worldOutlineProvider).value ?? WorldOutline.empty;
 
     return GestureDetector(
-      // A pan, not a horizontal drag: the globe turns under the hand in both
-      // directions, and a full turn either way is a drag of about twice its
-      // width.
+      // One finger turns the earth under the hand in both directions; two
+      // pinch it nearer (ZM1). A full turn is a drag of about twice its
+      // width, and less once zoomed, so the ground keeps pace with the finger.
       //
       // Both axes *add*. The vertical one used to subtract, which inverted
       // it: the point under the centre of the disc lands at screen y of
@@ -125,29 +196,127 @@ class _SimranGlobeState extends ConsumerState<SimranGlobe>
       // what moves the surface down under a downward finger. Dragging down
       // sent the earth up instead, and the north pole away rather than
       // toward you.
-      onPanUpdate: (d) => setState(() {
-        _dragged += d.delta.dx / widget.size * math.pi;
-        _tilt = (_tilt + d.delta.dy / widget.size * math.pi) % (2 * math.pi);
+      onScaleStart: (_) => _zoomAtStart = _zoom,
+      onScaleUpdate: (d) => setState(() {
+        if (d.pointerCount > 1) _setZoom(_zoomAtStart * d.scale);
+        final k = math.pi / (widget.size * _zoom);
+        _dragged += d.focalPointDelta.dx * k;
+        _tilt = (_tilt + d.focalPointDelta.dy * k) % (2 * math.pi);
+        _tipCity = null;
       }),
-      child: AnimatedBuilder(
-        animation: Listenable.merge([_spin, _pulse]),
-        builder: (context, _) => CustomPaint(
-          size: Size.square(widget.size),
-          painter: GlobePainter(
-            dots: widget.dots,
-            threads: widget.threads,
-            outline: outline,
-            rotation: _step(
-              _dragged + (reduceMotion ? 0 : _spin.value * 2 * math.pi),
-              _rotationStep,
+      // ZM2: a second tap close behind the first brings it in, and from all
+      // the way in, back out. Told apart here rather than by a double-tap
+      // recogniser, which would hold every single tap back to wait for one.
+      onTapUp: (d) {
+        final now = DateTime.now();
+        final last = _lastTap;
+        _lastTap = (at: d.localPosition, when: now);
+        if (last != null &&
+            now.difference(last.when) < const Duration(milliseconds: 300) &&
+            (last.at - d.localPosition).distance < 40) {
+          _lastTap = null;
+          _tipTimer?.cancel();
+          setState(() {
+            _setZoom(_zoom >= SimranGlobe.maxZoom - 0.01 ? 1 : math.min(SimranGlobe.maxZoom, _zoom * 2.5));
+            _tipCity = null;
+          });
+          return;
+        }
+        _tap(d.localPosition);
+      },
+      child: SizedBox.square(
+        dimension: widget.size,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            AnimatedBuilder(
+              animation: Listenable.merge([_spin, _pulse, _flow]),
+              builder: (context, _) => CustomPaint(
+                size: Size.square(widget.size),
+                painter: GlobePainter(
+                  dots: widget.dots,
+                  threads: widget.threads,
+                  arcs: widget.arcs,
+                  outline: outline,
+                  zoom: _zoom,
+                  rotation: _step(_rotation, _rotationStep),
+                  tilt: _step(_tilt, _rotationStep),
+                  // Half way through the breath when nothing is animating, so a
+                  // still frame is never the smallest the halo gets.
+                  // G-16: reduced motion, no blink.
+                  breath: reduceMotion
+                      ? 1
+                      : _step(Curves.easeInOut.transform(_pulse.value), 1 / 24),
+                  flow: reduceMotion ? -1 : _step(_flow.value, 1 / 180),
+                ),
+              ),
             ),
-            tilt: _step(_tilt, _rotationStep),
-            // Half way through the breath when nothing is animating, so a
-            // still frame is never the smallest the halo gets.
-            // G-16: reduced motion, no blink.
-            breath: reduceMotion
-                ? 1
-                : _step(Curves.easeInOut.transform(_pulse.value), 1 / 24),
+            if (_tipCity != null && _tipAt != null)
+              _CityTip(
+                at: _tipAt!,
+                bounds: widget.size,
+                name: widget.cityNames[_tipCity] ?? _tipCity!,
+                dots: [for (final d in widget.dots) if (d.cityId == _tipCity) d],
+                youLive: widget.youLive,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// TT1–TT3: the card for one city. Your city counts you where you are: live
+/// once your attendance is marked, here today until then.
+class _CityTip extends StatelessWidget {
+  const _CityTip({required this.at, required this.bounds, required this.name, required this.dots, required this.youLive});
+
+  final Offset at;
+  final double bounds;
+  final String name;
+  final List<GlobeDot> dots;
+  final bool youLive;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = L.of(context);
+    final mine = dots.any((d) => d.kind == DotKind.you);
+    int count(DotKind k) => dots.where((d) => d.kind == k).fold(0, (n, d) => n + d.count);
+    final live = count(DotKind.live) + (mine && youLive ? 1 : 0);
+    final here = count(DotKind.here) + (mine && !youLive ? 1 : 0);
+    const width = 180.0;
+    final left = (at.dx - width / 2).clamp(4.0, math.max(4.0, bounds - width - 4)).toDouble();
+    final above = at.dy > 96;
+    Widget row(Color c, String t) => Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Row(children: [
+            Container(width: 8, height: 8, decoration: BoxDecoration(color: c, shape: BoxShape.circle)),
+            const SizedBox(width: 8),
+            Flexible(child: Text(t, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.25))),
+          ]),
+        );
+    return Positioned(
+      left: left,
+      top: above ? null : at.dy + 18,
+      bottom: above ? bounds - at.dy + 18 : null,
+      width: width,
+      child: IgnorePointer(
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+          decoration: BoxDecoration(
+            color: const Color(0xEE0C0F24),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: GlobePainter.you.withValues(alpha: 0.55)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(name, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
+              if (mine) row(GlobePainter.you, l.globeTipYou),
+              if (live > 0) row(GlobePainter.live, l.globeTipLive(live)),
+              if (here > 0) row(GlobePainter.here, l.globeTipHere(here)),
+            ],
           ),
         ),
       ),
@@ -164,12 +333,22 @@ class GlobePainter extends CustomPainter {
     required this.rotation,
     required this.breath,
     this.tilt = 0,
+    this.zoom = 1,
     this.threads = const [],
+    this.arcs = const [],
+    this.flow = -1,
   });
 
   final List<GlobeDot> dots;
-  final List<(int, int)> threads;
+  final List<GlobeThread> threads;
+  final List<List<double>> arcs;
   final WorldOutline outline;
+
+  /// ZM1: the earth's radius over the widget's half-width.
+  final double zoom;
+
+  /// 0 to 1 round the lap of the light on the threads; negative draws none.
+  final double flow;
 
   /// About the polar axis — the spin, plus whatever the hand has added.
   final double rotation;
@@ -226,8 +405,10 @@ class GlobePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final r = size.width / 2;
-    final centre = Offset(r, r);
+    final centre = Offset(size.width / 2, size.height / 2);
+    final r = size.width / 2 * zoom;
+    // Zoomed in, the earth is bigger than its box and stays inside it.
+    if (zoom > 1) canvas.clipRect(Offset.zero & size);
     final cosR = math.cos(rotation);
     final sinR = math.sin(rotation);
     final cosT = math.cos(tilt);
@@ -428,25 +609,50 @@ class GlobePainter extends CustomPainter {
         );
     final points = [for (final d in dots) at(d)];
 
-    // DR6/DR7: threads under the dots, only when both ends face the viewer
-    // (SZ2). A quadratic bowed sideways by 14% of its length.
-    final thread = Paint()
-      ..color = _you.withValues(alpha: 0.28)
-      ..strokeWidth = 0.7
-      ..style = PaintingStyle.stroke;
-    for (final (a, b) in threads) {
-      final pa = points[a], pb = points[b];
-      if (pa == null || pb == null) continue;
-      final p0 = centre + pa, p1 = centre + pb;
-      final mid = (p0 + p1) / 2;
-      final d = p1 - p0;
-      final control = mid + Offset(-d.dy, d.dx) * 0.14;
-      canvas.drawPath(
-        Path()
-          ..moveTo(p0.dx, p0.dy)
-          ..quadraticBezierTo(control.dx, control.dy, p1.dx, p1.dy),
-        thread,
-      );
+    // DR6–DR8: threads under the dots, arcing over the earth. A sample is
+    // drawn while it faces the viewer or stands clear of the disc, so an arc
+    // to the far side climbs over the horizon and goes behind it (SZ2).
+    final mine = Path(), web = Path();
+    final lights = <(Offset, bool)>[];
+    for (var i = 0; i < threads.length && i < arcs.length; i++) {
+      final pts = arcs[i];
+      if (pts.isEmpty) continue;
+      final path = threads[i].mine ? mine : web;
+      var drawing = false;
+      for (var k = 0; k < pts.length; k += 3) {
+        final q = projectVec(pts[k], pts[k + 1], pts[k + 2], r: r, cosR: cosR, sinR: sinR, cosT: cosT, sinT: sinT);
+        if (q == null) {
+          drawing = false;
+          continue;
+        }
+        final c = centre + q;
+        if (drawing) {
+          path.lineTo(c.dx, c.dy);
+        } else {
+          path.moveTo(c.dx, c.dy);
+          drawing = true;
+        }
+      }
+      if (flow >= 0) {
+        // Each thread's light runs at its own pace from its own start.
+        final seed = (i * 0.6180339887) % 1;
+        final u = (seed + flow * (1 + (i % 5) * 0.25)) % 1;
+        final k = (u * arcSamples).floor() * 3;
+        final q = projectVec(pts[k], pts[k + 1], pts[k + 2], r: r, cosR: cosR, sinR: sinR, cosT: cosT, sinT: sinT);
+        if (q != null) lights.add((centre + q, threads[i].mine));
+      }
+    }
+    canvas.drawPath(web, Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.9
+      ..color = const Color(0xFFAACDFF).withValues(alpha: 0.30));
+    canvas.drawPath(mine, Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2
+      ..color = _you.withValues(alpha: 0.55));
+    for (final (c, isMine) in lights) {
+      canvas.drawCircle(c, isMine ? 2.4 : 1.8,
+          Paint()..color = (isMine ? const Color(0xFFFFC480) : const Color(0xFFD2E6FF)).withValues(alpha: 0.95));
     }
 
     // DR3: Here today 1.5 radii west, Live 1.5 radii east, You on the point,
@@ -456,12 +662,7 @@ class GlobePainter extends CustomPainter {
         final dot = dots[i];
         final p = points[i];
         if (dot.kind != pass || p == null) continue;
-        final shift = switch (dot.kind) {
-          DotKind.here => -1.5 * dot.radius,
-          DotKind.live => 1.5 * dot.radius,
-          DotKind.you => 0.0,
-        };
-        final c = centre + p + Offset(shift, 0);
+        final c = centre + p + Offset(shiftOf(dot), 0);
         if (dot.kind == DotKind.you) {
           canvas.drawCircle(c, dot.radius + 6, Paint()..color = _you.withValues(alpha: 0.12 + 0.22 * breath));
           canvas.drawCircle(c, dot.radius, Paint()..color = _you.withValues(alpha: 0.45 + 0.55 * breath));
@@ -513,8 +714,79 @@ class GlobePainter extends CustomPainter {
     return Offset(x * r, -yt * r);
   }
 
+  /// [project] for a point given as a 3-D vector, which need not be on the
+  /// surface: an arc's samples stand above it (DR8). Visible while it faces
+  /// the viewer or, lifted, stands clear of the disc.
+  static Offset? projectVec(
+    double vx,
+    double vy,
+    double vz, {
+    required double r,
+    required double cosR,
+    required double sinR,
+    required double cosT,
+    required double sinT,
+  }) {
+    final x = vy * cosR + vx * sinR;
+    final z = vx * cosR - vy * sinR;
+    final zt = vz * sinT + z * cosT;
+    final yt = vz * cosT - z * sinT;
+    if (zt <= 0 && x * x + yt * yt <= 1) return null;
+    return Offset(x * r, -yt * r);
+  }
+
+  /// TT1: the dot under [at] in a globe of [size], placed as [paint] places
+  /// it (DR3), with a margin for a fingertip. Your dot wins a tie.
+  static ({String cityId, Offset at})? dotAt({
+    required List<GlobeDot> dots,
+    required Offset at,
+    required double size,
+    required double zoom,
+    required double rotation,
+    required double tilt,
+  }) {
+    const toRadians = math.pi / 180;
+    final centre = Offset(size / 2, size / 2);
+    final r = size / 2 * zoom;
+    final cosR = math.cos(rotation), sinR = math.sin(rotation);
+    final cosT = math.cos(tilt), sinT = math.sin(tilt);
+    ({String cityId, Offset at})? best;
+    var bestD = double.infinity;
+    for (final d in dots) {
+      final p = project(
+        cosPhi: math.cos(d.lat * toRadians),
+        sinPhi: math.sin(d.lat * toRadians),
+        cosLambda: math.cos(d.lon * toRadians),
+        sinLambda: math.sin(d.lon * toRadians),
+        r: r,
+        cosR: cosR,
+        sinR: sinR,
+        cosT: cosT,
+        sinT: sinT,
+      );
+      if (p == null) continue;
+      final c = centre + p + Offset(shiftOf(d), 0);
+      final dist = (c - at).distance - (d.kind == DotKind.you ? 2 : 0);
+      if (dist <= math.max(d.radius, 10) + 8 && dist < bestD) {
+        bestD = dist;
+        best = (cityId: d.cityId, at: c);
+      }
+    }
+    return best;
+  }
+
+  /// DR3: Here today 1.5 radii west, Live 1.5 radii east, You on the point.
+  static double shiftOf(GlobeDot d) => switch (d.kind) {
+        DotKind.here => -1.5 * d.radius,
+        DotKind.live => 1.5 * d.radius,
+        DotKind.you => 0.0,
+      };
+
   @override
   bool shouldRepaint(GlobePainter old) =>
+      old.zoom != zoom ||
+      old.flow != flow ||
+      old.arcs != arcs ||
       old.rotation != rotation ||
       old.tilt != tilt ||
       old.breath != breath ||

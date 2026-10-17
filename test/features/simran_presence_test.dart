@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/features/simran/domain/simran_presence.dart';
 
@@ -5,13 +7,13 @@ import 'package:hazri/features/simran/domain/simran_presence.dart';
 void main() {
   group('§2.1 the split', () {
     test('G-8: outside the city, nothing is taken off', () {
-      expect(splitCity(25, 40, viewer: (inThisCity: false, markedToday: true)), (you: 0, live: 25, here: 15));
+      expect(splitCity(25, 40, viewer: (inThisCity: false, countedLive: true)), (you: 0, live: 25, here: 15));
     });
-    test('G-9: in the city and marked: you, live − 1, here', () {
-      expect(splitCity(25, 40, viewer: (inThisCity: true, markedToday: true)), (you: 1, live: 24, here: 15));
+    test('G-9: in the city and counted live: you, live − 1, here', () {
+      expect(splitCity(25, 40, viewer: (inThisCity: true, countedLive: true)), (you: 1, live: 24, here: 15));
     });
-    test('in the city, not yet marked: you, live, here − 1', () {
-      expect(splitCity(25, 40, viewer: (inThisCity: true, markedToday: false)), (you: 1, live: 25, here: 14));
+    test('in the city, not counted live yet: you, live, here − 1', () {
+      expect(splitCity(25, 40, viewer: (inThisCity: true, countedLive: false)), (you: 1, live: 25, here: 14));
     });
     test('NP1: no profile, nothing taken off', () {
       expect(splitCity(25, 40), (you: 0, live: 25, here: 15));
@@ -22,7 +24,7 @@ void main() {
         'amritsar': (live: 200, counted: 400),
       });
       final dots = globeDots(snap, {'delhi': (lat: 28.6, lon: 77.2), 'amritsar': (lat: 31.6, lon: 74.9)},
-          yourCityId: 'amritsar', markedToday: true);
+          yourCityId: 'amritsar', countedLive: true);
       int sum(DotKind k) => dots.where((d) => d.kind == k).fold(0, (a, d) => a + d.count);
       expect(sum(DotKind.you), 1);
       expect(sum(DotKind.live), 499);
@@ -30,20 +32,59 @@ void main() {
     });
   });
 
-  group('SZ1 radii', () {
-    test('the largest is the maximum; area grows with the count', () {
-      expect(dotRadius(100, 100), dotMaxRadius);
-      expect(dotRadius(25, 100), 8.5);
-      expect(dotRadius(1, 100), 4.1);
+  group('SZ1 radii (owner, 2026-10-17)', () {
+    test('one person is the size of your dot', () {
+      expect(dotRadius(1), dotYouRadius);
     });
-    test('every count equal → every dot the maximum', () {
-      final snap = GlobeSnapshot(day: 'd', live: 0, counted: 9, cities: {
-        'a': (live: 0, counted: 3),
-        'b': (live: 0, counted: 3),
-        'c': (live: 0, counted: 3),
+    test('area grows to the maximum at 25 people, and stays there', () {
+      expect(dotRadius(25), dotMaxRadius);
+      expect(dotRadius(400), dotMaxRadius);
+      expect(dotRadius(7), 9.0);
+      expect(dotRadius(2) > dotYouRadius, isTrue);
+    });
+    test('a quiet day does not blow single people up', () {
+      final snap = GlobeSnapshot(day: 'd', live: 3, counted: 3, cities: {
+        'a': (live: 1, counted: 1),
+        'b': (live: 1, counted: 1),
+        'c': (live: 1, counted: 1),
       });
       final dots = globeDots(snap, {for (final c in ['a', 'b', 'c']) c: (lat: 0.0, lon: 0.0)});
-      expect(dots.every((d) => d.radius == dotMaxRadius), isTrue);
+      expect(dots.every((d) => d.radius == dotYouRadius), isTrue);
+    });
+  });
+
+  group('CT1, CT2: the count and the dots agree', () {
+    // The owner's screenshot of 2026-10-17: you in Amritsar, one other person
+    // live there, one in Lahore. Built at 03:00, marked at 03:01.
+    final built = DateTime.utc(2026, 10, 17, 3);
+    final stale = GlobeSnapshot(day: '2026-10-17', live: 2, counted: 3, builtAt: built, cities: {
+      'amritsar': (live: 1, counted: 2), // the other person live; you not yet
+      'lahore': (live: 1, counted: 1),
+    });
+    final fresh = GlobeSnapshot(day: '2026-10-17', live: 3, counted: 3, builtAt: built.add(const Duration(minutes: 2)), cities: {
+      'amritsar': (live: 2, counted: 2), // now counting you
+      'lahore': (live: 1, counted: 1),
+    });
+    const at = {'amritsar': (lat: 31.6, lon: 74.9), 'lahore': (lat: 31.5, lon: 74.4)};
+    final markedAt = built.add(const Duration(minutes: 1));
+
+    for (final (name, snap) in [('before the snapshot catches up', stale), ('after', fresh)]) {
+      test('$name: you once, nobody else lost, and 3 live', () {
+        final counted = snapshotCountsYou(snap, marked: true, markedAt: markedAt);
+        final dots = globeDots(snap, at, yourCityId: 'amritsar', countedLive: counted);
+        int sum(DotKind k) => dots.where((d) => d.kind == k).fold(0, (a, d) => a + d.count);
+        expect(sum(DotKind.you), 1);
+        expect(sum(DotKind.live), 2);
+        expect(sum(DotKind.here), 0, reason: 'you are never drawn blue as well as orange');
+        expect(globeLiveTotal(snap, marked: true, countedLive: counted), 3);
+      });
+    }
+
+    test('not marked yet: the total is the snapshot\'s', () {
+      expect(globeLiveTotal(stale, marked: false, countedLive: false), 2);
+    });
+    test('a mark kept before its time was: taken as counted', () {
+      expect(snapshotCountsYou(stale, marked: true), isTrue);
     });
   });
 
@@ -59,13 +100,39 @@ void main() {
       for (final c in positions.keys) c: (live: 1, counted: 2),
     });
 
-    test('DR6: from your dot to every other dot, each once', () {
-      final dots = globeDots(snap, positions, yourCityId: 'amritsar', markedToday: true);
+    test('DR6: from your dot to every other city, once each', () {
+      final dots = globeDots(snap, positions, yourCityId: 'amritsar', countedLive: true);
       final threads = globeThreads(dots);
       final you = dots.indexWhere((d) => d.kind == DotKind.you);
-      expect(threads.every((t) => t.$1 == you), isTrue);
-      // Every dot outside your own city, green and blue alike.
-      expect(threads.length, dots.where((d) => d.cityId != 'amritsar').length);
+      final mine = threads.where((t) => t.mine).toList();
+      expect(mine.every((t) => t.a == you), isTrue);
+      expect({for (final t in mine) dots[t.b].cityId}, positions.keys.toSet()..remove('amritsar'));
+      expect(mine.length, positions.length - 1);
+    });
+
+    test('DR7 with a profile too: the others are joined to each other', () {
+      final dots = globeDots(snap, positions, yourCityId: 'amritsar', countedLive: true);
+      final web = globeThreads(dots).where((t) => !t.mine).toList();
+      final others = positions.keys.where((c) => c != 'amritsar').toList();
+      final parent = <String, String>{for (final c in others) c: c};
+      String find(String x) => parent[x] == x ? x : (parent[x] = find(parent[x]!));
+      for (final t in web) {
+        parent[find(dots[t.a].cityId)] = find(dots[t.b].cityId);
+      }
+      expect(others.map(find).toSet(), hasLength(1));
+    });
+
+    test('DR8: every arc rises off the earth and comes back down at its ends', () {
+      final dots = globeDots(snap, positions, yourCityId: 'amritsar', countedLive: true);
+      final threads = globeThreads(dots);
+      final arcs = globeArcs(dots, threads);
+      expect(arcs, hasLength(threads.length));
+      for (final a in arcs) {
+        double len(int i) => math.sqrt(a[i] * a[i] + a[i + 1] * a[i + 1] + a[i + 2] * a[i + 2]);
+        expect(len(0), closeTo(1, 1e-9));
+        expect(len(a.length - 3), closeTo(1, 1e-9));
+        expect(len((arcSamples ~/ 2) * 3), greaterThan(1.02));
+      }
     });
 
     test('DR7: without a profile, one connected web, each pair once', () {
@@ -75,8 +142,8 @@ void main() {
       // Union-find over cities.
       final parent = <String, String>{for (final c in positions.keys) c: c};
       String find(String x) => parent[x] == x ? x : (parent[x] = find(parent[x]!));
-      for (final (a, b) in threads) {
-        parent[find(dots[a].cityId)] = find(dots[b].cityId);
+      for (final t in threads) {
+        parent[find(dots[t.a].cityId)] = find(dots[t.b].cityId);
       }
       expect(positions.keys.map(find).toSet(), hasLength(1));
     });
@@ -85,7 +152,7 @@ void main() {
       final dots = globeDots(snap, positions);
       final threads = globeThreads(dots);
       bool linked(String x, String y) => threads.any((t) =>
-          {dots[t.$1].cityId, dots[t.$2].cityId}.containsAll({x, y}));
+          {dots[t.a].cityId, dots[t.b].cityId}.containsAll({x, y}));
       expect(linked('southall', 'dubai') || linked('southall', 'amritsar') || linked('southall', 'delhi'), isTrue);
     });
   });

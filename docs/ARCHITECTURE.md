@@ -620,6 +620,7 @@ language's defaults, and re-plans notifications (`02-notifications.md` CM6).
 | Key | Meaning |
 | --- | --- |
 | `presence_attendance_v1` | `dayIst` of the last successful attendance (AT1) |
+| `presence_attendance_at_v1` | When that attendance succeeded, ISO 8601 UTC by the phone's clock, so the globe knows whether a snapshot already counts you (07-simran CT1) |
 | `presence_snapshot_v1` | The last snapshot received, so the globe draws at once on the next open (GB3) |
 
 #### 3.9.2 Weekly backup
