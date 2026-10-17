@@ -62,6 +62,11 @@ export const DIARY_DAILY_CAP = 3;
 export const REPORT_NOTE_MAX = 200;
 export const CONTRIBUTIONS_MAX_PER_REQUEST = 200;
 export const BUILT_IN_SHARDS = 20;
+/** GG6: a group's globe is built again when older than this. */
+export const GROUP_GLOBE_SECONDS = 120;
+/** GG4: the paath a group's globe replays as light: the last 60 minutes, at most 12. */
+export const GROUP_ARRIVALS_MINUTES = 60;
+export const GROUP_ARRIVALS_MAX = 12;
 
 // 10-backup.md §4.5.
 export const BACKUP_MAX_ROWS_PER_REQUEST = 2000;

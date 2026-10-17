@@ -125,7 +125,7 @@ export function tokensRouter(deps: Deps): Router {
         tx.update(profileRef, update);
         useToken();
         for (const t of others) tx.update(t.ref, { status: 'SUPERSEDED' });
-        if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, p.name);
+        if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, { name: p.name, cityId: p.cityId ?? null });
         return { result: 'PROFILE_RESTORED' as VerifyResult, purpose, isOwner: true, profileId: p.profileId };
       });
 

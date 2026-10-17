@@ -16,6 +16,7 @@ import { codePoints } from '../validation';
 import { factWouldGrow } from '../badges/facts';
 import { sangatCaller, sangatCallerWithName, SangatCaller } from '../sangat/caller';
 import { processItem } from '../sangat/contribute';
+import { groupGlobe } from '../sangat/globe';
 import { refreshTokenGroups } from '../sangat/tokenGroups';
 import { OutboxItem, parseOutboxItem } from '../sangat/counting';
 import { formatInviteCode, generateInviteCode, inviteLink, normalizeInviteCode } from '../sangat/invite';
@@ -81,8 +82,13 @@ function validInvite(g: GroupDoc, nowMs: number): boolean {
   return !!g.inviteCode && !!g.inviteExpiresAt && g.inviteExpiresAt.toMillis() > nowMs;
 }
 
-/** 7.3: group, goal, today's total, member count, the first 50 members, the caller's role. */
-export async function groupDetail(db: Firestore, groupId: string, caller: SangatCaller, now: Date): Promise<GroupDetailDto> {
+/**
+ * Who may open a group (7.3, and 7.15 the same): nobody when it is missing
+ * or disabled (RP4); a custom group only its active members; a built-in
+ * group anybody. Every refusal is 404 GROUP_NOT_FOUND, so a stranger learns
+ * nothing about a custom group's existence.
+ */
+export async function openableGroup(db: Firestore, groupId: string, caller: SangatCaller) {
   const groupRef = db.doc(`groups/${groupId}`);
   const snap = await groupRef.get();
   if (!snap.exists) throw groupNotFound();
@@ -92,6 +98,12 @@ export async function groupDetail(db: Firestore, groupId: string, caller: Sangat
   const me = meSnap.exists ? (meSnap.data() as MemberDoc) : null;
   const isMember = me?.status === 'ACTIVE';
   if (g.kind === 'CUSTOM' && !isMember) throw groupNotFound(); // members only
+  return { groupRef, g, me, isMember };
+}
+
+/** 7.3: group, goal, today's total, member count, the first 50 members, the caller's role. */
+export async function groupDetail(db: Firestore, groupId: string, caller: SangatCaller, now: Date): Promise<GroupDetailDto> {
+  const { groupRef, g, me, isMember } = await openableGroup(db, groupId, caller);
   const today = dayIst(now);
   const goal = await readGoalForDisplay(groupRef, g, today);
   // VS4: profiles first, alphabetically, then "Sangat member" rows ('~' sorts last).
@@ -236,6 +248,16 @@ export function sangatRouter(deps: Deps): Router {
     }),
   );
 
+  // 7.15 GET /groups/{groupId}/globe (08-sangat GG1–GG9, §6.4a)
+  r.get(
+    `${P}/groups/:groupId/globe`,
+    h(async (req, res) => {
+      const caller = await sangatCaller(db, callerUid(res));
+      const { groupRef, g } = await openableGroup(db, param(req, 'groupId'), caller);
+      res.json(await groupGlobe(db, groupRef, g, clock.now()));
+    }),
+  );
+
   // 7.4 POST /groups
   r.post(
     `${P}/groups`,
@@ -294,11 +316,13 @@ export function sangatRouter(deps: Deps): Router {
           contribution: 0,
           contributionGoalId: null,
           sortName: sortNameOf(p.doc.name),
+          cityId: p.doc.cityId ?? null, // GG2
+          lastAddDay: null,
           updatedAt: ts,
         });
         tx.set(db.doc(`memberships/${key}`), { groupIds: FieldValue.arrayUnion(groupRef.id), updatedAt: ts }, { merge: true });
       });
-      const caller: SangatCaller = { uid, memberKey: key, profileId: p.doc.profileId, name: p.doc.name };
+      const caller: SangatCaller = { uid, memberKey: key, profileId: p.doc.profileId, name: p.doc.name, cityId: p.doc.cityId ?? null };
       await refreshTokenGroups(db, uid, key);
       res.status(201).json({ group: await groupDetail(db, groupRef.id, caller, now) });
     }),
@@ -452,6 +476,8 @@ export function sangatRouter(deps: Deps): Router {
       contribution: existing?.contribution ?? 0,
       contributionGoalId: existing?.contributionGoalId ?? null,
       sortName: sortNameOf(caller.name),
+      cityId: caller.cityId, // GG2: the profile's city, null without one
+      lastAddDay: existing?.lastAddDay ?? null,
       updatedAt: ts,
     };
     tx.set(groupRef.collection('members').doc(caller.memberKey), row);
@@ -577,12 +603,15 @@ export function sangatRouter(deps: Deps): Router {
         if (typeof p === 'string') throw Errors.validation({ [`items[${i}]`]: p });
         parsed.push(p);
       }
-      const caller = await sangatCaller(db, callerUid(res));
+      // The profile is read once per request, not per row: its city goes on
+      // each contribution and fills a member row that has none (GG2, GG4).
+      const caller = await sangatCallerWithName(db, callerUid(res));
+      const contributor = { memberKey: caller.memberKey, cityId: caller.cityId };
       const now = clock.now();
       const processed: string[] = [];
       // In order: an ADD and a RETRACT of one id are applied in the order sent (§5.1).
       for (const item of parsed) {
-        await processItem(db, caller.memberKey, item, now);
+        await processItem(db, contributor, item, now);
         processed.push(item.id);
       }
       res.json({ result: 'CONTRIBUTIONS_RECEIVED', processed });

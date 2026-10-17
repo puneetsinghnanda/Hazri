@@ -66,8 +66,26 @@ export function adoptionIsEmpty(r: AdoptionReads): boolean {
   return !r.memberships.exists && r.contributions.length === 0 && r.caps.length === 0 && !r.facts.exists;
 }
 
-export function writeAdoption(db: Firestore, tx: Transaction, r: AdoptionReads, profileName: string): void {
+/** The later of two `dayIst` values, either of which may be missing. */
+function laterDay(a: string | null | undefined, b: string | null | undefined): string | null {
+  if (!a) return b ?? null;
+  if (!b) return a;
+  return a > b ? a : b;
+}
+
+/**
+ * The profile the rows move to: its name for the member list (MB3), its city
+ * for the group's globe (08-sangat GG2).
+ */
+export interface AdoptingProfile {
+  name: string;
+  cityId: string | null;
+}
+
+export function writeAdoption(db: Firestore, tx: Transaction, r: AdoptionReads, profile: AdoptingProfile): void {
   const { fromKey, toKey } = r;
+  const profileName = profile.name;
+  const cityId = profile.cityId ?? null;
   const now = FieldValue.serverTimestamp();
 
   // Member rows. When the profile already has a row in that group (a restore
@@ -82,8 +100,10 @@ export function writeAdoption(db: Firestore, tx: Transaction, r: AdoptionReads, 
       const merged: Partial<MemberDoc> = {
         status: to.status === 'ACTIVE' || from.status === 'ACTIVE' ? 'ACTIVE' : to.status,
         contribution: sameGoal ? to.contribution + from.contribution : to.contribution,
+        lastAddDay: sameGoal ? laterDay(to.lastAddDay, from.lastAddDay) : (to.lastAddDay ?? null),
         name: profileName,
         sortName: sortNameOf(profileName),
+        cityId,
       };
       tx.set(m.to.ref, { ...merged, updatedAt: now }, { merge: true });
       if (to.status === 'ACTIVE' && from.status === 'ACTIVE') {
@@ -96,6 +116,7 @@ export function writeAdoption(db: Firestore, tx: Transaction, r: AdoptionReads, 
         memberKey: toKey,
         name: profileName,
         sortName: sortNameOf(profileName),
+        cityId,
         updatedAt: now,
       });
     }

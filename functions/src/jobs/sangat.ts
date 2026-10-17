@@ -142,28 +142,52 @@ export async function runSangatRollover(
 }
 
 /**
- * On a profile update: when the name changed, update `name` and `sortName`
- * on that member's rows in every group. Writes member rows, never the
- * profile that triggered it (FN3); skips rows already right (FN4).
+ * What a profile update changes on that person's member rows: the name
+ * (and `sortName`) when the name changed, the city (08-sangat GG2) when the
+ * city changed. Null when neither did, which is every other profile write
+ * (lastSeenDay, email, quota), so those cost no query.
+ */
+export function profileSyncChange(
+  before: { name?: unknown; cityId?: unknown } | undefined,
+  after: { name?: unknown; cityId?: unknown } | undefined,
+): { name?: string; cityId?: string } | null {
+  if (!after) return null;
+  const change: { name?: string; cityId?: string } = {};
+  if (typeof after.name === 'string' && before?.name !== after.name) change.name = after.name;
+  if (typeof after.cityId === 'string' && before?.cityId !== after.cityId) change.cityId = after.cityId;
+  return Object.keys(change).length > 0 ? change : null;
+}
+
+/**
+ * On a profile update: when the name or the city changed, update `name` and
+ * `sortName`, or `cityId`, on that member's rows in every group. Writes
+ * member rows, never the profile that triggered it (FN3); skips rows already
+ * right (FN4).
  */
 export async function runSangatProfileSync(
   db: Firestore,
   profileId: string,
-  before: { name?: unknown } | undefined,
-  after: { name?: unknown } | undefined,
+  before: { name?: unknown; cityId?: unknown } | undefined,
+  after: { name?: unknown; cityId?: unknown } | undefined,
 ): Promise<{ rowsUpdated: number }> {
-  if (!after || typeof after.name !== 'string' || before?.name === after.name) return { rowsUpdated: 0 };
-  const name = after.name;
+  const change = profileSyncChange(before, after);
+  if (!change) return { rowsUpdated: 0 };
   const key = `p_${profileId}`;
   const rows = await db.collectionGroup('members').where('memberKey', '==', key).get();
   const writer = db.bulkWriter();
   let rowsUpdated = 0;
   for (const r of rows.docs) {
-    // Only groups/{g}/members/{k}; the per-goal archive rows carry no name.
+    // Only groups/{g}/members/{k}; the per-goal archive rows carry no name or city.
     if (r.ref.parent.parent?.parent.id !== 'groups') continue;
     const m = r.data() as MemberDoc;
-    if (m.name === name && m.sortName === sortNameOf(name)) continue;
-    void writer.update(r.ref, { name, sortName: sortNameOf(name), updatedAt: FieldValue.serverTimestamp() });
+    const update: Record<string, unknown> = {};
+    if (change.name !== undefined && (m.name !== change.name || m.sortName !== sortNameOf(change.name))) {
+      update.name = change.name;
+      update.sortName = sortNameOf(change.name);
+    }
+    if (change.cityId !== undefined && m.cityId !== change.cityId) update.cityId = change.cityId;
+    if (Object.keys(update).length === 0) continue;
+    void writer.update(r.ref, { ...update, updatedAt: FieldValue.serverTimestamp() });
     rowsUpdated++;
   }
   await writer.close();

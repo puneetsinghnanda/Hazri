@@ -129,7 +129,7 @@ export function profileRouter(deps: Deps): Router {
         });
         tx.create(db.doc(`emailIndex/${emailHash}`), { profileId: profileRef.id, createdAt: now });
         tx.create(db.doc(`owners/${uid}`), { profileId: profileRef.id, createdAt: now });
-        if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, name);
+        if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, { name, cityId });
       });
       res.status(201).json({ profile: await readProfileDto(db, profileRef.id) });
     }),

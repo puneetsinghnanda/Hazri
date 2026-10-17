@@ -59,13 +59,53 @@ function bumpGoal(tx: Transaction, t: Target, day: string, delta: number, rand: 
   }
 }
 
-function bumpMember(tx: Transaction, t: Target, delta: number): void {
-  if (!t.member) return;
-  if (t.member.contributionGoalId === t.goalId) {
-    tx.update(t.memberRef, { contribution: FieldValue.increment(delta), updatedAt: FieldValue.serverTimestamp() });
-  } else if (delta > 0) {
-    tx.update(t.memberRef, { contribution: delta, contributionGoalId: t.goalId, updatedAt: FieldValue.serverTimestamp() });
+/** What one counted (or taken back) paath changes on the member's row; null when nothing. */
+export interface MemberChange {
+  contribution: { increment: number } | { set: number; goalId: string };
+  /** GG3: the group day of the latest counted paath toward the current goal. */
+  lastAddDay?: string;
+  /** GG2: filled from the caller's profile on a row that has none (rows from before 2026-10-17). */
+  cityId?: string;
+}
+
+/**
+ * The member row's side of one paath on one goal. `contribution` counts
+ * toward the goal named by `contributionGoalId`; a row still on an earlier
+ * goal starts again at this one. On an ADD, `lastAddDay` moves to the
+ * paath's group day when that is later than the stored one (never back: a
+ * late outbox row for an earlier day leaves it), and `cityId` is filled when
+ * the row has none and the caller has a profile. A retraction changes
+ * neither.
+ */
+export function memberChange(
+  member: Pick<MemberDoc, 'contributionGoalId' | 'lastAddDay' | 'cityId'>,
+  goalId: string,
+  delta: number,
+  day: string,
+  callerCityId: string | null,
+): MemberChange | null {
+  const sameGoal = member.contributionGoalId === goalId;
+  if (!sameGoal && delta <= 0) return null;
+  const change: MemberChange = { contribution: sameGoal ? { increment: delta } : { set: delta, goalId } };
+  if (delta > 0) {
+    const stored = sameGoal ? (member.lastAddDay ?? null) : null;
+    if (stored === null || day > stored) change.lastAddDay = day;
+    if (!member.cityId && callerCityId) change.cityId = callerCityId;
   }
+  return change;
+}
+
+function bumpMember(tx: Transaction, t: Target, delta: number, day: string, callerCityId: string | null): void {
+  if (!t.member) return;
+  const c = memberChange(t.member, t.goalId, delta, day, callerCityId);
+  if (!c) return;
+  const update: Record<string, unknown> =
+    'increment' in c.contribution
+      ? { contribution: FieldValue.increment(c.contribution.increment) }
+      : { contribution: c.contribution.set, contributionGoalId: c.contribution.goalId };
+  if (c.lastAddDay !== undefined) update.lastAddDay = c.lastAddDay;
+  if (c.cityId !== undefined) update.cityId = c.cityId;
+  tx.update(t.memberRef, { ...update, updatedAt: FieldValue.serverTimestamp() });
 }
 
 async function readTarget(
@@ -102,14 +142,21 @@ async function readTarget(
 
 export type ProcessOutcome = 'COUNTED' | 'RECORDED' | 'DUPLICATE' | 'RETRACTED';
 
+/** Who sent the row: their member key, and their profile's city or null (read once per request). */
+export interface Contributor {
+  memberKey: string;
+  cityId: string | null;
+}
+
 /** Processes one outbox row. Safe to run twice (S-14). */
 export async function processItem(
   db: Firestore,
-  memberKey: string,
+  contributor: Contributor,
   item: OutboxItem,
   now: Date,
   rand: Rand = defaultRand,
 ): Promise<ProcessOutcome> {
+  const { memberKey, cityId } = contributor;
   const ref = db.doc(`contributions/${contributionDocId(memberKey, item.id)}`);
   const day = groupDayOf(item);
   return db.runTransaction(async (tx) => {
@@ -139,7 +186,7 @@ export async function processItem(
         if (!d.counts) continue;
         const amount = amountFor(item, t.goal);
         bumpGoal(tx, t, day, amount, rand, now);
-        bumpMember(tx, t, amount);
+        bumpMember(tx, t, amount, day, cityId);
         if (t.capRef) {
           tx.set(
             t.capRef,
@@ -162,6 +209,7 @@ export async function processItem(
         countedIn,
         groupIds: groupIdsCounted,
         countedCount: countedIn.length,
+        cityId, // GG4: where its light starts on the group's globe
         createdAt: FieldValue.serverTimestamp(),
       });
       return countedIn.length > 0 ? 'COUNTED' : 'RECORDED';
@@ -182,6 +230,7 @@ export async function processItem(
         countedIn: [],
         groupIds: [],
         countedCount: 0,
+        cityId,
         createdAt: FieldValue.serverTimestamp(),
         retractedAt: FieldValue.serverTimestamp(),
       });
@@ -210,7 +259,7 @@ export async function processItem(
       );
       if (amount === 0) continue;
       bumpGoal(tx, t, cDay, -amount, rand, now);
-      bumpMember(tx, t, -amount);
+      bumpMember(tx, t, -amount, cDay, cityId);
       if (t.capRef) tx.set(t.capRef, { diaryCount: FieldValue.increment(-1) }, { merge: true });
     }
     tx.update(ref, { retracted: true, retractedAt: FieldValue.serverTimestamp() });

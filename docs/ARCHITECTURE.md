@@ -1073,7 +1073,7 @@ One document per group, built by 7.15 when it is older than `GROUP_GLOBE_SECONDS
 | `recent` | array | At most `GROUP_ARRIVALS_MAX` `{ cityId \| null, at, amount }`, newest first: contributions counted in `{groupId}/{goalId}` and not retracted, received in the last `GROUP_ARRIVALS_MINUTES` |
 | `builtAt` | timestamp | Server time of the build |
 
-**Building it.** A custom group reads its active member rows (at most `CUSTOM_GROUP_MAX_MEMBERS`, fields `cityId` and `lastAddDay` only). A built-in group, too large for that, runs two `count()` aggregations per city of the reference list on its active members (`cityId` =, and `cityId` = with `lastAddDay` =) and takes `unplaced` as `memberCount` less the placed. Both then read `recent` with one query on `contributions` (`groupIds` array-contains, `createdAt` ≥ now − 60 min, newest first, 3 × `GROUP_ARRIVALS_MAX`), keeping the first `GROUP_ARRIVALS_MAX` that are not retracted and whose `countedIn` holds the current goal. Two requests rebuilding at once write the same numbers (FN4).
+**Building it.** A custom group reads its active member rows (at most `CUSTOM_GROUP_MAX_MEMBERS`, fields `cityId` and `lastAddDay` only). A built-in group, too large for that, runs two `count()` aggregations per city of the reference list on its active members (`cityId` =, and `cityId` = with `lastAddDay` =) and takes `unplaced` as `memberCount` less the placed. Both then read `recent` with one query on `contributions` (`groupIds` array-contains, `createdAt` ≥ now − 60 min, newest first, 3 × `GROUP_ARRIVALS_MAX`), keeping the first `GROUP_ARRIVALS_MAX` that are not retracted and whose `countedIn` holds the current goal. Two requests rebuilding at once write the same numbers (FN4). A built-in group runs the "today" count only for cities that have members. `recent[].at` is when the server received the paath (`createdAt`), which is what the hour and the order use. A city not in the reference list counts under `unplaced`. Once a goal has ended its last globe is served as it was, with no rebuild and no arrivals (GG9); if none was stored, one is built once. A retraction does not move `lastAddDay` back, so that member stays green until the day turns.
 
 #### 08-sangat §6.5 Other collections
 
@@ -1088,7 +1088,7 @@ One document per group, built by 7.15 when it is older than `GROUP_GLOBE_SECONDS
 #### 08-sangat §6.6 Indexes
 
 - `members` (collection group): `status` ascending, `sortName` ascending, for the member list.
-- `members` (collection): `status`, `cityId` and `status`, `cityId`, `lastAddDay`, ascending, for a built-in group's globe counts (6.4a).
+- `members` (collection): `status`, `cityId`; `status`, `cityId`, `lastAddDay`; and `status`, `lastAddDay`, ascending, for a built-in group's globe counts (6.4a: the last gives today's count of members with no city).
 - `contributions`: `groupIds` array-contains, `createdAt` descending, for a group's recent arrivals (6.4a).
 - `groups`: `kind` ascending, `status` ascending, for the built-in list and the admin website.
 - `groupReports`: `status` ascending, `createdAt` descending.

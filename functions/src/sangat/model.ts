@@ -69,6 +69,10 @@ export interface MemberDoc {
   /** The goal `contribution` counts toward; a different goal means 0 (README decisions). */
   contributionGoalId: string | null;
   sortName: string;
+  /** The profile's city, for the group's globe (GG2); null for `u_` members and rows from before 2026-10-17. */
+  cityId?: string | null;
+  /** `dayIst` of the latest counted paath toward the current goal (GG3); never moved backwards. */
+  lastAddDay?: string | null;
   updatedAt: Timestamp;
 }
 

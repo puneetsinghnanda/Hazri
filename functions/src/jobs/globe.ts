@@ -7,7 +7,8 @@ import { CITIES } from '../reference';
 import { buildSnapshot, CityCount } from '../presence/snapshot';
 import { dayIst } from '../time';
 
-async function inBatches<T, R>(items: readonly T[], size: number, fn: (t: T) => Promise<R>): Promise<R[]> {
+/** Runs `fn` over `items`, `size` at a time (aggregations in parallel, not all at once). */
+export async function inBatches<T, R>(items: readonly T[], size: number, fn: (t: T) => Promise<R>): Promise<R[]> {
   const out: R[] = [];
   for (let i = 0; i < items.length; i += size) out.push(...(await Promise.all(items.slice(i, i + size).map(fn))));
   return out;

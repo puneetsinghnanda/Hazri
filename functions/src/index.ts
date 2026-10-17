@@ -54,7 +54,7 @@ export const sangatRollover = onSchedule(
   },
 );
 
-/** Profile name change → the member's rows. */
+/** Profile name or city change → the member's rows (name, sortName, cityId). */
 export const sangatProfileSync = onDocumentUpdated({ ...FUNCTION_DEFAULTS, document: 'profiles/{profileId}' }, async (event) => {
   await runSangatProfileSync(db, event.params.profileId, event.data?.before.data(), event.data?.after.data());
 });
