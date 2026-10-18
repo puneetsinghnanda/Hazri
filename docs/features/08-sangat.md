@@ -74,7 +74,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 - **BI1.** The three built-in groups at launch are Amrit Vela Sangat (ਅੰਮ੍ਰਿਤ ਵੇਲਾ ਸੰਗਤ, अमृत वेला संगत), Simran Sangat (ਸਿਮਰਨ ਸੰਗਤ, सिमरन संगत) and Sukhmani Sahib Sangat (ਸੁਖਮਨੀ ਸਾਹਿਬ ਸੰਗਤ, सुखमनी साहिब संगत). Their names are set in the admin website. More can be added there later.
 - **BI2.** Nobody is a member until they join. Every user sees the list of built-in groups with Join or Leave, with or without a profile.
-- **BI3.** Each has one goal at a time, set in the admin website: a bani or Naam Simran, a target (paath, or minutes for Naam Simran), and a length in days.
+- **BI3.** Each has one goal at a time, set in the admin website: a bani or Naam Simran, a target (paath, or minutes for Naam Simran), and a length in days. An edit to the target or length reaches the running goal at once (11-admin §4.2).
 - **BI4. Reset.** When the target is met, or when the end day passes unmet, the next group day a new goal starts with the same bani or minutes, target and length. The finished goal stays as history, with its total and every member's contribution.
 - **BI5.** No member limit. Leaving and joining again is allowed at any time.
 

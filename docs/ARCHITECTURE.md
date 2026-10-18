@@ -1622,7 +1622,7 @@ All under `/api/v1/admin`, admin-only (AC3), following `01-accounts.md` §6.0.
 | `GET /dashboard` | The figures of 4.1 |
 | `GET /groups?kind=&status=` | Groups for 4.2 and 4.3, 50 at a time with a cursor |
 | `POST /groups/built-in` | Create a built-in group `{ names, goalTemplate }` |
-| `PATCH /groups/{groupId}` | Edit names or goal template; set `status` `ACTIVE` or `DISABLED` |
+| `PATCH /groups/{groupId}` | Edit names or goal template (the running goal takes the template's target and length, 11-admin §4.2); set `status` `ACTIVE` or `DISABLED` |
 | `POST /groups/{groupId}/start` | Start a built-in group's first goal |
 | `DELETE /groups/{groupId}` | Delete a group `{ confirmName }` |
 | `GET /groups/{groupId}/history` | Past goals |

@@ -246,6 +246,30 @@ describeEmu('sangat (08-sangat §7)', () => {
     expect(group.members[0].contribution).toBe(21);
   });
 
+  it('admin edits the template mid-goal: the running goal takes its target and length, not its bani (11-admin 4.2, AW-5)', async () => {
+    const gid = await builtInGroup(h, { type: 'BANI', baniId: 'JAPJ', target: 1000, lengthDays: 30 });
+    await h.as('m1').post(`/api/v1/sangat/groups/${gid}/join`);
+    await h.as('m1').post('/api/v1/sangat/contributions', { items: [japji(1), japji(2), japji(3)] });
+    await runSangatTotals(h.db, h.clock.now());
+
+    const edit = await h.admin().patch(`/api/v1/admin/groups/${gid}`, { goalTemplate: { type: 'BANI', baniId: 'SUKH', target: 100, lengthDays: 10 } });
+    expect(edit.status).toBe(200);
+    expect(edit.body.group.currentGoal).toMatchObject({ target: 100, startDay: '2026-10-08', endDay: '2026-10-17', total: 3 });
+    const seen = (await h.as('m1').get(`/api/v1/sangat/groups/${gid}`)).body.group.goal;
+    expect(seen).toMatchObject({ target: 100, endDay: '2026-10-17', total: 3, baniId: 'JAPJ', status: 'ACTIVE' });
+    const audit = (await h.db.collection('adminAudit').where('action', '==', 'UPDATE_GROUP').get()).docs[0].data();
+    expect(audit.before.currentGoal).toEqual({ target: 1000, endDay: '2026-11-06' });
+    expect(audit.after.currentGoal).toEqual({ target: 100, endDay: '2026-10-17' });
+
+    // A length that would end the goal before today ends it today, not in the past.
+    h.clock.set('2026-10-10T06:00:00Z');
+    await h.admin().patch(`/api/v1/admin/groups/${gid}`, { goalTemplate: { type: 'BANI', baniId: 'JAPJ', target: 3, lengthDays: 1 } });
+    expect((await h.db.doc(`groups/${gid}/goals/g0001`).get()).get('endDay')).toBe('2026-10-10');
+    // A target at or under the total completes the goal on the next count.
+    await runSangatTotals(h.db, h.clock.now());
+    expect((await h.db.doc(`groups/${gid}/goals/g0001`).get()).get('status')).toBe('COMPLETED');
+  });
+
   it('sangatRollover twice: expiry, inactive custom group, built-in reset with history (CG6, BI4, S-18, S-19, S-20)', async () => {
     // Two 5-minute sittings are 10 minutes of Naam Simran (SG-1).
     const builtIn = await builtInGroup(h, { type: 'SIMRAN', target: 10, lengthDays: 3 });

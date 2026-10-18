@@ -1,7 +1,7 @@
 // Admin endpoints (11-admin §5, ARCHITECTURE §6.6), all under /api/v1/admin,
 // admin-only (AC3). Every change writes adminAudit (AC5).
 import { Router } from 'express';
-import type { Firestore } from 'firebase-admin/firestore';
+import type { DocumentReference, Firestore } from 'firebase-admin/firestore';
 import { AggregateField, FieldPath, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { CUSTOM_GROUPS_ACTIVE_DEFAULT, GROUP_LIMIT_MAX, GROUP_LIMIT_MIN } from '../config';
 import type { Deps, VerifiedToken } from '../deps';
@@ -207,13 +207,28 @@ export function adminRouter(deps: Deps): Router {
             else Object.assign(fields, n.fields);
           }
         }
+        let goalChange: { ref: DocumentReference; before: { target: number; endDay: string }; after: { target: number; endDay: string } } | null = null;
         if (b.goalTemplate !== undefined) {
-          // 4.2: the template changes the next goal, never the running one.
           if (g.kind !== 'BUILT_IN') fields.goalTemplate = 'Only built-in groups have a goal template';
           else {
             const t = parseTemplate(b.goalTemplate);
-            if (t.ok) update.goalTemplate = t.value;
-            else Object.assign(fields, t.fields);
+            if (t.ok) {
+              update.goalTemplate = t.value;
+              // 4.2: the template applies to the running goal too -- its target
+              // and length, never its bani, which its total was counted in.
+              if (g.currentGoalId) {
+                const goalRef = ref.collection('goals').doc(g.currentGoalId);
+                const goal = (await tx.get(goalRef)).data() as GoalDoc | undefined;
+                if (goal && goal.status === 'ACTIVE') {
+                  const today = dayIst(clock.now());
+                  const end = addDays(goal.startDay, t.value.lengthDays - 1);
+                  const after = { target: t.value.target, endDay: end < today ? today : end };
+                  if (after.target !== goal.target || after.endDay !== goal.endDay) {
+                    goalChange = { ref: goalRef, before: { target: goal.target, endDay: goal.endDay }, after };
+                  }
+                }
+              }
+            } else Object.assign(fields, t.fields);
           }
         }
         if (b.status !== undefined) {
@@ -231,8 +246,14 @@ export function adminRouter(deps: Deps): Router {
         }
         if (Object.keys(fields).length > 0) throw Errors.validation(fields);
         if (Object.keys(update).length > 0) tx.update(ref, { ...update, updatedAt: FieldValue.serverTimestamp() });
-        const before = Object.fromEntries(Object.keys(update).map((k) => [k, plain((g as unknown as Record<string, unknown>)[k])]));
-        return { before, after: plain(update) };
+        if (goalChange) tx.update(goalChange.ref, goalChange.after);
+        const before: Record<string, unknown> = Object.fromEntries(Object.keys(update).map((k) => [k, plain((g as unknown as Record<string, unknown>)[k])]));
+        const after: Record<string, unknown> = plain(update) as Record<string, unknown>;
+        if (goalChange) {
+          before.currentGoal = goalChange.before;
+          after.currentGoal = goalChange.after;
+        }
+        return { before, after };
       });
       await audit(db, by(res), 'UPDATE_GROUP', `groups/${id}`, out.before, out.after);
       const g = (await ref.get()).data() as GroupDoc;

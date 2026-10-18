@@ -781,8 +781,8 @@ people. *Rules: `11-admin.md`. Data: ARCHITECTURE §6.6, §8.5.*
   groups, built-in groups with their progress, Sangat paath today, open
   reports — counted when the page opens or on Refresh, never polled.
 - **Built-in groups:** create and edit (names in three languages, the goal
-  template), start, history, disable or enable. Editing changes the next goal,
-  never the running one.
+  template), start, history, disable or enable. Editing applies to the running goal
+  too: its target and length change at once, its total and bani do not.
 - **Reports:** disable, enable, delete (typing the name to confirm), dismiss.
 - **People:** look up a profile by email; set the custom-group limit (5–100).
 - Every change is written to an audit log. English only. No third-party
@@ -1405,6 +1405,7 @@ anything earlier. The feature file named holds the detail.
 | 10-07 | Diary: the now-and-longest streak card (2) | `09-diary.md` |
 | 10-08 | Simran: design 29's threads back; a web of threads without a profile | `07-simran.md` S-11 |
 | 10-17 | Simran globe: dots one person the size of yours, full at 25; arcs with light; zoom; tap a dot for its city; the count matches the dots | `07-simran.md` S-12–S-15 |
+| 10-18 | Editing a built-in group's template applies to the running goal too: target and length at once, total and bani kept; replaces "never the running one" | `11-admin.md` §4.2, AW-5 |
 | 10-17 | A group's own globe in its goal ring, with paath arriving as light, for custom and built-in groups; counts per city only | `08-sangat.md` SG-3, GG1–GG9 |
 | 10-08 | First run: Android's splash only; Welcome option D, "a day with Hazri"; the app is named Hazri everywhere | `03-first-run.md` |
 | 10-08 | Badges, no points; ten names with Vichari and Satsangi; totals never runs; thresholds 1, 7, 40, 40, 108, all banis, 3, 180, 5, 365; recalculated, stored only when earned; in the backup; history counts | `12-badges.md` |

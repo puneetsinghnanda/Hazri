@@ -182,7 +182,7 @@ async function group(id: string): Promise<void> {
     ${
       builtIn
         ? `<div class="card"><h3>Edit names and the goal template</h3>${templateForm(g.goalTemplate, g.names)}
-           <button id="save">Save</button><p class="muted">Editing the template changes the next goal, never the running one.</p></div>`
+           <button id="save">Save</button><p class="muted">Saving changes the running goal's target and length at once. A new bani starts with the next goal.</p></div>`
         : ''
     }
     <div class="card"><h3>History</h3>${

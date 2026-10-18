@@ -53,7 +53,7 @@ Figures are counted with `count()` aggregations when the page opens and when the
 
 - List of built-in groups with status, member count and current goal.
 - **Create** and **Edit**: names in English, Punjabi and Hindi (each 1–64 characters); the goal template: one list, the banis of `content.db` (served by the API) and **Naam Simran**, which counts minutes (`08-sangat.md` SG-1); target (1–1,000,000: paath, or minutes for Naam Simran); length in days (1–365).
-- **Start** creates the first goal from today (IST). Editing the template changes the **next** goal, never the running one.
+- **Start** creates the first goal from today (IST). Editing the template applies to the running goal as well as every later one (owner, 2026-10-18): the running goal takes the new target and length -- its end day becomes start day + length − 1, and never earlier than today -- and keeps its start day, its total and its bani, because the total was counted in that bani; a new bani or Naam Simran starts with the next goal. A target at or below the total completes the goal at the next count (§7.14), and BI4 starts the next one.
 - **History**: past goals with dates, total, target and member count.
 - **Disable / enable**: a disabled built-in group disappears from the app; it keeps its data.
 
@@ -87,7 +87,7 @@ Figures are counted with `count()` aggregations when the page opens and when the
 | AW-2 | Signed in with another Google account | Any page | `adminNotAllowed`; every API call returns `403` |
 | AW-3 | A crafted request with an anonymous app token | `/api/v1/admin/dashboard` | `403 NOT_ADMIN` |
 | AW-4 | Admin creates Amrit Vela Sangat, Japji Sahib, 100,000, 30 days, and starts it | — | It appears in the app's built-in list |
-| AW-5 | Admin edits its target during a goal | — | The running goal is unchanged; the next one uses the new target |
+| AW-5 | Admin edits its target or length during a goal | — | The running goal shows the new target and end day at once, with its total and bani unchanged; the next goal uses the whole template |
 | AW-6 | A group reported three times | Admin disables it | Hidden in the app; audit row written |
 | AW-7 | Support request to raise a limit | Admin sets 10 | That person can have 10 active custom groups |
 
