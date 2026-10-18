@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hazri · Nitnem app for Android</title>
+<meta name="description" content="Hazri is a Nitnem app for Android. Do paath with the sangat toward one shared goal, sit in Naam Simran with people around the world, and keep a diary of your hazri, with no login and no ads.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700&family=Mukta:wght@400;500;600;700&family=Playfair+Display:wght@500&display=swap">
+<style>
+/* Layout: the night sky opens on the sangat's globe; it turns to dusk for the
+   tour (text on the left keeping time with the phone on the right) and to dawn
+   at the horizon, where the day's light sections begin. */
+:root {
+  --bg: #F4F3F8; --card: #FFFFFF; --card2: #ECEBF3; --ink: #1B1D3A; --ink2: #4D5070;
+  --muted: #6E7190; --rule: #E1E1EA; --primary: #262C63; --onPrimary: #FFFFFF;
+  --kesri: #D9730D; --kesriSoft: #FBE8D2; --kesriInk: #9A4F00; --sage: #2E7A57;
+  /* The sky is the same in both themes: it is the Amrit Vela, not a surface. */
+  --night: #070A1E; --night2: #10143A; --dusk: #232659; --dawn: #5E3550; --sunrise: #8C4524;
+  --sky-ink: #F3F1FA; --sky-ink2: #C6C5DD; --sky-ink3: #8F90B4; --sky-rule: rgba(255,255,255,.14); --sun: #F2A24E;
+  --live: #3DBE7B; --here: #5B8DEF;
+  --display: "Baloo Paaji 2", "Mukta", system-ui, sans-serif;
+  --body: "Mukta", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shadow: 0 1px 2px rgba(27,29,58,.06), 0 10px 28px rgba(27,29,58,.08);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0C0F24; --card: #161A37; --card2: #1F2447; --ink: #EDECF6; --ink2: #B9BAD3;
+  --muted: #9396B5; --rule: #2A2F55; --primary: #F2A24E; --onPrimary: #1C1206;
+  --kesri: #F2A24E; --kesriSoft: #3A2A1A; --kesriInk: #FFC27E; --sage: #6CCB9C;
+  --shadow: 0 0 0 1px rgba(255,255,255,.05); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0C0F24; --card: #161A37; --card2: #1F2447; --ink: #EDECF6; --ink2: #B9BAD3;
+  --muted: #9396B5; --rule: #2A2F55; --primary: #F2A24E; --onPrimary: #1C1206;
+  --kesri: #F2A24E; --kesriSoft: #3A2A1A; --kesriInk: #FFC27E; --sage: #6CCB9C;
+  --shadow: 0 0 0 1px rgba(255,255,255,.05); color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; text-wrap: balance }
+p { margin: 0 }
+a { color: inherit }
+:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; border-radius: 6px }
+.wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding-inline: 24px }
+
+/* ---------- The sky ---------- */
+.sky { position: relative; color: var(--sky-ink); overflow-x: clip;
+  background: linear-gradient(180deg, var(--night) 0%, var(--night2) 38%, var(--dusk) 62%, var(--dawn) 86%, var(--sunrise) 100%); }
+.stars { position: absolute; left: 0; top: 0; width: 100%; height: 120vh; pointer-events: none }
+.nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 1 }
+.nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-weight: 500; color: var(--sky-ink2); font-size: 16px }
+.nav ul a { text-decoration: none } .nav ul a:hover { color: var(--sky-ink) }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 20px; border-radius: 14px;
+  font: 600 16px/1 var(--body); text-decoration: none; border: 0; cursor: pointer; white-space: nowrap }
+.btn-sun { background: var(--sun); color: #1C1206 }
+.btn-sun:hover { background: #F6B46A }
+.btn-ghost { background: rgba(255,255,255,.08); color: var(--sky-ink); box-shadow: inset 0 0 0 1px var(--sky-rule) }
+.eyebrow { font: 600 13px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--sun) }
+
+/* ---------- Hero: the sangat's globe ---------- */
+.hero { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  grid-template-areas: "head globe" "body globe"; column-gap: 32px; align-items: center; padding-block: 8px 72px }
+.hero-head { grid-area: head; align-self: end; display: flex; flex-direction: column; gap: 18px; padding-bottom: 22px }
+.hero-body { grid-area: body; align-self: start; display: flex; flex-direction: column; gap: 22px }
+.hero h1 { font-size: clamp(40px, 5.4vw, 70px); letter-spacing: -.01em }
+.hero h1 em { font-style: normal; color: var(--sun) }
+.lede { font-size: 19px; color: var(--sky-ink2); max-width: 31em }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center }
+.play { display: inline-flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 18px 8px 14px; border-radius: 14px;
+  background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px var(--sky-rule) }
+.play small { display: block; font-size: 12px; line-height: 1.2; color: var(--sky-ink2) }
+.play b { display: block; font: 600 17px/1.2 var(--body) }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 15px; color: var(--sky-ink2); padding: 0; margin: 0; list-style: none }
+.facts li { display: flex; align-items: center; gap: 8px }
+.facts li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--sun) }
+
+.hero-globe { grid-area: globe; position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0 }
+.orb { position: relative; width: min(100%, 660px); aspect-ratio: 1; margin-inline: -4%; }
+.orb canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; border-radius: 50% }
+.orb canvas:active { cursor: grabbing }
+.legend { margin-top: -5%; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 16px; font-size: 14px; color: var(--sky-ink2) }
+.legend span { display: inline-flex; align-items: center; gap: 7px }
+.legend i { width: 9px; height: 9px; border-radius: 50% }
+.legend .drag { color: var(--sky-ink3) }
+.legend .drag svg { flex: none }
+
+/* ---------- The tour ---------- */
+.tour { position: relative; z-index: 1; padding-block: 56px 150px }
+.tour-head { max-width: 640px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px }
+.tour-head h2 { font-size: clamp(32px, 4vw, 50px) }
+.tour-head p { color: var(--sky-ink2); font-size: 18px }
+.tour-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 430px); gap: 72px; align-items: center }
+
+.feats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column }
+.feat { position: relative; padding-left: 26px }
+.feat::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--sky-rule); border-radius: 1px }
+.feat .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--sun); border-radius: 1px; transform-origin: 50% 0; transform: scaleY(0) }
+.feat button { all: unset; box-sizing: border-box; display: flex; align-items: baseline; gap: 14px; width: 100%; padding-block: 14px; cursor: pointer }
+.feat button:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; border-radius: 6px }
+.feat .tab { flex: none; width: 66px; font: 600 12px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--sky-ink3); transition: color .3s }
+.feat h3 { font-size: 23px; color: var(--sky-ink3); transition: color .3s }
+.feat button:hover h3 { color: var(--sky-ink2) }
+.feat.on .tab { color: var(--sun) }
+.feat.on h3 { color: var(--sky-ink) }
+.feat .more { overflow: hidden; height: 0; padding-left: 80px }
+.feat .more-in { padding-bottom: 18px; display: flex; flex-direction: column; gap: 12px }
+.feat .more p { color: var(--sky-ink2); font-size: 17px; max-width: 30em }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { font-size: 14px; line-height: 1.3; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px var(--sky-rule); color: var(--sky-ink) }
+.chip i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: 1px }
+
+/* ---------- The phone ---------- */
+.stagecol { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 16px }
+/* The screen keeps the 390 x 844 the designs were drawn at; the body wraps it. */
+.phone { position: relative; display: flex; height: min(700px, calc(100vh - 120px)); max-width: 100%;
+  border-radius: 54px; padding: 8px; background: linear-gradient(160deg, #2B2F52, #0B0D1F 40%, #191C38);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 40px 80px -20px rgba(0,0,0,.6), 0 0 120px -10px rgba(242,162,78,.28) }
+.phone::after { content: ""; position: absolute; top: 18px; left: 50%; width: 11px; height: 11px; margin-left: -5.5px; border-radius: 50%; background: #05060f; box-shadow: 0 0 0 2px #15182d; z-index: 5 }
+.screen { position: relative; height: 100%; aspect-ratio: 390 / 844; border-radius: 46px; overflow: hidden; background: #F4F3F8; isolation: isolate }
+.stage { position: absolute; left: 0; top: 0; width: 390px; height: 844px; transform-origin: 0 0 }
+.scene { position: absolute; inset: 0; visibility: hidden }
+.scene img { position: absolute; display: block; max-width: none; user-select: none; -webkit-user-drag: none }
+.scene .base { left: 0; top: 0; width: 390px; height: 844px }
+.scene svg.rings { position: absolute; inset: 0; overflow: visible }
+.counter { position: absolute; white-space: nowrap; font-variant-numeric: tabular-nums }
+.band { position: absolute; border-radius: 16px }
+.clip { position: absolute; overflow: hidden }
+.scrim { position: absolute; inset: 0; background: rgba(20,22,45,.45) }
+.ripple { position: absolute; border-radius: 50%; border: 2px solid #F2A24E; pointer-events: none }
+canvas.globe { position: absolute; left: 0; top: 0; width: 390px; height: 844px }
+
+.controls { display: flex; align-items: center; justify-content: center; gap: 12px; width: min(100%, 380px) }
+.segs { display: none; gap: 6px; flex: 1 }
+.seg { flex: 1; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center }
+.seg span { position: relative; display: block; width: 100%; height: 4px; border-radius: 2px; background: rgba(255,255,255,.18); overflow: hidden }
+.seg span b { position: absolute; inset: 0; background: var(--sun); transform-origin: 0 50%; transform: scaleX(0) }
+.pause { height: 36px; flex: none; border-radius: 18px; border: 0; padding: 0 14px 0 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+  font: 500 14px/1 var(--body); background: rgba(255,255,255,.1); color: var(--sky-ink); box-shadow: inset 0 0 0 1px var(--sky-rule) }
+.caption { display: none; text-align: center; width: min(100%, 380px); min-height: 120px }
+.caption b { display: block; font: 700 22px/1.2 var(--display) }
+.caption p { font-size: 15px; color: var(--sky-ink2); line-height: 1.45; margin-top: 6px }
+
+.horizon { position: absolute; left: 50%; bottom: -1px; width: min(900px, 140vw); transform: translateX(-50%); pointer-events: none; z-index: 0 }
+.horizon .glow { position: absolute; left: 50%; bottom: 0; width: 70%; aspect-ratio: 2 / 1; transform: translateX(-50%);
+  border-radius: 999px 999px 0 0; background: radial-gradient(60% 100% at 50% 100%, rgba(255,190,110,.75), rgba(242,162,78,.35) 45%, transparent 75%) }
+.horizon svg { position: relative; display: block; width: 100%; height: auto }
+
+/* ---------- Below the sky ---------- */
+section.light { padding-block: 96px }
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start }
+.kicker { font: 600 13px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--kesriInk) }
+section.light h2 { font-size: clamp(32px, 4vw, 48px); margin-top: 12px }
+section.light .lead { color: var(--ink2); margin-top: 16px; max-width: 32em }
+.groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px }
+.group { background: var(--card); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.group h3 { font-size: 20px }
+.group .meta { font-size: 14px; color: var(--muted); line-height: 1.35 }
+.group .goal { font-size: 15px; color: var(--ink2); line-height: 1.4 }
+.bar { height: 6px; border-radius: 3px; background: var(--card2); overflow: hidden }
+.bar i { display: block; height: 100%; border-radius: 3px; background: var(--kesri) }
+.group.own { background: var(--primary); color: var(--onPrimary) }
+.group.own .meta, .group.own .goal { color: inherit; opacity: .82 }
+.group.own .bar { background: rgba(255,255,255,.2) }
+.group.own .bar i { background: #F2A24E }
+:root[data-theme="dark"] .group.own .bar i { background: #1C1206 }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .group.own .bar i { background: #1C1206 } }
+.note { font-size: 13px; color: var(--muted); margin-top: 14px }
+
+.promise { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule) }
+.promise div { padding: 28px 28px 30px 0; min-width: 0 }
+.promise div + div { padding-left: 28px; border-left: 1px solid var(--rule) }
+.promise h3 { font-size: 22px }
+.promise p { color: var(--ink2); margin-top: 8px; font-size: 16px }
+
+.download { background: var(--primary); color: var(--onPrimary); border-radius: 28px; padding: 48px; text-align: center }
+.download h2 { margin-top: 0 !important }
+.download p { opacity: .85; margin-top: 12px }
+footer { padding-block: 40px 56px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between }
+
+
+/* ---------- Gurpurab calendar ---------- */
+.cal-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: start; margin-top: 40px }
+.today-ns { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px solid var(--rule) }
+.today-ns small { font: 600 12px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); flex-basis: 100% }
+.today-ns b { font: 700 30px/1.1 var(--display) }
+.today-ns span { color: var(--ink2) }
+.feature { background: var(--primary); color: var(--onPrimary); border-radius: 24px; padding: 26px 26px 22px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden }
+.feature::after { content: ""; position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(242,162,78,.35), transparent 70%); pointer-events: none }
+.feature .when { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.feature .count { font: 700 44px/1 var(--display); font-variant-numeric: tabular-nums }
+.feature .count-l { font-size: 15px; opacity: .85 }
+.feature h3 { font-size: 26px; line-height: 1.15 }
+.feature .dates { font-size: 15px; opacity: .85 }
+.feature .story { font-size: 16px; line-height: 1.6; opacity: .92; position: relative }
+.feature .story.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden }
+.feature .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-top: 4px }
+.feature .more-btn { all: unset; cursor: pointer; font-weight: 600; font-size: 15px; text-decoration: underline; text-underline-offset: 4px }
+.feature .more-btn:focus-visible { outline: 2px solid #F2A24E; outline-offset: 3px; border-radius: 4px }
+.feature .remind { font-size: 13px; padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.12) }
+.kinds { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px }
+.kind { all: unset; cursor: pointer; font: 500 14px/1 var(--body); padding: 9px 14px; border-radius: 999px; background: var(--card); color: var(--ink2); box-shadow: inset 0 0 0 1px var(--rule) }
+.kind[aria-pressed="true"] { background: var(--ink); color: var(--bg); box-shadow: none }
+.kind:focus-visible { outline: 2px solid var(--kesri); outline-offset: 2px }
+.days { list-style: none; margin: 0; padding: 0; background: var(--card); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden }
+.days li + li { border-top: 1px solid var(--rule) }
+.day { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 16px }
+.day:hover { background: var(--card2) }
+.day:focus-visible { outline: 2px solid var(--kesri); outline-offset: -2px }
+.day[aria-current="true"] { background: var(--kesriSoft) }
+.dnum { text-align: center; line-height: 1 }
+.dnum b { display: block; font: 700 24px/1 var(--display); font-variant-numeric: tabular-nums }
+.dnum small { font: 600 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.dname { min-width: 0 }
+.dname b { display: block; font-weight: 600; font-size: 16px; line-height: 1.3 }
+.dname span { display: block; font-size: 13.5px; color: var(--muted); line-height: 1.4 }
+.dtag { font-size: 12.5px; color: var(--kesriInk); background: var(--kesriSoft); padding: 4px 9px; border-radius: 999px; white-space: nowrap }
+.day[aria-current="true"] .dtag { background: var(--card) }
+.cal-foot { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; margin-top: 12px; font-size: 14px; color: var(--muted) }
+.link-btn { all: unset; cursor: pointer; font-weight: 600; color: var(--kesriInk); text-decoration: underline; text-underline-offset: 4px }
+.link-btn:focus-visible { outline: 2px solid var(--kesri); outline-offset: 3px; border-radius: 4px }
+
+/* ---------- Blog ---------- */
+.blog-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 28px; margin-top: 36px; align-items: start }
+.story-card { border-radius: 24px; padding: 26px; background: linear-gradient(170deg, #10143A, #232659 60%, #5E3550); color: #F3F1FA; display: flex; flex-direction: column; gap: 12px; min-height: 100% }
+.story-card small { font: 600 12px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: #F2A24E }
+.story-card h3 { font-size: 26px }
+.story-card p { color: #C6C5DD; font-size: 16px }
+.story-card .btn { align-self: flex-start; margin-top: auto; background: #F2A24E; color: #1C1206 }
+.cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px }
+.guides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.guide { background: var(--card); border-radius: 18px; padding: 16px 18px; box-shadow: var(--shadow); display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 14px; align-content: start; min-width: 0 }
+.guide .ic { grid-row: span 3; width: 40px; height: 40px; border-radius: 12px; background: var(--kesriSoft); color: var(--kesriInk); display: flex; align-items: center; justify-content: center }
+.guide small { font-size: 12.5px; color: var(--muted) }
+.guide h3 { font-size: 18px; line-height: 1.25 }
+.guide p { font-size: 14.5px; color: var(--ink2); line-height: 1.45 }
+.guide .slug { grid-column: 2; font-size: 12px; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere }
+
+
+/* ---------- Guide reader ---------- */
+.guide { cursor: pointer; transition: transform .2s, box-shadow .2s }
+.guide:hover { transform: translateY(-2px) }
+.guide:focus-visible { outline: 2px solid var(--kesri); outline-offset: 3px }
+dialog.reader { position: fixed; inset: 0 0 0 auto; width: min(760px, 100vw); max-width: 100vw; height: 100%; max-height: 100%; margin: 0; padding: 0; border: 0;
+  background: var(--bg); color: var(--ink); box-shadow: -20px 0 60px rgba(0,0,0,.25) }
+dialog.reader::backdrop { background: rgba(10,12,30,.55) }
+.reader-in { height: 100%; overflow-y: auto; overscroll-behavior: contain }
+.reader-bar { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 20px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); background: var(--bg); border-bottom: 1px solid var(--rule) }
+.reader-bar .crumb { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0 }
+.close { width: 40px; height: 40px; flex: none; border-radius: 50%; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: var(--card2); color: var(--ink) }
+.reader-body { padding: 28px 28px 56px; display: flex; flex-direction: column; gap: 22px; max-width: 680px }
+.reader-body .meta { font-size: 14px; color: var(--kesriInk); font-weight: 600 }
+.reader-body h2 { font-size: clamp(28px, 4.4vw, 40px) }
+.reader-body .intro { font-size: 18px; color: var(--ink2) }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; counter-reset: step }
+.steps li { position: relative; padding: 0 0 22px 52px; counter-increment: step }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--primary); color: var(--onPrimary); font: 700 16px/34px var(--display); text-align: center }
+.steps li::after { content: ""; position: absolute; left: 16.5px; top: 40px; bottom: 6px; width: 1px; background: var(--rule) }
+.steps li:last-child::after { display: none }
+.steps h3 { font-size: 20px; padding-top: 4px }
+.steps p { color: var(--ink2); margin-top: 6px }
+.where { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 13.5px; color: var(--muted) }
+.where .tap { font-weight: 600; color: var(--ink); background: var(--card); box-shadow: inset 0 0 0 1px var(--rule); border-radius: 10px; padding: 4px 10px }
+.tipbox { background: var(--kesriSoft); border-radius: 18px; padding: 18px 20px }
+.tipbox b { display: block; font: 700 16px/1.2 var(--display); color: var(--kesriInk); margin-bottom: 6px }
+.tipbox p { color: var(--ink) }
+.faq h3 { font-size: 22px; margin-bottom: 8px }
+.faq details { border-top: 1px solid var(--rule); padding: 12px 0 }
+.faq details:last-child { border-bottom: 1px solid var(--rule) }
+.faq summary { cursor: pointer; font-weight: 600; list-style-position: outside }
+.faq details p { color: var(--ink2); margin-top: 8px }
+.related h3 { font-size: 18px; margin-bottom: 10px }
+.related div { display: flex; flex-direction: column; gap: 8px }
+.related button { all: unset; cursor: pointer; padding: 12px 14px; border-radius: 14px; background: var(--card); box-shadow: var(--shadow); font-weight: 600 }
+.related button:focus-visible { outline: 2px solid var(--kesri); outline-offset: 2px }
+@media (max-width: 520px) { .reader-body { padding: 22px 16px 48px } .steps li { padding-left: 46px } }
+
+/* ---------- Phone width ---------- */
+@media (max-width: 960px) {
+  .nav ul { display: none }
+  .hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "globe" "body"; padding-bottom: 40px }
+  .hero-head { padding-bottom: 0; gap: 14px }
+  .orb { width: min(112%, 560px); margin-block: -10px 0 }
+  .tour { padding-block: 32px 130px }
+  .tour-head { margin-bottom: 28px }
+  .tour-grid { grid-template-columns: minmax(0, 1fr); gap: 0 }
+  .feats { display: none }
+  .phone { height: auto; width: min(310px, 80vw); border-radius: 46px }
+  .screen { width: 100%; height: auto; border-radius: 38px }
+  .hero-body { margin-top: 18px }
+  .segs { display: flex }
+  .caption { display: block }
+  .split, .download, .cal-grid, .blog-grid { grid-template-columns: minmax(0, 1fr); gap: 28px }
+  .guides { grid-template-columns: minmax(0, 1fr) }
+  .download { padding: 28px 22px }
+  .promise { grid-template-columns: minmax(0, 1fr) }
+  .promise div, .promise div + div { padding: 22px 0; border-left: 0 }
+  .promise div + div { border-top: 1px solid var(--rule) }
+  section.light { padding-block: 64px }
+}
+@media (max-width: 520px) { .groups { grid-template-columns: minmax(0, 1fr) } .wrap { padding-inline: 16px } .pause .lbl { display: none } .pause { padding: 0; width: 36px; justify-content: center } }
+
+/* A recording of the phone alone, for the Play Store and sharing: #reel */
+.reel-brand { display: none }
+body.reel { background: var(--night); height: 100vh; overflow: hidden }
+body.reel main > :not(.sky), body.reel .nav, body.reel .hero, body.reel .stars, body.reel .tour-head, body.reel .feats,
+body.reel .horizon, body.reel .controls { display: none !important }
+body.reel .sky { height: 100vh }
+body.reel .tour { padding: 0 }
+body.reel .tour-grid { display: block }
+body.reel .stagecol { height: 100vh; justify-content: center; gap: 4.5vh }
+body.reel .reel-brand { display: flex; align-items: center; gap: 1.6vh; font: 700 4.4vh/1 var(--display) }
+body.reel .reel-brand svg { width: 5.4vh; height: 5.4vh }
+body.reel .phone { height: 64vh; width: auto; border-radius: 4.6vh; padding: .7vh }
+body.reel .screen { border-radius: 4vh }
+body.reel .caption { display: block; width: 86vw; min-height: 14vh }
+body.reel .caption b { font-size: 3.4vh }
+body.reel .caption p { font-size: 2.05vh; margin-top: 1vh }
+</style>
+
+<main>
+<section class="sky" id="top">
+  <canvas class="stars" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="#top" aria-label="Hazri home">
+        <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><path d="M4 27A16 16 0 0 1 36 27" fill="none" stroke="#F3F1FA" stroke-width="2.4" stroke-linecap="round"/><path d="M6 31.5H34" fill="none" stroke="#F3F1FA" stroke-width="2.4" stroke-linecap="round"/><path d="M12 27A8 8 0 0 1 28 27Z" fill="#F2A24E"/></svg>
+        Hazri
+      </a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#sangat">Groups</a></li>
+        <li><a href="#gurpurab">Gurpurab</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#promise">Privacy</a></li>
+      </ul>
+      <a class="btn btn-ghost" href="#download">Coming soon</a>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-head">
+        <div class="eyebrow">Hazri · Nitnem app for Android</div>
+        <h1>Paath is lighter when the <em>sangat</em> does it together</h1>
+      </div>
+      <div class="hero-globe">
+        <div class="orb">
+          <canvas id="orb" tabindex="0" role="img" aria-label="A globe of the sangat. Your dot blinks in orange over Amritsar, with threads joining it to people doing paath and simran around the world. Drag, or use the arrow keys, to turn it."></canvas>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--sun)"></i>You</span>
+          <span><i style="background:var(--live)"></i>Sitting now</span>
+          <span><i style="background:var(--here)"></i>Here today</span>
+          <span class="drag"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 12h8M5 12l3-3M5 12l3 3M19 12l-3-3M19 12l-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to turn the globe</span>
+        </div>
+      </div>
+      <div class="hero-body">
+        <p class="lede">Join a Sangat group and every paath you finish counts toward one shared goal. Sit in Naam Simran and see who is sitting with you, from Amritsar to Vancouver.</p>
+        <div class="cta">
+          <div class="play" aria-label="Coming soon to Google Play">
+            <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5v17l14-8.5z" fill="none" stroke="#F2A24E" stroke-width="2" stroke-linejoin="round"/></svg>
+            <span><small>Coming soon to</small><b>Google Play</b></span>
+          </div>
+        </div>
+        <ul class="facts"><li>No login</li><li>No ads</li><li>Reads and plays offline</li></ul>
+      </div>
+    </div>
+
+    <div class="tour" id="features">
+      <div class="tour-head">
+        <div class="eyebrow">Inside Hazri</div>
+        <h2>A day with Hazri, screen by screen</h2>
+      </div>
+      <div class="tour-grid">
+        <ol class="feats" aria-label="Features"></ol>
+        <div class="stagecol">
+          <div class="reel-brand" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M4 27A16 16 0 0 1 36 27" fill="none" stroke="#F3F1FA" stroke-width="2.4" stroke-linecap="round"/><path d="M6 31.5H34" fill="none" stroke="#F3F1FA" stroke-width="2.4" stroke-linecap="round"/><path d="M12 27A8 8 0 0 1 28 27Z" fill="#F2A24E"/></svg>Hazri</div>
+          <div class="phone">
+            <div class="screen"><div class="stage" aria-hidden="true"></div></div>
+          </div>
+          <div class="controls">
+            <div class="segs" role="group" aria-label="Choose a feature"></div>
+            <button class="pause" type="button"></button>
+          </div>
+          <div class="caption" aria-live="polite"><div class="cap-in"><b></b><p></p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="horizon" aria-hidden="true">
+    <div class="glow"></div>
+    <svg viewBox="0 0 900 140"><path d="M140 140A310 310 0 0 1 760 140" fill="none" stroke="rgba(255,226,190,.55)" stroke-width="2"/></svg>
+  </div>
+</section>
+
+<section class="light" id="sangat">
+  <div class="wrap split">
+    <div>
+      <div class="kicker">The Sangat</div>
+      <h2>Three groups open to everybody, and your own</h2>
+      <p class="lead">Join the Amrit Vela, Simran or Sukhmani Sahib Sangat, or start a private group for your family or your gurdwara. A group has one goal and an end date, and every paath its members finish counts toward it.</p>
+      <p class="lead">You join with a link or a code. Nobody needs a password, and nobody sees your diary.</p>
+    </div>
+    <div>
+      <div class="groups">
+        <article class="group">
+          <h3>Amrit Vela Sangat</h3>
+          <div class="goal">100,000 Japji Sahib by 31 Oct</div>
+          <div class="bar"><i style="width:61%"></i></div>
+          <div class="meta">4,982 members · open to all</div>
+        </article>
+        <article class="group">
+          <h3>Simran Sangat</h3>
+          <div class="goal">500,000 minutes of Naam Simran by 31 Oct</div>
+          <div class="bar"><i style="width:42%"></i></div>
+          <div class="meta">2,418 members · open to all</div>
+        </article>
+        <article class="group">
+          <h3>Sukhmani Sahib Sangat</h3>
+          <div class="goal">10,000 Sukhmani Sahib by 31 Oct</div>
+          <div class="bar"><i style="width:28%"></i></div>
+          <div class="meta">1,306 members · open to all</div>
+        </article>
+        <article class="group own">
+          <h3>Gill Parivar</h3>
+          <div class="goal">3,412 of 5,000 paath · 83 days left</div>
+          <div class="bar"><i style="width:68%"></i></div>
+          <div class="meta">Private · joined with a link</div>
+        </article>
+      </div>
+      <p class="note">Figures, names and the people on the globe are examples from the app’s designs.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="light" id="gurpurab" style="padding-top:0">
+  <div class="wrap">
+    <div class="kicker">Gurpurab calendar</div>
+    <h2>Every Gurpurab of the year, with the story of the day</h2>
+    <p class="lead">Dates follow the SGPC’s Nanakshahi calendar for 558, from 14 March 2026 to 13 March 2027. Hazri holds the whole year on your phone and reminds you on the morning of each day: at 06:00 for a Gurpurab, at 07:00 for other Sikh days.</p>
+    <div class="cal-grid">
+      <div>
+        <div class="today-ns" id="todayNs"><small>Today in the Nanakshahi calendar</small><b></b><span></span></div>
+        <article class="feature" id="feature" aria-live="polite">
+          <div class="when"><span class="count"></span><span class="count-l"></span></div>
+          <h3></h3>
+          <div class="dates"></div>
+          <p class="story clamp"></p>
+          <div class="row"><button class="more-btn" type="button">Read the full story</button><span class="remind"></span></div>
+        </article>
+      </div>
+      <div>
+        <div class="kinds" role="group" aria-label="Show"></div>
+        <ol class="days" id="days"></ol>
+        <div class="cal-foot"><span id="calCount"></span><button class="link-btn" type="button" id="calMore">Show more days</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="blog" style="padding-top:0">
+  <div class="wrap">
+    <div class="kicker">Blog</div>
+    <h2>Guides for every part of Hazri</h2>
+    <p class="lead">Short how-tos, step by step, and a story for each Gurpurab of the year.</p>
+    <div class="blog-grid">
+      <article class="story-card" id="storyCard">
+        <small>Gurpurab story</small>
+        <h3></h3>
+        <p class="sc-date"></p>
+        <p class="sc-text"></p>
+        <a class="btn" href="#gurpurab">Read it in the calendar</a>
+      </article>
+      <div>
+        <div class="cats" role="group" aria-label="Guides about"></div>
+        <div class="guides" id="guides"></div>
+        <div class="cal-foot"><span id="guideCount"></span><button class="link-btn" type="button" id="guideMore">Show all guides</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="promise" style="padding-top:0">
+  <div class="wrap">
+    <div class="promise">
+      <div><h3>No login, no password</h3><p>Open the app and start. A profile is there if you want one, for your city, the backup and the Sangat.</p></div>
+      <div><h3>No ads, no tracking</h3><p>Hazri carries no ad or tracking software and never reads your advertising ID.</p></div>
+      <div><h3>Works with the radio off</h3><p>Reading, listening, the Gurpurab calendar and your diary are all on the phone and need no signal.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="download" style="padding-top:0">
+  <div class="wrap">
+    <div class="download">
+      <div>
+        <h2>Coming soon to Google Play</h2>
+        <p>Hazri is being tested now and will be on Google Play soon.</p>
+      </div>
+    </div>
+    <footer>
+      <span>hazri.me · A Nitnem app for Android</span>
+      <span>Every line of Gurbani in Hazri comes from reviewed sources. Nothing is machine-translated.</span>
+    </footer>
+  </div>
+</section>
+</main>
+
+<dialog class="reader" id="reader" aria-labelledby="readerTitle">
+  <div class="reader-in">
+    <div class="reader-bar"><span class="crumb"></span>
+      <button class="close" type="button" aria-label="Close the guide"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <article class="reader-body"></article>
+  </div>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+const SCENES = __SCENES__;
+const WORLD = __WORLD__;
+
+// What each screen is for, in the order the phone plays them.
+const STORY = {
+  today:  { tab: 'Today', title: 'Your day on one screen',
+            text: 'Open Hazri and Today shows whether your hazri is marked, how many days in a row you have kept it, and what is left of today’s goal.',
+            chips: ['Amrit Vela reminder at 04:00', 'A reminder for each goal'] },
+  reader: { tab: 'Nitnem', title: 'The line lights up as it is recited',
+            text: 'Every bani comes with its recitation, and the reader follows it line by line, so you never lose your place. Read in Gurmukhi, Devanagari or Roman letters.',
+            chips: ['Japji Sahib · Pauri 1 of 38', 'Keeps playing with the screen locked'] },
+  simran: { tab: 'Simran', title: 'Sit in Simran with the world',
+            text: 'Start a sitting and the globe shows who else is in Naam Simran today, from Amritsar to Vancouver.',
+            legend: [['#F2A24E', 'You'], ['#3DBE7B', 'Live'], ['#5B8DEF', 'Here today']] },
+  sangat: { tab: 'Sangat', title: 'Do paath together',
+            text: 'Join the Amrit Vela, Simran or Sukhmani Sahib Sangat, or make a private group for your family with one goal and an end date.',
+            chips: ['Invite with a link or a code'] },
+  group:  { tab: 'Group', title: 'Watch the goal fill',
+            text: 'Each paath you finish counts toward your group’s goal. The ring shows how far the sangat has come, and Sit for Naam Simran adds yours.',
+            chips: ['500,000 minutes by 31 Oct'] },
+  diary:  { tab: 'Diary', title: 'A diary that keeps itself',
+            text: 'Every day you mark your hazri goes into the Diary, with your streak and your longest. It stays on your phone and, with a profile, is backed up each week.',
+            chips: ['Kept on your phone'] },
+  badge:  { tab: 'Badges', title: 'Badges for keeping at it',
+            text: 'Ten badges, counted in days. When you earn one, Hazri shows it on the screen, never as a notification.',
+            chips: ['Abhyasi: hazri on 40 days'] },
+};
+const ORDER = ['today', 'reader', 'simran', 'sangat', 'group', 'diary', 'badge'];
+const DWELL = 5.6;              // seconds each screen stays in the tour
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const byId = Object.fromEntries(SCENES.map(s => [s.id, s]));
+const stage = document.querySelector('.stage');
+const NS = 'http://www.w3.org/2000/svg';
+
+__HELPERS__
+__BUILD__
+/* ---------- The hero globe: the sangat, joined ---------- */
+const D2R = Math.PI / 180;
+const vec = (lat, lon) => [Math.cos(lat * D2R) * Math.cos(lon * D2R), Math.cos(lat * D2R) * Math.sin(lon * D2R), Math.sin(lat * D2R)];
+const angle = (a, b) => Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])));
+const orb = {
+  cv: document.getElementById('orb'), lon: 58, lat: 20, spin: -4.5, v: -4.5, drag: null, t: 0, visible: true,
+  people: PEOPLE.map(([lat, lon, kind]) => ({ v: vec(lat, lon), kind })),
+  coast: WORLD.map(r => r.map(([lon, lat]) => vec(lat, lon))),
+  grid: [],
+  arcs: [],
+};
+for (let lon = -180; lon < 180; lon += 30) { const r = []; for (let lat = -90; lat <= 90; lat += 3) r.push(vec(lat, lon)); orb.grid.push(r); }
+for (let lat = -60; lat <= 60; lat += 30) { const r = []; for (let lon = -180; lon <= 180; lon += 3) r.push(vec(lat, lon)); orb.grid.push(r); }
+// The sangat joined to itself: the shortest tree through every dot plus each
+// dot's two nearest (the app's web), and a thread from you to everyone.
+(function arcs() {
+  const P = orb.people, n = P.length, pairs = new Map();
+  const add = (i, j, mine) => { const k = Math.min(i, j) + ':' + Math.max(i, j); if (!pairs.has(k) || mine) pairs.set(k, [i, j, mine]); };
+  const inside = new Set([1]), rest = new Set(); for (let i = 2; i < n; i++) rest.add(i);
+  while (rest.size) {
+    let best = null;
+    for (const i of inside) for (const j of rest) { const d = angle(P[i].v, P[j].v); if (!best || d < best[0]) best = [d, i, j]; }
+    add(best[1], best[2], false); inside.add(best[2]); rest.delete(best[2]);
+  }
+  for (let i = 1; i < n; i++) P.map((q, j) => [angle(P[i].v, q.v), j]).filter(([, j]) => j > 0 && j !== i).sort((a, b) => a[0] - b[0]).slice(0, 2).forEach(([, j]) => add(i, j, false));
+  for (let j = 1; j < n; j++) add(0, j, true);
+  let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (const [i, j, mine] of pairs.values()) {
+    const a = P[i].v, b = P[j].v, w = angle(a, b), pts = [];
+    if (w < .01) continue;
+    const lift = .03 + .22 * (w / Math.PI);
+    for (let s = 0; s <= 40; s++) {
+      const t = s / 40, k1 = Math.sin((1 - t) * w) / Math.sin(w), k2 = Math.sin(t * w) / Math.sin(w), h = 1 + lift * Math.sin(Math.PI * t);
+      pts.push([(k1 * a[0] + k2 * b[0]) * h, (k1 * a[1] + k2 * b[1]) * h, (k1 * a[2] + k2 * b[2]) * h]);
+    }
+    orb.arcs.push({ pts, mine, phase: rnd(), speed: .18 + rnd() * .22 });
+  }
+})();
+function drawOrb() {
+  const cv = orb.cv, S = cv.clientWidth, dpr = cv.width / (S || 1), ctx = cv.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, S, S);
+  const C = S / 2, R = S * .37;
+  const L = orb.lon * D2R, p0 = orb.lat * D2R, cL = Math.cos(L), sL = Math.sin(L), cp = Math.cos(p0), sp = Math.sin(p0);
+  // Into view space: X east, Y up, Z toward the viewer.
+  const view = v => {
+    const x1 = v[0] * cL + v[1] * sL, y1 = -v[0] * sL + v[1] * cL, z1 = v[2];
+    return [y1, z1 * cp - x1 * sp, x1 * cp + z1 * sp];
+  };
+  const seen = q => q[2] > 0 || q[0] * q[0] + q[1] * q[1] > 1;
+  const at = q => [C + R * q[0], C - R * q[1]];
+  const path = (pts, test) => {
+    let open = false;
+    for (const v of pts) {
+      const q = view(v);
+      if (!test(q)) { open = false; continue; }
+      const [x, y] = at(q);
+      if (!open) { ctx.moveTo(x, y); open = true; } else ctx.lineTo(x, y);
+    }
+  };
+  // Atmosphere and sea
+  let g = ctx.createRadialGradient(C, C, R * .9, C, C, R * 1.32);
+  g.addColorStop(0, 'rgba(111,195,211,.30)'); g.addColorStop(1, 'rgba(111,195,211,0)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(C, C, R * 1.32, 0, 7); ctx.fill();
+  g = ctx.createRadialGradient(C - R * .3, C - R * .35, R * .1, C, C, R);
+  g.addColorStop(0, '#0B1A44'); g.addColorStop(.75, '#071232'); g.addColorStop(1, '#0A1F52');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(C, C, R, 0, 7); ctx.fill();
+  const front = q => q[2] > .02;
+  ctx.beginPath(); for (const r of orb.grid) path(r, front);
+  ctx.strokeStyle = 'rgba(47,78,150,.55)'; ctx.lineWidth = .8; ctx.stroke();
+  ctx.beginPath(); for (const r of orb.coast) path(r, front);
+  ctx.strokeStyle = 'rgba(143,212,255,.85)'; ctx.lineWidth = 1.1; ctx.lineJoin = 'round'; ctx.stroke();
+  ctx.beginPath(); ctx.arc(C, C, R, 0, 7); ctx.strokeStyle = 'rgba(127,196,255,.8)'; ctx.lineWidth = 2; ctx.stroke();
+  // Threads, then the light moving along them
+  for (const pass of [false, true]) {
+    ctx.beginPath();
+    for (const a of orb.arcs) if (a.mine === pass) path(a.pts, seen);
+    ctx.strokeStyle = pass ? 'rgba(242,162,78,.42)' : 'rgba(170,205,255,.22)'; ctx.lineWidth = pass ? 1.1 : .9; ctx.stroke();
+  }
+  for (const a of orb.arcs) {
+    const u = (a.phase + orb.t * a.speed) % 1, i = Math.floor(u * 40);
+    const q = view(a.pts[i]);
+    if (!seen(q)) continue;
+    const [x, y] = at(q), fade = Math.sin(Math.PI * u);
+    ctx.fillStyle = a.mine ? `rgba(255,196,128,${.95 * fade})` : `rgba(210,230,255,${.8 * fade})`;
+    ctx.beginPath(); ctx.arc(x, y, a.mine ? 2.2 : 1.6, 0, 7); ctx.fill();
+  }
+  // People
+  let me = null;
+  orb.people.forEach((p, i) => {
+    const q = view(p.v);
+    if (q[2] <= .02) return;
+    const [x, y] = at(q), edge = Math.min(1, q[2] * 4);
+    ctx.globalAlpha = edge;
+    if (p.kind === 'you') { me = [x, y]; return; }
+    const r = p.kind === 'live' ? 3.6 : 3, col = DOT[p.kind];
+    const pulse = p.kind === 'live' ? .22 + .14 * Math.sin(orb.t * 2.4 + i) : .2;
+    ctx.fillStyle = col; ctx.globalAlpha = edge * pulse; ctx.beginPath(); ctx.arc(x, y, r * 2.6, 0, 7); ctx.fill();
+    ctx.globalAlpha = edge; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  if (me) {
+    const [x, y] = me, ping = (orb.t * .55) % 1, blink = .5 + .5 * Math.sin(orb.t * 4);
+    ctx.strokeStyle = `rgba(242,162,78,${.8 * (1 - ping)})`; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x, y, 6 + ping * 26, 0, 7); ctx.stroke();
+    ctx.fillStyle = `rgba(242,162,78,${.18 + .22 * blink})`; ctx.beginPath(); ctx.arc(x, y, 12, 0, 7); ctx.fill();
+    ctx.fillStyle = '#F2A24E'; ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#FFF4E6'; ctx.beginPath(); ctx.arc(x, y, 2, 0, 7); ctx.fill();
+    // Your label
+    const label = 'You · Amritsar';
+    ctx.font = '600 13px Mukta, system-ui, sans-serif';
+    const w = ctx.measureText(label).width + 20, lx = Math.min(S - w - 4, x + 16), ly = y - 34;
+    ctx.fillStyle = 'rgba(12,15,36,.78)'; ctx.strokeStyle = 'rgba(242,162,78,.6)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.roundRect(lx, ly, w, 24, 12); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#F3F1FA'; ctx.textBaseline = 'middle'; ctx.fillText(label, lx + 10, ly + 12.5);
+  }
+}
+let orbLast = 0;
+function orbLoop(now) {
+  const dt = Math.min(.05, (now - orbLast) / 1000 || 0); orbLast = now;
+  if (orb.visible && !orb.rec) {
+    if (!orb.drag) {
+      orb.v += ((reduce ? 0 : orb.spin) - orb.v) * Math.min(1, dt * 1.2);
+      orb.lon += orb.v * dt;
+    }
+    if (!reduce) orb.t += dt;
+    drawOrb();
+  }
+  requestAnimationFrame(orbLoop);
+}
+function sizeOrb() {
+  const d = Math.min(2, devicePixelRatio || 1), S = orb.cv.clientWidth;
+  orb.cv.width = Math.round(S * d); orb.cv.height = Math.round(S * d);
+  drawOrb();
+}
+new ResizeObserver(sizeOrb).observe(orb.cv);
+new IntersectionObserver(([e]) => { orb.visible = e.isIntersecting; }).observe(orb.cv);
+// Turn it by hand: the point under your finger follows it.
+orb.cv.addEventListener('pointerdown', e => {
+  orb.drag = { x: e.clientX, y: e.clientY, t: performance.now(), v: 0 };
+  orb.cv.setPointerCapture(e.pointerId);
+});
+orb.cv.addEventListener('pointermove', e => {
+  const d = orb.drag; if (!d) return;
+  const R = orb.cv.clientWidth * .37, now = performance.now();
+  const dlon = -(e.clientX - d.x) / R / D2R, dlat = (e.clientY - d.y) / R / D2R;
+  orb.lon += dlon; orb.lat = Math.max(-70, Math.min(70, orb.lat + dlat));
+  const dt = Math.max(1, now - d.t) / 1000;
+  d.v = dlon / dt; d.x = e.clientX; d.y = e.clientY; d.t = now;
+  if (reduce) drawOrb();
+});
+const release = () => { if (orb.drag) { orb.v = Math.max(-240, Math.min(240, orb.drag.v)); orb.drag = null; } };
+orb.cv.addEventListener('pointerup', release);
+orb.cv.addEventListener('pointercancel', release);
+orb.cv.addEventListener('keydown', e => {
+  const step = { ArrowLeft: [12, 0], ArrowRight: [-12, 0], ArrowUp: [0, -8], ArrowDown: [0, 8] }[e.key];
+  if (!step) return;
+  e.preventDefault(); orb.lon += step[0]; orb.lat = Math.max(-70, Math.min(70, orb.lat + step[1])); drawOrb();
+});
+
+/* ---------- The tour: the text keeps time with the phone ---------- */
+const scenes = ORDER.map(id => {
+  const root = el('div', 'scene', stage);
+  const tl = BUILD[id](byId[id], root);
+  return { id, root, tl };
+});
+const featList = document.querySelector('.feats');
+const feats = ORDER.map((id, i) => {
+  const s = STORY[id];
+  const li = el('li', 'feat', featList);
+  const fill = el('span', 'fill', li);
+  const b = el('button', '', li); b.type = 'button'; b.setAttribute('aria-expanded', 'false');
+  b.innerHTML = `<span class="tab">${s.tab}</span><h3>${s.title}</h3>`;
+  const more = el('div', 'more', li), inner = el('div', 'more-in', more);
+  el('p', '', inner).textContent = s.text;
+  const chips = el('div', 'chips', inner);
+  (s.chips || []).forEach(c => el('span', 'chip', chips).textContent = c);
+  (s.legend || []).forEach(([c, t]) => { const x = el('span', 'chip', chips); x.innerHTML = `<i style="background:${c}"></i>${t}`; });
+  b.addEventListener('click', () => { go(i); if (running()) schedule(); });
+  return { li, b, fill, more, inner };
+});
+const segs = document.querySelector('.segs');
+const segFills = ORDER.map((id, i) => {
+  const b = el('button', 'seg', segs); b.type = 'button';
+  b.setAttribute('aria-label', STORY[id].title);
+  const bar = el('span', '', b), fill = el('b', '', bar);
+  b.addEventListener('click', () => { go(i); if (running()) schedule(); });
+  return fill;
+});
+const capIn = document.querySelector('.cap-in'), capT = capIn.querySelector('b'), capP = capIn.querySelector('p');
+
+let cur = -1, timer = null, inView = false, userPaused = reduce;
+const running = () => inView && !userPaused;
+function go(i) {
+  if (i === cur) return;
+  const prev = scenes[cur], next = scenes[i], was = feats[cur], now = feats[i];
+  if (prev) {
+    if (reduce) gsap.set(prev.root, { autoAlpha: 0 });
+    else gsap.to(prev.root, { autoAlpha: 0, scale: .97, duration: .45, ease: 'power2.in', onComplete: () => gsap.set(prev.root, { scale: 1 }) });
+  }
+  globe.active = next.id === 'simran';
+  if (globe.active) globe.t0 = gsap.globalTimeline.time();
+  if (reduce) { gsap.set(next.root, { autoAlpha: 1 }); next.tl.progress(1); }
+  else {
+    gsap.fromTo(next.root, { autoAlpha: 0, x: 36 }, { autoAlpha: 1, x: 0, duration: .55, ease: 'power3.out', delay: prev ? .2 : 0 });
+    next.tl.restart(true, false); next.tl.delay(prev ? .35 : .1);
+  }
+  if (next.id === 'simran' && reduce) drawGlobe();
+  cur = i;
+  // The words move with the screen: the old feature folds away, the new one opens.
+  if (was) {
+    was.li.classList.remove('on'); was.b.setAttribute('aria-expanded', 'false');
+    gsap.to(was.more, { height: 0, duration: reduce ? 0 : .45, ease: 'power2.inOut' });
+  }
+  now.li.classList.add('on'); now.b.setAttribute('aria-expanded', 'true');
+  gsap.to(now.more, { height: 'auto', duration: reduce ? 0 : .5, ease: 'power2.inOut' });
+  if (!reduce) gsap.fromTo(now.inner, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .55, delay: .15, ease: 'power3.out' });
+  const s = STORY[next.id];
+  if (reduce) { capT.textContent = s.title; capP.textContent = s.text; }
+  else gsap.to(capIn, { autoAlpha: 0, y: -10, duration: .2, ease: 'power1.in', onComplete: () => {
+    capT.textContent = s.title; capP.textContent = s.text;
+    gsap.fromTo(capIn, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power3.out' });
+  } });
+  feats.forEach((f, n) => { gsap.killTweensOf(f.fill); gsap.set(f.fill, { scaleY: n === i && !running() ? 1 : 0 }); });
+  segFills.forEach((f, n) => { gsap.killTweensOf(f); gsap.set(f, { scaleX: n < i || (n === i && !running()) ? 1 : 0 }); });
+}
+function schedule() {
+  if (timer) timer.kill();
+  const f = feats[cur].fill, sg = segFills[cur];
+  gsap.killTweensOf([f, sg]);
+  gsap.fromTo(f, { scaleY: 0 }, { scaleY: 1, duration: DWELL, ease: 'none' });
+  gsap.fromTo(sg, { scaleX: 0 }, { scaleX: 1, duration: DWELL, ease: 'none' });
+  timer = gsap.delayedCall(DWELL, () => { go((cur + 1) % ORDER.length); schedule(); });
+}
+function halt() {
+  if (timer) timer.kill(); timer = null;
+  if (cur >= 0) { gsap.killTweensOf([feats[cur].fill, segFills[cur]]); gsap.set([feats[cur].fill], { scaleY: 1 }); gsap.set(segFills[cur], { scaleX: 1 }); }
+}
+const pauseBtn = document.querySelector('.pause');
+const ICON_PAUSE = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg><span class="lbl">Pause</span>';
+const ICON_PLAY = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z" fill="currentColor"/></svg><span class="lbl">Play</span>';
+function syncPause() {
+  pauseBtn.innerHTML = userPaused ? ICON_PLAY : ICON_PAUSE;
+  pauseBtn.setAttribute('aria-label', userPaused ? 'Play the tour' : 'Pause the tour');
+}
+pauseBtn.addEventListener('click', () => { userPaused = !userPaused; syncPause(); if (running()) schedule(); else halt(); });
+syncPause();
+// The tour plays while you can see it, from the screen you left it on.
+new IntersectionObserver(([e]) => {
+  const was = inView; inView = e.isIntersecting;
+  if (inView && !was && running()) { if (!reduce) scenes[cur].tl.restart(true, false); schedule(); }
+  if (!inView && was) halt();
+}, { threshold: .35 }).observe(document.querySelector('.tour-grid'));
+
+/* The stage is 390 x 844, the size the screens were drawn at, scaled to the phone. */
+const screenEl = document.querySelector('.screen');
+new ResizeObserver(() => { stage.style.transform = `scale(${screenEl.clientWidth / 390})`; }).observe(screenEl);
+
+/* A night sky that thins out toward dawn. */
+function stars() {
+  const c = document.querySelector('.stars'), r = c.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
+  c.width = r.width * d; c.height = r.height * d;
+  const x = c.getContext('2d'); x.scale(d, d);
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 260; i++) {
+    const px = rnd() * r.width, py = Math.pow(rnd(), 1.6) * r.height;
+    x.globalAlpha = (.25 + rnd() * .6) * (1 - py / r.height);
+    x.fillStyle = '#fff'; x.beginPath(); x.arc(px, py, rnd() < .15 ? 1.3 : .8, 0, 7); x.fill();
+  }
+}
+stars(); addEventListener('resize', () => { clearTimeout(stars.t); stars.t = setTimeout(stars, 200); });
+
+/* ---------- Gurpurab calendar ---------- */
+const CAL = __CAL__;
+const BLOG = __BLOG__;
+const MONTHS = ['Chet', 'Vaisakh', 'Jeth', 'Harh', 'Sawan', 'Bhadon', 'Assu', 'Katak', 'Maghar', 'Poh', 'Magh', 'Phagan'];
+const KIND = { prakash: 'Prakash Purab', gurgaddi: 'Gurgaddi', 'joti-jot': 'Joti Jot', shaheedi: 'Shaheedi', birth: 'Birth anniversary',
+  historical: 'Day in history', special: 'Special day', 'jor-mela': 'Jor Mela', festival: 'Festival', sangrand: 'Sangrand', puranmashi: 'Puranmashi', masya: 'Masya' };
+const GROUP = t => ['prakash', 'gurgaddi', 'joti-jot'].includes(t) ? 'gurpurab' : t === 'shaheedi' ? 'shaheedi'
+  : ['sangrand', 'puranmashi', 'masya'].includes(t) ? 'monthly' : 'panth';
+const FILTERS = [['all', 'Coming up'], ['gurpurab', 'Gurpurabs'], ['shaheedi', 'Shaheedi'], ['panth', 'Days of the Panth'], ['monthly', 'Sangrand and Masya']];
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const TODAY = iso(new Date());
+const long = s => parse(s).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const short = s => parse(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+const daysTo = s => Math.round((parse(s) - parse(TODAY)) / 864e5);
+const remindAt = e => e.r ? (GROUP(e.t) === 'gurpurab' ? '06:00' : '07:00') : '';
+function nanakshahi(s) {
+  const m = [...CAL.months].reverse().find(m => m.start <= s);
+  if (!m) return null;
+  const day = daysTo.call(null, s) - daysTo(m.start) + 1;
+  return day <= m.days ? `${day} ${MONTHS[m.idx]} ${m.ns_year}` : null;
+}
+(function today() {
+  const box = document.getElementById('todayNs');
+  const ns = nanakshahi(TODAY);
+  box.querySelector('b').textContent = ns || 'Outside Nanakshahi 558';
+  box.querySelector('span').textContent = long(TODAY);
+})();
+const upcoming = CAL.events.filter(e => e.d >= TODAY);
+let calFilter = 'all', calShown = 8, picked = null;
+const feature = document.getElementById('feature');
+const fCount = feature.querySelector('.count'), fCountL = feature.querySelector('.count-l'), fName = feature.querySelector('h3'),
+  fDates = feature.querySelector('.dates'), fStory = feature.querySelector('.story'), fMore = feature.querySelector('.more-btn'), fRemind = feature.querySelector('.remind');
+function show(e, animate) {
+  picked = e;
+  const n = daysTo(e.d);
+  fCount.textContent = n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n > 0 ? `In ${n} days` : `${-n} days ago`;
+  fCountL.textContent = KIND[e.t];
+  fName.textContent = e.n;
+  fDates.textContent = `${long(e.d)} · ${e.ns}`;
+  fStory.textContent = e.a || e.line || `${KIND[e.t]} in the Nanakshahi calendar.`;
+  fStory.classList.add('clamp');
+  fMore.hidden = !e.a; fMore.textContent = 'Read the full story';
+  const at = remindAt(e);
+  fRemind.hidden = !at; fRemind.textContent = at ? `Hazri reminds you at ${at}` : '';
+  document.querySelectorAll('#days .day').forEach(b => b.setAttribute('aria-current', String(b.dataset.key === e.d + e.n)));
+  if (animate && !reduce) gsap.fromTo(feature.children, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .04, ease: 'power2.out' });
+}
+fMore.addEventListener('click', () => {
+  const open = fStory.classList.toggle('clamp');
+  fMore.textContent = open ? 'Read the full story' : 'Show less';
+});
+const kinds = document.querySelector('.kinds');
+FILTERS.forEach(([k, label]) => {
+  const b = el('button', 'kind', kinds); b.type = 'button'; b.textContent = label;
+  b.setAttribute('aria-pressed', String(k === calFilter));
+  b.addEventListener('click', () => {
+    calFilter = k; calShown = 8;
+    kinds.querySelectorAll('.kind').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    renderDays(true);
+  });
+});
+function renderDays(animate) {
+  const list = upcoming.filter(e => calFilter === 'all' ? GROUP(e.t) !== 'monthly' : GROUP(e.t) === calFilter);
+  const ol = document.getElementById('days'); ol.innerHTML = '';
+  list.slice(0, calShown).forEach(e => {
+    const li = el('li', '', ol), b = el('button', 'day', li); b.type = 'button'; b.dataset.key = e.d + e.n;
+    const d = parse(e.d), at = remindAt(e);
+    b.innerHTML = `<span class="dnum"><b>${d.getDate()}</b><small>${d.toLocaleDateString('en-GB', { month: 'short' })}</small></span>
+      <span class="dname"><b></b><span></span></span>${at ? `<span class="dtag">${at}</span>` : '<span></span>'}`;
+    b.querySelector('.dname b').textContent = e.n;
+    b.querySelector('.dname span').textContent = `${KIND[e.t]} · ${e.ns}`;
+    b.setAttribute('aria-label', `${e.n}, ${long(e.d)}`);
+    b.addEventListener('click', () => { show(e, true); if (!wideCal.matches) feature.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); });
+  });
+  document.getElementById('calCount').textContent = `${Math.min(calShown, list.length)} of ${list.length} days still to come in 558`;
+  document.getElementById('calMore').hidden = calShown >= list.length;
+  if (picked) document.querySelectorAll('#days .day').forEach(b => b.setAttribute('aria-current', String(b.dataset.key === picked.d + picked.n)));
+  if (animate && !reduce) gsap.fromTo(ol.children, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: .3, stagger: .03 });
+}
+const wideCal = matchMedia('(min-width: 961px)');
+document.getElementById('calMore').addEventListener('click', () => { calShown += 8; renderDays(false); });
+const nextBig = upcoming.find(e => GROUP(e.t) === 'gurpurab') || upcoming[0];
+renderDays(false);
+if (nextBig) show(nextBig, false);
+
+/* ---------- Blog ---------- */
+const CATS = ['All', ...new Set(BLOG.guides.map(g => g.cat))];
+let cat = 'All', allGuides = false;
+const cats = document.querySelector('.cats');
+CATS.forEach(c => {
+  const b = el('button', 'kind', cats); b.type = 'button'; b.textContent = c; b.setAttribute('aria-pressed', String(c === cat));
+  b.addEventListener('click', () => { cat = c; cats.querySelectorAll('.kind').forEach(x => x.setAttribute('aria-pressed', String(x === b))); renderGuides(true); });
+});
+function renderGuides(animate) {
+  const list = BLOG.guides.filter(g => cat === 'All' || g.cat === cat);
+  const shown = allGuides || cat !== 'All' ? list : list.slice(0, 6);
+  const box = document.getElementById('guides'); box.innerHTML = '';
+  shown.forEach(g => {
+    const a = el('article', 'guide', box);
+    a.dataset.slug = g.slug; a.tabIndex = 0; a.setAttribute('role', 'button'); a.setAttribute('aria-label', `Read the guide: ${g.title}`);
+    a.innerHTML = `<span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="${BLOG.icons[g.icon]}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <small></small><h3></h3><p></p><span class="slug"></span>`;
+    a.querySelector('small').textContent = `${g.cat} · ${g.min} min read`;
+    a.querySelector('h3').textContent = g.title;
+    a.querySelector('p').textContent = g.ex;
+    a.querySelector('.slug').textContent = `hazri.me/blog/${g.slug}`;
+  });
+  document.getElementById('guideCount').textContent = `${shown.length} of ${list.length} guides`;
+  const more = document.getElementById('guideMore');
+  more.hidden = shown.length >= list.length;
+  if (animate && !reduce) gsap.fromTo(box.children, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: .3, stagger: .03 });
+}
+document.getElementById('guideMore').addEventListener('click', () => { allGuides = true; renderGuides(true); });
+renderGuides(false);
+(function storyCard() {
+  const e = upcoming.find(x => x.a) ;
+  const card = document.getElementById('storyCard');
+  if (!e) { card.hidden = true; return; }
+  card.querySelector('h3').textContent = e.n;
+  card.querySelector('.sc-date').textContent = `${long(e.d)} · ${e.ns}`;
+  const words = e.a.split(/\s+/);
+  card.querySelector('.sc-text').textContent = words.slice(0, 42).join(' ') + (words.length > 42 ? '…' : '');
+  card.querySelector('.btn').addEventListener('click', () => { show(e, true); });
+})();
+
+/* ---------- Guide reader ---------- */
+const GUIDES = __GUIDES__;
+const byGuide = Object.fromEntries(GUIDES.map(g => [g.slug, g]));
+const reader = document.getElementById('reader'), rBody = reader.querySelector('.reader-body'), rCrumb = reader.querySelector('.crumb');
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function openGuide(slug) {
+  const g = byGuide[slug]; if (!g) return;
+  rCrumb.textContent = `hazri.me/blog/${g.slug}`;
+  rBody.innerHTML = `
+    <div class="meta">${esc(g.group)} · ${g.read} min read</div>
+    <h2 id="readerTitle">${esc(g.title)}</h2>
+    <p class="intro">${esc(g.intro)}</p>
+    <ol class="steps">${g.steps.map(st => `<li><h3>${esc(st.title)}</h3><p>${esc(st.body)}</p>
+      <div class="where"><span>${esc(st.where)}</span>${st.tap ? `<span aria-hidden="true">›</span><span class="tap">${esc(st.tap)}</span>` : ''}</div></li>`).join('')}</ol>
+    ${g.tip ? `<div class="tipbox"><b>Good to know</b><p>${esc(g.tip)}</p></div>` : ''}
+    ${g.faq && g.faq.length ? `<div class="faq"><h3>Questions</h3>${g.faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</div>` : ''}
+    ${g.related && g.related.length ? `<div class="related"><h3>Read next</h3><div>${g.related.filter(r => byGuide[r]).map(r => `<button type="button" data-slug="${r}">${esc(byGuide[r].title)}</button>`).join('')}</div></div>` : ''}`;
+  rBody.querySelectorAll('.related button').forEach(b => b.addEventListener('click', () => openGuide(b.dataset.slug)));
+  reader.querySelector('.reader-in').scrollTop = 0;
+  if (!reader.open) {
+    reader.showModal();
+    if (!reduce) gsap.fromTo(reader.querySelector('.reader-in'), { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: .35, ease: 'power3.out' });
+  } else if (!reduce) gsap.fromTo(rBody, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .3 });
+}
+reader.querySelector('.close').addEventListener('click', () => reader.close());
+reader.addEventListener('click', e => { if (e.target === reader) reader.close(); });
+document.getElementById('guides').addEventListener('click', e => {
+  const card = e.target.closest('.guide'); if (card) openGuide(card.dataset.slug);
+});
+document.getElementById('guides').addEventListener('keydown', e => {
+  const card = e.target.closest('.guide');
+  if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openGuide(card.dataset.slug); }
+});
+
+if (location.hash === '#reel') document.body.classList.add('reel');
+// Frame-by-frame control for recording the video: time comes from here, not the clock.
+window.__rec = {
+  start() {
+    gsap.globalTimeline.pause(); globe.rec = true; orb.rec = true;
+    halt(); inView = true; userPaused = false;
+    scenes.forEach(x => gsap.set(x.root, { autoAlpha: 0 }));
+    cur = -1; go(0); schedule();
+    return gsap.globalTimeline.time();
+  },
+  frame(t) { gsap.globalTimeline.time(t); if (globe.active) globeAt(t); },
+  orb(t, lon) { orb.t = t; orb.lon = lon; drawOrb(); },
+};
+requestAnimationFrame(spin);
+requestAnimationFrame(orbLoop);
+go(0);
+</script>

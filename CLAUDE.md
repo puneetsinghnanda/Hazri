@@ -213,7 +213,8 @@ content/source/           the reviewed source files the pipeline reads
 docs/                     PRD.md, ARCHITECTURE.md, features/ (one file per feature)
 design/                   tokens.json, screens.json, HTML specs, PNG renders
                           canvas.html: every screen on one page, by feature
-public/                   Firebase Hosting: /verify and /j/<groupId>
+public/                   Firebase Hosting: the home page, /verify and /j/<groupId>
+tools/site/               builds public/index.html (the home page)
 ```
 
 ## Regenerating
@@ -226,7 +227,14 @@ dart run build_runner build                           # drift *.g.dart
 ```
 
 **Neither is the website.** `public/` is Firebase Hosting — `/verify`, where
-an email verification link lands, and `/j/<groupId>`, where an invite does.
+an email verification link lands, `/j/<groupId>`, where an invite does, and
+since 2026-10-18 **the home page** at `/`: the sangat's globe, the phone tour,
+the Gurpurab calendar and the guides, in English. It is **built, not edited**:
+change `tools/site/template.html` or its data and run
+`python3 tools/site/build.py`, which writes `public/index.html`; the phone
+screens it shows are `public/img/*.webp`. It collects nothing -- the "notify
+me" box was taken out before it went live, so the site sends no data
+anywhere.
 It goes live with `firebase deploy --only hosting` and **no workflow runs
 that**, so a change to those pages changes nothing until somebody deploys by
 hand. **First deployed 2026-09-27**, before which the site had never been
