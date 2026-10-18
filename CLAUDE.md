@@ -243,7 +243,7 @@ every verification link the app had ever sent had been landing. Both URLs come f
 test holds that they share a host, because they were once on two and one of
 them served nothing.
 
-**`hazri.me` is registered and connected to nothing** (2026-09-26). It is a
+**`hazri.me` is registered (Namecheap) and being connected to Hosting** (records added 2026-10-18, see `docs/domain-setup.md` for the zone as it stands). It is a
 Phase 3 asset: it is added *alongside* `hazri-dfcc1.web.app`, never instead,
 because a verification link already sitting in an inbox has to keep working.
 `docs/domain-setup.md` is the record set and the order to add it in; the DNS

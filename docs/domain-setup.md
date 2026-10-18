@@ -1,6 +1,16 @@
 # Setting up `hazri.me`
 
-Registered 2026-09-26. **Connected to nothing** at the time of writing.
+Registered 2026-09-26 at **Namecheap** (nameservers: Namecheap BasicDNS).
+
+**Status, 2026-10-18:** the pages track (steps 3 and 4) is done and waiting
+on propagation. At Namecheap -> Advanced DNS, the parking CNAME on `www` and
+the URL Redirect on `@` were deleted, and Firebase's two records were added:
+A `@` -> `199.36.158.100` and TXT `@` -> `hosting-site=hazri-dfcc1` (TTL 5
+min). `hazri.me` is on Authentication's authorized domains. Nothing is set for
+`www.hazri.me` yet. The zone also carries Brevo's records for the profile
+mail (`brevo1._domainkey` and `brevo2._domainkey` CNAMEs, a `brevo-code` TXT
+on `@`, and `_dmarc` TXT `v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com`),
+which must stay. There is no SPF record; when one is added it is one line.
 
 This is the record set and the order to add it in. The exact values come from
 each provider's own wizard — Zoho's mail servers differ by the region the
