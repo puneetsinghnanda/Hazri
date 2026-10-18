@@ -4,7 +4,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { GROUP_ARRIVALS_MAX, GROUP_GLOBE_SECONDS } from '../../src/config';
 import { profileSyncChange } from '../../src/jobs/sangat';
 import { memberChange } from '../../src/sangat/contribute';
-import { fromCityCounts, globeDto, globeIsFresh, GroupGlobeDoc, pickArrivals, tallyMembers } from '../../src/sangat/globe';
+import { cityFills, fromCityCounts, globeDto, globeIsFresh, GroupGlobeDoc, pickArrivals, tallyMembers } from '../../src/sangat/globe';
 
 const day = '2026-10-17';
 const now = new Date('2026-10-17T06:00:00Z');
@@ -93,6 +93,24 @@ describe('pickArrivals: the paath arriving as light (GG4)', () => {
   it('a Naam Simran goal: each sitting brings its whole minutes (CT1, SG-1)', () => {
     const rows = [row(0, { kind: 'SIMRAN', baniId: null, durationS: 7 * 60 + 59 }), row(1, { kind: 'SIMRAN', baniId: null, durationS: 20 * 60 })];
     expect(pickArrivals(rows, 'grp', 'g0001', simran).map((a) => a.amount)).toEqual([7, 20]);
+  });
+});
+
+describe('cityFills: rows from before cities were kept, from their profiles (GG2)', () => {
+  const known = (c: string) => ['amritsar', 'london'].includes(c);
+  it('fills a profile row with no city or an unknown one; leaves a known city, an anonymous row and a cityless profile', () => {
+    const rows = [
+      { id: 'p_a' },
+      { id: 'p_b', cityId: 'atlantis' },
+      { id: 'p_c', cityId: 'amritsar' },
+      { id: 'u_d' },
+      { id: 'p_e' },
+    ];
+    const profiles: Record<string, string | undefined> = { a: 'london', b: 'amritsar', c: 'london', e: undefined };
+    expect(cityFills(rows, (id) => profiles[id], known)).toEqual([
+      { id: 'p_a', cityId: 'london' },
+      { id: 'p_b', cityId: 'amritsar' },
+    ]);
   });
 });
 

@@ -9,6 +9,7 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/progress_ring.dart';
 import '../../simran/data/presence_repository.dart';
+import '../../simran/domain/simran_presence.dart';
 import '../../simran/ui/simran_globe.dart';
 import '../data/group_globe_controller.dart';
 import '../domain/group_globe.dart';
@@ -63,6 +64,9 @@ class GroupGlobeRing extends ConsumerWidget {
                       progress: progress,
                       colour: colour,
                       trackColour: Colors.white.withValues(alpha: 0.16),
+                    ),
+                    Positioned.fill(
+                      child: GroupTethers(dots: drawing.dots, project: project, progress: progress),
                     ),
                     Positioned.fill(
                       child: GroupArrivals(
@@ -328,6 +332,98 @@ class GroupArrivalsState extends State<GroupArrivals> with SingleTickerProviderS
   }
 }
 
+/// GG4a: every dot on the near side of the globe is tied to the ring's
+/// leading edge by a dashed line in its own colour, the path its paath
+/// travels when it arrives (design 104). Drawn with the globe as it turns.
+class GroupTethers extends StatelessWidget {
+  const GroupTethers({super.key, required this.dots, required this.project, required this.progress});
+
+  final List<GlobeDot> dots;
+
+  /// As [GroupArrivals.project]: in the globe's square, centred in this one.
+  final GlobeProjector project;
+  final double progress;
+
+  /// Where each line starts, in this square: the dot's own centre, after
+  /// the side-by-side shift of DR3. Dots round the back have no line.
+  @visibleForTesting
+  List<({Offset start, DotKind kind})> starts() {
+    const inset = Offset(
+      (GroupGlobeRing.ringSize - GroupGlobeRing.globeSize) / 2,
+      (GroupGlobeRing.ringSize - GroupGlobeRing.globeSize) / 2,
+    );
+    return [
+      for (final d in dots)
+        if (project(d.lat, d.lon) case (at: final at, front: true))
+          (start: at + Offset(GlobePainter.shiftOf(d), 0) + inset, kind: d.kind),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) => CustomPaint(
+    size: Size.infinite,
+    painter: _TethersPainter(lines: starts(), progress: progress),
+  );
+}
+
+class _TethersPainter extends CustomPainter {
+  _TethersPainter({required this.lines, required this.progress});
+
+  final List<({Offset start, DotKind kind})> lines;
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final centre = size.center(Offset.zero);
+    final end = _leadingEdge(size, progress);
+    for (final l in lines) {
+      final colour = switch (l.kind) {
+        DotKind.you => GlobePainter.you,
+        DotKind.live => GlobePainter.live,
+        DotKind.here => GlobePainter.here,
+      };
+      final paint = Paint()
+        ..color = colour.withValues(alpha: 0.6)
+        ..strokeWidth = 1.2
+        ..strokeCap = StrokeCap.round;
+      final control = _bow(l.start, end, centre);
+      // Dashes of 4 dp with gaps of 5, measured along the curve.
+      const steps = 48;
+      var prev = l.start;
+      var run = 0.0;
+      for (var i = 1; i <= steps; i++) {
+        final t = i / steps;
+        final u = 1 - t;
+        final p = l.start * (u * u) + control * (2 * u * t) + end * (t * t);
+        if (run % 9 < 4) canvas.drawLine(prev, p, paint);
+        run += (p - prev).distance;
+        prev = p;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_TethersPainter old) => true; // rebuilt with every turn of the globe
+}
+
+/// The ring's leading edge, in a square of [size], on the ring's centre line.
+Offset _leadingEdge(Size size, double progress) {
+  final centre = size.center(Offset.zero);
+  final radius = (size.width - GroupGlobeRing.ringStroke) / 2;
+  final angle = _leadingAngle(progress);
+  return centre + Offset(math.cos(angle), math.sin(angle)) * radius;
+}
+
+/// The control point of a gentle arc from [start] to [end], bowed away from
+/// the centre so it reads as travelling. Arrivals fly along the same curve
+/// as the dashed lines.
+Offset _bow(Offset start, Offset end, Offset centre) {
+  final mid = (start + end) / 2;
+  final away = mid - centre;
+  final bow = away.distance < 1 ? Offset(-(end - start).dy, (end - start).dx) : away;
+  return mid + bow / (bow.distance == 0 ? 1 : bow.distance) * ((end - start).distance * 0.25);
+}
+
 /// The ring's leading edge, as an angle on screen: the ring starts at the
 /// top and runs clockwise.
 double _leadingAngle(double progress) => -math.pi / 2 + 2 * math.pi * progress.clamp(0.0, 1.0);
@@ -345,9 +441,7 @@ class _ArrivalsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final centre = size.center(Offset.zero);
-    final radius = (size.width - GroupGlobeRing.ringStroke) / 2;
-    final angle = _leadingAngle(progress);
-    final end = centre + Offset(math.cos(angle), math.sin(angle)) * radius;
+    final end = _leadingEdge(size, progress);
     final glowFor = GroupArrivals.glow.inMicroseconds / GroupArrivals.flight.inMicroseconds;
     for (final l in lights) {
       if (l.t >= 1) {
@@ -363,11 +457,7 @@ class _ArrivalsPainter extends CustomPainter {
         );
         continue;
       }
-      // A gentle arc, bowed away from the centre so it reads as travelling.
-      final mid = (l.start + end) / 2;
-      final away = mid - centre;
-      final bow = away.distance < 1 ? Offset(-(end - l.start).dy, (end - l.start).dx) : away;
-      final control = mid + bow / (bow.distance == 0 ? 1 : bow.distance) * ((end - l.start).distance * 0.25);
+      final control = _bow(l.start, end, centre);
       Offset at(double t) {
         final u = 1 - t;
         return l.start * (u * u) + control * (2 * u * t) + end * (t * t);

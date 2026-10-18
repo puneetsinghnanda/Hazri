@@ -133,11 +133,30 @@ describeEmu("the group's globe (08-sangat GG1–GG9, 7.15)", () => {
     const { id } = await customGroup(h, 'creator');
     const ref = h.db.doc(`groups/${id}/members/p_${p.profileId}`);
     await ref.update({ cityId: FieldValue.delete(), lastAddDay: FieldValue.delete() });
-    expect((await h.as('creator').get(globePath(id))).body).toMatchObject({ cities: {}, unplaced: { members: 1, today: 0 } });
     await h.as('creator').post('/api/v1/sangat/contributions', { items: [japji(1)] });
     expect((await ref.get()).data()).toMatchObject({ cityId: 'toronto', lastAddDay: '2026-10-08' });
-    h.clock.advance(121);
-    expect((await h.as('creator').get(globePath(id))).body).toMatchObject({ cities: { toronto: [1, 1] }, unplaced: { members: 0, today: 0 } });
+  });
+
+  it('rows from before 2026-10-17 are filled from their profiles on the first build, once (GG2)', async () => {
+    const p = await createProfile(h, 'creator', { email: 'c@example.com', cityId: 'toronto' });
+    const q = await createProfile(h, 'londoner', { email: 'l@example.com', cityId: 'london' });
+    const { id, code } = await customGroup(h, 'creator');
+    await h.as('londoner').post('/api/v1/sangat/join', { code });
+    await h.as('anon').post('/api/v1/sangat/join', { code });
+    for (const key of [`p_${p.profileId}`, `p_${q.profileId}`]) await h.db.doc(`groups/${id}/members/${key}`).update({ cityId: FieldValue.delete() });
+    // A globe stored by the build before this one, without the fill.
+    await h.db.doc(`groups/${id}/globe/current`).set({
+      goalId: 'g0001', day: '2026-10-08', cities: {}, unplaced: { today: 0, members: 3 }, recent: [], builtAt: Timestamp.fromDate(h.clock.now()),
+    });
+    const body = (await h.as('creator').get(globePath(id))).body;
+    expect(body).toMatchObject({ cities: { toronto: [0, 1], london: [0, 1] }, unplaced: { members: 1, today: 0 } });
+    expect((await h.db.doc(`groups/${id}/members/p_${q.profileId}`).get()).get('cityId')).toBe('london');
+    expect((await h.db.doc(`groups/${id}/globe/current`).get()).get('citiesFilled')).toBe(true);
+
+    const gid = await builtInGroup(h);
+    await h.as('londoner').post(`/api/v1/sangat/groups/${gid}/join`);
+    await h.db.doc(`groups/${gid}/members/p_${q.profileId}`).update({ cityId: FieldValue.delete() });
+    expect((await h.as('passer-by').get(globePath(gid))).body).toMatchObject({ cities: { london: [0, 1] }, unplaced: { members: 0 } });
   });
 
   it('built-in: count() per city, unplaced from memberCount, open to anybody', async () => {

@@ -284,6 +284,19 @@ void main() {
       await drain(tester);
     });
 
+    testWidgets('GG4a: with nothing arriving, every dot in view is still tied to the ring', (tester) async {
+      await boot(tester, globeJson: globe(recent: []));
+      final tethers = tester.widget<GroupTethers>(find.byType(GroupTethers));
+      final inView = [
+        for (final d in tethers.dots)
+          if (tethers.project(d.lat, d.lon).front) d.kind,
+      ];
+      expect(inView, containsAll([DotKind.you, DotKind.live, DotKind.here]));
+      expect(tethers.starts().map((s) => s.kind), inView);
+      expect(tester.state<GroupArrivalsState>(find.byType(GroupArrivals)).queued, isEmpty);
+      await drain(tester);
+    });
+
     testWidgets('the flights are spaced 0.8 s apart', (tester) async {
       await boot(tester, globeJson: globe());
       final state = tester.state<GroupArrivalsState>(find.byType(GroupArrivals));

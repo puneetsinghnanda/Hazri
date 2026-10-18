@@ -13,7 +13,7 @@ import { inBatches } from '../jobs/globe';
 import { CITIES, isCityId } from '../reference';
 import { dayIst, toIso } from '../time';
 import { amountFor, ItemKind } from './counting';
-import type { GoalDoc, GroupDoc } from './model';
+import { GoalDoc, GroupDoc, profileIdOfKey } from './model';
 
 /** `[today, members]`: active members with this profile city, and how many of them added today (GG3). */
 export type CityPair = [number, number];
@@ -34,6 +34,8 @@ export interface GroupGlobeDoc {
   unplaced: { today: number; members: number };
   recent: Arrival[];
   builtAt: Timestamp;
+  /** GG2: member rows from before cities were kept have been filled from their profiles, once. */
+  citiesFilled?: boolean;
 }
 
 /** The reply of 7.15. */
@@ -174,7 +176,55 @@ export function globeDto(doc: GroupGlobeDoc, ended: boolean): GroupGlobeDto {
   };
 }
 
+/**
+ * GG2, for rows written before member rows carried a city: which rows to
+ * fill and with what, from each profile's city. A row whose city is already
+ * a known one, a row without a profile, or a profile without a known city
+ * is left alone.
+ */
+export function cityFills(
+  rows: ReadonlyArray<{ id: string; cityId?: unknown }>,
+  profileCity: (profileId: string) => unknown,
+  isCity: (id: string) => boolean = isCityId,
+): Array<{ id: string; cityId: string }> {
+  const out: Array<{ id: string; cityId: string }> = [];
+  for (const r of rows) {
+    if (typeof r.cityId === 'string' && isCity(r.cityId)) continue;
+    const profileId = profileIdOfKey(r.id);
+    if (!profileId) continue;
+    const city = profileCity(profileId);
+    if (typeof city === 'string' && isCity(city)) out.push({ id: r.id, cityId: city });
+  }
+  return out;
+}
+
 // --- Firestore ---------------------------------------------------------------
+
+/** The most rows the one-off fill reads (GG2). */
+const FILL_MAX_ROWS = 10_000;
+
+/**
+ * GG2: fills `cityId` on the group's active member rows that predate it,
+ * from their profiles. Run once per group (the stored globe's
+ * `citiesFilled`); rows written since carry a city from the start.
+ */
+export async function fillMemberCities(db: Firestore, groupRef: DocumentReference): Promise<number> {
+  const snap = await groupRef.collection('members').where('status', '==', 'ACTIVE').select('cityId').limit(FILL_MAX_ROWS).get();
+  const rows = snap.docs.map((d) => ({ id: d.id, cityId: d.get('cityId') as unknown }));
+  const wanted = rows.filter((r) => !(typeof r.cityId === 'string' && isCityId(r.cityId)) && profileIdOfKey(r.id));
+  if (wanted.length === 0) return 0;
+  const cities = new Map<string, unknown>();
+  await inBatches(wanted, 100, async (r) => {
+    const id = profileIdOfKey(r.id) as string;
+    const p = await db.doc(`profiles/${id}`).get();
+    cities.set(id, p.exists ? p.get('cityId') : null);
+  });
+  const fills = cityFills(rows, (id) => cities.get(id));
+  const writer = db.bulkWriter();
+  for (const f of fills) void writer.update(groupRef.collection('members').doc(f.id), { cityId: f.cityId });
+  await writer.close();
+  return fills.length;
+}
 
 /** Custom: one read of the active member rows, two fields each (§6.4a). */
 async function customCounts(groupRef: DocumentReference, day: string) {
@@ -239,13 +289,15 @@ export async function buildGroupGlobe(
   goal: { id: string; doc: GoalDoc } | null,
   ended: boolean,
   now: Date,
+  filled = true,
 ): Promise<GroupGlobeDoc> {
   const day = dayIst(now);
+  if (!filled) await fillMemberCities(db, groupRef);
   const [counts, recent] = await Promise.all([
     g.kind === 'BUILT_IN' ? builtInCounts(groupRef, g, day) : customCounts(groupRef, day),
     goal && !ended ? readArrivals(db, groupRef.id, goal, now) : Promise.resolve([] as Arrival[]),
   ]);
-  return { goalId: goal?.id ?? g.currentGoalId ?? null, day, ...counts, recent, builtAt: Timestamp.fromDate(now) };
+  return { goalId: goal?.id ?? g.currentGoalId ?? null, day, ...counts, recent, builtAt: Timestamp.fromDate(now), citiesFilled: true };
 }
 
 /**
@@ -269,7 +321,8 @@ export async function groupGlobe(
   const sameGoal = stored !== null && (stored.goalId ?? null) === goalId;
   const groupEnded = g.status !== 'ACTIVE';
   if (groupEnded && sameGoal) return globeDto(stored, true);
-  if (!groupEnded && globeIsFresh(stored, { goalId, day: dayIst(now) }, now)) return globeDto(stored as GroupGlobeDoc, false);
+  const filled = stored?.citiesFilled === true;
+  if (!groupEnded && filled && globeIsFresh(stored, { goalId, day: dayIst(now) }, now)) return globeDto(stored as GroupGlobeDoc, false);
 
   const goalSnap = goalId ? await groupRef.collection('goals').doc(goalId).get() : null;
   const goal = goalSnap?.exists ? { id: goalSnap.id, doc: goalSnap.data() as GoalDoc } : null;
@@ -277,7 +330,7 @@ export async function groupGlobe(
   const ended = groupEnded || (goal !== null && goal.doc.status !== 'ACTIVE');
   if (ended && sameGoal) return globeDto(stored, true);
 
-  const built = await buildGroupGlobe(db, groupRef, g, goal, ended, now);
+  const built = await buildGroupGlobe(db, groupRef, g, goal, ended, now, filled);
   await ref.set(built);
   return globeDto(built, ended);
 }
