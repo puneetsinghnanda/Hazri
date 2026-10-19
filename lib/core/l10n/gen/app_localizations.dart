@@ -114,7 +114,7 @@ abstract class L {
   /// No description provided for @tagline.
   ///
   /// In en, this message translates to:
-  /// **'Your daily Nitnem — always with you'**
+  /// **'Mark your Hazri to Waheguru'**
   String get tagline;
 
   /// No description provided for @actionContinue.

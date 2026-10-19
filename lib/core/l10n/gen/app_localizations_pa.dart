@@ -15,7 +15,7 @@ class LPa extends L {
   String get appNameNative => 'ਹਾਜ਼ਰੀ';
 
   @override
-  String get tagline => 'ਤੁਹਾਡਾ ਰੋਜ਼ਾਨਾ ਨਿਤਨੇਮ — ਹਮੇਸ਼ਾ ਅੰਗ ਸੰਗ';
+  String get tagline => 'ਵਾਹਿਗੁਰੂ ਅੱਗੇ ਆਪਣੀ ਹਾਜ਼ਰੀ ਲਗਾਓ';
 
   @override
   String get actionContinue => 'ਅੱਗੇ ਚੱਲੋ';

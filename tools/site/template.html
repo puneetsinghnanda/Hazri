@@ -193,7 +193,6 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 14px; display
 .feature h3 { font-size: 26px; line-height: 1.15 }
 .feature .dates { font-size: 15px; opacity: .85 }
 .feature .story { font-size: 16px; line-height: 1.6; opacity: .92; position: relative }
-.feature .story.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden }
 .feature .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-top: 4px }
 .feature .more-btn { all: unset; cursor: pointer; font-weight: 600; font-size: 15px; text-decoration: underline; text-underline-offset: 4px }
 .feature .more-btn:focus-visible { outline: 2px solid #F2A24E; outline-offset: 3px; border-radius: 4px }
@@ -447,14 +446,15 @@ body.reel .caption p { font-size: 2.05vh; margin-top: 1vh }
           <div class="when"><span class="count"></span><span class="count-l"></span></div>
           <h3></h3>
           <div class="dates"></div>
-          <p class="story clamp"></p>
-          <div class="row"><button class="more-btn" type="button">Read the full story</button><span class="remind"></span></div>
+          <p class="story"></p>
+          <div class="row"><a class="more-btn" href="/gurpurab">Read the full story</a><span class="remind"></span></div>
         </article>
       </div>
       <div>
         <div class="kinds" role="group" aria-label="Show"></div>
         <ol class="days" id="days"></ol>
         <div class="cal-foot"><span id="calCount"></span><button class="link-btn" type="button" id="calMore">Show more days</button></div>
+        <p class="note"><a href="/gurpurab">Every story of the year, month by month</a></p>
       </div>
     </div>
   </div>
@@ -471,7 +471,7 @@ body.reel .caption p { font-size: 2.05vh; margin-top: 1vh }
         <h3></h3>
         <p class="sc-date"></p>
         <p class="sc-text"></p>
-        <a class="btn" href="#gurpurab">Read it in the calendar</a>
+        <a class="btn" href="/gurpurab">Read the full story</a>
       </article>
       <div>
         <div class="cats" role="group" aria-label="Guides about"></div>
@@ -501,7 +501,7 @@ body.reel .caption p { font-size: 2.05vh; margin-top: 1vh }
       </div>
     </div>
     <footer>
-      <span>hazri.me · A Nitnem app for Android</span>
+      <span>hazri.me · Mark your Hazri to Waheguru</span>
       <span>Every line of Gurbani in Hazri comes from reviewed sources. Nothing is machine-translated.</span>
     </footer>
   </div>
@@ -866,18 +866,14 @@ function show(e, animate) {
   fCountL.textContent = KIND[e.t];
   fName.textContent = e.n;
   fDates.textContent = `${long(e.d)} · ${e.ns}`;
-  fStory.textContent = e.a || e.line || `${KIND[e.t]} in the Nanakshahi calendar.`;
-  fStory.classList.add('clamp');
-  fMore.hidden = !e.a; fMore.textContent = 'Read the full story';
+  fStory.textContent = e.a || e.x || e.line || `${KIND[e.t]} in the Nanakshahi calendar.`;
+  fMore.hidden = !e.s; fMore.href = `/gurpurab/${e.s}`;
+  fMore.setAttribute('aria-label', `Read the full story: ${e.n}`);
   const at = remindAt(e);
   fRemind.hidden = !at; fRemind.textContent = at ? `Hazri reminds you at ${at}` : '';
   document.querySelectorAll('#days .day').forEach(b => b.setAttribute('aria-current', String(b.dataset.key === e.d + e.n)));
   if (animate && !reduce) gsap.fromTo(feature.children, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .04, ease: 'power2.out' });
 }
-fMore.addEventListener('click', () => {
-  const open = fStory.classList.toggle('clamp');
-  fMore.textContent = open ? 'Read the full story' : 'Show less';
-});
 const kinds = document.querySelector('.kinds');
 FILTERS.forEach(([k, label]) => {
   const b = el('button', 'kind', kinds); b.type = 'button'; b.textContent = label;
@@ -942,14 +938,14 @@ function renderGuides(animate) {
 document.getElementById('guideMore').addEventListener('click', () => { allGuides = true; renderGuides(true); });
 renderGuides(false);
 (function storyCard() {
-  const e = upcoming.find(x => x.a) ;
+  const e = upcoming.find(x => x.a && GROUP(x.t) !== 'monthly');
   const card = document.getElementById('storyCard');
   if (!e) { card.hidden = true; return; }
   card.querySelector('h3').textContent = e.n;
   card.querySelector('.sc-date').textContent = `${long(e.d)} · ${e.ns}`;
   const words = e.a.split(/\s+/);
   card.querySelector('.sc-text').textContent = words.slice(0, 42).join(' ') + (words.length > 42 ? '…' : '');
-  card.querySelector('.btn').addEventListener('click', () => { show(e, true); });
+  card.querySelector('.btn').href = `/gurpurab/${e.s}`;
 })();
 
 /* ---------- Guide reader ---------- */

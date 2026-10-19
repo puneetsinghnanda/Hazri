@@ -229,7 +229,9 @@ dart run build_runner build                           # drift *.g.dart
 **Neither is the website.** `public/` is Firebase Hosting — `/verify`, where
 an email verification link lands, `/j/<groupId>`, where an invite does, and
 since 2026-10-18 **the home page** at `/`: the sangat's globe, the phone tour,
-the Gurpurab calendar and the guides, in English. It is **built, not edited**:
+the Gurpurab calendar and the guides, in English, and since 2026-10-19 **a story page for
+every day of the calendar** at `/gurpurab/<slug>` (`docs/site-stories.md`: 102 pages from
+`tools/site/articles/*.json`, photos from Wikimedia Commons still to be reviewed). It is **built, not edited**:
 change `tools/site/template.html` or its data and run
 `python3 tools/site/build.py`, which writes `public/index.html`; the phone
 screens it shows are `public/img/*.webp`. It collects nothing -- the "notify

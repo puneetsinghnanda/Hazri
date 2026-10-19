@@ -15,7 +15,7 @@ class LHi extends L {
   String get appNameNative => 'ਹਾਜ਼ਰੀ';
 
   @override
-  String get tagline => 'आपका रोज़ाना नितनेम — हमेशा अंग संग';
+  String get tagline => 'वाहिगुरु के आगे अपनी हाज़री लगाएँ';
 
   @override
   String get actionContinue => 'आगे बढ़ें';

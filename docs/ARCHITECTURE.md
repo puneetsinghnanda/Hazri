@@ -1782,7 +1782,7 @@ is deployed, and the PR description says so.
 |---|---|
 | `firestore.rules`, indexes | `firebase deploy --only firestore` |
 | Functions | `firebase deploy --only functions` |
-| Public site: the home page, `/verify`, `/j/<code>`, `assetlinks.json` (`hazri.me`, `www.hazri.me` redirecting, and `hazri-dfcc1.web.app`) | `python3 tools/site/build.py` if the page changed, then `firebase deploy --only hosting:public` |
+| Public site: the home page, the story pages at `/gurpurab/<slug>` with their index, `sitemap.xml` and `robots.txt` (`docs/site-stories.md`), `/verify`, `/j/<code>`, `assetlinks.json` (`hazri.me`, `www.hazri.me` redirecting, and `hazri-dfcc1.web.app`) | `python3 tools/site/build.py` if the page changed, then `firebase deploy --only hosting:public` |
 | Admin website (`hazri-admin-d4b72.web.app`) | `npm --prefix admin run build && firebase deploy --only hosting:admin` |
 
 CI (`.github/workflows/build.yml`) analyses, tests and builds the APK; the

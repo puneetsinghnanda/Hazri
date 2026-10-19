@@ -1,0 +1,119 @@
+/* The story pages at /gurpurab/: one per day of the Nanakshahi calendar, plus
+   the index. Colours and type are the home page's (design/tokens.json). */
+:root {
+  --bg: #F4F3F8; --card: #FFFFFF; --card2: #ECEBF3; --ink: #1B1D3A; --ink2: #4D5070;
+  --muted: #6E7190; --rule: #E1E1EA; --primary: #262C63; --onPrimary: #FFFFFF;
+  --kesri: #D9730D; --kesriSoft: #FBE8D2; --kesriInk: #9A4F00;
+  --sun: #F2A24E; --sky-ink: #F3F1FA; --sky-ink2: #C6C5DD;
+  --display: "Baloo Paaji 2", "Mukta", system-ui, sans-serif;
+  --body: "Mukta", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shadow: 0 1px 2px rgba(27,29,58,.06), 0 10px 28px rgba(27,29,58,.08);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0C0F24; --card: #161A37; --card2: #1F2447; --ink: #EDECF6; --ink2: #B9BAD3;
+  --muted: #9396B5; --rule: #2A2F55; --kesri: #F2A24E; --kesriSoft: #3A2A1A; --kesriInk: #FFC27E;
+  --shadow: 0 0 0 1px rgba(255,255,255,.05); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0C0F24; --card: #161A37; --card2: #1F2447; --ink: #EDECF6; --ink2: #B9BAD3;
+  --muted: #9396B5; --rule: #2A2F55; --kesri: #F2A24E; --kesriSoft: #3A2A1A; --kesriInk: #FFC27E;
+  --shadow: 0 0 0 1px rgba(255,255,255,.05); color-scheme: dark }
+
+* { box-sizing: border-box }
+html { -webkit-text-size-adjust: 100% }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 18px; line-height: 1.7 }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.15; margin: 0; text-wrap: balance }
+p { margin: 0 }
+a { color: inherit }
+:focus-visible { outline: 2px solid var(--kesri); outline-offset: 3px; border-radius: 6px }
+.wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding-inline: 16px }
+
+/* The bar: the same night sky the home page opens on. */
+.top { background: linear-gradient(180deg, #070A1E, #10143A 70%, #232659); color: var(--sky-ink) }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 22px/1 var(--display) }
+.nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font-size: 15px; color: var(--sky-ink2) }
+.nav ul a { text-decoration: none }
+.nav ul a:hover { color: var(--sky-ink) }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 999px; text-decoration: none;
+  font: 600 16px/1 var(--body); white-space: nowrap; background: var(--sun); color: #1C1206 }
+
+/* The article */
+.crumbs { font-size: 14px; color: var(--muted); padding-top: 28px; display: flex; flex-wrap: wrap; gap: 6px }
+.crumbs a { text-decoration: none }
+.crumbs a:hover { text-decoration: underline }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 48px; align-items: start; padding-block: 18px 72px }
+.kicker { font: 600 13px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--kesriInk) }
+article h1 { font-size: clamp(32px, 5vw, 50px); margin-top: 10px }
+.dek { font-size: 20px; color: var(--ink2); margin-top: 14px; max-width: 36em }
+.when { margin-top: 14px; font-size: 15px; color: var(--muted) }
+.when b { color: var(--ink); font-weight: 600 }
+figure { margin: 28px 0 8px; border-radius: 22px; overflow: hidden; background: var(--card2); position: relative }
+figure img, figure svg { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover }
+figcaption { font-size: 13px; color: var(--muted); padding: 10px 14px; background: var(--card) }
+figcaption a { color: var(--muted) }
+.body { margin-top: 26px; max-width: 40em }
+.body p + p, .body p + h2, .body h2 + p, .body ul + h2, .body p + ul, .body ul + p { margin-top: 18px }
+.body h2 { font-size: 26px; margin-top: 36px !important }
+.body ul { padding-left: 22px; margin: 0 }
+.body li + li { margin-top: 6px }
+.dates { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 16px; background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow) }
+.dates th, .dates td { text-align: left; padding: 10px 14px; border-top: 1px solid var(--rule) }
+.dates thead th { border-top: 0; font: 600 12px/1.2 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+
+/* The poster after every story */
+.poster { margin-top: 44px; border-radius: 26px; padding: 30px; color: var(--sky-ink); position: relative; overflow: hidden;
+  background: linear-gradient(170deg, #10143A, #232659 55%, #5E3550 85%, #8C4524) }
+.poster::after { content: ""; position: absolute; left: 50%; bottom: -140px; width: 420px; height: 280px; transform: translateX(-50%);
+  border-radius: 999px 999px 0 0; background: radial-gradient(60% 100% at 50% 100%, rgba(255,190,110,.55), rgba(242,162,78,.2) 45%, transparent 75%); pointer-events: none }
+.poster > * { position: relative; z-index: 1 }
+.poster small { font: 600 12px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--sun) }
+.poster h2 { font-size: clamp(28px, 4vw, 38px); margin-top: 10px }
+.poster p { color: var(--sky-ink2); margin-top: 12px; max-width: 30em; font-size: 17px }
+.poster ul { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px }
+.poster li { font-size: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14) }
+.poster .play { margin-top: 22px; display: inline-flex; align-items: center; gap: 12px; padding: 12px 22px 12px 16px; border-radius: 14px;
+  background: #000; color: #fff; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.3) }
+.poster .play small { display: block; font: 500 11px/1.2 var(--body); letter-spacing: .04em; text-transform: none; color: #ddd }
+.poster .play b { display: block; font: 600 19px/1.1 var(--body) }
+
+/* The side column */
+aside { position: sticky; top: 20px; display: flex; flex-direction: column; gap: 16px }
+.facts { background: var(--card); border-radius: 20px; padding: 20px; box-shadow: var(--shadow) }
+.facts h3, .more h3 { font-size: 18px; margin-bottom: 10px }
+.facts dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 15px; line-height: 1.45 }
+.facts dt { color: var(--muted) }
+.facts dd { margin: 0; font-weight: 600 }
+.more { background: var(--card); border-radius: 20px; padding: 20px; box-shadow: var(--shadow) }
+.more ul { list-style: none; margin: 0; padding: 0 }
+.more li + li { border-top: 1px solid var(--rule) }
+.more a { display: block; padding: 10px 0; text-decoration: none; font-size: 15px; line-height: 1.35 }
+.more a span { display: block; font-size: 13px; color: var(--muted) }
+.more a:hover b { text-decoration: underline }
+
+/* The index */
+.intro { padding-block: 30px 10px }
+.intro h1 { font-size: clamp(34px, 5vw, 54px); margin-top: 10px }
+.intro p { color: var(--ink2); margin-top: 14px; max-width: 38em }
+.month { margin-top: 36px }
+.month h2 { font-size: 24px; margin-bottom: 12px }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.card { background: var(--card); border-radius: 18px; padding: 16px 18px; box-shadow: var(--shadow); text-decoration: none; display: flex; flex-direction: column; gap: 4px }
+.card small { font-size: 12.5px; color: var(--kesriInk); font-weight: 600; letter-spacing: .04em }
+.card b { font: 700 18px/1.25 var(--display) }
+.card span { font-size: 14px; color: var(--muted); line-height: 1.4 }
+.card:hover b { text-decoration: underline }
+
+footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 10px 28px; justify-content: space-between }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 28px }
+  aside { position: static }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+}
+@media (max-width: 600px) {
+  body { font-size: 17px }
+  .nav ul { display: none }
+  .cards { grid-template-columns: minmax(0, 1fr) }
+  .poster { padding: 24px 20px }
+  .dek { font-size: 18px }
+}

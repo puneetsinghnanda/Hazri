@@ -15,7 +15,7 @@ class LEn extends L {
   String get appNameNative => 'ਹਾਜ਼ਰੀ';
 
   @override
-  String get tagline => 'Your daily Nitnem — always with you';
+  String get tagline => 'Mark your Hazri to Waheguru';
 
   @override
   String get actionContinue => 'Continue';
