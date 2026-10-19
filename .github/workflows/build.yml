@@ -15,10 +15,58 @@ name: Build
 # is not one. It did, three times. Release assets are not counted against that
 # quota at all, so one rolling pre-release per branch, apk-<branch>, replaced
 # on the next hand-started run of that branch.
+#
+# A push or pull request builds only when it touches something the build
+# reads (owner, 2026-10-19). Each run is about fifteen minutes and the
+# account's free Actions minutes are shared; a push that changes only the
+# website, the docs, the designs or the server code cannot change the APK, and
+# the server code has its own workflow. The list below (twice: push and pull
+# request take the same one) is everything this job
+# reads: the app, its content and the pipeline that rebuilds content.db, its
+# settings, and the three files outside them that app tests open. A test that
+# starts reading another file outside these must add it here, or a change to
+# that file will not be checked until the next app push. Run workflow by hand
+# always builds.
 on:
   push:
     branches: ['**']
+    paths:
+      - 'lib/**'
+      - 'test/**'
+      - 'android/**'
+      - 'assets/**'
+      - 'content/**'
+      - 'tools/content_pipeline/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+      - 'analysis_options.yaml'
+      - 'l10n.yaml'
+      - '.metadata'
+      - '.github/workflows/build.yml'
+      # Read by test/android/firebase_hosting_test.dart and assetlinks_test.dart.
+      - 'firebase.json'
+      - 'public/.well-known/**'
+      # Read by test/android/manifest_test.dart.
+      - 'functions/src/notifications/messenger.ts'
   pull_request:
+    paths:
+      - 'lib/**'
+      - 'test/**'
+      - 'android/**'
+      - 'assets/**'
+      - 'content/**'
+      - 'tools/content_pipeline/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+      - 'analysis_options.yaml'
+      - 'l10n.yaml'
+      - '.metadata'
+      - '.github/workflows/build.yml'
+      # Read by test/android/firebase_hosting_test.dart and assetlinks_test.dart.
+      - 'firebase.json'
+      - 'public/.well-known/**'
+      # Read by test/android/manifest_test.dart.
+      - 'functions/src/notifications/messenger.ts'
   workflow_dispatch:
 
 # Only the newest push to a branch needs building. Without this every push

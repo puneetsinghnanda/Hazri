@@ -1,7 +1,8 @@
 # Getting a test APK
 
-`build.yml` analyzes, tests and builds on every push, but it **only keeps the
-APK when the run was started by hand**. To install the app on a phone:
+`build.yml` analyzes, tests and builds on every push **that touches the app**
+(see "Which pushes build" below), but it **only keeps the APK when the run was
+started by hand**. To install the app on a phone:
 
 1. Open the **Actions** tab, pick **Build** in the sidebar, then **Run
    workflow** and choose your branch.
@@ -14,7 +15,19 @@ APK when the run was started by hand**. To install the app on a phone:
 There is a copy attached to the run page as an artifact too, but it is only a
 convenience and it is allowed to fail: see below.
 
-A push still builds the APK — that is what catches a Gradle or manifest break
+**Which pushes build** (2026-10-19). Each run is about fifteen minutes and the
+account's free Actions minutes are shared, so a push builds only when it
+changes something the build reads: `lib/`, `test/`, `android/`, `assets/`,
+`content/`, `tools/content_pipeline/`, the pubspec, `analysis_options.yaml`,
+`l10n.yaml`, `.metadata`, `build.yml` itself, and the three outside files app
+tests open (`firebase.json`, `public/.well-known/`,
+`functions/src/notifications/messenger.ts`). A push that changes only the
+website, docs, designs, the admin site or the Functions does not build the app
+(the Functions have `functions.yml`). Run workflow by hand always builds. If a
+test starts reading another file outside those folders, add it to the `paths`
+lists in `build.yml`.
+
+A push that touches the app still builds the APK — that is what catches a Gradle or manifest break
 no widget test can see — it simply does not store it. The reason is storage:
 the allowance on this plan is 500 MB and one APK is about 95 MiB, so five of
 them fill it and every run after that fails at the last step with *Artifact

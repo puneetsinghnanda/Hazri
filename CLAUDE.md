@@ -286,7 +286,11 @@ it.
 ## Builds
 
 `.github/workflows/build.yml` analyzes, tests and builds the release APK on
-every push, **but only a run started by hand keeps it** (Actions -> Build ->
+every push **that touches the app** -- since 2026-10-19 a push that changes only
+the website, docs, designs, admin or Functions does not build, to save the
+account's Actions minutes; the `paths` lists in the workflow are what counts,
+and a test that reads a new file outside them must add it there -- **but only a
+run started by hand keeps it** (Actions -> Build ->
 Run workflow). A push still compiles the Android app, which is what catches a
 Gradle or manifest break no widget test can see; it simply does not keep the
 95 MiB.
