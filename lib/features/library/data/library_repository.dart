@@ -32,8 +32,13 @@ final libraryEntriesProvider = FutureProvider<List<LibraryEntry>>(
   (ref) => ref.watch(libraryRepositoryProvider).entries(),
 );
 
+/// One entry, read from the list, so a fresh list fetched behind the saved
+/// one (`onUpdated`) redraws an article that is already open. It once asked
+/// the repository on its own and kept the first answer for the session, so
+/// an article opened before the fresh list arrived stayed old until restart.
 final libraryEntryProvider = FutureProvider.family<LibraryEntry?, String>(
-  (ref, id) => ref.watch(libraryRepositoryProvider).entry(id),
+  (ref, id) async =>
+      (await ref.watch(libraryEntriesProvider.future)).where((e) => e.id == id).firstOrNull,
 );
 
 /// What somebody has typed into the search box (design 46).

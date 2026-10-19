@@ -9,7 +9,7 @@ import '../app_harness.dart';
 
 class _FakeLibrary implements LibraryRepository {
   _FakeLibrary(this.all);
-  final List<LibraryEntry> all;
+  List<LibraryEntry> all;
 
   @override
   Future<List<LibraryEntry>> entries() async => all;
@@ -110,6 +110,28 @@ void main() {
   testWidgets('an entry that names no layout keeps the plain reader', (tester) async {
     await pump(tester, 'beant');
     expect(find.text('Shaheedi of Bhai Beant Singh'), findsOneWidget);
+  });
+
+  testWidgets('an open article redraws when a fresh list arrives behind the saved one', (tester) async {
+    // The saved copy from before the layouts: no layout, so the plain reader.
+    const old = LibraryEntry(id: 'ram-das', kind: EntryKind.guru, title: 'Prakash Purab of Sri Guru Ram Das Ji');
+    final library = _FakeLibrary([old]);
+    final app = await TestApp.create(
+      prefs: {'onboarding_done': true},
+      now: DateTime(2026, 10, 19, 9),
+      extra: [libraryRepositoryProvider.overrideWithValue(library)],
+    );
+    addTearDown(app.dispose);
+    usePhoneFrame(tester);
+    await tester.pumpWidget(app.wrapRouted(const LibraryEntryScreen(id: 'ram-das')));
+    await settle(tester);
+    expect(find.text('27'), findsNothing);
+
+    // What main.dart's onUpdated does when the fresh list arrives.
+    library.all = _entries;
+    app.container.invalidate(libraryEntriesProvider);
+    await settle(tester);
+    expect(find.text('27'), findsOneWidget);
   });
 
   test('the layout is read from the entry, and an unknown one is plain', () {
