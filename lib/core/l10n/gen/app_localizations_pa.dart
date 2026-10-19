@@ -1789,9 +1789,6 @@ class LPa extends L {
   String get librarySearchHint => 'ਲੇਖ, ਗੁਰਦੁਆਰੇ, ਬਾਣੀਆਂ ਲੱਭੋ…';
 
   @override
-  String get libraryKindAll => 'ਸਾਰੇ';
-
-  @override
   String get libraryKindArticle => 'ਲੇਖ';
 
   @override

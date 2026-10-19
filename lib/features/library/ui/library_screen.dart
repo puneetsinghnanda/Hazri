@@ -92,18 +92,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              _KindChip(
-                label: l.libraryKindAll,
-                selected: kind == null,
-                onTap: () => ref.read(libraryKindProvider.notifier).state = null,
-              ),
-              for (final k in EntryKind.values) ...[
-                const SizedBox(width: 8),
+              for (final k in EntryKind.topics) ...[
+                if (k != EntryKind.topics.first) const SizedBox(width: 8),
                 _KindChip(
                   label: kindLabel(l, k),
                   selected: kind == k,
-                  onTap: () => ref.read(libraryKindProvider.notifier).state =
-                      kind == k ? null : k,
+                  onTap: () => ref.read(libraryKindProvider.notifier).state = k,
                 ),
               ],
             ],

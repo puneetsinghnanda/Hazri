@@ -6,10 +6,36 @@ comes from Firestore and is corrected in one place. That is deliberate and it
 is the same rule CLAUDE.md rule 3 applies to Gurbani: nothing about Sikhi is
 written in Dart, generated, or paraphrased into the build.
 
-It follows that a fresh install shows an empty library until entries are
-published, and the screen says so rather than pretending.
+It follows that the library needs a connection, and that with nothing
+published it is empty and says so rather than pretending.
 
-## Where entries live
+## The four chips (owner, 2026-10-19)
+
+The screen has four chips and no others: **Sikh days**, **Gurdwaras**, **Guru
+Sahibans**, **Banis**, in that order. Sikh days is selected when the screen
+opens and lists **every** entry, because every story page is a day in the
+calendar. Each of the others lists the entries tagged with it (`tags`), or,
+for an entry with no tags, whose `kind` it is. There is no "All" chip and no
+"Articles" chip; `article` survives only as the label of an entry that names
+no topic. Within a chip, the days still to come are listed first, soonest
+first, then the days already past, then anything without a date, by title.
+Designs 43 and 46 show the older six chips; this file wins.
+
+## Where entries come from
+
+**The website's story pages** (since 2026-10-19). `python3 tools/site/build.py`
+writes the 102 pages of `hazri.me/gurpurab` into
+`functions/src/vichar-entries.json` as well as into `public/`, and the `api`
+Function bundles that file, so the app and the website read the same text from
+the same source (`tools/site/articles/*.json`, topics in
+`tools/site/categories.json`, see `docs/site-stories.md`) and serving them
+costs no Firestore read. A change reaches phones after
+`firebase deploy --only functions`; the website's after
+`firebase deploy --only hosting:public`.
+
+**Firestore**, as before, for anything else, and for a quick correction: an
+entry stored under the same id as a story page (its slug) replaces that page
+in the app until the next deploy, with no deploy needed.
 
 ```
 content/vichar/entries/{id}
@@ -26,10 +52,12 @@ whatever the website uses in Phase 3.
 | `title` | string | Required. An entry with no title is skipped rather than shown blank. |
 | `kind` | string | `article`, `gurdwara`, `guru`, `bani` or `day`. Anything else falls back to `article`. |
 | `summary` | string | One or two sentences. Shown under the title in the list and at the top of the entry. |
-| `body` | string | The entry itself. Blank lines separate paragraphs. |
-| `minutes` | number | Reading time **as the source states it**. Not computed: a word count is a poor guess in Gurmukhi and worse in mixed script. Omit it and no time is shown. |
+| `body` | string | The entry itself. Blank lines separate paragraphs; a paragraph that starts `## ` is a heading. |
+| `minutes` | number | Reading time **as the source states it**. Not computed: a word count is a poor guess in Gurmukhi and worse in mixed script. Omit it and no time is shown. The story pages state it from their English word count at 200 a minute. |
 | `place` | string | A city or region, for a Gurdwara. Shown under the title. |
-| `facts` | map of string to string | The labelled rows on design 45 — Where, Marks, Open, Langar. The source decides what appears and in what order. |
+| `facts` | list of `{label, value}`, or a map of string to string | The labelled rows on design 45 — Where, Marks, Open, Langar. The source decides what appears and in what order (a map's order is not kept by Firestore; a list's is). |
+| `tags` | list of string | The chips it is listed under: any of `day`, `gurdwara`, `guru`, `bani`. Omit it and the entry is listed under its `kind`. Every entry is listed under Sikh days regardless. |
+| `dates` | list of string | The calendar days it tells the story of, `YYYY-MM-DD`. Used to put the coming days first. |
 
 Example:
 

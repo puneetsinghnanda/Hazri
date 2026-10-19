@@ -1788,9 +1788,6 @@ class LHi extends L {
   String get librarySearchHint => 'लेख, गुरुद्वारे, बाणियाँ ढूँढें…';
 
   @override
-  String get libraryKindAll => 'सभी';
-
-  @override
   String get libraryKindArticle => 'लेख';
 
   @override

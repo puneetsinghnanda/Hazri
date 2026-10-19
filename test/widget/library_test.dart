@@ -34,6 +34,22 @@ const _entries = [
     summary: 'The evening bani, and the hour it belongs to.',
     minutes: 6,
   ),
+  // A story page from the website: tagged with two topics, and a day in the
+  // calendar.
+  LibraryEntry(
+    id: 'harmandir-sahib-foundation-stone',
+    kind: EntryKind.gurdwara,
+    tags: {EntryKind.gurdwara, EntryKind.guru},
+    title: 'Foundation stone of Sri Harmandir Sahib',
+    dates: ['2027-01-14'],
+  ),
+  LibraryEntry(
+    id: 'bandi-chhor-divas',
+    kind: EntryKind.guru,
+    tags: {EntryKind.guru, EntryKind.day},
+    title: 'Bandi Chhor Divas',
+    dates: ['2026-11-08'],
+  ),
 ];
 
 /// Designs 43 and 46. Nothing in the library is written in the app, so these
@@ -47,7 +63,10 @@ void main() {
   }) async {
     final app = await TestApp.create(
       prefs: {'onboarding_done': true},
-      extra: [libraryRepositoryProvider.overrideWithValue(_FakeLibrary(entries))],
+      extra: [
+        libraryRepositoryProvider.overrideWithValue(_FakeLibrary(entries)),
+        libraryTodayProvider.overrideWithValue('2026-10-19'),
+      ],
     );
     addTearDown(app.dispose);
     usePhoneFrame(tester);
@@ -89,18 +108,60 @@ void main() {
     expect(find.text(l.libraryEmpty), findsNothing);
   });
 
-  testWidgets('a chip filters by kind and untaps to show everything',
+  Finder chip(String label) =>
+      find.descendant(of: find.byType(SingleChildScrollView), matching: find.text(label));
+
+  testWidgets('four chips, Sikh days first, and no All or Articles',
       (tester) async {
     final l = await pump(tester);
-    // Six chips do not fit across a phone, so the row scrolls and the chip
-    // has to be brought into view before it can be tapped.
-    await tester.ensureVisible(find.text(l.libraryKindBani));
+    final xs = [l.libraryKindDay, l.libraryKindGurdwara, l.libraryKindGuru, l.libraryKindBani]
+        .map((t) => tester.getTopLeft(chip(t)).dx)
+        .toList();
+    expect(xs, orderedEquals([...xs]..sort()));
+    expect(find.text('All'), findsNothing);
+    expect(chip(l.libraryKindArticle), findsNothing);
+  });
+
+  testWidgets('Sikh days is selected at first and lists every entry, '
+      'the days to come first', (tester) async {
+    await pump(tester);
+    for (final t in ['Bandi Chhor Divas', 'Foundation stone of Sri Harmandir Sahib',
+        'Gurdwara Bangla Sahib, Delhi', 'Why Rehras Sahib is read at sunset']) {
+      expect(find.text(t), findsOneWidget);
+    }
+    double y(String t) => tester.getTopLeft(find.text(t)).dy;
+    // 8 November comes before 14 January; undated entries follow.
+    expect(y('Bandi Chhor Divas'), lessThan(y('Foundation stone of Sri Harmandir Sahib')));
+    expect(y('Foundation stone of Sri Harmandir Sahib'),
+        lessThan(y('Gurdwara Bangla Sahib, Delhi')));
+  });
+
+  testWidgets('a chip lists the entries tagged with it, '
+      'whatever their own kind', (tester) async {
+    final l = await pump(tester);
+    await tester.tap(chip(l.libraryKindGurdwara));
     await settle(tester);
-    await tester.tap(find.text(l.libraryKindBani));
+    expect(find.text('Gurdwara Bangla Sahib, Delhi'), findsOneWidget);
+    expect(find.text('Foundation stone of Sri Harmandir Sahib'), findsOneWidget);
+    expect(find.text('Bandi Chhor Divas'), findsNothing);
+    expect(find.text('Why Rehras Sahib is read at sunset'), findsNothing);
+
+    await tester.ensureVisible(chip(l.libraryKindGuru));
+    await settle(tester);
+    await tester.tap(chip(l.libraryKindGuru));
+    await settle(tester);
+    expect(find.text('Bandi Chhor Divas'), findsOneWidget);
+    expect(find.text('Foundation stone of Sri Harmandir Sahib'), findsOneWidget);
+    expect(find.text('Gurdwara Bangla Sahib, Delhi'), findsNothing);
+
+    // Tapping the chip that is already selected keeps it selected.
+    await tester.tap(chip(l.libraryKindGuru));
     await settle(tester);
     expect(find.text('Gurdwara Bangla Sahib, Delhi'), findsNothing);
 
-    await tester.tap(find.text(l.libraryKindBani));
+    await tester.ensureVisible(chip(l.libraryKindDay));
+    await settle(tester);
+    await tester.tap(chip(l.libraryKindDay));
     await settle(tester);
     expect(find.text('Gurdwara Bangla Sahib, Delhi'), findsOneWidget);
   });

@@ -349,6 +349,34 @@ def sitemap(arts, cats):
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'
 
 
+# The app's Vichar library shows these same pages, with its four chips
+# standing for the four topics (lib/features/library, docs/vichar-content.md).
+APP_KIND = {'gurudwaras': 'gurdwara', 'guru-sahiban': 'guru', 'banis': 'bani', 'sikh-days': 'day'}
+
+
+def vichar_entries(arts):
+    """The pages as `GET /api/v1/vichar/entries` serves them: written into
+    functions/src/vichar-entries.json and bundled with the Function, so the
+    app reads the website's text without a Firestore read."""
+    out = []
+    for a in arts:
+        body = [('## ' + plain(x[3:])) if x.startswith('## ') else plain(x) for x in a['body']]
+        words = len(' '.join(body).split())
+        facts = [{'label': 'Date' if len(a['events']) == 1 else 'Dates',
+                  'value': '\n'.join(f"{long_date(e['d'])} · {e['ns']}" for e in a['events'])},
+                 {'label': 'Kind', 'value': KIND[a['kind']]}]
+        if a['remind']:
+            facts.append({'label': 'Hazri reminds you', 'value': f"at {a['remind']}, on the day"})
+        out.append({
+            'id': a['slug'], 'title': a['name'], 'kind': APP_KIND[a['cats'][0]['slug']],
+            'tags': [APP_KIND[c['slug']] for c in a['cats']],
+            'dates': [e['d'] for e in a['events']],
+            'summary': a['desc'], 'body': '\n\n'.join(body),
+            'minutes': max(1, round(words / 200)), 'place': None, 'facts': facts,
+        })
+    return out
+
+
 def load(here):
     arts = []
     for f in sorted((here / 'articles').glob('*.json')):
@@ -421,6 +449,8 @@ def build(here, public, cal):
         (out / 'topic' / f"{c['slug']}.html").write_text(topic(c, cats))
     (public / 'stories.css').write_text((here / 'stories.css').read_text())
     (public / 'sitemap.xml').write_text(sitemap(arts, cats))
+    (here.parent.parent / 'functions' / 'src' / 'vichar-entries.json').write_text(
+        json.dumps(vichar_entries(arts), ensure_ascii=False, indent=1) + '\n')
     (public / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nDisallow: /verify\nDisallow: /j/\n\nSitemap: {SITE}/sitemap.xml\n')
 
     first_para = {a['slug']: plain(next(x for x in a['body'] if not x.startswith(('## ', '- ')))) for a in arts}

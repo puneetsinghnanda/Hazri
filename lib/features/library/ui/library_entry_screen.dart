@@ -82,10 +82,18 @@ class LibraryEntryScreen extends ConsumerWidget {
             ),
           ),
         ],
+        // A paragraph that starts "## " is a heading, as the website's
+        // story pages write them.
         for (final paragraph in paragraphs) ...[
-          const SizedBox(height: 14),
-          Text(paragraph,
-              style: HazriText.body.copyWith(color: c.ink2, height: 1.7)),
+          if (paragraph.startsWith('## ')) ...[
+            const SizedBox(height: 22),
+            Text(paragraph.substring(3),
+                style: HazriText.bodyStrong.copyWith(color: c.ink)),
+          ] else ...[
+            const SizedBox(height: 14),
+            Text(paragraph,
+                style: HazriText.body.copyWith(color: c.ink2, height: 1.7)),
+          ],
         ],
         const SizedBox(height: 20),
         Text(l.libraryCorrections,

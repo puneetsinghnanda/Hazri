@@ -238,13 +238,16 @@ describeEmu('devices, badges and the Vichar library', () => {
     await entries.doc('a').set({ title: 'Anand Karaj', kind: 'nonsense', body: 'One.\n\nTwo.' });
     await entries.doc('c').set({ kind: 'article' });
     const res = await h.as('x').get('/api/v1/vichar/entries');
-    expect(res.body).toEqual({
+    const mine = res.body.entries.filter((e: { id: string }) => ['a', 'b', 'c'].includes(e.id));
+    expect({ entries: mine }).toEqual({
       entries: [
-        { id: 'a', title: 'Anand Karaj', kind: 'article', summary: null, body: 'One.\n\nTwo.', minutes: null, place: null, facts: [] },
+        { id: 'a', title: 'Anand Karaj', kind: 'article', tags: [], dates: [], summary: null, body: 'One.\n\nTwo.', minutes: null, place: null, facts: [] },
         {
           id: 'b',
           title: 'Bangla Sahib',
           kind: 'gurdwara',
+          tags: ['gurdwara'],
+          dates: [],
           summary: null,
           body: null,
           minutes: 4,
@@ -256,5 +259,21 @@ describeEmu('devices, badges and the Vichar library', () => {
         },
       ],
     });
+  });
+
+  it('vichar: the bundled story pages are served, and a stored entry with the same id replaces one', async () => {
+    const id = 'prakash-purab-guru-nanak-dev-ji';
+    let res = await h.as('x').get('/api/v1/vichar/entries');
+    const page = res.body.entries.find((e: { id: string }) => e.id === id);
+    expect(page.tags).toContain('guru');
+    expect(page.dates).toHaveLength(1);
+    expect(res.body.entries.length).toBeGreaterThanOrEqual(100);
+
+    await h.db.collection('content/vichar/entries').doc(id).set({ title: 'Corrected', kind: 'guru' });
+    h.clock.advance(601);
+    res = await h.as('x').get('/api/v1/vichar/entries');
+    const both = res.body.entries.filter((e: { id: string }) => e.id === id);
+    expect(both).toHaveLength(1);
+    expect(both[0].title).toBe('Corrected');
   });
 });

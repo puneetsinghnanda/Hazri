@@ -3321,12 +3321,6 @@ abstract class L {
   /// **'Search articles, gurdwaras, banis…'**
   String get librarySearchHint;
 
-  /// No description provided for @libraryKindAll.
-  ///
-  /// In en, this message translates to:
-  /// **'All'**
-  String get libraryKindAll;
-
   /// No description provided for @libraryKindArticle.
   ///
   /// In en, this message translates to:

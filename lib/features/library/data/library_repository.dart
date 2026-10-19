@@ -39,16 +39,37 @@ final libraryEntryProvider = FutureProvider.family<LibraryEntry?, String>(
 /// What somebody has typed into the search box (design 46).
 final librarySearchProvider = StateProvider<String>((ref) => '');
 
-/// Which chip is selected, or null for everything.
-final libraryKindProvider = StateProvider<EntryKind?>((ref) => null);
+/// Which chip is selected. There is always one: Sikh days, which lists
+/// everything, until another is tapped.
+final libraryKindProvider = StateProvider<EntryKind>((ref) => EntryKind.day);
 
-/// The entries that survive the search box and the chip.
+/// Today as YYYY-MM-DD, for putting the coming days first. A provider so a
+/// test can fix the date.
+final libraryTodayProvider = Provider<String>((ref) {
+  final now = DateTime.now();
+  return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+});
+
+/// The entries that survive the search box and the chip: the days still to
+/// come first, soonest first, then the days already past in calendar order,
+/// then anything without a date by title.
 final libraryResultsProvider = Provider<List<LibraryEntry>>((ref) {
   final all = ref.watch(libraryEntriesProvider).value ?? const <LibraryEntry>[];
   final query = ref.watch(librarySearchProvider);
   final kind = ref.watch(libraryKindProvider);
+  final today = ref.watch(libraryTodayProvider);
+  String key(LibraryEntry e) {
+    final next = e.nextDate(today);
+    if (next != null) return '0$next';
+    if (e.dates.isNotEmpty) return '1${e.dates.first}';
+    return '2';
+  }
+
   return [
     for (final e in all)
-      if ((kind == null || e.kind == kind) && e.matches(query)) e,
-  ];
+      if (e.listedUnder(kind) && e.matches(query)) e,
+  ]..sort((a, b) {
+      final c = key(a).compareTo(key(b));
+      return c != 0 ? c : a.title.compareTo(b.title);
+    });
 });

@@ -1,13 +1,18 @@
 import 'package:flutter/foundation.dart';
 
-/// What kind of thing an entry is. The chips on design 43, and the eyebrow
-/// above every card.
+/// What kind of thing an entry is: the eyebrow above every card. Four of
+/// them are also the topics the chips filter by ([topics]); `article` is a
+/// kind only, kept for an entry that names no topic.
 enum EntryKind {
   article,
   gurdwara,
   guru,
   bani,
   day;
+
+  /// The chips, in order. Sikh days comes first and lists every entry,
+  /// because every story page is a day in the calendar (owner, 2026-10-19).
+  static const topics = [day, gurdwara, guru, bani];
 
   static EntryKind parse(String? v) => EntryKind.values.firstWhere(
         (k) => k.name == v,
@@ -33,6 +38,8 @@ class LibraryEntry {
     this.minutes = 0,
     this.facts = const {},
     this.place = '',
+    this.tags = const {},
+    this.dates = const [],
   });
 
   final String id;
@@ -54,6 +61,21 @@ class LibraryEntry {
 
   /// A city or region, shown under the title of a place.
   final String place;
+
+  /// The topics it is listed under. Empty means its [kind] alone.
+  final Set<EntryKind> tags;
+
+  /// The calendar days it tells the story of, YYYY-MM-DD, earliest first.
+  final List<String> dates;
+
+  /// Whether the chip for [topic] lists this entry. Sikh days lists them all.
+  bool listedUnder(EntryKind topic) =>
+      topic == EntryKind.day || tags.contains(topic) || kind == topic;
+
+  /// The first of [dates] on or after [today] (YYYY-MM-DD), or null when they
+  /// are all past or there are none.
+  String? nextDate(String today) =>
+      dates.where((d) => d.compareTo(today) >= 0).firstOrNull;
 
   /// Whether this entry matches what somebody typed.
   ///
@@ -92,6 +114,17 @@ class LibraryEntry {
       minutes: ((data['minutes'] as num?) ?? 0).toInt(),
       place: (data['place'] as String?) ?? '',
       facts: facts,
+      tags: {
+        if (data['tags'] case final List<Object?> raw)
+          for (final t in raw)
+            if (t is String && EntryKind.topics.any((k) => k.name == t))
+              EntryKind.parse(t),
+      },
+      dates: [
+        if (data['dates'] case final List<Object?> raw)
+          for (final d in raw)
+            if (d is String && RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(d)) d,
+      ]..sort(),
     );
   }
 

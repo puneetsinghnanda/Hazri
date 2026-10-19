@@ -1791,9 +1791,6 @@ class LEn extends L {
   String get librarySearchHint => 'Search articles, gurdwaras, banis…';
 
   @override
-  String get libraryKindAll => 'All';
-
-  @override
   String get libraryKindArticle => 'Articles';
 
   @override

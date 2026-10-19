@@ -507,8 +507,10 @@ answers `500 INTERNAL` from the endpoint that needs it.
 - **`hazri.me` is not yet the app's host.** `kSiteBase` stays
   `hazri-dfcc1.web.app` until Phase 3 (`docs/domain-setup.md`), because a
   link already in somebody's inbox has to keep working.
-- **The Vichar library is empty until entries are published**
-  (`docs/vichar-content.md`); nothing in it is written in Dart.
+- **The Vichar library is the website's 102 story pages** (2026-10-19),
+  bundled with the `api` Function from `tools/site/articles/` and shown under
+  four chips, Sikh days first (`docs/vichar-content.md`); nothing in it is
+  written in Dart, and it reaches phones only after `firebase deploy --only functions`.
 - **Analytics ships with collection off** and the Settings switch is inert
   and says so. Do not wire it up without rewriting the privacy screen.
 - **Around a hundred and fifty Punjabi and Hindi UI strings are mine** and

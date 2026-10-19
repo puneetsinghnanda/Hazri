@@ -26,6 +26,31 @@ void main() {
     expect(LibraryEntry.fromJson({'id': 'x', 'title': '  '}), isNull);
   });
 
+  test('tags and dates come through; unknown tags and bad dates do not', () {
+    final e = LibraryEntry.fromJson({
+      'id': 'h',
+      'title': 't',
+      'kind': 'gurdwara',
+      'tags': ['gurdwara', 'guru', 'article', 'zz'],
+      'dates': ['2027-01-14', '2026-07-05', '14 Jan'],
+    })!;
+    expect(e.tags, {EntryKind.gurdwara, EntryKind.guru});
+    expect(e.dates, ['2026-07-05', '2027-01-14']);
+    expect(e.nextDate('2026-10-19'), '2027-01-14');
+    expect(e.nextDate('2027-02-01'), isNull);
+  });
+
+  test('Sikh days lists every entry; another topic only what is tagged or of its kind', () {
+    const tagged = LibraryEntry(id: 'a', kind: EntryKind.guru, title: 'a', tags: {EntryKind.guru, EntryKind.bani});
+    const plain = LibraryEntry(id: 'b', kind: EntryKind.gurdwara, title: 'b');
+    const article = LibraryEntry(id: 'c', kind: EntryKind.article, title: 'c');
+    expect([tagged, plain, article].every((e) => e.listedUnder(EntryKind.day)), isTrue);
+    expect(tagged.listedUnder(EntryKind.bani), isTrue);
+    expect(tagged.listedUnder(EntryKind.gurdwara), isFalse);
+    expect(plain.listedUnder(EntryKind.gurdwara), isTrue);
+    expect(article.listedUnder(EntryKind.guru), isFalse);
+  });
+
   test('an unknown kind reads as an article', () {
     expect(LibraryEntry.fromJson({'id': 'a', 'title': 't', 'kind': 'zz'})!.kind,
         EntryKind.article);

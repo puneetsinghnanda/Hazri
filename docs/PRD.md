@@ -717,11 +717,12 @@ numbers and none is invented.
   same in either theme).
 
 **The Vichar library** (needs the network). Articles and reference entries
-on Gurdwaras, the Guru Sahiban, banis and Sikh days, with search and kind
-filters. **Nothing in it is written in Dart** — it is published content
+on Gurdwaras, the Guru Sahiban, banis and Sikh days, with search and four
+chips: Sikh days (first, and every entry), Gurdwaras, Guru Sahibans, Banis
+(owner, 2026-10-19). The story pages of hazri.me/gurpurab are its entries,
+bundled with the `api` Function from the website's own source. **Nothing in it is written in Dart** — it is published content
 (`docs/vichar-content.md`), and rule 2 of §0.3 applies to it. It moves
-behind the API (`01-accounts.md` §13.4). It is empty until entries are
-published. Screens 43–46.
+behind the API (`01-accounts.md` §13.4). Screens 43–46.
 
 ### 4.16 Gurpurab and Nanakshahi calendar
 

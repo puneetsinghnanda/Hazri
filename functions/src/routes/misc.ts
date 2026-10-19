@@ -10,13 +10,23 @@ import { bodyOf, h } from '../http';
 import { factCounts } from '../badges/facts';
 import { ownedProfile, requireProfile } from '../profile/profile';
 import { utcOffsetMinutes } from '../time';
+// The website's story pages, one per day of the calendar, written by
+// tools/site/build.py from the same files as hazri.me/gurpurab. Bundled, so
+// serving them costs no Firestore read (00-platform: reads are what bills).
+import siteEntriesJson from '../vichar-entries.json';
 
 export const VICHAR_KINDS = ['article', 'gurdwara', 'guru', 'bani', 'day'] as const;
+/** The four topics the app's chips filter by; `article` is a kind, not a topic. */
+export const VICHAR_TOPICS = ['day', 'gurdwara', 'guru', 'bani'] as const;
 
 export interface VicharEntryDto {
   id: string;
   title: string;
   kind: (typeof VICHAR_KINDS)[number];
+  /** The topics it is listed under; an entry with none is listed under its kind. */
+  tags: Array<(typeof VICHAR_TOPICS)[number]>;
+  /** The days in the calendar it tells the story of, as YYYY-MM-DD, earliest first. */
+  dates: string[];
   summary: string | null;
   body: string | null;
   minutes: number | null;
@@ -32,15 +42,28 @@ export function vicharEntryDto(id: string, d: Record<string, unknown>): VicharEn
   if (!title) return null;
   const kind = (VICHAR_KINDS as readonly string[]).includes(d.kind as string) ? (d.kind as VicharEntryDto['kind']) : 'article';
   const facts: VicharEntryDto['facts'] = [];
-  if (d.facts && typeof d.facts === 'object' && !Array.isArray(d.facts)) {
+  if (Array.isArray(d.facts)) {
+    for (const f of d.facts as unknown[]) {
+      const pair = f as { label?: unknown; value?: unknown };
+      if (typeof pair?.label === 'string' && typeof pair.value === 'string') facts.push({ label: pair.label, value: pair.value });
+    }
+  } else if (d.facts && typeof d.facts === 'object') {
     for (const [label, value] of Object.entries(d.facts as Record<string, unknown>)) {
       if (typeof value === 'string') facts.push({ label, value });
     }
   }
+  const rawTags = Array.isArray(d.tags) ? d.tags : [];
+  const tags = VICHAR_TOPICS.filter((t) => rawTags.includes(t));
+  if (tags.length === 0 && kind !== 'article') tags.push(kind);
+  const dates = (Array.isArray(d.dates) ? d.dates : [])
+    .filter((x): x is string => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x))
+    .sort();
   return {
     id,
     title,
     kind,
+    tags,
+    dates,
     summary: strOrNull(d.summary),
     body: strOrNull(d.body),
     minutes: typeof d.minutes === 'number' && Number.isFinite(d.minutes) ? d.minutes : null,
@@ -48,6 +71,11 @@ export function vicharEntryDto(id: string, d: Record<string, unknown>): VicharEn
     facts,
   };
 }
+
+/** The bundled story pages, read once at cold start. */
+export const SITE_VICHAR: VicharEntryDto[] = (siteEntriesJson as Array<Record<string, unknown>>)
+  .map((e) => vicharEntryDto(e.id as string, e))
+  .filter((e): e is VicharEntryDto => e !== null);
 
 export function miscRouter(deps: Deps): Router {
   const { db, clock } = deps;
@@ -105,18 +133,22 @@ export function miscRouter(deps: Deps): Router {
     }),
   );
 
-  // GET /vichar/entries: the published library, sorted by title, at most 200.
+  // GET /vichar/entries: the published library, sorted by title. The bundled
+  // story pages, then at most 200 entries from Firestore; one stored under the
+  // same id as a story page replaces it, so a correction needs no deploy.
   r.get(
     '/api/v1/vichar/entries',
     h(async (_req, res) => {
       const nowMs = clock.now().getTime();
       if (!vichar || nowMs - vichar.at >= VICHAR_CACHE_SECONDS * 1000) {
         const snap = await db.collection('content').doc('vichar').collection('entries').get();
-        const entries = snap.docs
+        const stored = snap.docs
           .map((d) => vicharEntryDto(d.id, d.data()))
           .filter((e): e is VicharEntryDto => e !== null)
-          .sort((a, b) => a.title.localeCompare(b.title))
           .slice(0, VICHAR_MAX_ENTRIES);
+        const ids = new Set(stored.map((e) => e.id));
+        const entries = [...SITE_VICHAR.filter((e) => !ids.has(e.id)), ...stored]
+          .sort((a, b) => a.title.localeCompare(b.title));
         vichar = { at: nowMs, entries };
       }
       res.json({ entries: vichar.entries });
