@@ -18,7 +18,6 @@ import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/notification_access.dart';
 import '../../nitnem/domain/bani.dart';
 import '../data/goals_controller.dart';
-import 'add_goal_sheet.dart';
 import 'set_goal_card.dart';
 
 /// The Goals screen (04-goals §7.3, design 19). Items of the active goal in
@@ -104,7 +103,7 @@ class GoalsScreen extends ConsumerWidget {
                   for (final item in items) _ItemCard(item: item),
                 if (items.isNotEmpty) ...[
                   const SizedBox(height: 4),
-                  _AddButton(label: l.goalsAdd, onTap: () => showGoalItemSheet(context)),
+                  _AddButton(label: l.goalsAdd, onTap: () => context.push(Routes.goalPlan)),
                 ],
               ],
             ),
@@ -339,7 +338,7 @@ class _ItemMenu extends ConsumerWidget {
       onSelected: (value) async {
         switch (value) {
           case 'edit':
-            await showGoalItemSheet(context, editing: item);
+            await context.push(Routes.goalPlan);
           // GI7: Remove asks first, then leaves the goal from today.
           case 'remove':
             final ok = await showDialog<bool>(

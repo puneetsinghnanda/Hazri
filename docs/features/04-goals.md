@@ -1,7 +1,9 @@
 # 4. Goals and Hazri
 
 Written 2026-10-07 with Puneet Singh Nanda. It replaces the earlier version of
-this file entirely. It is also kept as a Claude Doc
+this file entirely. **Amended 2026-10-19 with the owner:** the goal is chosen
+on one page (§7.2, design 106), every paath is read once a day (GI10), and
+every reminder is on, at the paath's own time (RM1). It is also kept as a Claude Doc
 ("Feature Document: Goals and Hazri"); the two must stay identical, so a
 change to one is made to the other in the same commit.
 
@@ -28,9 +30,9 @@ Two features run side by side and are judged independently. **Hazri** is turning
 | --- | --- | --- |
 | G1 | With no active goal, Home shows a card asking the user to set a daily goal | 4.1, 7.1 |
 | G2 | Any bani, and Naam Simran, can be added to the goal | 4.2, 7.2 |
-| G3 | Each bani has its own times-per-day target | 3, 4.2, 7.2 |
+| G3 | Each bani is read once a day (2026-10-19; was a times-per-day target) | 3, 4.2 (GI10), 7.2 |
 | G4 | Each bani has its own duration (every day, N days, or until a date) | 4.2, 7.2 |
-| G5 | Each bani can have its own reminder | 4.8, 7.6 |
+| G5 | Each item has its own reminder, always on, at the paath's own time | 3, 4.8, 7.2 |
 | G6 | With an active goal, Home shows how many goal items are achieved today | 7.1 |
 | G7 | A met goal day is marked in the Diary; tapping a day shows what was recited and completed | 4.6, 4.7, 7.4, 7.5 |
 | G8 | Removing items keeps the goal running while one remains; an empty goal is completed, history kept | 4.3 |
@@ -64,14 +66,16 @@ Put these in `lib/features/goals/domain/goal_constants.dart`. No other file may 
 | --- | --- |
 | `HAZRI_SIMRAN_MIN_SECONDS` | 300 (5 minutes) |
 | `SIMRAN_DEFAULT_MINUTES` | 5 (the Simran menu's timer when no simran goal item is in scope) |
-| `TIMES_PER_DAY_MIN` / `TIMES_PER_DAY_MAX` | 1 / 11 (bani items) |
+| `TIMES_PER_DAY_MIN` / `TIMES_PER_DAY_MAX` | 1 / 11: the range a stored bani item may hold. Items made since 2026-10-19 are 1 (GI10); larger values survive only in history rows |
 | `SIMRAN_GOAL_MINUTES_MIN` / `SIMRAN_GOAL_MINUTES_MAX` | 5 / 120 |
 | `SIMRAN_GOAL_MINUTES_PRESETS` | 5, 11, 21, 31 (plus Custom) |
 | `DURATION_DAYS_MIN` / `DURATION_DAYS_MAX` | 1 / 365 |
 | `DURATION_DAYS_PRESET` | 40 |
 | `UNTIL_DATE_MAX_AHEAD_DAYS` | 365 (from today) |
 | `DIARY_EDIT_WINDOW_DAYS` | 7 (today and the 7 days before it can be edited) |
-| `REMINDER_DEFAULT_TIME` | 19:30 (pre-filled when the user switches a reminder on; reminders start off) |
+| `REMINDER_DEFAULTS` | By `content.db` id: `JAPJ` 06:00, `JAAP` 06:15, `TVPS` 06:30, `CHAU` 06:45, `ANND` 07:00, `SUKH` 11:00, `REHR` 18:00, `ARDS` 18:30, `SOHL` 19:00 (owner, 2026-10-19) |
+| `SIMRAN_REMINDER_DEFAULT` | 05:30 (Naam Simran, Amrit Vela) |
+| `REMINDER_DEFAULT_TIME` | 19:30, for a bani added to `content.db` later with no time above |
 
 `SIMRAN_GOAL_MINUTES_MIN` equals the hazri threshold on purpose: a simran item can never be met by a sitting too short to mark hazri.
 
@@ -103,6 +107,7 @@ Each rule has an ID that tests cite. Goals never write anything of their own abo
 - **GI7. Removing** an item sets `removedOn` = today. It is out of scope from today; every earlier day keeps its verdict. An item removed on its start day was never in scope. There is no hard delete.
 - **GI8.** After `lastDay` an item is out of scope and stays in the database.
 - **GI9.** If an item's `baniId` is not in `content.db`, the app sets `removedOn` = today on load and logs a warning. Past days are unchanged; the app never crashes or shows a blank name.
+- **GI10. Once a day** (2026-10-19). Every bani item made from §7.2 has `timesPerDay` = 1. At app start and after a restore, `normaliseGoalItems()` gives every in-scope bani item with `timesPerDay` > 1 a target of 1 through GI6 (so the day it runs and every earlier day keep their verdict), and every in-scope item with no `reminderTime` its own time (RM1). Running it twice changes nothing.
 
 ### 4.3 Blank goal
 
@@ -155,12 +160,12 @@ Home, the Goals screen, the Diary grid and the Diary day screen all call it. Not
 
 ### 4.8 Reminders
 
-- **RM1.** Each item has its own `reminderTime` (`HH:mm`, local). Null means off, which is the default.
+- **RM1. Always on** (2026-10-19). Each item has its own `reminderTime` (`HH:mm`, local). A new item takes `REMINDER_DEFAULTS` for its bani, or `SIMRAN_REMINDER_DEFAULT`, unless the person chose a time. There is no off: `editReminder` takes a time, never null. A row with a null time, from before this date, is given its own by GI10.
 - **RM2.** The reminder fires once a day at `reminderTime` on each day the item is in scope.
 - **RM3.** It does not fire on a day the item is already met. Reminders are re-planned after every completion, sitting, Diary edit and item change.
 - **RM4.** Reminder rows are derived from items when planning; they are not stored. The notification ID is `ReminderIds.goal(itemId)`. They count toward the existing 60-pending cap.
 - **RM5.** The title is the bani's name from `content.db` in the app language (simran: the existing localised Naam Simran label). The body is the string `goalReminderBody` (7.7).
-- **RM6.** If notification permission is denied, the Goals screen shows the existing "reminders cannot arrive" card.
+- **RM6.** If notification permission is denied, the Goals screen and §7.2 show the existing "reminders cannot arrive" card.
 
 ### 4.9 Celebration
 
@@ -194,25 +199,27 @@ The goal widget shows:
 
 The existing hazri banner on Home is unchanged. It is shown to everybody and reads only `hazri(today)`.
 
-### 7.2 Add Goal and Edit Item sheet
+### 7.2 Your day of paath (design 106, 2026-10-19)
 
-1. **Choose:** the featured banis (`JAPJ`, `CHAU`, `SUKH`, `ANND`, `REHR`), then More… for the rest of `content.db`, then Naam Simran. An item already in scope carries `goalInGoalBadge`; choosing it opens Edit (GI1).
-2. **Target:**
-    - Bani: `goalTimesPerDay` stepper, 1–11, default 1.
-    - Simran: minute chips 5, 11, 21, 31 and Custom (5–120), default 11 (design 47). A custom value outside 5–120 shows `goalValidationMinutes` and nothing saves.
-3. **Duration** (`goalDuration`): `goalDurationEveryDay` (default), `goalDurationDays` (stepper 1–365, default 40), or `goalDurationUntil` (date picker from today to today + 365).
-4. **Reminder:** `goalReminder` switch, off by default. Switching it on shows a time picker set to 19:30.
-5. **Save:** `goalSave` when adding, `goalEditSave` when editing. Calls `addItem`, or `editReminder`, `editDuration` and `editTarget` for whatever changed (5.7).
+The goal is chosen on one page, `GoalPlannerScreen` at `/goals/plan`. It replaces the Add Goal and Edit Item sheet of design 47, which added one item at a time.
 
-In Edit, a new end date before today shows `goalEndDateInPast` and nothing saves.
+1. **The day.** Every bani in `content.db` and Naam Simran, each on a vertical line at its reminder time, earliest first, under the bands `goalPlanAmritVela` (before 06:00), `goalPlanMorning` (before 11:00), `goalPlanDaytime` (before 17:00) and `goalPlanEvening`. A paath moved to another time moves with it.
+2. **Choosing.** A paath not in the goal is a dashed box with +; tapping it adds it. A chosen paath is a solid card with a kesri tick on the line; tapping the card takes it out. The screen opens with the items in scope today already chosen.
+3. **Once a day.** There is no times-a-day control (GI10). Naam Simran shows its minutes as a chip; tapping it offers 5, 11, 21 and 31 (`goalMinutesLabel`); default 11.
+4. **Reminders.** A chosen paath shows its time as a kesri chip with a bell; tapping it opens a time wheel (`goalPlanChangeTime`) and the exact-alarm card. There is no switch (RM1). `goalPlanReminderNote` says so under the list.
+5. **How long**, in the bar at the foot, applies to every item: `goalDurationEveryDay` (default), `goalDurationDays` (40), or `goalDurationUntil` (date picker from today to today + 365). Opened on a goal, it shows the first item's duration.
+6. **The button.** `goalPlanStart` with no active goal, `goalPlanSave` with one, both with the number of paaths chosen; `goalEditSave` when none is chosen. It is disabled until something changes, and with nothing chosen and no goal.
+7. **Saving** goes through §5.7 in this order: `addItem` for each new paath (with its time and the duration), then `editReminder`, `editDuration` and `editTarget` for each kept one whatever changed, then `removeItem` for each taken out, so a goal being changed never passes through empty (BG1). Taking a paath out asks first: `goalRemoveConfirmTitle` with the names, `goalRemoveConfirmBody`, Cancel and `goalRemove`.
+
+A new end date before today shows `goalEndDateInPast` and nothing saves.
 
 ### 7.3 Goals screen
 
 - Lists in-scope items of the active goal in creation order.
 - Each row shows the name, the rule and today's progress. Rules read like "3 times a day · every day", "11 min · `goalDayOfTotal`" or "once a day · until 31 Dec". The reminder time shows when one is set.
-- Each row's menu has Edit (7.2) and `goalRemove`.
+- Each row's menu has Edit, which opens 7.2, and `goalRemove`.
 - Remove asks first: `goalRemoveConfirmTitle` / `goalRemoveConfirmBody`, buttons Cancel and `goalRemove`. Confirming calls `removeItem`.
-- An add button opens 7.2. With no active goal, the screen shows the Set Goal card from 7.1.
+- The add button (`goalsAdd`) opens 7.2. With no active goal, the screen shows the Set Goal card from 7.1, which opens 7.2 too.
 - No manual "+1" tick exists. Completions come only from CR1–CR4.
 - If notification permission is denied and any item has a reminder, the RM6 card shows at the top.
 
@@ -233,7 +240,7 @@ Every change re-runs `verdictOn` for that day, so both dots update at once.
 
 ### 7.6 Reminders
 
-Set per item in 7.2 and planned by the existing `ReminderScheduler` under RM1–RM6. Tapping a goal notification opens the reader for that bani, or the Simran menu.
+Always on, at each item's time from 7.2, and planned by the existing `ReminderScheduler` under RM1–RM6. Tapping a goal notification opens the reader for that bani, or the Simran menu.
 
 ### 7.7 Strings
 
@@ -248,21 +255,23 @@ English source text. `pa` and `hi` are required in the ARB files from day one an
 | `goalWidgetProgress` | {met} of {total} done |
 | `goalTimesOfTarget` | {done} of {target} |
 | `goalSimranMinutes` | {minutes} min |
-| `goalInGoalBadge` | In your goal |
-| `goalTimesPerDay` | Times a day |
-| `goalDuration` | How long |
+| `goalPlanTitle` | Your day of paath |
+| `goalPlanIntro` | Each paath sits at its time in the day. Tap one to add it to your goal, and tap it again to take it out. |
+| `goalPlanAmritVela` / `goalPlanMorning` / `goalPlanDaytime` / `goalPlanEvening` | Amrit Vela / Morning / Daytime / Evening |
+| `goalPlanChangeTime` | Change reminder time |
+| `goalPlanReminderNote` | Reminders are always on. Each paath starts at its usual time; tap the time to change it. Hazri stays quiet once that paath is done. |
+| `goalPlanStart` | Start goal · {count} paaths a day (1: … 1 paath a day) |
+| `goalPlanSave` | Save goal · {count} paaths a day (1: … 1 paath a day) |
+| `goalsAdd` | Add or change paaths |
 | `goalDurationEveryDay` | Every day |
 | `goalDurationDays` | For {n} days |
 | `goalDurationUntil` | Until {date} |
 | `goalDayOfTotal` | Day {n} of {total} |
-| `goalReminder` | Reminder |
-| `goalSave` | Add to goal |
 | `goalEditSave` | Save |
 | `goalRemove` | Remove |
 | `goalRemoveConfirmTitle` | Remove {name}? |
 | `goalRemoveConfirmBody` | It leaves your goal from today. Days already recorded stay as they are. |
 | `goalEndDateInPast` | Choose today or a later date. |
-| `goalValidationMinutes` | Enter 5 to 120 minutes. |
 | `goalReminderBody` | Time for your daily goal |
 | `diaryHazriMarked` | Hazri marked |
 | `diaryNoHazri` | No hazri |
@@ -321,6 +330,18 @@ Each row behaves exactly as stated and becomes one test. "Orange" and "green" ar
 | E-7 | Japji for 40 days | End date set to yesterday | `goalEndDateInPast`; nothing saves |
 | E-8 | Japji in scope with reminder | Reminder time changed | Only the reminder moves; no verdict changes |
 | E-9 | Goal completed yesterday | User adds Japji today | A new goal starts today (GL4); the old one stays completed |
+
+### 8.3a One page, once a day, reminders on (2026-10-19)
+
+| # | Given | When | Then |
+| --- | --- | --- | --- |
+| P-1 | No goal | Your day of paath opens | Naam Simran first at 05:30, then Japji 06:00, Jaap 06:15 … Kirtan Sohila 19:00; nothing chosen; the button does nothing |
+| P-2 | No goal | Japji and Jaap tapped, then Start | One goal, two items, `timesPerDay` 1, reminders 06:00 and 06:15, every day |
+| P-3 | Japji and Rehras in the goal | Rehras tapped, then Save | Asks first; on Remove only Japji stays in scope |
+| P-4 | An item added with no time | — | Takes its own: Japji 06:00, Kirtan Sohila 19:00, Naam Simran 05:30 (RM1) |
+| P-5 | Japji ×3 with no reminder, from before 2026-10-19, read once yesterday | App starts | Japji ×1 at 06:00 from today in the same series; yesterday stays not met (GI10) |
+
+G-3, G-4 and E-5 describe targets above 1, which only rows from before 2026-10-19 hold; the verdict still judges them as written.
 
 ### 8.4 Diary editing
 
@@ -410,6 +431,7 @@ The feature is complete only when every item passes. Tests use `flutter_test` wi
 | Restarting copies an `untilDate` that may already be past | Restart is a new item from today with fresh duration | GI2, GI4 |
 | Missing bani hidden on Goals screen but still counted | Item removed from today, history kept | GI9 |
 | Future-start goal shown as "Complete" | Future starts do not exist | GI2 |
-| Goal reminder on by default at 19:30, fires even when met | Off by default; skipped once met | RM1, RM3 |
+| Goal reminder on by default at 19:30, fires even when met | On, at each paath's own time; skipped once met (2026-10-19) | RM1, RM3 |
+| One item at a time in a sheet, with a times-a-day stepper and a reminder switch (design 47) | The day as one page, once a day, reminders always on (design 106, 2026-10-19) | 7.2, GI10, RM1 |
 | Delete erases a goal and its ticks | No hard delete; Remove only | GI7 |
 | The earlier version of this file (2026-09-25) | Replaced by this document | 0 |

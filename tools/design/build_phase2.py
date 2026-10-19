@@ -3489,6 +3489,202 @@ def notifications() -> str:
 """
 
 
+# ------------------------------------------------- goals as one page, 2026-10-19
+
+GOAL_DAY = [
+    ("Amrit Vela", "moon", [("05:30", "Naam Simran", "11 min", False)]),
+    ("Morning", "sun", [("06:00", "Japji Sahib", None, True), ("06:15", "Jaap Sahib", None, True),
+                        ("06:30", "Tav Prasad Savaiye", None, False), ("06:45", "Chaupai Sahib", None, True),
+                        ("07:00", "Anand Sahib", None, False)]),
+    ("Daytime", "sun", [("11:00", "Sukhmani Sahib", None, False)]),
+    ("Evening", "moon", [("18:00", "Rehras Sahib", None, True), ("18:30", "Ardas", None, False),
+                         ("19:00", "Kirtan Sohila", None, True)]),
+]
+
+
+def goal_planner() -> str:
+    """Option C of four (owner, 2026-10-19): the day as a timeline. Every bani
+    and Naam Simran at its own time; tap one to add it, tap its time to move
+    the reminder. Once a day each, reminders always on. 04-goals 7.2."""
+    sun = ('<svg class="i" width="16" height="16" viewBox="0 0 24 24" style="color:var(--kesri)">'
+           '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>')
+    moon = ('<svg class="i" width="16" height="16" viewBox="0 0 24 24" style="color:var(--primary)">'
+            '<path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></svg>')
+    rows = []
+    for band, ic, items in GOAL_DAY:
+        rows.append(f'<div class="row" style="gap:8px;margin:12px 0 4px 54px">{sun if ic == "sun" else moon}'
+                    f'<span class="eyebrow">{band}</span></div>')
+        for time, name, detail, on in items:
+            if on:
+                dot = (f'<div style="width:26px;height:26px;border-radius:13px;background:var(--kesri);color:#fff;'
+                       f'display:flex;align-items:center;justify-content:center;position:relative;z-index:1">'
+                       f'{icon("check", 15)}</div>')
+                box = (f'<div class="card row" style="flex:1;padding:10px 10px 10px 14px;gap:8px;border-radius:16px">'
+                       f'<div style="flex:1;font-weight:600;font-size:15.5px">{name}</div>'
+                       f'<div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk);padding:6px 9px">'
+                       f'{icon("bell", 13)}{time} ▾</div></div>')
+            else:
+                dot = ('<div style="width:22px;height:22px;border-radius:11px;background:var(--bg);'
+                       'border:2px solid var(--muted);opacity:.7;position:relative;z-index:1"></div>')
+                label = name if detail is None else f"{name} · {detail}"
+                box = (f'<div class="row" style="flex:1;padding:12px 14px;border:1.5px dashed var(--muted);'
+                       f'border-radius:16px;color:var(--ink2);font-weight:600;font-size:15.5px">'
+                       f'<span style="flex:1">{label}</span><span style="color:var(--kesri)">{icon("plus", 18)}</span></div>')
+            rows.append(f'<div class="row" style="gap:8px;margin:5px 0"><div style="width:44px;text-align:right;'
+                        f'font-size:12px;font-weight:600;color:var(--muted)">{time}</div>'
+                        f'<div style="width:28px;display:flex;justify-content:center">{dot}</div>{box}</div>')
+    return f"""
+<div class="pad col" style="gap:6px;padding-bottom:150px">
+  {header("Your day of paath")}
+  <div style="font-size:14px;color:var(--ink2);line-height:1.45;margin-top:6px">Each paath sits at its time
+    in the day. Tap one to add it to your goal, and tap it again to take it out.</div>
+  <div style="position:relative">
+    <div style="position:absolute;left:65px;top:30px;bottom:6px;width:2px;background:var(--rule)"></div>
+    {''.join(rows)}
+  </div>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:2;background:var(--card);border-top:1px solid var(--rule);
+  padding:12px 16px 18px" class="col">
+  <div class="row" style="background:var(--card2);border-radius:14px;padding:4px;gap:4px">
+    <div style="flex:1;text-align:center;padding:10px 0;border-radius:10px;background:var(--card);font-weight:600;font-size:13px">Every day</div>
+    <div style="flex:1;text-align:center;padding:10px 0;font-weight:600;font-size:13px;color:var(--ink2)">For 40 days</div>
+    <div style="flex:1;text-align:center;padding:10px 0;font-weight:600;font-size:13px;color:var(--ink2)">Until…</div>
+  </div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary);margin-top:10px">Start goal · 5 paaths a day</div>
+</div>
+"""
+
+
+# ------------------------------------------- Vichar articles, three layouts, 2026-10-19
+
+def _article_body(paras, heading) -> str:
+    out = []
+    for p in paras:
+        if p.startswith("## "):
+            out.append(heading(p[3:]))
+        else:
+            out.append(f'<div style="font-size:15.5px;line-height:1.7;color:var(--ink2)">{p}</div>')
+    return "".join(out)
+
+
+def article_calendar() -> str:
+    """A: a Gurpurab as a calendar card (owner, 2026-10-19): the date, the
+    countdown, the title and the opening in a navy card; headings with a
+    kesri bar; the facts; what comes next in the calendar."""
+    bar = lambda t: (f'<div class="row" style="gap:10px;margin-top:6px"><div style="width:24px;height:3px;'
+                     f'border-radius:2px;background:var(--kesri)"></div><div class="disp" style="font-size:19px;'
+                     f'font-weight:700">{t}</div></div>')
+    body = _article_body([
+        "The Prakash Purab of Sri Guru Ram Das Ji celebrates the birth in 1534 of the fourth Sikh Guru, in Lahore.",
+        "## From Lahore to the fourth Guru",
+        "Bhai Jetha Ji lost both parents as a child and came to Goindwal Sahib, where he stayed to serve Sri Guru Amar Das Ji.",
+    ], bar)
+    return f"""
+<div class="pad col" style="gap:14px;padding-top:14px">
+  <div class="row" style="justify-content:space-between"><div style="width:44px">{icon("back", 22)}</div>
+    <div style="font-weight:600;color:var(--ink2)">Vichar</div><div style="width:44px;display:flex;justify-content:flex-end">{icon("share", 20)}</div></div>
+  <div class="col" style="background:var(--primary);color:var(--onPrimary);border-radius:24px;padding:20px;gap:12px">
+    <div class="row" style="gap:14px">
+      <div class="col" style="width:64px;height:72px;border-radius:16px;background:rgba(255,255,255,.1);align-items:center;justify-content:center">
+        <div class="disp" style="font-size:30px;font-weight:700;line-height:1">27</div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--kesri)">OCT</div></div>
+      <div class="col" style="gap:6px"><div style="font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--kesri)">PRAKASH PURAB · IN 8 DAYS</div>
+        <div style="font-size:13.5px;opacity:.75">Tuesday, 27 October 2026</div></div>
+    </div>
+    <div class="disp" style="font-size:26px;font-weight:700;line-height:1.15">Prakash Purab of Sri Guru Ram Das Ji</div>
+    <div style="font-size:14px;opacity:.75;line-height:1.5">The fourth Guru, who founded Amritsar and gave the Laavan of the Anand Karaj.</div>
+    <div class="chip" style="background:rgba(255,255,255,.12);align-self:flex-start">2 min read</div>
+  </div>
+  <div class="col" style="gap:12px;padding:0 4px">{body}</div>
+  <div class="eyebrow" style="margin-top:6px">Next in the calendar</div>
+  {listrow("diary", "Shaheedi of Bhai Beant Singh", "Shaheedi · 1 Nov")}
+</div>
+"""
+
+
+def _gurdwara_art(h: int = 300) -> str:
+    return (f'<svg width="390" height="{h}" viewBox="0 0 390 320" preserveAspectRatio="xMidYMid slice" style="display:block">'
+            '<rect width="390" height="320" fill="#232659"/><rect y="150" width="390" height="170" fill="#5E3550"/>'
+            '<ellipse cx="195" cy="250" rx="190" ry="90" fill="#D9730D" opacity="0.45"/>'
+            '<g fill="#0B0E26"><rect x="0" y="250" width="390" height="70"/><rect x="110" y="190" width="170" height="60"/>'
+            '<rect x="160" y="160" width="70" height="30"/><path d="M160 160C160 128 180 114 195 98C210 114 230 128 230 160Z"/>'
+            '<rect x="194" y="74" width="2" height="26"/><rect x="116" y="172" width="18" height="18"/>'
+            '<path d="M116 172C116 162 125 158 125 150C125 158 134 162 134 172Z"/><rect x="256" y="172" width="18" height="18"/>'
+            '<path d="M256 172C256 162 265 158 265 150C265 158 274 162 274 172Z"/><rect x="320" y="110" width="3" height="140"/></g>'
+            '<path d="M323 112L362 124L323 136Z" fill="#D9730D"/></svg>')
+
+
+def article_photo() -> str:
+    """B: a place, photo-led (owner, 2026-10-19). The picture is drawn, not
+    fetched (PRD 8 lists no photo host); the place is named over it. Kind and
+    topics as chips, the story, then previous and next."""
+    h2 = lambda t: f'<div class="disp" style="font-size:19px;font-weight:700;margin-top:6px">{t}</div>'
+    body = _article_body([
+        "## Serving the sick",
+        "That year smallpox spread through Delhi. The Guru went among the sick of every faith, giving them water from the well at the bungalow where he stayed.",
+    ], h2)
+    return f"""
+<div style="position:relative;height:300px">{_gurdwara_art()}
+  <div class="row" style="position:absolute;left:12px;right:12px;top:14px;justify-content:space-between;color:#fff">
+    <div style="width:44px;height:44px;border-radius:22px;background:rgba(7,10,30,.45);display:flex;align-items:center;justify-content:center">{icon("back", 22)}</div>
+    <div style="width:44px;height:44px;border-radius:22px;background:rgba(7,10,30,.45);display:flex;align-items:center;justify-content:center">{icon("share", 20)}</div></div>
+  <div style="position:absolute;right:14px;bottom:40px;font-size:11.5px;color:#fff;background:rgba(7,10,30,.5);padding:5px 8px;border-radius:8px">Gurdwara Bangla Sahib, New Delhi</div>
+</div>
+<div class="col" style="margin-top:-28px;background:var(--bg);border-radius:28px 28px 0 0;padding:22px 20px 0;gap:12px;position:relative">
+  <div class="row" style="gap:8px;flex-wrap:wrap">
+    <span class="chip" style="background:var(--kesriSoft);color:var(--kesriInk);letter-spacing:.08em">JOTI JOT</span>
+    <span class="chip" style="background:var(--card2);color:var(--ink2);letter-spacing:.08em">GURDWARAS</span>
+    <span class="chip" style="background:var(--card2);color:var(--ink2);letter-spacing:.08em">GURU SAHIBANS</span></div>
+  <div class="disp" style="font-size:26px;font-weight:700;line-height:1.15">Joti Jot of Sri Guru Harkrishan Sahib Ji</div>
+  <div style="font-size:13.5px;color:var(--muted)">Thursday, 1 April · 2 min read</div>
+  <div style="font-size:16.5px;line-height:1.6">The eighth Guru, still a child, completed his life on earth in Delhi in 1664.</div>
+  {body}
+</div>
+"""
+
+
+def article_timeline() -> str:
+    """C: a day of history as a timeline (owner, 2026-10-19): a navy band with
+    the dates in the calendar, the opening, then each section of the story as
+    a step on a line, the first in kesri."""
+    def step(title, text, first=False, last=False):
+        dot = ('<div style="width:18px;height:18px;border-radius:9px;background:var(--kesri);box-shadow:0 0 0 4px var(--kesriSoft)"></div>'
+               if first else
+               '<div style="width:12px;height:12px;border-radius:6px;background:var(--card);box-shadow:inset 0 0 0 3px var(--primary);margin-top:3px"></div>')
+        line = '' if last else '<div style="flex:1;width:2px;background:var(--rule)"></div>'
+        return (f'<div class="row" style="align-items:stretch;gap:14px"><div class="col" style="width:20px;align-items:center">{dot}{line}</div>'
+                f'<div class="col" style="flex:1;padding-bottom:18px;gap:6px"><div style="font-weight:600;font-size:16px;'
+                f'color:{"var(--kesriInk)" if first else "var(--ink)"}">{title}</div>'
+                f'<div style="font-size:14.5px;line-height:1.6;color:var(--ink2)">{text}</div></div></div>')
+    tiles = []
+    for d, state in [("21", ""), ("22", ""), ("23", "next"), ("28", "")]:
+        bg = "var(--kesri)" if state == "next" else "rgba(255,255,255,.12)"
+        fg = "#1C1206" if state == "next" else "#fff"
+        tiles.append(f'<div class="col" style="width:52px;height:62px;border-radius:12px;background:{bg};color:{fg};align-items:center;justify-content:center">'
+                     f'<div style="font-weight:600;font-size:17px;line-height:1">{d}</div><div style="font-size:10px;font-weight:600;letter-spacing:.12em;margin-top:4px">DEC</div></div>')
+    return f"""
+<div class="col" style="background:var(--primary);color:var(--onPrimary);padding:14px 0 22px">
+  <div class="row" style="justify-content:space-between;padding:0 12px">{icon("back", 22)}{icon("share", 20)}</div>
+  <div class="col" style="padding:8px 20px 0;gap:10px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--kesri)">SHAHEEDI · DEC 2026</div>
+    <div class="disp" style="font-size:28px;font-weight:700;line-height:1.12">Saka Chamkaur Sahib</div>
+    <div style="font-size:14px;opacity:.75;line-height:1.5">The elder Sahibzade gave their lives with a small band of Singhs against a vast army.</div>
+  </div>
+  <div style="padding:16px 20px 8px;font-size:11px;font-weight:600;letter-spacing:.12em;opacity:.75">IN THE CALENDAR</div>
+  <div class="row" style="gap:6px;padding:0 20px">{''.join(tiles)}</div>
+</div>
+<div class="pad col" style="gap:14px">
+  <div style="font-size:16.5px;line-height:1.65">On the night of 22 December 1704 the Guru reached Chamkaur with about forty Singhs.</div>
+  <div class="eyebrow" style="margin-top:6px">How the story unfolds</div>
+  <div class="col">
+    {step("The garhi at Chamkaur", "Forty Singhs in a mud fortress against a vast army.", first=True)}
+    {step("Five at a time", "With few arrows left, the Singhs went out in groups of five.")}
+    {step("The Sahibzade", "Baba Ajit Singh Ji and Baba Jujhar Singh Ji asked to go, and fell.", last=True)}
+  </div>
+</div>
+"""
+
+
 SCREENS = [
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
@@ -3543,6 +3739,10 @@ SCREENS = [
     ("103-BuiltInGroup", "Built-in group — ring and timeline", built_in_group),
     ("104-GroupGlobe", "Private group — the globe in the ring", lambda: group_globe(True)),
     ("105-BuiltInGroupGlobe", "Built-in group — the globe in the ring", lambda: group_globe(False)),
+    ("106-GoalPlanner", "Goals — your day of paath", goal_planner),
+    ("107-ArticleCalendar", "Vichar — a Gurpurab, as a calendar card", article_calendar),
+    ("108-ArticlePhoto", "Vichar — a place, photo-led", article_photo),
+    ("109-ArticleTimeline", "Vichar — a day of history, as a timeline", article_timeline),
 ]
 
 

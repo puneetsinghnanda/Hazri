@@ -684,7 +684,55 @@ class LEn extends L {
   }
 
   @override
-  String get goalsAdd => 'Add to goal';
+  String get goalsAdd => 'Add or change paaths';
+
+  @override
+  String get goalPlanTitle => 'Your day of paath';
+
+  @override
+  String get goalPlanIntro =>
+      'Each paath sits at its time in the day. Tap one to add it to your goal, and tap it again to take it out.';
+
+  @override
+  String get goalPlanAmritVela => 'Amrit Vela';
+
+  @override
+  String get goalPlanMorning => 'Morning';
+
+  @override
+  String get goalPlanDaytime => 'Daytime';
+
+  @override
+  String get goalPlanEvening => 'Evening';
+
+  @override
+  String get goalPlanChangeTime => 'Change reminder time';
+
+  @override
+  String get goalPlanReminderNote =>
+      'Reminders are always on. Each paath starts at its usual time; tap the time to change it. Hazri stays quiet once that paath is done.';
+
+  @override
+  String goalPlanStart(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Start goal · $count paaths a day',
+      one: 'Start goal · 1 paath a day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalPlanSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Save goal · $count paaths a day',
+      one: 'Save goal · 1 paath a day',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get goalsFooter =>
@@ -753,17 +801,6 @@ class LEn extends L {
 
   @override
   String get goalFieldReminder => 'Reminder';
-
-  @override
-  String goalReminderEveryDayAt(String time) {
-    return 'Every day at $time';
-  }
-
-  @override
-  String get goalSave => 'Add to goal';
-
-  @override
-  String get goalMoreBanis => 'More…';
 
   @override
   String get goalPause => 'Pause goal';
@@ -1843,6 +1880,29 @@ class LEn extends L {
   String get libraryOpen => 'Open';
 
   @override
+  String get libraryShare => 'Share';
+
+  @override
+  String libraryInDays(int count) {
+    return 'In $count days';
+  }
+
+  @override
+  String get libraryNextInCalendar => 'Next in the calendar';
+
+  @override
+  String get libraryPrevious => 'Previous';
+
+  @override
+  String get libraryNext => 'Next';
+
+  @override
+  String get libraryInTheCalendar => 'In the calendar';
+
+  @override
+  String get libraryHowItUnfolds => 'How the story unfolds';
+
+  @override
   String get syncTitle => 'Sync';
 
   @override
@@ -1955,10 +2015,6 @@ class LEn extends L {
   String goalsDoneOf(int done, int total) {
     return '$done of $total done';
   }
-
-  @override
-  String get goalSimranOrBani =>
-      'Simran counts in minutes; a bani counts in paath';
 
   @override
   String get goalHowLong => 'How long each time';
@@ -2365,15 +2421,6 @@ class LEn extends L {
   }
 
   @override
-  String get goalInGoalBadge => 'In your goal';
-
-  @override
-  String get goalTimesPerDay => 'Times a day';
-
-  @override
-  String get goalDuration => 'How long';
-
-  @override
   String goalDurationDays(int n) {
     return 'For $n days';
   }
@@ -2387,9 +2434,6 @@ class LEn extends L {
   String goalDayOfTotal(int n, int total) {
     return 'Day $n of $total';
   }
-
-  @override
-  String get goalReminder => 'Reminder';
 
   @override
   String get goalEditSave => 'Save';
@@ -2410,9 +2454,6 @@ class LEn extends L {
   String get goalEndDateInPast => 'Choose today or a later date.';
 
   @override
-  String get goalValidationMinutes => 'Enter 5 to 120 minutes.';
-
-  @override
   String get goalReminderBody => 'Time for your daily goal';
 
   @override
@@ -2427,24 +2468,10 @@ class LEn extends L {
   }
 
   @override
-  String get goalAddTitle => 'Add to your goal';
-
-  @override
-  String goalEditTitle(String name) {
-    return 'Edit $name';
-  }
-
-  @override
-  String get goalChoose => 'Choose';
-
-  @override
   String get goalNaamSimran => 'Naam Simran';
 
   @override
   String get goalMinutesLabel => 'Minutes';
-
-  @override
-  String get goalCustom => 'Custom';
 
   @override
   String get goalEdit => 'Edit';

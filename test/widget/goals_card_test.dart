@@ -44,7 +44,7 @@ void main() {
     expect(find.text(l.goalWidgetTitle.toUpperCase()), findsOneWidget);
     expect(find.text(l.goalWidgetProgress(0, 1)), findsOneWidget);
     expect(find.text('Japji Sahib'), findsOneWidget);
-    expect(find.text(l.goalTimesOfTarget(0, 1)), findsOneWidget);
+    expect(find.textContaining('${l.goalTimesOfTarget(0, 1)} ·'), findsOneWidget);
   });
 
   testWidgets('a completion moves the header (one rule: verdictOn)', (tester) async {
@@ -53,14 +53,15 @@ void main() {
     await repo().logCompletion(baniId: 'JAPJ', slot: BaniSlotValue.morning, source: CompletionSource.reader);
     final l = await pump(tester);
     expect(find.text(l.goalWidgetProgress(1, 2)), findsOneWidget);
-    expect(find.text(l.goalTimesOfTarget(0, 2)), findsOneWidget);
+    expect(find.textContaining('${l.goalTimesOfTarget(0, 2)} ·'), findsOneWidget);
   });
 
   testWidgets('Naam Simran is named, in minutes', (tester) async {
     await repo().addItem(const GoalItemSpec.simran(11));
     final l = await pump(tester);
     expect(find.text(l.goalNaamSimran), findsOneWidget);
-    expect(find.text(l.goalSimranMinutes(0)), findsOneWidget);
+    // RM1: every item has a reminder, so its time follows the amount.
+    expect(find.textContaining(l.goalSimranMinutes(0)), findsOneWidget);
   });
 
   testWidgets('after the last item is removed: the card says set a new one (GL1)', (tester) async {

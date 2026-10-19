@@ -70,7 +70,7 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 
 ### 4.2 Goal bani
 
-- **GR1.** One notification per goal item that has a `reminderTime`, on each day the item is in scope (`04-goals.md` §4.8).
+- **GR1.** One notification per goal item, at its `reminderTime`, on each day the item is in scope (`04-goals.md` §4.8). Since 2026-10-19 every item has one, at the paath's own time (Naam Simran 05:30, Japji 06:00 … Kirtan Sohila 19:00), and it cannot be switched off (`04-goals.md` RM1).
 - **GR2.** Not sent on a day the item is already met; it is cancelled as soon as it is met (`04-goals.md` RM3).
 - **GR3.** "In 15 min" re-sends the same notification once, 15 minutes later, without the snooze button. No second snooze.
 - **GR4.** A bani item uses message 5.2-A, a simran item 5.2-B. Tap opens the reader on that bani, or the Simran screen with the goal's minutes.

@@ -680,7 +680,55 @@ class LHi extends L {
   }
 
   @override
-  String get goalsAdd => 'लक्ष्य में जोड़ें';
+  String get goalsAdd => 'पाठ जोड़ें या बदलें';
+
+  @override
+  String get goalPlanTitle => 'आपका पाठ का दिन';
+
+  @override
+  String get goalPlanIntro =>
+      'हर पाठ दिन में अपने समय पर है। लक्ष्य में जोड़ने के लिए छुएँ, निकालने के लिए फिर से छुएँ।';
+
+  @override
+  String get goalPlanAmritVela => 'अमृत वेला';
+
+  @override
+  String get goalPlanMorning => 'सुबह';
+
+  @override
+  String get goalPlanDaytime => 'दिन';
+
+  @override
+  String get goalPlanEvening => 'शाम';
+
+  @override
+  String get goalPlanChangeTime => 'याद दिलाने का समय बदलें';
+
+  @override
+  String get goalPlanReminderNote =>
+      'याद दिलाना हमेशा चालू है। हर पाठ अपने सामान्य समय पर शुरू होता है; बदलने के लिए समय को छुएँ। पाठ हो जाने पर हाज़री चुप रहती है।';
+
+  @override
+  String goalPlanStart(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'लक्ष्य शुरू करें · दिन में $count पाठ',
+      one: 'लक्ष्य शुरू करें · दिन में 1 पाठ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalPlanSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'लक्ष्य सहेजें · दिन में $count पाठ',
+      one: 'लक्ष्य सहेजें · दिन में 1 पाठ',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get goalsFooter =>
@@ -749,17 +797,6 @@ class LHi extends L {
 
   @override
   String get goalFieldReminder => 'याद';
-
-  @override
-  String goalReminderEveryDayAt(String time) {
-    return 'हर रोज़ $time बजे';
-  }
-
-  @override
-  String get goalSave => 'लक्ष्य में जोड़ें';
-
-  @override
-  String get goalMoreBanis => 'और…';
 
   @override
   String get goalPause => 'संकल्प रोकें';
@@ -1840,6 +1877,29 @@ class LHi extends L {
   String get libraryOpen => 'खोलें';
 
   @override
+  String get libraryShare => 'साझा करें';
+
+  @override
+  String libraryInDays(int count) {
+    return '$count दिन में';
+  }
+
+  @override
+  String get libraryNextInCalendar => 'कैलेंडर में आगे';
+
+  @override
+  String get libraryPrevious => 'पिछला';
+
+  @override
+  String get libraryNext => 'अगला';
+
+  @override
+  String get libraryInTheCalendar => 'कैलेंडर में';
+
+  @override
+  String get libraryHowItUnfolds => 'कथा कैसे घटी';
+
+  @override
   String get syncTitle => 'सिंक';
 
   @override
@@ -1951,10 +2011,6 @@ class LHi extends L {
   String goalsDoneOf(int done, int total) {
     return '$total में से $done पूरे';
   }
-
-  @override
-  String get goalSimranOrBani =>
-      'सिमरन मिनटों में गिना जाता है; बाणी पाठों में';
 
   @override
   String get goalHowLong => 'हर बार कितनी देर';
@@ -2356,15 +2412,6 @@ class LHi extends L {
   }
 
   @override
-  String get goalInGoalBadge => 'आपके लक्ष्य में';
-
-  @override
-  String get goalTimesPerDay => 'दिन में कितनी बार';
-
-  @override
-  String get goalDuration => 'कितने समय के लिए';
-
-  @override
   String goalDurationDays(int n) {
     return '$n दिनों के लिए';
   }
@@ -2378,9 +2425,6 @@ class LHi extends L {
   String goalDayOfTotal(int n, int total) {
     return '$total में से दिन $n';
   }
-
-  @override
-  String get goalReminder => 'रिमाइंडर';
 
   @override
   String get goalEditSave => 'सहेजें';
@@ -2401,9 +2445,6 @@ class LHi extends L {
   String get goalEndDateInPast => 'आज या बाद की कोई तारीख़ चुनें।';
 
   @override
-  String get goalValidationMinutes => '5 से 120 मिनट दर्ज करें।';
-
-  @override
   String get goalReminderBody => 'आपके रोज़ के लक्ष्य का समय';
 
   @override
@@ -2418,24 +2459,10 @@ class LHi extends L {
   }
 
   @override
-  String get goalAddTitle => 'अपने लक्ष्य में जोड़ें';
-
-  @override
-  String goalEditTitle(String name) {
-    return '$name बदलें';
-  }
-
-  @override
-  String get goalChoose => 'चुनें';
-
-  @override
   String get goalNaamSimran => 'नाम सिमरन';
 
   @override
   String get goalMinutesLabel => 'मिनट';
-
-  @override
-  String get goalCustom => 'अपने हिसाब से';
 
   @override
   String get goalEdit => 'बदलें';

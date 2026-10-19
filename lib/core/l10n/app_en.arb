@@ -453,7 +453,31 @@
       }
     }
   },
-  "goalsAdd": "Add to goal",
+  "goalsAdd": "Add or change paaths",
+  "goalPlanTitle": "Your day of paath",
+  "goalPlanIntro": "Each paath sits at its time in the day. Tap one to add it to your goal, and tap it again to take it out.",
+  "goalPlanAmritVela": "Amrit Vela",
+  "goalPlanMorning": "Morning",
+  "goalPlanDaytime": "Daytime",
+  "goalPlanEvening": "Evening",
+  "goalPlanChangeTime": "Change reminder time",
+  "goalPlanReminderNote": "Reminders are always on. Each paath starts at its usual time; tap the time to change it. Hazri stays quiet once that paath is done.",
+  "goalPlanStart": "{count, plural, =1{Start goal · 1 paath a day} other{Start goal · {count} paaths a day}}",
+  "@goalPlanStart": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "goalPlanSave": "{count, plural, =1{Save goal · 1 paath a day} other{Save goal · {count} paaths a day}}",
+  "@goalPlanSave": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "goalsFooter": "Goals, counts and reminders stay on this phone and appear in your Diary.",
   "goalsEmpty": "No goals yet. A goal is a quiet way to keep an extra paath going.",
   "goalRuleOnce": "Once a day",
@@ -523,16 +547,6 @@
   "goalDuration40Days": "40 days",
   "goalDurationUntilDate": "Until a date",
   "goalFieldReminder": "Reminder",
-  "goalReminderEveryDayAt": "Every day at {time}",
-  "@goalReminderEveryDayAt": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "goalSave": "Add to goal",
-  "goalMoreBanis": "More…",
   "goalPause": "Pause goal",
   "goalDeleteConfirm": "Delete this goal? Its ticks stay in your Diary.",
   "settingsTitle": "Settings",
@@ -953,6 +967,20 @@
   "libraryResults": "{count} results for “{query}”",
   "libraryCorrections": "Fetched from the website. If something here is wrong, it is corrected once there and every phone sees the correction.",
   "libraryOpen": "Open",
+  "libraryShare": "Share",
+  "libraryInDays": "In {count} days",
+  "@libraryInDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryNextInCalendar": "Next in the calendar",
+  "libraryPrevious": "Previous",
+  "libraryNext": "Next",
+  "libraryInTheCalendar": "In the calendar",
+  "libraryHowItUnfolds": "How the story unfolds",
   "@libraryMinutes": {
     "placeholders": {
       "count": {
@@ -1047,7 +1075,6 @@
       }
     }
   },
-  "goalSimranOrBani": "Simran counts in minutes; a bani counts in paath",
   "goalHowLong": "How long each time",
   "goalCustomMinutes": "Custom",
   "goalSimranLoops": "The recitation is five minutes long and loops with a soft crossfade for anything longer.",
@@ -1346,9 +1373,6 @@
       }
     }
   },
-  "goalInGoalBadge": "In your goal",
-  "goalTimesPerDay": "Times a day",
-  "goalDuration": "How long",
   "goalDurationDays": "For {n} days",
   "@goalDurationDays": {
     "placeholders": {
@@ -1376,7 +1400,6 @@
       }
     }
   },
-  "goalReminder": "Reminder",
   "goalEditSave": "Save",
   "goalRemove": "Remove",
   "goalRemoveConfirmTitle": "Remove {name}?",
@@ -1389,7 +1412,6 @@
   },
   "goalRemoveConfirmBody": "It leaves your goal from today. Days already recorded stay as they are.",
   "goalEndDateInPast": "Choose today or a later date.",
-  "goalValidationMinutes": "Enter 5 to 120 minutes.",
   "goalReminderBody": "Time for your daily goal",
   "goalTimesRule": "{times, plural, =1{once a day} other{{times} times a day}}",
   "@goalTimesRule": {
@@ -1399,19 +1421,8 @@
       }
     }
   },
-  "goalAddTitle": "Add to your goal",
-  "goalEditTitle": "Edit {name}",
-  "@goalEditTitle": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goalChoose": "Choose",
   "goalNaamSimran": "Naam Simran",
   "goalMinutesLabel": "Minutes",
-  "goalCustom": "Custom",
   "goalEdit": "Edit",
   "goalCompleteTitle": "Today's goal is done",
   "diaryHazriMarked": "Hazri marked",

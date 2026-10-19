@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
@@ -199,6 +200,41 @@ void main() {
       final goals = await db.select(db.goals).get();
       expect(goals, hasLength(2));
       expect(goals.where((g) => g.completedOn == null).single.startDate, '2026-10-02');
+    });
+  });
+
+  group('GI10 and RM1: once a day, reminders always on (2026-10-19)', () {
+    test('RM1: an item added with no time takes its own', () async {
+      final japji = await repo.addItem(const GoalItemSpec.bani('JAPJ'));
+      final sohila = await repo.addItem(const GoalItemSpec.bani('SOHL'));
+      final simran = await repo.addItem(const GoalItemSpec.simran(11));
+      expect(japji.reminderTime, '06:00');
+      expect(sohila.reminderTime, '19:00');
+      expect(simran.reminderTime, '05:30');
+    });
+
+    test('RM1: a time the person chose is kept', () async {
+      final japji = await repo.addItem(const GoalItemSpec.bani('JAPJ', reminderTime: '05:10'));
+      expect(japji.reminderTime, '05:10');
+    });
+
+    test('an older goal takes the new shape; past days keep their verdict', () async {
+      // A goal from before 2026-10-19: Japji three times a day, no reminder.
+      final old = await repo.addItem(const GoalItemSpec.bani('JAPJ', timesPerDay: 3));
+      await db.update(db.goalItems).write(const GoalItemsCompanion(reminderTime: Value(null)));
+      await read('JAPJ');
+      clock.instant = d(10, 2);
+      await repo.normaliseGoalItems();
+      final now = await repo.itemsInScopeToday();
+      expect(now.single.timesPerDay, 1);
+      expect(now.single.reminderTime, '06:00');
+      expect(now.single.seriesId, old.seriesId);
+      expect((await verdict(d(10, 1))).goalState, GoalState.notMet);
+      await read('JAPJ');
+      expect((await verdict()).goalState, GoalState.met);
+      // A second run changes nothing.
+      await repo.normaliseGoalItems();
+      expect((await repo.itemsInScopeToday()).single.id, now.single.id);
     });
   });
 

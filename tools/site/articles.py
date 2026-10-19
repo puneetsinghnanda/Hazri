@@ -360,6 +360,19 @@ def sitemap(arts, cats):
 APP_KIND = {'gurudwaras': 'gurdwara', 'guru-sahiban': 'guru', 'banis': 'bani', 'sikh-days': 'day'}
 
 
+def layout_of(a):
+    """How the app lays a story out (owner, 2026-10-19): a Gurpurab as a
+    calendar card, a place as a photo, and a day of history as a timeline.
+    An article's own "layout" wins."""
+    if a.get('layout'):
+        return a['layout']
+    if a['group'] == 'gurpurab':
+        return 'calendar'
+    if any(c['slug'] == 'gurudwaras' for c in a['cats']) and a.get('img'):
+        return 'photo'
+    return 'timeline'
+
+
 def vichar_entries(arts):
     """The pages as `GET /api/v1/vichar/entries` serves them: written into
     functions/src/vichar-entries.json and bundled with the Function, so the
@@ -379,6 +392,8 @@ def vichar_entries(arts):
             'dates': [e['d'] for e in a['events']],
             'summary': a['desc'], 'body': '\n\n'.join(body),
             'minutes': max(1, round(words / 200)), 'place': None, 'facts': facts,
+            'layout': layout_of(a), 'label': KIND[a['kind']],
+            'image': image_of(a), 'imageCaption': a.get('cap') or a.get('alt'),
         })
     return out
 

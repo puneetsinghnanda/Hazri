@@ -281,6 +281,7 @@ final backupServiceProvider = Provider<BackupService>((ref) {
     badges: ref.watch(badgeStoreProvider),
     afterRestore: () async {
       await repo.closeGoalIfBlank();
+      await repo.normaliseGoalItems();
       repo.onChanged?.call();
       // BB4: what the restore completes is found silently.
       await ref.read(badgeControllerProvider).evaluate(silent: true);

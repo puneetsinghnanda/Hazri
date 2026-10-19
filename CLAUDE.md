@@ -183,6 +183,8 @@ each:
 | Badges | 95, 96, 97, 98, 99 | 1C sheet, 2A page, 3B one badge, 4B profile section, 5C menu header |
 | Profile and Sangat (2026-10-10) | 100, 101, 102, 103 | Profile D (identity card and badge shelf, replaces 98), Edit profile C (Today in your city, then one card of fields), Sangat C (dashboard tiles, built-ins as rows), group H (ring in a navy band, timeline, Sit for the paath) |
 | A group's globe (2026-10-17) | 104, 105 | Option C for custom and built-in groups: the goal ring wraps the group's globe, members as counts per city, every dot tied to the ring by a dashed line (GG4a, 2026-10-18), paath of the last hour arriving as light along it (`08-sangat.md` GG1-GG10); replaces 103 and, for a custom group, 31 |
+| Goals as one page (2026-10-19) | 106 | Option C of four: the day as a timeline, every paath at its own time; once a day each, reminders always on and movable (`04-goals.md` GI10, RM1, 7.2); replaces 47 |
+| Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -401,6 +403,11 @@ is true of the code now, then what is live, then what is still open.
   `verdictOn` in `lib/features/goals/domain/day_verdict.dart` is the one rule
   Today, the Goals screen, the Diary grid and the day screen all call. The
   v4 -> v5 migration (04-goals §5.8) is tested on a hand-built v4 database.
+  **Since 2026-10-19 the goal is one page** (`GoalPlannerScreen`, design
+  106): every paath once a day (GI10), every reminder on at the paath's own
+  time from `GoalConstants.reminderDefaults` (Naam Simran 05:30 ... Kirtan
+  Sohila 19:00, RM1). `normaliseGoalItems()` at start and after a restore
+  turns an older goal into that shape without touching a past day.
 - **Notifications** (`02-notifications.md`): five local kinds --
   `amritVela`, `goalBani` (one per goal item at its own time), `calendar`
   (Gurpurabs 06:00, other Sikh events 07:00), `hazriNudge`, `sangat` --
@@ -516,7 +523,10 @@ answers `500 INTERNAL` from the endpoint that needs it.
   four chips, Sikh days first (`docs/vichar-content.md`); nothing in it is
   written in Dart, and it reaches phones only after `firebase deploy --only functions`.
   The last list is saved on the phone and opens offline; a fresh one is
-  fetched behind it once a session.
+  fetched behind it once a session. Each entry names its **layout** --
+  calendar card, photo-led or timeline, chosen by `layout_of` in
+  `tools/site/articles.py` -- and the photo-led one draws its picture: the
+  app loads no photo, because PRD §8 lists no photo host.
 - **Analytics ships with collection off** and the Settings switch is inert
   and says so. Do not wire it up without rewriting the privacy screen.
 - **Around a hundred and fifty Punjabi and Hindi UI strings are mine** and

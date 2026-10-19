@@ -32,7 +32,18 @@ export interface VicharEntryDto {
   minutes: number | null;
   place: string | null;
   facts: Array<{ label: string; value: string }>;
+  /** How the app lays the article out (docs/vichar-content.md); null for the plain reader. */
+  layout: (typeof VICHAR_LAYOUTS)[number] | null;
+  /** The kind of day in words, e.g. "Prakash Purab": the eyebrow over the title. */
+  label: string | null;
+  /** A Wikimedia Commons photo, https only; null when the article has none. */
+  image: string | null;
+  imageCaption: string | null;
 }
+
+export const VICHAR_LAYOUTS = ['calendar', 'photo', 'timeline'] as const;
+const httpsOrNull = (v: unknown): string | null =>
+  typeof v === 'string' && /^https:\/\/(commons|upload)\.wikimedia\.org\//.test(v) ? v : null;
 
 const strOrNull = (v: unknown): string | null => (typeof v === 'string' && v.trim() !== '' ? v : null);
 
@@ -69,6 +80,10 @@ export function vicharEntryDto(id: string, d: Record<string, unknown>): VicharEn
     minutes: typeof d.minutes === 'number' && Number.isFinite(d.minutes) ? d.minutes : null,
     place: strOrNull(d.place),
     facts,
+    layout: (VICHAR_LAYOUTS as readonly string[]).includes(d.layout as string) ? (d.layout as VicharEntryDto['layout']) : null,
+    label: strOrNull(d.label),
+    image: httpsOrNull(d.image),
+    imageCaption: strOrNull(d.imageCaption),
   };
 }
 

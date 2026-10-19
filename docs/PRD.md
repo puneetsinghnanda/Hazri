@@ -63,7 +63,7 @@ Around it:
 - **All seven Nitnem banis, Ardas and Sukhmani Sahib**, in Gurmukhi,
   Devanagari and Roman, with meanings where reviewed meanings exist, and a
   recitation for each that the text follows line by line.
-- **Daily goals** the reader chooses — any bani, any number of times a day,
+- **Daily goals** the reader chooses — any bani, once a day, each with its reminder,
   for as long as they choose, and Naam Simran by the minute — judged
   separately from hazri.
 - **A Diary** of every day: hazri and goal at a glance, every paath listed,
@@ -207,7 +207,7 @@ merged.
 | Idea | What marks it | Needs | Shown on |
 |---|---|---|---|
 | **Hazri** | One completed bani, or one Naam Simran sitting of 5 minutes or more, on a local day | Nothing: no goal, no profile, no network | Today's hazri banner; the Diary's orange dot |
-| **Goal** | Every goal item in scope that day met (its bani × its times a day; Simran for its minutes) | A goal the reader set | Today's goal widget; the Diary's green dot |
+| **Goal** | Every goal item in scope that day met (its bani once; Simran for its minutes) | A goal the reader set | Today's goal widget; the Diary's green dot |
 | **Hazri streak** | Consecutive days with hazri marked (any paath, or 5 minutes of Naam Simran; owner 2026-10-10); grace days silent | Nothing | Today's streak card from 2 days; the Diary's now-and-longest card |
 | **Badges** | Totals of days and milestones, never runs | Nothing (two need a profile) | The profile, the menu, the Badges page |
 | **Sangat** | Each paath of a group's bani, or each minute of Naam Simran for a Simran group, counted toward the group | Joining a group | The Sangat tab |
@@ -337,16 +337,21 @@ Daily Simran tile.
 ### 4.3 Hazri and goals
 
 **Purpose.** Hazri is turning up; a goal is finishing what the reader chose.
-They are judged independently. *Rules: `04-goals.md`. Screens: 19 (Goals), 47
-(Add goal), 42 (Log a paath), 61. Data: ARCHITECTURE §3.3.*
+They are judged independently. *Rules: `04-goals.md`. Screens: 106 (Your day
+of paath, 2026-10-19), 19 (Goals), 61. Data: ARCHITECTURE §3.3.*
 
 - **Hazri:** at least one completion, or one sitting of 300 s or more, on the
   local day. Shorter sittings are stored and mark nothing (HZ1–HZ4).
-- **A goal holds items.** Any bani from `content.db`, or Naam Simran. Each
-  item has its own **times a day** (1–11; Simran: minutes 5–120, presets 5,
-  11, 21, 31), its own **duration** (every day; N days, 40 the preset, up to
-  365; or until a date within a year), and its own **reminder** (off by
-  default; 19:30 pre-filled when switched on).
+- **A goal holds items, chosen on one page** (design 106, owner 2026-10-19):
+  the day as a timeline with every bani from `content.db` and Naam Simran at
+  its own time; tap to add, tap again to take out. **Every paath is read once
+  a day** (GI10; Simran: minutes 5–120, presets 5, 11, 21, 31). The goal has
+  one **duration** (every day; N days, 40 the preset, up to 365; or until a
+  date within a year), and **every item has a reminder, always on** (RM1), at
+  its own time: Naam Simran 05:30, Japji 06:00, Jaap 06:15, Tav Prasad Savaiye
+  06:30, Chaupai 06:45, Anand 07:00, Sukhmani 11:00, Rehras 18:00, Ardas
+  18:30, Kirtan Sohila 19:00. The person can move a time; nobody can switch a
+  reminder off.
 - **One active goal.** Adding an item with no active goal creates one. At most
   one item per bani, and one Simran item, in scope at a time; choosing a bani
   already in scope opens it for editing (GL1–GL4, GI1).
@@ -1298,8 +1303,9 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `19-PaathGoals` | Paath goals | current |  |
-| `47-AddGoal` | Add a goal | current |  |
+| `106-GoalPlanner` | Your day of paath | **new** | Option C, chosen 19 Oct: the day as a timeline, every paath at its own time; tap to add, tap the time to move the reminder; once a day each, reminders always on. Replaces 47. 04-goals.md GI10, RM1, 7.2 |
+| `19-PaathGoals` | Paath goals | current | Today's progress; its add button and Edit open 106 |
+| `47-AddGoal` | Add a goal | superseded | Replaced by 106 |
 | `42-LogPaath` | Log a paath | superseded | No manual logging: paath count from completions and the Diary + (04-goals CR1-CR4, 08-sangat CT1) |
 | `20-AddGoal` | Add a paath goal, Phase 1 | superseded | Replaced by 47 |
 
@@ -1337,7 +1343,10 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `43-Vichar` | Vichar | current |  |
-| `44-VicharArticle` | Vichar, an article | current |  |
+| `107-ArticleCalendar` | Vichar, a Gurpurab | **new** | Layout A, chosen 19 Oct: the calendar card, the countdown, what comes next. docs/vichar-content.md |
+| `108-ArticlePhoto` | Vichar, a place | **new** | Layout B: a drawn Gurdwara under the place's name, chips, previous and next |
+| `109-ArticleTimeline` | Vichar, a day of history | **new** | Layout C: the dates in the calendar, the story's sections as steps on a line |
+| `44-VicharArticle` | Vichar, an article | current | The plain reader, for an entry that names no layout |
 | `45-VicharTopic` | Vichar, a reference entry | current |  |
 | `46-VicharSearch` | Vichar, search | current |  |
 | `24-Hukamnama` | Hukamnama | superseded | The daily Hukamnama is gone; replaced by Vichar |

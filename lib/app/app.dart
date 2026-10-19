@@ -123,6 +123,8 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
         unawaited(ref.read(backupControllerProvider).onProfileLoaded());
       }
       await ref.read(userRepositoryProvider).closeGoalIfBlank();
+      // 04-goals GI10, RM1: goals made before 2026-10-19 take the new shape.
+      await ref.read(userRepositoryProvider).normaliseGoalItems();
       unawaited(ref.read(outboxSenderProvider).send());
       unawaited(ref.read(sangatDeviceProvider).sync());
       // 12-badges EV2 at start (LS1: history counts), and the Sangat facts

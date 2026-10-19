@@ -454,13 +454,29 @@ class UserRepository {
               durationDays: spec.durationDays,
               untilDate: spec.untilDate,
             )),
-            reminderTime: Value(spec.reminderTime),
+            // RM1: always on; a spec with no time takes the item's own.
+            reminderTime: Value(spec.reminderTime ??
+                GoalConstants.reminderFor(baniId: spec.baniId, simran: spec.itemType == ItemType.simran)),
             createdAt: now,
             updatedAt: now,
           ));
     });
     _changed();
     return result;
+  }
+
+  /// GI10 and RM1 for goals made before 2026-10-19: an item in scope read
+  /// more than once a day becomes once a day (through [editTarget], so past
+  /// days keep their verdict), and one with no reminder gets its own time.
+  /// Run at start and after a restore; a second run changes nothing.
+  Future<void> normaliseGoalItems() async {
+    for (final i in await itemsInScopeToday()) {
+      if (i.reminderTime == null) {
+        await editReminder(
+            i.id, GoalConstants.reminderFor(baniId: i.baniId, simran: i.itemType == ItemType.simran));
+      }
+      if (i.itemType == ItemType.bani && i.timesPerDay != 1) await editTarget(i.id, timesPerDay: 1);
+    }
   }
 
   void _validate(GoalItemSpec spec) {
@@ -483,8 +499,8 @@ class UserRepository {
     }
   }
 
-  /// Reminder only: updated in place (GI6).
-  Future<void> editReminder(String itemId, String? time) async {
+  /// Reminder only: updated in place (GI6). There is no "off" (RM1).
+  Future<void> editReminder(String itemId, String time) async {
     await (_db.update(_db.goalItems)..where((i) => i.id.equals(itemId))).write(
       GoalItemsCompanion(reminderTime: Value(time), updatedAt: Value(_nowUtc)),
     );

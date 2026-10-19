@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../app/router.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
@@ -8,7 +10,6 @@ import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/goals_controller.dart';
-import 'add_goal_sheet.dart';
 
 /// The Set Goal card (04-goals §7.1, GL1): shown whenever no goal is active.
 /// The first time it invites; after a goal completes it says so. Not
@@ -22,7 +23,7 @@ class SetGoalCard extends ConsumerWidget {
     final l = L.of(context);
     final again = ref.watch(hadGoalProvider).value ?? false;
     return HazriCard(
-      onTap: () => showGoalItemSheet(context),
+      onTap: () => context.push(Routes.goalPlan),
       child: Row(
         children: [
           Container(

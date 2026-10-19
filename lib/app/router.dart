@@ -9,6 +9,7 @@ import '../features/about/ui/privacy_screen.dart';
 import '../features/sangat/ui/sangat_screen.dart';
 import '../features/diary/ui/diary_day_screen.dart';
 import '../features/diary/ui/diary_screen.dart';
+import '../features/goals/ui/goal_planner_screen.dart';
 import '../features/goals/ui/goals_screen.dart';
 import '../features/gurpurab/ui/gurpurab_screen.dart';
 import '../features/library/ui/library_entry_screen.dart';
@@ -62,6 +63,7 @@ abstract final class Routes {
   static String libraryEntry(String id) => '/library/$id';
   static const gurpurab = '/gurpurab';
   static const goals = '/goals';
+  static const goalPlan = '/goals/plan';
   static const about = '/about';
   static const privacy = '/privacy';
 
@@ -185,6 +187,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: Routes.gurpurab, builder: (_, _) => const GurpurabScreen()),
       GoRoute(path: Routes.goals, builder: (_, _) => const GoalsScreen()),
+      GoRoute(path: Routes.goalPlan, builder: (_, _) => const GoalPlannerScreen()),
       GoRoute(path: Routes.about, builder: (_, _) => const AboutScreen()),
       GoRoute(path: Routes.privacy, builder: (_, _) => const PrivacyScreen()),
       GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),

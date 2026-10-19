@@ -1296,8 +1296,68 @@ abstract class L {
   /// No description provided for @goalsAdd.
   ///
   /// In en, this message translates to:
-  /// **'Add to goal'**
+  /// **'Add or change paaths'**
   String get goalsAdd;
+
+  /// No description provided for @goalPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your day of paath'**
+  String get goalPlanTitle;
+
+  /// No description provided for @goalPlanIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Each paath sits at its time in the day. Tap one to add it to your goal, and tap it again to take it out.'**
+  String get goalPlanIntro;
+
+  /// No description provided for @goalPlanAmritVela.
+  ///
+  /// In en, this message translates to:
+  /// **'Amrit Vela'**
+  String get goalPlanAmritVela;
+
+  /// No description provided for @goalPlanMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get goalPlanMorning;
+
+  /// No description provided for @goalPlanDaytime.
+  ///
+  /// In en, this message translates to:
+  /// **'Daytime'**
+  String get goalPlanDaytime;
+
+  /// No description provided for @goalPlanEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get goalPlanEvening;
+
+  /// No description provided for @goalPlanChangeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Change reminder time'**
+  String get goalPlanChangeTime;
+
+  /// No description provided for @goalPlanReminderNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are always on. Each paath starts at its usual time; tap the time to change it. Hazri stays quiet once that paath is done.'**
+  String get goalPlanReminderNote;
+
+  /// No description provided for @goalPlanStart.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Start goal · 1 paath a day} other{Start goal · {count} paaths a day}}'**
+  String goalPlanStart(int count);
+
+  /// No description provided for @goalPlanSave.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Save goal · 1 paath a day} other{Save goal · {count} paaths a day}}'**
+  String goalPlanSave(int count);
 
   /// No description provided for @goalsFooter.
   ///
@@ -1406,24 +1466,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Reminder'**
   String get goalFieldReminder;
-
-  /// No description provided for @goalReminderEveryDayAt.
-  ///
-  /// In en, this message translates to:
-  /// **'Every day at {time}'**
-  String goalReminderEveryDayAt(String time);
-
-  /// No description provided for @goalSave.
-  ///
-  /// In en, this message translates to:
-  /// **'Add to goal'**
-  String get goalSave;
-
-  /// No description provided for @goalMoreBanis.
-  ///
-  /// In en, this message translates to:
-  /// **'More…'**
-  String get goalMoreBanis;
 
   /// No description provided for @goalPause.
   ///
@@ -3411,6 +3453,48 @@ abstract class L {
   /// **'Open'**
   String get libraryOpen;
 
+  /// No description provided for @libraryShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get libraryShare;
+
+  /// No description provided for @libraryInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'In {count} days'**
+  String libraryInDays(int count);
+
+  /// No description provided for @libraryNextInCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Next in the calendar'**
+  String get libraryNextInCalendar;
+
+  /// No description provided for @libraryPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get libraryPrevious;
+
+  /// No description provided for @libraryNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get libraryNext;
+
+  /// No description provided for @libraryInTheCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'In the calendar'**
+  String get libraryInTheCalendar;
+
+  /// No description provided for @libraryHowItUnfolds.
+  ///
+  /// In en, this message translates to:
+  /// **'How the story unfolds'**
+  String get libraryHowItUnfolds;
+
   /// No description provided for @syncTitle.
   ///
   /// In en, this message translates to:
@@ -3602,12 +3686,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'{done} of {total} done'**
   String goalsDoneOf(int done, int total);
-
-  /// No description provided for @goalSimranOrBani.
-  ///
-  /// In en, this message translates to:
-  /// **'Simran counts in minutes; a bani counts in paath'**
-  String get goalSimranOrBani;
 
   /// No description provided for @goalHowLong.
   ///
@@ -4287,24 +4365,6 @@ abstract class L {
   /// **'{minutes} min'**
   String goalSimranMinutes(int minutes);
 
-  /// No description provided for @goalInGoalBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'In your goal'**
-  String get goalInGoalBadge;
-
-  /// No description provided for @goalTimesPerDay.
-  ///
-  /// In en, this message translates to:
-  /// **'Times a day'**
-  String get goalTimesPerDay;
-
-  /// No description provided for @goalDuration.
-  ///
-  /// In en, this message translates to:
-  /// **'How long'**
-  String get goalDuration;
-
   /// No description provided for @goalDurationDays.
   ///
   /// In en, this message translates to:
@@ -4322,12 +4382,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Day {n} of {total}'**
   String goalDayOfTotal(int n, int total);
-
-  /// No description provided for @goalReminder.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminder'**
-  String get goalReminder;
 
   /// No description provided for @goalEditSave.
   ///
@@ -4359,12 +4413,6 @@ abstract class L {
   /// **'Choose today or a later date.'**
   String get goalEndDateInPast;
 
-  /// No description provided for @goalValidationMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter 5 to 120 minutes.'**
-  String get goalValidationMinutes;
-
   /// No description provided for @goalReminderBody.
   ///
   /// In en, this message translates to:
@@ -4377,24 +4425,6 @@ abstract class L {
   /// **'{times, plural, =1{once a day} other{{times} times a day}}'**
   String goalTimesRule(int times);
 
-  /// No description provided for @goalAddTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Add to your goal'**
-  String get goalAddTitle;
-
-  /// No description provided for @goalEditTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit {name}'**
-  String goalEditTitle(String name);
-
-  /// No description provided for @goalChoose.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose'**
-  String get goalChoose;
-
   /// No description provided for @goalNaamSimran.
   ///
   /// In en, this message translates to:
@@ -4406,12 +4436,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Minutes'**
   String get goalMinutesLabel;
-
-  /// No description provided for @goalCustom.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom'**
-  String get goalCustom;
 
   /// No description provided for @goalEdit.
   ///

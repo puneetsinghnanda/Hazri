@@ -681,7 +681,55 @@ class LPa extends L {
   }
 
   @override
-  String get goalsAdd => 'ਟੀਚੇ ਵਿੱਚ ਜੋੜੋ';
+  String get goalsAdd => 'ਪਾਠ ਜੋੜੋ ਜਾਂ ਬਦਲੋ';
+
+  @override
+  String get goalPlanTitle => 'ਤੁਹਾਡਾ ਪਾਠ ਦਾ ਦਿਨ';
+
+  @override
+  String get goalPlanIntro =>
+      'ਹਰ ਪਾਠ ਦਿਨ ਵਿੱਚ ਆਪਣੇ ਸਮੇਂ ਤੇ ਹੈ। ਟੀਚੇ ਵਿੱਚ ਜੋੜਨ ਲਈ ਛੂਹੋ, ਕੱਢਣ ਲਈ ਮੁੜ ਛੂਹੋ।';
+
+  @override
+  String get goalPlanAmritVela => 'ਅੰਮ੍ਰਿਤ ਵੇਲਾ';
+
+  @override
+  String get goalPlanMorning => 'ਸਵੇਰ';
+
+  @override
+  String get goalPlanDaytime => 'ਦਿਨ';
+
+  @override
+  String get goalPlanEvening => 'ਸ਼ਾਮ';
+
+  @override
+  String get goalPlanChangeTime => 'ਯਾਦ ਦਿਵਾਉਣ ਦਾ ਸਮਾਂ ਬਦਲੋ';
+
+  @override
+  String get goalPlanReminderNote =>
+      'ਯਾਦ ਦਿਵਾਉਣਾ ਹਮੇਸ਼ਾ ਚਾਲੂ ਹੈ। ਹਰ ਪਾਠ ਆਪਣੇ ਆਮ ਸਮੇਂ ਤੇ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ; ਬਦਲਣ ਲਈ ਸਮੇਂ ਨੂੰ ਛੂਹੋ। ਪਾਠ ਹੋ ਜਾਣ ਤੇ ਹਾਜ਼ਰੀ ਚੁੱਪ ਰਹਿੰਦੀ ਹੈ।';
+
+  @override
+  String goalPlanStart(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ਟੀਚਾ ਸ਼ੁਰੂ ਕਰੋ · ਦਿਨ ਵਿੱਚ $count ਪਾਠ',
+      one: 'ਟੀਚਾ ਸ਼ੁਰੂ ਕਰੋ · ਦਿਨ ਵਿੱਚ 1 ਪਾਠ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalPlanSave(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ਟੀਚਾ ਸੰਭਾਲੋ · ਦਿਨ ਵਿੱਚ $count ਪਾਠ',
+      one: 'ਟੀਚਾ ਸੰਭਾਲੋ · ਦਿਨ ਵਿੱਚ 1 ਪਾਠ',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get goalsFooter =>
@@ -750,17 +798,6 @@ class LPa extends L {
 
   @override
   String get goalFieldReminder => 'ਚੇਤਾ';
-
-  @override
-  String goalReminderEveryDayAt(String time) {
-    return 'ਹਰ ਰੋਜ਼ $time ਵਜੇ';
-  }
-
-  @override
-  String get goalSave => 'ਟੀਚੇ ਵਿੱਚ ਜੋੜੋ';
-
-  @override
-  String get goalMoreBanis => 'ਹੋਰ…';
 
   @override
   String get goalPause => 'ਸੰਕਲਪ ਰੋਕੋ';
@@ -1841,6 +1878,29 @@ class LPa extends L {
   String get libraryOpen => 'ਖੋਲ੍ਹੋ';
 
   @override
+  String get libraryShare => 'ਸਾਂਝਾ ਕਰੋ';
+
+  @override
+  String libraryInDays(int count) {
+    return '$count ਦਿਨਾਂ ਵਿੱਚ';
+  }
+
+  @override
+  String get libraryNextInCalendar => 'ਕੈਲੰਡਰ ਵਿੱਚ ਅੱਗੇ';
+
+  @override
+  String get libraryPrevious => 'ਪਿਛਲਾ';
+
+  @override
+  String get libraryNext => 'ਅਗਲਾ';
+
+  @override
+  String get libraryInTheCalendar => 'ਕੈਲੰਡਰ ਵਿੱਚ';
+
+  @override
+  String get libraryHowItUnfolds => 'ਕਥਾ ਕਿਵੇਂ ਵਾਪਰੀ';
+
+  @override
   String get syncTitle => 'ਸਿੰਕ';
 
   @override
@@ -1952,10 +2012,6 @@ class LPa extends L {
   String goalsDoneOf(int done, int total) {
     return '$total ਵਿੱਚੋਂ $done ਪੂਰੇ';
   }
-
-  @override
-  String get goalSimranOrBani =>
-      'ਸਿਮਰਨ ਮਿੰਟਾਂ ਵਿੱਚ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ; ਬਾਣੀ ਪਾਠਾਂ ਵਿੱਚ';
 
   @override
   String get goalHowLong => 'ਹਰ ਵਾਰ ਕਿੰਨੀ ਦੇਰ';
@@ -2360,15 +2416,6 @@ class LPa extends L {
   }
 
   @override
-  String get goalInGoalBadge => 'ਤੁਹਾਡੇ ਟੀਚੇ ਵਿੱਚ';
-
-  @override
-  String get goalTimesPerDay => 'ਦਿਨ ਵਿੱਚ ਕਿੰਨੀ ਵਾਰ';
-
-  @override
-  String get goalDuration => 'ਕਿੰਨੇ ਸਮੇਂ ਲਈ';
-
-  @override
   String goalDurationDays(int n) {
     return '$n ਦਿਨਾਂ ਲਈ';
   }
@@ -2382,9 +2429,6 @@ class LPa extends L {
   String goalDayOfTotal(int n, int total) {
     return '$total ਵਿੱਚੋਂ ਦਿਨ $n';
   }
-
-  @override
-  String get goalReminder => 'ਯਾਦ-ਦਹਾਨੀ';
 
   @override
   String get goalEditSave => 'ਸੰਭਾਲੋ';
@@ -2405,9 +2449,6 @@ class LPa extends L {
   String get goalEndDateInPast => 'ਅੱਜ ਜਾਂ ਬਾਅਦ ਦੀ ਕੋਈ ਤਾਰੀਖ਼ ਚੁਣੋ।';
 
   @override
-  String get goalValidationMinutes => '5 ਤੋਂ 120 ਮਿੰਟ ਦਰਜ ਕਰੋ।';
-
-  @override
   String get goalReminderBody => 'ਤੁਹਾਡੇ ਰੋਜ਼ਾਨਾ ਟੀਚੇ ਦਾ ਸਮਾਂ';
 
   @override
@@ -2422,24 +2463,10 @@ class LPa extends L {
   }
 
   @override
-  String get goalAddTitle => 'ਆਪਣੇ ਟੀਚੇ ਵਿੱਚ ਜੋੜੋ';
-
-  @override
-  String goalEditTitle(String name) {
-    return '$name ਬਦਲੋ';
-  }
-
-  @override
-  String get goalChoose => 'ਚੁਣੋ';
-
-  @override
   String get goalNaamSimran => 'ਨਾਮ ਸਿਮਰਨ';
 
   @override
   String get goalMinutesLabel => 'ਮਿੰਟ';
-
-  @override
-  String get goalCustom => 'ਆਪਣੇ ਮੁਤਾਬਕ';
 
   @override
   String get goalEdit => 'ਬਦਲੋ';

@@ -20,6 +20,21 @@ enum EntryKind {
       );
 }
 
+/// How an article is laid out (owner, 2026-10-19; docs/vichar-content.md):
+/// a Gurpurab as a calendar card, a place as a photo-led page, a day of
+/// history as a timeline. `plain` is the reader for anything else.
+enum EntryLayout {
+  plain,
+  calendar,
+  photo,
+  timeline;
+
+  static EntryLayout parse(String? v) => EntryLayout.values.firstWhere(
+        (k) => k.name == v,
+        orElse: () => EntryLayout.plain,
+      );
+}
+
 /// One thing to read or look up.
 ///
 /// **Nothing in here is written in Dart.** The body of every entry comes from
@@ -40,6 +55,10 @@ class LibraryEntry {
     this.place = '',
     this.tags = const {},
     this.dates = const [],
+    this.layout = EntryLayout.plain,
+    this.label = '',
+    this.image,
+    this.imageCaption = '',
   });
 
   final String id;
@@ -67,6 +86,24 @@ class LibraryEntry {
 
   /// The calendar days it tells the story of, YYYY-MM-DD, earliest first.
   final List<String> dates;
+
+  final EntryLayout layout;
+
+  /// The kind of day in words ("Prakash Purab"), as the source writes it.
+  final String label;
+
+  /// A Wikimedia Commons photo. Not loaded by the app: Wikimedia is not on
+  /// PRD §8's list of places the app may reach, so the photo-led layout draws
+  /// its own picture and names the place with [imageCaption].
+  final String? image;
+  final String imageCaption;
+
+  /// The body as paragraphs; one that starts "## " is a heading.
+  List<String> get paragraphs => body
+      .split(RegExp(r'\n\s*\n'))
+      .map((p) => p.trim())
+      .where((p) => p.isNotEmpty)
+      .toList();
 
   /// Whether the chip for [topic] lists this entry. Sikh days lists them all.
   bool listedUnder(EntryKind topic) =>
@@ -125,6 +162,10 @@ class LibraryEntry {
           for (final d in raw)
             if (d is String && RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(d)) d,
       ]..sort(),
+      layout: EntryLayout.parse(data['layout'] as String?),
+      label: (data['label'] as String?) ?? '',
+      image: data['image'] as String?,
+      imageCaption: (data['imageCaption'] as String?) ?? '',
     );
   }
 

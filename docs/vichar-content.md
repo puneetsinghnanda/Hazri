@@ -59,6 +59,10 @@ whatever the website uses in Phase 3.
 | `facts` | list of `{label, value}`, or a map of string to string | The labelled rows on design 45 — Where, Marks, Open, Langar. The source decides what appears and in what order (a map's order is not kept by Firestore; a list's is). |
 | `tags` | list of string | The chips it is listed under: any of `day`, `gurdwara`, `guru`, `bani`. Omit it and the entry is listed under its `kind`. Every entry is listed under Sikh days regardless. |
 | `dates` | list of string | The calendar days it tells the story of, `YYYY-MM-DD`. Used to put the coming days first. |
+| `layout` | string | `calendar`, `photo` or `timeline` (see Layouts below). Anything else, or none, is the plain reader of designs 44 and 45. |
+| `label` | string | The kind of day in words, e.g. `Prakash Purab`: the eyebrow over the title and the first chip. |
+| `image` | string | A Wikimedia Commons photo, `https://commons.wikimedia.org/…` or `upload.wikimedia.org` only. Served, **not loaded by the app**: PRD §8 lists no photo host. |
+| `imageCaption` | string | What the photo shows. The photo-led layout writes it over the picture it draws, so the place is named even though its photo is not shown. |
 
 Example:
 
@@ -78,6 +82,24 @@ Example:
   "body": "First paragraph.\n\nSecond paragraph."
 }
 ```
+
+## Layouts (owner, 2026-10-19)
+
+Chosen from four drawn options: **A for Gurpurabs, B for gurdwaras, C for
+multi-day history.** The website's build picks one for every story page
+(`layout_of` in `tools/site/articles.py`), and an article's own `"layout"` in
+its JSON wins:
+
+| Layout | For | What it shows | Design |
+|---|---|---|---|
+| `calendar` (A) | Every Gurpurab: Prakash, Gurgaddi, Joti Jot (30 pages) | The date as a tile, the countdown ("In 8 days"), title and opening in a navy card; headings with a kesri bar; the facts; the next two days in the calendar; Share | 107 |
+| `photo` (B) | A story listed under Gurdwaras that has a photo on the website (19) | A drawn Gurdwara at dusk with the place's name over it, kind and topics as chips, the story, previous and next in the calendar | 108 |
+| `timeline` (C) | Everything else: Shaheedi, the days of the Panth, Sangrand, Masya, Puranmashi (53) | A navy band with every date the story is in the calendar (the next in kesri), the opening, then each `## ` section as a step on a line, the first in kesri | 109 |
+
+The same text appears in every layout; only the frame differs. The photo-led
+page draws its picture instead of loading the Commons photo, because the app
+reaches nothing PRD §8 does not list; adding a photo host would be a change to
+§8 and to the privacy screen first.
 
 ## On the phone (owner, 2026-10-19)
 

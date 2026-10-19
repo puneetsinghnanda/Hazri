@@ -401,7 +401,7 @@ One row per stretch of one bani (or simran) inside a goal. A target edit adds a 
 | `startDate` | TEXT | no | `YYYY-MM-DD`, today on insert |
 | `endDate` | TEXT | yes | Computed per GI4. Null for `EVERY_DAY`. |
 | `removedOn` | TEXT | yes | `YYYY-MM-DD` set by GI6 or GI7. The item is out of scope from this day. |
-| `reminderTime` | TEXT | yes | `HH:mm`, 24-hour local time. Null = reminder off. |
+| `reminderTime` | TEXT | yes | `HH:mm`, 24-hour local time. Since 2026-10-19 always set (04-goals RM1); null only on a row from before, which `normaliseGoalItems()` fills (GI10). |
 | `createdAt` | DATETIME | no | UTC |
 | `updatedAt` | DATETIME | no | UTC, every write |
 
@@ -456,7 +456,8 @@ Every write runs in one drift transaction and sets `updatedAt`. After each one t
 | Operation | Writes |
 | --- | --- |
 | `addItem(spec)` | Creates the goal if none is active (GL2), then inserts the item (GI1, GI2, GI4) |
-| `editReminder(itemId, time?)` | Updates `reminderTime` in place |
+| `editReminder(itemId, time)` | Updates `reminderTime` in place; there is no off (RM1) |
+| `normaliseGoalItems()` | GI10: every in-scope bani item to once a day through `editTarget`, every missing reminder to its own time. At start and after a restore; idempotent |
 | `editDuration(itemId, spec)` | Updates `durationType`, `durationDays`, `endDate` in place; new `endDate` ≥ today |
 | `editTarget(itemId, target)` | GI6: ends the old row, inserts the new one (or updates in place on its start day) |
 | `removeItem(itemId)` | Sets `removedOn` = today (GI7); then BG1 |

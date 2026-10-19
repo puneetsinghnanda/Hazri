@@ -241,7 +241,7 @@ describeEmu('devices, badges and the Vichar library', () => {
     const mine = res.body.entries.filter((e: { id: string }) => ['a', 'b', 'c'].includes(e.id));
     expect({ entries: mine }).toEqual({
       entries: [
-        { id: 'a', title: 'Anand Karaj', kind: 'article', tags: [], dates: [], summary: null, body: 'One.\n\nTwo.', minutes: null, place: null, facts: [] },
+        { id: 'a', title: 'Anand Karaj', kind: 'article', tags: [], dates: [], summary: null, body: 'One.\n\nTwo.', minutes: null, place: null, facts: [], layout: null, label: null, image: null, imageCaption: null },
         {
           id: 'b',
           title: 'Bangla Sahib',
@@ -256,6 +256,10 @@ describeEmu('devices, badges and the Vichar library', () => {
             { label: 'Where', value: 'Delhi' },
             { label: 'Langar', value: 'Always' },
           ]),
+          layout: null,
+          label: null,
+          image: null,
+          imageCaption: null,
         },
       ],
     });
@@ -267,6 +271,9 @@ describeEmu('devices, badges and the Vichar library', () => {
     const page = res.body.entries.find((e: { id: string }) => e.id === id);
     expect(page.tags).toContain('guru');
     expect(page.dates).toHaveLength(1);
+    // A Gurpurab is laid out as a calendar card (docs/vichar-content.md).
+    expect(page.layout).toBe('calendar');
+    expect(page.label).toBe('Prakash Purab');
     expect(res.body.entries.length).toBeGreaterThanOrEqual(100);
 
     await h.db.collection('content/vichar/entries').doc(id).set({ title: 'Corrected', kind: 'guru' });
