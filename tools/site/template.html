@@ -35,7 +35,7 @@
   --shadow: 0 0 0 1px rgba(255,255,255,.05); color-scheme: dark }
 
 * { box-sizing: border-box }
-body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
 h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; text-wrap: balance }
 p { margin: 0 }
 a { color: inherit }
@@ -47,6 +47,16 @@ a { color: inherit }
   background: linear-gradient(180deg, var(--night) 0%, var(--night2) 38%, var(--dusk) 62%, var(--dawn) 86%, var(--sunrise) 100%); }
 .stars { position: absolute; left: 0; top: 0; width: 100%; height: 120vh; pointer-events: none }
 .nav { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px }
+/* The menu stays at the top while the page scrolls. Over the night sky it is
+   clear; once the page moves it takes a dark band so it reads over the light
+   sections too. The band is a shadow so it spans the window, not the wrap. */
+.nav.sticky { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1200px; padding: 14px 24px; z-index: 50;
+  transition: box-shadow .25s, background-color .25s; clip-path: inset(0 -100vmax) }
+.nav.sticky.scrolled { background: rgba(9,12,34,.88); box-shadow: 0 0 0 100vmax rgba(9,12,34,.88);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px) }
+.nav.sticky + .hero { margin-top: 74px }
+.sky { display: flow-root }
+html { scroll-padding-top: 76px }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 1 }
 .nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-weight: 500; color: var(--sky-ink2); font-size: 16px }
 .nav ul a { text-decoration: none } .nav ul a:hover { color: var(--sky-ink) }
@@ -323,7 +333,7 @@ body.reel .caption p { font-size: 2.05vh; margin-top: 1vh }
 <section class="sky" id="top">
   <canvas class="stars" aria-hidden="true"></canvas>
   <div class="wrap">
-    <nav class="nav" aria-label="Main">
+    <nav class="nav sticky" aria-label="Main">
       <a class="brand" href="#top" aria-label="Hazri home">
         <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><path d="M4 27A16 16 0 0 1 36 27" fill="none" stroke="#F3F1FA" stroke-width="2.4" stroke-linecap="round"/><path d="M6 31.5H34" fill="none" stroke="#F3F1FA" stroke-width="2.4" stroke-linecap="round"/><path d="M12 27A8 8 0 0 1 28 27Z" fill="#F2A24E"/></svg>
         Hazri
@@ -826,6 +836,13 @@ function stars() {
   }
 }
 stars(); addEventListener('resize', () => { clearTimeout(stars.t); stars.t = setTimeout(stars, 200); });
+
+/* ---------- The sticky menu ---------- */
+(function () {
+  const nav = document.querySelector('.nav.sticky');
+  const mark = () => nav.classList.toggle('scrolled', scrollY > 8);
+  addEventListener('scroll', mark, { passive: true }); mark();
+})();
 
 /* ---------- Gurpurab calendar ---------- */
 const CAL = __CAL__;

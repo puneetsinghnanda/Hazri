@@ -28,7 +28,9 @@ a { color: inherit }
 .wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding-inline: 16px }
 
 /* The bar: the same night sky the home page opens on. */
-.top { background: linear-gradient(180deg, #070A1E, #10143A 70%, #232659); color: var(--sky-ink) }
+.top { background: linear-gradient(180deg, #070A1E, #10143A 70%, #232659); color: var(--sky-ink);
+  position: sticky; top: 0; z-index: 50; box-shadow: 0 6px 20px rgba(7,10,30,.18) }
+html { scroll-padding-top: 76px }
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 22px/1 var(--display) }
 .nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font-size: 15px; color: var(--sky-ink2) }
@@ -47,6 +49,11 @@ article h1 { font-size: clamp(32px, 5vw, 50px); margin-top: 10px }
 .dek { font-size: 20px; color: var(--ink2); margin-top: 14px; max-width: 36em }
 .when { margin-top: 14px; font-size: 15px; color: var(--muted) }
 .when b { color: var(--ink); font-weight: 600 }
+.tags { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 8px }
+.tags a { display: inline-block; font-size: 14px; line-height: 1; padding: 8px 13px; border-radius: 999px; text-decoration: none;
+  background: var(--card); color: var(--ink2); box-shadow: inset 0 0 0 1px var(--rule) }
+.tags a:hover { color: var(--ink); box-shadow: inset 0 0 0 1px var(--kesri) }
+.tags a[aria-current="page"] { background: var(--ink); color: var(--bg); box-shadow: none }
 figure { margin: 28px 0 8px; border-radius: 22px; overflow: hidden; background: var(--card2); position: relative }
 figure img, figure svg { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover }
 figcaption { font-size: 13px; color: var(--muted); padding: 10px 14px; background: var(--card) }
@@ -77,7 +84,7 @@ figcaption a { color: var(--muted) }
 .poster .play b { display: block; font: 600 19px/1.1 var(--body) }
 
 /* The side column */
-aside { position: sticky; top: 20px; display: flex; flex-direction: column; gap: 16px }
+aside { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 16px }
 .facts { background: var(--card); border-radius: 20px; padding: 20px; box-shadow: var(--shadow) }
 .facts h3, .more h3 { font-size: 18px; margin-bottom: 10px }
 .facts dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 15px; line-height: 1.45 }

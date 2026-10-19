@@ -14,6 +14,10 @@ fails if a calendar day has no page, if an article names a day the calendar
 does not have, or if a page is under 200 words. The home page's calendar card
 now shows each day's whole story and links "Read the full story" to its page.
 
+**Topics.** Every page carries one or more of four topics, Gurudwaras, Guru Sahibans, Banis and Sikh Days, set in
+`tools/site/categories.json` (a list of page slugs per topic). They show as links under each title and on the
+index, and each has its own page at `/gurpurab/topic/<topic>`. The build fails if a page has no topic.
+
 **What the pages are not.** None of them quotes Gurbani, and no picture is of
 a Guru (CLAUDE.md rule 3): the photographs are of places. The history is
 written from widely accepted accounts and the calendar's own stories; where

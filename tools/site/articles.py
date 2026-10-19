@@ -208,7 +208,7 @@ def json_ld(art, canonical, image):
         'mainEntityOfPage': canonical, 'datePublished': UPDATED, 'dateModified': UPDATED, 'inLanguage': 'en',
         'author': {'@type': 'Organization', 'name': 'Hazri', 'url': SITE},
         'publisher': {'@type': 'Organization', 'name': 'Hazri', 'url': SITE},
-        'about': art['events'][0]['n'], 'keywords': ', '.join(art.get('kw', [])),
+        'about': art['events'][0]['n'], 'articleSection': [c['name'] for c in art['cats']], 'keywords': ', '.join(art.get('kw', [])),
         **({'image': [image]} if image else {}),
     }, {
         '@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
@@ -271,6 +271,7 @@ def page(art, arts):
 <h1>{esc(art['title'])}</h1>
 <p class="dek">{esc(art['desc'])}</p>
 <p class="when">{when}</p>
+{tag_chips(art['cats'])}
 {figure(art)}
 <div class="body">
 {body}
@@ -286,7 +287,36 @@ def page(art, arts):
 ''' + FOOT)
 
 
-def index(arts):
+def tag_chips(cats, current=None):
+    return '<ul class="tags">' + ''.join(
+        f'<li><a href="/gurpurab/topic/{c["slug"]}"{" aria-current=\"page\"" if c is current else ""}>{esc(c["name"])}</a></li>'
+        for c in cats) + '</ul>'
+
+
+def card(a):
+    return (f'<a class="card" href="/gurpurab/{a["slug"]}"><small>{esc(KIND[a["kind"]])}</small>'
+            f'<b>{esc(a["name"])}</b><span>{esc(long_date(a["first"]))} · {esc(a["events"][0]["ns"])}</span></a>')
+
+
+def topic(cat, cats):
+    canonical = f"{SITE}/gurpurab/topic/{cat['slug']}"
+    title = f"{cat['name']}: Sikh history stories from the Nanakshahi calendar | Hazri"
+    lst = sorted(cat['arts'], key=lambda a: (a['group'] == 'monthly', a['first']))
+    return head(title, cat['about'], canonical, None) + f'''<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Hazri</a> › <a href="/gurpurab">Gurpurab calendar</a> › <span>{esc(cat['name'])}</span></nav>
+<div class="intro">
+<div class="kicker">Topic · {len(lst)} stories</div>
+<h1>{esc(cat['name'])}</h1>
+<p>{esc(cat['about'])}</p>
+{tag_chips(cats, cat)}
+</div>
+<section class="month"><div class="cards">{"".join(card(a) for a in lst)}</div></section>
+{poster({'remind': ''})}
+</main>
+''' + FOOT
+
+
+def index(arts, cats):
     canonical = f'{SITE}/gurpurab'
     title = 'Gurpurab calendar 2026–27 (Nanakshahi 558): every Gurpurab, Shaheedi and Sikh day | Hazri'
     desc = ('The story of every Gurpurab, Shaheedi Purab and day of the Panth in the Nanakshahi calendar 558, '
@@ -295,10 +325,6 @@ def index(arts):
     for a in sorted((a for a in arts if a['group'] != 'monthly'), key=lambda a: a['first']):
         ns = a['events'][0]['ns'].split(' ')
         by_month.setdefault(f'{ns[1]} {ns[2]}', []).append(a)
-
-    def card(a):
-        return (f'<a class="card" href="/gurpurab/{a["slug"]}"><small>{esc(KIND[a["kind"]])}</small>'
-                f'<b>{esc(a["name"])}</b><span>{esc(long_date(a["first"]))} · {esc(a["events"][0]["ns"])}</span></a>')
     months = ''.join(f'<section class="month"><h2>{esc(m)}</h2><div class="cards">{"".join(card(a) for a in lst)}</div></section>'
                      for m, lst in by_month.items())
     monthly = ''.join(card(a) for a in arts if a['group'] == 'monthly')
@@ -307,6 +333,7 @@ def index(arts):
 <div class="kicker">Gurpurab calendar · Nanakshahi 558</div>
 <h1>Every Gurpurab and Sikh day of the year, with its story</h1>
 <p>Dates follow the SGPC’s Nanakshahi calendar for 558, from 14 March 2026 to 13 March 2027. Each page tells the story of the day and how the sangat observes it. Hazri keeps the whole year on your phone and reminds you on the morning of each day.</p>
+{tag_chips(cats)}
 </div>
 <section class="month"><h2>Every month</h2><div class="cards">{monthly}</div></section>
 {months}
@@ -315,8 +342,9 @@ def index(arts):
 ''' + FOOT
 
 
-def sitemap(arts):
-    urls = [SITE + '/', SITE + '/gurpurab'] + [f"{SITE}/gurpurab/{a['slug']}" for a in arts]
+def sitemap(arts, cats):
+    urls = ([SITE + '/', SITE + '/gurpurab'] + [f"{SITE}/gurpurab/topic/{c['slug']}" for c in cats]
+            + [f"{SITE}/gurpurab/{a['slug']}" for a in arts])
     body = ''.join(f'<url><loc>{u}</loc><lastmod>{UPDATED}</lastmod></url>' for u in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'
 
@@ -363,15 +391,36 @@ def build(here, public, cal):
         if len(a['desc']) > 180:
             raise SystemExit(f"{a['slug']}: desc is {len(a['desc'])} characters; search results cut it at about 160 and it should still read whole")
 
+    # Every page is tagged with one or more of the topics in categories.json.
+    cats = json.loads((here / 'categories.json').read_text())
+    by_slug = {a['slug']: a for a in arts}
+    for a in arts:
+        a['cats'] = []
+    for c in cats:
+        c['arts'] = []
+        for slug in c['slugs']:
+            if slug not in by_slug:
+                raise SystemExit(f"categories.json: {c['name']} names {slug!r}, which has no article")
+            by_slug[slug]['cats'].append(c)
+            c['arts'].append(by_slug[slug])
+    untagged = [a['slug'] for a in arts if not a['cats']]
+    if untagged:
+        raise SystemExit('no topic in categories.json for: ' + ', '.join(untagged))
+
     out = public / 'gurpurab'
     out.mkdir(exist_ok=True)
     for old in out.glob('*.html'):
         old.unlink()
     for a in arts:
         (out / f"{a['slug']}.html").write_text(page(a, arts))
-    (out / 'index.html').write_text(index(arts))
+    (out / 'index.html').write_text(index(arts, cats))
+    (out / 'topic').mkdir(exist_ok=True)
+    for old in (out / 'topic').glob('*.html'):
+        old.unlink()
+    for c in cats:
+        (out / 'topic' / f"{c['slug']}.html").write_text(topic(c, cats))
     (public / 'stories.css').write_text((here / 'stories.css').read_text())
-    (public / 'sitemap.xml').write_text(sitemap(arts))
+    (public / 'sitemap.xml').write_text(sitemap(arts, cats))
     (public / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nDisallow: /verify\nDisallow: /j/\n\nSitemap: {SITE}/sitemap.xml\n')
 
     first_para = {a['slug']: plain(next(x for x in a['body'] if not x.startswith(('## ', '- ')))) for a in arts}
