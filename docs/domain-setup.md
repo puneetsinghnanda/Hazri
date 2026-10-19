@@ -12,8 +12,9 @@ re-adding at once can answer "Error creating domain" for a few minutes.
 The pages track (steps 3 and 4) was done on 2026-10-18. At Namecheap -> Advanced DNS, the parking CNAME on `www` and
 the URL Redirect on `@` were deleted, and Firebase's two records were added:
 A `@` -> `199.36.158.100` and TXT `@` -> `hosting-site=hazri-dfcc1` (TTL 5
-min). `hazri.me` is on Authentication's authorized domains. Nothing is set for
-`www.hazri.me` yet. The zone also carries Brevo's records for the profile
+min). `hazri.me` is on Authentication's authorized domains. `www.hazri.me` was
+added on 2026-10-19 as a redirect to `hazri.me`; Firebase asked for a single
+CNAME `www` -> `hazri-dfcc1.web.app` (no A, no TXT), which is in the zone. The zone also carries Brevo's records for the profile
 mail (`brevo1._domainkey` and `brevo2._domainkey` CNAMEs, a `brevo-code` TXT
 on `@`, and `_dmarc` TXT `v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com`),
 which must stay. There is no SPF record; when one is added it is one line.

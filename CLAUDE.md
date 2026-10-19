@@ -243,7 +243,7 @@ every verification link the app had ever sent had been landing. Both URLs come f
 test holds that they share a host, because they were once on two and one of
 them served nothing.
 
-**`https://hazri.me` is live on Firebase Hosting** (Namecheap, connected 2026-10-19; `docs/domain-setup.md` has the zone as it stands). It serves the same `public/` as `hazri-dfcc1.web.app`; `www.hazri.me` is not set up yet, and the app still points at `hazri-dfcc1.web.app`. It is a
+**`https://hazri.me` is live on Firebase Hosting** (Namecheap, connected 2026-10-19; `docs/domain-setup.md` has the zone as it stands). It serves the same `public/` as `hazri-dfcc1.web.app`; `www.hazri.me` redirects to it (CNAME to `hazri-dfcc1.web.app`, added 2026-10-19), and the app still points at `hazri-dfcc1.web.app`. It is a
 Phase 3 asset: it is added *alongside* `hazri-dfcc1.web.app`, never instead,
 because a verification link already sitting in an inbox has to keep working.
 `docs/domain-setup.md` is the record set and the order to add it in; the DNS
