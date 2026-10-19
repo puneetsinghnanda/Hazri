@@ -105,20 +105,14 @@ screens are designs 95–99 — the sheet (1C), the Badges page (2A), one badge
 (3B), the profile's Badges section (4B, replacing 33) and the menu's navy
 header with the earned set under the name and city (5C, replacing 37).
 
-**Notifications are specified** (`docs/features/02-notifications.md`,
-2026-10-07) as a closed list: Amrit Vela at 04:00, a reminder per goal item
-at its own time, Gurpurabs at 06:00 and other Sikh events at 07:00 on the
-day, a hazri nudge at 07:00 with no goal and no hazri, and three pushes by
-Cloud Function -- the Sangat at 21:00, new members to a group's creator, a
-group ending. **Reminders are on by default** and Android's permission prompt
-comes at app start. The Rehras, Kirtan Sohila and Daily Simran reminders the
-code still ships are removed by that file (N-2, open), and a badge or a met
-goal is an in-app sheet, not a notification. The code today has five local
-kinds -- `amritVela`, `evening`, `bedtime`, `simran`, `gurpurab` -- and no
-per-goal reminder; see the two bugs under "Known gaps" before believing any
-claim that a notification works. Every notification that must reach
-*everybody* stays local, because somebody with no profile and no group has no
-token.
+**Notifications are built to their specification**
+(`docs/features/02-notifications.md`, 2026-10-07): Amrit Vela at 04:00, a
+reminder per goal item at its own time, Gurpurabs at 06:00 and other Sikh
+events at 07:00, a hazri nudge at 07:00 with no goal and no hazri, and three
+pushes by Cloud Function -- the Sangat at 21:00, new members to a group's
+creator, a group ending. Reminders are on by default and Android's permission
+prompt comes at app start. Every notification that must reach *everybody*
+stays local, because somebody with no profile and no group has no token.
 
 ## The feature specifications
 
@@ -205,9 +199,13 @@ lib/
     settings/   AppSettings + SettingsController (shared_preferences)
     time/       Clock, NOAA SolarService, Nanakshahi calendar, formatting
     widgets/    AppMark, DayArc, ProgressRing, cards, chips, buttons
-  features/     onboarding today nitnem reader diary reminders hukamnama
-                simran gurpurab goals settings about
+  features/     about audio backup badges diary goals gurpurab hazri library
+                nitnem onboarding profile reader reminders sangat settings
+                simran today vichar
                 each: data/ (repos, controllers) domain/ (models, logic) ui/
+android/                  Reminders.kt (alarms and posting), MainActivity.kt
+functions/                the `api` Cloud Function and the scheduled / triggered ones
+admin/                    the admin website (Vite + TypeScript), hosting:admin
 tools/content_pipeline/   builds assets/content/content.db
 content/source/           the reviewed source files the pipeline reads
 docs/                     PRD.md, ARCHITECTURE.md, features/ (one file per feature)
@@ -215,6 +213,8 @@ design/                   tokens.json, screens.json, HTML specs, PNG renders
                           canvas.html: every screen on one page, by feature
 public/                   Firebase Hosting: the home page, /verify and /j/<groupId>
 tools/site/               builds public/index.html (the home page)
+tools/design/             draws the Phase 2 screens (build_phase2.py)
+firestore.rules, firestore.indexes.json, firebase.json, .firebaserc
 ```
 
 ## Regenerating
@@ -378,255 +378,142 @@ timings and verify the alignment acoustically.
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
-## Where the specifications overtake the code
+## State of the build (2026-10-19)
 
-"Known gaps" below describes **the code on this branch as it is**. The
-feature files written on 2026-10-07 and 2026-10-08 change several of the
-things it describes; those are targets for the build, not bugs to patch in
-place. `docs/ARCHITECTURE.md` §11 is the full list of what today's code
-has that the target replaces, and PRD §11 says which step removes each:
+**Phase 2 is built**: all ten steps of PRD §11, in that order, on this
+branch. The older code each step replaced -- the first sangat (listed groups,
+counted-on-read totals, the join banner), diary sync, the 45-second presence
+read, the Settings city, the branded splash and intro pages, elder Today as a
+fork, the Rehras / Kirtan Sohila / Daily Simran reminders -- is gone, and
+`docs/ARCHITECTURE.md` §11 is the record of what went. What follows is what
+is true of the code now, then what is live, then what is still open.
 
-- **The sangat code is removed and rebuilt** (`01-accounts.md` W2,
-  `08-sangat.md`): three built-in groups and private custom groups, each with
-  one goal and an end date, all through the `api` Function. The listing
-  procedure, the invite rules, the counted-on-read totals and the join banner
-  below all go with it.
-- **Diary sync is replaced by the weekly backup** (`10-backup.md`), only with
-  a profile, with no switch.
-- **Today gets the navy app bar** (`05-today.md` T11) -- so "no brand bar"
-  below now describes every tab but Today -- plus the streak card; the join
-  banner goes and elder Today stops being a fork.
-- **The globe's legend is You, Live and Here today**, refreshed every 2
-  minutes, placed by the profile's city with attendance once a day
-  (`07-simran.md`); "in the sangat" and the 45-second presence read go.
-- **There is one city, the profile's**; the Settings city goes, and without a
-  profile nothing guesses one (`03-first-run.md` CY1–CY3).
-- **First run is Android's splash, Welcome, Language, How you read** --
-  built 2026-10-08: `/` is a redirect, not a screen; the branded splash, the
-  three intro pages and the reminders step are gone (`03-first-run.md` F1–F8).
+### What the app does
 
-## Known gaps in this build
+- **Goals, the Diary and Hazri** (steps 2-3): `user.db` schema 6 (5 added
+  goals of items, `completions`, `simran_sessions`; 6 added `badges`).
+  `verdictOn` in `lib/features/goals/domain/day_verdict.dart` is the one rule
+  Today, the Goals screen, the Diary grid and the day screen all call. The
+  v4 -> v5 migration (04-goals §5.8) is tested on a hand-built v4 database.
+- **Notifications** (`02-notifications.md`): five local kinds --
+  `amritVela`, `goalBani` (one per goal item at its own time), `calendar`
+  (Gurpurabs 06:00, other Sikh events 07:00), `hazriNudge`, `sangat` --
+  planned by the pure `ReminderPlanner.plan` for 7 days every time anything
+  is written (`UserRepository.onChanged`). They are **scheduled and posted by
+  Hazri's own Android code** (`android/.../Reminders.kt`, DP7, 2026-10-11),
+  not by `flutter_local_notifications`: on the owner's phone not one reminder
+  the plugin scheduled ever showed, while an alarm set straight through
+  Android arrived to the second (Diagnostics' alarm test, DP6). The plugin is
+  kept for "Send one now", a foreground Sangat push, the channels and the
+  permissions. The Sangat's three pushes (21:00 digest, new members to the
+  creator, a group ending) are sent by the `sangatDispatch` Function. A badge
+  or a met goal is an in-app sheet, never a notification.
+- **Profile** (step 4): anonymous sign-in, Setup / Profile / Edit / Email
+  sent / Link result, `/verify` links through the router's redirect, the
+  profile's city as the only city (without a profile, sunrise times fall
+  back to fixed ones). Verification and restore mail is sent by the `api`
+  Function through **Brevo** (`BREVO_API_KEY` is a Functions secret, never
+  in git; the domain is authenticated in the `hazri.me` zone). Without the
+  key the endpoints answer `503 EMAIL_NOT_CONFIGURED` and the app says so.
+  No account has a password, there is no sign-in screen, and nothing in
+  `lib/` calls a password API -- `test/features/no_password_test.dart` fails
+  if one appears.
+- **Weekly backup** (step 5): a one-off WorkManager job `weekly-backup`
+  re-enqueued for each Sunday 00:00 plus jitter, a catch-up at app open,
+  Back up now and Restore on the Profile screen. The watermark compares with
+  `>=` because drift keeps seconds; a repeat row is harmless (BK8).
+- **Sangat** (step 6, `08-sangat.md`), all through the `api` Function:
+  three built-in groups with Join/Leave, private custom groups with one goal
+  and an end date, invites by link or code, the outbox in `user.db` (queued
+  only while `sangat_member_v1` says the install is in a group), reports, and
+  the push token. Totals are **maintained by the server** from shards
+  (`sangatTotals`, every minute) -- never written by a client. **Each group
+  has its own globe** (GG1-GG10, designs 104/105): members as counts per
+  city, every dot tied to the ring by a dashed line (GG4a), the last hour's
+  paath arriving as light along it, rebuilt by the server at most every 2
+  minutes. A member row from before rows carried a city is filled from the
+  profile on the group's first globe build (`citiesFilled`). The install
+  referrer is read in `MainActivity.kt` with Google's `installreferrer`
+  library directly: the Flutter plugin uses the `kotlinOptions` block Kotlin
+  2.4 rejects.
+- **Admin website** (`admin/`, `11-admin.md`): `https://hazri-admin-d4b72.web.app`,
+  Google sign-in for the one admin address only. Editing a built-in group's
+  template changes the **running** goal's target and length at once, and
+  its bani from the next goal (owner, 2026-10-18).
+- **Simran and the globe** (step 7, `07-simran.md`): one shared snapshot
+  from `GET /presence/globe`, fetched on opening the tab and every 2 minutes
+  while it is visible; attendance once per IST day with a profile; You
+  (orange, blinking), Live (green), Here today (blue); dots sized by SZ1
+  (one person is your dot's size, full at 25); threads from your dot (DR6)
+  and a web joining the rest (DR7), as arcs with light along them (DR8);
+  pinch or double tap to zoom (ZM1-ZM3); tap a dot for its city (TT1-TT3).
+  The presence line counts you the way the dots do (CT1, CT2). ਵਾਹਿਗੁਰੂ drifts
+  off the globe during a sitting, one word per utterance from
+  `SimranTrack.onsets`; with no recitation there are no words. The screen's
+  serif wordmark, ੴ rule and verse come from the owner's mock-up of
+  2026-09-20, which is not in the repository; `simranHeadline*` is unused and
+  a test holds it off the screen. Playfair Display (Latin only) is bundled
+  for this screen alone, so Gurmukhi and Devanagari fall through to the Noto
+  serifs by design.
+- **Today and Nitnem** (step 8): the navy band on Today only (T11) -- every
+  other tab draws its own header -- the streak card with the week strip
+  (T12), the CTA order of T4, elder mode as one tree.
+- **Badges** (step 9): `evaluateBadges` runs after every write, at start,
+  after the Sangat facts and silently after a restore; the sheet waits until
+  a tab is showing and never interrupts a sitting (UI7). Badge names live in
+  `BadgeId` as proper nouns by script; everything else is in the ARB files.
+- **First run** (step 10): Android's splash, Welcome, Language, How you read;
+  `/` is a redirect, not a screen.
 
-### Phase 2
+### What is live, and what is deployed by hand
 
-- **`firestore.rules` must be published by hand and is not, automatically.**
-  See "Regenerating" above. Every group write and the globe depend on the
-  current file being live in the console; until it is, writes are refused and
-  the app says so (`SangatRefused`), which is not the same as being offline
-  and must never be reported as though it were. The file in git went live on
-  2026-09-22, so the gap is the next change to it, not this one.
-- **The Email/Password provider is enabled, and rule 4 now rests on the code
-  alone.** Firebase's email link is a *mode* of that provider, not a provider
-  of its own — the console's two switches move together — so
-  `sendSignInLinkToEmail` cannot work without it. Until 2026-09-27 the
-  project had **only Anonymous**, so every verification mail had been failing
-  with `operation-not-allowed` since the day the code was written, and the
-  app reported it as no signal. Enabling it was the fix and there was no
-  alternative. What it costs: *no password, ever* used to be true twice, and
-  is now true once. No account has a password, there is no sign-in screen,
-  and nothing in `lib/` calls a password API —
-  `test/features/no_password_test.dart` fails if one appears, and has been
-  watched failing. A15 of the earlier accounts spec (`git show cc1c967:docs/features/01-accounts.md`)
-  has the detail. The new profile spec (`docs/features/01-accounts.md` §3.1) sends
-  its own links and needs only the Anonymous provider, so this changes when it is built. **A verification
-  completed end to end for the first time on 2026-09-27**, once the provider
-  was on: mail sent by Firebase's own mailer, delivered, link followed,
-  address confirmed.
-- **A verification or restore link is tapped now, and can still be pasted.**
-  Built 2026-09-27 once there was a keystore to name. Four things have to
-  agree or Android silently opens a browser instead, and **all four fail in
-  exactly the same invisible way**: the `autoVerify` intent-filter, both
-  hosts declared (`web.app` and `firebaseapp.com` are one Hosting site under
-  two names), the SHA-256 in `public/.well-known/assetlinks.json` matching
-  the key CI signs with, and that file being **deployed**. Three are held by
-  tests; the deploy is a hand-run and cannot be.
-  `firebase.json` once carried Hosting's default `"**/.*"` ignore rule, which
-  reads as "no dotfiles" and quietly excluded `.well-known` — the deploy
-  succeeded, the file was never uploaded, and the only symptom was Google's
-  digitalassetlinks endpoint answering with no statements.
-  `test/android/firebase_hosting_test.dart` holds that now.
-  The link is read by `IncomingLink`, which keys on the `oobCode` and **not**
-  on the path: Firebase moved these links off Dynamic Links onto a Hosting
-  domain in August 2025 and the path went with them.
-- **An invite is a pasted link or the code off the end of it**, for the same
-  reason. The group id *is* the invite, so `get` on a group document is open
-  to anybody signed in who knows the id, and `list` is not -- that split is
-  what lets a newcomer join, and it went live on 2026-09-22. Under the older
-  rule, which gated `read` on `isMember`, `join` could not read the group it
-  was about to join and every code was refused with "something went wrong at
-  our end". If that message comes back, check the console before the Dart.
-- **Goals, the Diary and local notifications follow the 2026-10-07 specs**
-  (PRD §11 steps 2 and 3, built 2026-10-08). `user.db` is schema 5: one
-  goal of items, every paath a row in `completions`, every sitting a row in
-  `simran_sessions`, and `verdictOn` in
-  `lib/features/goals/domain/day_verdict.dart` is the one rule Today, the
-  Goals screen, the Diary grid and the day screen all call. The v4 → v5
-  migration (04-goals §5.8) is tested on a hand-built v4 database. The
-  planner (`ReminderPlanner.plan`) is pure and plans the five kinds of
-  `02-notifications.md` for 7 days from the database every time anything is
-  written (`UserRepository.onChanged`); there is no reminders table any more
-  and nothing to seed. The manifest receivers below still matter exactly as
-  written.
-- **The profile is built (PRD §11 step 4, 2026-10-08)**: anonymous sign-in,
-  the profile cache, Setup / Profile / Edit / Email sent / Link result, the
-  greeting, person icon and banner on Today, `/verify` links through the
-  router's redirect, the Settings city removed (the profile's city is the
-  only one, and without a profile sunrise times fall back to fixed ones).
-  The email endpoints answer `503 EMAIL_NOT_CONFIGURED` until
-  `BREVO_API_KEY` is set as a Functions secret; the app says so rather than
-  calling it a network failure. The profile's own links need only the
-  Anonymous provider, so the Email/Password provider can be switched off.
-- **The weekly backup is built (PRD §11 step 5)**: a one-off WorkManager job
-  `weekly-backup` re-enqueued for each Sunday 00:00 plus jitter, a catch-up
-  at app open, Back up now and Restore on the Profile screen, and Restore
-  offered right after a profile restore. The watermark compares with `>=`
-  because drift keeps seconds; a repeat row is harmless (BK8). `workmanager`
-  is the one native dependency this step adds, and only CI's Gradle build can
-  show whether it compiles against the app's Android setup.
-- **The Sangat is rebuilt (PRD §11 step 6)** on the `api` Function: built-in
-  groups with Join/Leave, custom groups with one goal, invites by link or
-  code, the outbox in `user.db` (queued only while `sangat_member_v1` says
-  the install is in a group), reports, and the push token with a profile and
-  a group. **Each group has its own globe** (08-sangat GG1-GG10,
-  designs 104/105, 2026-10-17): `GET /sangat/groups/{id}/globe`, rebuilt by
-  the server at most every 2 minutes, members as counts per city, and the
-  last hour's paath arriving as light into the goal ring. It needs the
-  Functions and five new indexes deployed by hand. The install referrer is read in `MainActivity.kt` with Google's
-  `installreferrer` library directly: the Flutter plugin for it uses the
-  `kotlinOptions` block Kotlin 2.4 rejects. The admin website is `admin/`.
-- **The globe follows 07-simran (PRD §11 step 7)**: one shared snapshot from
-  `GET /presence/globe`, fetched on opening the tab and every 2 minutes only
-  while it is visible; attendance marked once per IST day with a profile;
-  You (orange, blinking), Live (green) and Here today (blue) split per §2.1;
-  dots sized by SZ1 (one person is your dot's size, full at 25, since
-  2026-10-17); threads from your dot (DR6) and a web joining the rest (DR7),
-  as arcs with light running along them (DR8); pinch or double tap to zoom
-  (ZM1-ZM3) and tap a dot for its city (TT1-TT3). The presence line counts
-  you the way the dots do, including in the two minutes before the snapshot
-  catches up with your mark (CT1, CT2). A sitting no longer reports to the globe. The
-  paragraphs further down about the 45-second presence read, "in the
-  sangat", two people in one city being one dot and the headline describe
-  the build before this one.
-- **Today follows 05-today (PRD §11 step 8)**: the navy band on Today only
-  (T11), the streak card with the week strip at 2 days or more (T12), the
-  CTA order of T4 (in progress, unmet goal item, current slot, next slot),
-  and elder mode as one tree (`ElderTodayScreen` is gone; elder hides the
-  Vichar and Gurpurab cards). "There is no brand bar" below now describes
-  every tab except Today.
-- **Badges are built (PRD §11 step 9)**: `user.db` schema 6 adds `badges`;
-  `evaluateBadges` (`BadgeController.evaluate`) runs after every write
-  through `UserRepository.addChangeListener`, at start, after the Sangat
-  facts and silently after a restore. The sheet is shown by a router
-  listener in `app.dart`, only on a tab and never during a sitting, so a
-  badge earned in the reader waits until the reader is left (UI7). The
-  badge names of §2 live in `BadgeId` as proper nouns by script, like a
-  bani's name; everything else is in the ARB files.
-- **Reminders are scheduled and posted by Hazri's own Android code**
-  (`android/.../Reminders.kt`, 02-notifications DP7, 2026-10-11), not by
-  `flutter_local_notifications`. On the owner's phone not one reminder the
-  plugin scheduled ever showed, with every permission granted, while an alarm
-  set straight through Android arrived to the second (Diagnostics' alarm
-  test, DP6). The plugin is kept for "Send one now", a foreground Sangat push,
-  the channels and the permissions. Confirmed on the phone 2026-10-11: the
-  two-minute test, goal reminders and their buttons all arrive. The two
-  paragraphs below describe the plugin's path and are history.
-- **`ScheduledNotificationReceiver` must be declared in the manifest, and was
-  not.** That is why no reminder ever arrived, and it had nothing to do with
-  the Dart. `flutter_local_notifications` declares **no receivers** in its own
-  manifest -- permissions and nothing else -- so the app must declare both of
-  them; the plugin's README says it is "so that the plugin can actually show
-  the scheduled notification(s)". Hazri declared the boot receiver and not
-  this one, so every alarm fired into a component that did not exist.
-  `zonedSchedule` threw nothing, the notifications sat in
-  `pendingNotificationRequests()` looking perfectly healthy, and **four rounds
-  of fixes to the scheduling code went out before anybody read the XML**.
-  `test/android/manifest_test.dart` holds both receivers now. No widget test
-  can see this: the fake service never touches the platform and `flutter test`
-  never merges a manifest, so the file is the only place to check.
-- **Nothing asked for POST_NOTIFICATIONS except setup step 3**, which is why
-  a phone that upgraded with onboarding already done never received a single
-  notification. Android 13+ denies it until granted; `reschedule()` read
-  `areNotificationsEnabled()`, got false, cancelled everything and returned
-  silently, at every app start, for ever. It now **asks** first -- the plugin
-  shows the dialog only while Android has no recorded answer -- and the
-  notifications screen carries a card saying reminders cannot arrive, with a
-  button that asks and then falls through to the app's notification settings.
-  `notificationsAllowedProvider` was dead code written for exactly this and
-  wired to nothing; it is used now. This was real but it was **not** the reason
-  the reader saw nothing -- their permission had been granted all along. See
-  the receiver above.
-- **A listed group cannot be listed from the app.** `listed` is refused by the
-  rules on create and pinned on update, so a group made on a phone is always
-  private. Asking to be listed writes `listingRequested`, and approving one is
-  a console edit -- `docs/group-listing.md` is the procedure. There is no
-  admin screen and no notification either way yet. On Blaze this becomes an
-  `approveListing` callable rather than a console edit.
-- **The sangat's numbers are counted on read, and are moving to being
-  maintained.** `count()` and `sum()` aggregation queries give the member
-  count, the group total and the globe's headline today. **Do not let a client
-  write a counter field** -- every member can write the group document, so a
-  client-written total is a total any member could forge. Now that the project
-  is on Blaze the honest version is a Cloud Function maintaining it, which is
-  what `docs/features/00-platform.md` specifies.
-- **Group and global notifications are not built yet**, though they are no
-  longer impossible: the project is on Blaze and a Cloud Function can send
-  them. Screen 50 still shows them switched off and unavailable, and must keep
-  saying so until the Functions are actually deployed.
-- **The Vichar library is empty until entries are published.** Nothing in it
-  is written in Dart -- see `docs/vichar-content.md` for the document shape.
-  This is rule 3 applied past Gurbani to everything the app says about Sikhi.
-- **Analytics ships with collection off** and sends nothing (PRD §8). The
-  Settings switch is present and inert, and says so. Do not wire it up
-  without also rewriting the privacy screen; the two are one promise.
-- **Around a hundred and fifty Punjabi and Hindi UI strings added in Phase 2
-  are mine** and want a native ear before release.
-- **There is no brand bar.** Every tab draws its own header -- the menu
-  button, the tab's name, a line under it -- because the designs put the
-  screen's name there and the app's name above every screen made Today look
-  like it was still starting up. Settings is pushed from that menu and is no
-  longer a tab.
-- **The Simran tab follows the reader's mock-up of 2026-09-20**, which
-  supersedes design 29 for that screen: the globe, the legend and the two
-  colours are design 29's, and the serif wordmark, the ੴ rule and the verse
-  are the mock-up's. **That mock-up is not in the repository** -- it was a
-  screenshot in the session it was built in, so this paragraph and the
-  screen itself are the only record of it. Its headline, "One Name. / A
-  Brighter World.", was taken out afterwards to give the globe the room;
-  `simranHeadline*` is still in the ARB files, unused, and a test holds that
-  it stays off the screen. One screen whether or not a sitting is running --
-  the countdown takes the presence line's place while one is. Two things design
-  29 has are still not shown: its month total and country count, because
-  neither is stored anywhere and a number nobody counted is worse than no
-  number; and its third legend colour, "in the sangat", because a member's
-  city is on their own private user document and the membership rows carry a
-  name, not a place.
-- **The globe re-reads presence every 45 seconds while its tab is open**,
-  and after a sitting is marked, and on resume. It used to read once, when
-  the provider was first touched, and never again -- so two people sitting
-  together never saw each other. Your own dot always showed because it is
-  drawn from Settings on the phone, not from the server, which made the bug
-  look like a drawing problem rather than a fetching one.
-- **The hazri banner is shown to everybody.** It used to return an empty box
-  unless `hasJoinedSangat`, so the one thing the app is named after was
-  invisible to the majority who never join -- against rule 4, which says the
-  sangat is opt-in. The cost is that Today can carry the join banner and the
-  hazri banner at once until the join banner is dismissed; the "Not now"
-  memory that fixes that proprly lives on `claude/eloquent-edison-qsjll0`.
-- **Two people in the same city are one dot**, sized by the count and lit as
-  yours. The globe knows cities, not people, so there is no second dot to
-  draw; the headline counts them.
-- **ਵਾਹਿਗੁਰੂ drifts off the globe while a sitting runs**, one word for each
-  utterance, taken from `SimranTrack.onsets` — the times the recitation was
-  measured at when the app was built. With no recitation there are no words:
-  a rhythm of its own would be the screen saying something it does not know.
-- **Design 29's "turn the globe with your hand" is gone** with the header it
-  sat in; the mock-up puts the kicker there instead. The gesture is still
-  there and now works in both directions, but nothing on screen says so.
-- **Playfair Display is bundled for the Simran screen only.** It is the one
-  screen set in a serif. The subset is Latin, so Gurmukhi and Devanagari fall
-  through to the Noto serifs -- which means a Punjabi or Hindi headline is
-  set in a different face from an English one, by design rather than by
-  accident.
+| Thing | Where | How it changes |
+|---|---|---|
+| Test APK | rolling pre-release `apk-claude/pensive-hawking-k87ese` | Actions -> Build -> Run workflow |
+| Website, `/verify`, `/j/`, `assetlinks.json` | `https://hazri.me` (and `www.hazri.me`, redirecting) and `https://hazri-dfcc1.web.app` | `firebase deploy --only hosting:public` |
+| Admin website | `https://hazri-admin-d4b72.web.app` | `npm --prefix admin run build && firebase deploy --only hosting:admin` |
+| `api` and the scheduled / triggered Functions | `asia-south1` | `firebase deploy --only functions` |
+| Firestore indexes and rules | `asia-south1` | `firebase deploy --only firestore` (rules: also the console) |
+
+**No workflow deploys any of the server side.** A change to `functions/`,
+`firestore.*`, `public/` or `admin/` is half done until somebody runs the
+deploy, and the failure modes are quiet: an unpublished rule refuses every
+write (reported as `SangatRefused`, never as offline), and a missing index
+answers `500 INTERNAL` from the endpoint that needs it.
+
+### Lessons the code still carries
+
+- **A verification or restore link is tapped, and can still be pasted.**
+  Four things have to agree or Android silently opens a browser instead, and
+  all four fail the same invisible way: the `autoVerify` intent-filter, both
+  hosts declared (`web.app` and `firebaseapp.com`), the SHA-256 in
+  `public/.well-known/assetlinks.json` matching the key CI signs with, and
+  that file being **deployed**. Hosting's default `"**/.*"` ignore rule once
+  excluded `.well-known` silently; `test/android/firebase_hosting_test.dart`
+  holds that now. `IncomingLink` keys on the `oobCode`, not the path.
+- **`ScheduledNotificationReceiver` must be declared in the manifest** for
+  the plugin path that remains. Its absence once meant no reminder ever
+  arrived while `pendingNotificationRequests()` looked healthy, and four
+  rounds of Dart fixes went out before anybody read the XML.
+  `test/android/manifest_test.dart` holds both receivers.
+- **POST_NOTIFICATIONS is asked for at app start**, not only in a setup
+  step: a phone that upgraded past setup once never received a notification.
+  The notifications screen says so when reminders cannot arrive.
+
+### Still open
+
+- **`hazri.me` is not yet the app's host.** `kSiteBase` stays
+  `hazri-dfcc1.web.app` until Phase 3 (`docs/domain-setup.md`), because a
+  link already in somebody's inbox has to keep working.
+- **The Vichar library is empty until entries are published**
+  (`docs/vichar-content.md`); nothing in it is written in Dart.
+- **Analytics ships with collection off** and the Settings switch is inert
+  and says so. Do not wire it up without rewriting the privacy screen.
+- **Around a hundred and fifty Punjabi and Hindi UI strings are mine** and
+  want a native ear before release; the website is English only.
+- **CI's last step can fail after the APK is published** (2026-10-18, the
+  post-run cache save), which marks a good run red. The release is still
+  replaced; check the release before believing the colour.
 
 ### Content and audio
 

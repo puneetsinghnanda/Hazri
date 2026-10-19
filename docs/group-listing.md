@@ -1,3 +1,8 @@
+> **History (2026-10-19).** This procedure belongs to the first Sangat, which
+> was removed in PRD §11 step 6. Groups are now built-in (made in the admin
+> website, `docs/features/11-admin.md`) or private by invite; there is no
+> listing to approve. Kept for the record only.
+
 # Approving a group for the Sangat list
 
 A group made in the app is **always private**. It works immediately — the

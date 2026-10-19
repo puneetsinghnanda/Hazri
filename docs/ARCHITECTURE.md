@@ -1782,8 +1782,8 @@ is deployed, and the PR description says so.
 |---|---|
 | `firestore.rules`, indexes | `firebase deploy --only firestore` |
 | Functions | `firebase deploy --only functions` |
-| Public site (`/verify`, `/j/<code>`, `assetlinks.json`) | `firebase deploy --only hosting` |
-| Admin website | `firebase deploy --only hosting:admin` |
+| Public site: the home page, `/verify`, `/j/<code>`, `assetlinks.json` (`hazri.me`, `www.hazri.me` redirecting, and `hazri-dfcc1.web.app`) | `python3 tools/site/build.py` if the page changed, then `firebase deploy --only hosting:public` |
+| Admin website (`hazri-admin-d4b72.web.app`) | `npm --prefix admin run build && firebase deploy --only hosting:admin` |
 
 CI (`.github/workflows/build.yml`) analyses, tests and builds the APK; the
 Functions and rules additionally run against the emulator (`00-platform.md`
@@ -1846,13 +1846,13 @@ something is expensive to derive it is cached with the inputs it came from
 and invalidated by them, never written as a second truth.
 
 
-## 11. What on the branch today is replaced
+## 11. What the build replaced
 
-The code on `claude/pensive-hawking-k87ese` predates the specifications of
-2026-10-07. This is what it has that the target above replaces; the PRD's
-implementation plan (§11 there) removes each in the step named.
+**Done (2026-10-19).** Every row below was replaced in the step named, and
+the old code is gone from `claude/pensive-hawking-k87ese`. The table stays as
+the record of what the specifications of 2026-10-07 removed.
 
-| On the branch today | Replaced by | Step |
+| Before | Replaced by | Step |
 |---|---|---|
 | `cloud_firestore` on the client, writing `users/{uid}`, `groups/{id}`, `groups/{id}/members/{uid}`, `presence/{day}/cities/{cityId}` directly | The `api` Function; rules deny all (§5.11) | Platform, Sangat, Simran |
 | `users/{uid}/diary/{day}` diary sync (`lib/features/sync/`), `/sync` screen, `diary_sync` and `sync_wifi_only` | Weekly backup (§5.7, §6.4) | Backup |

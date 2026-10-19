@@ -14,18 +14,22 @@ family, Gurdwara or circle.
 
 ## Where the project is
 
-**Phase 1** — the offline Nitnem app — is built. **Phase 2 is in progress.**
-Every Phase 2 feature was specified with the owner on 7 and 8 October 2026,
-the screens that changed were redesigned and chosen, and the build follows
-the ten-step plan in [`docs/PRD.md`](docs/PRD.md) §11.
+**Phase 1** (the offline Nitnem app) and **Phase 2** are built. Every Phase 2
+feature was specified with the owner on 7 and 8 October 2026, the screens
+that changed were redesigned and chosen, and all ten steps of the plan in
+[`docs/PRD.md`](docs/PRD.md) §11 are on the branch `claude/pensive-hawking-k87ese`.
+It is being tested on the owner's phone ahead of the Play Store.
 
 | | |
 |---|---|
 | Platform | Android only (minSdk 24, target 36), Flutter |
-| Backend | Firebase `hazri-dfcc1` on Blaze: Anonymous Auth, one `api` Cloud Function, Firestore and Functions in `asia-south1`, FCM for the Sangat |
-| Phase 3 | Seven items (PRD §2.3). Badges are already specified and designed |
+| Backend | Firebase `hazri-dfcc1` on Blaze: Anonymous Auth, the `api` Cloud Function plus scheduled and triggered Functions, Firestore and Functions in `asia-south1`, FCM for the Sangat, Brevo for profile mail |
+| Website | **[hazri.me](https://hazri.me)**, the home page, also at `hazri-dfcc1.web.app` |
+| Admin | [hazri-admin-d4b72.web.app](https://hazri-admin-d4b72.web.app), for the one admin account |
+| Test APK | [the latest build](https://github.com/puneetsinghnanda/Hazri/releases/download/apk-claude/pensive-hawking-k87ese/app-arm64-v8a-release.apk) (arm64), replaced on every hand-started run |
+| Phase 3 | Seven items (PRD §2.3). Badges were specified early and are already built |
 
-## What Phase 2 brings
+## What Phase 2 brought
 
 | Feature | In short |
 |---|---|
@@ -38,14 +42,11 @@ the ten-step plan in [`docs/PRD.md`](docs/PRD.md) §11.
 | **Weekly backup** | With a profile, goals and the diary are backed up each Sunday and can be restored |
 | **Simran and the globe** | A sitting of 5 minutes or the goal's length; the sangat on a globe by city — you, those here today, everybody else |
 | **Sangat** | Three built-in groups anybody can join, and private groups by invite, each working toward one shared goal |
-| **Badges** | Ten badges for days kept — never points, never a ranking (Phase 3, specified ahead) |
+| **Badges** | Ten badges for days kept — never points, never a ranking (a Phase 3 item, built early) |
 | **First run** | Android's splash, one Welcome screen, language, how you read — Gurbani in under 30 seconds |
 | **Admin website** | One person runs the built-in groups and acts on reports |
 
-## What the app on this branch does today
-
-The code predates the Phase 2 specifications; the plan replaces parts of it
-step by step ([`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) §11 lists what).
+## What else is in the app
 
 - **All nine banis** in Gurmukhi, Devanagari and Roman, with pause marks,
   Larivaar, text size, resume and keep-screen-on; meanings where reviewed
@@ -54,11 +55,12 @@ step by step ([`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) §11 lists what).
   following the text line by line and word by word, with timings checked by
   ear; tap a line to jump; speed, ±10 s, sleep timer; plays on with the
   phone locked.
-- **ਅੱਜ ਦਾ ਵਿਚਾਰ** — one line of Sri Guru Granth Sahib Ji a day, shareable as
-  text or an image — and the **Gurpurab and Nanakshahi calendar** for
+- **ਅੱਜ ਦਾ ਵਿਚਾਰ**: one line of Sri Guru Granth Sahib Ji a day, shareable as
+  text or an image. Plus the **Gurpurab and Nanakshahi calendar** for
   Nanakshahi 558.
-- Today, the Nitnem list, Diary, goals, Simran with the globe, an early
-  Sangat, reminders, elder mode, Settings, About and Privacy.
+- **A group's own globe**: the goal ring wraps the group's members by city,
+  every dot tied to the ring, and the last hour's paath arriving as light.
+- Elder mode, Settings, About and the privacy screen.
 
 ## The documents
 
@@ -82,7 +84,10 @@ tools/content_pipeline/   builds assets/content/content.db
 tools/design/             generates the Phase 2 screens in design/html/
 tools/audio_pipeline/     builds the recitations and their timings
 design/                   tokens.json, every screen in light and dark, canvas.html
-public/                   Firebase Hosting: /verify, /j/<code>, assetlinks.json
+public/                   Firebase Hosting: the home page, /verify, /j/<code>, assetlinks.json
+tools/site/               builds public/index.html (the home page)
+functions/                the api Cloud Function and the scheduled / triggered ones
+admin/                    the admin website
 docs/                     PRD, architecture, feature specifications
 audio/                    how to rebuild and check the recitations
 ```
@@ -94,6 +99,7 @@ flutter pub get
 python3 tools/content_pipeline/build_content_db.py   # assets/content/content.db
 flutter gen-l10n                                      # lib/core/l10n/gen
 dart run build_runner build                           # drift *.g.dart
+python3 tools/site/build.py                           # public/index.html, the home page
 flutter analyze
 flutter test
 flutter build apk --release --split-per-abi --target-platform android-arm64
@@ -115,7 +121,8 @@ deployed (ARCHITECTURE §9):
 ```bash
 firebase deploy --only firestore         # rules and indexes
 firebase deploy --only functions
-firebase deploy --only hosting           # /verify, /j/, assetlinks.json
+firebase deploy --only hosting:public    # hazri.me: the home page, /verify, /j/, assetlinks.json
+npm --prefix admin run build && firebase deploy --only hosting:admin   # the admin website
 ```
 
 ## Content

@@ -3224,6 +3224,17 @@ def _group_globe_svg(size: int, cities, you, lon0: float, lat0: float, scale: fl
             dots.append(f'<circle cx="{me[0]:.1f}" cy="{me[1]:.1f}" r="{r * 3:.1f}" fill="{SKY["you"]}" '
                         f'opacity=".25"/><circle cx="{me[0]:.1f}" cy="{me[1]:.1f}" r="{r:.1f}" '
                         f'fill="{SKY["you"]}"/>')
+        # GG4a: every dot in view tied to the ring's leading edge, dashed, in its own colour.
+        tethers = ""
+        if tip is not None:
+            ends = [(p, SKY["here"] if t <= 0 else SKY["live"]) for p, t, _ in pts]
+            if me:
+                ends.append((me, SKY["you"]))
+            for p, colour in ends:
+                d = (f'M{p[0]:.1f} {p[1]:.1f} Q{(p[0] + tip[0]) / 2 + 30:.1f} '
+                     f'{min(p[1], tip[1]) - 40:.1f} {tip[0]:.1f} {tip[1]:.1f}')
+                tethers += (f'<path d="{d}" fill="none" stroke="{colour}" stroke-width="{1.2 * k:.1f}" '
+                            f'stroke-dasharray="4 5" stroke-linecap="round" opacity=".6"/>')
         lights = ""
         for i, (lat, lon) in enumerate(arrivals):
             p = project(lat, lon)
@@ -3247,7 +3258,7 @@ def _group_globe_svg(size: int, cities, you, lon0: float, lat0: float, scale: fl
                 '<circle cx="160" cy="160" r="150" fill="url(#gsea)"/>'
                 f'{grid}{coast}{"".join(threads)}'
                 '<circle cx="160" cy="160" r="149.5" fill="none" stroke="#7FC4FF" stroke-width="2.4" opacity=".85"/>'
-                f'{"".join(dots)}{lights}</svg>')
+                f'{tethers}{"".join(dots)}{lights}</svg>')
     finally:
         LON0, LAT0 = saved
 
