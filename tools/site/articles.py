@@ -153,7 +153,7 @@ def head(title, desc, canonical, image, extra=''):
 <body>
 <header class="top"><div class="wrap nav">
 <a class="brand" href="/" aria-label="Hazri home">{MARK} Hazri</a>
-<ul><li><a href="/#features">Features</a></li><li><a href="/#gurpurab">Calendar</a></li><li><a href="/gurpurab">All stories</a></li></ul>
+<ul><li><a href="/">Home</a></li><li><a href="/#features">Features</a></li><li><a href="/#gurpurab">Calendar</a></li><li><a href="/gurpurab">All stories</a></li></ul>
 <a class="btn" href="{PLAY}">Get the app</a>
 </div></header>
 '''
