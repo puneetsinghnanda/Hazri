@@ -41,7 +41,10 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
-    final loading = ref.watch(libraryEntriesProvider).isLoading;
+    // A spinner only when there is nothing to show yet: a list refreshed
+    // behind a saved copy stays on screen while it reloads.
+    final loading = ref.watch(libraryEntriesProvider).isLoading &&
+        !ref.watch(libraryEntriesProvider).hasValue;
     final all = ref.watch(libraryEntriesProvider).value ?? const <LibraryEntry>[];
     final results = ref.watch(libraryResultsProvider);
     final query = ref.watch(librarySearchProvider);

@@ -81,7 +81,12 @@ Future<void> main() async {
           authServiceProvider.overrideWithValue(FirebaseAuthService()),
         if (backend.isUp)
           libraryRepositoryProvider.overrideWith(
-            (ref) => ApiLibraryRepository(ref.watch(apiClientProvider)),
+            (ref) => ApiLibraryRepository(
+              ref.watch(apiClientProvider),
+              // A fresh list fetched behind the saved one is shown as soon
+              // as it arrives.
+              onUpdated: () => ref.invalidate(libraryEntriesProvider),
+            ),
           ),
       ],
       child: const HazriApp(),

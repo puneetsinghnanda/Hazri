@@ -511,6 +511,8 @@ answers `500 INTERNAL` from the endpoint that needs it.
   bundled with the `api` Function from `tools/site/articles/` and shown under
   four chips, Sikh days first (`docs/vichar-content.md`); nothing in it is
   written in Dart, and it reaches phones only after `firebase deploy --only functions`.
+  The last list is saved on the phone and opens offline; a fresh one is
+  fetched behind it once a session.
 - **Analytics ships with collection off** and the Settings switch is inert
   and says so. Do not wire it up without rewriting the privacy screen.
 - **Around a hundred and fifty Punjabi and Hindi UI strings are mine** and

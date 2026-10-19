@@ -945,7 +945,7 @@
   "libraryKindDay": "Sikh days",
   "libraryMoreToRead": "More to read",
   "libraryMinutes": "{count} min read",
-  "libraryNeedsConnection": "Vichar is the one part of Hazri that needs a connection. Your banis, their recitations, the calendar and your diary never do.",
+  "libraryNeedsConnection": "Vichar comes from the website. The first time it needs a connection; after that the last copy stays on your phone and opens without one, and a newer one is fetched whenever there is a connection.",
   "libraryNothingMatches": "Nothing matches that yet",
   "libraryEmpty": "There is nothing here yet. Vichar is written on the website and every phone reads the same copy, so what appears here is whatever has been published.",
   "libraryOffline": "No connection",

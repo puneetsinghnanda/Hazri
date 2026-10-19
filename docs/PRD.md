@@ -716,7 +716,7 @@ numbers and none is invented.
   an image (1080 × 1350, its own paper palette with a kesri border and ੴ, the
   same in either theme).
 
-**The Vichar library** (needs the network). Articles and reference entries
+**The Vichar library** (needs the network the first time; the last copy is kept on the phone and opens offline). Articles and reference entries
 on Gurdwaras, the Guru Sahiban, banis and Sikh days, with search and four
 chips: Sikh days (first, and every entry), Gurdwaras, Guru Sahibans, Banis
 (owner, 2026-10-19). The story pages of hazri.me/gurpurab are its entries,
@@ -959,7 +959,7 @@ match Google Play's Data safety form exactly.
 | Start-up | Today interactive within 1.5 s on a 2022 mid-range phone, 3 s on a 3 GB budget phone; no network call on the path |
 | Smoothness | The reader scrolls and highlights at 60 fps; no frame over 16 ms in a 10-minute profile run |
 | Follow-along | The highlight within 100 ms (target), 150 ms (maximum) of the timing data, at every speed |
-| Offline | Everything but the Sangat, the globe, the profile, the backup and the Vichar library works in airplane mode |
+| Offline | Everything but the Sangat, the globe, the profile and the backup works in airplane mode; the Vichar library does once it has been fetched |
 | Battery | Position ticks only while the reader or a player is visible; the globe refreshes every 2 minutes only while Simran is open |
 | Cost | Today, Nitnem, the reader and the Diary read no Firestore document; the globe one per fetch (ARCHITECTURE §10) |
 | Reliability | Crash-free users ≥ 99.5 %; every database migration tested on real-shaped data |

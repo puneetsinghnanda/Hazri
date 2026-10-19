@@ -6,8 +6,9 @@ comes from Firestore and is corrected in one place. That is deliberate and it
 is the same rule CLAUDE.md rule 3 applies to Gurbani: nothing about Sikhi is
 written in Dart, generated, or paraphrased into the build.
 
-It follows that the library needs a connection, and that with nothing
-published it is empty and says so rather than pretending.
+It follows that the library needs a connection the first time it is opened;
+after that the last copy is kept on the phone (below). With nothing published
+it is empty and says so rather than pretending.
 
 ## The four chips (owner, 2026-10-19)
 
@@ -77,6 +78,26 @@ Example:
   "body": "First paragraph.\n\nSecond paragraph."
 }
 ```
+
+## On the phone (owner, 2026-10-19)
+
+The library is fetched in one call, `GET /api/v1/vichar/entries`, the first
+time it is opened in a session — never at app start — and held in memory for
+the rest of the session. Each answer is also saved on the phone, as
+`vichar-entries.json` in the app's support directory
+(`lib/features/library/data/library_store.dart`):
+
+- **With a saved copy**, the library opens on it at once, with or without a
+  connection, and fetches a fresh one behind it. When the fresh one differs,
+  it replaces the saved copy and the screen shows it; when the fetch fails,
+  the saved copy stays.
+- **With none** (the first visit after installing), the screen waits for the
+  fetch, and with no connection says the library is empty and why.
+
+The saved copy is published text, not the person's own, so it is not in
+`user.db` and not in the backup; a restored phone fetches it again. A new or
+corrected entry reaches a phone the next time the library is opened in a new
+session with a connection, after the server's own 10-minute cache.
 
 ## Searching
 

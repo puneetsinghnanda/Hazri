@@ -3366,7 +3366,7 @@ abstract class L {
   /// No description provided for @libraryNeedsConnection.
   ///
   /// In en, this message translates to:
-  /// **'Vichar is the one part of Hazri that needs a connection. Your banis, their recitations, the calendar and your diary never do.'**
+  /// **'Vichar comes from the website. The first time it needs a connection; after that the last copy stays on your phone and opens without one, and a newer one is fetched whenever there is a connection.'**
   String get libraryNeedsConnection;
 
   /// No description provided for @libraryNothingMatches.
