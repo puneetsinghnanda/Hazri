@@ -12,6 +12,7 @@ credit; with none, the page draws its own illustration. Nothing here is
 Gurbani and no picture is of a Guru (CLAUDE.md rule 3): the photographs are
 of places.
 """
+import hashlib
 import html
 import json
 import random
@@ -128,6 +129,11 @@ def illustration(slug, grp, kind, label):
 </svg>'''
 
 
+# The stylesheet's address carries a hash of its content, so a browser holding
+# an old copy fetches the new one the moment a page asks for it.
+CSS_VERSION = hashlib.sha1((Path(__file__).parent / 'stories.css').read_bytes()).hexdigest()[:10]
+
+
 def head(title, desc, canonical, image, extra=''):
     return f'''<!doctype html>
 <html lang="en">
@@ -148,7 +154,7 @@ def head(title, desc, canonical, image, extra=''):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@600;700&family=Mukta:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="/stories.css">
+<link rel="stylesheet" href="/stories.css?v={CSS_VERSION}">
 {extra}</head>
 <body>
 <header class="top"><div class="wrap nav">

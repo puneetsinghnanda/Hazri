@@ -204,8 +204,14 @@ footer { padding-block: 40px 56px; color: var(--muted); font-size: 14px; display
 .feature .dates { font-size: 15px; opacity: .85 }
 .feature .story { font-size: 16px; line-height: 1.6; opacity: .92; position: relative }
 .feature .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-top: 4px }
-.feature .more-btn { all: unset; cursor: pointer; font-weight: 600; font-size: 15px; text-decoration: underline; text-underline-offset: 4px }
-.feature .more-btn:focus-visible { outline: 2px solid #F2A24E; outline-offset: 3px; border-radius: 4px }
+/* The way to the day's story page: an orange button, like the one in the Blog
+   section. In dark mode the card itself is orange, so the button turns dark. */
+.feature .more-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 20px; border-radius: 14px;
+  background: var(--sun); color: #1C1206; font: 600 16px/1 var(--body); text-decoration: none; white-space: nowrap }
+.feature .more-btn:hover { background: #F6B46A }
+.feature .more-btn:focus-visible { outline: 2px solid #F3F1FA; outline-offset: 3px }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .feature .more-btn { background: #1C1206; color: #F2A24E } }
+:root[data-theme="dark"] .feature .more-btn { background: #1C1206; color: #F2A24E }
 .feature .remind { font-size: 13px; padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.12) }
 .kinds { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px }
 .kind { all: unset; cursor: pointer; font: 500 14px/1 var(--body); padding: 9px 14px; border-radius: 999px; background: var(--card); color: var(--ink2); box-shadow: inset 0 0 0 1px var(--rule) }
@@ -351,7 +357,7 @@ body.reel .caption p { font-size: 2.05vh; margin-top: 1vh }
 
     <div class="hero">
       <div class="hero-head">
-        <div class="eyebrow">Hazri · Nitnem app for Android</div>
+        <div class="eyebrow">Hazri · Mark your Hazri to Waheguru</div>
         <h1>Paath is lighter when the <em>sangat</em> does it together</h1>
       </div>
       <div class="hero-globe">
