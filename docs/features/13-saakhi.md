@@ -120,7 +120,12 @@ for the Guru, then the saakhi does not ship until the image is replaced.
 **Failure: an unsourced pankti.** Given a pankti whose text has not been
 checked against a named source, then the saakhi does not ship.
 
-## 4. Open before the first saakhi ships
+## 4. Open before each saakhi ships
+
+Final so far (design, words and timings approved by the owner): *Bhai Lalo
+and Malik Bhago* and *Anand Bhaya Meri Maaye*, both 2026-10-20.
+
+### Bhai Lalo and Malik Bhago
 
 | # | Item | Default |
 |---|---|---|
@@ -131,6 +136,17 @@ checked against a named source, then the saakhi does not ship.
 | SK-5 | The recording ends while the voice is still speaking (2:12) | Trim at a pause |
 | SK-6 | The big lesson line and the family question are Claude's wording | Approved by the owner with design D |
 | SK-7 | Punjabi narration | Text first; recording when the owner has it |
+
+### Anand Bhaya Meri Maaye
+
+| # | Item | Default |
+|---|---|---|
+| SK-8 | Six images draw the Guru as a figure (cover, 1, 2, 3, 6, 7); the cover shows the Guru teaching, where the story's teacher is the learned Sikh, and has its title painted in; page 1's canopy carries a Khanda; the teacher looks younger on page 3 | Regenerate them; SK2 |
+| SK-9 | The Anand Sahib line on page 4 (about 0:43) must be a person's recording | Replace it if it is text to speech; SK3 |
+| SK-10 | The Punjabi text is Claude's draft, and the source's Punjabi meaning of the line opens "ਹੇ ਭਾਈ ਮਾਂ!" | The owner checks both; a fault in the meaning is fixed in `anand-sahib.json` |
+| SK-11 | The recording may hold only one of the lesson page's two sentences (1:42 to 1:49) | The owner listens |
+| SK-12 | A second pankti the owner supplied is not used | Placed once its Ang is known |
+| SK-13 | The Guru is not named in the account | The text says Guru Ji |
 
 ## 5. Storage
 
