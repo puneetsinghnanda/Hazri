@@ -154,15 +154,15 @@
       "page_starts": [
         0,
         20.61,
-        31.83,
-        39.3,
-        56.38,
-        69.61,
-        80.98,
-        105.14
+        35,
+        42,
+        56,
+        70,
+        80,
+        102
       ],
       "meaning_at": null,
-      "timing_note": "Placed by Claude from the pauses in the recording and each page's length, 2026-10-20, for the owner to correct.",
+      "timing_note": "Pages 3-8 at the owner's times, 2026-10-20; page 2 from the recording's pause.",
       "voice": "text to speech, chosen by the owner; the Anand Sahib line on page 4 must be a person's recording"
     },
     "pa": null,
