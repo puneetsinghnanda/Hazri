@@ -147,7 +147,24 @@
     "note": "The line, its Ang and both meanings are read from content/source/anand-sahib.json, never copied here. The owner supplied a second pankti (to be placed once its Ang is known): not used yet."
   },
   "narration": {
-    "en": null,
+    "en": {
+      "file": "anand-bhaya-meri-maaye.en.mp3",
+      "master": "not in git (SK13)",
+      "duration": 108.72,
+      "page_starts": [
+        0,
+        20.61,
+        31.83,
+        39.3,
+        56.38,
+        69.61,
+        80.98,
+        105.14
+      ],
+      "meaning_at": null,
+      "timing_note": "Placed by Claude from the pauses in the recording and each page's length, 2026-10-20, for the owner to correct.",
+      "voice": "text to speech, chosen by the owner; the Anand Sahib line on page 4 must be a person's recording"
+    },
     "pa": null,
     "human_clip": "anand_line: one person reading the line, played between en_p4a and en_p4b, and pa_p4a and pa_p4b"
   },
