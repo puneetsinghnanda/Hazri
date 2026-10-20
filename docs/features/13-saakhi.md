@@ -150,9 +150,16 @@ to `docs/ARCHITECTURE.md` when the feature is built, and the pipeline reads
 
 ## 7. The preview
 
-`python3 tools/design/build_saakhi_preview.py <images-dir> <audio.mp3> <out.html>`
-writes one self-contained HTML file from `design/saakhi/reader.template.html`:
-images and audio embedded, playable on a phone. The images directory holds
-`cover`, `p1` ... `p8` in any common format. The template still carries the
-first saakhi's words; generalising it to read the JSON is part of building the
-feature.
+`python3 tools/design/build_saakhi_preview.py <saakhi.json> <images-dir> <out.html> [--audio <narration.mp3>]`
+writes one self-contained HTML file from `design/saakhi/reader.template.html`,
+which reads everything about a saakhi from its JSON: images and audio
+embedded, playable on a phone. The images directory holds `cover`, `p1` ...
+`p8` in any common format; an image the JSON marks `missing` borrows the page
+before it. Without `--audio` the play button is disabled and says the
+narration is coming. Gurbani a saakhi names by `ref` (a bani and a line id) is
+read from that bani's source file at build time, with its Ang and the
+meanings the saakhi names by source.
+
+**SK14. A line of Gurbani may sit on a story page** (`"gurbani"` on the page),
+below the text, with its meaning in the reader's language and its Ang. It
+follows SK3: from a named source file, never voiced by text to speech.

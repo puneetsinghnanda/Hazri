@@ -18,6 +18,10 @@
     "en": "The taste of honest bread",
     "pa": "ਇਮਾਨਦਾਰੀ ਦੀ ਰੋਟੀ ਦਾ ਸੁਆਦ"
   },
+  "blurb": {
+    "en": "a saakhi about honest work, to read and listen to with your children.",
+    "pa": "ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਬਾਰੇ ਇੱਕ ਸਾਖੀ, ਬੱਚਿਆਂ ਨਾਲ ਪੜ੍ਹਨ ਅਤੇ ਸੁਣਨ ਲਈ।"
+  },
   "pages": [
     {
       "page": 1,
@@ -132,7 +136,11 @@
     "meaning": {
       "en": "One who meditates as he eats dry bread, sees the Blessed Lord inwardly and outwardly. Know this well, that one who eats and eats while practicing evil, is like a field of poisonous plants."
     },
-    "provenance": "Transcribed from the owner's screenshot of a Gurbani app, 2026-10-19. The English is the translation that screenshot shows. Check both against BaniDB (or another named source) before release: SK-3."
+    "provenance": "Transcribed from the owner's screenshot of a Gurbani app, 2026-10-19. The English is the translation that screenshot shows. Check both against BaniDB (or another named source) before release: SK-3.",
+    "source": {
+      "en": "Sri Guru Granth Sahib Ji",
+      "pa": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ"
+    }
   },
   "narration": {
     "en": {
@@ -156,7 +164,8 @@
   },
   "images": {
     "cover": {
-      "status": "fix: Guru drawn as a robed figure; title painted into the image"
+      "status": "fix: Guru drawn as a robed figure; title painted into the image",
+      "title_in_image": true
     },
     "p1": {
       "status": "fix: Guru drawn as a robed figure"

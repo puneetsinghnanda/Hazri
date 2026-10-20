@@ -170,6 +170,11 @@ body{min-height:100vh;display:flex;justify-content:center;align-items:flex-start
 .gbDrop .mean.glow{color:#FFE3BF}
 .gb.glow{text-shadow:0 0 18px rgba(242,162,78,.55)}
 
+.inlineGb{margin-top:12px;border-left:3px solid var(--gold);padding:6px 0 6px 14px}
+.inlineGb .gb{font-family:"Noto Serif Gurmukhi",serif;font-size:21px;line-height:1.7;color:#FFE3BF}
+.inlineGb .mean{font-size:15px;line-height:1.45;color:rgba(255,255,255,.82);margin-top:4px}
+.inlineGb .src{font-size:12px;color:rgba(255,255,255,.5);margin-top:4px}
+
 /* share sheet */
 .sheetScrim{position:absolute;inset:0;background:rgba(8,11,28,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:8}
 .sheetScrim.on{opacity:1;pointer-events:auto}
@@ -212,15 +217,15 @@ body{min-height:100vh;display:flex;justify-content:center;align-items:flex-start
   <section class="view lib" id="lib">
     <h1>Saakhis</h1>
     <p class="sub">Stories from Sikh history to read or listen to with your children.</p>
-    <button class="scard" id="open" aria-label="Open Bhai Lalo and Malik Bhago">
+    <button class="scard" id="open">
       <img id="cardImg" alt="">
-      <span class="chip badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v13M3 5h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6v13h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3H3z"/></svg>8 pages</span>
+      <span class="chip badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v13M3 5h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6v13h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3H3z"/></svg><span id="cardPages"></span></span>
       <span class="meta">
-        <span class="pt pa" style="display:block">ਭਾਈ ਲਾਲੋ ਤੇ ਮਲਿਕ ਭਾਗੋ</span>
-        <span class="et" style="display:block">Bhai Lalo and Malik Bhago</span>
+        <span class="pt pa" style="display:block" id="cardPa"></span>
+        <span class="et" style="display:block" id="cardEn"></span>
         <span class="row">
-          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>English · ਪੰਜਾਬੀ</span>
-          <span class="chip">About 4 min</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg><span id="cardLangs"></span></span>
+          <span class="chip" id="cardLen"></span>
         </span>
       </span>
     </button>
@@ -235,7 +240,7 @@ body{min-height:100vh;display:flex;justify-content:center;align-items:flex-start
       <div class="bars" id="bars"></div>
       <div class="topRow">
         <button class="ib" id="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-        <span class="ttl" id="ttl">Bhai Lalo and Malik Bhago</span>
+        <span class="ttl" id="ttl"></span>
         <div class="lang" role="group" aria-label="Language">
           <button data-l="en" class="sel">EN</button><button data-l="pa" class="pa">ਪੰ</button>
         </div>
@@ -271,57 +276,29 @@ body{min-height:100vh;display:flex;justify-content:center;align-items:flex-start
   <h2>Review notes</h2>
   <p class="lede">The current page is highlighted. Flags are image fixes to make before release; none affect the text.</p>
   <ol id="noteList" start="0"></ol>
-  <p class="kbd">Tap the right side of the image or press → for the next page, the left side or ← to go back. ▶ plays the English narration; the page turns with the voice. Tapping a page while it plays jumps the voice to that page. Page starts: 0:00 · 0:15 · 0:27 · 0:40 · 0:58 · 1:15 · 1:39 · 1:52, to the end at 2:12. On the last page the Gurbani row opens by itself when the meaning is read (2:05).</p>
+  <p class="kbd">Tap the right side of the image or press → for the next page, the left side or ← to go back. ▶ plays the English narration; the page turns with the voice. Tapping a page while it plays jumps the voice to that page. <span id="kbdTimes"></span></p>
 </aside>
 
 <script>
 const IMGS = __IMGS__;
-const NARR_EN = '__NARR__';
+const NARR_EN = '__NARR__';   // empty when the saakhi has no recording yet
 
-const PAGES = [
- {k:'p1', t:{en:'The honest carpenter',pa:'ਮਿਹਨਤੀ ਤਰਖਾਣ'},
-  en:'When Guru Nanak Dev Ji set out to share his message, he stayed in the home of Bhai Lalo, a carpenter. Bhai Lalo worked hard all day with his hands, and the simple bread on his table was earned honestly.',
-  pa:'ਜਦੋਂ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਆਪਣਾ ਸੁਨੇਹਾ ਦੇਣ ਲਈ ਨਿਕਲੇ, ਤਾਂ ਉਹ ਭਾਈ ਲਾਲੋ ਦੇ ਘਰ ਠਹਿਰੇ। ਭਾਈ ਲਾਲੋ ਇੱਕ ਤਰਖਾਣ ਸਨ। ਉਹ ਸਾਰਾ ਦਿਨ ਆਪਣੇ ਹੱਥਾਂ ਨਾਲ ਮਿਹਨਤ ਕਰਦੇ ਸਨ, ਅਤੇ ਉਨ੍ਹਾਂ ਦੀ ਸਾਦੀ ਰੋਟੀ ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਸੀ।',
-  note:'<span class="flag f-fig">Guru as figure</span>Robed seated figure with hands; keep the light, remove the body.'},
- {k:'p2', t:{en:'The feast',pa:'ਵੱਡਾ ਭੋਜ'},
-  en:'The village official, Malik Bhago, was a corrupt man. To make the people think well of him, he invited everyone in the village to a grand feast.',
-  pa:'ਪਿੰਡ ਦਾ ਹਾਕਮ, ਮਲਿਕ ਭਾਗੋ, ਇੱਕ ਭ੍ਰਿਸ਼ਟ ਆਦਮੀ ਸੀ। ਲੋਕਾਂ ਵਿੱਚ ਆਪਣੀ ਚੰਗੀ ਸ਼ੋਭਾ ਬਣਾਉਣ ਲਈ, ਉਸ ਨੇ ਸਾਰੇ ਪਿੰਡ ਨੂੰ ਇੱਕ ਵੱਡੇ ਭੋਜ ਲਈ ਸੱਦਾ ਦਿੱਤਾ।',
-  note:'<span class="flag f-meat">Meat on plates</span>Roast chicken in the foreground; swap for sweets, puris, kheer.'},
- {k:'p3', t:{en:'The refusal',pa:'ਇਨਕਾਰ'},
-  en:'Guru Nanak Dev Ji did not go. Malik Bhago sent special messengers to bring him. He set rich, delicious food before him, and waited to hear words of praise. But Guru Nanak Dev Ji would not accept any of his food.',
-  pa:'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਨਹੀਂ ਗਏ। ਮਲਿਕ ਭਾਗੋ ਨੇ ਉਨ੍ਹਾਂ ਨੂੰ ਲਿਆਉਣ ਲਈ ਖ਼ਾਸ ਸੰਦੇਸ਼ਵਾਹਕ ਭੇਜੇ। ਉਸ ਨੇ ਗੁਰੂ ਜੀ ਅੱਗੇ ਸੁਆਦਲੇ, ਸ਼ਾਹੀ ਪਕਵਾਨ ਰੱਖੇ, ਅਤੇ ਆਪਣੀ ਤਾਰੀਫ਼ ਸੁਣਨ ਦੀ ਉਡੀਕ ਕਰਨ ਲੱਗਾ। ਪਰ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਨੇ ਉਸ ਦਾ ਭੋਜਨ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤਾ।',
-  note:'<span class="flag f-fig">Guru as figure</span>Draped robes on the seat under the light; reads as a seated person.'},
- {k:'p4', t:{en:'Why?',pa:'ਕਿਉਂ?'},
-  en:'Surprised, Malik Bhago asked why. <q>The Guru told him that the food that Malik Bhago considered to be tasty and sweet was, in fact, made from blood of the poor.</q> Malik Bhago had been taking money from the people, instead of living on honest earnings.',
-  pa:'ਹੈਰਾਨ ਹੋ ਕੇ, ਮਲਿਕ ਭਾਗੋ ਨੇ ਪੁੱਛਿਆ, "ਕਿਉਂ?" <q>ਗੁਰੂ ਜੀ ਨੇ ਉਸ ਨੂੰ ਦੱਸਿਆ ਕਿ ਜਿਸ ਭੋਜਨ ਨੂੰ ਮਲਿਕ ਭਾਗੋ ਸੁਆਦਲਾ ਅਤੇ ਮਿੱਠਾ ਸਮਝਦਾ ਸੀ, ਉਹ ਅਸਲ ਵਿੱਚ ਗਰੀਬਾਂ ਦੇ ਖ਼ੂਨ ਨਾਲ ਬਣਿਆ ਸੀ।</q> ਮਲਿਕ ਭਾਗੋ ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਦੀ ਥਾਂ, ਲੋਕਾਂ ਤੋਂ ਧੱਕੇ ਨਾਲ ਪੈਸਾ ਲੈਂਦਾ ਸੀ।',
-  note:'<span class="flag f-fig">Guru as figure</span><span class="flag f-meat">Meat</span>Shoulder and hand in the foreground; roast meat on the platter.'},
- {k:'p5', t:{en:'The confession',pa:'ਗਲਤੀ ਦਾ ਅਹਿਸਾਸ'},
-  en:'Malik Bhago was deeply ashamed, while everyone else admired the Guru for speaking the truth without fear. Malik Bhago could not deny it. He admitted his wrong, asked to be forgiven, and promised to live a true and honest life from that day on.',
-  pa:'ਮਲਿਕ ਭਾਗੋ ਬਹੁਤ ਸ਼ਰਮਿੰਦਾ ਹੋਇਆ, ਜਦਕਿ ਬਾਕੀ ਸਾਰਿਆਂ ਨੇ ਨਿਡਰ ਹੋ ਕੇ ਸੱਚ ਬੋਲਣ ਲਈ ਗੁਰੂ ਜੀ ਦੀ ਸ਼ਲਾਘਾ ਕੀਤੀ। ਮਲਿਕ ਭਾਗੋ ਇਸ ਸੱਚ ਤੋਂ ਮੁੱਕਰ ਨਾ ਸਕਿਆ। ਉਸ ਨੇ ਆਪਣੀ ਗਲਤੀ ਮੰਨੀ, ਮੁਆਫ਼ੀ ਮੰਗੀ, ਅਤੇ ਉਸ ਦਿਨ ਤੋਂ ਸੱਚੀ ਤੇ ਇਮਾਨਦਾਰ ਜ਼ਿੰਦਗੀ ਜੀਉਣ ਦਾ ਵਾਅਦਾ ਕੀਤਾ।',
-  note:'<span class="flag f-fig">Guru as figure</span>Seated robed figure at right edge; crop or regenerate as light only.'},
- {k:'p6', t:{en:"The Guru's words",pa:'ਗੁਰੂ ਜੀ ਦੇ ਬਚਨ'},
-  en:'Guru Nanak Dev Ji told the gathering <q>that only honestly earned food, such as that of Bhai Lalo, tastes good and sweet like milk. All dishonest earnings are like the blood of the innocent. If drops of blood fall on a cloth, it becomes dirty. How can the mind of a person who lives on the blood of the helpless people remain pious and clean?</q>',
-  pa:'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਨੇ ਇਕੱਠ ਨੂੰ ਦੱਸਿਆ <q>ਕਿ ਸਿਰਫ਼ ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਦਾ ਭੋਜਨ, ਜਿਵੇਂ ਭਾਈ ਲਾਲੋ ਦਾ, ਦੁੱਧ ਵਰਗਾ ਸੁਆਦਲਾ ਅਤੇ ਮਿੱਠਾ ਹੁੰਦਾ ਹੈ। ਬੇਈਮਾਨੀ ਦੀ ਹਰ ਕਮਾਈ ਬੇਕਸੂਰਾਂ ਦੇ ਖ਼ੂਨ ਵਰਗੀ ਹੈ। ਜੇ ਕੱਪੜੇ ਉੱਤੇ ਖ਼ੂਨ ਦੀਆਂ ਬੂੰਦਾਂ ਪੈ ਜਾਣ, ਤਾਂ ਉਹ ਮੈਲਾ ਹੋ ਜਾਂਦਾ ਹੈ। ਜੋ ਮਨੁੱਖ ਬੇਸਹਾਰਾ ਲੋਕਾਂ ਦੇ ਖ਼ੂਨ ਉੱਤੇ ਪਲਦਾ ਹੈ, ਉਸ ਦਾ ਮਨ ਪਵਿੱਤਰ ਅਤੇ ਸਾਫ਼ ਕਿਵੇਂ ਰਹਿ ਸਕਦਾ ਹੈ?</q>',
-  note:'<span class="flag f-fig">Guru as figure</span>Full seated figure with a raised hand at the centre. Most important to fix.'},
- {k:'p7', t:{en:'Milk and blood',pa:'ਦੁੱਧ ਅਤੇ ਖ਼ੂਨ'},
-  en:"Such was the Guru's presence that the people seemed to see blood in Malik Bhago's rich dinner, and milk in Bhai Lalo's simple meal.",
-  pa:'ਗੁਰੂ ਜੀ ਦੀ ਹਜ਼ੂਰੀ ਦਾ ਅਜਿਹਾ ਅਸਰ ਸੀ ਕਿ ਲੋਕਾਂ ਨੂੰ ਮਲਿਕ ਭਾਗੋ ਦੇ ਸ਼ਾਹੀ ਭੋਜਨ ਵਿੱਚ ਖ਼ੂਨ, ਅਤੇ ਭਾਈ ਲਾਲੋ ਦੀ ਸਾਦੀ ਰੋਟੀ ਵਿੱਚ ਦੁੱਧ ਦਿਖਾਈ ਦਿੱਤਾ।',
-  note:'<span class="flag f-ok">Light only</span><span class="flag f-meat">Meat</span>The light is right. Chicken legs in red sauce; a rich vegetarian dish with a red haze would carry the same meaning.'},
- {k:'p8', lesson:true, t:{en:'The lesson',pa:'ਸਿੱਖਿਆ'},
-  en:'Taking away what belongs to others is like drawing their blood; it stains the mind. Honest earnings are like sweet milk; they keep the mind pure.',
-  pa:'ਦੂਜਿਆਂ ਦਾ ਹੱਕ ਖੋਹਣਾ ਉਨ੍ਹਾਂ ਦਾ ਖ਼ੂਨ ਚੂਸਣ ਵਾਂਗ ਹੈ; ਇਹ ਮਨ ਨੂੰ ਮੈਲਾ ਕਰਦਾ ਹੈ। ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਮਿੱਠੇ ਦੁੱਧ ਵਰਗੀ ਹੈ; ਇਹ ਮਨ ਨੂੰ ਪਵਿੱਤਰ ਰੱਖਦੀ ਹੈ।',
-  note:'<span class="flag f-ok">Good</span>No figure, calm, works under text. The pankti shown is a preview; the app takes it from the source file.'}
-];
-const COVER_NOTE = '<span class="flag f-fig">Guru as figure</span><span class="flag f-txt">Title in image</span>Needs a text-free version; the app draws the title. Malik Bhago is not in this scene in the story.';
-
-const PANKTI = 'ਹਰਿ ਰੁਖੀ ਰੋਟੀ ਖਾਇ ਸਮਾਲੇ ॥ ਹਰਿ ਅੰਤਰਿ ਬਾਹਰਿ ਨਦਰਿ ਨਿਹਾਲੇ ॥<br>ਖਾਇ ਖਾਇ ਕਰੇ ਬਦਫੈਲੀ ਜਾਣੁ ਵਿਸੂ ਕੀ ਵਾੜੀ ਜੀਉ ॥੨॥';
-const MEANING = 'One who meditates as he eats dry bread, sees the Blessed Lord inwardly and outwardly. Know this well, that one who eats and eats while practicing evil, is like a field of poisonous plants.';
+// Everything specific to one saakhi comes from its content file, through tools/design/build_saakhi_preview.py.
+const S = __SAAKHI__;
+const PAGES = [...S.pages, {k:S.lesson.k, lesson:true, t:S.lesson.t, note:S.lesson.note}];
+const N = PAGES.length;
+const COVER_NOTE = S.coverNote;
+const PANKTI = S.shabad ? S.shabad.lines.join('<br>') : '';
+const MEANING = S.shabad ? S.shabad.meaning : {};      // by language; a missing language shows none (SK3)
+const NARR = S.narration;                               // null until a recording exists
 
 const UI = {
-  en:{page:(n)=>`Page ${n} of 8`, begin:'Read the saakhi', listen:'Listen', ang:'Sri Guru Granth Sahib Ji · Ang 105', open:'Open in reader',
-      share:'Share', gurbani:'Gurbani', angShort:'Ang 105', lessonWord:'Lesson', again:'Read again', title:'Bhai Lalo and Malik Bhago', sub:'The taste of honest bread', noAudio:''},
-  pa:{page:(n)=>`ਪੰਨਾ ${n} / 8`, begin:'ਸਾਖੀ ਪੜ੍ਹੋ', listen:'ਸੁਣੋ', ang:'ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ · ਅੰਗ 105', open:'ਪਾਠ ਵਿੱਚ ਖੋਲ੍ਹੋ',
-      share:'ਸਾਂਝਾ ਕਰੋ', gurbani:'ਗੁਰਬਾਣੀ', angShort:'ਅੰਗ 105', lessonWord:'ਸਿੱਖਿਆ', again:'ਦੁਬਾਰਾ ਪੜ੍ਹੋ', title:'ਭਾਈ ਲਾਲੋ ਤੇ ਮਲਿਕ ਭਾਗੋ', sub:'ਇਮਾਨਦਾਰੀ ਦੀ ਰੋਟੀ ਦਾ ਸੁਆਦ', noAudio:'ਪੰਜਾਬੀ ਆਵਾਜ਼ ਜਲਦੀ ਆ ਰਹੀ ਹੈ'}
+  en:{page:(n)=>`Page ${n} of ${N}`, begin:'Read the saakhi', listen:'Listen', ang:S.shabad?`${S.shabad.source.en} · Ang ${S.shabad.ang}`:'', open:'Open in reader',
+      share:'Share', gurbani:'Gurbani', angShort:S.shabad?`Ang ${S.shabad.ang}`:'', lessonWord:'Lesson', again:'Read again', title:S.title.en, sub:S.subtitle.en,
+      noAudio: NARR ? '' : 'Narration coming soon'},
+  pa:{page:(n)=>`ਪੰਨਾ ${n} / ${N}`, begin:'ਸਾਖੀ ਪੜ੍ਹੋ', listen:'ਸੁਣੋ', ang:S.shabad?`${S.shabad.source.pa} · ਅੰਗ ${S.shabad.ang}`:'', open:'ਪਾਠ ਵਿੱਚ ਖੋਲ੍ਹੋ',
+      share:'ਸਾਂਝਾ ਕਰੋ', gurbani:'ਗੁਰਬਾਣੀ', angShort:S.shabad?`ਅੰਗ ${S.shabad.ang}`:'', lessonWord:'ਸਿੱਖਿਆ', again:'ਦੁਬਾਰਾ ਪੜ੍ਹੋ', title:S.title.pa, sub:S.subtitle.pa,
+      noAudio:'ਪੰਜਾਬੀ ਆਵਾਜ਼ ਜਲਦੀ ਆ ਰਹੀ ਹੈ'}
 };
 
 const I = {
@@ -343,17 +320,23 @@ let playing = false, raf = null;
 const $ = (s)=>document.querySelector(s);
 
 // Narration: one English file. Page starts in seconds, found from the pauses in the recording.
-const AUDIO = new Audio(NARR_EN);
+const AUDIO = new Audio(NARR ? NARR_EN : undefined);
 AUDIO.preload = 'auto';
-const CUES = [0, 0, 15, 27, 40, 58, 75, 99, 112];   // cover, p1..p8 (owner's timings; lesson at 1:52 from 2026-10-20)
-// The 2026-10-20 edit cut 12.7s from the last slide: it now reads the first lesson sentence, then the meaning of the pankti.
-const LESSON_PARTS = {meaning:125.3};
+const CUES = [0, ...(NARR ? NARR.page_starts : PAGES.map(()=>0))];   // cover, then each page's start in seconds
+const LESSON_PARTS = {meaning: NARR && NARR.meaning_at != null ? NARR.meaning_at : Infinity};
+const DUR = ()=> AUDIO.duration || (NARR ? NARR.duration : 0);
 const pageStart = (i)=>CUES[i+1];
-const pageEnd = (i)=> i+2 < CUES.length ? CUES[i+2] : (AUDIO.duration || 131.6);
+const pageEnd = (i)=> i+2 < CUES.length ? CUES[i+2] : DUR();
 const pageAt = (t)=>{ let p=0; for(let i=1;i<CUES.length;i++) if(t>=CUES[i]-0.05) p=i-1; return p; };
 const fmt = (s)=>{ s=Math.max(0,s); return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0'); };
 
 document.getElementById('cardImg').src = IMGS.cover;
+$('#open').setAttribute('aria-label', 'Open ' + S.title.en);
+$('#cardPa').textContent = S.title.pa; $('#cardEn').textContent = S.title.en;
+$('#cardPages').textContent = N + ' pages';
+$('#cardLangs').textContent = NARR ? 'English narration' : 'Narration coming';
+$('#cardLen').textContent = NARR ? 'About ' + Math.max(1, Math.round(NARR.duration/60)) + ' min' : 'Read along';
+$('#kbdTimes').textContent = NARR ? 'Page starts: ' + NARR.page_starts.map(fmt).join(' · ') + ', to the end at ' + fmt(NARR.duration) + '.' : 'No narration yet: the pages turn by tap or swipe.';
 // slides
 const slidesEl = $('#slides');
 [{k:'cover',cover:true}, ...PAGES].forEach((p,i)=>{
@@ -391,25 +374,23 @@ function paintLesson(){
 }
 function paintTime(){
   const h = $('#hint'); if(!h) return;
-  if(lang==='pa'){ h.textContent = UI.pa.noAudio; return; }
-  h.textContent = (playing || AUDIO.currentTime>0) ? `${fmt(AUDIO.currentTime)} / ${fmt(AUDIO.duration||131.6)}` : '';
+  if(lang==='pa' || !NARR){ h.textContent = UI[lang].noAudio; return; }
+  h.textContent = (playing || AUDIO.currentTime>0) ? `${fmt(AUDIO.currentTime)} / ${fmt(DUR())}` : '';
 }
 
 // ---- The lesson page: four alternatives to choose from ----
 let LESSON_VARIANT = 'D',   // owner's choice, 2026-10-20, for every saakhi
     gbOpen = false, lessonStep = 0;
 const MORAL = {
-  en:{big:'Honest bread is sweet like milk.', sub:'Taking what belongs to others stains the mind.',
-      ask:'Who worked to bring the food on our plate today?', askLbl:'Talk about it together'},
-  pa:{big:'ਇਮਾਨਦਾਰੀ ਦੀ ਰੋਟੀ ਦੁੱਧ ਵਰਗੀ ਮਿੱਠੀ ਹੈ।', sub:'ਦੂਜਿਆਂ ਦਾ ਹੱਕ ਖੋਹਣਾ ਮਨ ਨੂੰ ਮੈਲਾ ਕਰਦਾ ਹੈ।',
-      ask:'ਅੱਜ ਸਾਡੀ ਥਾਲੀ ਦਾ ਭੋਜਨ ਕਿਸ ਦੀ ਮਿਹਨਤ ਨਾਲ ਆਇਆ?', askLbl:'ਮਿਲ ਕੇ ਗੱਲ ਕਰੋ'}
+  en:{big:S.lesson.line.en, ask:S.lesson.ask.en, askLbl:'Talk about it together'},
+  pa:{big:S.lesson.line.pa, ask:S.lesson.ask.pa, askLbl:'ਮਿਲ ਕੇ ਗੱਲ ਕਰੋ'}
 };
 function lessonHTML(u, paC, playBtn, shareBtn){
   const m = MORAL[lang], v = LESSON_VARIANT;
   const eyebrow = `<div class="eyeRow"><div class="eyebrow${paC}">✦ ${PAGES[idx].t[lang]}</div>${playBtn('mini')}</div>`;
   const ends = `<div class="endRow">${shareBtn('a')}<button class="b" id="again">${I.again}<span class="${paC}">${u.again}</span></button></div><div class="hint${paC}" id="hint"></div>`;
-  const chip = `<button class="gbChip" id="gbChip"><span class="gbIc">ੴ</span><span class="${paC}">${u.gurbani}</span><span class="gbAng${paC}">${u.angShort}</span><span class="chev">${gbOpen?'⌃':'⌄'}</span></button>`;
-  const panktiFull = (withMean)=>`<div class="gbBlock"><div class="gb">${PANKTI}</div>${(withMean && lang==='en')?`<div class="mean">${MEANING}</div>`:''}</div>`;
+  const chip = !S.shabad ? '' : `<button class="gbChip" id="gbChip"><span class="gbIc">ੴ</span><span class="${paC}">${u.gurbani}</span><span class="gbAng${paC}">${u.angShort}</span><span class="chev">${gbOpen?'⌃':'⌄'}</span></button>`;
+  const panktiFull = (withMean)=>`<div class="gbBlock"><div class="gb">${PANKTI}</div>${(withMean && MEANING[lang])?`<div class="mean">${MEANING[lang]}</div>`:''}</div>`;
   if(v==='A') return `${eyebrow}
       <div class="moralBig${paC}">${m.big}</div><div class="moralSub${paC}">${m.sub}</div>
       ${chip}${gbOpen?`<div class="gbDrop">${panktiFull(true)}<div class="src"><span class="${paC}">${u.ang}</span></div></div>`:''}
@@ -417,7 +398,7 @@ function lessonHTML(u, paC, playBtn, shareBtn){
   if(v==='B') return `${eyebrow}
       <div class="heroGb"><div class="rule"></div><div class="gb">${PANKTI}</div><div class="rule"></div>
         <div class="heroSrc${paC}">${u.ang}</div>
-        ${lang==='en'?`<button class="meanT" id="gbMeanT">${gbOpen?'Hide meaning':'Meaning'} ${gbOpen?'⌃':'⌄'}</button>${gbOpen?`<div class="mean c">${MEANING}</div>`:''}`:''}
+        ${MEANING[lang]?`<button class="meanT" id="gbMeanT">${gbOpen?'Hide meaning':'Meaning'} ${gbOpen?'⌃':'⌄'}</button>${gbOpen?`<div class="mean c">${MEANING[lang]}</div>`:''}`:''}
       </div>
       <div class="moralLine${paC}">${m.big}</div>
       ${ends}`;
@@ -444,17 +425,18 @@ function render(){
   $('#ttl').textContent = u.title; $('#ttl').className = 'ttl' + (lang==='pa'?' pa':'');
   const tb = $('#textBox');
   const paC = lang==='pa' ? ' pa' : '';
-  const canPlay = lang==='en';
+  const canPlay = lang==='en' && !!NARR;
   if(idx<0){
     tb.innerHTML = `<div class="coverBox">
-      <div class="pt pa">ਭਾਈ ਲਾਲੋ ਤੇ ਮਲਿਕ ਭਾਗੋ</div>
-      <div class="et">Bhai Lalo and Malik Bhago</div>
+      <div class="pt pa">${S.title.pa}</div>
+      <div class="et">${S.title.en}</div>
       <div class="st${paC}">${u.sub}</div>
-      <button class="begin" id="goListen">${I.play}<span class="${paC}">${u.listen}</span></button>
-      <button class="begin2" id="go"><span class="${paC}">${u.begin}</span></button>
+      ${NARR ? `<button class="begin" id="goListen">${I.play}<span class="${paC}">${u.listen}</span></button>
+      <button class="begin2" id="go"><span class="${paC}">${u.begin}</span></button>`
+      : `<button class="begin" id="go">${I.book}<span class="${paC}">${u.begin}</span></button>`}
     </div>`;
     $('#go').onclick = ()=>go(0);
-    $('#goListen').onclick = ()=>{ if(lang!=='en') setLang('en'); AUDIO.currentTime = 0; idx = 0; setPlay(true); };
+    const gl=$('#goListen'); if(gl) gl.onclick = ()=>{ if(lang!=='en') setLang('en'); AUDIO.currentTime = 0; idx = 0; setPlay(true); };
     paintBars(); return;
   }
   const p = PAGES[idx];
@@ -469,7 +451,8 @@ function render(){
     const st=$('#stepNx'); if(st) st.onclick = ()=>{ lessonStep=1; render(); };
     const sb=$('#stepPv'); if(sb) sb.onclick = ()=>{ lessonStep=0; render(); };
   } else {
-    tb.innerHTML = `<div class="eyebrow${paC}">${u.page(idx+1)} · ${p.t[lang]}</div><p class="story${paC}">${p[lang]}</p>
+    const gb = p.gb ? `<div class="inlineGb"><div class="gb">${p.gb.lines.join('<br>')}</div>${p.gb.meaning[lang]?`<div class="mean">${p.gb.meaning[lang]}</div>`:''}<div class="src${paC}">${UI[lang].ang.replace(/\d+$/, p.gb.ang)}</div></div>` : '';
+    tb.innerHTML = `<div class="eyebrow${paC}">${u.page(idx+1)} · ${p.t[lang]}</div><p class="story${paC}">${p[lang]}</p>${gb}
       <div class="ctrls">
         ${shareBtn('shareP')}
         <button class="cb" id="pv" aria-label="Previous page">${I.prev}</button>
@@ -495,7 +478,7 @@ function tick(){
   if(playing) raf = requestAnimationFrame(tick);
 }
 function setPlay(v){
-  if(v && lang!=='en') return;
+  if(v && (lang!=='en' || !NARR)) return;
   playing = v;
   if(v){
     // Resume inside the page on screen; otherwise start it from its beginning.
@@ -528,7 +511,7 @@ let fav=false;
 
 // ---- Share: a 1080x1920 image of the page, branded, with where to get the app ----
 const SITE = 'hazri.me';
-const COVER_HAS_TITLE = true;   // the supplied cover has its title painted in; false once a text-free cover arrives
+const COVER_HAS_TITLE = S.coverHasTitle;   // a cover with its title painted in; false once a text-free cover arrives
 const loadImg = (src)=> new Promise(r=>{ const im=new Image(); im.onload=()=>r(im); im.src=src; });
 function wrap(ctx, text, maxW){
   const words = text.split(/\s+/), lines=[]; let line='';
@@ -551,8 +534,8 @@ async function makeShareImage(whole){
   const pa = lang==='pa', body = pa ? '"Baloo Paaji 2"' : 'Mukta';
   // header: the saakhi's name
   if(page || !COVER_HAS_TITLE){
-    g.fillStyle='#fff'; g.font='600 40px "Baloo Paaji 2"'; g.fillText('ਭਾਈ ਲਾਲੋ ਤੇ ਮਲਿਕ ਭਾਗੋ',72,120);
-    g.font='700 54px "Baloo Paaji 2"'; g.fillText('Bhai Lalo and Malik Bhago',72,184);
+    g.fillStyle='#fff'; g.font='600 40px "Baloo Paaji 2"'; g.fillText(S.title.pa,72,120);
+    g.font='700 54px "Baloo Paaji 2"'; g.fillText(S.title.en,72,184);
   }
   // footer band
   const fy=H-250;
@@ -568,7 +551,7 @@ async function makeShareImage(whole){
     g.font=`500 ${pa?50:48}px ${body}`; lines = wrap(g, page[lang].replace(/<[^>]+>/g,''), W-144);
   } else {
     eyebrow = pa ? 'ਸਾਖੀ' : 'A SAAKHI';
-    g.font=`500 50px ${body}`; lines = wrap(g, pa ? UI.pa.sub : 'The taste of honest bread. A story of honest work, to read and listen to with your children.', W-144);
+    g.font=`500 50px ${body}`; lines = wrap(g, pa ? S.blurb.pa : S.blurb.en, W-144);
   }
   const lh = pa?80:72; let y = fy - 60 - (lines.length-1)*lh;
   g.fillStyle='#FFC27E'; g.font=`600 ${pa?36:32}px ${pa?'"Baloo Paaji 2"':'Mukta'}`;
@@ -579,8 +562,8 @@ async function makeShareImage(whole){
 }
 function shareText(){
   return lang==='pa'
-    ? `ਭਾਈ ਲਾਲੋ ਤੇ ਮਲਿਕ ਭਾਗੋ: ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਬਾਰੇ ਇੱਕ ਸਾਖੀ, ਬੱਚਿਆਂ ਨਾਲ ਪੜ੍ਹਨ ਅਤੇ ਸੁਣਨ ਲਈ। ਹਾਜ਼ਰੀ ਐਪ ਵਿੱਚ ਮੁਫ਼ਤ: https://${SITE}`
-    : `Bhai Lalo and Malik Bhago: a saakhi about honest work, to read and listen to with your children. Free in the Hazri app: https://${SITE}`;
+    ? `${S.title.pa}: ${S.blurb.pa} ਹਾਜ਼ਰੀ ਐਪ ਵਿੱਚ ਮੁਫ਼ਤ: https://${SITE}`
+    : `${S.title.en}: ${S.blurb.en} Free in the Hazri app: https://${SITE}`;
 }
 let shWhole=false, shCanvas=null;
 async function refreshShare(){
@@ -595,7 +578,7 @@ function closeShare(){ $('#scrim').classList.remove('on'); $('#sheet').classList
 $('#scrim').onclick = closeShare; $('#shClose').onclick = closeShare;
 $('#shPage').onclick = ()=>{ shWhole=false; refreshShare(); };
 $('#shWhole').onclick = ()=>{ shWhole=true; refreshShare(); };
-const fileName = ()=> `hazri-saakhi-bhai-lalo${(!shWhole && idx>=0)?'-page-'+(idx+1):''}.jpg`;
+const fileName = ()=> `hazri-saakhi-${S.id}${(!shWhole && idx>=0)?'-page-'+(idx+1):''}.jpg`;
 function saveImage(){ const a=document.createElement('a'); a.href=$('#shImg').src; a.download=fileName(); a.click(); }
 $('#shSave').onclick = ()=>{ saveImage(); $('#shMsg').textContent='Image saved.'; };
 $('#shCopy').onclick = async ()=>{ try{ await navigator.clipboard.writeText(shareText()); $('#shMsg').textContent='Message copied.'; }catch(e){ $('#shMsg').textContent=shareText(); } };

@@ -1,0 +1,184 @@
+{
+  "_note": "One saakhi. Reviewed by the owner, who is the reviewer for every saakhi. <q>...</q> marks the Guru's own words, kept exactly as in the source; the app shows them in a warm tint. Rules: docs/features/13-saakhi.md.",
+  "schema": "saakhi-1.0",
+  "id": "anand-bhaya-meri-maaye",
+  "status": {
+    "en": "draft 2026-10-20: words approved for narration, images in review",
+    "pa": "draft: written by Claude from the English, to be checked by the owner"
+  },
+  "source": {
+    "kind": "retold",
+    "note": "Retold from an account the owner supplied on 2026-10-20. The Guru is not named in it, so the text says Guru Ji. Core meaning and the Guru's words unchanged; the brackets in '(from the world)' were dropped so the narration reads it smoothly."
+  },
+  "title": {
+    "en": "Anand Bhaya Meri Maaye",
+    "pa": "ਅਨੰਦੁ ਭਇਆ ਮੇਰੀ ਮਾਏ"
+  },
+  "title_note": "The Punjabi title is the opening of the Anand Sahib line, content/source/anand-sahib.json line 3. It is Gurbani, so it is never read by text to speech.",
+  "subtitle": {
+    "en": "The Sikh who learned one line",
+    "pa": "ਇੱਕ ਤੁਕ ਸਿੱਖਣ ਵਾਲਾ ਸਿੱਖ"
+  },
+  "blurb": {
+    "en": "a saakhi about the faith of a Sikh who learned one line of Gurbani, to read and listen to with your children.",
+    "pa": "ਗੁਰਬਾਣੀ ਦੀ ਇੱਕ ਤੁਕ ਸਿੱਖਣ ਵਾਲੇ ਸਿੱਖ ਦੀ ਸ਼ਰਧਾ ਬਾਰੇ ਇੱਕ ਸਾਖੀ, ਬੱਚਿਆਂ ਨਾਲ ਪੜ੍ਹਨ ਅਤੇ ਸੁਣਨ ਲਈ।"
+  },
+  "pages": [
+    {
+      "page": 1,
+      "image": "p1",
+      "title": {
+        "en": "The request",
+        "pa": "ਬੇਨਤੀ"
+      },
+      "text": {
+        "en": "One day, a Sikh came before Guru Ji with folded hands and said, \"O True King! I am grieved by the world. Free me from the pain of birth and death, and save me from sins. I am in your protection.\" Then he added softly, \"But I cannot read, so I cannot recite or understand Gurbani.\"",
+        "pa": "ਇੱਕ ਦਿਨ ਇੱਕ ਸਿੱਖ ਹੱਥ ਜੋੜ ਕੇ ਗੁਰੂ ਜੀ ਅੱਗੇ ਆਇਆ ਅਤੇ ਬੇਨਤੀ ਕੀਤੀ, \"ਹੇ ਸੱਚੇ ਪਾਤਸ਼ਾਹ! ਮੈਂ ਦੁਨੀਆ ਤੋਂ ਦੁਖੀ ਹਾਂ। ਮੇਰਾ ਜਨਮ ਮਰਨ ਦਾ ਦੁੱਖ ਦੂਰ ਕਰੋ, ਅਤੇ ਮੈਨੂੰ ਪਾਪਾਂ ਤੋਂ ਬਚਾਓ। ਮੈਂ ਤੁਹਾਡੀ ਸ਼ਰਨ ਵਿੱਚ ਹਾਂ।\" ਫਿਰ ਉਸ ਨੇ ਹੌਲੀ ਜਿਹੀ ਕਿਹਾ, \"ਪਰ ਮੈਂ ਅਨਪੜ੍ਹ ਹਾਂ, ਗੁਰਬਾਣੀ ਨਾ ਪੜ੍ਹ ਸਕਦਾ ਹਾਂ, ਨਾ ਸਮਝ ਸਕਦਾ ਹਾਂ।\""
+      }
+    },
+    {
+      "page": 2,
+      "image": "p2",
+      "title": {
+        "en": "Guru Ji's answer",
+        "pa": "ਗੁਰੂ ਜੀ ਦਾ ਉੱਤਰ"
+      },
+      "text": {
+        "en": "Guru Ji said, <q>\"Brother Sikh! You are blessed that you became detached from the world. To gain wisdom, knowledge is very important. One should get education. An uneducated person cannot understand anything.\"</q>",
+        "pa": "ਗੁਰੂ ਜੀ ਨੇ ਕਿਹਾ, <q>\"ਭਾਈ ਸਿੱਖਾ! ਤੂੰ ਭਾਗਾਂ ਵਾਲਾ ਹੈਂ ਕਿ ਤੇਰਾ ਮਨ ਦੁਨੀਆ ਤੋਂ ਉਪਰਾਮ ਹੋ ਗਿਆ ਹੈ। ਸਮਝ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਵਿੱਦਿਆ ਬਹੁਤ ਜ਼ਰੂਰੀ ਹੈ। ਮਨੁੱਖ ਨੂੰ ਵਿੱਦਿਆ ਪ੍ਰਾਪਤ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ। ਅਨਪੜ੍ਹ ਮਨੁੱਖ ਕੁਝ ਵੀ ਨਹੀਂ ਸਮਝ ਸਕਦਾ।\"</q>"
+      }
+    },
+    {
+      "page": 3,
+      "image": "p3",
+      "title": {
+        "en": "The teacher",
+        "pa": "ਵਿਦਵਾਨ ਸਿੱਖ"
+      },
+      "text": {
+        "en": "So Guru Ji asked a learned Sikh to teach him with love. The learned Sikh welcomed him warmly, and the lessons began.",
+        "pa": "ਗੁਰੂ ਜੀ ਨੇ ਇੱਕ ਵਿਦਵਾਨ ਸਿੱਖ ਨੂੰ ਕਿਹਾ ਕਿ ਉਹ ਇਸ ਸਿੱਖ ਨੂੰ ਪਿਆਰ ਨਾਲ ਪੜ੍ਹਾਵੇ। ਵਿਦਵਾਨ ਸਿੱਖ ਨੇ ਉਸ ਦਾ ਨਿੱਘਾ ਸੁਆਗਤ ਕੀਤਾ, ਅਤੇ ਪੜ੍ਹਾਈ ਸ਼ੁਰੂ ਹੋ ਗਈ।"
+      }
+    },
+    {
+      "page": 4,
+      "image": "p4",
+      "title": {
+        "en": "The first line",
+        "pa": "ਪਹਿਲੀ ਤੁਕ"
+      },
+      "gurbani": {
+        "ref": {
+          "bani": "anand-sahib",
+          "id": 3
+        },
+        "show": "after_text"
+      },
+      "text": {
+        "en": "Among the very first things he taught him was this line from Anand Sahib.",
+        "pa": "ਸਭ ਤੋਂ ਪਹਿਲਾਂ ਉਸ ਨੇ ਉਸ ਨੂੰ ਅਨੰਦ ਸਾਹਿਬ ਦੀ ਇਹ ਤੁਕ ਸਿਖਾਈ।"
+      }
+    },
+    {
+      "page": 5,
+      "image": "p5",
+      "title": {
+        "en": "One line, again and again",
+        "pa": "ਇੱਕ ਤੁਕ, ਵਾਰ ਵਾਰ"
+      },
+      "text": {
+        "en": "The Sikh recited this line with love, and went on reciting it. Morning and evening, at work and at rest, he said it again and again, and with every recitation his faith grew stronger. Six months went by.",
+        "pa": "ਸਿੱਖ ਨੇ ਇਹ ਤੁਕ ਪਿਆਰ ਨਾਲ ਪੜ੍ਹੀ, ਅਤੇ ਪੜ੍ਹਦਾ ਹੀ ਗਿਆ। ਸਵੇਰੇ ਸ਼ਾਮ, ਕੰਮ ਕਰਦਿਆਂ ਤੇ ਆਰਾਮ ਕਰਦਿਆਂ, ਉਹ ਇਸ ਨੂੰ ਵਾਰ ਵਾਰ ਦੁਹਰਾਉਂਦਾ, ਅਤੇ ਹਰ ਵਾਰ ਉਸ ਦੀ ਸ਼ਰਧਾ ਹੋਰ ਵਧਦੀ ਗਈ। ਛੇ ਮਹੀਨੇ ਬੀਤ ਗਏ।"
+      }
+    },
+    {
+      "page": 6,
+      "image": "p6",
+      "title": {
+        "en": "\"He never came back\"",
+        "pa": "\"ਉਹ ਮੁੜ ਕੇ ਨਹੀਂ ਆਇਆ\""
+      },
+      "text": {
+        "en": "After six months, Guru Ji asked the learned Sikh, <q>\"Did he learn?\"</q> The learned Sikh replied, \"He did not return after learning one line.\"",
+        "pa": "ਛੇ ਮਹੀਨਿਆਂ ਬਾਅਦ ਗੁਰੂ ਜੀ ਨੇ ਵਿਦਵਾਨ ਸਿੱਖ ਨੂੰ ਪੁੱਛਿਆ, <q>\"ਕੀ ਉਸ ਨੇ ਪੜ੍ਹ ਲਿਆ?\"</q> ਵਿਦਵਾਨ ਸਿੱਖ ਨੇ ਜਵਾਬ ਦਿੱਤਾ, \"ਉਹ ਇੱਕ ਤੁਕ ਸਿੱਖ ਕੇ ਮੁੜ ਕੇ ਨਹੀਂ ਆਇਆ।\""
+      }
+    },
+    {
+      "page": 7,
+      "image": "p7",
+      "title": {
+        "en": "One line was enough",
+        "pa": "ਇੱਕ ਤੁਕ ਹੀ ਕਾਫ਼ੀ ਸੀ"
+      },
+      "text": {
+        "en": "Guru Ji called for the Sikh and said, <q>\"You were sent to learn.\"</q> He replied with folded hands, \"Guru Ji! One line was enough. When the True Guru has been found, Anand is found. What more could I ask for?\" Guru Ji smiled and said, <q>\"You are nihaal. Your cycle of birth and death has been curtailed.\"</q>",
+        "pa": "ਗੁਰੂ ਜੀ ਨੇ ਉਸ ਸਿੱਖ ਨੂੰ ਬੁਲਾਇਆ ਅਤੇ ਕਿਹਾ, <q>\"ਤੈਨੂੰ ਤਾਂ ਪੜ੍ਹਨ ਲਈ ਭੇਜਿਆ ਸੀ।\"</q> ਉਸ ਨੇ ਹੱਥ ਜੋੜ ਕੇ ਜਵਾਬ ਦਿੱਤਾ, \"ਗੁਰੂ ਜੀ! ਇੱਕ ਤੁਕ ਹੀ ਕਾਫ਼ੀ ਸੀ। ਜਦੋਂ ਸੱਚਾ ਗੁਰੂ ਮਿਲ ਗਿਆ, ਤਾਂ ਅਨੰਦ ਮਿਲ ਗਿਆ। ਹੋਰ ਮੈਂ ਕੀ ਮੰਗਾਂ?\" ਗੁਰੂ ਜੀ ਮੁਸਕਰਾਏ ਅਤੇ ਕਿਹਾ, <q>\"ਤੂੰ ਨਿਹਾਲ ਹੈਂ। ਤੇਰਾ ਜਨਮ ਮਰਨ ਦਾ ਗੇੜ ਮੁੱਕ ਗਿਆ ਹੈ।\"</q>"
+      }
+    }
+  ],
+  "lesson": {
+    "image": "p8",
+    "title": {
+      "en": "The lesson",
+      "pa": "ਸਿੱਖਿਆ"
+    },
+    "line": {
+      "en": "One line, said with love, is enough.",
+      "pa": "ਪਿਆਰ ਨਾਲ ਪੜ੍ਹੀ ਇੱਕ ਤੁਕ ਹੀ ਕਾਫ਼ੀ ਹੈ।"
+    },
+    "ask": {
+      "en": "Which line of Gurbani do you love most?",
+      "pa": "ਤੁਹਾਨੂੰ ਗੁਰਬਾਣੀ ਦੀ ਕਿਹੜੀ ਤੁਕ ਸਭ ਤੋਂ ਪਿਆਰੀ ਲੱਗਦੀ ਹੈ?"
+    }
+  },
+  "shabad": {
+    "ref": {
+      "bani": "anand-sahib",
+      "id": 3
+    },
+    "meaning_sources": {
+      "en": "SBMS",
+      "pa": "PSST"
+    },
+    "source": {
+      "en": "Sri Guru Granth Sahib Ji",
+      "pa": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ"
+    },
+    "note": "The line, its Ang and both meanings are read from content/source/anand-sahib.json, never copied here. The owner supplied a second pankti (to be placed once its Ang is known): not used yet."
+  },
+  "narration": {
+    "en": null,
+    "pa": null,
+    "human_clip": "anand_line: one person reading the line, played between en_p4a and en_p4b, and pa_p4a and pa_p4b"
+  },
+  "images": {
+    "cover": {
+      "status": "fix: Guru drawn as a figure, teaching the seeker (in the story the learned Sikh teaches him); title painted into the image",
+      "title_in_image": true
+    },
+    "p1": {
+      "status": "fix: Guru drawn as a seated figure with hands and a book; a Khanda on the canopy, which is centuries later than the story"
+    },
+    "p2": {
+      "status": "fix: Guru drawn as a robed figure with a raised hand; cropping to the seeker and the light at the edge would fix it"
+    },
+    "p3": {
+      "status": "fix: Guru drawn as a seated figure in the background; the teacher here is younger with a dark beard"
+    },
+    "p4": {
+      "status": "ok"
+    },
+    "p5": {
+      "status": "missing: the seeker reciting alone at dawn; the page 4 image stands in"
+    },
+    "p6": {
+      "status": "fix: Guru drawn as a seated figure with a raised hand"
+    },
+    "p7": {
+      "status": "fix: Guru drawn as a seated figure with a raised hand"
+    },
+    "p8": {
+      "status": "ok"
+    }
+  }
+}
