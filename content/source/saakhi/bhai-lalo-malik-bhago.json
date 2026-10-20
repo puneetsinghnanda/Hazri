@@ -1,0 +1,186 @@
+{
+  "_note": "One saakhi. Reviewed by the owner, who is the reviewer for every saakhi. <q>...</q> marks the Guru's own words, kept exactly as in the source; the app shows them in a warm tint. Rules: docs/features/13-saakhi.md.",
+  "schema": "saakhi-1.0",
+  "id": "bhai-lalo-malik-bhago",
+  "status": {
+    "en": "final 2026-10-20",
+    "pa": "draft: written by Claude from the approved English, to be checked by the owner"
+  },
+  "source": {
+    "kind": "retold",
+    "note": "Retold from a traditional account on a website the owner chose not to name in the app (SK4). Core meaning and the Guru's words unchanged."
+  },
+  "title": {
+    "en": "Bhai Lalo and Malik Bhago",
+    "pa": "ਭਾਈ ਲਾਲੋ ਤੇ ਮਲਿਕ ਭਾਗੋ"
+  },
+  "subtitle": {
+    "en": "The taste of honest bread",
+    "pa": "ਇਮਾਨਦਾਰੀ ਦੀ ਰੋਟੀ ਦਾ ਸੁਆਦ"
+  },
+  "pages": [
+    {
+      "page": 1,
+      "image": "p1",
+      "title": {
+        "en": "The honest carpenter",
+        "pa": "ਮਿਹਨਤੀ ਤਰਖਾਣ"
+      },
+      "text": {
+        "en": "When Guru Nanak Dev Ji set out to share his message, he stayed in the home of Bhai Lalo, a carpenter. Bhai Lalo worked hard all day with his hands, and the simple bread on his table was earned honestly.",
+        "pa": "ਜਦੋਂ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਆਪਣਾ ਸੁਨੇਹਾ ਦੇਣ ਲਈ ਨਿਕਲੇ, ਤਾਂ ਉਹ ਭਾਈ ਲਾਲੋ ਦੇ ਘਰ ਠਹਿਰੇ। ਭਾਈ ਲਾਲੋ ਇੱਕ ਤਰਖਾਣ ਸਨ। ਉਹ ਸਾਰਾ ਦਿਨ ਆਪਣੇ ਹੱਥਾਂ ਨਾਲ ਮਿਹਨਤ ਕਰਦੇ ਸਨ, ਅਤੇ ਉਨ੍ਹਾਂ ਦੀ ਸਾਦੀ ਰੋਟੀ ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਸੀ।"
+      }
+    },
+    {
+      "page": 2,
+      "image": "p2",
+      "title": {
+        "en": "The feast",
+        "pa": "ਵੱਡਾ ਭੋਜ"
+      },
+      "text": {
+        "en": "The village official, Malik Bhago, was a corrupt man. To make the people think well of him, he invited everyone in the village to a grand feast.",
+        "pa": "ਪਿੰਡ ਦਾ ਹਾਕਮ, ਮਲਿਕ ਭਾਗੋ, ਇੱਕ ਭ੍ਰਿਸ਼ਟ ਆਦਮੀ ਸੀ। ਲੋਕਾਂ ਵਿੱਚ ਆਪਣੀ ਚੰਗੀ ਸ਼ੋਭਾ ਬਣਾਉਣ ਲਈ, ਉਸ ਨੇ ਸਾਰੇ ਪਿੰਡ ਨੂੰ ਇੱਕ ਵੱਡੇ ਭੋਜ ਲਈ ਸੱਦਾ ਦਿੱਤਾ।"
+      }
+    },
+    {
+      "page": 3,
+      "image": "p3",
+      "title": {
+        "en": "The refusal",
+        "pa": "ਇਨਕਾਰ"
+      },
+      "text": {
+        "en": "Guru Nanak Dev Ji did not go. Malik Bhago sent special messengers to bring him. He set rich, delicious food before him, and waited to hear words of praise. But Guru Nanak Dev Ji would not accept any of his food.",
+        "pa": "ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਨਹੀਂ ਗਏ। ਮਲਿਕ ਭਾਗੋ ਨੇ ਉਨ੍ਹਾਂ ਨੂੰ ਲਿਆਉਣ ਲਈ ਖ਼ਾਸ ਸੰਦੇਸ਼ਵਾਹਕ ਭੇਜੇ। ਉਸ ਨੇ ਗੁਰੂ ਜੀ ਅੱਗੇ ਸੁਆਦਲੇ, ਸ਼ਾਹੀ ਪਕਵਾਨ ਰੱਖੇ, ਅਤੇ ਆਪਣੀ ਤਾਰੀਫ਼ ਸੁਣਨ ਦੀ ਉਡੀਕ ਕਰਨ ਲੱਗਾ। ਪਰ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਨੇ ਉਸ ਦਾ ਭੋਜਨ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤਾ।"
+      }
+    },
+    {
+      "page": 4,
+      "image": "p4",
+      "title": {
+        "en": "Why?",
+        "pa": "ਕਿਉਂ?"
+      },
+      "text": {
+        "en": "Surprised, Malik Bhago asked why. <q>The Guru told him that the food that Malik Bhago considered to be tasty and sweet was, in fact, made from blood of the poor.</q> Malik Bhago had been taking money from the people, instead of living on honest earnings.",
+        "pa": "ਹੈਰਾਨ ਹੋ ਕੇ, ਮਲਿਕ ਭਾਗੋ ਨੇ ਪੁੱਛਿਆ, \"ਕਿਉਂ?\" <q>ਗੁਰੂ ਜੀ ਨੇ ਉਸ ਨੂੰ ਦੱਸਿਆ ਕਿ ਜਿਸ ਭੋਜਨ ਨੂੰ ਮਲਿਕ ਭਾਗੋ ਸੁਆਦਲਾ ਅਤੇ ਮਿੱਠਾ ਸਮਝਦਾ ਸੀ, ਉਹ ਅਸਲ ਵਿੱਚ ਗਰੀਬਾਂ ਦੇ ਖ਼ੂਨ ਨਾਲ ਬਣਿਆ ਸੀ।</q> ਮਲਿਕ ਭਾਗੋ ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਦੀ ਥਾਂ, ਲੋਕਾਂ ਤੋਂ ਧੱਕੇ ਨਾਲ ਪੈਸਾ ਲੈਂਦਾ ਸੀ।"
+      }
+    },
+    {
+      "page": 5,
+      "image": "p5",
+      "title": {
+        "en": "The confession",
+        "pa": "ਗਲਤੀ ਦਾ ਅਹਿਸਾਸ"
+      },
+      "text": {
+        "en": "Malik Bhago was deeply ashamed, while everyone else admired the Guru for speaking the truth without fear. Malik Bhago could not deny it. He admitted his wrong, asked to be forgiven, and promised to live a true and honest life from that day on.",
+        "pa": "ਮਲਿਕ ਭਾਗੋ ਬਹੁਤ ਸ਼ਰਮਿੰਦਾ ਹੋਇਆ, ਜਦਕਿ ਬਾਕੀ ਸਾਰਿਆਂ ਨੇ ਨਿਡਰ ਹੋ ਕੇ ਸੱਚ ਬੋਲਣ ਲਈ ਗੁਰੂ ਜੀ ਦੀ ਸ਼ਲਾਘਾ ਕੀਤੀ। ਮਲਿਕ ਭਾਗੋ ਇਸ ਸੱਚ ਤੋਂ ਮੁੱਕਰ ਨਾ ਸਕਿਆ। ਉਸ ਨੇ ਆਪਣੀ ਗਲਤੀ ਮੰਨੀ, ਮੁਆਫ਼ੀ ਮੰਗੀ, ਅਤੇ ਉਸ ਦਿਨ ਤੋਂ ਸੱਚੀ ਤੇ ਇਮਾਨਦਾਰ ਜ਼ਿੰਦਗੀ ਜੀਉਣ ਦਾ ਵਾਅਦਾ ਕੀਤਾ।"
+      }
+    },
+    {
+      "page": 6,
+      "image": "p6",
+      "title": {
+        "en": "The Guru's words",
+        "pa": "ਗੁਰੂ ਜੀ ਦੇ ਬਚਨ"
+      },
+      "text": {
+        "en": "Guru Nanak Dev Ji told the gathering <q>that only honestly earned food, such as that of Bhai Lalo, tastes good and sweet like milk. All dishonest earnings are like the blood of the innocent. If drops of blood fall on a cloth, it becomes dirty. How can the mind of a person who lives on the blood of the helpless people remain pious and clean?</q>",
+        "pa": "ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ ਨੇ ਇਕੱਠ ਨੂੰ ਦੱਸਿਆ <q>ਕਿ ਸਿਰਫ਼ ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਦਾ ਭੋਜਨ, ਜਿਵੇਂ ਭਾਈ ਲਾਲੋ ਦਾ, ਦੁੱਧ ਵਰਗਾ ਸੁਆਦਲਾ ਅਤੇ ਮਿੱਠਾ ਹੁੰਦਾ ਹੈ। ਬੇਈਮਾਨੀ ਦੀ ਹਰ ਕਮਾਈ ਬੇਕਸੂਰਾਂ ਦੇ ਖ਼ੂਨ ਵਰਗੀ ਹੈ। ਜੇ ਕੱਪੜੇ ਉੱਤੇ ਖ਼ੂਨ ਦੀਆਂ ਬੂੰਦਾਂ ਪੈ ਜਾਣ, ਤਾਂ ਉਹ ਮੈਲਾ ਹੋ ਜਾਂਦਾ ਹੈ। ਜੋ ਮਨੁੱਖ ਬੇਸਹਾਰਾ ਲੋਕਾਂ ਦੇ ਖ਼ੂਨ ਉੱਤੇ ਪਲਦਾ ਹੈ, ਉਸ ਦਾ ਮਨ ਪਵਿੱਤਰ ਅਤੇ ਸਾਫ਼ ਕਿਵੇਂ ਰਹਿ ਸਕਦਾ ਹੈ?</q>"
+      }
+    },
+    {
+      "page": 7,
+      "image": "p7",
+      "title": {
+        "en": "Milk and blood",
+        "pa": "ਦੁੱਧ ਅਤੇ ਖ਼ੂਨ"
+      },
+      "text": {
+        "en": "Such was the Guru's presence that the people seemed to see blood in Malik Bhago's rich dinner, and milk in Bhai Lalo's simple meal.",
+        "pa": "ਗੁਰੂ ਜੀ ਦੀ ਹਜ਼ੂਰੀ ਦਾ ਅਜਿਹਾ ਅਸਰ ਸੀ ਕਿ ਲੋਕਾਂ ਨੂੰ ਮਲਿਕ ਭਾਗੋ ਦੇ ਸ਼ਾਹੀ ਭੋਜਨ ਵਿੱਚ ਖ਼ੂਨ, ਅਤੇ ਭਾਈ ਲਾਲੋ ਦੀ ਸਾਦੀ ਰੋਟੀ ਵਿੱਚ ਦੁੱਧ ਦਿਖਾਈ ਦਿੱਤਾ।"
+      }
+    }
+  ],
+  "lesson": {
+    "image": "p8",
+    "title": {
+      "en": "The lesson",
+      "pa": "ਸਿੱਖਿਆ"
+    },
+    "line": {
+      "en": "Honest bread is sweet like milk.",
+      "pa": "ਇਮਾਨਦਾਰੀ ਦੀ ਰੋਟੀ ਦੁੱਧ ਵਰਗੀ ਮਿੱਠੀ ਹੈ।"
+    },
+    "ask": {
+      "en": "Who worked to bring the food on our plate today?",
+      "pa": "ਅੱਜ ਸਾਡੀ ਥਾਲੀ ਦਾ ਭੋਜਨ ਕਿਸ ਦੀ ਮਿਹਨਤ ਨਾਲ ਆਇਆ?"
+    },
+    "full": {
+      "en": "Taking away what belongs to others is like drawing their blood; it stains the mind. Honest earnings are like sweet milk; they keep the mind pure.",
+      "pa": "ਦੂਜਿਆਂ ਦਾ ਹੱਕ ਖੋਹਣਾ ਉਨ੍ਹਾਂ ਦਾ ਖ਼ੂਨ ਚੂਸਣ ਵਾਂਗ ਹੈ; ਇਹ ਮਨ ਨੂੰ ਮੈਲਾ ਕਰਦਾ ਹੈ। ਇਮਾਨਦਾਰੀ ਦੀ ਕਮਾਈ ਮਿੱਠੇ ਦੁੱਧ ਵਰਗੀ ਹੈ; ਇਹ ਮਨ ਨੂੰ ਪਵਿੱਤਰ ਰੱਖਦੀ ਹੈ।"
+    }
+  },
+  "shabad": {
+    "ang": 105,
+    "gurmukhi": [
+      "ਹਰਿ ਰੁਖੀ ਰੋਟੀ ਖਾਇ ਸਮਾਲੇ ॥ ਹਰਿ ਅੰਤਰਿ ਬਾਹਰਿ ਨਦਰਿ ਨਿਹਾਲੇ ॥",
+      "ਖਾਇ ਖਾਇ ਕਰੇ ਬਦਫੈਲੀ ਜਾਣੁ ਵਿਸੂ ਕੀ ਵਾੜੀ ਜੀਉ ॥੨॥"
+    ],
+    "meaning": {
+      "en": "One who meditates as he eats dry bread, sees the Blessed Lord inwardly and outwardly. Know this well, that one who eats and eats while practicing evil, is like a field of poisonous plants."
+    },
+    "provenance": "Transcribed from the owner's screenshot of a Gurbani app, 2026-10-19. The English is the translation that screenshot shows. Check both against BaniDB (or another named source) before release: SK-3."
+  },
+  "narration": {
+    "en": {
+      "file": "bhai-lalo-malik-bhago.en.mp3",
+      "master": "not in git (SK13)",
+      "duration": 131.55,
+      "page_starts": [
+        0,
+        15,
+        27,
+        40,
+        58,
+        75,
+        99,
+        112
+      ],
+      "meaning_at": 125.3,
+      "voice": "text to speech, chosen by the owner; the pankti is not voiced"
+    },
+    "pa": null
+  },
+  "images": {
+    "cover": {
+      "status": "fix: Guru drawn as a robed figure; title painted into the image"
+    },
+    "p1": {
+      "status": "fix: Guru drawn as a robed figure"
+    },
+    "p2": {
+      "status": "fix: meat on the plates"
+    },
+    "p3": {
+      "status": "fix: Guru drawn as a robed figure"
+    },
+    "p4": {
+      "status": "fix: Guru drawn as a robed figure; meat on the platter"
+    },
+    "p5": {
+      "status": "fix: Guru drawn as a robed figure"
+    },
+    "p6": {
+      "status": "fix: Guru drawn as a robed figure"
+    },
+    "p7": {
+      "status": "fix: meat on the plates (the light is right)"
+    },
+    "p8": {
+      "status": "ok"
+    }
+  }
+}

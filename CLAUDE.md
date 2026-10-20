@@ -78,7 +78,10 @@ the marker, rate the app, a digital Gurdwara visit, switching analytics
 collection on, and notifications. There is no phase after it, and the
 fifteen-item Phase 3 that used to be written down -- the iPhone app, Live
 Kirtan, widgets, Saakhis, kids' mode and the rest -- was removed on
-2026-09-22 rather than deferred.
+2026-09-22 rather than deferred. **Saakhis came back on 2026-10-19** as a
+Phase 2 feature (`docs/features/13-saakhi.md`): the Guru is never drawn,
+only shown as light; the lesson page is design D for every saakhi; nothing
+about a saakhi is counted, and there is no Diary link.
 
 **The 23-screen Phase 3 design set is superseded — do not merge it.**
 `claude/eloquent-edison-qsjll0` carries 46 files, `design/html/62-*` to

@@ -163,6 +163,7 @@ There is no phase after 3.
 | 13 | Elder mode | §4.17 | `05-today.md` T5 |
 | 14 | Menu, Settings, About, Privacy | §4.18 | — |
 | 15 | Admin website | §4.19 | `11-admin.md` |
+| 16 | Saakhis (added 2026-10-19) | §4.20 | `13-saakhi.md` |
 | — | Platform, testing rules | §11 | `00-platform.md`, `ARCHITECTURE.md` |
 
 **Badges** (§4.14, `12-badges.md`) are Phase 3 item 3.2, specified and
@@ -192,8 +193,10 @@ a full-screen player.
 Removed on 2026-09-22, not deferred: the recitation check, kids' kantth mode
 and Gurmukhi letters, Gurdwara Connect, the Wear OS Simran counter,
 home-screen widgets, Ask a question, pronunciation practice, more voices,
-Cast to TV, Live Kirtan, Saakhis, daily quotes, the iPhone app, and the
+Cast to TV, Live Kirtan, daily quotes, the iPhone app, and the
 earning ideas (Dasvandh, a Plus plan, sponsorships, a Paath marketplace).
+Saakhis were on this list and came back on 2026-10-19 as a Phase 2
+feature (§4.20); the old Phase 3 saakhi screens stay superseded.
 The 23-screen Phase 3 design set drawn for that list (`design/html/62-*` to
 `84-*` on `claude/eloquent-edison-qsjll0`) is superseded and must not be
 merged.
@@ -796,6 +799,18 @@ people. *Rules: `11-admin.md`. Data: ARCHITECTURE §6.6, §8.5.*
 
 ---
 
+### 4.20 Saakhis
+
+Added 2026-10-19. Stories from Sikh history in a few illustrated pages, to
+read or listen to with a child: on the phone, in the reader's language, the
+Guru never drawn (shown only as light), and any Gurbani from a named source.
+Narration turns the pages; the lesson page is one line, a question for the
+family and the shabad on tap (design D, the same for every saakhi); Share
+makes an image of the page with where to get the app. Nothing about a saakhi
+is counted. Rules and scenarios: `docs/features/13-saakhi.md`.
+
+---
+
 ## 5. Content and audio
 
 Rule 2 of §0.3 governs all of it: nothing Gurbani-related is written,
@@ -1234,6 +1249,7 @@ blocks anything (Phase 3 item 3.3).
 | T-1, T-3 | The day arc; elder mode as one tree | No arc; one tree | `05-today.md` |
 | B-1 | Partial credit for Sukhmani Sahib | A resumable position is enough | `06-nitnem.md` |
 | Y-3 | Export the diary | Not built | `09-diary.md` |
+| SK-1–SK-7 | The first saakhi's images, Punjabi text, pankti check, share link, recording end | Fix before it ships | `13-saakhi.md` §4 |
 
 **Closed:** D13 (Blaze with Cloud Functions, 2026-09-26); D11's names and D14
 (badges, no points, 2026-10-08); P5 (diary sync replaced by the weekly
