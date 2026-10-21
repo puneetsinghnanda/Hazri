@@ -4,7 +4,7 @@
   "id": "bhai-lalo-malik-bhago",
   "status": {
     "en": "final 2026-10-20",
-    "pa": "draft: written by Claude from the approved English, to be checked by the owner"
+    "pa": "accepted by the owner, 2026-10-21"
   },
   "source": {
     "kind": "retold",
@@ -164,32 +164,33 @@
   },
   "images": {
     "cover": {
-      "status": "fix: Guru drawn as a robed figure; title painted into the image",
+      "status": "ok",
       "title_in_image": true
     },
     "p1": {
-      "status": "fix: Guru drawn as a robed figure"
+      "status": "ok"
     },
     "p2": {
-      "status": "fix: meat on the plates"
+      "status": "ok"
     },
     "p3": {
-      "status": "fix: Guru drawn as a robed figure"
+      "status": "ok"
     },
     "p4": {
-      "status": "fix: Guru drawn as a robed figure; meat on the platter"
+      "status": "ok"
     },
     "p5": {
-      "status": "fix: Guru drawn as a robed figure"
+      "status": "ok"
     },
     "p6": {
-      "status": "fix: Guru drawn as a robed figure"
+      "status": "ok"
     },
     "p7": {
-      "status": "fix: meat on the plates (the light is right)"
+      "status": "ok"
     },
     "p8": {
       "status": "ok"
     }
-  }
+  },
+  "images_note": "Accepted by the owner, 2026-10-21: the Guru may appear as a figure with light in place of the face (13-saakhi.md SK2)."
 }

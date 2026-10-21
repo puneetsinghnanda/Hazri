@@ -803,7 +803,7 @@ people. *Rules: `11-admin.md`. Data: ARCHITECTURE §6.6, §8.5.*
 
 Added 2026-10-19. Stories from Sikh history in a few illustrated pages, to
 read or listen to with a child: on the phone, in the reader's language, the
-Guru never drawn (shown only as light), and any Gurbani from a named source.
+Guru's face never shown (only light where it would be, SK2), and any Gurbani from a named source.
 Narration turns the pages; the lesson page is one line, a question for the
 family and the shabad on tap (design D, the same for every saakhi); Share
 makes an image of the page with where to get the app. Nothing about a saakhi

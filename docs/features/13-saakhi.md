@@ -16,7 +16,7 @@ saakhi's words are `content/source/saakhi/bhai-lalo-malik-bhago.json`.
 A story from Sikh history, told in a few illustrated pages, read or listened
 to by a parent with a child. It is the competitor feature done properly: in
 the reader's language, with the source of every line of Gurbani named, and
-with the Guru never drawn.
+with the Guru's face never shown.
 
 ## 2. Rules
 
@@ -24,11 +24,12 @@ with the Guru never drawn.
 like the banis. Reading or listening needs no network, no profile and no
 group (CLAUDE.md rule 4).
 
-**SK2. The Guru is never drawn.** Not a face, not a body, not robes, not hands,
-not an outline. The Guru's presence is a warm golden light, and the other
-people in the scene react to it. An image that shows any part of a figure for
-the Guru does not ship (CLAUDE.md rule 3). AI art is allowed for every other
-person and scene (owner, 2026-10-19).
+**SK2. The Guru's face is never shown.** The Guru may be drawn as a figure,
+but where the face would be there is only a warm golden light, and the other
+people in the scene react to it (owner, 2026-10-21, replacing "never drawn" of
+2026-10-19). An image in which any feature of the Guru's face can be seen does
+not ship. AI art is allowed, the Guru's figure included, on that condition
+(CLAUDE.md rule 3).
 
 **SK3. Gurbani comes from a named source.** A saakhi may carry one shabad; most
 will not. Its Gurmukhi and its meaning come from the source file, with Ang and
@@ -90,7 +91,7 @@ Where the list lives in the app is decided when it is built (PRD §3.2).
 **SK12. Favourite** is a heart on each story page, kept on the phone.
 
 **SK13. Audio masters are not in git**, like the banis' (`audio/README.md`).
-The images are not in git until every one of them meets SK2.
+The images join git as app assets when the feature is built.
 
 ## 3. Scenarios
 
@@ -114,8 +115,9 @@ says the Punjabi narration is coming.
 sheet previews page 4's image with its text and the Hazri band, and offers
 Share image, Save and Copy text.
 
-**Failure: a figure in an image.** Given an image shows any part of a figure
-for the Guru, then the saakhi does not ship until the image is replaced.
+**Failure: a face in an image.** Given an image in which any feature of the
+Guru's face can be seen, then the saakhi does not ship until the image is
+replaced.
 
 **Failure: an unsourced pankti.** Given a pankti whose text has not been
 checked against a named source, then the saakhi does not ship.
@@ -123,30 +125,34 @@ checked against a named source, then the saakhi does not ship.
 ## 4. Open before each saakhi ships
 
 Final so far (design, words and timings approved by the owner): *Bhai Lalo
-and Malik Bhago* and *Anand Bhaya Meri Maaye*, both 2026-10-20.
+and Malik Bhago* and *Anand Bhaya Meri Maaye*, both 2026-10-20. On 2026-10-21
+the owner accepted both saakhis' images as they are (the Guru's figure with the
+face in light, SK2) and closed the remaining items, except the Punjabi
+narration. The two Gurbani checks stay listed because SK3 asks for them.
 
 ### Bhai Lalo and Malik Bhago
 
 | # | Item | Default |
 |---|---|---|
-| SK-1 | Six images show the Guru as a robed figure (cover, 1, 3, 4, 5, 6); three show meat (2, 4, 7); the cover has its title painted in | Regenerate them; SK2 |
-| SK-2 | The Punjabi text is Claude's draft | The owner checks it |
-| SK-3 | The Ang 105 pankti and its English were transcribed from a screenshot | Check against BaniDB or another named source |
+| SK-1 | Images: the Guru as a figure, meat on three pages, the cover's painted title | **Closed**: accepted by the owner, 2026-10-21; the reader draws no second title over a cover that has one |
+| SK-2 | The Punjabi text is Claude's draft | **Closed**: accepted by the owner, 2026-10-21 |
+| SK-3 | The Ang 105 pankti and its English were transcribed from a screenshot | **Open under SK3**: check against BaniDB or another named source before release |
 | SK-4 | Where Share's link leads | `hazri.me` today; a Play Store link or a per-saakhi page later |
-| SK-5 | The recording ends while the voice is still speaking (2:12) | Trim at a pause |
+| SK-5 | The recording ends while the voice is still speaking (2:12) | **Closed**: accepted by the owner, 2026-10-21 |
 | SK-6 | The big lesson line and the family question are Claude's wording | Approved by the owner with design D |
-| SK-7 | Punjabi narration | Text first; recording when the owner has it |
+| SK-7 | Punjabi narration | **Open**: the owner is recording it |
 
 ### Anand Bhaya Meri Maaye
 
 | # | Item | Default |
 |---|---|---|
-| SK-8 | Six images draw the Guru as a figure (cover, 1, 2, 3, 6, 7); the cover shows the Guru teaching, where the story's teacher is the learned Sikh, and has its title painted in; page 1's canopy carries a Khanda; the teacher looks younger on page 3 | Regenerate them; SK2 |
-| SK-9 | The Anand Sahib line on page 4 (about 0:43) must be a person's recording | Replace it if it is text to speech; SK3 |
-| SK-10 | The Punjabi text is Claude's draft, and the source's Punjabi meaning of the line opens "ਹੇ ਭਾਈ ਮਾਂ!" | The owner checks both; a fault in the meaning is fixed in `anand-sahib.json` |
-| SK-11 | The recording may hold only one of the lesson page's two sentences (1:42 to 1:49) | The owner listens |
-| SK-12 | A second pankti the owner supplied is not used | Placed once its Ang is known |
-| SK-13 | The Guru is not named in the account | The text says Guru Ji |
+| SK-8 | Images: the Guru as a figure, the cover's teacher and painted title, the Khanda on page 1, the teacher's age on page 3 | **Closed**: accepted by the owner, 2026-10-21 |
+| SK-9 | The Anand Sahib line on page 4 (about 0:43) must be a person's recording | **Open under SK3**: confirm before release |
+| SK-14 | Punjabi narration | **Open**: the owner is recording it |
+| SK-10 | The Punjabi text is Claude's draft, and the source's Punjabi meaning of the line opens "ਹੇ ਭਾਈ ਮਾਂ!" | **Closed**: accepted by the owner, 2026-10-21 |
+| SK-11 | The recording may hold only one of the lesson page's two sentences (1:42 to 1:49) | **Closed**: accepted by the owner, 2026-10-21 |
+| SK-12 | A second pankti the owner supplied is not used | **Closed**: the Anand Sahib line is the saakhi's Gurbani |
+| SK-13 | The Guru is not named in the account | **Closed**: the text says Guru Ji |
 
 ## 5. Storage
 

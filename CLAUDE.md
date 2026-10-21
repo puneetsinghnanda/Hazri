@@ -31,7 +31,9 @@ git history and is not a reference.
    key, collection or endpoint is made in `ARCHITECTURE.md`. Note any
    conflict in the PR description.
 3. **Never create, paraphrase, auto-translate or AI-generate Gurbani text,
-   Gurbani audio, meanings, or images of the Gurus.** Every line of Gurbani and
+   Gurbani audio, meanings, or images of the Gurus' faces.** A saakhi may
+   show a Guru's figure, AI art included, with only light where the face
+   would be (owner, 2026-10-21; `docs/features/13-saakhi.md` SK2). Every line of Gurbani and
    every meaning in the app comes from `content/source/` through
    `tools/content_pipeline/build_content_db.py`. Nothing Gurbani-related is
    typed into Dart.
@@ -79,8 +81,8 @@ collection on, and notifications. There is no phase after it, and the
 fifteen-item Phase 3 that used to be written down -- the iPhone app, Live
 Kirtan, widgets, Saakhis, kids' mode and the rest -- was removed on
 2026-09-22 rather than deferred. **Saakhis came back on 2026-10-19** as a
-Phase 2 feature (`docs/features/13-saakhi.md`): the Guru is never drawn,
-only shown as light; the lesson page is design D for every saakhi; nothing
+Phase 2 feature (`docs/features/13-saakhi.md`): the Guru's face is never
+shown, only light where it would be (2026-10-21); the lesson page is design D for every saakhi; nothing
 about a saakhi is counted, and there is no Diary link.
 
 **The 23-screen Phase 3 design set is superseded — do not merge it.**
