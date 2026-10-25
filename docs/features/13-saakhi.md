@@ -129,6 +129,9 @@ and Malik Bhago* and *Anand Bhaya Meri Maaye*, both 2026-10-20. On 2026-10-21
 the owner accepted both saakhis' images as they are (the Guru's figure with the
 face in light, SK2) and closed the remaining items, except the Punjabi
 narration. The two Gurbani checks stay listed because SK3 asks for them.
+*The Saint-Soldier* became final on 2026-10-25. *Why Was the Hut Broken?*
+has its design, images and English narration and waits for the owner's
+final word.
 
 ### Bhai Lalo and Malik Bhago
 
@@ -153,6 +156,15 @@ narration. The two Gurbani checks stay listed because SK3 asks for them.
 | SK-11 | The recording may hold only one of the lesson page's two sentences (1:42 to 1:49) | **Closed**: accepted by the owner, 2026-10-21 |
 | SK-12 | A second pankti the owner supplied is not used | **Closed**: the Anand Sahib line is the saakhi's Gurbani |
 | SK-13 | The Guru is not named in the account | **Closed**: the text says Guru Ji |
+
+### The Saint-Soldier
+
+| # | Item | Default |
+|---|---|---|
+| SK-15 | The pankti ਸੂਰਾ ਸੋ ਪਹਿਚਾਨੀਐ ... has no Ang or English meaning from a named source yet | **Open under SK3**: no Gurbani row until both come |
+| SK-16 | The recording ends before the family question (2:25 to 2:32) | The question shows on screen; the owner listens |
+| SK-17 | The Khanda emblem on flags and turbans is later than 1757 | Accepted as on the second saakhi |
+| SK-18 | Punjabi text is Claude's draft; Punjabi narration | **Open**: the owner checks the text and records it |
 
 ## 5. Storage
 
