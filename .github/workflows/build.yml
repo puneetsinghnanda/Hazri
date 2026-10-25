@@ -89,7 +89,12 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Pinned, not ubuntu-latest: the content check below wants content.db
+    # byte for byte, and SQLite lays the same database out differently from
+    # one version to the next. ubuntu-latest moved to 26.04 in October 2026
+    # and failed that check on a database 24.04's SQLite 3.45 builds
+    # identically every time (run 255, 2026-10-25).
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     # contents: write is for the release the APK is published to. Nothing else
     # in this workflow writes to the repository.
