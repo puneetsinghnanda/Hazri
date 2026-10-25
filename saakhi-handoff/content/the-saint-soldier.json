@@ -1,0 +1,185 @@
+{
+  "_note": "One saakhi. Reviewed by the owner, who is the reviewer for every saakhi. Rules: docs/features/13-saakhi.md.",
+  "schema": "saakhi-1.0",
+  "id": "the-saint-soldier",
+  "status": {
+    "en": "final 2026-10-25",
+    "pa": "draft: written by Claude from the English, to be checked by the owner"
+  },
+  "source": {
+    "kind": "retold",
+    "note": "Retold from an account of Baba Deep Singh Ji the owner supplied on 2026-10-25. Baba Ji's words at the line are kept as in the account. Jahan Khan's death is told as his defeat, and no image shows blood or a wound (a children's story)."
+  },
+  "title": {
+    "en": "The Saint-Soldier",
+    "pa": "ਸੰਤ ਸਿਪਾਹੀ"
+  },
+  "title_note": "Taken from the owner's cover, which has it painted in.",
+  "subtitle": {
+    "en": "Baba Deep Singh Ji's promise",
+    "pa": "ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ ਦਾ ਪ੍ਰਣ"
+  },
+  "blurb": {
+    "en": "the saakhi of Baba Deep Singh Ji, scholar and warrior, who kept his promise to his last breath, to read and listen to with your children.",
+    "pa": "ਵਿਦਵਾਨ ਅਤੇ ਯੋਧੇ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ ਦੀ ਸਾਖੀ, ਜਿਨ੍ਹਾਂ ਨੇ ਆਪਣਾ ਪ੍ਰਣ ਆਖ਼ਰੀ ਸਾਹ ਤੱਕ ਨਿਭਾਇਆ, ਬੱਚਿਆਂ ਨਾਲ ਪੜ੍ਹਨ ਅਤੇ ਸੁਣਨ ਲਈ।"
+  },
+  "pages": [
+    {
+      "page": 1,
+      "image": "p1",
+      "title": {
+        "en": "The saint-soldier",
+        "pa": "ਸੰਤ ਸਿਪਾਹੀ"
+      },
+      "text": {
+        "en": "Baba Deep Singh Ji came from the village of Pahuwind, near Amritsar. He was tall, strong and uncommonly brave, and he had received amrit from the hands of Guru Gobind Singh Ji himself. He was a true Sant-Sipahi: a saint and a soldier at once.",
+        "pa": "ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ ਅੰਮ੍ਰਿਤਸਰ ਦੇ ਨੇੜੇ ਪਿੰਡ ਪਹੂਵਿੰਡ ਦੇ ਰਹਿਣ ਵਾਲੇ ਸਨ। ਉਹ ਉੱਚੇ-ਲੰਮੇ, ਤਕੜੇ ਅਤੇ ਬੇਹੱਦ ਬਹਾਦਰ ਸਨ, ਅਤੇ ਉਨ੍ਹਾਂ ਨੇ ਖ਼ੁਦ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ ਦੇ ਹੱਥੋਂ ਅੰਮ੍ਰਿਤ ਛਕਿਆ ਸੀ। ਉਹ ਸੱਚੇ ਸੰਤ-ਸਿਪਾਹੀ ਸਨ: ਸੰਤ ਵੀ ਅਤੇ ਸਿਪਾਹੀ ਵੀ।"
+      }
+    },
+    {
+      "page": 2,
+      "image": "p2",
+      "title": {
+        "en": "The scholar",
+        "pa": "ਵਿਦਵਾਨ"
+      },
+      "text": {
+        "en": "Baba Ji was also one of the greatest scholars of his time, and he recited Bani every day. With Bhai Mani Singh Ji, he spent many years making copies of Guru Granth Sahib Ji, some written with his own hands. Copies from Baba Ji were trusted as the most authentic of all.",
+        "pa": "ਬਾਬਾ ਜੀ ਆਪਣੇ ਸਮੇਂ ਦੇ ਮਹਾਨ ਵਿਦਵਾਨਾਂ ਵਿੱਚੋਂ ਇੱਕ ਸਨ, ਅਤੇ ਰੋਜ਼ ਬਾਣੀ ਦਾ ਪਾਠ ਕਰਦੇ ਸਨ। ਭਾਈ ਮਨੀ ਸਿੰਘ ਜੀ ਨਾਲ ਮਿਲ ਕੇ ਉਨ੍ਹਾਂ ਨੇ ਕਈ ਸਾਲ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੇ ਉਤਾਰੇ ਤਿਆਰ ਕੀਤੇ, ਕੁਝ ਆਪਣੇ ਹੱਥੀਂ ਲਿਖੇ। ਬਾਬਾ ਜੀ ਵੱਲੋਂ ਦਿੱਤੇ ਉਤਾਰੇ ਸਭ ਤੋਂ ਪ੍ਰਮਾਣਿਕ ਮੰਨੇ ਜਾਂਦੇ ਸਨ।"
+      }
+    },
+    {
+      "page": 3,
+      "image": "p3",
+      "title": {
+        "en": "Sad news",
+        "pa": "ਦੁਖਦਾਈ ਖ਼ਬਰ"
+      },
+      "text": {
+        "en": "Ahmad Shah Abdali had invaded India for the fourth time. From Lahore he sent an army to punish the Sikhs. It plundered Amritsar, damaged Sri Harmandir Sahib and filled in the sacred sarovar. When the news reached Damdama Sahib, Baba Ji felt as if an arrow had pierced his heart.",
+        "pa": "ਅਹਿਮਦ ਸ਼ਾਹ ਅਬਦਾਲੀ ਨੇ ਚੌਥੀ ਵਾਰ ਹਿੰਦੁਸਤਾਨ ਉੱਤੇ ਹਮਲਾ ਕੀਤਾ ਸੀ। ਲਾਹੌਰ ਤੋਂ ਉਸ ਨੇ ਸਿੱਖਾਂ ਨੂੰ ਸਜ਼ਾ ਦੇਣ ਲਈ ਫ਼ੌਜ ਭੇਜੀ। ਉਸ ਨੇ ਅੰਮ੍ਰਿਤਸਰ ਨੂੰ ਲੁੱਟਿਆ, ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਦੀ ਬੇਅਦਬੀ ਕੀਤੀ ਅਤੇ ਪਵਿੱਤਰ ਸਰੋਵਰ ਨੂੰ ਪੂਰ ਦਿੱਤਾ। ਜਦੋਂ ਇਹ ਖ਼ਬਰ ਦਮਦਮਾ ਸਾਹਿਬ ਪਹੁੰਚੀ, ਤਾਂ ਬਾਬਾ ਜੀ ਨੂੰ ਇੰਝ ਲੱਗਾ ਜਿਵੇਂ ਕੋਈ ਤੀਰ ਉਨ੍ਹਾਂ ਦੇ ਦਿਲ ਨੂੰ ਵਿੰਨ੍ਹ ਗਿਆ ਹੋਵੇ।"
+      }
+    },
+    {
+      "page": 4,
+      "image": "p4",
+      "title": {
+        "en": "The line of the Khanda",
+        "pa": "ਖੰਡੇ ਦੀ ਲਕੀਰ"
+      },
+      "text": {
+        "en": "Baba Ji decided at once to go to Amritsar. With his great Khanda he drew a line on the ground and said, \"Only those should cross this line who are prepared to die but not turn back to the enemy in the battlefield.\" Five hundred Sikhs stepped across. By Tarn Taran Sahib, five thousand had joined him, ready to celebrate Diwali at Amritsar.",
+        "pa": "ਬਾਬਾ ਜੀ ਨੇ ਉਸੇ ਵੇਲੇ ਅੰਮ੍ਰਿਤਸਰ ਜਾਣ ਦਾ ਫ਼ੈਸਲਾ ਕੀਤਾ। ਆਪਣੇ ਭਾਰੀ ਖੰਡੇ ਨਾਲ ਉਨ੍ਹਾਂ ਨੇ ਧਰਤੀ ਉੱਤੇ ਲਕੀਰ ਖਿੱਚੀ ਅਤੇ ਕਿਹਾ, \"ਇਹ ਲਕੀਰ ਸਿਰਫ਼ ਉਹੀ ਪਾਰ ਕਰਨ ਜੋ ਮਰਨ ਲਈ ਤਿਆਰ ਹਨ, ਪਰ ਜੰਗ ਦੇ ਮੈਦਾਨ ਵਿੱਚ ਦੁਸ਼ਮਣ ਨੂੰ ਪਿੱਠ ਨਹੀਂ ਵਿਖਾਉਣਗੇ।\" ਪੰਜ ਸੌ ਸਿੱਖਾਂ ਨੇ ਲਕੀਰ ਪਾਰ ਕੀਤੀ। ਤਰਨ ਤਾਰਨ ਸਾਹਿਬ ਤੱਕ ਪੰਜ ਹਜ਼ਾਰ ਸਿੱਖ ਨਾਲ ਆ ਰਲੇ, ਅੰਮ੍ਰਿਤਸਰ ਵਿੱਚ ਦੀਵਾਲੀ ਮਨਾਉਣ ਲਈ ਤਿਆਰ।"
+      }
+    },
+    {
+      "page": 5,
+      "image": "p5",
+      "title": {
+        "en": "The battle",
+        "pa": "ਜੰਗ"
+      },
+      "text": {
+        "en": "Jahan Khan marched out from Lahore with twenty thousand soldiers. Five miles from Amritsar the armies met, and the Sikhs fought so bravely that Jahan Khan's soldiers ran for their lives. Bhai Dayal Singh's band of five hundred defeated Jahan Khan himself. But then Atai Khan arrived with a huge army and cannons, and the odds turned against the Sikhs.",
+        "pa": "ਜਹਾਨ ਖ਼ਾਨ ਵੀਹ ਹਜ਼ਾਰ ਫ਼ੌਜ ਲੈ ਕੇ ਲਾਹੌਰ ਤੋਂ ਨਿਕਲਿਆ। ਅੰਮ੍ਰਿਤਸਰ ਤੋਂ ਪੰਜ ਮੀਲ ਦੂਰ ਦੋਹਾਂ ਫ਼ੌਜਾਂ ਦਾ ਟਾਕਰਾ ਹੋਇਆ, ਅਤੇ ਸਿੱਖ ਇੰਨੀ ਬਹਾਦਰੀ ਨਾਲ ਲੜੇ ਕਿ ਜਹਾਨ ਖ਼ਾਨ ਦੇ ਸਿਪਾਹੀ ਜਾਨ ਬਚਾ ਕੇ ਭੱਜ ਗਏ। ਭਾਈ ਦਿਆਲ ਸਿੰਘ ਜੀ ਦੇ ਪੰਜ ਸੌ ਸਿੰਘਾਂ ਦੇ ਜਥੇ ਨੇ ਖ਼ੁਦ ਜਹਾਨ ਖ਼ਾਨ ਨੂੰ ਹਰਾ ਦਿੱਤਾ। ਪਰ ਫਿਰ ਅਤਾਈ ਖ਼ਾਨ ਵੱਡੀ ਫ਼ੌਜ ਅਤੇ ਤੋਪਾਂ ਲੈ ਕੇ ਆ ਪਹੁੰਚਿਆ, ਅਤੇ ਹਾਲਾਤ ਸਿੱਖਾਂ ਦੇ ਉਲਟ ਹੋ ਗਏ।"
+      }
+    },
+    {
+      "page": 6,
+      "image": "p6",
+      "title": {
+        "en": "\"Baba Ji, your promise!\"",
+        "pa": "\"ਬਾਬਾ ਜੀ, ਤੁਹਾਡਾ ਪ੍ਰਣ!\""
+      },
+      "text": {
+        "en": "Near Ramsar, Baba Ji, then more than seventy-five years old, was gravely wounded in the neck. As he began to fall, a Sikh called out, \"Baba Ji, you had prayed to fall a martyr at Sri Harmandir Sahib, but you seem to be leaving us here.\" At once a new strength filled him. Holding his head with his left hand, he fought on with his Khanda in his right.",
+        "pa": "ਰਾਮਸਰ ਦੇ ਨੇੜੇ, ਪਚੱਤਰ ਸਾਲ ਤੋਂ ਵੱਧ ਉਮਰ ਦੇ ਬਾਬਾ ਜੀ ਦੀ ਗਰਦਨ ਉੱਤੇ ਡੂੰਘਾ ਵਾਰ ਹੋਇਆ। ਜਦੋਂ ਉਹ ਡਿੱਗਣ ਲੱਗੇ, ਇੱਕ ਸਿੰਘ ਨੇ ਯਾਦ ਕਰਾਇਆ, \"ਬਾਬਾ ਜੀ, ਤੁਸੀਂ ਅਰਦਾਸ ਕੀਤੀ ਸੀ ਕਿ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਦੀ ਹਦੂਦ ਵਿੱਚ ਸ਼ਹੀਦ ਹੋਵੋਂਗੇ, ਪਰ ਤੁਸੀਂ ਤਾਂ ਇੱਥੇ ਹੀ ਜਾ ਰਹੇ ਹੋ।\" ਉਸੇ ਪਲ ਉਨ੍ਹਾਂ ਵਿੱਚ ਅਲੌਕਿਕ ਬਲ ਆ ਗਿਆ। ਖੱਬੇ ਹੱਥ ਨਾਲ ਆਪਣਾ ਸੀਸ ਸੰਭਾਲ ਕੇ, ਸੱਜੇ ਹੱਥ ਨਾਲ ਖੰਡਾ ਚਲਾਉਂਦੇ ਹੋਏ ਉਹ ਲੜਦੇ ਰਹੇ।"
+      }
+    },
+    {
+      "page": 7,
+      "image": "p7",
+      "title": {
+        "en": "The promise kept",
+        "pa": "ਪ੍ਰਣ ਪੂਰਾ ਹੋਇਆ"
+      },
+      "text": {
+        "en": "Fighting all the way, Baba Ji reached the precincts of Sri Harmandir Sahib. His vow was fulfilled, and there he fell, a martyr, in the year 1757. Today Gurdwara Shaheed Ganj Baba Deep Singh Ji stands where he was wounded.",
+        "pa": "ਇਸ ਤਰ੍ਹਾਂ ਲੜਦੇ ਹੋਏ ਬਾਬਾ ਜੀ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਦੀ ਹਦੂਦ ਵਿੱਚ ਪਹੁੰਚ ਗਏ। ਉਨ੍ਹਾਂ ਦਾ ਪ੍ਰਣ ਪੂਰਾ ਹੋਇਆ, ਅਤੇ ਉੱਥੇ ਉਹ ਸੰਨ 1757 ਵਿੱਚ ਸ਼ਹੀਦ ਹੋ ਗਏ। ਅੱਜ ਜਿੱਥੇ ਉਨ੍ਹਾਂ ਨੂੰ ਵਾਰ ਲੱਗਾ ਸੀ, ਉੱਥੇ ਗੁਰਦੁਆਰਾ ਸ਼ਹੀਦ ਗੰਜ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ ਸੁਸ਼ੋਭਿਤ ਹੈ।"
+      }
+    }
+  ],
+  "lesson": {
+    "image": "p8",
+    "title": {
+      "en": "The lesson",
+      "pa": "ਸਿੱਖਿਆ"
+    },
+    "line": {
+      "en": "A true promise is kept to the last breath.",
+      "pa": "ਸੱਚਾ ਪ੍ਰਣ ਆਖ਼ਰੀ ਸਾਹ ਤੱਕ ਨਿਭਾਇਆ ਜਾਂਦਾ ਹੈ।"
+    },
+    "ask": {
+      "en": "What is a promise you will always keep?",
+      "pa": "ਤੁਸੀਂ ਕਿਹੜਾ ਪ੍ਰਣ ਸਦਾ ਨਿਭਾਓਗੇ?"
+    },
+    "narration": {
+      "en": "Baba Deep Singh Ji was a scholar and a warrior, and he kept his promise to his very last breath. What is a promise you will always keep?",
+      "pa": "ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ ਵਿਦਵਾਨ ਵੀ ਸਨ ਅਤੇ ਯੋਧੇ ਵੀ, ਅਤੇ ਉਨ੍ਹਾਂ ਨੇ ਆਪਣਾ ਪ੍ਰਣ ਆਖ਼ਰੀ ਸਾਹ ਤੱਕ ਨਿਭਾਇਆ। ਤੁਸੀਂ ਕਿਹੜਾ ਪ੍ਰਣ ਸਦਾ ਨਿਭਾਓਗੇ?"
+    }
+  },
+  "shabad": null,
+  "shabad_pending": "ਸੂਰਾ ਸੋ ਪਹਿਚਾਨੀਐ ... (the owner's pankti): added once its Ang and an English meaning are confirmed from a named source (SK3).",
+  "narration": {
+    "en": {
+      "file": "the-saint-soldier.en.mp3",
+      "master": "not in git (SK13)",
+      "duration": 151.56,
+      "page_starts": [
+        0,
+        17.61,
+        37.09,
+        57.02,
+        79.7,
+        103.16,
+        127.69,
+        144.56
+      ],
+      "meaning_at": null,
+      "timing_note": "Placed by Claude, 2026-10-25, by matching every sentence of the script to a pause in the recording; for the owner to correct by ear.",
+      "voice": "text to speech, chosen by the owner"
+    },
+    "pa": null
+  },
+  "images": {
+    "cover": {
+      "status": "ok",
+      "title_in_image": true
+    },
+    "p1": {
+      "status": "ok"
+    },
+    "p2": {
+      "status": "ok"
+    },
+    "p3": {
+      "status": "ok"
+    },
+    "p4": {
+      "status": "ok"
+    },
+    "p5": {
+      "status": "ok"
+    },
+    "p6": {
+      "status": "ok"
+    },
+    "p7": {
+      "status": "ok"
+    },
+    "p8": {
+      "status": "ok"
+    }
+  },
+  "images_note": "No blood or wound in any image; the page 6 image shows Baba Ji steadying his head as in traditional Sikh art."
+}
