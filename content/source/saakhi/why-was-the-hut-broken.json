@@ -129,7 +129,24 @@
   },
   "shabad": null,
   "narration": {
-    "en": null,
+    "en": {
+      "file": "why-was-the-hut-broken.en.mp3",
+      "master": "not in git (SK13)",
+      "duration": 148.19,
+      "page_starts": [
+        0,
+        16.11,
+        37.88,
+        59.65,
+        83.68,
+        102.2,
+        116.33,
+        137.28
+      ],
+      "meaning_at": null,
+      "timing_note": "Placed by Claude, 2026-10-25, by matching every sentence of the script to a pause in the recording; for the owner to correct by ear.",
+      "voice": "text to speech, chosen by the owner"
+    },
     "pa": null
   },
   "images": {
