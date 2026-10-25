@@ -3685,6 +3685,143 @@ def article_timeline() -> str:
 """
 
 
+# ------------------------------------------- saakhis, chosen 2026-10-25
+# 13-saakhi.md SK11: on Today as a row of covers (option 1A), the library,
+# and the menu as a left drawer (option A). The reader itself is
+# design/saakhi/reader.template.html, approved 2026-10-20. Covers are small
+# copies of the owner's images, kept in design/saakhi/covers/ and embedded.
+
+SAAKHIS = [
+    # id, English name, Punjabi name, length
+    ("bhai-lalo-malik-bhago", "Bhai Lalo and Malik Bhago", "ਭਾਈ ਲਾਲੋ ਤੇ ਮਲਿਕ ਭਾਗੋ", "2 min"),
+    ("anand-bhaya-meri-maaye", "Anand Bhaya Meri Maaye", "ਅਨੰਦੁ ਭਇਆ ਮੇਰੀ ਮਾਏ", "2 min"),
+    ("why-was-the-hut-broken", "Why Was the Hut Broken?", "ਕੁੱਲੀ ਕਿਉਂ ਢਾਹੀ ਗਈ?", "2 min"),
+    ("the-saint-soldier", "The Saint-Soldier", "ਸੰਤ ਸਿਪਾਹੀ", "3 min"),
+]
+
+
+def cover(sid: str) -> str:
+    """A saakhi's cover as a data URI, so the design file stays self-contained."""
+    import base64
+    with open(os.path.join(ROOT, "design", "saakhi", "covers", f"{sid}.jpg"), "rb") as fh:
+        return "data:image/jpeg;base64," + base64.b64encode(fh.read()).decode()
+
+
+def saakhi_row() -> str:
+    """Option 1A: 'Saakhis' and 'See all', then tall covers scrolling sideways."""
+    cards = "".join(
+        f'<div style="flex:none;width:118px;height:192px;border-radius:18px;overflow:hidden;position:relative;'
+        f'background:url({cover(sid)}) center/cover;box-shadow:0 8px 18px rgba(27,29,58,.16)">'
+        f'<div style="position:absolute;left:8px;top:8px;font-size:11px;font-weight:700;color:#fff;'
+        f'background:rgba(12,15,36,.55);padding:3px 7px;border-radius:999px" class="row">'
+        f'<span style="margin-right:3px">▶</span>{length}</div>'
+        f'<div class="col" style="position:absolute;left:0;right:0;bottom:0;padding:26px 9px 9px;gap:2px;'
+        f'background:linear-gradient(transparent,rgba(12,15,36,.88))">'
+        f'<div class="gur" style="font-size:11.5px;color:rgba(255,255,255,.85);line-height:1.3">{pa}</div>'
+        f'<div style="font-size:13px;font-weight:700;color:#fff;line-height:1.2">{en}</div></div></div>'
+        for sid, en, pa, length in SAAKHIS)
+    return f"""
+<div class="col" style="gap:10px">
+  <div class="row" style="justify-content:space-between">
+    <div class="disp" style="font-size:18px;font-weight:700">Saakhis</div>
+    <div style="font-size:13px;font-weight:700;color:var(--kesriInk)">See all</div>
+  </div>
+  <div class="row" style="gap:10px;margin-right:-20px;overflow:hidden">{cards}</div>
+</div>"""
+
+
+def today_saakhis() -> str:
+    """Today with the saakhis row: after the Nitnem button, before ਅੱਜ ਦਾ ਵਿਚਾਰ (SK11, 1A)."""
+    return f"""
+{app_bar("Sat Sri Akal, Harpreet")}
+<div class="col" style="gap:13px;padding:0 20px;margin-top:-32px">
+  {streak_strip()}
+  {goal_widget()}
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
+    {icon("nitnem", 20)}<div>Start your Nitnem</div></div>
+  {saakhi_row()}
+  {vichar_card()}
+</div>
+{nav("today")}
+"""
+
+
+def saakhi_library() -> str:
+    """The library: one card per saakhi, Punjabi name above English, pages, narration, length (SK11)."""
+    rows = "".join(
+        f'<div class="card row" style="padding:10px;gap:14px;align-items:stretch">'
+        f'<div style="width:78px;height:118px;border-radius:14px;flex:none;'
+        f'background:url({cover(sid)}) center/cover"></div>'
+        f'<div class="col" style="flex:1;gap:3px;justify-content:center">'
+        f'<div class="gur" style="font-size:14px;color:var(--ink2);line-height:1.35">{pa}</div>'
+        f'<div class="disp" style="font-size:17px;font-weight:700;line-height:1.2">{en}</div>'
+        f'<div style="font-size:12.5px;color:var(--muted);margin-top:2px">8 pages · English narration</div>'
+        f'<div class="row" style="gap:8px;margin-top:8px">'
+        f'<div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk)">'
+        f'{icon("play", 13)}Listen · {length}</div>'
+        f'<div class="chip" style="background:var(--card2);color:var(--ink2)">Read</div></div>'
+        f'</div></div>'
+        for sid, en, pa, length in SAAKHIS)
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Saakhis", "Stories to read and listen to together")}
+  <div class="col" style="gap:12px">{rows}</div>
+</div>
+"""
+
+
+def menu_saakhis() -> str:
+    """The menu as a left drawer, option A (SK11): navy header, then one list with Saakhis near the top."""
+    strip = "".join(
+        f'<div style="aspect-ratio:1;border-radius:50%;background:{LIT if b[4] else "rgba(255,255,255,.08)"};'
+        f'box-shadow:{"none" if b[4] else "inset 0 0 0 1px rgba(255,255,255,.2)"}"></div>' for b in BADGES)
+    sv = ('<svg class="i" width="20" height="20" viewBox="0 0 24 24">{}</svg>')
+    glyph = {
+        "Today": icon("today", 20),
+        "Saakhis": sv.format('<rect x="4" y="3.5" width="12" height="17" rx="2"/><path d="M16 6.5h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-8"/>'),
+        "Library": icon("nitnem", 20),
+        "Badges": sv.format('<circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.5L7 21l5-2.5 5 2.5-1.5-7.5"/>'),
+        "Notifications": icon("bell", 20),
+        "Settings": sv.format('<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>'),
+        "Privacy and data": icon("shield", 20),
+        "About and credits": sv.format('<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>'),
+        "Help": sv.format('<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.1-2.4 3.6M12 17h.01"/>'),
+    }
+
+    def item(t, on=False, count=None):
+        bg = "var(--kesriSoft)" if on else "transparent"
+        fg = "var(--kesriInk)" if on else "var(--ink)"
+        ic = "var(--kesriInk)" if on else "var(--muted)"
+        badge = (f'<div style="margin-left:auto;min-width:22px;height:22px;border-radius:11px;background:var(--kesri);'
+                 f'color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{count}</div>'
+                 if count else "")
+        return (f'<div class="row" style="gap:14px;min-height:48px;padding:0 12px;border-radius:14px;background:{bg};'
+                f'color:{fg};font-size:15px;font-weight:{700 if on else 600}"><div style="color:{ic}">{glyph[t]}</div>{t}{badge}</div>')
+
+    top = item("Today", on=True) + item("Saakhis", count=4) + item("Library") + item("Badges")
+    rest = "".join(item(t) for t in ["Notifications", "Settings", "Privacy and data", "About and credits", "Help"])
+    return f"""
+{today_backdrop()}
+<div class="col" style="position:absolute;left:0;top:0;bottom:0;width:304px;background:var(--card);
+  border-radius:0 24px 24px 0;overflow:hidden">
+  <div class="band col" style="color:#fff;padding:30px 18px 18px;gap:14px">
+    <div class="row" style="gap:12px">{avatar("HK", "var(--kesriSoft)", "var(--kesriInk)", 52)}
+      <div class="col"><div style="font-size:17px;font-weight:700">Harpreet Kaur</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.75)">Ludhiana</div></div></div>
+    <div class="col" style="gap:8px">
+      <div class="row" style="justify-content:space-between;font-size:12.5px;font-weight:600;
+        color:rgba(255,255,255,.8)"><span>Badges</span><span>4 of 10</span></div>
+      <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px">{strip}</div>
+    </div>
+  </div>
+  <div class="col" style="padding:10px 8px 0">{top}
+    <div style="height:1px;background:var(--rule);margin:8px 12px"></div>{rest}</div>
+  <div style="flex:1"></div>
+  <div style="padding:0 20px 22px;font-size:12px;color:var(--muted)">Hazri · version 2.0</div>
+</div>
+"""
+
+
 SCREENS = [
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
@@ -3743,6 +3880,9 @@ SCREENS = [
     ("107-ArticleCalendar", "Vichar — a Gurpurab, as a calendar card", article_calendar),
     ("108-ArticlePhoto", "Vichar — a place, photo-led", article_photo),
     ("109-ArticleTimeline", "Vichar — a day of history, as a timeline", article_timeline),
+    ("110-TodaySaakhis", "Today — with the saakhis row", today_saakhis),
+    ("111-SaakhiLibrary", "Saakhis — the library", saakhi_library),
+    ("112-MenuSaakhis", "Menu — the left drawer, with Saakhis", menu_saakhis),
 ]
 
 
