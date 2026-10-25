@@ -86,7 +86,16 @@ nothing (PRD §8).
 
 **SK11. The library.** Saakhis are listed as cards: the cover, the Punjabi name
 above the English, the page count, the narration languages and the length.
-Where the list lives in the app is decided when it is built (PRD §3.2).
+Two ways in (owner, 2026-10-25, from the options of that day):
+- **On Today, option 1A:** a "Saakhis" heading with "See all", then every
+  saakhi as a tall cover card in a row that scrolls sideways (Punjabi name
+  above the English, a "▶ 2 min" chip). It sits after the Nitnem button and
+  before ਅੱਜ ਦਾ ਵਿਚਾਰ. "See all" opens the library.
+- **In the menu, option A:** the menu becomes a left drawer (no longer a
+  bottom sheet) with today's navy header (name, city, badges), then one
+  list: Today, Saakhis with a count, Library, Badges, then Notifications,
+  Settings, Privacy and data, About and credits, Help. This changes PRD §3.2
+  and design 37/99 (5C) when it is drawn and built.
 
 **SK12. Favourite** is a heart on each story page, kept on the phone.
 
