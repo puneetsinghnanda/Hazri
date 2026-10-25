@@ -180,6 +180,16 @@ class Badges extends Table {
   Set<Column> get primaryKey => {badgeId};
 }
 
+/// A saakhi the reader marked with the heart (13-saakhi.md SK12). Kept on
+/// the phone only; nothing about a saakhi is counted (SK7).
+class SaakhiFavourites extends Table {
+  TextColumn get saakhiId => text()();
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {saakhiId};
+}
+
 class GraceDays extends Table {
   TextColumn get localDate => text()();
   TextColumn get monthKey => text()();
@@ -210,6 +220,7 @@ class EventReminderOverrides extends Table {
     GraceDays,
     EventReminderOverrides,
     Badges,
+    SaakhiFavourites,
   ],
 )
 class UserDb extends _$UserDb {
@@ -219,7 +230,7 @@ class UserDb extends _$UserDb {
   UserDb.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -234,6 +245,8 @@ class UserDb extends _$UserDb {
           if (from < 5) await migrateToV5(this, m);
           // 12-badges §4.1: the table, empty.
           if (from < 6) await m.createTable(badges);
+          // 13-saakhi SK12: the hearts, empty.
+          if (from < 7) await m.createTable(saakhiFavourites);
         },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');

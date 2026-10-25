@@ -97,7 +97,15 @@ Two ways in (owner, 2026-10-25, from the options of that day):
   Settings, Privacy and data, About and credits, Help. This changes PRD §3.2
   and design 37/99 (5C) when it is drawn and built.
 
-**SK12. Favourite** is a heart on each story page, kept on the phone.
+**SK12. Favourite** is a heart on each story page, kept on the phone. It
+marks the saakhi (`user.db` `saakhi_favourites`), and the library shows it.
+
+**SK15. Built** (2026-10-25). The reader, the library (design 111), Share,
+the Today row (design 110) and the left drawer (design 112) are in the app.
+The Today row is not shown in elder mode, like ਅੱਜ ਦਾ ਵਿਚਾਰ beside it. The
+share sheet offers Share image and Copy text; **Save** is left out until the
+app has a way to write to the phone's gallery (a share to Files or Photos
+does the same today).
 
 **SK13. Audio masters are not in git**, like the banis' (`audio/README.md`).
 The images join git as app assets when the feature is built.
@@ -147,7 +155,7 @@ narration. The two Gurbani checks stay listed because SK3 asks for them.
 |---|---|---|
 | SK-1 | Images: the Guru as a figure, meat on three pages, the cover's painted title | **Closed**: accepted by the owner, 2026-10-21; the reader draws no second title over a cover that has one |
 | SK-2 | The Punjabi text is Claude's draft | **Closed**: accepted by the owner, 2026-10-21 |
-| SK-3 | The Ang 105 pankti and its English were transcribed from a screenshot | **Open under SK3**: check against BaniDB or another named source before release |
+| SK-3 | The Ang 105 pankti and its English were transcribed from a screenshot | **Closed** 2026-10-25: both match BaniDB (Ang 105, verses 4211-4213, shabad 306) word for word; recorded as `checked` in the saakhi file |
 | SK-4 | Where Share's link leads | `hazri.me` today; a Play Store link or a per-saakhi page later |
 | SK-5 | The recording ends while the voice is still speaking (2:12) | **Closed**: accepted by the owner, 2026-10-21 |
 | SK-6 | The big lesson line and the family question are Claude's wording | Approved by the owner with design D |
@@ -185,9 +193,12 @@ narration. The two Gurbani checks stay listed because SK3 asks for them.
 
 ## 5. Storage
 
-The `content.db` tables (a saakhi, its pages, its narration cues) are added
-to `docs/ARCHITECTURE.md` when the feature is built, and the pipeline reads
-`content/source/saakhi/*.json`. Favourites go in `user.db`.
+`content.db` table `saakhi` and `user.db` table `saakhi_favourites`:
+`docs/ARCHITECTURE.md` §3.2 and §3.6a. The pipeline reads
+`content/source/saakhi/*.json`; a typed-in shabad ships only with a `checked`
+record (SK3). Pictures and narration are app assets made by
+`tools/saakhi/build_assets.py` from the owner's masters, which sit in
+`saakhi-handoff/` until they move to a release (SK13).
 
 ## 6. Adding a saakhi
 

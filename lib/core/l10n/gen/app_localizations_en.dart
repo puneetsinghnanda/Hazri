@@ -1880,6 +1880,124 @@ class LEn extends L {
   String get libraryOpen => 'Open';
 
   @override
+  String get saakhiTitle => 'Saakhis';
+
+  @override
+  String get saakhiLibrarySubtitle =>
+      'Stories from Sikh history to read and listen to with your children.';
+
+  @override
+  String get saakhiEmpty => 'There are no saakhis on this phone yet.';
+
+  @override
+  String get saakhiSeeAll => 'See all';
+
+  @override
+  String saakhiPages(int count) {
+    return '$count pages';
+  }
+
+  @override
+  String saakhiMinutes(int count) {
+    return '$count min';
+  }
+
+  @override
+  String get saakhiNarrationEnglish => 'English narration';
+
+  @override
+  String get saakhiNarrationComing => 'Narration coming soon';
+
+  @override
+  String get saakhiPunjabiNarrationComing =>
+      'The Punjabi narration is coming soon';
+
+  @override
+  String get saakhiListen => 'Listen';
+
+  @override
+  String get saakhiRead => 'Read the saakhi';
+
+  @override
+  String get saakhiReadShort => 'Read';
+
+  @override
+  String saakhiPageOf(int page, int total) {
+    return 'Page $page of $total';
+  }
+
+  @override
+  String get saakhiShare => 'Share';
+
+  @override
+  String get saakhiGurbani => 'Gurbani';
+
+  @override
+  String saakhiAng(int ang) {
+    return 'Ang $ang';
+  }
+
+  @override
+  String saakhiSourceAng(String source, int ang) {
+    return '$source · Ang $ang';
+  }
+
+  @override
+  String get saakhiReadAgain => 'Read again';
+
+  @override
+  String get saakhiTalkTogether => 'Talk about it together';
+
+  @override
+  String get saakhiFavourite => 'Favourite';
+
+  @override
+  String get saakhiPreviousPage => 'Previous page';
+
+  @override
+  String get saakhiNextPage => 'Next page';
+
+  @override
+  String get saakhiPlay => 'Play';
+
+  @override
+  String get saakhiPause => 'Pause';
+
+  @override
+  String get saakhiShareTitle => 'Share this saakhi';
+
+  @override
+  String get saakhiShareThisPage => 'This page';
+
+  @override
+  String get saakhiShareWhole => 'Whole saakhi';
+
+  @override
+  String get saakhiShareImage => 'Share image';
+
+  @override
+  String get saakhiCopyText => 'Copy text';
+
+  @override
+  String get saakhiCopied => 'Message copied.';
+
+  @override
+  String get saakhiShareEyebrow => 'A saakhi';
+
+  @override
+  String get saakhiShareBandTitle => 'Read and listen to the full saakhi';
+
+  @override
+  String saakhiShareBandSub(String site) {
+    return 'Free in the Hazri app · $site';
+  }
+
+  @override
+  String saakhiShareMessage(String title, String blurb, String link) {
+    return '$title: $blurb Free in the Hazri app: $link';
+  }
+
+  @override
   String get libraryShare => 'Share';
 
   @override

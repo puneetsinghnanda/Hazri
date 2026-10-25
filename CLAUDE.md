@@ -190,6 +190,7 @@ each:
 | A group's globe (2026-10-17) | 104, 105 | Option C for custom and built-in groups: the goal ring wraps the group's globe, members as counts per city, every dot tied to the ring by a dashed line (GG4a, 2026-10-18), paath of the last hour arriving as light along it (`08-sangat.md` GG1-GG10); replaces 103 and, for a custom group, 31 |
 | Goals as one page (2026-10-19) | 106 | Option C of four: the day as a timeline, every paath at its own time; once a day each, reminders always on and movable (`04-goals.md` GI10, RM1, 7.2); replaces 47 |
 | Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
+| Saakhis (2026-10-25) | 110, 111, 112 | Today option 1A (a row of covers after the Nitnem button), the library, and the menu as a left drawer, option A (replaces 99); the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -482,6 +483,17 @@ is true of the code now, then what is live, then what is still open.
   `BadgeId` as proper nouns by script; everything else is in the ARB files.
 - **First run** (step 10): Android's splash, Welcome, Language, How you read;
   `/` is a redirect, not a screen.
+- **Saakhis** (`13-saakhi.md`, built 2026-10-25): four saakhis on the phone,
+  `content.db` table `saakhi` (content version 9) from
+  `content/source/saakhi/*.json`, pictures and narration under
+  `assets/saakhi/` made by `tools/saakhi/build_assets.py` from the owner's
+  masters in `saakhi-handoff/`. The reader turns pages with the narration
+  (just_audio, its own player), the lesson is design D, Share makes a
+  1080 x 1920 picture, hearts go in `user.db` schema 7. Today shows the row
+  of covers (1A) and the menu is a left drawer (option A,
+  `showMenuDrawer` in `lib/app/menu_sheet.dart`). A typed-in shabad ships
+  only with a `checked` record naming its source (SK3); Bhai Lalo's Ang 105
+  pankti was checked against BaniDB on 2026-10-25.
 
 ### What is live, and what is deployed by hand
 

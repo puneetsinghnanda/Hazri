@@ -73,6 +73,11 @@ flutter:
     - assets/audio/
     - assets/geo/
     - assets/images/
+    - assets/saakhi/
+    - assets/saakhi/anand-bhaya-meri-maaye/
+    - assets/saakhi/bhai-lalo-malik-bhago/
+    - assets/saakhi/the-saint-soldier/
+    - assets/saakhi/why-was-the-hut-broken/
   fonts:
     - family: Mukta
       fonts:

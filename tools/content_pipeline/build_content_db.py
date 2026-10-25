@@ -25,8 +25,12 @@ TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 SIMRAN_DIR = os.path.join(ROOT, "content", "source", "simran")
 VERIFIED_FILE = os.path.join(TIMINGS_DIR, "verified.json")
 VICHAR_DIR = os.path.join(ROOT, "content", "source", "vichar")
+SAAKHI_DIR = os.path.join(ROOT, "content", "source", "saakhi")
+SAAKHI_ASSETS = os.path.join(ROOT, "assets", "saakhi")
+# The order Today's row and the library show them in (owner, 2026-10-25).
+SAAKHI_ORDER = ["bhai-lalo-malik-bhago", "anand-bhaya-meri-maaye", "why-was-the-hut-broken", "the-saint-soldier"]
 
-CONTENT_VERSION = 8
+CONTENT_VERSION = 9
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -113,6 +117,12 @@ CREATE TABLE city(
 CREATE TABLE quote(
   id TEXT PRIMARY KEY, gurmukhi TEXT NOT NULL, devanagari TEXT NOT NULL, roman TEXT NOT NULL,
   attribution_en TEXT, attribution_pa TEXT, attribution_hi TEXT, source_id TEXT);
+
+-- A saakhi (13-saakhi.md), resolved: its pages, lesson, narration cues and
+-- any Gurbani, read here from the bani's own source file (SK3). One JSON row
+-- per saakhi because the reader always wants the whole of one; `sort` is the
+-- order Today and the library list them in.
+CREATE TABLE saakhi(id TEXT PRIMARY KEY, sort INTEGER NOT NULL, json TEXT NOT NULL);
 
 CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT NOT NULL);
 """
@@ -704,6 +714,82 @@ def build_cities(con: sqlite3.Connection, report: dict) -> None:
     report["cities"] = len(cities)
 
 
+def saakhi_line(ref: dict, sources: dict) -> dict:
+    """One line of a bani, with its Ang and the meanings the saakhi names by source (SK3)."""
+    with open(os.path.join(SRC, f"{ref['bani']}.json"), encoding="utf-8") as fh:
+        bani = json.load(fh)
+    line = next(l for l in bani["lines"] if l["id"] == ref["id"])
+    meanings = {}
+    for lang, key in (("en", "english"), ("pa", "punjabi")):
+        for variant in (key, f"{key}_alt"):
+            m = (line.get("meaning") or {}).get(variant)
+            if m and m.get("source") == sources.get(lang):
+                meanings[lang] = m["text"]
+    return {"lines": [line["text"]["gurmukhi_plain"]], "ang": line["scripture"]["page"],
+            "meaning": meanings}
+
+
+def build_saakhis(con: sqlite3.Connection, report: dict) -> None:
+    """The saakhis, each resolved into what the reader needs.
+
+    Gurbani named by `ref` is read from its bani's source file. A shabad typed
+    into the saakhi file ships only once it carries a `checked` record naming
+    the source it was checked against (SK3, "an unsourced pankti"); until then
+    the saakhi shows no Gurbani row. Images and narration must exist as assets
+    (tools/saakhi/build_assets.py) or the saakhi is left out.
+    """
+    built = []
+    names = sorted(f[:-5] for f in os.listdir(SAAKHI_DIR) if f.endswith(".json")) \
+        if os.path.isdir(SAAKHI_DIR) else []
+    order = [n for n in SAAKHI_ORDER if n in names] + [n for n in names if n not in SAAKHI_ORDER]
+    for sort, sid in enumerate(order):
+        with open(os.path.join(SAAKHI_DIR, f"{sid}.json"), encoding="utf-8") as fh:
+            s = json.load(fh)
+        asset = lambda key: f"assets/saakhi/{sid}/{key}.webp"
+        keys = ["cover"] + [p["image"] for p in s["pages"]] + [s["lesson"]["image"]]
+        missing = [k for k in keys if not os.path.exists(os.path.join(SAAKHI_ASSETS, sid, f"{k}.webp"))]
+        if missing:
+            raise SystemExit(f"saakhi {sid}: no asset for {missing}; run tools/saakhi/build_assets.py")
+        sh = s.get("shabad")
+        shabad = None
+        if sh and "ref" in sh:
+            shabad = saakhi_line(sh["ref"], sh["meaning_sources"])
+        elif sh and sh.get("checked"):
+            shabad = {"lines": sh["gurmukhi"], "ang": sh["ang"], "meaning": sh.get("meaning") or {}}
+        if shabad:
+            shabad["source"] = sh["source"]
+        pages = []
+        for p in s["pages"]:
+            page = {"title": p["title"], "text": p["text"], "image": asset(p["image"])}
+            if p.get("gurbani"):
+                page["gurbani"] = saakhi_line(p["gurbani"]["ref"], (sh or {}).get("meaning_sources", {}))
+            pages.append(page)
+        narration = {}
+        for lang, n in (s.get("narration") or {}).items():
+            if not isinstance(n, dict) or not n.get("file"):
+                continue
+            path = os.path.join(SAAKHI_ASSETS, f"{sid}.{lang}.m4a")
+            if not os.path.exists(path):
+                raise SystemExit(f"saakhi {sid}: no narration asset {path}")
+            narration[lang] = {"asset": f"assets/saakhi/{sid}.{lang}.m4a",
+                               "duration": n["duration"], "pageStarts": n["page_starts"],
+                               "meaningAt": n.get("meaning_at") if shabad else None}
+        doc = {
+            "id": sid, "title": s["title"], "subtitle": s["subtitle"], "blurb": s["blurb"],
+            "languages": sorted(s["title"].keys()),
+            "cover": {"image": asset("cover"), "titleInImage": bool(s["images"]["cover"].get("title_in_image"))},
+            "pages": pages,
+            "lesson": {"title": s["lesson"]["title"], "line": s["lesson"]["line"],
+                       "ask": s["lesson"]["ask"], "image": asset(s["lesson"]["image"])},
+            "shabad": shabad, "narration": narration,
+        }
+        con.execute("INSERT INTO saakhi(id,sort,json) VALUES(?,?,?)",
+                    (sid, sort, json.dumps(doc, ensure_ascii=False, separators=(",", ":"))))
+        built.append({"id": sid, "pages": len(pages), "shabad": bool(shabad),
+                      "narration": sorted(narration)})
+    report["saakhis"] = built
+
+
 def source_digest() -> str:
     """sha256 over every input that can change the database."""
     h = hashlib.sha256()
@@ -714,7 +800,7 @@ def source_digest() -> str:
         os.path.join(os.path.dirname(__file__), "cities.json"),
         os.path.abspath(__file__),
     ]
-    for folder in (TIMINGS_DIR, SIMRAN_DIR, VICHAR_DIR):
+    for folder in (TIMINGS_DIR, SIMRAN_DIR, VICHAR_DIR, SAAKHI_DIR):
         if os.path.isdir(folder):
             inputs += sorted(
                 os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".json")
@@ -746,6 +832,7 @@ def main() -> int:
     build_vichar(con, report)
     build_calendar(con, report)
     build_cities(con, report)
+    build_saakhis(con, report)
 
     con.execute("INSERT INTO meta(key,value) VALUES('content_version',?)", (str(CONTENT_VERSION),))
     # A digest of the inputs rather than a wall-clock timestamp, so the same

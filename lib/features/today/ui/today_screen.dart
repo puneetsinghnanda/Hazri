@@ -27,6 +27,7 @@ import 'package:intl/intl.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../goals/domain/day_verdict.dart';
 import '../../goals/ui/set_goal_card.dart';
+import '../../saakhi/ui/saakhi_library_screen.dart';
 import '../../vichar/ui/vichar_card.dart';
 import '../../profile/data/profile_controller.dart';
 import '../../profile/ui/profile_banner.dart';
@@ -76,6 +77,9 @@ class TodayScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     _CtaButton(cta: ref.watch(todayCtaProvider)),
                     if (!elder) ...[
+                      // 13-saakhi SK11, option 1A: after the button, before ਅੱਜ ਦਾ ਵਿਚਾਰ.
+                      const SizedBox(height: 18),
+                      const SaakhiTodayRow(),
                       const SizedBox(height: 12),
                       const VicharCard(),
                       const SizedBox(height: 12),
@@ -136,7 +140,7 @@ class _TodayAppBar extends ConsumerWidget {
         children: [
           Row(
             children: [
-              round(AppIcon(HazriIconData.menu, size: 20, color: white), l.menuTooltip, () => showMenuSheet(context)),
+              round(AppIcon(HazriIconData.menu, size: 20, color: white), l.menuTooltip, () => showMenuDrawer(context)),
               const SizedBox(width: 12),
               const AppMark(size: 28, arcColor: white, sunColor: Color(0xFFF2A24E)),
               const SizedBox(width: 8),

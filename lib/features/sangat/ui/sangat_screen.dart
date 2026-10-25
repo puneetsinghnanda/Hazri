@@ -116,7 +116,7 @@ class _SangatScreenState extends ConsumerState<SangatScreen> with WidgetsBinding
             child: ListView(
               padding: const EdgeInsets.fromLTRB(HazriSize.gutter, 0, HazriSize.gutter, 24),
               children: [
-                TabHeader(title: l.sangatTitle, onMenu: () => showMenuSheet(context)),
+                TabHeader(title: l.sangatTitle, onMenu: () => showMenuDrawer(context)),
                 UpdatedLine(savedAt: view?.savedAt, offline: view?.offline ?? false),
                 if (view == null || (view.offline && lists == null))
                   Padding(

@@ -61,7 +61,7 @@ class NitnemScreen extends ConsumerWidget {
               TabHeader(
                 title: l.nitnemTitle,
                 subtitle: l.nitnemVersionLine,
-                onMenu: () => showMenuSheet(context),
+                onMenu: () => showMenuDrawer(context),
                 trailing: Padding(
                   padding: const EdgeInsets.only(left: 8, top: 6),
                   child: HazriChip(

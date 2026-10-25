@@ -308,11 +308,12 @@ beyond what the feature file says.
 
 | Store | Holds | Survives | Backed up |
 |---|---|---|---|
-| `content.db` | Everything the app ships: banis, lines, meanings, timings, calendar, cities, the daily Vichar | Replaced when `content_version` changes | No; it ships with the app |
+| `content.db` | Everything the app ships: banis, lines, meanings, timings, calendar, cities, the daily Vichar, the saakhis | Replaced when `content_version` changes | No; it ships with the app |
 | `user.db` | The reader's own record (§3.3–3.7) | Uninstall: only through Android backup | Android Auto Backup; with a profile, the weekly server backup of the tables in `10-backup.md` §3.1 |
 | `shared_preferences` | Settings, the profile cache, once-a-day flags, small caches (§3.8–3.9) | As `user.db` | Android Auto Backup only |
 | `assets/audio` | The recitations, in the APK | Ships with the app | No |
 | `assets/geo/world.bin` | The globe's coastlines and borders | Ships with the app | No |
+| `assets/saakhi/` | Each saakhi's pictures (`<id>/cover.webp`, `p1.webp` …, 900 px wide) and narration (`<id>.<lang>.m4a`, mono AAC 48 kbps), about 9 MB for four, made by `tools/saakhi/build_assets.py` from the owner's masters | Ships with the app | No |
 
 **What never leaves the phone:** reading positions, notification and app
 settings, grace days, and anything at all for a person with no profile and
@@ -325,8 +326,8 @@ Built by `tools/content_pipeline/build_content_db.py` from `content/source/`
 and bundled at `assets/content/content.db`. On first run, and whenever
 `meta.content_version` differs from the stamp file `content.version`, it is
 copied to `getApplicationSupportDirectory()/content.db` and opened read-only
-(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 8 at the time
-of writing. **Nothing in it is ever written by the app** (rule 3).
+(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 9 at the time
+of writing (9 added `saakhi`, 2026-10-25). **Nothing in it is ever written by the app** (rule 3).
 
 | Table | Columns | Holds |
 |---|---|---|
@@ -344,6 +345,7 @@ of writing. **Nothing in it is ever written by the app** (rule 3).
 | `calendar_event` | id, ns_year, date, kind, name_en, name_pa?, name_hi?, ns_label?, default_remind, supplementary | 147 events, 52 flagged to remind |
 | `city` | id, name_en/pa/hi, country_code, lat, lon, tz, **state_code** (added by `07-simran.md` §5.1, here §5.5) | 92 cities; the list a profile's city is chosen from |
 | `quote` | id, gurmukhi, devanagari, roman, attribution_en/pa/hi?, source_id? | Quotations shown in the app |
+| `saakhi` | id PK, sort, json | One row per saakhi (`13-saakhi.md`), resolved by the pipeline from `content/source/saakhi/<id>.json`: titles, pages, lesson, the asset paths, the narration's page starts and meaning cue, and any Gurbani, read from its bani's source file by `ref` or carried with a `checked` record naming the source it was checked against (SK3); a shabad with neither is left out. Read whole with a raw query (`SaakhiRepository`), so drift declares no table for it. `sort` is the order Today and the library show |
 | `meta` | key, value | `content_version`, `source_digest`, `ik_onkar` |
 
 The audio itself is **bundled in the APK** under `assets/audio/` — AAC-LC,
@@ -549,6 +551,17 @@ The app keeps the last response of 7.1, 7.2 and 7.3 for each group (shared prefe
 | `updatedAt` | DATETIME | no | UTC, every write |
 
 Migration 5 → 6 creates the table empty. Nothing else changes.
+
+### 3.6a `user.db`: `saakhi_favourites` (schema 7, 2026-10-25)
+
+| Field | Type | Nullable | Rule |
+| --- | --- | --- | --- |
+| `saakhiId` | TEXT (PK) | no | A `content.db` saakhi id |
+| `createdAt` | DATETIME | no | UTC |
+
+The heart on a story page (`13-saakhi.md` SK12). Migration 6 → 7 creates it
+empty. Kept on the phone only: it is not in the weekly backup, because
+nothing about a saakhi is counted (SK7).
 
 
 ### 3.7 `user.db`: the other tables, and the schema versions

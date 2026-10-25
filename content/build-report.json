@@ -270,7 +270,41 @@
     "covered_to": "2027-04-13"
   },
   "cities": 92,
-  "content_version": 8,
-  "source_digest": "59512f7d66d999b3",
-  "bytes": 4804608
+  "saakhis": [
+    {
+      "id": "bhai-lalo-malik-bhago",
+      "pages": 7,
+      "shabad": true,
+      "narration": [
+        "en"
+      ]
+    },
+    {
+      "id": "anand-bhaya-meri-maaye",
+      "pages": 7,
+      "shabad": true,
+      "narration": [
+        "en"
+      ]
+    },
+    {
+      "id": "why-was-the-hut-broken",
+      "pages": 7,
+      "shabad": false,
+      "narration": [
+        "en"
+      ]
+    },
+    {
+      "id": "the-saint-soldier",
+      "pages": 7,
+      "shabad": false,
+      "narration": [
+        "en"
+      ]
+    }
+  ],
+  "content_version": 9,
+  "source_digest": "9df3926ee6e3a5fd",
+  "bytes": 4849664
 }

@@ -1878,6 +1878,123 @@ class LPa extends L {
   String get libraryOpen => 'ਖੋਲ੍ਹੋ';
 
   @override
+  String get saakhiTitle => 'ਸਾਖੀਆਂ';
+
+  @override
+  String get saakhiLibrarySubtitle =>
+      'ਸਿੱਖ ਇਤਿਹਾਸ ਦੀਆਂ ਕਹਾਣੀਆਂ, ਬੱਚਿਆਂ ਨਾਲ ਪੜ੍ਹਨ ਅਤੇ ਸੁਣਨ ਲਈ।';
+
+  @override
+  String get saakhiEmpty => 'ਇਸ ਫ਼ੋਨ ਤੇ ਅਜੇ ਕੋਈ ਸਾਖੀ ਨਹੀਂ ਹੈ।';
+
+  @override
+  String get saakhiSeeAll => 'ਸਾਰੀਆਂ ਵੇਖੋ';
+
+  @override
+  String saakhiPages(int count) {
+    return '$count ਪੰਨੇ';
+  }
+
+  @override
+  String saakhiMinutes(int count) {
+    return '$count ਮਿੰਟ';
+  }
+
+  @override
+  String get saakhiNarrationEnglish => 'ਅੰਗਰੇਜ਼ੀ ਆਵਾਜ਼';
+
+  @override
+  String get saakhiNarrationComing => 'ਆਵਾਜ਼ ਜਲਦੀ ਆ ਰਹੀ ਹੈ';
+
+  @override
+  String get saakhiPunjabiNarrationComing => 'ਪੰਜਾਬੀ ਆਵਾਜ਼ ਜਲਦੀ ਆ ਰਹੀ ਹੈ';
+
+  @override
+  String get saakhiListen => 'ਸੁਣੋ';
+
+  @override
+  String get saakhiRead => 'ਸਾਖੀ ਪੜ੍ਹੋ';
+
+  @override
+  String get saakhiReadShort => 'ਪੜ੍ਹੋ';
+
+  @override
+  String saakhiPageOf(int page, int total) {
+    return 'ਪੰਨਾ $page / $total';
+  }
+
+  @override
+  String get saakhiShare => 'ਸਾਂਝਾ ਕਰੋ';
+
+  @override
+  String get saakhiGurbani => 'ਗੁਰਬਾਣੀ';
+
+  @override
+  String saakhiAng(int ang) {
+    return 'ਅੰਗ $ang';
+  }
+
+  @override
+  String saakhiSourceAng(String source, int ang) {
+    return '$source · ਅੰਗ $ang';
+  }
+
+  @override
+  String get saakhiReadAgain => 'ਦੁਬਾਰਾ ਪੜ੍ਹੋ';
+
+  @override
+  String get saakhiTalkTogether => 'ਮਿਲ ਕੇ ਗੱਲ ਕਰੋ';
+
+  @override
+  String get saakhiFavourite => 'ਮਨਪਸੰਦ';
+
+  @override
+  String get saakhiPreviousPage => 'ਪਿਛਲਾ ਪੰਨਾ';
+
+  @override
+  String get saakhiNextPage => 'ਅਗਲਾ ਪੰਨਾ';
+
+  @override
+  String get saakhiPlay => 'ਚਲਾਓ';
+
+  @override
+  String get saakhiPause => 'ਰੋਕੋ';
+
+  @override
+  String get saakhiShareTitle => 'ਇਹ ਸਾਖੀ ਸਾਂਝੀ ਕਰੋ';
+
+  @override
+  String get saakhiShareThisPage => 'ਇਹ ਪੰਨਾ';
+
+  @override
+  String get saakhiShareWhole => 'ਪੂਰੀ ਸਾਖੀ';
+
+  @override
+  String get saakhiShareImage => 'ਤਸਵੀਰ ਸਾਂਝੀ ਕਰੋ';
+
+  @override
+  String get saakhiCopyText => 'ਲਿਖਤ ਕਾਪੀ ਕਰੋ';
+
+  @override
+  String get saakhiCopied => 'ਸੁਨੇਹਾ ਕਾਪੀ ਹੋ ਗਿਆ।';
+
+  @override
+  String get saakhiShareEyebrow => 'ਸਾਖੀ';
+
+  @override
+  String get saakhiShareBandTitle => 'ਪੂਰੀ ਸਾਖੀ ਪੜ੍ਹੋ ਅਤੇ ਸੁਣੋ';
+
+  @override
+  String saakhiShareBandSub(String site) {
+    return 'ਹਾਜ਼ਰੀ ਐਪ ਵਿੱਚ, ਮੁਫ਼ਤ · $site';
+  }
+
+  @override
+  String saakhiShareMessage(String title, String blurb, String link) {
+    return '$title: $blurb ਹਾਜ਼ਰੀ ਐਪ ਵਿੱਚ ਮੁਫ਼ਤ: $link';
+  }
+
+  @override
   String get libraryShare => 'ਸਾਂਝਾ ਕਰੋ';
 
   @override

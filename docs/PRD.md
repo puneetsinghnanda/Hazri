@@ -229,15 +229,16 @@ Every launch:  Android system splash → Today, or the deep-link target
 Bottom navigation:  Today · Nitnem · Simran · Sangat · Diary
 Elder mode:         Today · Nitnem · Diary   (Simran and Sangat stay reachable)
 
-Menu (menu button on each tab header; design 99):
+Menu (menu button on each tab header; a left drawer, design 112, option A of
+2026-10-25, replacing the bottom sheet of design 99):
   navy header — avatar, name and city (or "Set up your profile"), Badges n of 10
-  and the row of ten — then
-  Your profile · Badges · Notifications · Audio and voice · Text size and script ·
-  Language · Privacy and my data · About and credits
+  and the row of ten; it opens the profile — then
+  Today · Saakhis (with a count) · Library · Badges ·
+  Notifications · Settings · Privacy and data · About and credits · Help
 ```
 
 **Pushed screens.** Reader (and its text sheet) · Vichar and the Vichar
-library · Gurpurab calendar · Goals (Add goal, Edit item sheets) · Diary day
+library · Saakhis and the saakhi reader (`13-saakhi.md`) · Gurpurab calendar · Goals (Add goal, Edit item sheets) · Diary day
 · Profile, Profile setup, Edit profile, Email sent, Link result, Restore my
 data · Badges, One badge · Notifications (and diagnostics) · Sangat: Create
 group, Join, Group, Invite, Report · Settings · About and credits · Privacy
@@ -1358,6 +1359,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
+| `110-TodaySaakhis` | Today, with the saakhis row | **new** | Option 1A, chosen 25 Oct: tall covers scrolling sideways after the Nitnem button, before ਅੱਜ ਦਾ ਵਿਚਾਰ. 13-saakhi.md SK11 |
+| `111-SaakhiLibrary` | Saakhis, the library | **new** | A card per saakhi: cover, Punjabi and English name, pages, narration, Listen and Read. SK11 |
 | `43-Vichar` | Vichar | current |  |
 | `107-ArticleCalendar` | Vichar, a Gurpurab | **new** | Layout A, chosen 19 Oct: the calendar card, the countdown, what comes next. docs/vichar-content.md |
 | `108-ArticlePhoto` | Vichar, a place | **new** | Layout B: a drawn Gurdwara under the place's name, chips, previous and next |
@@ -1384,7 +1387,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `96-Badges` | Badges, all ten | **new** | Option 2A: a two-column grid, earned in colour with the date, the rest greyed with how to earn them. UI3 |
 | `97-BadgeDetail` | One badge, opened | **new** | Option 3B: a full page with what it marks and how it is earned; previous and next. UI4 |
 | `98-ProfileBadges` | Your profile, with badges | superseded | Replaced by 100 |
-| `99-MenuBadges` | Menu, with badges | **new** | Option 5C: the earned set under name and city in a navy header; Badges is a menu row. UI6 |
+| `112-MenuSaakhis` | Menu, the left drawer | **new** | Option A, chosen 25 Oct: the navy header (name, city, badges), then Today, Saakhis with a count, Library, Badges, Notifications, Settings, Privacy and data, About and credits, Help. 13-saakhi.md SK11 |
+| `99-MenuBadges` | Menu, with badges | superseded | Its navy header lives on in 112; the bottom sheet is replaced by the left drawer |
 
 **Menu, settings and account** — `01-accounts.md`
 

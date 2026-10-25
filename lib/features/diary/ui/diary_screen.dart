@@ -83,7 +83,7 @@ class DiaryScreen extends ConsumerWidget {
               TabHeader(
                 title: l.diaryTitle,
                 subtitle: l.diarySubtitle,
-                onMenu: () => showMenuSheet(context),
+                onMenu: () => showMenuDrawer(context),
               ),
               const SizedBox(height: 6),
               Row(

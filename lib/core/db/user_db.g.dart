@@ -4039,6 +4039,224 @@ class BadgesCompanion extends UpdateCompanion<BadgeRow> {
   }
 }
 
+class $SaakhiFavouritesTable extends SaakhiFavourites
+    with TableInfo<$SaakhiFavouritesTable, SaakhiFavourite> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SaakhiFavouritesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _saakhiIdMeta = const VerificationMeta(
+    'saakhiId',
+  );
+  @override
+  late final GeneratedColumn<String> saakhiId = GeneratedColumn<String>(
+    'saakhi_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [saakhiId, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'saakhi_favourites';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SaakhiFavourite> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('saakhi_id')) {
+      context.handle(
+        _saakhiIdMeta,
+        saakhiId.isAcceptableOrUnknown(data['saakhi_id']!, _saakhiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_saakhiIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {saakhiId};
+  @override
+  SaakhiFavourite map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SaakhiFavourite(
+      saakhiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}saakhi_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $SaakhiFavouritesTable createAlias(String alias) {
+    return $SaakhiFavouritesTable(attachedDatabase, alias);
+  }
+}
+
+class SaakhiFavourite extends DataClass implements Insertable<SaakhiFavourite> {
+  final String saakhiId;
+  final DateTime createdAt;
+  const SaakhiFavourite({required this.saakhiId, required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['saakhi_id'] = Variable<String>(saakhiId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  SaakhiFavouritesCompanion toCompanion(bool nullToAbsent) {
+    return SaakhiFavouritesCompanion(
+      saakhiId: Value(saakhiId),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory SaakhiFavourite.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SaakhiFavourite(
+      saakhiId: serializer.fromJson<String>(json['saakhiId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'saakhiId': serializer.toJson<String>(saakhiId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  SaakhiFavourite copyWith({String? saakhiId, DateTime? createdAt}) =>
+      SaakhiFavourite(
+        saakhiId: saakhiId ?? this.saakhiId,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  SaakhiFavourite copyWithCompanion(SaakhiFavouritesCompanion data) {
+    return SaakhiFavourite(
+      saakhiId: data.saakhiId.present ? data.saakhiId.value : this.saakhiId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaakhiFavourite(')
+          ..write('saakhiId: $saakhiId, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(saakhiId, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SaakhiFavourite &&
+          other.saakhiId == this.saakhiId &&
+          other.createdAt == this.createdAt);
+}
+
+class SaakhiFavouritesCompanion extends UpdateCompanion<SaakhiFavourite> {
+  final Value<String> saakhiId;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const SaakhiFavouritesCompanion({
+    this.saakhiId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SaakhiFavouritesCompanion.insert({
+    required String saakhiId,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : saakhiId = Value(saakhiId),
+       createdAt = Value(createdAt);
+  static Insertable<SaakhiFavourite> custom({
+    Expression<String>? saakhiId,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (saakhiId != null) 'saakhi_id': saakhiId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SaakhiFavouritesCompanion copyWith({
+    Value<String>? saakhiId,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return SaakhiFavouritesCompanion(
+      saakhiId: saakhiId ?? this.saakhiId,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (saakhiId.present) {
+      map['saakhi_id'] = Variable<String>(saakhiId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaakhiFavouritesCompanion(')
+          ..write('saakhiId: $saakhiId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDb extends GeneratedDatabase {
   _$UserDb(QueryExecutor e) : super(e);
   $UserDbManager get managers => $UserDbManager(this);
@@ -4054,6 +4272,9 @@ abstract class _$UserDb extends GeneratedDatabase {
   late final $EventReminderOverridesTable eventReminderOverrides =
       $EventReminderOverridesTable(this);
   late final $BadgesTable badges = $BadgesTable(this);
+  late final $SaakhiFavouritesTable saakhiFavourites = $SaakhiFavouritesTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4068,6 +4289,7 @@ abstract class _$UserDb extends GeneratedDatabase {
     graceDays,
     eventReminderOverrides,
     badges,
+    saakhiFavourites,
   ];
 }
 
@@ -6226,6 +6448,158 @@ typedef $$BadgesTableProcessedTableManager =
       BadgeRow,
       PrefetchHooks Function()
     >;
+typedef $$SaakhiFavouritesTableCreateCompanionBuilder =
+    SaakhiFavouritesCompanion Function({
+      required String saakhiId,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$SaakhiFavouritesTableUpdateCompanionBuilder =
+    SaakhiFavouritesCompanion Function({
+      Value<String> saakhiId,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$SaakhiFavouritesTableFilterComposer
+    extends Composer<_$UserDb, $SaakhiFavouritesTable> {
+  $$SaakhiFavouritesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get saakhiId => $composableBuilder(
+    column: $table.saakhiId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SaakhiFavouritesTableOrderingComposer
+    extends Composer<_$UserDb, $SaakhiFavouritesTable> {
+  $$SaakhiFavouritesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get saakhiId => $composableBuilder(
+    column: $table.saakhiId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SaakhiFavouritesTableAnnotationComposer
+    extends Composer<_$UserDb, $SaakhiFavouritesTable> {
+  $$SaakhiFavouritesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get saakhiId =>
+      $composableBuilder(column: $table.saakhiId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$SaakhiFavouritesTableTableManager
+    extends
+        RootTableManager<
+          _$UserDb,
+          $SaakhiFavouritesTable,
+          SaakhiFavourite,
+          $$SaakhiFavouritesTableFilterComposer,
+          $$SaakhiFavouritesTableOrderingComposer,
+          $$SaakhiFavouritesTableAnnotationComposer,
+          $$SaakhiFavouritesTableCreateCompanionBuilder,
+          $$SaakhiFavouritesTableUpdateCompanionBuilder,
+          (
+            SaakhiFavourite,
+            BaseReferences<_$UserDb, $SaakhiFavouritesTable, SaakhiFavourite>,
+          ),
+          SaakhiFavourite,
+          PrefetchHooks Function()
+        > {
+  $$SaakhiFavouritesTableTableManager(_$UserDb db, $SaakhiFavouritesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SaakhiFavouritesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SaakhiFavouritesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SaakhiFavouritesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> saakhiId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SaakhiFavouritesCompanion(
+                saakhiId: saakhiId,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String saakhiId,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => SaakhiFavouritesCompanion.insert(
+                saakhiId: saakhiId,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SaakhiFavouritesTable, SaakhiFavourite>(table),
+                  BaseReferences<
+                    _$UserDb,
+                    $SaakhiFavouritesTable,
+                    SaakhiFavourite
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SaakhiFavouritesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDb,
+      $SaakhiFavouritesTable,
+      SaakhiFavourite,
+      $$SaakhiFavouritesTableFilterComposer,
+      $$SaakhiFavouritesTableOrderingComposer,
+      $$SaakhiFavouritesTableAnnotationComposer,
+      $$SaakhiFavouritesTableCreateCompanionBuilder,
+      $$SaakhiFavouritesTableUpdateCompanionBuilder,
+      (
+        SaakhiFavourite,
+        BaseReferences<_$UserDb, $SaakhiFavouritesTable, SaakhiFavourite>,
+      ),
+      SaakhiFavourite,
+      PrefetchHooks Function()
+    >;
 
 class $UserDbManager {
   final _$UserDb _db;
@@ -6251,4 +6625,6 @@ class $UserDbManager {
       );
   $$BadgesTableTableManager get badges =>
       $$BadgesTableTableManager(_db, _db.badges);
+  $$SaakhiFavouritesTableTableManager get saakhiFavourites =>
+      $$SaakhiFavouritesTableTableManager(_db, _db.saakhiFavourites);
 }

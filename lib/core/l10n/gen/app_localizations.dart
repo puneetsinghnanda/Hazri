@@ -3453,6 +3453,210 @@ abstract class L {
   /// **'Open'**
   String get libraryOpen;
 
+  /// No description provided for @saakhiTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saakhis'**
+  String get saakhiTitle;
+
+  /// No description provided for @saakhiLibrarySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stories from Sikh history to read and listen to with your children.'**
+  String get saakhiLibrarySubtitle;
+
+  /// No description provided for @saakhiEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no saakhis on this phone yet.'**
+  String get saakhiEmpty;
+
+  /// No description provided for @saakhiSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get saakhiSeeAll;
+
+  /// No description provided for @saakhiPages.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pages'**
+  String saakhiPages(int count);
+
+  /// No description provided for @saakhiMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min'**
+  String saakhiMinutes(int count);
+
+  /// No description provided for @saakhiNarrationEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English narration'**
+  String get saakhiNarrationEnglish;
+
+  /// No description provided for @saakhiNarrationComing.
+  ///
+  /// In en, this message translates to:
+  /// **'Narration coming soon'**
+  String get saakhiNarrationComing;
+
+  /// No description provided for @saakhiPunjabiNarrationComing.
+  ///
+  /// In en, this message translates to:
+  /// **'The Punjabi narration is coming soon'**
+  String get saakhiPunjabiNarrationComing;
+
+  /// No description provided for @saakhiListen.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get saakhiListen;
+
+  /// No description provided for @saakhiRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the saakhi'**
+  String get saakhiRead;
+
+  /// No description provided for @saakhiReadShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get saakhiReadShort;
+
+  /// No description provided for @saakhiPageOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
+  String saakhiPageOf(int page, int total);
+
+  /// No description provided for @saakhiShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get saakhiShare;
+
+  /// No description provided for @saakhiGurbani.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurbani'**
+  String get saakhiGurbani;
+
+  /// No description provided for @saakhiAng.
+  ///
+  /// In en, this message translates to:
+  /// **'Ang {ang}'**
+  String saakhiAng(int ang);
+
+  /// No description provided for @saakhiSourceAng.
+  ///
+  /// In en, this message translates to:
+  /// **'{source} · Ang {ang}'**
+  String saakhiSourceAng(String source, int ang);
+
+  /// No description provided for @saakhiReadAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Read again'**
+  String get saakhiReadAgain;
+
+  /// No description provided for @saakhiTalkTogether.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk about it together'**
+  String get saakhiTalkTogether;
+
+  /// No description provided for @saakhiFavourite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourite'**
+  String get saakhiFavourite;
+
+  /// No description provided for @saakhiPreviousPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
+  String get saakhiPreviousPage;
+
+  /// No description provided for @saakhiNextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
+  String get saakhiNextPage;
+
+  /// No description provided for @saakhiPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get saakhiPlay;
+
+  /// No description provided for @saakhiPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get saakhiPause;
+
+  /// No description provided for @saakhiShareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this saakhi'**
+  String get saakhiShareTitle;
+
+  /// No description provided for @saakhiShareThisPage.
+  ///
+  /// In en, this message translates to:
+  /// **'This page'**
+  String get saakhiShareThisPage;
+
+  /// No description provided for @saakhiShareWhole.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole saakhi'**
+  String get saakhiShareWhole;
+
+  /// No description provided for @saakhiShareImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get saakhiShareImage;
+
+  /// No description provided for @saakhiCopyText.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy text'**
+  String get saakhiCopyText;
+
+  /// No description provided for @saakhiCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Message copied.'**
+  String get saakhiCopied;
+
+  /// No description provided for @saakhiShareEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'A saakhi'**
+  String get saakhiShareEyebrow;
+
+  /// No description provided for @saakhiShareBandTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read and listen to the full saakhi'**
+  String get saakhiShareBandTitle;
+
+  /// No description provided for @saakhiShareBandSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Free in the Hazri app · {site}'**
+  String saakhiShareBandSub(String site);
+
+  /// No description provided for @saakhiShareMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{title}: {blurb} Free in the Hazri app: {link}'**
+  String saakhiShareMessage(String title, String blurb, String link);
+
   /// No description provided for @libraryShare.
   ///
   /// In en, this message translates to:

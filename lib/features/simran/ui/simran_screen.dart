@@ -213,7 +213,7 @@ class _SimranSky extends ConsumerWidget {
                 child: Column(
                   children: [
                     _gutter(_Header(
-                      onMenu: () => showMenuSheet(context),
+                      onMenu: () => showMenuDrawer(context),
                       onBell: () => context.push(Routes.notifications),
                     )),
                     // No headline. ੴ and the verse come straight up under

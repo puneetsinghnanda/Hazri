@@ -192,6 +192,13 @@ const SECTIONS = [
       ['53-RestoreOrNew', 'Restore, or start fresh', 'current', ''],
       ['54-Restored', 'Your sangat is back', 'current', ''],
     ]},
+  { id: 'saakhi', name: 'Saakhis', spec: '13-saakhi.md',
+    note: 'Chosen 25 October 2026 from four options for Today and three for the menu. The reader is design/saakhi/reader.template.html, approved 20 October 2026, and is not part of this set.',
+    screens: [
+      ['110-TodaySaakhis', 'Today, with the saakhis row', 'new', 'Option 1A: "Saakhis" and "See all", then every saakhi as a tall cover card scrolling sideways (Punjabi name above the English, a play chip with the length), after the Nitnem button and before Today\'s Vichar. SK11'],
+      ['111-SaakhiLibrary', 'Saakhis, the library', 'new', 'A card per saakhi: cover, Punjabi and English name, pages, narration, Listen with its length, Read. SK11'],
+      ['112-MenuSaakhis', 'Menu, the left drawer', 'new', 'Option A: a left drawer instead of the bottom sheet; the navy header (name, city, badges), then Today, Saakhis with a count, Library, Badges, Notifications, Settings, Privacy and data, About and credits, Help. Replaces 99. SK11'],
+    ]},
   { id: 'vichar', name: 'Vichar', spec: '',
     screens: [
       ['43-Vichar', 'Vichar', 'current', ''],
@@ -217,7 +224,7 @@ const SECTIONS = [
       ['96-Badges', 'Badges, all ten', 'new', 'Option 2A: a two-column grid, earned in colour with the date, the rest greyed with how to earn them. UI3'],
       ['97-BadgeDetail', 'One badge, opened', 'new', 'Option 3B: a full page with what it marks and how it is earned; previous and next. UI4'],
       ['98-ProfileBadges', 'Your profile, with badges', 'superseded', 'Replaced by 100'],
-      ['99-MenuBadges', 'Menu, with badges', 'new', 'Option 5C: the earned set under name and city in a navy header; Badges is a menu row. UI6'],
+      ['99-MenuBadges', 'Menu, with badges', 'superseded', 'Replaced by 112, the left drawer (2026-10-25); its navy header with the badges stays'],
     ]},
   { id: 'settings', name: 'Menu, settings and account', spec: '01-accounts.md',
     note: '100 and 101 chosen 10 October 2026 from four options each. The older account screens were drawn before 01-accounts.md; the spec wins where they differ.',
