@@ -131,7 +131,24 @@
   "shabad": null,
   "shabad_pending": "ਸੂਰਾ ਸੋ ਪਹਿਚਾਨੀਐ ... (the owner's pankti): added once its Ang and an English meaning are confirmed from a named source (SK3).",
   "narration": {
-    "en": null,
+    "en": {
+      "file": "the-saint-soldier.en.mp3",
+      "master": "not in git (SK13)",
+      "duration": 151.56,
+      "page_starts": [
+        0,
+        17.61,
+        37.09,
+        57.02,
+        79.7,
+        103.16,
+        127.69,
+        144.56
+      ],
+      "meaning_at": null,
+      "timing_note": "Placed by Claude, 2026-10-25, by matching every sentence of the script to a pause in the recording; for the owner to correct by ear.",
+      "voice": "text to speech, chosen by the owner"
+    },
     "pa": null
   },
   "images": {
