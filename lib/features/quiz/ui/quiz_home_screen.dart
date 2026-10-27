@@ -6,7 +6,9 @@ import '../../../app/router.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
+import '../../../core/theme/icon_data.dart';
 import '../../../core/time/date_format.dart';
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/quiz_repository.dart';
@@ -105,6 +107,27 @@ class _QuizHomeScreenState extends ConsumerState<QuizHomeScreen> {
               ],
             ),
           ),
+          if (online) ...[
+            const SizedBox(height: 12),
+            // Your numbers (7A), also behind the points in the header.
+            HazriCard(
+              onTap: () => context.push(Routes.quizMe),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(l.quizYourNumbers, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+                  ),
+                  Text(l.quizPointsShort(me?.points ?? 0), style: HazriText.bodyStrong.copyWith(color: c.kesriInk)),
+                  if (me?.places['day'] != null) ...[
+                    const SizedBox(width: 8),
+                    Text('#${me!.places['day']}', style: HazriText.bodySmall.copyWith(color: c.muted)),
+                  ],
+                  const SizedBox(width: 6),
+                  AppIcon(HazriIconData.chevronRight, size: 16, color: c.muted),
+                ],
+              ),
+            ),
+          ],
           const SizedBox(height: 20),
           Text(l.quizFeatured, style: HazriText.display22.copyWith(color: c.ink, fontSize: 18)),
           const SizedBox(height: 10),

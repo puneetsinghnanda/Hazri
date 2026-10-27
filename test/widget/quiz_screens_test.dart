@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -64,6 +67,29 @@ void main() {
     expect(find.text(l.quizKnowMore), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  for (final width in [360.0, 390.0, 412.0]) {
+    testWidgets('at ${width.toInt()} dp both buttons show their whole label, and only they act', (tester) async {
+      final l = await pumpAt(tester, '/today');
+      tester.view.physicalSize = Size(width * 3, 844 * 3);
+      await settle(tester);
+      await tester.scrollUntilVisible(find.text(l.quizTakeQuiz), 300, scrollable: find.byType(Scrollable).first);
+      await settle(tester);
+      for (final label in [l.quizKnowMore, l.quizTakeQuiz]) {
+        // The test font is a block font far wider than the app's, so a long
+        // label may not fit whole here; it must still be given real room,
+        // never squeezed to a sliver as it was on a 360 dp phone (2026-10-27).
+        final text = tester.renderObject<RenderParagraph>(find.text(label));
+        final whole = text.getMaxIntrinsicWidth(double.infinity);
+        expect(text.size.width, greaterThanOrEqualTo(min(whole, 150) - 0.5), reason: label);
+      }
+      // A tap on the words is reading, not starting (owner, 2026-10-27).
+      await tester.tap(find.descendant(of: find.byType(QuizTodayCard), matching: find.text('Guru Ram Das Ji')));
+      await settle(tester);
+      expect(find.byType(QuizScreen), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+  }
 
   testWidgets('the quiz card stays on Today in elder mode (QZ9)', (tester) async {
     await pumpAt(tester, '/today', elder: true);

@@ -105,7 +105,9 @@ from `days.json` as the eyebrow (or **Did you know?** on a day without one), the
 insight, and two buttons, **Know more** and **Take the quiz**. It sits after
 the Nitnem button and before the Saakhis row (owner, 2026-10-26: "above
 saakhis"). It is shown in elder mode too, at elder sizes, as the Saakhis row
-is (owner, 2026-10-27).
+is (owner, 2026-10-27). Only the two buttons act; a tap on the words does
+nothing (owner, 2026-10-27). The buttons sit side by side when both labels fit
+whole, and are stacked, Take the quiz first, when they do not.
 
 **QZ10. The insight is the explanation of one of the topic's questions,
 word for word**, never written for the card. It is chosen by the date from
@@ -263,8 +265,9 @@ The page is design 6A:
    **Today** or date chip where one applies, "5 random questions · {n} pts so
    far" ("5 random questions" alone without a profile), and **Start**.
 
-The header's points open Your numbers; a board icon in the header opens the
-leaderboard.
+The header's points open Your numbers, and so does a **Your quiz** row under
+Coming up (with a profile: the points and today's place); a board icon in the
+header opens the leaderboard.
 
 **QZ34. Your numbers is design 7A**: a navy card with the initials, the name
 and city, the total points, and the player's place today, this week and this
