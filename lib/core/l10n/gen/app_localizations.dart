@@ -3621,12 +3621,6 @@ abstract class L {
   /// **'Whole saakhi'**
   String get saakhiShareWhole;
 
-  /// No description provided for @saakhiShareImage.
-  ///
-  /// In en, this message translates to:
-  /// **'Share image'**
-  String get saakhiShareImage;
-
   /// No description provided for @saakhiCopyText.
   ///
   /// In en, this message translates to:

@@ -81,6 +81,11 @@ and narration, in every app language, whenever it has Punjabi; English only
 for one that does not. The language switch on the cover still changes it for
 that reading. The library card says "Punjabi and English narration".
 
+**SK8a. The bars at the top** are one per page after the cover, the lesson
+last. Pages already passed are full, and so is the page being read, so the
+lesson fills the last bar; while the narration is part-way through a page,
+its bar shows how far (owner, 2026-10-27: the last bar never filled).
+
 **SK10. Share** is a labelled button at the bottom of every story page and the
 main button of the lesson page, never only an icon in the top bar. It makes a
 1080 x 1920 image of the current page (or the cover, for the whole saakhi):
@@ -109,7 +114,7 @@ marks the saakhi (`user.db` `saakhi_favourites`), and the library shows it.
 the Today row (design 110) and the left drawer (design 112) are in the app.
 The Today row is shown in elder mode too (owner, 2026-10-27; until then it
 stepped aside there with ਅੱਜ ਦਾ ਵਿਚਾਰ). The
-share sheet offers Share image and Copy text; **Save** is left out until the
+share sheet offers Share (the picture, labelled just "Share", owner 2026-10-27) and Copy text; **Save** is left out until the
 app has a way to write to the phone's gallery (a share to Files or Photos
 does the same today).
 
@@ -136,7 +141,7 @@ says the Punjabi narration is coming.
 
 **Share a page.** Given the reader is on page 4, when they tap Share, then the
 sheet previews page 4's image with its text and the Hazri band, and offers
-Share image, Save and Copy text.
+Share, Save and Copy text.
 
 **Failure: a face in an image.** Given an image in which any feature of the
 Guru's face can be seen, then the saakhi does not ship until the image is

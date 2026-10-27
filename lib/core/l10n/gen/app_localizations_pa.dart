@@ -1973,9 +1973,6 @@ class LPa extends L {
   String get saakhiShareWhole => 'ਪੂਰੀ ਸਾਖੀ';
 
   @override
-  String get saakhiShareImage => 'ਤਸਵੀਰ ਸਾਂਝੀ ਕਰੋ';
-
-  @override
   String get saakhiCopyText => 'ਲਿਖਤ ਕਾਪੀ ਕਰੋ';
 
   @override

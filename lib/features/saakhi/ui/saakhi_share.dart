@@ -169,7 +169,7 @@ class _ShareSheetState extends State<_ShareSheet> {
                 child: FilledButton.icon(
                   onPressed: _busy ? null : _shareImage,
                   icon: const Icon(Icons.share_outlined, size: 20),
-                  label: Text(l.saakhiShareImage),
+                  label: Text(l.shareCardShare),
                   style: FilledButton.styleFrom(
                     backgroundColor: SaakhiColors.gold,
                     foregroundColor: SaakhiColors.onGold,

@@ -67,6 +67,10 @@ void main() {
       await tester.tap(find.byTooltip(l.saakhiNextPage));
       await settle(tester);
     }
+    // SK8a: on the lesson every bar is full, the last one too.
+    final bars = tester.widgetList<LinearProgressIndicator>(find.byType(LinearProgressIndicator)).toList();
+    expect(bars, hasLength(8));
+    expect(bars.map((b) => b.value), everyElement(1.0));
     // Punjabi by default, whatever the app's language (SK9, owner 2026-10-27).
     expect(find.text('ਇਮਾਨਦਾਰੀ ਦੀ ਰੋਟੀ ਦੁੱਧ ਵਰਗੀ ਮਿੱਠੀ ਹੈ।'), findsOneWidget);
     expect(find.text(l.saakhiTalkTogether), findsOneWidget); // a Punjabi page's eyebrow is not upper-cased

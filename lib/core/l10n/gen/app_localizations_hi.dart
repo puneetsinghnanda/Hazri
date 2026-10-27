@@ -1972,9 +1972,6 @@ class LHi extends L {
   String get saakhiShareWhole => 'पूरी साखी';
 
   @override
-  String get saakhiShareImage => 'तस्वीर साझा करें';
-
-  @override
   String get saakhiCopyText => 'लिखत कॉपी करें';
 
   @override

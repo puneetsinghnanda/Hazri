@@ -1976,9 +1976,6 @@ class LEn extends L {
   String get saakhiShareWhole => 'Whole saakhi';
 
   @override
-  String get saakhiShareImage => 'Share image';
-
-  @override
   String get saakhiCopyText => 'Copy text';
 
   @override

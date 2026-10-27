@@ -399,15 +399,20 @@ class _TopBar extends StatelessWidget {
   final VoidCallback onClose;
   final ValueChanged<String> onLanguage;
 
+  /// The page being read is a full bar, so the lesson fills the last one
+  /// (it stayed empty unless the voice was playing, 2026-10-27). While the
+  /// narration is part-way through this page, the bar shows how far.
   double _fill(int barPage) {
     if (barPage < page) return 1;
     if (barPage > page) return 0;
     final n = saakhi.narrationIn(language);
-    if (n == null || !playing) return 0;
+    if (n == null) return 1;
     final start = n.startOf(barPage);
     final end = barPage < saakhi.lessonPage ? n.startOf(barPage + 1) : n.duration;
     final span = (end - start).inMilliseconds;
-    return span <= 0 ? 0 : ((position - start).inMilliseconds / span).clamp(0.0, 1.0);
+    final within = position > start && position < end;
+    if (span <= 0 || !within) return 1;
+    return ((position - start).inMilliseconds / span).clamp(0.0, 1.0);
   }
 
   @override
