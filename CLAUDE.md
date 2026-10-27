@@ -45,7 +45,10 @@ git history and is not a reference.
    profile the person chooses to make** (name, email, city, phone if given)
    with its verification and restore mail; with a profile, the **daily
    attendance mark** and the **weekly backup**; for a Sangat member, their
-   paath toward their groups and an FCM token. No client touches Firestore:
+   paath toward their groups and an FCM token; for anybody who starts a
+   **Gurmat Quiz** online, its topic and the five answers, and with a profile
+   their first name, initial, city and quiz points on the leaderboards
+   (`docs/features/14-quiz.md`, 2026-10-27). No client touches Firestore:
    everything goes through the `api` Cloud Function. **Firebase Analytics ships in Phase 2 with collection off and
    sends nothing** (`setAnalyticsCollectionEnabled(false)` at start-up);
    Crashlytics is not added at all until Phase 3, which is where collection is
@@ -84,6 +87,15 @@ Kirtan, widgets, Saakhis, kids' mode and the rest -- was removed on
 Phase 2 feature (`docs/features/13-saakhi.md`): the Guru's face is never
 shown, only light where it would be (2026-10-21); the lesson page is design D for every saakhi; nothing
 about a saakhi is counted, and there is no Diary link.
+
+**The Gurmat Quiz was added on 2026-10-27** as a Phase 2 feature
+(`docs/features/14-quiz.md`, PRD §4.21), after six rounds of design: the
+owner's 340-question bank in `content.db`, five questions drawn by the server,
+ten points a right answer, and top-20 leaderboards for each quiz and for
+everyone, by day, week and month in IST. It is **the first points and the one
+ranking in the app**, for quiz answers only: PRD §1.3 was amended for it and
+for nothing else, and no question quotes Gurbani. Specified, not built; PRD
+§11.3 step 10a is the plan.
 
 **The 23-screen Phase 3 design set is superseded — do not merge it.**
 `claude/eloquent-edison-qsjll0` carries 46 files, `design/html/62-*` to
@@ -191,6 +203,7 @@ each:
 | Goals as one page (2026-10-19) | 106 | Option C of four: the day as a timeline, every paath at its own time; once a day each, reminders always on and movable (`04-goals.md` GI10, RM1, 7.2); replaces 47 |
 | Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
 | Saakhis (2026-10-25) | 110, 111, 112 | Today option 1A (a row of covers after the Nitnem button), the library, and the menu as a left drawer, option A (replaces 99); the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
+| Gurmat Quiz (2026-10-27) | not yet numbered | Today 1A (a calendar leaf above the Saakhis row), the quiz as approved, result 4B, leaderboard 5A and 5B, quiz page 6A, Your numbers 7A; drawn in scratch rounds, to be added to `build_phase2.py` (`14-quiz.md` §10 step 6) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -531,6 +544,11 @@ answers `500 INTERNAL` from the endpoint that needs it.
   The notifications screen says so when reminders cannot arrive.
 
 ### Still open
+
+- **The Gurmat Quiz is specified, not built** (`14-quiz.md`, 2026-10-27).
+  When it is, the privacy screen is rewritten in the same change, and the
+  Functions, the indexes, the TTL policies and the `/q/` page are deployed by
+  hand.
 
 - **`hazri.me` is not yet the app's host.** `kSiteBase` stays
   `hazri-dfcc1.web.app` until Phase 3 (`docs/domain-setup.md`), because a

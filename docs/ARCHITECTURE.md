@@ -183,6 +183,7 @@ thing lives in exactly one place:
 | Which badges are earned? | `evaluateBadges()` | `12-badges.md` §4.2 |
 | What notifications are due? | `ReminderPlanner.plan(...)` | `02-notifications.md` §6.2 |
 | Who is on the globe, in which colour? | The snapshot split of `07-simran.md` §2.1 | `07-simran.md` |
+| Which quiz is today's, and which line is its insight? | `quizOfTheDay(date)` | `14-quiz.md` QZ8, QZ10 |
 
 The only code that inserts a completion is `completeBani`
 (`06-nitnem.md`); it logs the row, queues it for the Sangat and asks for
@@ -327,7 +328,7 @@ and bundled at `assets/content/content.db`. On first run, and whenever
 `meta.content_version` differs from the stamp file `content.version`, it is
 copied to `getApplicationSupportDirectory()/content.db` and opened read-only
 (`PRAGMA query_only`). Drift `schemaVersion` 1; content version 9 at the time
-of writing (9 added `saakhi`, 2026-10-25). **Nothing in it is ever written by the app** (rule 3).
+of writing (9 added `saakhi`, 2026-10-25; 10 adds the quiz tables, `14-quiz.md`, when it is built). **Nothing in it is ever written by the app** (rule 3).
 
 | Table | Columns | Holds |
 |---|---|---|
@@ -346,6 +347,9 @@ of writing (9 added `saakhi`, 2026-10-25). **Nothing in it is ever written by th
 | `city` | id, name_en/pa/hi, country_code, lat, lon, tz, **state_code** (added by `07-simran.md` §5.1, here §5.5) | 92 cities; the list a profile's city is chosen from |
 | `quote` | id, gurmukhi, devanagari, roman, attribution_en/pa/hi?, source_id? | Quotations shown in the app |
 | `saakhi` | id PK, sort, json | One row per saakhi (`13-saakhi.md`), resolved by the pipeline from `content/source/saakhi/<id>.json`: titles, pages, lesson, the asset paths, the narration's page starts and meaning cue, and any Gurbani, read from its bani's source file by `ref` or carried with a `checked` record naming the source it was checked against (SK3); a shabad with neither is left out. Read whole with a raw query (`SaakhiRepository`), so drift declares no table for it. `sort` is the order Today and the library show |
+| `quiz_topic` | id PK, category, sort, name_en, name_pa, name_hi, glyph, slug? | The seventeen quiz topics (`14-quiz.md` §3.1). `category`: `gurus`, `gurdwaras`, `banis`, `heroes`, `culture`. `slug` is the Vichar page Know more opens on a day with no event (QZ11) |
+| `quiz_question` | id PK, topic_id, difficulty, question, option_a, option_b, option_c, option_d, answer, explanation, has_note, retired, since | The bank (QZ4): `difficulty` `easy`, `medium` or `hard`; `answer` `A` to `D`; `has_note` keeps a question with a reviewer's note out of the insights (QZ10); `since` is the content version that first shipped it (§6.7). Sources and notes are not in the app (QZ7); the sources' names are in `source` with kind `quiz`, for About |
+| `quiz_day` | event_name PK, label_en, label_pa, label_hi, topic_id, slug? | `days.json`: a calendar event's English name as in `calendar_event.name_en`, the card's short label, its topic, and its Vichar page (QZ8, QZ9, QZ11) |
 | `meta` | key, value | `content_version`, `source_digest`, `ik_onkar` |
 
 The audio itself is **bundled in the APK** under `assets/audio/` — AAC-LC,
@@ -668,6 +672,8 @@ No `user.db` table is added. Every backed-up row already has `id`, `updatedAt` a
 |---|---|---|
 | `profile_cache_v1` | The profile DTO and the uid that owns it (§2.5) | `01-accounts.md` §8.2 |
 | `snoozed:{reminderId}:{day}` | A goal reminder already snoozed once that day | `02-notifications.md` §6.3 |
+| `quiz_me_v1` | The last `GET /quiz/me` answer, so the quiz page and Your numbers open offline | `14-quiz.md` QZ35 |
+| `quiz_boards_v1` | The last copy of each board shown, keyed by board id, for "Not updated · no connection" | `14-quiz.md` QZ30 |
 
 ### 3.10 Android backup
 
@@ -754,6 +760,10 @@ collection: camelCase fields, server timestamps, rules deny all
 | `fcmTokens/{uid}` | Device push token, Sangat members only | §5.10 |
 | `sangatNotices/{groupId}_{goalId}_{milestone}` | A milestone notice, sent once | §7.2 |
 | `adminAudit/{autoId}` | Every admin change | `11-admin.md` AC5 |
+| `quizSessions/{sessionId}` | One quiz: its five questions, then its choices and points | §5.13 |
+| `quizPlayers/{memberKey}` | A player's own totals, recent questions and daily count | §5.13 |
+| `quizScores/{boardId}_{memberKey}` | A player's score on one board (a period and a topic, or everyone) | §5.13 |
+| `quizBoards/{boardId}` | One board's top twenty, rebuilt at most every 2 minutes | §5.13 |
 
 **Retired** (in the earlier design, deployed for test data only, and not to be
 used): `users/{uid}` and its `diary`, the old `groups` member shape with
@@ -1260,6 +1270,91 @@ The ignore list must not contain \*\*/.\*, otherwise .well-known/assetlinks.json
 ```
 
 
+### 5.13 The Gurmat Quiz (`14-quiz.md`, 2026-10-27)
+
+Every document is written by the `api` Function alone (§10.1 M3). `memberKey`
+is the Sangat's: `p_{profileId}` with a profile, `u_{uid}` without
+(`08-sangat.md` MB2). Days, weeks and months are IST (QZ21).
+
+**Board ids.** `{period}{key}_{scope}`: period `d` with `YYYY-MM-DD`, `w`
+with the ISO week `YYYY-Www`, `m` with `YYYY-MM`; scope `all` or a topic id.
+For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
+
+#### `quizSessions/{sessionId}` (auto id)
+
+| Field | Type | Rule |
+|---|---|---|
+| `memberKey` | string | Who started it |
+| `topicId` | string | |
+| `questionIds` | string[5] | Drawn by QZ13 from questions with `since` ≤ `bankVersion` and not retired |
+| `bankVersion` | number | The content version the app sent |
+| `dayIst` | string | The IST day it started; its points count on this day |
+| `status` | string | `OPEN`, then `SUBMITTED` |
+| `choices` | string[5]? | `A` to `D`, once submitted |
+| `correct` | bool[5]? | Marked by the bank in the Function |
+| `points` | number? | 10 per right answer |
+| `createdAt`, `submittedAt?` | timestamp | |
+| `deleteAt` | timestamp | `createdAt` + 30 days; a Firestore TTL policy removes it |
+
+#### `quizPlayers/{memberKey}`
+
+| Field | Type | Rule |
+|---|---|---|
+| `displayName` | string? | The profile's first name and the initial of its last word ("Manpreet S."); null without a profile |
+| `cityId` | string? | The profile's city |
+| `listed` | bool | True with a profile (QZ27) |
+| `points` | number | Every attempt (QZ19) |
+| `attempts` | number | Submitted sessions |
+| `topics` | map | topicId → points from every attempt ("pts so far") |
+| `days` | map | dayIst → points that day, the last 62 days (Your numbers' month) |
+| `recent` | map | topicId → the question ids of the last two attempts (QZ13) |
+| `today` | map | `{ day, sessions }`, the daily limit (QZ22) |
+| `updatedAt` | timestamp | |
+
+#### `quizScores/{boardId}_{memberKey}`
+
+| Field | Type | Rule |
+|---|---|---|
+| `boardId`, `memberKey` | string | |
+| `score` | number | QZ20: on a `d…_{topic}` board the day's best; on the rest the sum of daily bests it covers |
+| `listed`, `displayName`, `cityId` | | Copied from the player when written |
+| `reachedAt` | timestamp | When the score last rose; orders equal scores (QZ28) |
+| `deleteAt` | timestamp | TTL: a day's board's rows 35 days after the day, a week's 70, a month's 400 |
+
+#### `quizBoards/{boardId}`
+
+| Field | Type | Rule |
+|---|---|---|
+| `rows` | array ≤ 20 | `{ place, displayName, cityId, score, memberKey }`; `memberKey` never leaves the server (§6.7) |
+| `played` | number | `count()` of the board's scores, listed or not |
+| `builtAt` | timestamp | Rebuilt when older than `QUIZ_BOARD_SECONDS` (120) and somebody asks |
+| `deleteAt` | timestamp | As its scores |
+
+#### Indexes
+
+- `quizScores`: `boardId` ascending, `listed` ascending, `score` descending,
+  `reachedAt` ascending, for a board's top twenty;
+- `quizScores`: `boardId`, `listed`, `score` ascending, for a player's place
+  (`count()` of the listed scores above theirs, plus one);
+- `quizScores`: `memberKey` ascending, for the move on profile creation and
+  the name and city sync.
+
+#### What writes them
+
+- **A submission** (§6.7) reads the session, the player and the day's topic
+  score; if the attempt beats the day's best, it reads and raises the five
+  other scores it feeds (the week's and month's for the topic, and the
+  day's, week's and month's Everyone) by the difference. At most 8 writes.
+- **Profile creation** (`01-accounts.md` §6.2) gains one step, beside the
+  Sangat's: `quizPlayers/u_{uid}` and the `u_{uid}` scores of the current
+  day, week and month (at most 54) are rewritten under `p_{profileId}`,
+  listed, with the profile's name and city (QZ31). Older unlisted scores
+  are left to expire. A restore moves nothing: the profile's points are
+  already its own (QZ32).
+- **`sangatProfileSync`**, on a profile's name or city change, also updates
+  `quizPlayers/p_{profileId}` and that member's scores on the current
+  boards.
+
 ## 6. The API
 
 One HTTPS Cloud Function, `api` (Express, `asia-south1`), reached through the
@@ -1275,6 +1370,7 @@ limits, the 401 retry, timeouts — are `01-accounts.md` §6.0, here in §6.1.
 | Sangat | Groups, joins, invites, goals, members, reports, the outbox | §6.3 |
 | Backup | `GET /backup/manifest`, `POST /backup`, `GET /backup/goals`, `GET /backup/weeks`, `GET /backup/badges` | §6.4, §5.9 |
 | Badges | `GET /badges/sangat` | §6.5 |
+| Quiz | `POST /quiz/sessions`, `POST /quiz/sessions/{id}/answers`, `GET /quiz/board`, `GET /quiz/me` | §6.7 |
 | Devices | `POST` and `DELETE /devices/fcm-token` | §5.10 |
 | Admin | `/admin/*` | §6.6 |
 
@@ -1650,6 +1746,26 @@ All under `/api/v1/admin`, admin-only (AC3), following `01-accounts.md` §6.0.
 Errors: `403 NOT_ADMIN`, `404 NOT_FOUND`, `400 VALIDATION_ERROR`, `409 CONFIRM_MISMATCH`.
 
 
+### 6.7 The Gurmat Quiz (`14-quiz.md`)
+
+All under `/api/v1/quiz`, following `01-accounts.md` §6.0. Every endpoint
+works with an anonymous ID token; a profile only decides whether the player
+is listed. The answer key is `functions/src/quiz-bank.json`, written by the
+content pipeline with `content.db` (QZ4).
+
+| Method and path | Body | Does | Errors |
+|---|---|---|---|
+| `POST /sessions` | `{ topicId, bankVersion }` | Counts the session against the day (QZ22), draws five questions (QZ13) from the bank as of `bankVersion`, stores the session. Returns `{ sessionId, questionIds, expiresAt }` | `400 VALIDATION_ERROR` (unknown topic), `429 QUIZ_DAILY_LIMIT` |
+| `POST /sessions/{id}/answers` | `{ choices: ["A", …] }`, five | Marks the choices, records the points (§5.13 "What writes them"). Returns `{ correct: [5 bools], points, totalPoints, placeToday }`, `placeToday` on the topic's day board, null without a profile. A second call returns the first answer and writes nothing | `404 SESSION_NOT_FOUND` (also another player's), `409 SESSION_TOO_FAST` (under 10 s), `409 SESSION_EXPIRED` (over 30 min), `400 VALIDATION_ERROR` |
+| `GET /board?period=day\|week\|month&scope=all\|{topicId}` | — | The current board, rebuilt first when older than 120 s (§5.13). Returns `{ boardId, builtAt, played, rows: [ { place, name, cityId, score, you } ], me: { score, place } }`; `you` marks the caller's row, `me.place` is null without a profile | `400 VALIDATION_ERROR` |
+| `GET /me` | — | `{ listed, points, attempts, topics, days, places: { day, week, month } }`; `days` covers this month and last; `places` on the Everyone boards, null without a profile | — |
+
+**Cost.** A session: 2 reads, 2 writes. A submission: 3 to 8 reads, 2 to 8
+writes, plus one `count()` for `placeToday`. A board: 1 read while it is
+fresh; a rebuild is one query of 20 and one `count()`; the caller's place is
+1 read and one `count()`. `/me`: 1 read and three `count()`s. A thousand
+players taking three quizzes a day is about 30,000 writes a day.
+
 ## 7. Scheduled and triggered Functions
 
 ### 7.1 Every Function besides `api`
@@ -1662,7 +1778,7 @@ each twice.
 |---|---|---|---|
 | `sangatTotals` | Every minute | Adds built-in goals' shards into `total`; marks a goal completed at its target | §6.3 (`08-sangat.md` §7.14) |
 | `sangatRollover` | 00:05 IST daily | Expires goals past their end day, makes ended custom groups inactive, starts built-in groups' next goal | §6.3 |
-| `sangatProfileSync` | Profile name change | Updates the member's name on their rows | §6.3 |
+| `sangatProfileSync` | Profile name change | Updates the member's name on their rows, and the quiz player's name and city on the current boards (§5.13) | §6.3 |
 | `sangatDispatch` | Hourly | The 21:00 digest, the creator's 20:00 new-members message, waiting milestone notices | §7.2 |
 | `sangatMilestone` | Firestore update | Milestone notices at 25/50/75/100 % | §7.2 |
 | `badgeGoalReached` | A goal's `status` becomes `COMPLETED` | Adds the goal to each contributor's `badgeFacts.goalsReached`; joins are counted inside the join transaction | `12-badges.md` SF1–SF2, §5.8 |
@@ -1741,6 +1857,8 @@ fingerprint is listed (`01-accounts.md` D6).
 <data android:scheme="https" android:host="{{FIREBASE_PROJECT_ID}}.web.app" android:pathPrefix="/verify" />
 </intent-filter>
 ```
+
+The manifest as built names both hosts (`web.app` and `firebaseapp.com`) with no path, so `/verify`, `/j/` (invites, `08-sangat.md`) and, with the quiz, `/q/` (a shared quiz, `14-quiz.md` QZ25) all reach the app and the router decides. `/q/`'s browser fallback is `public/q/index.html`, through a Hosting rewrite of `/q/**`.
 
 The main activity keeps android:launchMode="singleTask" and the default taskAffinity. The \<application\> tag keeps android:allowBackup="true". *(Amended, §13 D5 and D7.)*
 
@@ -1842,6 +1960,7 @@ the last line.
 | A contribution | A transaction on the contribution, the member and the goal (a shard for built-in goals) | Idempotent by the contribution id |
 | Weekly backup | See `10-backup.md` §6.5 (here §6.4) | Changes only |
 | Notifications | See §7.3 | FCM itself does not bill |
+| The Gurmat Quiz | See §6.7: about 10 writes a quiz; a board is 1 read while fresh | Boards are built at most every 2 minutes, only when looked at |
 
 **M1 — if it can be answered from `user.db`, it must be.** Anything that
 breaks with the radio off, and is not the Sangat or the globe, is a bug.

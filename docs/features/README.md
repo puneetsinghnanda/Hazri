@@ -19,6 +19,7 @@ behaviour has to survive.
 | 11 | Admin website | [`11-admin.md`](11-admin.md) |
 | 12 | Badges | [`12-badges.md`](12-badges.md) |
 | 13 | Saakhis | [`13-saakhi.md`](13-saakhi.md) |
+| 14 | The Gurmat Quiz | [`14-quiz.md`](14-quiz.md) |
 
 `00-platform.md` holds what they all share: the backend, the data model, and
 the testing rule that comes out of how this went wrong.

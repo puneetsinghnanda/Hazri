@@ -40,7 +40,7 @@
 These are also in `CLAUDE.md` and apply to every session.
 
 1. **Designs are the visual spec, not code to port.** `design/html/NN-*.{light,dark}.html` are 390 × 844 CSS px = 390 × 844 dp. Match layout, spacing, radii, colours and type; build with Flutter widgets. `design/tokens.json` is the source of colour, type and shape.
-2. **Never create, paraphrase, auto-translate or AI-generate Gurbani text, Gurbani audio, meanings, or images of the Gurus.** Every line of Gurbani and every meaning comes from `content/source/` through `tools/content_pipeline/build_content_db.py`. Nothing Gurbani-related is typed into Dart. The same holds for everything the app says about Sikhi (the Vichar library).
+2. **Never create, paraphrase, auto-translate or AI-generate Gurbani text, Gurbani audio, meanings, or images of the Gurus' faces.** A saakhi and the Gurmat Quiz's Gurus drawing may show a Guru's figure with only light where the face would be (`13-saakhi.md` SK2, `14-quiz.md` QZ3). Every line of Gurbani and every meaning comes from `content/source/` through `tools/content_pipeline/build_content_db.py`. Nothing Gurbani-related is typed into Dart. The same holds for everything the app says about Sikhi (the Vichar library).
 3. **No ad SDKs, no tracking or attribution SDKs, no advertising ID, no password and no sign-in screen, ever.** What Phase 2 may send is the closed list of §8.
 4. **Nothing needed to read a bani, hear it, see the calendar, keep the diary, set goals or mark hazri may need the network.**
 5. **Every user-facing string is localised** in Punjabi, Hindi and English from the first commit; `test/core/l10n_test.dart` fails on a missing key.
@@ -97,7 +97,10 @@ Around it:
 ### 1.3 Principles (non-negotiable)
 
 1. **Maryada first.** No ads or promotions near Gurbani. **No points or XP
-   for Gurbani.** No guilt: nothing ever says a streak broke, a day was
+   for Gurbani:** not for reading, listening, Simran, hazri, goals, the
+   streak, badges, the Sangat or saakhis. The Gurmat Quiz (§4.21) is the one
+   place with points, ten for each right answer about Sikh history and
+   practice, and it never quotes Gurbani (owner, 2026-10-27). No guilt: nothing ever says a streak broke, a day was
    missed, or somebody is behind. Gurbani in notifications is limited to bani
    names. No badge, sheet or count on the reader, the player or a Simran
    sitting.
@@ -105,12 +108,16 @@ Around it:
    credited; nothing generated (rule 2 of §0.3).
 3. **Offline by default.** Reading, listening, the calendar, the Diary, goals,
    hazri and badges work with the radio off. Only the Sangat, the globe, the
-   profile and the backup use the network, and their failure never blocks
+   profile, the backup and the quiz's points and leaderboards use the network
+   (a quiz itself can be taken offline, without points), and their failure never blocks
    anything else.
 4. **Opt-in, and private by default.** The profile is optional and the Sangat
    is opt-in: somebody who never makes a profile or joins a group uses the
-   whole app entirely on their own phone. Nobody is ranked, and nobody's
-   shortfall is shown.
+   whole app entirely on their own phone, except the quiz's points if they
+   take one (§8.1). Nobody is ranked for their paath, Simran, hazri, goals or
+   badges, and nobody's shortfall is shown. The Gurmat Quiz's leaderboards
+   are the one ranking: quiz points only, the top twenty, and only people
+   with a profile (§4.21).
 5. **One rule, one place.** Hazri, the goal state, the streak and badge counts
    are each decided by one function, which every screen calls.
 6. **Calm design.** The Amrit Vela visual language: dawn-mist light,
@@ -164,6 +171,7 @@ There is no phase after 3.
 | 14 | Menu, Settings, About, Privacy | §4.18 | — |
 | 15 | Admin website | §4.19 | `11-admin.md` |
 | 16 | Saakhis (added 2026-10-19) | §4.20 | `13-saakhi.md` |
+| 17 | Gurmat Quiz (added 2026-10-27) | §4.21 | `14-quiz.md` |
 | — | Platform, testing rules | §11 | `00-platform.md`, `ARCHITECTURE.md` |
 
 **Badges** (§4.14, `12-badges.md`) are Phase 3 item 3.2, specified and
@@ -233,12 +241,13 @@ Menu (menu button on each tab header; a left drawer, design 112, option A of
 2026-10-25, replacing the bottom sheet of design 99):
   navy header — avatar, name and city (or "Set up your profile"), Badges n of 10
   and the row of ten; it opens the profile — then
-  Today · Saakhis (with a count) · Library · Badges ·
+  Today · Saakhis (with a count) · Gurmat Quiz · Library · Badges ·
   Notifications · Settings · Privacy and data · About and credits · Help
 ```
 
 **Pushed screens.** Reader (and its text sheet) · Vichar and the Vichar
-library · Saakhis and the saakhi reader (`13-saakhi.md`) · Gurpurab calendar · Goals (Add goal, Edit item sheets) · Diary day
+library · Saakhis and the saakhi reader (`13-saakhi.md`) · the Gurmat Quiz page, a quiz, its
+result, the leaderboard and Your numbers (`14-quiz.md`) · Gurpurab calendar · Goals (Add goal, Edit item sheets) · Diary day
 · Profile, Profile setup, Edit profile, Email sent, Link result, Restore my
 data · Badges, One badge · Notifications (and diagnostics) · Sangat: Create
 group, Join, Group, Invite, Report · Settings · About and credits · Privacy
@@ -324,8 +333,12 @@ Top to bottom:
 6. **The call to action**: a paath in progress (Continue at the saved line);
    else the first unmet goal item; else the current slot's first bani not done;
    else the next slot's (T4).
-7. **ਅੱਜ ਦਾ ਵਿਚਾਰ** card (§4.15).
-8. **The Gurpurab card** when an event is within 7 days, else today's
+7. **The Gurmat Quiz card** (design 1A, 2026-10-27): the day's topic, one
+   insight, Know more and Take the quiz (§4.21, `14-quiz.md` QZ9). Not in
+   elder mode.
+8. **The Saakhis row** (design 110, `13-saakhi.md` SK11). Not in elder mode.
+9. **ਅੱਜ ਦਾ ਵਿਚਾਰ** card (§4.15).
+10. **The Gurpurab card** when an event is within 7 days, else today's
    Nanakshahi date.
 
 **Rules.** No join-the-sangat banner and no Sangat number on Today (T2, T7).
@@ -810,6 +823,42 @@ family and the shabad on tap (design D, the same for every saakhi); Share
 makes an image of the page with where to get the app. Nothing about a saakhi
 is counted. Rules and scenarios: `docs/features/13-saakhi.md`.
 
+### 4.21 The Gurmat Quiz
+
+Added 2026-10-27, designed over six rounds with the owner. **Purpose:** learn
+Sikh history and practice a little at a time, by the day of the calendar, and
+compare with family and the sangat. *Rules: `14-quiz.md`. Data:
+ARCHITECTURE §3.2, §5.13, §6.7.*
+
+- **The bank.** The owner's 340 questions, twenty to a topic, seventeen
+  topics in five categories: Gurus (the ten Gurus and Sri Guru Granth Sahib
+  Ji), Gurdwaras (Five Takhts, Historic Gurdwaras), Banis, Heroes (Sikh
+  Heroes, Sikh History) and Culture. Bundled in `content.db` through the
+  pipeline; English until reviewed translations exist; no question quotes
+  Gurbani.
+- **Today** (design 1A, above the Saakhis row): a calendar leaf with the
+  day's event or "Did you know?", the day's topic, one explanation from the
+  bank word for word, **Know more** (the day's Vichar page) and **Take the
+  quiz** (straight to the first question). The topic is the calendar
+  event's, or a rotation by date, the same on every phone.
+- **A quiz:** five questions drawn new each time by the server (two easy,
+  two medium, one hard), each marked at once with its explanation and no
+  source; ten points a right answer, scored by the server. Offline, the quiz
+  runs without points.
+- **The result** (4B): the score, the five answers, a highlighted Share card
+  ("Can your family beat 4 out of 5?") making a 1080 × 1920 image with a
+  link that opens the same quiz, and **See the leaderboard · you are 7th**.
+- **Leaderboards** (5A, 5B): the top twenty for each quiz and for everyone,
+  today, this week and this month (IST), first name, surname initial and
+  city. Everyone with a profile is listed; without one a player is not, is
+  asked to make a profile, and their points move to it when they do. Every
+  attempt adds to the player's own total; a board counts each player's best
+  attempt at a topic on a day, so replays cannot buy a place.
+- **The quiz page** (6A, in the menu): coming up on the calendar, the five
+  categories as drawn tiles, and each quiz with its points so far; **Your
+  numbers** (7A): the total, the places, and the month.
+- Not a Diary row, not hazri, not a goal, no badge, no notification.
+
 ---
 
 ## 5. Content and audio
@@ -902,8 +951,9 @@ current with the note that the file wins where they differ.
 
 ### 8.1 What leaves the phone
 
-Nothing leaves the phone for somebody who never makes a profile or joins a
-group, except the anonymous sign-in. The closed list for Phase 2:
+Nothing leaves the phone for somebody who never makes a profile, joins a
+group or takes a Gurmat Quiz with the network on, except the anonymous
+sign-in. The closed list for Phase 2:
 
 | What | When | Sent |
 |---|---|---|
@@ -913,12 +963,15 @@ group, except the anonymous sign-in. The closed list for Phase 2:
 | **Weekly backup** | With a profile | Goals, goal items, completions, sittings, earned badges |
 | **Sangat contributions** | For a member of a group | Each paath or sitting that could count, from the outbox |
 | **An FCM token** | With a profile **and** a group | The device's push token, its language and time zone |
+| **A quiz** | When the reader starts a Gurmat Quiz online, with or without a profile (added 2026-10-27) | The topic and the content version, then the five answers chosen; the server keeps the points under the install's anonymous id, or the profile |
+| **The leaderboards** | With a profile | Shown to every Hazri user on the boards a player has scored on: the profile's first name, the initial of its last name, its city and the points. Nothing else about the profile |
 | **Analytics** | Never in Phase 2 | Firebase Analytics ships with collection off (`setAnalyticsCollectionEnabled(false)` at start-up); the Settings switch is shown off and inert |
 
 **Never, in any phase:** an advertising ID (`AD_ID` removed from the merged
 manifest), ad personalisation, location (the city is chosen from a list),
 free text in analytics, anything sold or shared. The globe shows a city and
-a count, never a name; a group's globe shows its members the same, counted
+a count, never a name; the quiz's leaderboards are the one place a name is
+shown beyond a group, and only a first name and an initial; a group's globe shows its members the same, counted
 per city (`08-sangat.md` GG7); the Sangat shows a member's name only to the
 members of their group.
 
@@ -937,7 +990,10 @@ The privacy screen is this section in the reader's words, and it **never
 runs ahead of what the build does**. It is rewritten in the same release that
 ships the profile, attendance and the backup: nothing is sent unless you
 make a profile or join a group; what each of those sends; that analytics are
-not collected; that the globe shows your city and never your name. In Phase 3
+not collected; that the globe shows your city and never your name. It is
+rewritten again in the change that ships the Gurmat Quiz: that starting a
+quiz online sends its answers, and that with a profile your first name,
+initial, city and quiz points are on the leaderboards. In Phase 3
 it names analytics as a fourth category and points at the switch. It must
 match Google Play's Data safety form exactly.
 
@@ -1035,6 +1091,7 @@ The order is dependency, not preference: each step needs the ones before it.
 | 8 | **Today and Nitnem** | 3, 4 | Today rebuilt, the menu, the reader and player fixes |
 | 9 | **Badges** | 3; 4, 5 for the profile section and backup; 6 for Sevadar and Satsangi | All five badge screens |
 | 10 | **First run** | everything | Android's splash, Welcome, Language, How you read |
+| 10a | **Gurmat Quiz** (added 2026-10-27) | 1, 4, 8 | The bank in `content.db`, sessions, scoring and boards, the Today card, the quiz, the result, the boards, the quiz page, Your numbers, the share link, the privacy screen rewritten |
 | 11 | **Release** | everything | §13 |
 
 ### 11.4 Each step
@@ -1166,6 +1223,19 @@ The order is dependency, not preference: each step needs the ones before it.
 - *Done when:* every scenario of `03-first-run.md` §3.7 passes; a fresh install reaches
   Gurbani in under 30 seconds.
 
+**Step 10a — Gurmat Quiz.**
+- *Data:* `content.db` 10 (`quiz_topic`, `quiz_question`, `quiz_day`) and
+  `functions/src/quiz-bank.json` from `content/source/quiz/`;
+  `quizSessions`, `quizPlayers`, `quizScores`, `quizBoards`, their indexes
+  and TTL policies; the four `/quiz` endpoints; the move on profile creation
+  and the name sync.
+- *App:* `quizOfTheDay`, the Today card (1A), the quiz, the result (4B), the
+  leaderboard (5A, 5B), the quiz page (6A), Your numbers (7A), the menu row,
+  the share image and `/q/<topic>`; **the privacy screen and §8 in the same
+  change.**
+- *Done when:* `14-quiz.md` §13 passes, and the Functions, indexes, TTL
+  policies and `/q/` page are deployed.
+
 ### 11.5 Deployed by hand
 
 No workflow deploys the server. A step that changes one of these is only
@@ -1173,9 +1243,10 @@ done once it is deployed, and its PR says so (ARCHITECTURE §9).
 
 | Change | Command | Steps |
 |---|---|---|
-| Rules and indexes | `firebase deploy --only firestore` | 4, 6, 7, 9 |
-| Functions | `firebase deploy --only functions` | 1, 4–7, 9 |
-| Public site (`/verify`, `/j/`, `assetlinks.json`) | `firebase deploy --only hosting` | 4, 6 |
+| Rules and indexes | `firebase deploy --only firestore` | 4, 6, 7, 9, 10a |
+| Functions | `firebase deploy --only functions` | 1, 4–7, 9, 10a |
+| Public site (`/verify`, `/j/`, `/q/`, `assetlinks.json`) | `firebase deploy --only hosting` | 4, 6, 10a |
+| Firestore TTL policies (`deleteAt` on the quiz collections) | `gcloud firestore fields ttls update deleteAt --collection-group=<name> --enable-ttl` | 10a |
 | Admin site | `firebase deploy --only hosting:admin` | 6 |
 
 ### 11.6 What on the branch is replaced
@@ -1251,6 +1322,7 @@ blocks anything (Phase 3 item 3.3).
 | B-1 | Partial credit for Sukhmani Sahib | A resumable position is enough | `06-nitnem.md` |
 | Y-3 | Export the diary | Not built | `09-diary.md` |
 | SK-1–SK-7 | The first saakhi's images, Punjabi text, pankti check, share link, recording end | Fix before it ships | `13-saakhi.md` §4 |
+| QZ-1–QZ-7 | The quiz: noted questions, the event map, translations, staying off the boards, two kinds of points, elder mode, players abroad | As written there | `14-quiz.md` §12 |
 
 **Closed:** D13 (Blaze with Cloud Functions, 2026-09-26); D11's names and D14
 (badges, no points, 2026-10-08); P5 (diary sync replaced by the weekly
@@ -1442,3 +1514,4 @@ anything earlier. The feature file named holds the detail.
 | 10-08 | Badges, no points; ten names with Vichari and Satsangi; totals never runs; thresholds 1, 7, 40, 40, 108, all banis, 3, 180, 5, 365; recalculated, stored only when earned; in the backup; history counts | `12-badges.md` |
 | 10-08 | Nitnemi counts the five morning banis; a badge is announced by an in-app sheet; designs 1C, 2A, 3B, 4B, 5C | `12-badges.md` BD-1, BD-11, BD-12 |
 | 10-08 | This PRD replaces v1.0; architecture, schema and storage live in `docs/ARCHITECTURE.md` | — |
+| 10-27 | The Gurmat Quiz: the first points and the one ranking in the app, for quiz answers only (§1.3 amended); five server-drawn questions, 10 points each; everyone with a profile on the top-20 boards (each quiz and everyone; day, week, month, IST); every attempt adds to your total, a board counts your best per topic per day; points without a profile move to it; designs 1A, 4B, 5A, 5B, 6A, 7A | `14-quiz.md` |
