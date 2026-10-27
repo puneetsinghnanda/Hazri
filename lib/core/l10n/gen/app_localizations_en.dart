@@ -3749,4 +3749,244 @@ class LEn extends L {
   @override
   String get privacyGroupGlobe =>
       'A group\'s globe shows how many of its members are in each city, never their names. In a small group, a city with one member can point to that member.';
+
+  @override
+  String get quizTitle => 'Gurmat Quiz';
+
+  @override
+  String get quizDidYouKnow => 'Did you know?';
+
+  @override
+  String get quizKnowMore => 'Know more';
+
+  @override
+  String get quizTakeQuiz => 'Take the quiz';
+
+  @override
+  String quizQuestionOf(int n, int total) {
+    return 'Question $n of $total';
+  }
+
+  @override
+  String get quizNext => 'Next';
+
+  @override
+  String get quizSeeResult => 'See your result';
+
+  @override
+  String get quizRight => 'Right';
+
+  @override
+  String get quizWrong => 'Not quite';
+
+  @override
+  String get quizLeaveTitle => 'Leave the quiz?';
+
+  @override
+  String get quizLeaveBody => 'This quiz won\'t count.';
+
+  @override
+  String get quizKeepGoing => 'Keep going';
+
+  @override
+  String get quizLeave => 'Leave';
+
+  @override
+  String get quizEnglishOnly => 'The questions are in English for now.';
+
+  @override
+  String get quizStarting => 'Getting your questions…';
+
+  @override
+  String get quizResultTitle => 'Your answers';
+
+  @override
+  String quizPointsEarned(int points) {
+    return '+$points points';
+  }
+
+  @override
+  String get quizPointsNeedConnection => 'Points need a connection';
+
+  @override
+  String get quizDailyLimit =>
+      'You\'ve taken a lot of quizzes today. Come back tomorrow.';
+
+  @override
+  String get quizMakeProfileToEarn =>
+      'Make a profile to earn points and join the leaderboard';
+
+  @override
+  String quizShareChallenge(int score) {
+    return 'Can your family beat $score out of 5?';
+  }
+
+  @override
+  String quizShareEventLine(String topic, String label) {
+    return 'On $topic\'s $label, share the quiz and learn the story together.';
+  }
+
+  @override
+  String get quizShareLine => 'Share the quiz and learn together.';
+
+  @override
+  String get quizShareButton => 'Share the quiz';
+
+  @override
+  String get quizShareBand => 'Take the same quiz · Free in the Hazri app';
+
+  @override
+  String quizShareMessage(int score, String topic, String link) {
+    return 'I got $score out of 5 in the $topic quiz on Hazri. Can you beat it? $link';
+  }
+
+  @override
+  String quizShareYourScore(int score) {
+    return '$score out of 5';
+  }
+
+  @override
+  String quizSeeLeaderboardPlace(int place) {
+    return 'See the leaderboard · you are #$place';
+  }
+
+  @override
+  String get quizSeeLeaderboard => 'See the leaderboard';
+
+  @override
+  String get quizLeaderboardTitle => 'Leaderboard';
+
+  @override
+  String get quizPeriodToday => 'Today';
+
+  @override
+  String get quizPeriodWeek => 'Week';
+
+  @override
+  String get quizPeriodMonth => 'Month';
+
+  @override
+  String get quizEveryone => 'Everyone';
+
+  @override
+  String get quizYou => 'You';
+
+  @override
+  String quizPlayedToday(int count) {
+    return 'Top 20 · $count played today · resets at midnight IST';
+  }
+
+  @override
+  String quizPlayedWeek(int count) {
+    return 'Top 20 · $count played this week · resets Monday at midnight IST';
+  }
+
+  @override
+  String quizPlayedMonth(int count) {
+    return 'Top 20 · $count played this month · resets on the 1st at midnight IST';
+  }
+
+  @override
+  String get quizBoardStale => 'Not updated · no connection';
+
+  @override
+  String get quizBoardOffline => 'The leaderboard needs a connection.';
+
+  @override
+  String get quizBoardEmpty => 'Nobody has scored yet. Be the first.';
+
+  @override
+  String get quizProfileCardTitle => 'Make a profile to be on the leaderboard';
+
+  @override
+  String get quizProfileCardBody =>
+      'Your quiz points count from the day you make one. Just a name and your city.';
+
+  @override
+  String get quizMakeProfile => 'Make a profile';
+
+  @override
+  String get quizMakeProfileHeader => 'Make a profile to earn points';
+
+  @override
+  String get quizComingUp => 'Coming up on the calendar';
+
+  @override
+  String get quizStart => 'Start';
+
+  @override
+  String get quizFeatured => 'Featured categories';
+
+  @override
+  String get quizCatAll => 'All';
+
+  @override
+  String get quizCatGurus => 'Gurus';
+
+  @override
+  String get quizCatGurdwaras => 'Gurdwaras';
+
+  @override
+  String get quizCatBanis => 'Banis';
+
+  @override
+  String get quizCatHeroes => 'Heroes';
+
+  @override
+  String get quizCatCulture => 'Culture';
+
+  @override
+  String quizCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count quizzes',
+      one: '1 quiz',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String quizRowLine(int points) {
+    return '5 random questions · $points pts so far';
+  }
+
+  @override
+  String get quizRowLineNoProfile => '5 random questions';
+
+  @override
+  String quizPointsShort(int points) {
+    return '$points pts';
+  }
+
+  @override
+  String get quizYourNumbers => 'Your quiz';
+
+  @override
+  String get quizPointsLabel => 'points';
+
+  @override
+  String get quizPlaceToday => 'today';
+
+  @override
+  String get quizPlaceWeek => 'this week';
+
+  @override
+  String get quizPlaceMonth => 'this month';
+
+  @override
+  String quizMonthTotal(int points) {
+    return '$points points';
+  }
+
+  @override
+  String get quizEmpty => 'The quiz is not on this phone yet.';
+
+  @override
+  String get privacyProfileQuiz =>
+      'When you take a Gurmat Quiz online: its topic and your five answers, scored on the server. Without a profile the quiz stays on this phone and sends nothing';
+
+  @override
+  String get privacyProfileLeaderboard =>
+      'On the quiz leaderboards, which every Hazri user can see: your first name, the first letter of your last name, your city and your quiz points';
 }

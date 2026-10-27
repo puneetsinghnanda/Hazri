@@ -3731,4 +3731,237 @@ class LHi extends L {
   @override
   String get privacyGroupGlobe =>
       'ग्रुप का ग्लोब दिखाता है कि हर शहर में उसके कितने सदस्य हैं, कभी उनके नाम नहीं। छोटे ग्रुप में, एक सदस्य वाला शहर उस सदस्य की ओर इशारा कर सकता है।';
+
+  @override
+  String get quizTitle => 'गुरमत क्विज़';
+
+  @override
+  String get quizDidYouKnow => 'क्या आप जानते हैं?';
+
+  @override
+  String get quizKnowMore => 'और जानें';
+
+  @override
+  String get quizTakeQuiz => 'क्विज़ दें';
+
+  @override
+  String quizQuestionOf(int n, int total) {
+    return 'प्रश्न $n / $total';
+  }
+
+  @override
+  String get quizNext => 'आगे';
+
+  @override
+  String get quizSeeResult => 'अपना परिणाम देखें';
+
+  @override
+  String get quizRight => 'सही';
+
+  @override
+  String get quizWrong => 'सही नहीं';
+
+  @override
+  String get quizLeaveTitle => 'क्विज़ छोड़नी है?';
+
+  @override
+  String get quizLeaveBody => 'यह क्विज़ नहीं गिनी जाएगी।';
+
+  @override
+  String get quizKeepGoing => 'जारी रखें';
+
+  @override
+  String get quizLeave => 'छोड़ें';
+
+  @override
+  String get quizEnglishOnly => 'प्रश्न अभी अंग्रेज़ी में हैं।';
+
+  @override
+  String get quizStarting => 'आपके प्रश्न आ रहे हैं…';
+
+  @override
+  String get quizResultTitle => 'आपके उत्तर';
+
+  @override
+  String quizPointsEarned(int points) {
+    return '+$points अंक';
+  }
+
+  @override
+  String get quizPointsNeedConnection => 'अंकों के लिए इंटरनेट चाहिए';
+
+  @override
+  String get quizDailyLimit => 'आज आपने बहुत क्विज़ दी हैं। कल फिर आइए।';
+
+  @override
+  String get quizMakeProfileToEarn =>
+      'अंक कमाने और लीडरबोर्ड में आने के लिए प्रोफ़ाइल बनाएँ';
+
+  @override
+  String quizShareChallenge(int score) {
+    return 'क्या आपका परिवार 5 में से $score से आगे जा सकता है?';
+  }
+
+  @override
+  String quizShareEventLine(String topic, String label) {
+    return '$topic के $label पर क्विज़ साझा करें और मिलकर इतिहास जानें।';
+  }
+
+  @override
+  String get quizShareLine => 'क्विज़ साझा करें और मिलकर सीखें।';
+
+  @override
+  String get quizShareButton => 'क्विज़ साझा करें';
+
+  @override
+  String get quizShareBand => 'यही क्विज़ दें · Hazri ऐप में मुफ़्त';
+
+  @override
+  String quizShareMessage(int score, String topic, String link) {
+    return 'मैंने Hazri पर $topic क्विज़ में 5 में से $score लिए। क्या आप आगे जा सकते हैं? $link';
+  }
+
+  @override
+  String quizShareYourScore(int score) {
+    return '5 में से $score';
+  }
+
+  @override
+  String quizSeeLeaderboardPlace(int place) {
+    return 'लीडरबोर्ड देखें · आप #$place हैं';
+  }
+
+  @override
+  String get quizSeeLeaderboard => 'लीडरबोर्ड देखें';
+
+  @override
+  String get quizLeaderboardTitle => 'लीडरबोर्ड';
+
+  @override
+  String get quizPeriodToday => 'आज';
+
+  @override
+  String get quizPeriodWeek => 'सप्ताह';
+
+  @override
+  String get quizPeriodMonth => 'महीना';
+
+  @override
+  String get quizEveryone => 'सभी';
+
+  @override
+  String get quizYou => 'आप';
+
+  @override
+  String quizPlayedToday(int count) {
+    return 'शीर्ष 20 · आज $count ने खेली · भारतीय समय आधी रात को नया';
+  }
+
+  @override
+  String quizPlayedWeek(int count) {
+    return 'शीर्ष 20 · इस सप्ताह $count ने खेली · सोमवार भारतीय समय आधी रात को नया';
+  }
+
+  @override
+  String quizPlayedMonth(int count) {
+    return 'शीर्ष 20 · इस महीने $count ने खेली · 1 तारीख़ को भारतीय समय आधी रात को नया';
+  }
+
+  @override
+  String get quizBoardStale => 'अपडेट नहीं · इंटरनेट नहीं';
+
+  @override
+  String get quizBoardOffline => 'लीडरबोर्ड के लिए इंटरनेट चाहिए।';
+
+  @override
+  String get quizBoardEmpty => 'अभी किसी ने अंक नहीं लिए। पहले बनिए।';
+
+  @override
+  String get quizProfileCardTitle => 'लीडरबोर्ड में आने के लिए प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get quizProfileCardBody =>
+      'प्रोफ़ाइल बनाने के दिन से आपके अंक गिने जाएँगे। बस नाम और शहर।';
+
+  @override
+  String get quizMakeProfile => 'प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get quizMakeProfileHeader => 'अंक कमाने के लिए प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get quizComingUp => 'कैलेंडर में आगे';
+
+  @override
+  String get quizStart => 'शुरू करें';
+
+  @override
+  String get quizFeatured => 'विशेष श्रेणियाँ';
+
+  @override
+  String get quizCatAll => 'सभी';
+
+  @override
+  String get quizCatGurus => 'गुरु साहिबान';
+
+  @override
+  String get quizCatGurdwaras => 'गुरुद्वारे';
+
+  @override
+  String get quizCatBanis => 'बाणियाँ';
+
+  @override
+  String get quizCatHeroes => 'सूरमे';
+
+  @override
+  String get quizCatCulture => 'संस्कृति';
+
+  @override
+  String quizCount(int count) {
+    return '$count क्विज़';
+  }
+
+  @override
+  String quizRowLine(int points) {
+    return '5 प्रश्न हर बार नए · अब तक $points अंक';
+  }
+
+  @override
+  String get quizRowLineNoProfile => '5 प्रश्न हर बार नए';
+
+  @override
+  String quizPointsShort(int points) {
+    return '$points अंक';
+  }
+
+  @override
+  String get quizYourNumbers => 'आपकी क्विज़';
+
+  @override
+  String get quizPointsLabel => 'अंक';
+
+  @override
+  String get quizPlaceToday => 'आज';
+
+  @override
+  String get quizPlaceWeek => 'इस सप्ताह';
+
+  @override
+  String get quizPlaceMonth => 'इस महीने';
+
+  @override
+  String quizMonthTotal(int points) {
+    return '$points अंक';
+  }
+
+  @override
+  String get quizEmpty => 'क्विज़ अभी इस फ़ोन पर नहीं है।';
+
+  @override
+  String get privacyProfileQuiz =>
+      'जब आप इंटरनेट से गुरमत क्विज़ देते हैं: उसका विषय और आपके पाँच उत्तर, जिनके अंक सर्वर पर गिने जाते हैं। प्रोफ़ाइल के बिना क्विज़ इसी फ़ोन पर रहती है और कुछ नहीं भेजती';
+
+  @override
+  String get privacyProfileLeaderboard =>
+      'क्विज़ लीडरबोर्ड पर, जिसे हर Hazri उपयोगकर्ता देख सकता है: आपका पहला नाम, अंतिम नाम का पहला अक्षर, आपका शहर और आपके क्विज़ अंक';
 }

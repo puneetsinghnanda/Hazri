@@ -96,8 +96,10 @@ ten points a right answer **with a profile only** (without one the quiz plays
 on the phone, sends nothing and earns nothing), and top-20 leaderboards for each quiz and for
 everyone, by day, week and month in IST. It is **the first points and the one
 ranking in the app**, for quiz answers only: PRD §1.3 was amended for it and
-for nothing else, and no question quotes Gurbani. Specified, not built; PRD
-§11.3 step 10a is the plan.
+for nothing else, and no question quotes Gurbani. **Built 2026-10-27**
+(content version 10, `lib/features/quiz/`, `functions/src/quiz/`); the
+server side is not deployed yet, and the numbered designs are still to be
+drawn into `build_phase2.py`.
 
 **The 23-screen Phase 3 design set is superseded — do not merge it.**
 `claude/eloquent-edison-qsjll0` carries 46 files, `design/html/62-*` to
@@ -547,10 +549,17 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
-- **The Gurmat Quiz is specified, not built** (`14-quiz.md`, 2026-10-27).
-  When it is, the privacy screen is rewritten in the same change, and the
-  Functions, the indexes, the TTL policies and the `/q/` page are deployed by
-  hand.
+- **The Gurmat Quiz is built but its server side is not deployed**
+  (`14-quiz.md`, 2026-10-27). The question bank is
+  `content/source/quiz/`, imported from the owner's spreadsheet by
+  `tools/content_pipeline/import_quiz.py`; the pipeline writes it to
+  `content.db` and the answer key to `functions/src/quiz-bank.json`, so a
+  change to the bank needs `firebase deploy --only functions` as well as a
+  new APK. Until the Functions, the two `quizScores` indexes
+  (`firebase deploy --only firestore`), the TTL policies on `deleteAt` and
+  the `/q/` page are deployed, a quiz with a profile plays on the phone and
+  says "Points need a connection". The privacy screen already names the
+  quiz and the leaderboards.
 
 - **`hazri.me` is not yet the app's host.** `kSiteBase` stays
   `hazri-dfcc1.web.app` until Phase 3 (`docs/domain-setup.md`), because a

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Take the quiz — Hazri</title>
+<!-- 14-quiz.md QZ25: so the link previews in chat apps. -->
+<meta property="og:title" content="Can you beat my score? A Gurmat Quiz on Hazri">
+<meta property="og:description" content="Five questions on Sikh history and practice. Free in the Hazri app.">
+<meta property="og:site_name" content="Hazri">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <a class="mark" href="/">Hazri</a>
+  <div class="langs">
+    <button type="button" data-set="pa" aria-pressed="false">ਪੰਜਾਬੀ</button>
+    <button type="button" data-set="hi" aria-pressed="false">हिंदी</button>
+    <button type="button" data-set="en" aria-pressed="true">English</button>
+  </div>
+</header>
+
+<section>
+  <div data-lang="pa">
+    <h1>ਤੁਹਾਨੂੰ ਗੁਰਮਤਿ ਕੁਇਜ਼ ਲਈ ਸੱਦਾ ਹੈ</h1>
+    <p class="lede">ਪੰਜ ਸਵਾਲ, ਹਰ ਵਾਰ ਨਵੇਂ। ਵੇਖੋ ਤੁਸੀਂ ਕਿੰਨੇ ਸਹੀ ਕਰਦੇ ਹੋ।</p>
+  </div>
+  <div data-lang="hi">
+    <h1>आपको गुरमत क्विज़ के लिए बुलाया गया है</h1>
+    <p class="lede">पाँच प्रश्न, हर बार नए। देखिए आप कितने सही करते हैं।</p>
+  </div>
+  <div data-lang="en">
+    <h1>You have been challenged to a Gurmat Quiz</h1>
+    <p class="lede">Five questions, new every time. See how many you get right.</p>
+  </div>
+
+  <div class="card">
+    <code class="code id" id="topic">&nbsp;</code>
+  </div>
+
+  <p>
+    <a class="button" href="https://play.google.com/store/apps/details?id=app.hazri">
+      <span data-lang="pa">ਹਾਜ਼ਰੀ ਲਓ</span>
+      <span data-lang="hi">हाज़री पाएँ</span>
+      <span data-lang="en">Get Hazri</span>
+    </a>
+  </p>
+
+  <div data-lang="pa">
+    <h2>ਹਜ਼ਰੀ ਵਿੱਚ</h2>
+    <ol>
+      <li>ਹਜ਼ਰੀ ਖੋਲ੍ਹੋ।</li>
+      <li>ਮੀਨੂ &rarr; ਗੁਰਮਤਿ ਕੁਇਜ਼।</li>
+      <li>ਉੱਪਰ ਵਾਲੀ ਕੁਇਜ਼ ਚੁਣੋ ਅਤੇ ਸ਼ੁਰੂ ਕਰੋ।</li>
+    </ol>
+  </div>
+  <div data-lang="hi">
+    <h2>हज़री में</h2>
+    <ol>
+      <li>हज़री खोलें।</li>
+      <li>मेन्यू &rarr; गुरमत क्विज़।</li>
+      <li>ऊपर वाली क्विज़ चुनें और शुरू करें।</li>
+    </ol>
+  </div>
+  <div data-lang="en">
+    <h2>In Hazri</h2>
+    <ol>
+      <li>Open Hazri.</li>
+      <li>Menu &rarr; Gurmat Quiz.</li>
+      <li>Pick the quiz above and press Start.</li>
+    </ol>
+  </div>
+</section>
+
+<p class="note">
+  <span data-lang="pa">ਕੁਇਜ਼ ਖੇਡਣ ਲਈ ਕਿਸੇ ਖਾਤੇ ਦੀ ਲੋੜ ਨਹੀਂ। ਅੰਕ ਅਤੇ ਲੀਡਰਬੋਰਡ ਪ੍ਰੋਫ਼ਾਈਲ ਨਾਲ ਹੀ ਹਨ।</span>
+  <span data-lang="hi">क्विज़ खेलने के लिए किसी खाते की ज़रूरत नहीं। अंक और लीडरबोर्ड प्रोफ़ाइल के साथ ही हैं।</span>
+  <span data-lang="en">You need no account to play. Points and the leaderboards come with a profile.</span>
+</p>
+
+<footer>
+  <span data-lang="pa">ਹਜ਼ਰੀ ਤੁਹਾਡੀ ਪੋਥੀ, ਟੀਚੇ ਅਤੇ ਹਜ਼ਰੀ ਫ਼ੋਨ ਉੱਤੇ ਹੀ ਰੱਖਦੀ ਹੈ।</span>
+  <span data-lang="hi">हज़री आपकी डायरी, लक्ष्य और हाज़री फ़ोन पर ही रखती है।</span>
+  <span data-lang="en">Hazri keeps your diary, goals and attendance on your phone.</span>
+</footer>
+
+</main>
+
+<script src="/lang.js"></script>
+<script>
+(function () {
+  // 14-quiz.md QZ25: /q/{topic}. On a phone with Hazri, Android opens the app
+  // instead of this page; here the quiz's name is shown from its id. The page
+  // never calls the API.
+  var parts = location.pathname.split('/').filter(function (p) { return p !== ''; });
+  var id = parts.length > 1 ? decodeURIComponent(parts[parts.length - 1]) : '';
+  if (!/^[a-z0-9-]{1,64}$/.test(id)) id = '';
+  var name = id.split('-').map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' ');
+  document.getElementById('topic').textContent = name || 'Gurmat Quiz';
+})();
+</script>
+</body>
+</html>

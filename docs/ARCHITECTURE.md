@@ -328,7 +328,7 @@ and bundled at `assets/content/content.db`. On first run, and whenever
 `meta.content_version` differs from the stamp file `content.version`, it is
 copied to `getApplicationSupportDirectory()/content.db` and opened read-only
 (`PRAGMA query_only`). Drift `schemaVersion` 1; content version 9 at the time
-of writing (9 added `saakhi`, 2026-10-25; 10 adds the quiz tables, `14-quiz.md`, when it is built). **Nothing in it is ever written by the app** (rule 3).
+of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`, 2026-10-27). **Nothing in it is ever written by the app** (rule 3).
 
 | Table | Columns | Holds |
 |---|---|---|
@@ -1341,8 +1341,9 @@ For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
 #### What writes them
 
 - **A submission** (§6.7) reads the session, the player and the day's topic
-  score; if the attempt beats the day's best, it reads and raises the five
-  other scores it feeds (the week's and month's for the topic, and the
+  score; if the attempt beats the day's best, or is the day's first at the
+  topic (recorded even at 0, so `played` counts it), it reads and raises the
+  five other scores it feeds (the week's and month's for the topic, and the
   day's, week's and month's Everyone) by the difference. At most 8 writes.
 - **Profile creation** changes nothing here: quizzes before it were never
   sent (QZ31). A restore moves nothing either: the points are the

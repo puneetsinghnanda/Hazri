@@ -29,6 +29,10 @@ import '../features/settings/ui/settings_screen.dart';
 import '../features/simran/ui/simran_screen.dart';
 import '../features/today/ui/today_screen.dart';
 import '../features/profile/data/incoming_link.dart';
+import '../features/quiz/ui/quiz_board_screen.dart';
+import '../features/quiz/ui/quiz_home_screen.dart';
+import '../features/quiz/ui/quiz_me_screen.dart';
+import '../features/quiz/ui/quiz_screen.dart';
 import '../features/profile/ui/email_sent_screen.dart';
 import '../features/profile/ui/link_result_screen.dart';
 import '../features/profile/ui/profile_edit_screen.dart';
@@ -65,6 +69,11 @@ abstract final class Routes {
   static String saakhi(String id, {bool listen = false}) => '/saakhis/$id${listen ? '?listen=1' : ''}';
 
   static String libraryEntry(String id) => '/library/$id';
+  // The Gurmat Quiz (14-quiz.md).
+  static const quiz = '/quiz';
+  static String quizPlay(String topicId) => '/quiz/play/$topicId';
+  static String quizBoard({String? scope}) => '/quiz/board${scope == null ? '' : '?scope=$scope'}';
+  static const quizMe = '/quiz/me';
   static const gurpurab = '/gurpurab';
   static const goals = '/goals';
   static const goalPlan = '/goals/plan';
@@ -197,6 +206,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/library/:id',
         builder: (_, state) => LibraryEntryScreen(id: state.pathParameters['id']!),
       ),
+      GoRoute(path: Routes.quiz, builder: (_, _) => const QuizHomeScreen()),
+      GoRoute(
+        path: '/quiz/play/:topic',
+        parentNavigatorKey: _rootKey,
+        builder: (_, state) => QuizScreen(topicId: state.pathParameters['topic']!),
+      ),
+      GoRoute(
+        path: '/quiz/board',
+        builder: (_, state) => QuizBoardScreen(scope: state.uri.queryParameters['scope']),
+      ),
+      GoRoute(path: Routes.quizMe, builder: (_, _) => const QuizMeScreen()),
       GoRoute(path: Routes.gurpurab, builder: (_, _) => const GurpurabScreen()),
       GoRoute(path: Routes.goals, builder: (_, _) => const GoalsScreen()),
       GoRoute(path: Routes.goalPlan, builder: (_, _) => const GoalPlannerScreen()),

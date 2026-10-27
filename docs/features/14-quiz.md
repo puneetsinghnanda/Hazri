@@ -68,8 +68,9 @@ buttons, the result, the boards) is in the ARB files in all three languages
 
 **QZ7. The bank's notes and sources are never shown on the quiz.** They are
 for review. The answer screen shows the explanation alone (owner, 2026-10-26:
-"remove the source section"). The sources' names join the `source` table, so
-About and credits lists them with the rest.
+"remove the source section"). The bank is credited once in About and
+credits (`source` row `QUIZBANK`, naming its main references), not question
+by question.
 
 ### 3.1 Topics and categories
 
@@ -124,7 +125,9 @@ shown and Take the quiz fills the row.
 two medium and one hard from the topic's twenty, in that order. A topic short
 of one difficulty fills the place from the next harder one, then the next
 easier one. Questions the player saw in their last two attempts at the topic
-are avoided while the topic has enough others.
+are avoided while the topic has enough others; the difficulty matters more
+than freshness, so a recent question of the right difficulty is taken before
+a fresh one of another.
 
 **QZ14. With a profile, the server draws them** when the player presses
 Start (`POST /quiz/sessions`, ARCHITECTURE §6.7), so a session is the
@@ -165,7 +168,9 @@ numbers. A replay is a new set of five.
 (owner, 2026-10-27), so replaying a quiz thirty times cannot outrank a player
 who knew the answers. A topic's board for a day is that best; for a week or a
 month, the sum of those daily bests; the Everyone board, the sum over every
-topic. A player who improves their best moves up by the difference.
+topic. A player who improves their best moves up by the difference. The
+day's first attempt at a topic is recorded even at 0, so the player counts
+as having played (QZ28).
 
 **QZ21. Days, weeks and months are IST**, as the Sangat's are: a day ends at
 midnight IST, a week runs Monday to Sunday, a month is the calendar month.
@@ -273,6 +278,13 @@ result; the last answer
 is kept on the phone, so both open offline with the last numbers.
 
 ## 10. Building it
+
+**Built 2026-10-27** (steps 1 to 5): content version 10, the Functions with
+their unit and emulator tests, and the app. **Not yet deployed:** the
+Functions, the two `quizScores` indexes, the TTL policies on `deleteAt` and
+the `/q/` page are deployed by hand (PRD §11.5); until then a quiz with a
+profile plays on the phone and says "Points need a connection". Step 6, the
+numbered designs in `build_phase2.py`, is still to do.
 
 1. This file, ARCHITECTURE §3.2, §5.13, §6.7, PRD §1.3, §4.21, §8.
 2. The importer and the pipeline: the spreadsheet to `content/source/quiz/`,

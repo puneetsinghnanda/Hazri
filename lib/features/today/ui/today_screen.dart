@@ -27,6 +27,7 @@ import 'package:intl/intl.dart';
 import '../../goals/data/goals_controller.dart';
 import '../../goals/domain/day_verdict.dart';
 import '../../goals/ui/set_goal_card.dart';
+import '../../quiz/ui/quiz_today_card.dart';
 import '../../saakhi/ui/saakhi_library_screen.dart';
 import '../../vichar/ui/vichar_card.dart';
 import '../../profile/data/profile_controller.dart';
@@ -76,6 +77,10 @@ class TodayScreen extends ConsumerWidget {
                     const _GoalsCard(),
                     const SizedBox(height: 12),
                     _CtaButton(cta: ref.watch(todayCtaProvider)),
+                    // 14-quiz QZ9, design 1A: after the button, above the saakhis;
+                    // in elder mode too (owner, 2026-10-27).
+                    const SizedBox(height: 12),
+                    const QuizTodayCard(),
                     // 13-saakhi SK11, option 1A: after the button, before ਅੱਜ ਦਾ ਵਿਚਾਰ.
                     // Shown in elder mode too (SK15, owner 2026-10-27).
                     const SizedBox(height: 18),

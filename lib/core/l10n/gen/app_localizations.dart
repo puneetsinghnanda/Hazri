@@ -6579,6 +6579,408 @@ abstract class L {
   /// In en, this message translates to:
   /// **'A group\'s globe shows how many of its members are in each city, never their names. In a small group, a city with one member can point to that member.'**
   String get privacyGroupGlobe;
+
+  /// No description provided for @quizTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurmat Quiz'**
+  String get quizTitle;
+
+  /// No description provided for @quizDidYouKnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you know?'**
+  String get quizDidYouKnow;
+
+  /// No description provided for @quizKnowMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Know more'**
+  String get quizKnowMore;
+
+  /// No description provided for @quizTakeQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the quiz'**
+  String get quizTakeQuiz;
+
+  /// No description provided for @quizQuestionOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Question {n} of {total}'**
+  String quizQuestionOf(int n, int total);
+
+  /// No description provided for @quizNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get quizNext;
+
+  /// No description provided for @quizSeeResult.
+  ///
+  /// In en, this message translates to:
+  /// **'See your result'**
+  String get quizSeeResult;
+
+  /// No description provided for @quizRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Right'**
+  String get quizRight;
+
+  /// No description provided for @quizWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Not quite'**
+  String get quizWrong;
+
+  /// No description provided for @quizLeaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the quiz?'**
+  String get quizLeaveTitle;
+
+  /// No description provided for @quizLeaveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This quiz won\'t count.'**
+  String get quizLeaveBody;
+
+  /// No description provided for @quizKeepGoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep going'**
+  String get quizKeepGoing;
+
+  /// No description provided for @quizLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get quizLeave;
+
+  /// No description provided for @quizEnglishOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'The questions are in English for now.'**
+  String get quizEnglishOnly;
+
+  /// No description provided for @quizStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your questions…'**
+  String get quizStarting;
+
+  /// No description provided for @quizResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answers'**
+  String get quizResultTitle;
+
+  /// No description provided for @quizPointsEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'+{points} points'**
+  String quizPointsEarned(int points);
+
+  /// No description provided for @quizPointsNeedConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Points need a connection'**
+  String get quizPointsNeedConnection;
+
+  /// No description provided for @quizDailyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve taken a lot of quizzes today. Come back tomorrow.'**
+  String get quizDailyLimit;
+
+  /// No description provided for @quizMakeProfileToEarn.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a profile to earn points and join the leaderboard'**
+  String get quizMakeProfileToEarn;
+
+  /// No description provided for @quizShareChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Can your family beat {score} out of 5?'**
+  String quizShareChallenge(int score);
+
+  /// No description provided for @quizShareEventLine.
+  ///
+  /// In en, this message translates to:
+  /// **'On {topic}\'s {label}, share the quiz and learn the story together.'**
+  String quizShareEventLine(String topic, String label);
+
+  /// No description provided for @quizShareLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the quiz and learn together.'**
+  String get quizShareLine;
+
+  /// No description provided for @quizShareButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the quiz'**
+  String get quizShareButton;
+
+  /// No description provided for @quizShareBand.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the same quiz · Free in the Hazri app'**
+  String get quizShareBand;
+
+  /// No description provided for @quizShareMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'I got {score} out of 5 in the {topic} quiz on Hazri. Can you beat it? {link}'**
+  String quizShareMessage(int score, String topic, String link);
+
+  /// No description provided for @quizShareYourScore.
+  ///
+  /// In en, this message translates to:
+  /// **'{score} out of 5'**
+  String quizShareYourScore(int score);
+
+  /// No description provided for @quizSeeLeaderboardPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'See the leaderboard · you are #{place}'**
+  String quizSeeLeaderboardPlace(int place);
+
+  /// No description provided for @quizSeeLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'See the leaderboard'**
+  String get quizSeeLeaderboard;
+
+  /// No description provided for @quizLeaderboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get quizLeaderboardTitle;
+
+  /// No description provided for @quizPeriodToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get quizPeriodToday;
+
+  /// No description provided for @quizPeriodWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get quizPeriodWeek;
+
+  /// No description provided for @quizPeriodMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get quizPeriodMonth;
+
+  /// No description provided for @quizEveryone.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone'**
+  String get quizEveryone;
+
+  /// No description provided for @quizYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get quizYou;
+
+  /// No description provided for @quizPlayedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 20 · {count} played today · resets at midnight IST'**
+  String quizPlayedToday(int count);
+
+  /// No description provided for @quizPlayedWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 20 · {count} played this week · resets Monday at midnight IST'**
+  String quizPlayedWeek(int count);
+
+  /// No description provided for @quizPlayedMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 20 · {count} played this month · resets on the 1st at midnight IST'**
+  String quizPlayedMonth(int count);
+
+  /// No description provided for @quizBoardStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Not updated · no connection'**
+  String get quizBoardStale;
+
+  /// No description provided for @quizBoardOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'The leaderboard needs a connection.'**
+  String get quizBoardOffline;
+
+  /// No description provided for @quizBoardEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has scored yet. Be the first.'**
+  String get quizBoardEmpty;
+
+  /// No description provided for @quizProfileCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a profile to be on the leaderboard'**
+  String get quizProfileCardTitle;
+
+  /// No description provided for @quizProfileCardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your quiz points count from the day you make one. Just a name and your city.'**
+  String get quizProfileCardBody;
+
+  /// No description provided for @quizMakeProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a profile'**
+  String get quizMakeProfile;
+
+  /// No description provided for @quizMakeProfileHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a profile to earn points'**
+  String get quizMakeProfileHeader;
+
+  /// No description provided for @quizComingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming up on the calendar'**
+  String get quizComingUp;
+
+  /// No description provided for @quizStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get quizStart;
+
+  /// No description provided for @quizFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured categories'**
+  String get quizFeatured;
+
+  /// No description provided for @quizCatAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get quizCatAll;
+
+  /// No description provided for @quizCatGurus.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurus'**
+  String get quizCatGurus;
+
+  /// No description provided for @quizCatGurdwaras.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurdwaras'**
+  String get quizCatGurdwaras;
+
+  /// No description provided for @quizCatBanis.
+  ///
+  /// In en, this message translates to:
+  /// **'Banis'**
+  String get quizCatBanis;
+
+  /// No description provided for @quizCatHeroes.
+  ///
+  /// In en, this message translates to:
+  /// **'Heroes'**
+  String get quizCatHeroes;
+
+  /// No description provided for @quizCatCulture.
+  ///
+  /// In en, this message translates to:
+  /// **'Culture'**
+  String get quizCatCulture;
+
+  /// No description provided for @quizCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 quiz} other{{count} quizzes}}'**
+  String quizCount(int count);
+
+  /// No description provided for @quizRowLine.
+  ///
+  /// In en, this message translates to:
+  /// **'5 random questions · {points} pts so far'**
+  String quizRowLine(int points);
+
+  /// No description provided for @quizRowLineNoProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'5 random questions'**
+  String get quizRowLineNoProfile;
+
+  /// No description provided for @quizPointsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String quizPointsShort(int points);
+
+  /// No description provided for @quizYourNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Your quiz'**
+  String get quizYourNumbers;
+
+  /// No description provided for @quizPointsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'points'**
+  String get quizPointsLabel;
+
+  /// No description provided for @quizPlaceToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get quizPlaceToday;
+
+  /// No description provided for @quizPlaceWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'this week'**
+  String get quizPlaceWeek;
+
+  /// No description provided for @quizPlaceMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'this month'**
+  String get quizPlaceMonth;
+
+  /// No description provided for @quizMonthTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} points'**
+  String quizMonthTotal(int points);
+
+  /// No description provided for @quizEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The quiz is not on this phone yet.'**
+  String get quizEmpty;
+
+  /// No description provided for @privacyProfileQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'When you take a Gurmat Quiz online: its topic and your five answers, scored on the server. Without a profile the quiz stays on this phone and sends nothing'**
+  String get privacyProfileQuiz;
+
+  /// No description provided for @privacyProfileLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'On the quiz leaderboards, which every Hazri user can see: your first name, the first letter of your last name, your city and your quiz points'**
+  String get privacyProfileLeaderboard;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

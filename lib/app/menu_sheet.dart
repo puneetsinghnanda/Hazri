@@ -17,6 +17,10 @@ import '../features/profile/ui/city_picker_sheet.dart';
 import '../features/saakhi/data/saakhi_repository.dart';
 import 'router.dart';
 
+/// A question in a circle: the Gurmat Quiz's row in the menu.
+const _quizIcon = '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.5"/>'
+    '<path d="M12 16.8v.2"/>';
+
 /// A stack of pages: the saakhis' row in the menu.
 const _saakhiIcon = '<rect x="4" y="3.5" width="12" height="17" rx="2"/>'
     '<path d="M16 6.5h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-8"/>';
@@ -100,6 +104,8 @@ class _MenuDrawer extends ConsumerWidget {
                         count: saakhis,
                         onTap: () => go(Routes.saakhis),
                       ),
+                      // 14-quiz.md QZ33: after Saakhis.
+                      _Row(icon: _quizIcon, label: l.quizTitle, onTap: () => go(Routes.quiz)),
                       _Row(icon: HazriIconData.book, label: l.libraryTitle, onTap: () => go(Routes.library)),
                       _Row(icon: HazriIconData.sparkle, label: l.badgesTitle, onTap: () => go(Routes.badges)),
                       Padding(

@@ -13,15 +13,16 @@ final _handled = <String>{};
 
 /// The in-app route for an incoming https link, or null for a normal app
 /// location. `/verify?token=` → the Link Result screen, once per token; the
-/// invite path `/j/<code>` → the Sangat's Join screen (08-sangat IV5);
-/// any other link on our hosts opens Today.
+/// invite path `/j/<code>` → the Sangat's Join screen (08-sangat IV5); a
+/// shared quiz `/q/<topic>` → that quiz (14-quiz.md QZ25); any other link on
+/// our hosts opens Today.
 ///
 /// Depending on the engine, the link arrives as the whole URL or as its path
 /// alone; both are handled.
 String? incomingLinkRoute(Uri uri) {
   final external = uri.hasScheme && uri.scheme.startsWith('http');
   final path = uri.path;
-  final ours = path == '/verify' || path == '/verify/' || path.startsWith('/j/');
+  final ours = path == '/verify' || path == '/verify/' || path.startsWith('/j/') || path.startsWith('/q/');
   if (!external && !ours) return null;
   if (external && (uri.scheme != 'https' || !_hosts.contains(uri.host))) return '/today';
   if (path == '/verify' || path == '/verify/') {
@@ -33,6 +34,11 @@ String? incomingLinkRoute(Uri uri) {
   if (path.startsWith('/j/')) {
     final code = path.substring(3).split('/').first;
     if (code.isNotEmpty) return '/sangat-join?code=${Uri.encodeQueryComponent(code)}';
+  }
+  // QZ25: /q/{topic} opens that quiz at its first question.
+  if (path.startsWith('/q/')) {
+    final topic = path.substring(3).split('/').first;
+    if (RegExp(r'^[a-z0-9-]{1,64}$').hasMatch(topic)) return '/quiz/play/$topic';
   }
   return '/today';
 }
