@@ -1890,6 +1890,12 @@ class LHi extends L {
   String get saakhiSeeAll => 'सभी देखें';
 
   @override
+  String get saakhiOfTheDay => 'आज की साखी';
+
+  @override
+  String get saakhiMore => 'और साखियाँ';
+
+  @override
   String saakhiPages(int count) {
     return '$count पन्ने';
   }

@@ -3477,6 +3477,18 @@ abstract class L {
   /// **'See all'**
   String get saakhiSeeAll;
 
+  /// No description provided for @saakhiOfTheDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s saakhi'**
+  String get saakhiOfTheDay;
+
+  /// No description provided for @saakhiMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More saakhis'**
+  String get saakhiMore;
+
   /// No description provided for @saakhiPages.
   ///
   /// In en, this message translates to:

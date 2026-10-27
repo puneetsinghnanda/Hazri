@@ -1893,6 +1893,12 @@ class LEn extends L {
   String get saakhiSeeAll => 'See all';
 
   @override
+  String get saakhiOfTheDay => 'Today\'s saakhi';
+
+  @override
+  String get saakhiMore => 'More saakhis';
+
+  @override
   String saakhiPages(int count) {
     return '$count pages';
   }

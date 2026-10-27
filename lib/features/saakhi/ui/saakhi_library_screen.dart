@@ -8,6 +8,7 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
+import '../../../core/time/clock.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/saakhi_repository.dart';
@@ -140,8 +141,11 @@ class SaakhiCard extends StatelessWidget {
   }
 }
 
-/// Today's saakhis row, option 1A (SK11): "Saakhis" and "See all", then every
-/// saakhi as a tall cover card in a row that scrolls sideways.
+/// Today's saakhis, option C (owner, 2026-10-27, replacing the bare row of
+/// 1A): one card with "Saakhis" and See all, the day's saakhi large with its
+/// cover, Punjabi and English names, Listen and Read, then the others as
+/// small covers under "More saakhis". The day's saakhi turns by date, the
+/// same on every phone (SK11).
 class SaakhiTodayRow extends ConsumerWidget {
   const SaakhiTodayRow({super.key});
 
@@ -151,36 +155,135 @@ class SaakhiTodayRow extends ConsumerWidget {
     final c = context.colors;
     final saakhis = ref.watch(saakhisProvider).value ?? const <Saakhi>[];
     if (saakhis.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(l.saakhiTitle, style: HazriText.display22.copyWith(color: c.ink, fontSize: 18)),
-            ),
-            TextButton(
-              onPressed: () => context.push(Routes.saakhis),
-              style: TextButton.styleFrom(foregroundColor: c.kesriInk, minimumSize: const Size(44, 44)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(l.saakhiSeeAll, style: HazriText.captionStrong.copyWith(color: c.kesriInk, fontSize: 13)),
-                  AppIcon(HazriIconData.chevronRight, size: 14, color: c.kesriInk),
-                ],
+    final today = ref.watch(clockProvider).today();
+    final days = DateTime.utc(today.year, today.month, today.day).difference(DateTime.utc(1970)).inDays;
+    final featured = saakhis[days % saakhis.length];
+    final rest = [
+      for (final s in saakhis)
+        if (s.id != featured.id) s,
+    ];
+    return HazriCard(
+      padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(l.saakhiTitle, style: HazriText.display22.copyWith(color: c.ink, fontSize: 18)),
+              ),
+              TextButton(
+                onPressed: () => context.push(Routes.saakhis),
+                style: TextButton.styleFrom(foregroundColor: c.kesriInk, minimumSize: const Size(44, 44)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(l.saakhiSeeAll, style: HazriText.captionStrong.copyWith(color: c.kesriInk, fontSize: 13)),
+                    AppIcon(HazriIconData.chevronRight, size: 14, color: c.kesriInk),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          _Featured(saakhi: featured),
+          if (rest.isNotEmpty) ...[
+            const SizedBox(height: 14),
+            Text(l.saakhiMore.toUpperCase(), style: HazriText.eyebrow.copyWith(color: c.muted)),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 128,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                clipBehavior: Clip.none,
+                itemCount: rest.length,
+                separatorBuilder: (_, _) => const SizedBox(width: 9),
+                itemBuilder: (context, i) => _CoverCard(saakhi: rest[i], width: 86, small: true),
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// The day's saakhi on Today's card (option C): its cover, then "Today's
+/// saakhi", the Punjabi name, the English name, the Punjabi subtitle, and
+/// Listen and Read (SK9a: Punjabi first).
+class _Featured extends StatelessWidget {
+  const _Featured({required this.saakhi});
+
+  final Saakhi saakhi;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = L.of(context);
+    final narrated = saakhi.narration.isNotEmpty;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () => context.push(Routes.saakhi(saakhi.id)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.asset(
+              saakhi.cover,
+              width: 100,
+              height: 150,
+              fit: BoxFit.cover,
+              errorBuilder: (_, _, _) => Container(width: 100, height: 150, color: c.card2),
+            ),
+          ),
         ),
-        const SizedBox(height: 4),
-        SizedBox(
-          height: 192,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            clipBehavior: Clip.none,
-            itemCount: saakhis.length,
-            separatorBuilder: (_, _) => const SizedBox(width: 10),
-            itemBuilder: (context, i) => _CoverCard(saakhi: saakhis[i]),
+        const SizedBox(width: 12),
+        Expanded(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 150),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l.saakhiOfTheDay.toUpperCase(), style: HazriText.eyebrow.copyWith(color: c.kesriInk)),
+                const SizedBox(height: 4),
+                Text(saakhi.title.of('pa'), style: HazriText.gurmukhi(17).copyWith(color: c.ink, height: 1.35)),
+                Text(
+                  saakhi.title.of('en'),
+                  style: HazriText.display22.copyWith(color: c.ink2, fontSize: 15, height: 1.2),
+                ),
+                if (saakhi.subtitle.has('pa')) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    saakhi.subtitle.of('pa'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: HazriText.gurmukhi(12.5, weight: FontWeight.w400).copyWith(color: c.muted, height: 1.4),
+                  ),
+                ],
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    if (narrated) ...[
+                      Expanded(
+                        child: PrimaryButton(
+                          label: l.saakhiListen,
+                          minHeight: 40,
+                          onPressed: () => context.push(Routes.saakhi(saakhi.id, listen: true)),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Expanded(
+                      child: PrimaryButton(
+                        label: l.saakhiReadShort,
+                        secondary: true,
+                        minHeight: 40,
+                        onPressed: () => context.push(Routes.saakhi(saakhi.id)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -189,9 +292,13 @@ class SaakhiTodayRow extends ConsumerWidget {
 }
 
 class _CoverCard extends StatelessWidget {
-  const _CoverCard({required this.saakhi});
+  const _CoverCard({required this.saakhi, this.width = 118, this.small = false});
 
   final Saakhi saakhi;
+  final double width;
+
+  /// The "More saakhis" size on Today's card: smaller type, the chip kept.
+  final bool small;
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +309,7 @@ class _CoverCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () => context.push(Routes.saakhi(saakhi.id)),
         child: Container(
-          width: 118,
+          width: width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             boxShadow: const [BoxShadow(color: Color(0x291B1D3A), blurRadius: 18, offset: Offset(0, 8))],
@@ -256,13 +363,13 @@ class _CoverCard extends StatelessWidget {
                       saakhi.title.of('pa'),
                       maxLines: 2,
                       style: HazriText.gurmukhi(
-                        11.5,
+                        small ? 10 : 11.5,
                       ).copyWith(color: Colors.white.withValues(alpha: 0.85), height: 1.3),
                     ),
                     Text(
                       saakhi.title.of('en'),
                       maxLines: 3,
-                      style: HazriText.bodyStrong.copyWith(color: Colors.white, fontSize: 13, height: 1.2),
+                      style: HazriText.bodyStrong.copyWith(color: Colors.white, fontSize: small ? 11 : 13, height: 1.2),
                     ),
                   ],
                 ),

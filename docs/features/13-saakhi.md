@@ -97,10 +97,16 @@ nothing (PRD §8).
 **SK11. The library.** Saakhis are listed as cards: the cover, the Punjabi name
 above the English, the page count, the narration languages and the length.
 Two ways in (owner, 2026-10-25, from the options of that day):
-- **On Today, option 1A:** a "Saakhis" heading with "See all", then every
-  saakhi as a tall cover card in a row that scrolls sideways (Punjabi name
-  above the English, a "▶ 2 min" chip). It sits after the Nitnem button and
-  before ਅੱਜ ਦਾ ਵਿਚਾਰ. "See all" opens the library.
+- **On Today, option C** (owner, 2026-10-27, replacing option 1A's bare row
+  of covers, which was the one part of Today not in a card): one card with
+  "Saakhis" and "See all", then the day's saakhi large (its cover, "Today's
+  saakhi", the Punjabi name above the English, the Punjabi subtitle, Listen
+  and Read), then "More saakhis" and the others as small covers. The day's
+  saakhi turns by date (days since 1970 modulo the number of saakhis), the
+  same on every phone. It sits after the quiz card and before ਅੱਜ ਦਾ
+  ਵਿਚਾਰ. "See all" opens the library. The options were drawn at
+  <https://claude.ai/artifact/XHPjPXhGyvdjvZDD33BxGP>; design 110 is still the
+  1A drawing until the generator is brought up to date.
 - **In the menu, option A:** the menu becomes a left drawer (no longer a
   bottom sheet) with today's navy header (name, city, badges), then one
   list: Today, Saakhis with a count, Library, Badges, then Notifications,

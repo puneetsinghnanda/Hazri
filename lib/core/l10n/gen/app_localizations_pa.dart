@@ -1891,6 +1891,12 @@ class LPa extends L {
   String get saakhiSeeAll => 'ਸਾਰੀਆਂ ਵੇਖੋ';
 
   @override
+  String get saakhiOfTheDay => 'ਅੱਜ ਦੀ ਸਾਖੀ';
+
+  @override
+  String get saakhiMore => 'ਹੋਰ ਸਾਖੀਆਂ';
+
+  @override
   String saakhiPages(int count) {
     return '$count ਪੰਨੇ';
   }

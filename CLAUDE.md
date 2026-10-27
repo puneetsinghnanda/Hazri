@@ -206,7 +206,7 @@ each:
 | A group's globe (2026-10-17) | 104, 105 | Option C for custom and built-in groups: the goal ring wraps the group's globe, members as counts per city, every dot tied to the ring by a dashed line (GG4a, 2026-10-18), paath of the last hour arriving as light along it (`08-sangat.md` GG1-GG10); replaces 103 and, for a custom group, 31 |
 | Goals as one page (2026-10-19) | 106 | Option C of four: the day as a timeline, every paath at its own time; once a day each, reminders always on and movable (`04-goals.md` GI10, RM1, 7.2); replaces 47 |
 | Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
-| Saakhis (2026-10-25) | 110, 111, 112 | Today option 1A (a row of covers after the Nitnem button), the library, and the menu as a left drawer, option A (replaces 99); the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
+| Saakhis (2026-10-25) | 110, 111, 112 | Today option 1A (a row of covers after the Nitnem button; **replaced 2026-10-27 by option C**, one card with the day's saakhi large and the others small, not yet drawn into 110), the library, and the menu as a left drawer, option A (replaces 99); the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
 | Gurmat Quiz (2026-10-27) | not yet numbered | Today 1A (a calendar leaf above the Saakhis row), the quiz as approved, result 4B, leaderboard 5A and 5B, quiz page 6A, Your numbers 7A; drawn in scratch rounds, to be added to `build_phase2.py` (`14-quiz.md` §10 step 6) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked

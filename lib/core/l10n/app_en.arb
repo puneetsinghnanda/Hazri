@@ -971,6 +971,8 @@
   "saakhiLibrarySubtitle": "Stories from Sikh history to read and listen to with your children.",
   "saakhiEmpty": "There are no saakhis on this phone yet.",
   "saakhiSeeAll": "See all",
+  "saakhiOfTheDay": "Today's saakhi",
+  "saakhiMore": "More saakhis",
   "saakhiPages": "{count} pages",
   "@saakhiPages": {"placeholders": {"count": {"type": "int"}}},
   "saakhiMinutes": "{count} min",

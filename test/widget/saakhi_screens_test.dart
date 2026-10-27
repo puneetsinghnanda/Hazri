@@ -101,12 +101,22 @@ void main() {
     expect(find.textContaining(l.saakhiPages(8)), findsWidgets);
   });
 
-  testWidgets('Today shows the saakhis as a row of covers with See all (1A)', (tester) async {
+  testWidgets('Today shows one card: the day\'s saakhi, Listen and Read, and the others below (option C)',
+      (tester) async {
     final l = await pumpAt(tester, '/today');
-    final row = find.byType(SaakhiTodayRow);
-    await tester.scrollUntilVisible(row, 300, scrollable: find.byType(Scrollable).first);
+    final card = find.byType(SaakhiTodayRow);
+    await tester.scrollUntilVisible(find.text(l.saakhiMore.toUpperCase()), 300, scrollable: find.byType(Scrollable).first);
+    await settle(tester);
     expect(find.text(l.saakhiSeeAll), findsOneWidget);
-    expect(find.descendant(of: row, matching: find.text('Bhai Lalo and Malik Bhago')), findsOneWidget);
+    expect(find.text(l.saakhiOfTheDay.toUpperCase()), findsOneWidget);
+    // 25 October 2026 is day 20,751 since 1970: 20,751 % 4 = 3, the fourth saakhi.
+    expect(find.descendant(of: card, matching: find.text('ਸੰਤ ਸਿਪਾਹੀ')), findsWidgets);
+    expect(find.descendant(of: card, matching: find.text(l.saakhiListen)), findsOneWidget);
+    expect(find.descendant(of: card, matching: find.text(l.saakhiReadShort)), findsOneWidget);
+    for (final other in ['Bhai Lalo and Malik Bhago', 'Anand Bhaya Meri Maaye', 'Why Was the Hut Broken?']) {
+      expect(find.descendant(of: card, matching: find.text(other)), findsOneWidget, reason: other);
+    }
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('the menu is a left drawer with Saakhis and its count (option A)', (tester) async {
