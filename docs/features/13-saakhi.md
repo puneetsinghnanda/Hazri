@@ -105,8 +105,8 @@ Two ways in (owner, 2026-10-25, from the options of that day):
   saakhi turns by date (days since 1970 modulo the number of saakhis), the
   same on every phone. It sits after the quiz card and before ਅੱਜ ਦਾ
   ਵਿਚਾਰ. "See all" opens the library. The options were drawn at
-  <https://claude.ai/artifact/XHPjPXhGyvdjvZDD33BxGP>; design 110 is still the
-  1A drawing until the generator is brought up to date.
+  <https://claude.ai/artifact/XHPjPXhGyvdjvZDD33BxGP>; it is design 113, which
+  supersedes 110.
 - **In the menu, option A:** the menu becomes a left drawer (no longer a
   bottom sheet) with today's navy header (name, city, badges), then one
   list: Today, Saakhis with a count, Library, Badges, then Notifications,
@@ -117,8 +117,8 @@ Two ways in (owner, 2026-10-25, from the options of that day):
 marks the saakhi (`user.db` `saakhi_favourites`), and the library shows it.
 
 **SK15. Built** (2026-10-25). The reader, the library (design 111), Share,
-the Today row (design 110) and the left drawer (design 112) are in the app.
-The Today row is shown in elder mode too (owner, 2026-10-27; until then it
+the Today card (design 113, option C since 2026-10-27; it was 110) and the
+left drawer (design 112) are in the app. The Today card is shown in elder mode too (owner, 2026-10-27; until then it
 stepped aside there with ਅੱਜ ਦਾ ਵਿਚਾਰ). The
 share sheet offers Share (the picture, labelled just "Share", owner 2026-10-27) and Copy text; **Save** is left out until the
 app has a way to write to the phone's gallery (a share to Files or Photos

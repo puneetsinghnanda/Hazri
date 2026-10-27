@@ -97,9 +97,10 @@ on the phone, sends nothing and earns nothing), and top-20 leaderboards for each
 everyone, by day, week and month in IST. It is **the first points and the one
 ranking in the app**, for quiz answers only: PRD §1.3 was amended for it and
 for nothing else, and no question quotes Gurbani. **Built 2026-10-27**
-(content version 10, `lib/features/quiz/`, `functions/src/quiz/`); the
-server side is not deployed yet, and the numbered designs are still to be
-drawn into `build_phase2.py`.
+(content version 10, `lib/features/quiz/`, `functions/src/quiz/`) and
+**live the same day**: the owner deployed the Functions and the two
+`quizScores` indexes, created the three TTL policies, and earned the first
+points. Its screens are designs 113-119.
 
 **The 23-screen Phase 3 design set is superseded — do not merge it.**
 `claude/eloquent-edison-qsjll0` carries 46 files, `design/html/62-*` to
@@ -206,8 +207,8 @@ each:
 | A group's globe (2026-10-17) | 104, 105 | Option C for custom and built-in groups: the goal ring wraps the group's globe, members as counts per city, every dot tied to the ring by a dashed line (GG4a, 2026-10-18), paath of the last hour arriving as light along it (`08-sangat.md` GG1-GG10); replaces 103 and, for a custom group, 31 |
 | Goals as one page (2026-10-19) | 106 | Option C of four: the day as a timeline, every paath at its own time; once a day each, reminders always on and movable (`04-goals.md` GI10, RM1, 7.2); replaces 47 |
 | Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
-| Saakhis (2026-10-25) | 110, 111, 112 | Today option 1A (a row of covers after the Nitnem button; **replaced 2026-10-27 by option C**, one card with the day's saakhi large and the others small, not yet drawn into 110), the library, and the menu as a left drawer, option A (replaces 99); the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
-| Gurmat Quiz (2026-10-27) | not yet numbered | Today 1A (a calendar leaf above the Saakhis row), the quiz as approved, result 4B, leaderboard 5A and 5B, quiz page 6A, Your numbers 7A; drawn in scratch rounds, to be added to `build_phase2.py` (`14-quiz.md` §10 step 6) |
+| Saakhis (2026-10-25) | 111, 112 (110 superseded) | The library, and the menu as a left drawer, option A (replaces 99; Gurmat Quiz under Saakhis since 2026-10-27). Today's option 1A, a row of covers (110), was **replaced 2026-10-27 by option C**, one card with the day's saakhi large and the others small, drawn in 113; the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
+| Gurmat Quiz (2026-10-27) | 113-119 | Today 1A, a calendar leaf above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -225,8 +226,8 @@ lib/
     time/       Clock, NOAA SolarService, Nanakshahi calendar, formatting
     widgets/    AppMark, DayArc, ProgressRing, cards, chips, buttons
   features/     about audio backup badges diary goals gurpurab hazri library
-                nitnem onboarding profile reader reminders sangat settings
-                simran today vichar
+                nitnem onboarding profile quiz reader reminders saakhi sangat
+                settings simran today vichar
                 each: data/ (repos, controllers) domain/ (models, logic) ui/
 android/                  Reminders.kt (alarms and posting), MainActivity.kt
 functions/                the `api` Cloud Function and the scheduled / triggered ones
@@ -409,10 +410,11 @@ timings and verify the alignment acoustically.
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
-## State of the build (2026-10-19)
+## State of the build (2026-10-27)
 
 **Phase 2 is built**: all ten steps of PRD §11, in that order, on this
-branch. The older code each step replaced -- the first sangat (listed groups,
+branch, and since then Saakhis (2026-10-25) and the Gurmat Quiz
+(2026-10-27). The older code each step replaced -- the first sangat (listed groups,
 counted-on-read totals, the join banner), diary sync, the 45-second presence
 read, the Settings city, the branded splash and intro pages, elder Today as a
 fork, the Rehras / Kirtan Sohila / Daily Simran reminders -- is gone, and
@@ -509,11 +511,30 @@ is true of the code now, then what is live, then what is still open.
   `assets/saakhi/` made by `tools/saakhi/build_assets.py` from the owner's
   masters in `saakhi-handoff/`. The reader turns pages with the narration
   (just_audio, its own player), the lesson is design D, Share makes a
-  1080 x 1920 picture, hearts go in `user.db` schema 7. Today shows the row
-  of covers (1A), in elder mode too (2026-10-27), and the menu is a left drawer (option A,
-  `showMenuDrawer` in `lib/app/menu_sheet.dart`). A typed-in shabad ships
+  1080 x 1920 picture (the button says Share), hearts go in `user.db` schema
+  7; the progress bars fill page by page and the last one fills at the end.
+  Today shows one card, option C (design 113, 2026-10-27): the day's saakhi
+  large -- days since 1970 modulo the count -- with Listen and Read, the
+  others small; only those act, and it stays in elder mode. The menu is a
+  left drawer (option A, `showMenuDrawer` in `lib/app/menu_sheet.dart`). A typed-in shabad ships
   only with a `checked` record naming its source (SK3); Bhai Lalo's Ang 105
   pankti was checked against BaniDB on 2026-10-25.
+- **The Gurmat Quiz** (`14-quiz.md`, built and deployed 2026-10-27): 17
+  topics and 340 questions in `content.db` (content version 10) from
+  `content/source/quiz/`, imported from the owner's spreadsheet by
+  `tools/content_pipeline/import_quiz.py`; the pipeline also writes the
+  answer key to `functions/src/quiz-bank.json`, so a change to the bank
+  needs `firebase deploy --only functions` as well as a new APK. The day's
+  topic is the calendar event's or a rotation by the phone's date (QZ8).
+  With a profile the server draws five questions (difficulty before
+  freshness), scores them and keeps `quizSessions`, `quizPlayers`,
+  `quizScores` and `quizBoards` (`deleteAt` TTL); every attempt adds to your
+  total, a board counts your best per topic per IST day, and a first attempt
+  at 0 still counts as played. **Without a profile the quiz plays on the
+  phone, sends nothing and earns nothing** (QZ14). Only the card's buttons
+  act; they sit side by side when both labels fit and stack when not
+  (`_Buttons`, tested at 360, 390 and 412 dp). A shared link is
+  `<kSiteBase>/q/<topic>` and opens that quiz (`IncomingLink`).
 
 ### What is live, and what is deployed by hand
 
@@ -552,17 +573,17 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
-- **The Gurmat Quiz is built but its server side is not deployed**
-  (`14-quiz.md`, 2026-10-27). The question bank is
-  `content/source/quiz/`, imported from the owner's spreadsheet by
-  `tools/content_pipeline/import_quiz.py`; the pipeline writes it to
-  `content.db` and the answer key to `functions/src/quiz-bank.json`, so a
-  change to the bank needs `firebase deploy --only functions` as well as a
-  new APK. Until the Functions, the two `quizScores` indexes
-  (`firebase deploy --only firestore`), the TTL policies on `deleteAt` and
-  the `/q/` page are deployed, a quiz with a profile plays on the phone and
-  says "Points need a connection". The privacy screen already names the
-  quiz and the leaderboards.
+- **The quiz's `/q/` page needs a hosting deploy.** `public/q/index.html`
+  and its `firebase.json` rewrite reach the website only with
+  `firebase deploy --only hosting:public`; nobody has confirmed that has
+  been run since 2026-10-27, and until it has, a shared quiz link lands on
+  the website's 404. The questions are English for now (QZ6), and the
+  Punjabi and Hindi topic names and labels are Claude's draft.
+- **The Punjabi saakhi page timings want an ear** (SK-23). They were
+  estimated from each page's share of the text and snapped to long pauses,
+  not heard; a page that turns early or late is corrected in
+  `narration.pa.page_starts`. The Punjabi lesson has no meaning cue
+  (`meaning_at` is null).
 
 - **`hazri.me` is not yet the app's host.** `kSiteBase` stays
   `hazri-dfcc1.web.app` until Phase 3 (`docs/domain-setup.md`), because a

@@ -333,11 +333,11 @@ Top to bottom:
 6. **The call to action**: a paath in progress (Continue at the saved line);
    else the first unmet goal item; else the current slot's first bani not done;
    else the next slot's (T4).
-7. **The Gurmat Quiz card** (design 1A, 2026-10-27): the day's topic, one
+7. **The Gurmat Quiz card** (design 1A, 2026-10-27, drawn as 113): the day's topic, one
    insight, Know more and Take the quiz (§4.21, `14-quiz.md` QZ9). In elder
    mode too.
-8. **The Saakhis row** (design 110, `13-saakhi.md` SK11). In elder mode too
-   (owner, 2026-10-27).
+8. **The Saakhis card** (option C, design 113, replacing 110's row on
+   2026-10-27; `13-saakhi.md` SK11). In elder mode too (owner, 2026-10-27).
 9. **ਅੱਜ ਦਾ ਵਿਚਾਰ** card (§4.15).
 10. **The Gurpurab card** when an event is within 7 days, else today's
    Nanakshahi date.
@@ -838,7 +838,7 @@ ARCHITECTURE §3.2, §5.13, §6.7.*
   Heroes, Sikh History) and Culture. Bundled in `content.db` through the
   pipeline; English until reviewed translations exist; no question quotes
   Gurbani.
-- **Today** (design 1A, above the Saakhis row): a calendar leaf with the
+- **Today** (design 1A, drawn as 113, above the Saakhis card): a calendar leaf with the
   day's event or "Did you know?", the day's topic, one explanation from the
   bank word for word, **Know more** (the day's Vichar page) and **Take the
   quiz** (straight to the first question). Shown in elder mode too. The topic is the calendar
@@ -1342,6 +1342,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `85-TodayAppBar` | Today, with the app bar and streak | **new** | App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12 |
+| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The Gurmat Quiz card 1A (a calendar leaf, the day's event or Did you know?, the topic, one explanation, Know more and Take the quiz; only the buttons act), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
 | `86-TodayNoProfile` | Today, first day, no profile | **new** | The profile banner overlaps the app bar; no streak yet. 05-today.md T-a |
 | `61-GoalComplete` | All of today's goals are done | current | Shown once a day when the goal is met. 04-goals.md CE1 |
 | `58-TodayHazri` | Today, hazri marked | superseded | Replaced by 85 |
@@ -1433,8 +1434,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `110-TodaySaakhis` | Today, with the saakhis row | **new** | Option 1A, chosen 25 Oct: tall covers scrolling sideways after the Nitnem button, before ਅੱਜ ਦਾ ਵਿਚਾਰ. 13-saakhi.md SK11 |
-| `111-SaakhiLibrary` | Saakhis, the library | **new** | A card per saakhi: cover, Punjabi and English name, pages, narration, Listen and Read. SK11 |
+| `111-SaakhiLibrary` | Saakhis, the library | **new** | A card per saakhi: cover, Punjabi and English name, pages, Punjabi and English narration, Listen and Read. SK11 |
+| `110-TodaySaakhis` | Today, with the saakhis row | superseded | Option 1A, chosen 25 Oct; replaced by option C, one card with the day's saakhi large and the others small (113, 27 Oct) |
 | `43-Vichar` | Vichar | current |  |
 | `107-ArticleCalendar` | Vichar, a Gurpurab | **new** | Layout A, chosen 19 Oct: the calendar card, the countdown, what comes next. docs/vichar-content.md |
 | `108-ArticlePhoto` | Vichar, a place | **new** | Layout B: a drawn Gurdwara under the place's name, chips, previous and next |
@@ -1444,6 +1445,17 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `46-VicharSearch` | Vichar, search | current |  |
 | `24-Hukamnama` | Hukamnama | superseded | The daily Hukamnama is gone; replaced by Vichar |
 | `25-ShareCard` | Hukamnama share card | superseded | Goes with the Hukamnama |
+
+**Gurmat Quiz** — `14-quiz.md`
+
+| Screen | Title | Status | Note |
+|---|---|---|---|
+| `114-QuizQuestion` | A question, answered | **new** | Straight in from Take the quiz; four options in the bank's order, marked at once, the explanation word for word and no source; Next. QZ7, QZ12, QZ15 |
+| `115-QuizResult` | Your answers | **new** | Result 4B, chosen 27 Oct: the score and points (or why none), the five answers, the challenge and Share the quiz, then See the leaderboard and Done. QZ23-QZ26 |
+| `116-QuizBoard` | One quiz's leaderboard | **new** | Leaderboard 5A: Today, Week, Month; Everyone, then today's topic, then the rest; the top twenty, your row marked. QZ27-QZ30 |
+| `117-QuizBoardNoProfile` | Everyone, without a profile | **new** | Leaderboard 5B: the same board with Make a profile above it. QZ14, QZ29 |
+| `118-QuizHome` | The quiz page | **new** | Design 6A: points and the leaderboard in the header, Coming up on the calendar, Your quiz, the featured categories as drawn tiles, the chosen category's quizzes. QZ33 |
+| `119-QuizMe` | Your quiz | **new** | Design 7A: name, city, total and places on a navy card; the month as a calendar of points. With a profile only. QZ34 |
 
 **Calendar and notifications** — `02-notifications.md`
 
@@ -1461,7 +1473,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `96-Badges` | Badges, all ten | **new** | Option 2A: a two-column grid, earned in colour with the date, the rest greyed with how to earn them. UI3 |
 | `97-BadgeDetail` | One badge, opened | **new** | Option 3B: a full page with what it marks and how it is earned; previous and next. UI4 |
 | `98-ProfileBadges` | Your profile, with badges | superseded | Replaced by 100 |
-| `112-MenuSaakhis` | Menu, the left drawer | **new** | Option A, chosen 25 Oct: the navy header (name, city, badges), then Today, Saakhis with a count, Library, Badges, Notifications, Settings, Privacy and data, About and credits, Help. 13-saakhi.md SK11 |
+| `112-MenuSaakhis` | Menu, the left drawer | **new** | Option A, chosen 25 Oct: the navy header (name, city, badges), then Today, Saakhis with a count, Gurmat Quiz, Library, Badges, Notifications, Settings, Privacy and data, About and credits, Help. 13-saakhi.md SK11 |
 | `99-MenuBadges` | Menu, with badges | superseded | Its navy header lives on in 112; the bottom sheet is replaced by the left drawer |
 
 **Menu, settings and account** — `01-accounts.md`

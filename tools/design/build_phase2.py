@@ -3755,7 +3755,7 @@ def saakhi_library() -> str:
         f'<div class="col" style="flex:1;gap:3px;justify-content:center">'
         f'<div class="gur" style="font-size:14px;color:var(--ink2);line-height:1.35">{pa}</div>'
         f'<div class="disp" style="font-size:17px;font-weight:700;line-height:1.2">{en}</div>'
-        f'<div style="font-size:12.5px;color:var(--muted);margin-top:2px">8 pages · English narration</div>'
+        f'<div style="font-size:12.5px;color:var(--muted);margin-top:2px">8 pages · Punjabi and English narration</div>'
         f'<div class="row" style="gap:8px;margin-top:8px">'
         f'<div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk)">'
         f'{icon("play", 13)}Listen · {length}</div>'
@@ -3779,6 +3779,7 @@ def menu_saakhis() -> str:
     glyph = {
         "Today": icon("today", 20),
         "Saakhis": sv.format('<rect x="4" y="3.5" width="12" height="17" rx="2"/><path d="M16 6.5h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-8"/>'),
+        "Gurmat Quiz": sv.format('<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.1-2.4 3.6M12 17h.01"/>'),
         "Library": icon("nitnem", 20),
         "Badges": sv.format('<circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.5L7 21l5-2.5 5 2.5-1.5-7.5"/>'),
         "Notifications": icon("bell", 20),
@@ -3798,7 +3799,7 @@ def menu_saakhis() -> str:
         return (f'<div class="row" style="gap:14px;min-height:48px;padding:0 12px;border-radius:14px;background:{bg};'
                 f'color:{fg};font-size:15px;font-weight:{700 if on else 600}"><div style="color:{ic}">{glyph[t]}</div>{t}{badge}</div>')
 
-    top = item("Today", on=True) + item("Saakhis", count=4) + item("Library") + item("Badges")
+    top = item("Today", on=True) + item("Saakhis", count=4) + item("Gurmat Quiz") + item("Library") + item("Badges")
     rest = "".join(item(t) for t in ["Notifications", "Settings", "Privacy and data", "About and credits", "Help"])
     return f"""
 {today_backdrop()}
@@ -3818,6 +3819,393 @@ def menu_saakhis() -> str:
     <div style="height:1px;background:var(--rule);margin:8px 12px"></div>{rest}</div>
   <div style="flex:1"></div>
   <div style="padding:0 20px 22px;font-size:12px;color:var(--muted)">Hazri · version 2.0</div>
+</div>
+"""
+
+
+# ------------------------------------------------------------- saakhis, option C
+
+def _saakhi_pa(sid: str, field: str) -> str:
+    """A saakhi's Punjabi title or subtitle, read from its reviewed source file."""
+    with open(os.path.join(ROOT, "content", "source", "saakhi", f"{sid}.json"), encoding="utf-8") as fh:
+        return json.load(fh)[field]["pa"]
+
+
+def saakhi_card() -> str:
+    """Option C (owner, 2026-10-27; SK11): one card, the day's saakhi large and the others small.
+
+    The day's saakhi is days since 1970 modulo the count, so on 27 October it
+    is the second; the rest follow in a row of small covers.
+    """
+    import datetime
+    day = (datetime.date(2026, 10, 27) - datetime.date(1970, 1, 1)).days % len(SAAKHIS)
+    sid, en, pa, length = SAAKHIS[day]
+    rest = "".join(
+        f'<div style="flex:none;width:86px;height:128px;border-radius:14px;overflow:hidden;position:relative;'
+        f'background:url({cover(s)}) center/cover">'
+        f'<div class="col" style="position:absolute;left:0;right:0;bottom:0;padding:20px 7px 7px;'
+        f'background:linear-gradient(transparent,rgba(12,15,36,.88))">'
+        f'<div class="gur" style="font-size:10.5px;color:#fff;line-height:1.3">{p}</div></div></div>'
+        for s, _, p, _ in SAAKHIS if s != sid)
+    return f"""
+  <div class="card col" style="padding:14px 14px 16px">
+    <div class="row" style="justify-content:space-between">
+      <div class="disp" style="font-size:18px;font-weight:700">Saakhis</div>
+      <div style="font-size:13px;font-weight:700;color:var(--kesriInk)">See all</div>
+    </div>
+    <div class="row" style="gap:12px;margin-top:10px;align-items:stretch">
+      <div style="width:100px;height:150px;border-radius:14px;flex:none;
+        background:url({cover(sid)}) center/cover"></div>
+      <div class="col" style="flex:1;min-width:0">
+        <div class="eyebrow" style="color:var(--kesriInk)">Today’s saakhi</div>
+        <div class="gur" style="font-size:17px;line-height:1.35;margin-top:4px">{_saakhi_pa(sid, "title")}</div>
+        <div class="disp" style="font-size:15px;font-weight:700;color:var(--ink2);line-height:1.2">{en}</div>
+        <div class="gur" style="font-size:12.5px;color:var(--muted);line-height:1.4;margin-top:2px">{_saakhi_pa(sid, "subtitle")}</div>
+        <div style="flex:1"></div>
+        <div class="row" style="gap:8px;margin-top:10px">
+          <div class="btn" style="flex:1;min-height:40px;font-size:14px;background:var(--kesri);color:#fff;border-radius:12px">
+            {icon("play", 14)}Listen</div>
+          <div class="btn" style="flex:1;min-height:40px;font-size:14px;background:var(--card2);color:var(--ink);border-radius:12px">
+            Read</div>
+        </div>
+      </div>
+    </div>
+    <div class="eyebrow" style="margin-top:14px">More saakhis</div>
+    <div class="row" style="gap:9px;margin-top:8px;overflow:hidden">{rest}</div>
+  </div>"""
+
+
+# ------------------------------------------------------------------ Gurmat Quiz
+
+def _drawing(name: str, size: int) -> str:
+    """A category drawing exactly as the app ships it (lib/features/quiz/ui/quiz_drawings.dart).
+
+    Read from the Dart file rather than copied, so the design cannot drift
+    from the app. The Banis drawing gets its ੴ here, as the app lays
+    content.db's on top of it.
+    """
+    import re
+    with open(os.path.join(ROOT, "lib", "features", "quiz", "ui", "quiz_drawings.dart"), encoding="utf-8") as fh:
+        svg = re.search(rf"static const {name} = '(.*?)';", fh.read()).group(1)
+    svg = svg.replace("<svg ", f'<svg width="{size}" height="{size}" ', 1)
+    if name == "banis":
+        svg = svg.replace("</svg>", '<text x="32" y="17" text-anchor="middle" font-family="Noto Serif Gurmukhi,serif" '
+                                    'font-size="15" font-weight="700" fill="#D9730D">ੴ</text></svg>')
+    return svg
+
+
+def _numeral(glyph: str, size: int = 46) -> str:
+    """A Guru's topic mark: the Gurmukhi numeral in gold on navy (QuizTopicGlyph)."""
+    return (f'<div class="gur" style="width:{size}px;height:{size}px;border-radius:50%;flex:none;'
+            f'background:linear-gradient(135deg,#2E3577,#1A1E48);color:#F6C26B;display:flex;'
+            f'align-items:center;justify-content:center;font-weight:700;font-size:{size * .44:.0f}px">{glyph}</div>')
+
+
+def quiz_card() -> str:
+    """Design 1A on Today (14-quiz.md QZ9-QZ12): a calendar leaf, the day's event,
+    the topic, one explanation word for word, Know more and Take the quiz.
+
+    Only the buttons act (owner, 2026-10-27); they sit side by side when both
+    labels fit whole and stack, Take the quiz first, when they do not.
+    """
+    small = "font-size:11px;font-weight:700;letter-spacing:.1em"
+    return f"""
+  <div class="card row" style="padding:0;overflow:hidden;align-items:stretch">
+    <div class="col" style="width:78px;flex:none;background:var(--kesri);color:#1C1206;
+      align-items:center;justify-content:center;padding:12px 0;line-height:1.05">
+      <div style="{small}">TUE</div>
+      <div class="disp" style="font-size:36px;font-weight:700">27</div>
+      <div style="{small}">OCT</div>
+      <div style="width:40px;height:1px;background:rgba(28,18,6,.3);margin:8px 0"></div>
+      <div style="font-size:12px;font-weight:700">11</div>
+      <div style="font-size:10.5px;font-weight:700">Katak</div>
+    </div>
+    <div class="col" style="padding:12px 14px;flex:1;min-width:0">
+      <div class="eyebrow" style="color:var(--kesriInk)">Did you know?</div>
+      <div class="disp" style="font-size:20px;font-weight:700;line-height:1.15;margin-top:4px">Guru Ram Das Ji</div>
+      <div style="font-size:13.5px;line-height:1.4;color:var(--ink2);margin-top:6px">Guru Ram Das Ji was named
+        Jetha (meaning 'firstborn') as a child and later became known as Ram Das.</div>
+      <div class="row" style="gap:10px;margin-top:10px">
+        <div class="btn" style="flex:1;min-height:44px;font-size:14.5px;background:var(--card2);color:var(--ink)">Know more</div>
+        <div class="btn" style="flex:1.25;min-height:44px;font-size:14.5px;background:var(--primary);color:var(--onPrimary)">Take the quiz</div>
+      </div>
+    </div>
+  </div>"""
+
+
+def today_quiz() -> str:
+    """Today scrolled past the band and the goal: the Nitnem button, the quiz
+    card, the saakhis card in option C, and Today's Vichar below
+    (05-today.md 6a, 6b; SK11). In elder mode too (QZ9, SK15)."""
+    return f"""
+<div class="col" style="gap:13px;padding:16px 20px 0">
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
+    {icon("nitnem", 20)}<div>Start your Nitnem</div></div>
+  {quiz_card()}
+  {saakhi_card()}
+  {vichar_card()}
+</div>
+{nav("today")}
+"""
+
+
+def _quiz_top(title: str, sub: str | None = None, left: str = "close") -> str:
+    """The quiz's own top bar: close (or back), the title, a line under it."""
+    glyph = ('<svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+             if left == "close" else icon(left, 20))
+    return (f'<div class="row" style="gap:10px;padding:16px 18px 12px">'
+            f'<div style="width:40px;height:40px;border-radius:13px;display:flex;align-items:center;'
+            f'justify-content:center;background:var(--card);box-shadow:var(--shadow);flex:none">{glyph}</div>'
+            f'<div class="col"><div class="disp" style="font-size:19px;font-weight:700;line-height:1.15">{title}</div>'
+            + (f'<div style="font-size:12.5px;color:var(--muted);font-weight:600">{sub}</div>' if sub else "")
+            + '</div></div>')
+
+
+def _option(letter: str, text: str, state: str = "open") -> str:
+    bg, border, mark_bg, mark_fg, fg = {
+        "open": ("var(--card)", "var(--rule)", "var(--card2)", "var(--ink2)", "var(--ink)"),
+        "right": ("var(--sageSoft)", "var(--sage)", "var(--sage)", "#fff", "var(--ink)"),
+        "wrong": ("#FBE3E1", "#C2463D", "#C2463D", "#fff", "var(--ink)"),
+        "faded": ("var(--card)", "var(--rule)", "var(--card2)", "var(--muted)", "var(--muted)"),
+    }[state]
+    mark = {"right": icon("check", 14), "wrong": "✕"}.get(state, letter)
+    return (f'<div class="row" style="gap:12px;min-height:56px;padding:8px 14px;border-radius:16px;'
+            f'background:{bg};border:1.5px solid {border};color:{fg};font-size:16px;font-weight:600">'
+            f'<div style="width:30px;height:30px;border-radius:15px;flex:none;background:{mark_bg};color:{mark_fg};'
+            f'display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">{mark}</div>'
+            f'{text}</div>')
+
+
+def quiz_question() -> str:
+    """A question, answered right (QZ15): four options in the bank's order, marked
+    at once, the explanation word for word and no source (QZ7), then Next."""
+    opts = (_option("A", "Goindwal", "faded") + _option("B", "Khadur Sahib", "faded")
+            + _option("C", "Lahore", "right") + _option("D", "Kartarpur", "faded"))
+    return f"""
+{_quiz_top("Guru Ram Das Ji", "Question 2 of 5")}
+<div style="margin:0 20px;height:6px;border-radius:4px;background:var(--card2);overflow:hidden">
+  <div style="width:40%;height:100%;background:var(--kesri);border-radius:4px"></div></div>
+<div class="col" style="padding:18px 20px 0;gap:10px">
+  <div class="disp" style="font-size:21px;font-weight:700;line-height:1.3;margin-bottom:8px">
+    In which city was Guru Ram Das Ji born?</div>
+  {opts}
+  <div class="card col" style="background:var(--sageSoft);box-shadow:none;padding:14px 16px;gap:4px;margin-top:4px">
+    <div style="font-weight:700;color:var(--sage)">Right</div>
+    <div style="font-size:14px;line-height:1.45;color:var(--ink2)">Guru Ram Das Ji was born in Chuna Mandi,
+      Lahore (now in Pakistan), to Baba Hari Das and Mata Daya Kaur.</div>
+  </div>
+</div>
+<div style="position:absolute;left:20px;right:20px;bottom:24px">
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">Next</div></div>
+"""
+
+
+def quiz_result() -> str:
+    """Result 4B (QZ23-QZ26): the score and points, the five answers, the
+    challenge to share, then the leaderboard as the main button."""
+    answers = [("In which city was Guru Ram Das Ji born?", True),
+               ("What was Guru Ram Das Ji's name before he became the Guru?", True),
+               ("Guru Ram Das Ji married Bibi Bhani Ji, the daughter of which Guru?", True),
+               ("Which city did Guru Ram Das Ji found?", False),
+               ("Who became the Guru after Guru Ram Das Ji?", True)]
+    rows = "".join(
+        f'<div class="row" style="gap:12px;padding:11px 14px;{"border-top:1px solid var(--rule)" if i else ""}">'
+        f'<div style="width:22px;height:22px;border-radius:11px;flex:none;color:#fff;display:flex;align-items:center;'
+        f'justify-content:center;font-size:12px;font-weight:700;background:{"var(--sage)" if ok else "#C2463D"}">'
+        f'{icon("check", 13) if ok else "✕"}</div>'
+        f'<div style="flex:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{q}</div>'
+        f'{chev(16)}</div>'
+        for i, (q, ok) in enumerate(answers))
+    return f"""
+{_quiz_top("Your answers")}
+<div class="col" style="padding:4px 20px 0;gap:14px">
+  <div class="col">
+    <div class="row" style="align-items:flex-end;gap:14px">
+      <div class="row" style="align-items:flex-end">
+        <div class="disp" style="font-size:44px;font-weight:700;line-height:1">4</div>
+        <div class="disp" style="font-size:22px;font-weight:700;color:var(--muted);margin:0 0 4px 2px">/5</div></div>
+      <div style="font-weight:700;color:var(--kesriInk);margin-bottom:6px">+40 points</div>
+    </div>
+    <div style="font-weight:700;color:var(--ink2)">Guru Ram Das Ji</div>
+  </div>
+  <div class="card col" style="padding:4px 0">{rows}</div>
+  <div class="card col" style="background:var(--kesriSoft);box-shadow:none;padding:16px;gap:4px">
+    <div class="disp" style="font-size:19px;font-weight:700;line-height:1.2">Can your family beat 4 out of 5?</div>
+    <div style="font-size:14px;color:var(--ink2)">Share the quiz and learn together.</div>
+    <div class="btn" style="background:var(--kesri);color:#fff;margin-top:8px">{icon("share", 18)}Share the quiz</div>
+  </div>
+</div>
+<div class="col" style="position:absolute;left:20px;right:20px;bottom:14px;gap:4px">
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">See the leaderboard · you are #3</div>
+  <div style="text-align:center;font-weight:600;color:var(--primary);padding:10px">Done</div>
+</div>
+"""
+
+
+QUIZ_PEOPLE = [("Manpreet S.", "MS", "Amritsar", 50), ("Gurleen K.", "GK", "Brampton", 50),
+               ("Harpreet K.", "HK", "Ludhiana", 40), ("Jasleen K.", "JK", "Delhi", 40),
+               ("Arjun S.", "AS", "Surrey", 30), ("Simran K.", "SK", "Birmingham", 30),
+               ("Navdeep S.", "NS", "Patiala", 30), ("Amandeep K.", "AK", "Melbourne", 20),
+               ("Ravinder S.", "RS", "Jalandhar", 20)]
+
+
+def _board(you: str | None) -> str:
+    rows = []
+    for i, (name, ini, city, score) in enumerate(QUIZ_PEOPLE, start=1):
+        me = name.startswith(you) if you else False
+        rows.append(
+            f'<div class="row" style="gap:12px;padding:9px 14px;{"background:var(--kesriSoft)" if me else ""}">'
+            f'<div style="width:22px;font-weight:700;color:{"var(--kesriInk)" if i <= 3 else "var(--muted)"}">{i}</div>'
+            + avatar(ini, "var(--kesri)" if me else "var(--card2)", "#fff" if me else "var(--ink2)", 34)
+            + f'<div class="col" style="flex:1;min-width:0"><div style="font-weight:700;font-size:14.5px">'
+            f'{"You" if me else name}</div><div style="font-size:12.5px;color:var(--muted)">{city}</div></div>'
+            f'<div style="font-weight:700">{score}</div></div>')
+    return f'<div class="card col" style="padding:4px 0;overflow:hidden">{"".join(rows)}</div>'
+
+
+def _chips(items, on: str) -> str:
+    return "".join(
+        f'<div class="chip" style="flex:none;min-height:40px;padding:0 14px;'
+        f'{"background:var(--primary);color:var(--onPrimary)" if t == on else "background:var(--card);color:var(--ink2);box-shadow:var(--shadow)"}">{t}</div>'
+        for t in items)
+
+
+def quiz_board() -> str:
+    """Leaderboard 5A (QZ27-QZ30): one quiz, today; the top twenty, you marked."""
+    return f"""
+{_quiz_top("Leaderboard", left="back")}
+<div class="col" style="padding:0 20px;gap:8px">
+  <div class="row" style="gap:8px">{_chips(["Today", "Week", "Month"], "Today")}</div>
+  <div class="row" style="gap:8px;overflow:hidden;margin-right:-20px">
+    {_chips(["Everyone", "Guru Ram Das Ji", "Guru Nanak Dev Ji", "Sikh Banis"], "Guru Ram Das Ji")}</div>
+  <div style="height:4px"></div>
+  {_board("Harpreet")}
+  <div style="text-align:center;font-size:12.5px;color:var(--muted);margin-top:2px">
+    Top 20 · 46 played today · resets at midnight IST</div>
+</div>
+"""
+
+
+def quiz_board_no_profile() -> str:
+    """Leaderboard 5B (QZ29): everyone, this week, seen without a profile; the
+    board is the same, with Make a profile above it."""
+    return f"""
+{_quiz_top("Leaderboard", left="back")}
+<div class="col" style="padding:0 20px;gap:8px">
+  <div class="row" style="gap:8px">{_chips(["Today", "Week", "Month"], "Week")}</div>
+  <div class="row" style="gap:8px;overflow:hidden;margin-right:-20px">
+    {_chips(["Everyone", "Guru Ram Das Ji", "Guru Nanak Dev Ji", "Sikh Banis"], "Everyone")}</div>
+  <div class="card col" style="padding:14px 16px;gap:4px;margin-top:4px">
+    <div style="font-weight:700">Make a profile to be on the leaderboard</div>
+    <div style="font-size:13.5px;color:var(--ink2)">Your quiz points count from the day you make one.
+      Just a name and your city.</div>
+    <div style="font-weight:700;color:var(--kesriInk);margin-top:4px">Make a profile</div>
+  </div>
+  {_board(None)}
+  <div style="text-align:center;font-size:12.5px;color:var(--muted);margin-top:2px">
+    Top 20 · 312 played this week · resets Monday at midnight IST</div>
+</div>
+"""
+
+
+def quiz_home() -> str:
+    """The quiz page 6A (QZ33): Coming up on the calendar, Your quiz, the
+    featured categories as drawn tiles, and the chosen category's quizzes."""
+    coming = [("27", "OCT", "Guru Ram Das Ji", "Today", True),
+              ("3", "NOV", "Guru Nanak Dev Ji", "Prakash Purab", False),
+              ("8", "NOV", "Guru Hargobind Sahib Ji", "Bandi Chhor Divas", False)]
+    rows = "".join(
+        (f'<div style="height:1px;background:rgba(255,255,255,.15);margin:9px 0"></div>' if i else "")
+        + f'<div class="row" style="gap:10px"><div class="col" style="width:44px;align-items:center">'
+        f'<div class="disp" style="font-size:22px;font-weight:700;line-height:1">{d}</div>'
+        f'<div style="font-size:10.5px;font-weight:700;opacity:.7">{m}</div></div>'
+        f'<div class="col" style="flex:1"><div style="font-weight:700;font-size:14.5px">{t}</div>'
+        f'<div style="font-size:12.5px;opacity:.72">{s}</div></div>'
+        + ('<div class="btn" style="min-height:40px;padding:0 16px;font-size:14px;border-radius:12px;'
+           'background:var(--kesri);color:#fff">Start</div>' if start else "")
+        + '</div>'
+        for i, (d, m, t, s, start) in enumerate(coming))
+    cats = [("all", "All"), ("gurus", "Gurus"), ("gurdwaras", "Gurdwaras"), ("banis", "Banis"),
+            ("heroes", "Heroes"), ("culture", "Culture")]
+    tiles = "".join(
+        f'<div class="col" style="width:74px;flex:none;align-items:center;gap:6px">'
+        f'<div style="width:70px;height:70px;border-radius:22px;background:var(--kesriSoft);display:flex;'
+        f'align-items:center;justify-content:center;border:2.5px solid {"var(--kesri)" if k == "gurus" else "transparent"}">'
+        f'{_drawing(k, 46)}</div>'
+        f'<div style="font-size:12px;font-weight:700;color:{"var(--kesriInk)" if k == "gurus" else "var(--ink2)"}">{label}</div></div>'
+        for k, label in cats)
+    gurus = [("੧", "Guru Nanak Dev Ji", 60, "3 Nov"), ("੨", "Guru Angad Dev Ji", 20, None),
+             ("੪", "Guru Ram Das Ji", 40, "Today")]
+    topics = "".join(
+        f'<div class="card row" style="padding:12px;gap:12px">{_numeral(g)}'
+        f'<div class="col" style="flex:1;min-width:0"><div class="row" style="gap:6px">'
+        f'<div style="font-weight:700;font-size:14.5px">{name}</div>'
+        + (f'<div class="chip" style="padding:2px 8px;font-size:11.5px;background:var(--kesriSoft);color:var(--kesriInk)">{when}</div>'
+           if when else "")
+        + f'</div><div style="font-size:12.5px;color:var(--muted)">5 random questions · {pts} pts so far</div></div>'
+        f'<div class="btn" style="min-height:40px;padding:0 16px;font-size:14px;border-radius:12px;'
+        f'background:var(--primary);color:var(--onPrimary)">Start</div></div>'
+        for g, name, pts, when in gurus)
+    return f"""
+<div class="row" style="gap:10px;padding:16px 18px 12px">
+  <div style="width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    background:var(--card);box-shadow:var(--shadow)">{icon("back", 20)}</div>
+  <div class="disp" style="font-size:22px;font-weight:700;flex:1">Gurmat Quiz</div>
+  <div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk);min-height:40px;padding:0 14px">120 pts</div>
+  <svg class="i" width="22" height="22" viewBox="0 0 24 24" style="color:var(--ink2)"><path d="M5 20V12M12 20V5M19 20v-9"/></svg>
+</div>
+<div class="col" style="padding:0 20px;gap:12px">
+  <div class="card col" style="background:var(--primary);color:var(--onPrimary);padding:14px 16px">
+    <div class="eyebrow" style="color:var(--kesri);margin-bottom:10px">Coming up on the calendar</div>{rows}</div>
+  <div class="card row" style="padding:14px 16px;gap:8px">
+    <div style="font-weight:700;flex:1">Your quiz</div>
+    <div style="font-weight:700;color:var(--kesriInk)">120 pts</div>
+    <div style="font-size:13px;color:var(--muted)">#3</div>{chev(16)}</div>
+  <div class="disp" style="font-size:18px;font-weight:700;margin-top:6px">Featured categories</div>
+  <div class="row" style="gap:10px;overflow:hidden;margin-right:-20px">{tiles}</div>
+  <div class="row" style="justify-content:space-between;margin-top:4px">
+    <div class="disp" style="font-size:18px;font-weight:700">Gurus</div>
+    <div style="font-size:12.5px;color:var(--muted)">10 quizzes</div></div>
+  {topics}
+</div>
+"""
+
+
+def quiz_me() -> str:
+    """Your quiz 7A (QZ34): the navy card with name, city, total and places,
+    then the month as a calendar with each day's points."""
+    pts = {3: 30, 4: 50, 8: 20, 11: 40, 12: 40, 15: 30, 19: 50, 20: 10, 22: 40, 25: 30, 26: 40, 27: 40}
+    lead = 3  # 1 October 2026 is a Thursday; Monday first
+    cells = "".join('<div></div>' for _ in range(lead)) + "".join(
+        f'<div class="col" style="aspect-ratio:.82;border-radius:10px;align-items:center;justify-content:center;'
+        f'{"background:var(--kesriSoft);" if d in pts else ""}'
+        f'{"border:1.5px solid var(--kesri);" if d == 27 else ""}">'
+        f'<div style="font-size:12px;color:{"var(--muted)" if d > 27 else "var(--ink)"}">{d}</div>'
+        + (f'<div style="font-size:10.5px;font-weight:700;color:var(--kesriInk);line-height:1">{pts[d]}</div>' if d in pts else "")
+        + '</div>' for d in range(1, 32))
+    week = "".join(f'<div style="text-align:center;font-size:12px;font-weight:700;color:var(--muted)">{w}</div>'
+                   for w in "MTWTFSS")
+    place = lambda n, label: (f'<div class="col" style="flex:1;align-items:center">'
+                              f'<div class="disp" style="font-size:20px;font-weight:700">{n}</div>'
+                              f'<div style="font-size:12px;opacity:.72">{label}</div></div>')
+    return f"""
+{_quiz_top("Your quiz", left="back")}
+<div class="col" style="padding:4px 20px 0;gap:16px">
+  <div class="card col" style="background:var(--primary);color:#fff;padding:16px">
+    <div class="row" style="gap:12px">{avatar("HK", "var(--kesri)", "#fff", 44)}
+      <div class="col" style="flex:1"><div style="font-weight:700">Harpreet Kaur</div>
+        <div style="font-size:12.5px;opacity:.72">Ludhiana</div></div>
+      <div class="col" style="align-items:flex-end">
+        <div class="disp" style="font-size:26px;font-weight:700;line-height:1;color:var(--kesri)">1,240</div>
+        <div style="font-size:12px;opacity:.72">points</div></div></div>
+    <div class="row" style="margin-top:16px">{place("#3", "today")}{place("#11", "this week")}{place("#18", "this month")}</div>
+  </div>
+  <div class="card col" style="padding:16px">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <div class="disp" style="font-size:18px;font-weight:700">October</div>
+      <div style="font-weight:700;color:var(--kesriInk)">420 points</div></div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">{week}{cells}</div>
+  </div>
 </div>
 """
 
@@ -3883,6 +4271,13 @@ SCREENS = [
     ("110-TodaySaakhis", "Today — with the saakhis row", today_saakhis),
     ("111-SaakhiLibrary", "Saakhis — the library", saakhi_library),
     ("112-MenuSaakhis", "Menu — the left drawer, with Saakhis", menu_saakhis),
+    ("113-TodayQuiz", "Today — scrolled to the quiz and the saakhis", today_quiz),
+    ("114-QuizQuestion", "Gurmat Quiz — a question, answered", quiz_question),
+    ("115-QuizResult", "Gurmat Quiz — your answers", quiz_result),
+    ("116-QuizBoard", "Gurmat Quiz — one quiz's leaderboard", quiz_board),
+    ("117-QuizBoardNoProfile", "Gurmat Quiz — everyone, without a profile", quiz_board_no_profile),
+    ("118-QuizHome", "Gurmat Quiz — the quiz page", quiz_home),
+    ("119-QuizMe", "Gurmat Quiz — your quiz", quiz_me),
 ]
 
 

@@ -2,8 +2,8 @@
 
 Written 2026-10-27 with the owner, after six rounds of design between
 2026-10-26 and 2026-10-27 (the round-6 page is the record of what was chosen;
-the screens join `tools/design/build_phase2.py` as numbered designs in step 6
-of §10). The questions are the owner's bank, `Hazri_Sikh_Quiz_Question_Bank.xlsx`:
+the screens are numbered designs 113-119, drawn by
+`tools/design/build_phase2.py`). The questions are the owner's bank, `Hazri_Sikh_Quiz_Question_Bank.xlsx`:
 340 questions, twenty to a topic, seventeen topics.
 
 This is the first feature in Hazri with points and a ranking. PRD §1.3 was
@@ -282,12 +282,13 @@ is kept on the phone, so both open offline with the last numbers.
 
 ## 10. Building it
 
-**Built 2026-10-27** (steps 1 to 5): content version 10, the Functions with
-their unit and emulator tests, and the app. **Not yet deployed:** the
-Functions, the two `quizScores` indexes, the TTL policies on `deleteAt` and
-the `/q/` page are deployed by hand (PRD §11.5); until then a quiz with a
-profile plays on the phone and says "Points need a connection". Step 6, the
-numbered designs in `build_phase2.py`, is still to do.
+**Built 2026-10-27**, all six steps: content version 10, the Functions with
+their unit and emulator tests, the app, and designs 113-119. **Deployed by
+hand on 2026-10-27:** the Functions, the two `quizScores` indexes and the
+three TTL policies on `deleteAt` (the owner's first quiz with a profile
+earned +30 points and first place). The `/q/` page goes live with the next
+`firebase deploy --only hosting:public` (PRD §11.5); until it does, a shared
+link opens the website's 404 rather than the quiz.
 
 1. This file, ARCHITECTURE §3.2, §5.13, §6.7, PRD §1.3, §4.21, §8.
 2. The importer and the pipeline: the spreadsheet to `content/source/quiz/`,
@@ -298,8 +299,9 @@ numbered designs in `build_phase2.py`, is still to do.
    Your numbers, the menu row; **the privacy screen rewritten in the same
    change** (PRD §8.3).
 5. The share image, `/q/<topic>` in the manifest and on the website.
-6. Designs 1A, the quiz, 4B, 5A, 5B, 6A and 7A in `build_phase2.py`, the
-   canvas republished.
+6. Designs 1A, the quiz, 4B, 5A, 5B, 6A and 7A in `build_phase2.py` as
+   113 (Today), 114 (a question), 115 (4B), 116 (5A), 117 (5B), 118 (6A)
+   and 119 (7A), the canvas republished.
 
 ## 11. Scenarios
 

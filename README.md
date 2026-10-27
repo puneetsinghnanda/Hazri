@@ -5,8 +5,8 @@
 A free Nitnem app for Android, in Punjabi, Hindi and English. Read or listen
 to all seven Nitnem banis, Ardas and Sukhmani Sahib; mark the day present
 with one bani or five minutes of Naam Simran; set daily goals; keep a diary;
-sit Simran with the sangat on a globe; and work toward a shared goal with a
-family, Gurdwara or circle.
+sit Simran with the sangat on a globe; work toward a shared goal with a
+family, Gurdwara or circle; hear a saakhi; and take the day's Gurmat Quiz.
 
 **Works offline. No login, no password. No ads on Gurbani, ever.**
 
@@ -17,8 +17,10 @@ family, Gurdwara or circle.
 **Phase 1** (the offline Nitnem app) and **Phase 2** are built. Every Phase 2
 feature was specified with the owner on 7 and 8 October 2026, the screens
 that changed were redesigned and chosen, and all ten steps of the plan in
-[`docs/PRD.md`](docs/PRD.md) §11 are on the branch `claude/pensive-hawking-k87ese`.
-It is being tested on the owner's phone ahead of the Play Store.
+[`docs/PRD.md`](docs/PRD.md) §11 are on the branch `claude/pensive-hawking-k87ese`,
+followed by Saakhis (25 October) and the Gurmat Quiz (27 October, its
+server side live the same day). It is being tested on the owner's phone
+ahead of the Play Store.
 
 | | |
 |---|---|
@@ -45,6 +47,8 @@ It is being tested on the owner's phone ahead of the Play Store.
 | **Badges** | Ten badges for days kept — never points, never a ranking (a Phase 3 item, built early) |
 | **First run** | Android's splash, one Welcome screen, language, how you read — Gurbani in under 30 seconds |
 | **Admin website** | One person runs the built-in groups and acts on reports |
+| **Saakhis** | Four illustrated stories from Sikh history to read and hear, page by page, opening in Punjabi with Punjabi narration in every app language, English one tap away; one a day on Today, the rest in the library |
+| **Gurmat Quiz** | A quiz a day on Today, by the calendar: five questions on a Guru, a Gurdwara, a bani, the heroes or Sikh culture, from the owner's 340-question bank. With a profile, 10 points a right answer and top-20 leaderboards by day, week and month; without one it plays on the phone and sends nothing. The only points in the app |
 
 ## What else is in the app
 
@@ -79,12 +83,12 @@ It is being tested on the owner's phone ahead of the Play Store.
 lib/                      the Flutter app (feature-first: data / domain / ui)
 assets/                   content.db, the recitations, fonts, the globe outline
 content/source/           the reviewed source files every line of Gurbani comes from,
-                          and timings/, the locked alignments
+                          and timings/, the locked alignments; saakhi/ and quiz/
 tools/content_pipeline/   builds assets/content/content.db
 tools/design/             generates the Phase 2 screens in design/html/
 tools/audio_pipeline/     builds the recitations and their timings
 design/                   tokens.json, every screen in light and dark, canvas.html
-public/                   Firebase Hosting: the home page, /verify, /j/<code>, assetlinks.json
+public/                   Firebase Hosting: the home page, /verify, /j/<code>, /q/<topic>, assetlinks.json
 tools/site/               builds public/index.html (the home page)
 functions/                the api Cloud Function and the scheduled / triggered ones
 admin/                    the admin website
@@ -121,7 +125,7 @@ deployed (ARCHITECTURE §9):
 ```bash
 firebase deploy --only firestore         # rules and indexes
 firebase deploy --only functions
-firebase deploy --only hosting:public    # hazri.me: the home page, /verify, /j/, assetlinks.json
+firebase deploy --only hosting:public    # hazri.me: the home page, /verify, /j/, /q/, assetlinks.json
 npm --prefix admin run build && firebase deploy --only hosting:admin   # the admin website
 ```
 
@@ -140,6 +144,8 @@ About screen can credit it.
 | Calendar | SGPC Nanakshahi calendar (jantri), Nanakshahi 558 — **559 must be added before March 2027** |
 | Fonts | Mukta, Baloo Paaji 2, Playfair Display, Noto Serif Gurmukhi, Noto Serif Devanagari — SIL OFL |
 | Globe | Natural Earth 1:110m (public domain) |
+| Saakhis | The owner's stories, pictures and narration (English and Punjabi), from `saakhi-handoff/` |
+| Gurmat Quiz | The owner's question bank, each question with its source; imported by `tools/content_pipeline/import_quiz.py`. No question quotes Gurbani |
 
 Meanings are uneven, and nothing fills the gaps: English for every bani,
 Punjabi for all but most of Ardas, Hindi only where the Faridkot teeka
