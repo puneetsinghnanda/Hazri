@@ -15,8 +15,8 @@ amended for it on the same day, and only for it (§2, QZ1).
 
 A short quiz on Sikh history and practice, offered by the day of the Sikh
 calendar, that a family can take together and compare: five questions, ten
-points for each right answer, and a leaderboard for each quiz, today, this
-week and this month.
+points for each right answer for somebody with a profile, and a leaderboard
+for each quiz, today, this week and this month.
 
 ## 2. What it is not
 
@@ -103,8 +103,8 @@ and the month, the Nanakshahi day and month, then the event's short label
 from `days.json` as the eyebrow (or **Did you know?** on a day without one), the topic's name, one
 insight, and two buttons, **Know more** and **Take the quiz**. It sits after
 the Nitnem button and before the Saakhis row (owner, 2026-10-26: "above
-saakhis"). It is not shown in elder mode, like the Saakhis row; the quiz is
-still in the menu.
+saakhis"). It is shown in elder mode too, at elder sizes, as the Saakhis row
+is (owner, 2026-10-27).
 
 **QZ10. The insight is the explanation of one of the topic's questions,
 word for word**, never written for the card. It is chosen by the date from
@@ -126,11 +126,14 @@ of one difficulty fills the place from the next harder one, then the next
 easier one. Questions the player saw in their last two attempts at the topic
 are avoided while the topic has enough others.
 
-**QZ14. The server draws them** when the player presses Start (`POST
-/quiz/sessions`, ARCHITECTURE §6.7), so a session is the server's and is
-scored by the server's own answer key. The phone shows the questions from
-`content.db` by id; nothing but the ids, the session and later the five
-choices travel.
+**QZ14. With a profile, the server draws them** when the player presses
+Start (`POST /quiz/sessions`, ARCHITECTURE §6.7), so a session is the
+server's and is scored by the server's own answer key. The phone shows the
+questions from `content.db` by id; nothing but the ids, the session and
+later the five choices travel. **Without a profile nothing is sent at all**
+(owner, 2026-10-27): the phone draws the five itself by QZ13's rule,
+avoiding the questions of the last two attempts it remembers, and the quiz
+runs exactly the same, without points (QZ31).
 
 **QZ15. Each answer is marked at once on the phone:** the right option in
 green, a wrong choice in red with the right one in green, then the
@@ -138,9 +141,9 @@ explanation, then **Next** (on the fifth, **See your result**). Options are
 shown in the bank's order, because two of them say "both of the above".
 There is no timer and no hint.
 
-**QZ16. Without a connection the quiz still works, without points.** If the
-session cannot be started within 5 seconds, the phone draws the five by
-QZ13's rule itself and the quiz runs the same; the result says **Points need
+**QZ16. Without a connection the quiz still works, without points.** If a
+profile's session cannot be started within 5 seconds, the phone draws the
+five itself (QZ14) and the quiz runs the same; the result says **Points need
 a connection** instead of the points. Nothing is queued to send later.
 
 **QZ17. Leaving a quiz part-way loses it.** Closing it asks
@@ -149,8 +152,8 @@ An unsubmitted session expires after 30 minutes.
 
 ## 6. Points
 
-**QZ18. Ten points for each right answer**, so a quiz is worth 0 to 50
-(owner, 2026-10-26). The server adds them up from the five choices
+**QZ18. Ten points for each right answer, with a profile**, so a quiz is
+worth 0 to 50 (owner, 2026-10-26 and 2026-10-27). The server adds them up from the five choices
 (`POST /quiz/sessions/{id}/answers`); a score from the phone is never
 trusted (ARCHITECTURE §10.1 M3).
 
@@ -168,7 +171,7 @@ topic. A player who improves their best moves up by the difference.
 midnight IST, a week runs Monday to Sunday, a month is the calendar month.
 The board says "resets at midnight IST".
 
-**QZ22. Limits.** At most 30 sessions per player per IST day; one
+**QZ22. Limits** (owner, 2026-10-27). At most 30 sessions per player per IST day; one
 submission per session; a session submitted less than 10 seconds after it
 started, or more than 30 minutes after, is refused and earns nothing. The
 app says **You've taken a lot of quizzes today. Come back tomorrow.** when
@@ -177,7 +180,8 @@ the daily limit is reached, and offers the offline quiz (QZ16).
 ## 7. The result
 
 **QZ23. The result is design 4B** (owner, 2026-10-26 and 2026-10-27): the
-score out of 5 and **+N points**, the topic, the five questions as one line
+score out of 5 and **+N points** (without a profile, no points line, QZ31),
+the topic, the five questions as one line
 each with ✓ or ✕ (each opens that question's answer screen again), then the
 share card, then **See the leaderboard · you are Nth** as the main button,
 and **Done**.
@@ -197,16 +201,16 @@ like `/j/<code>`), straight into its first question once setup is done
 the website that names the quiz and points to the app.
 
 **QZ26. The leaderboard button names the player's place on today's board for
-that topic.** Without a profile it reads **See the leaderboard**. Offline
-(QZ16) it is not shown.
+that topic.** Without a profile it reads **See the leaderboard**, and above
+the share card a line says **Make a profile to earn points and join the
+leaderboard**, opening Profile setup. Offline (QZ16) the button is not
+shown.
 
 ## 8. The leaderboards
 
 **QZ27. Everyone with a profile is on the boards** (owner, 2026-10-26: "All
 users will be in by default"). There is no opt-in and no switch. A player
-without a profile is never listed; their points are kept under the install
-and **move to the profile when one is made** (QZ31), which is what the board
-promises them (QZ29).
+without a profile has no points and is never listed (QZ31).
 
 **QZ28. A board is the top twenty** (owner, 2026-10-26), design 5A: chips for
 **Today**, **Week** and **Month**, then chips for **Everyone** and each
@@ -218,9 +222,10 @@ today · resets at midnight IST". Equal points share a place; within it, who
 reached the score first is listed first.
 
 **QZ29. Without a profile the board is design 5B**: the same board, with a
-card above it, **Make a profile to be on the leaderboard**, "Your {n} points
-today will count. Just a name and your city.", and **Make a profile**, which
-opens Profile setup.
+card above it, **Make a profile to be on the leaderboard**, "Your quiz points
+count from the day you make one. Just a name and your city.", and **Make a
+profile**, which opens Profile setup. Fetching a board needs no profile and
+sends nothing about the player.
 
 **QZ30. A board is never more than two minutes old** and is built by the
 server, at most every two minutes, only when somebody looks (ARCHITECTURE
@@ -228,11 +233,11 @@ server, at most every two minutes, only when somebody looks (ARCHITECTURE
 whoever opens it, and one more with a `count()` for the player's own place. A board that cannot be fetched shows the last copy with "Not updated ·
 no connection", or, with none, "The leaderboard needs a connection."
 
-**QZ31. Making a profile moves the install's quiz points to it**, in the
-profile-creation transaction, as Sangat memberships move (`08-sangat.md`
-MB2): the player's totals and this day's, week's and month's scores, now
-listed under the profile's name and city. A profile's name or city change
-reaches its rows on the current boards at once.
+**QZ31. Points start with a profile** (owner, 2026-10-27: "lets not record
+any point if there is no profile"). Quizzes taken before one is made earn
+nothing, are not sent and are not carried over; the first quiz after it is
+the first that counts. A profile's name or city change reaches its rows on
+the current boards at once.
 
 **QZ32. Restoring a profile on a new phone keeps its points**, because they
 belong to the profile, not the install.
@@ -242,7 +247,8 @@ belong to the profile, not the install.
 **QZ33. The menu gains Gurmat Quiz**, after Saakhis, opening the quiz page.
 The page is design 6A:
 
-1. the header "Gurmat Quiz" with the player's total points;
+1. the header "Gurmat Quiz" with the player's total points (without a
+   profile, **Make a profile to earn points** in its place);
 2. **Coming up on the calendar**: today's topic first with **Start**, then the
    next two dates in the next 30 days that `days.json` maps, each with its
    date, topic and event;
@@ -250,7 +256,7 @@ The page is design 6A:
    rounded saffron tiles with their drawings, the chosen one outlined;
 4. the chosen category's quizzes, each a row with its glyph, its name, a
    **Today** or date chip where one applies, "5 random questions · {n} pts so
-   far", and **Start**.
+   far" ("5 random questions" alone without a profile), and **Start**.
 
 The header's points open Your numbers; a board icon in the header opens the
 leaderboard.
@@ -258,11 +264,12 @@ leaderboard.
 **QZ34. Your numbers is design 7A**: a navy card with the initials, the name
 and city, the total points, and the player's place today, this week and this
 month on the Everyone board; then the month as a calendar, each day with the
-points earned that day, and the month's total. Without a profile the card
-shows "You" and the places are replaced by the Make a profile card (QZ29).
+points earned that day, and the month's total. Without a profile the screen
+is the Make a profile card (QZ29) alone.
 
 **QZ35. Your numbers and the quiz page's points come from the server** (`GET
-/quiz/me`), fetched when either opens and after each result; the last answer
+/quiz/me`, with a profile only), fetched when either opens and after each
+result; the last answer
 is kept on the phone, so both open offline with the last numbers.
 
 ## 10. Building it
@@ -270,8 +277,8 @@ is kept on the phone, so both open offline with the last numbers.
 1. This file, ARCHITECTURE §3.2, §5.13, §6.7, PRD §1.3, §4.21, §8.
 2. The importer and the pipeline: the spreadsheet to `content/source/quiz/`,
    `content.db` (content version 10) and `functions/src/quiz-bank.json`.
-3. The Functions: sessions, scoring, scores, boards, `/quiz/me`, the move on
-   profile creation, the name and city sync; emulator tests for each.
+3. The Functions: sessions, scoring, scores, boards, `/quiz/me`, the name
+   and city sync; emulator tests for each.
 4. The app: the Today card, the quiz, the result, the boards, the quiz page,
    Your numbers, the menu row; **the privacy screen rewritten in the same
    change** (PRD §8.3).
@@ -315,13 +322,15 @@ scores 20 on it, then their total rises by 20 and no board changes.
 five questions show within the 5-second limit, the quiz runs, and the
 result says "Points need a connection" with no leaderboard button.
 
-**Without a profile.** Given a player without a profile who has 140 points
-today, when they open the leaderboard, then the Make a profile card says
-"Your 140 points today will count" and they are not among the rows.
+**Without a profile.** Given a player without a profile, when they take a
+quiz and get 4 right, then no request is made, the result shows 4 out of 5
+with no points line and the Make a profile line, and when they open the
+leaderboard the Make a profile card is above the rows and they are not
+among them.
 
-**Making a profile.** Given that player, when they make a profile, then they
-appear on today's boards with 140 points under their first name, surname
-initial and city.
+**Making a profile.** Given that player, when they make a profile and take
+the same quiz again, then only the new quiz's points count, and they appear
+on today's boards under their first name, surname initial and city.
 
 **Top twenty.** Given 312 players today and the player 34th, when the board
 opens, then it lists 20 rows, then the player's own row with 34, and "Top 20
@@ -346,6 +355,10 @@ then it is refused with `SESSION_TOO_FAST` and earns nothing.
 start a 31st, then the server answers `QUIZ_DAILY_LIMIT` and the app offers
 the offline quiz.
 
+**Failure: a session without a profile.** Given an install with no profile,
+when anything calls `POST /quiz/sessions`, then the server answers `404
+NO_PROFILE` and stores nothing.
+
 **Failure: an unknown question.** Given an older app whose `content.db` lacks
 a question the server would draw, then the server draws only from the bank
 version the app sent (ARCHITECTURE §6.7), so every id it returns exists on
@@ -363,12 +376,13 @@ with Gurmukhi text in it, then `build_content_db.py` fails (QZ2).
 | # | Question | Default |
 |---|---|---|
 | QZ-1 | The 54 questions carrying a reviewer's note (traditions differ, a date disputed) | They ship; the notes stay out of the app (QZ7), and none is used as an insight (QZ10) |
-| QZ-2 | `days.json`: which events map to which topic | Claude's draft (each Guru's Prakash, Gurgaddi, Joti Jot and Shaheedi Purab to that Guru; Bandi Chhor Divas and Miri-Piri Divas to Guru Hargobind Sahib Ji; Vaisakhi to Guru Gobind Singh Ji; the two Gurgaddi and Sampuranta days of Sri Guru Granth Sahib Ji to it; the Sahibzade, the Shaheeds and the Ghallugharas to Sikh Heroes or Sikh History; the Akal Takht's and Harmandir Sahib's foundation days to the Five Takhts or Historic Gurdwaras), for the owner to check |
+| QZ-2 | `days.json`: which events map to which topic | **Closed**: Claude's draft, accepted by the owner on 2026-10-27 (each Guru's Prakash, Gurgaddi, Joti Jot and Shaheedi Purab to that Guru; Bandi Chhor Divas and Miri-Piri Divas to Guru Hargobind Sahib Ji; Vaisakhi to Guru Gobind Singh Ji; the two Gurgaddi and Sampuranta days of Sri Guru Granth Sahib Ji to it; the Sahibzade, the Shaheeds and the Ghallugharas to Sikh Heroes or Sikh History; the Akal Takht's and Harmandir Sahib's foundation days to the Five Takhts or Historic Gurdwaras) |
 | QZ-3 | Punjabi and Hindi questions | English until a reviewed translation exists (QZ6) |
-| QZ-4 | A way to stay off the boards with a profile | None: everybody with a profile is listed (owner, 2026-10-26). The privacy screen says so plainly |
-| QZ-5 | Your total (every attempt) and a board's score (best per topic per day) are different numbers | As written; the board is the fair one, the total is the player's own |
-| QZ-6 | The quiz in elder mode | Not on Today; in the menu |
-| QZ-7 | The topic for a player abroad | By the phone's date, so a Gurpurab's quiz is on its day there; the boards still turn at midnight IST |
+| QZ-4 | A way to stay off the boards with a profile | **Closed**: none; everybody with a profile is listed (owner, 2026-10-26, confirmed 2026-10-27). The privacy screen says so plainly |
+| QZ-5 | Your total (every attempt) and a board's score (best per topic per day) are different numbers | **Closed**: as written (owner, 2026-10-27) |
+| QZ-8 | Points without a profile | **Closed**: none, and nothing is sent; points start with a profile (owner, 2026-10-27) |
+| QZ-6 | The quiz in elder mode | **Closed**: on Today in elder mode too, with the Saakhis row (owner, 2026-10-27) |
+| QZ-7 | The topic for a player abroad | **Closed**: by the phone's date, so a Gurpurab's quiz is on its day there; the boards still turn at midnight IST (owner, 2026-10-27) |
 
 ## 13. Acceptance
 
@@ -376,12 +390,13 @@ with Gurmukhi text in it, then `build_content_db.py` fails (QZ2).
   edges; QZ10's choice; QZ13's draw for a topic short of hard questions.
 - Pipeline: the reference checks of QZ4 and QZ2 seen failing.
 - Emulator: a session and its submission (QZ14, QZ18); a submission twice; a
-  forged score; too fast, too late, the 31st session; QZ20's best per topic
-  per day across two attempts; the board's two-minute rebuild; the move on
-  profile creation (QZ31); a name change reaching today's board.
+  forged score; too fast, too late, the 31st session; no profile; QZ20's best
+  per topic per day across two attempts; the board's two-minute rebuild; a
+  name change reaching today's board.
 - Widget: the Today card in each state (event, no event, no Know more, elder
-  mode); a question answered right and wrong with no source; the result's
-  offline form; the board with and without a profile; the quiz page's chips.
+  mode); a question answered right and wrong with no source; the result
+  offline and without a profile, with no request made; the board with and
+  without a profile; the quiz page's chips.
 - `l10n_test` passes with every new string in pa, hi and en.
 - Storage: ARCHITECTURE §3.2 (`quiz_topic`, `quiz_question`, `quiz_day`),
   §3.9.4 (`quiz_me_v1`, `quiz_boards_v1`), §5.13 (`quizSessions`,

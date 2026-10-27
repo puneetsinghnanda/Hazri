@@ -1272,9 +1272,10 @@ The ignore list must not contain \*\*/.\*, otherwise .well-known/assetlinks.json
 
 ### 5.13 The Gurmat Quiz (`14-quiz.md`, 2026-10-27)
 
-Every document is written by the `api` Function alone (§10.1 M3). `memberKey`
-is the Sangat's: `p_{profileId}` with a profile, `u_{uid}` without
-(`08-sangat.md` MB2). Days, weeks and months are IST (QZ21).
+Every document is written by the `api` Function alone (§10.1 M3). **Only a
+profile plays for points** (QZ31): `memberKey` is always `p_{profileId}`,
+and an install without a profile sends nothing to the quiz. Days, weeks and
+months are IST (QZ21).
 
 **Board ids.** `{period}{key}_{scope}`: period `d` with `YYYY-MM-DD`, `w`
 with the ISO week `YYYY-Www`, `m` with `YYYY-MM`; scope `all` or a topic id.
@@ -1300,9 +1301,8 @@ For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
 
 | Field | Type | Rule |
 |---|---|---|
-| `displayName` | string? | The profile's first name and the initial of its last word ("Manpreet S."); null without a profile |
-| `cityId` | string? | The profile's city |
-| `listed` | bool | True with a profile (QZ27) |
+| `displayName` | string | The profile's first name and the initial of its last word ("Manpreet S.") |
+| `cityId` | string | The profile's city |
 | `points` | number | Every attempt (QZ19) |
 | `attempts` | number | Submitted sessions |
 | `topics` | map | topicId → points from every attempt ("pts so far") |
@@ -1317,7 +1317,7 @@ For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
 |---|---|---|
 | `boardId`, `memberKey` | string | |
 | `score` | number | QZ20: on a `d…_{topic}` board the day's best; on the rest the sum of daily bests it covers |
-| `listed`, `displayName`, `cityId` | | Copied from the player when written |
+| `displayName`, `cityId` | | Copied from the player when written |
 | `reachedAt` | timestamp | When the score last rose; orders equal scores (QZ28) |
 | `deleteAt` | timestamp | TTL: a day's board's rows 35 days after the day, a week's 70, a month's 400 |
 
@@ -1326,18 +1326,17 @@ For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
 | Field | Type | Rule |
 |---|---|---|
 | `rows` | array ≤ 20 | `{ place, displayName, cityId, score, memberKey }`; `memberKey` never leaves the server (§6.7) |
-| `played` | number | `count()` of the board's scores, listed or not |
+| `played` | number | `count()` of the board's scores |
 | `builtAt` | timestamp | Rebuilt when older than `QUIZ_BOARD_SECONDS` (120) and somebody asks |
 | `deleteAt` | timestamp | As its scores |
 
 #### Indexes
 
-- `quizScores`: `boardId` ascending, `listed` ascending, `score` descending,
-  `reachedAt` ascending, for a board's top twenty;
-- `quizScores`: `boardId`, `listed`, `score` ascending, for a player's place
-  (`count()` of the listed scores above theirs, plus one);
-- `quizScores`: `memberKey` ascending, for the move on profile creation and
-  the name and city sync.
+- `quizScores`: `boardId` ascending, `score` descending, `reachedAt`
+  ascending, for a board's top twenty;
+- `quizScores`: `boardId`, `score` ascending, for a player's place
+  (`count()` of the scores above theirs, plus one);
+- `quizScores`: `memberKey` ascending, for the name and city sync.
 
 #### What writes them
 
@@ -1345,12 +1344,9 @@ For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
   score; if the attempt beats the day's best, it reads and raises the five
   other scores it feeds (the week's and month's for the topic, and the
   day's, week's and month's Everyone) by the difference. At most 8 writes.
-- **Profile creation** (`01-accounts.md` §6.2) gains one step, beside the
-  Sangat's: `quizPlayers/u_{uid}` and the `u_{uid}` scores of the current
-  day, week and month (at most 54) are rewritten under `p_{profileId}`,
-  listed, with the profile's name and city (QZ31). Older unlisted scores
-  are left to expire. A restore moves nothing: the profile's points are
-  already its own (QZ32).
+- **Profile creation** changes nothing here: quizzes before it were never
+  sent (QZ31). A restore moves nothing either: the points are the
+  profile's own (QZ32).
 - **`sangatProfileSync`**, on a profile's name or city change, also updates
   `quizPlayers/p_{profileId}` and that member's scores on the current
   boards.
@@ -1748,17 +1744,18 @@ Errors: `403 NOT_ADMIN`, `404 NOT_FOUND`, `400 VALIDATION_ERROR`, `409 CONFIRM_M
 
 ### 6.7 The Gurmat Quiz (`14-quiz.md`)
 
-All under `/api/v1/quiz`, following `01-accounts.md` §6.0. Every endpoint
-works with an anonymous ID token; a profile only decides whether the player
-is listed. The answer key is `functions/src/quiz-bank.json`, written by the
+All under `/api/v1/quiz`, following `01-accounts.md` §6.0. Sessions,
+answers and `/me` **need a profile** and answer `404 NO_PROFILE` without one;
+the app never calls them then (QZ14). `GET /board` works with any install's
+token and records nothing about the caller. The answer key is `functions/src/quiz-bank.json`, written by the
 content pipeline with `content.db` (QZ4).
 
 | Method and path | Body | Does | Errors |
 |---|---|---|---|
-| `POST /sessions` | `{ topicId, bankVersion }` | Counts the session against the day (QZ22), draws five questions (QZ13) from the bank as of `bankVersion`, stores the session. Returns `{ sessionId, questionIds, expiresAt }` | `400 VALIDATION_ERROR` (unknown topic), `429 QUIZ_DAILY_LIMIT` |
-| `POST /sessions/{id}/answers` | `{ choices: ["A", …] }`, five | Marks the choices, records the points (§5.13 "What writes them"). Returns `{ correct: [5 bools], points, totalPoints, placeToday }`, `placeToday` on the topic's day board, null without a profile. A second call returns the first answer and writes nothing | `404 SESSION_NOT_FOUND` (also another player's), `409 SESSION_TOO_FAST` (under 10 s), `409 SESSION_EXPIRED` (over 30 min), `400 VALIDATION_ERROR` |
-| `GET /board?period=day\|week\|month&scope=all\|{topicId}` | — | The current board, rebuilt first when older than 120 s (§5.13). Returns `{ boardId, builtAt, played, rows: [ { place, name, cityId, score, you } ], me: { score, place } }`; `you` marks the caller's row, `me.place` is null without a profile | `400 VALIDATION_ERROR` |
-| `GET /me` | — | `{ listed, points, attempts, topics, days, places: { day, week, month } }`; `days` covers this month and last; `places` on the Everyone boards, null without a profile | — |
+| `POST /sessions` | `{ topicId, bankVersion }` | Counts the session against the day (QZ22), draws five questions (QZ13) from the bank as of `bankVersion`, stores the session. Returns `{ sessionId, questionIds, expiresAt }` | `400 VALIDATION_ERROR` (unknown topic), `404 NO_PROFILE`, `429 QUIZ_DAILY_LIMIT` |
+| `POST /sessions/{id}/answers` | `{ choices: ["A", …] }`, five | Marks the choices, records the points (§5.13 "What writes them"). Returns `{ correct: [5 bools], points, totalPoints, placeToday }`, `placeToday` on the topic's day board. A second call returns the first answer and writes nothing | `404 SESSION_NOT_FOUND` (also another player's), `409 SESSION_TOO_FAST` (under 10 s), `409 SESSION_EXPIRED` (over 30 min), `400 VALIDATION_ERROR` |
+| `GET /board?period=day\|week\|month&scope=all\|{topicId}` | — | The current board, rebuilt first when older than 120 s (§5.13). Returns `{ boardId, builtAt, played, rows: [ { place, name, cityId, score, you } ], me: { score, place } }`; `you` marks the caller's row; `me` is null without a profile or a score | `400 VALIDATION_ERROR` |
+| `GET /me` | — | `{ points, attempts, topics, days, places: { day, week, month } }`; `days` covers this month and last; `places` on the Everyone boards | `404 NO_PROFILE` |
 
 **Cost.** A session: 2 reads, 2 writes. A submission: 3 to 8 reads, 2 to 8
 writes, plus one `count()` for `placeToday`. A board: 1 read while it is

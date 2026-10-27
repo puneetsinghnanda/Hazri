@@ -4,6 +4,7 @@ import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/core/time/clock.dart';
+import 'package:hazri/features/saakhi/ui/saakhi_library_screen.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
 
 import '../app_harness.dart';
@@ -55,6 +56,8 @@ void main() {
     await pump(tester, elder: true);
     expect(find.text(l.appBarTitle), findsOneWidget);
     expect(find.text(l.goalSetCardTitle), findsOneWidget);
+    // 13-saakhi SK15 (owner, 2026-10-27): the saakhis stay in elder mode.
+    expect(find.byType(SaakhiTodayRow, skipOffstage: false), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

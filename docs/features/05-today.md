@@ -46,8 +46,8 @@ call to action does not know about goals.
 | 4 | Streak card | When the hazri streak is 2 days or more | T12 |
 | 5 | Set Goal card, or the goal widget | Always, one or the other | `04-goals.md` §7.1 |
 | 6 | Call to action | When `content.db` has a bani to offer | T4 |
-| 6a | Gurmat Quiz card (design 1A) | When `content.db` has quiz topics; not in elder mode | `14-quiz.md` QZ9 |
-| 6b | Saakhis row (design 110) | When `content.db` has a saakhi; not in elder mode | `13-saakhi.md` SK11 |
+| 6a | Gurmat Quiz card (design 1A) | When `content.db` has quiz topics; in elder mode too | `14-quiz.md` QZ9 |
+| 6b | Saakhis row (design 110) | When `content.db` has a saakhi; in elder mode too | `13-saakhi.md` SK11, SK15 |
 | 7 | Vichar card | When the dataset has a line for the date | T6 |
 | 8 | Gurpurab card | When one is near | unchanged |
 

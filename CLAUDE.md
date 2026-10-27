@@ -45,10 +45,11 @@ git history and is not a reference.
    profile the person chooses to make** (name, email, city, phone if given)
    with its verification and restore mail; with a profile, the **daily
    attendance mark** and the **weekly backup**; for a Sangat member, their
-   paath toward their groups and an FCM token; for anybody who starts a
-   **Gurmat Quiz** online, its topic and the five answers, and with a profile
-   their first name, initial, city and quiz points on the leaderboards
-   (`docs/features/14-quiz.md`, 2026-10-27). No client touches Firestore:
+   paath toward their groups and an FCM token; with a profile, a **Gurmat
+   Quiz** started online (its topic and the five answers), and their first
+   name, initial, city and quiz points on the leaderboards. Without a profile
+   the quiz sends nothing and earns no points (`docs/features/14-quiz.md`,
+   2026-10-27). No client touches Firestore:
    everything goes through the `api` Cloud Function. **Firebase Analytics ships in Phase 2 with collection off and
    sends nothing** (`setAnalyticsCollectionEnabled(false)` at start-up);
    Crashlytics is not added at all until Phase 3, which is where collection is
@@ -91,7 +92,8 @@ about a saakhi is counted, and there is no Diary link.
 **The Gurmat Quiz was added on 2026-10-27** as a Phase 2 feature
 (`docs/features/14-quiz.md`, PRD §4.21), after six rounds of design: the
 owner's 340-question bank in `content.db`, five questions drawn by the server,
-ten points a right answer, and top-20 leaderboards for each quiz and for
+ten points a right answer **with a profile only** (without one the quiz plays
+on the phone, sends nothing and earns nothing), and top-20 leaderboards for each quiz and for
 everyone, by day, week and month in IST. It is **the first points and the one
 ranking in the app**, for quiz answers only: PRD §1.3 was amended for it and
 for nothing else, and no question quotes Gurbani. Specified, not built; PRD
@@ -503,7 +505,7 @@ is true of the code now, then what is live, then what is still open.
   masters in `saakhi-handoff/`. The reader turns pages with the narration
   (just_audio, its own player), the lesson is design D, Share makes a
   1080 x 1920 picture, hearts go in `user.db` schema 7. Today shows the row
-  of covers (1A) and the menu is a left drawer (option A,
+  of covers (1A), in elder mode too (2026-10-27), and the menu is a left drawer (option A,
   `showMenuDrawer` in `lib/app/menu_sheet.dart`). A typed-in shabad ships
   only with a `checked` record naming its source (SK3); Bhai Lalo's Ang 105
   pankti was checked against BaniDB on 2026-10-25.

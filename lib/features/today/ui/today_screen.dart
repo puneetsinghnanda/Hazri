@@ -76,10 +76,11 @@ class TodayScreen extends ConsumerWidget {
                     const _GoalsCard(),
                     const SizedBox(height: 12),
                     _CtaButton(cta: ref.watch(todayCtaProvider)),
+                    // 13-saakhi SK11, option 1A: after the button, before ਅੱਜ ਦਾ ਵਿਚਾਰ.
+                    // Shown in elder mode too (SK15, owner 2026-10-27).
+                    const SizedBox(height: 18),
+                    const SaakhiTodayRow(),
                     if (!elder) ...[
-                      // 13-saakhi SK11, option 1A: after the button, before ਅੱਜ ਦਾ ਵਿਚਾਰ.
-                      const SizedBox(height: 18),
-                      const SaakhiTodayRow(),
                       const SizedBox(height: 12),
                       const VicharCard(),
                       const SizedBox(height: 12),

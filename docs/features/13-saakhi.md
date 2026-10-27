@@ -102,7 +102,8 @@ marks the saakhi (`user.db` `saakhi_favourites`), and the library shows it.
 
 **SK15. Built** (2026-10-25). The reader, the library (design 111), Share,
 the Today row (design 110) and the left drawer (design 112) are in the app.
-The Today row is not shown in elder mode, like ਅੱਜ ਦਾ ਵਿਚਾਰ beside it. The
+The Today row is shown in elder mode too (owner, 2026-10-27; until then it
+stepped aside there with ਅੱਜ ਦਾ ਵਿਚਾਰ). The
 share sheet offers Share image and Copy text; **Save** is left out until the
 app has a way to write to the phone's gallery (a share to Files or Photos
 does the same today).
