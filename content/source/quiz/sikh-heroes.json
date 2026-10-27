@@ -1,0 +1,405 @@
+{
+ "topic": "sikh-heroes",
+ "questions": [
+  {
+   "id": "Q301",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "On Guru Nanak Dev Ji's instruction, who applied the ceremonial tilak to Bhai Lehna at his installation as Guru Angad Dev Ji?",
+   "options": [
+    "Bhai Mardana Ji",
+    "Baba Buddha Ji",
+    "Bhai Gurdas Ji",
+    "Bhai Bala Ji"
+   ],
+   "answer": "B",
+   "explanation": "Baba Buddha Ji anointed Guru Angad Dev Ji with the tilak at Guru Nanak Dev Ji's bidding, and had the honour of anointing the succeeding Gurus as well.",
+   "source": "Encyclopaedia of Sikhism – Buddha, Baba",
+   "url": "https://eos.learnpunjabi.org/BUDDHA%20BABA%20(1506-1631).html",
+   "url2": null,
+   "note": "Exact count of Gurus anointed not asked (source wording is ambiguous).",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q302",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "Guru Arjan Dev Ji designated whose poetry as the 'key' to the holy scripture (Gurbani)?",
+   "options": [
+    "Bhai Mani Singh Ji",
+    "Bhai Nand Lal Ji",
+    "Baba Buddha Ji",
+    "Bhai Gurdas Ji"
+   ],
+   "answer": "D",
+   "explanation": "Bhai Gurdas Ji's Punjabi Vaaran explain the Gurus' teachings so well that Guru Arjan Dev Ji called them the key to the scripture.",
+   "source": "Encyclopaedia of Sikhism – Gurdas, Bhai",
+   "url": "https://eos.learnpunjabi.org/GURDAS%20BHAI%20(1551-1636).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q303",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "Where were Mata Gujri Ji and the two younger Sahibzade held captive in December 1705?",
+   "options": [
+    "The Thanda Burj (Cold Tower) of Sirhind Fort",
+    "The Lahore Fort",
+    "The Red Fort, Delhi",
+    "Chamkaur Garhi"
+   ],
+   "answer": "A",
+   "explanation": "Mata Gujri Ji and Sahibzade Zorawar Singh and Fateh Singh were held in the Thanda Burj of Sirhind Fort. She passed away there after the martyrdom of her grandsons; Gurdwara Fatehgarh Sahib marks the site.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Fatehgarh Sahib Gurdwara",
+   "url": "https://eos.learnpunjabi.org/FATEHGARH%20SAHIB%20GURDWARA%20.html",
+   "url2": "https://eos.learnpunjabi.org/GUJARI%20MATA%20(1624-1705).html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q304",
+   "topic": "sikh-heroes",
+   "difficulty": "easy",
+   "question": "Which revered Sikh woman is honoured as the 'Mother of the Khalsa'?",
+   "options": [
+    "Mata Gujri Ji",
+    "Mai Bhago Ji",
+    "Mata Sahib Kaur Ji",
+    "Bibi Bhani Ji"
+   ],
+   "answer": "C",
+   "explanation": "Mata Sahib Kaur Ji (Mata Sahib Devan), wife of Guru Gobind Singh Ji, is honoured as the Mother of the Khalsa. She later guided the Panth from Delhi and issued hukamnamas.",
+   "source": "SikhNet - Mata Sahib Devan",
+   "url": "https://www.sikhnet.com/node/105269",
+   "url2": null,
+   "note": "Patase/amrit story deliberately not asked: traditional accounts vary on chronology with her marriage date.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q305",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "In 1733, when the Mughal government offered the title of Nawab to the Khalsa at Amritsar, who was chosen to receive it?",
+   "options": [
+    "Jassa Singh Ramgarhia",
+    "Baba Deep Singh Ji",
+    "Kapur Singh",
+    "Bhai Mani Singh Ji"
+   ],
+   "answer": "C",
+   "explanation": "The offer was conveyed by Subeg Singh at a Baisakhi gathering in Amritsar; the assembled Sikhs unanimously chose Kapur Singh, who became known as Nawab Kapur Singh.",
+   "source": "Encyclopaedia of Sikhism – Kapur Singh, Nawab",
+   "url": "https://eos.learnpunjabi.org/KAPUR%20SINGH%20NAWAB%20(1697-1753).html",
+   "url2": null,
+   "note": "SUBSTITUTE: Sham Singh Attariwala at Sabraon could not be confirmed in an opened source (Britannica Sobraon page gives date only). Caution: existing Q314 names 'Nawab Kapur Singh' in its question text.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q306",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "Which Mughal official, faujdar of Sirhind, ordered the execution of Sahibzade Zorawar Singh and Fateh Singh in 1705?",
+   "options": [
+    "Wazir Khan",
+    "Zakariya Khan",
+    "Lakhpat Rai",
+    "Yahiya Khan"
+   ],
+   "answer": "A",
+   "explanation": "Wazir Khan, the faujdar of Sirhind, sentenced the younger Sahibzade (aged about 9 and 7) to death after they refused to give up their faith. Banda Singh Bahadur later defeated and killed Wazir Khan in 1710.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Fatehgarh Sahib Gurdwara",
+   "url": "https://eos.learnpunjabi.org/FATEHGARH%20SAHIB%20GURDWARA%20.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q307",
+   "topic": "sikh-heroes",
+   "difficulty": "easy",
+   "question": "Bhai Kanhaiya Ji is remembered for which act of sewa during the battles at Anandpur?",
+   "options": [
+    "Carrying the Guru's letters to the Mughal court",
+    "Cremating the martyrs at Chamkaur",
+    "Recovering the Guru's horses from Lahore",
+    "Giving water to wounded soldiers of both sides"
+   ],
+   "answer": "D",
+   "explanation": "Bhai Kanhaiya Ji served water to wounded soldiers on both sides, explaining to Guru Gobind Singh Ji that he saw the Guru in everyone. He founded the Sevapanthi order.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Kanhaiya, Bhai",
+   "url": "https://eos.learnpunjabi.org/KANHAIYA%20BHAI%20(1648-1718).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q308",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "In May 1710, Baba Banda Singh Bahadur's forces defeated and killed Wazir Khan at which battle before capturing Sirhind?",
+   "options": [
+    "Kup",
+    "Chappar Chiri",
+    "Sabraon",
+    "Naushera"
+   ],
+   "answer": "B",
+   "explanation": "At Chappar Chiri on 12 May 1710 Wazir Khan was killed, and Sirhind fell to Banda Singh Bahadur two days later.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Banda Singh Bahadur",
+   "url": "https://eos.learnpunjabi.org/BANDA%20SINGH%20BAHADUR%20(1670-1716).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q309",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "Which Sikh scholar and martyr, traditionally credited with compiling the Dasam Granth and who served at Sri Harmandir Sahib, was martyred in Lahore by having his body cut apart limb by limb?",
+   "options": [
+    "Bhai Taru Singh Ji",
+    "Baba Deep Singh Ji",
+    "Bhai Gurdas Ji",
+    "Bhai Mani Singh Ji"
+   ],
+   "answer": "D",
+   "explanation": "Bhai Mani Singh Ji was prosecuted over a Diwali gathering at Amritsar and martyred in Lahore in 1737 after refusing to give up his faith; his body was cut apart joint by joint.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Mani Singh, Bhai",
+   "url": "https://eos.learnpunjabi.org/MANI%20SINGH%20BHAI%20(D.1737).html",
+   "url2": null,
+   "note": "Year not asked: sources give 1734 or 1737.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q310",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "How was Bhai Taru Singh Ji martyred in Lahore in 1745?",
+   "options": [
+    "He was broken on a wheel",
+    "His scalp was removed",
+    "He was bricked alive",
+    "He was boiled in a cauldron"
+   ],
+   "answer": "B",
+   "explanation": "Bhai Taru Singh Ji of village Puhla refused to convert to Islam and was sentenced to death by scalping in Lahore in 1745, under Governor Zakariya Khan.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Taru Singh, Bhai",
+   "url": "https://eos.learnpunjabi.org/TARU%20SINGH%20BHAI%20(1720-45).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q311",
+   "topic": "sikh-heroes",
+   "difficulty": "easy",
+   "question": "Baba Deep Singh Ji attained martyrdom in 1757 while fighting to defend which holy place?",
+   "options": [
+    "Anandpur Sahib",
+    "Nankana Sahib",
+    "Sri Harmandir Sahib, Amritsar",
+    "Takht Sri Patna Sahib"
+   ],
+   "answer": "C",
+   "explanation": "After Jahan Khan desecrated the sacred pool at Amritsar, Baba Deep Singh Ji marched there and fell fighting near the Harmandir on 11 November 1757. He led the Shahid misl.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Dip Singh Shahid, Baba",
+   "url": "https://eos.learnpunjabi.org/DIP%20SINGH%20SHAHID%20BABA%20(1682-1757).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q312",
+   "topic": "sikh-heroes",
+   "difficulty": "easy",
+   "question": "Mai Bhago Ji led the forty Sikhs who returned to fight for Guru Gobind Singh Ji at which battle in 1705?",
+   "options": [
+    "Khidrana (Sri Muktsar Sahib)",
+    "Chamkaur",
+    "Saragarhi",
+    "Bhangani"
+   ],
+   "answer": "A",
+   "explanation": "Mai Bhago Ji led forty Sikhs who had deserted at Anandpur back to the Guru; they fell at Khidrana on 29 December 1705 and were blessed as the Chali Mukte (Forty Liberated Ones).",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Bhago, Mai",
+   "url": "https://eos.learnpunjabi.org/BHAGO%20MAI.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q313",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "After the Sikhs occupied Lahore in 1761, Jassa Singh Ahluwalia was proclaimed with which title, meaning 'King of the Nation'?",
+   "options": [
+    "Sultan-ul-Qaum",
+    "Sher-e-Punjab",
+    "Hind di Chadar",
+    "Nawab"
+   ],
+   "answer": "A",
+   "explanation": "Jassa Singh Ahluwalia, leader of the Dal Khalsa, was proclaimed at Lahore with the title Sultan-ul-Qaum, and a coin was struck in the name of the Gurus.",
+   "source": "Encyclopaedia of Sikhism – Jassa Singh Ahluvalia",
+   "url": "https://eos.learnpunjabi.org/JASSA%20SINGH%20AHLUVALIA%20(1718-1783).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q314",
+   "topic": "sikh-heroes",
+   "difficulty": "hard",
+   "question": "In 1734 the Sikh fighting force (the Dal Khalsa) was divided into which two bodies?",
+   "options": [
+    "Dal Khalsa and Misldars",
+    "Akali Dal and Nihang Dal",
+    "Budha Dal and Taruna Dal",
+    "Shahid Dal and Faujdar Dal"
+   ],
+   "answer": "C",
+   "explanation": "Nawab Kapur Singh organised the Budha Dal (the elders, who looked after holy places) and the Taruna Dal (the younger fighting force). He later helped form the Dal Khalsa in 1748.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Kapur Singh, Nawab",
+   "url": "https://eos.learnpunjabi.org/KAPUR%20SINGH%20NAWAB%20(1697-1753).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q315",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "Jassa Singh Ramgarhia's title comes from which fort at Amritsar that he rebuilt?",
+   "options": [
+    "Lohgarh",
+    "Ram Rauni, renamed Ramgarh",
+    "Gobindgarh",
+    "Kesgarh"
+   ],
+   "answer": "B",
+   "explanation": "After the mud fort Ram Rauni at Amritsar was destroyed, Jassa Singh rebuilt it and named it Ramgarh; he and his misl came to be called Ramgarhia.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Jassa Singh Ramgarhia",
+   "url": "https://eos.learnpunjabi.org/JASSA%20SINGH%20RAMGARHIA%20(1723-1803).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q316",
+   "topic": "sikh-heroes",
+   "difficulty": "hard",
+   "question": "Hari Singh Nalwa, the famous general of Maharaja Ranjit Singh, built which fort near the Khyber Pass in 1836?",
+   "options": [
+    "Attock",
+    "Gobindgarh",
+    "Lohgarh",
+    "Jamrud"
+   ],
+   "answer": "D",
+   "explanation": "Hari Singh Nalwa built the Jamrud fort in 1836 and was mortally wounded fighting the Afghans near it on 30 April 1837. He earned the name 'Nalwa' after killing a tiger.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Hari Singh Nalva",
+   "url": "https://eos.learnpunjabi.org/HARI%20SINGH%20NALVA%20(1791-1837).html",
+   "url2": "https://www.britannica.com/place/Jamrud",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q317",
+   "topic": "sikh-heroes",
+   "difficulty": "hard",
+   "question": "Akali Phula Singh, Jathedar of the Akal Takht, attained martyrdom in 1823 at which battle?",
+   "options": [
+    "Sabraon",
+    "Chillianwala",
+    "Jamrud",
+    "Naushera"
+   ],
+   "answer": "D",
+   "explanation": "Akali Phula Singh led the Akali troops in Maharaja Ranjit Singh's campaigns and fell at the Battle of Naushera on 14 March 1823, after which the Afghans retreated.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Phula Singh, Akali",
+   "url": "https://eos.learnpunjabi.org/PHULA%20SINGH%20AKALI%20(1761-1823).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q318",
+   "topic": "sikh-heroes",
+   "difficulty": "easy",
+   "question": "In which city did Bhagat Puran Singh Ji establish the Pingalwara, a home for destitute and disabled people?",
+   "options": [
+    "Lahore",
+    "Ludhiana",
+    "Amritsar",
+    "Delhi"
+   ],
+   "answer": "C",
+   "explanation": "After Partition in 1947, Bhagat Puran Singh Ji settled in Amritsar and set up the Pingalwara to care for the destitute and disabled.",
+   "source": "SikhNet - Bhagat Puran Singh Ji",
+   "url": "https://sikhnet.com/news/inspiring-journey-bhagat-puran-singh-ji-life-compassion-and-dedication",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q319",
+   "topic": "sikh-heroes",
+   "difficulty": "easy",
+   "question": "Who commanded the 21 soldiers of the 36th Sikhs at the Battle of Saragarhi in 1897?",
+   "options": [
+    "Havildar Ishar Singh",
+    "Subedar Udham Singh",
+    "Naik Hari Singh",
+    "Sardar Sham Singh"
+   ],
+   "answer": "A",
+   "explanation": "Havildar Ishar Singh led 21 soldiers of the 36th Sikhs who defended Saragarhi post to the last man on 12 September 1897; all received the Indian Order of Merit posthumously.",
+   "source": "Sikh Museum Initiative - Battle of Saragarhi",
+   "url": "https://www.sikhmuseum.org.uk/battle-of-saragarhi-the-last-stand-of-21-sikhs",
+   "url2": "https://ferozepur.nic.in/?p=22253",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q320",
+   "topic": "sikh-heroes",
+   "difficulty": "medium",
+   "question": "In 1940, Udham Singh shot which former Lieutenant Governor of Punjab in London, avenging the Jallianwala Bagh massacre?",
+   "options": [
+    "Reginald Dyer",
+    "Michael O'Dwyer",
+    "Lord Dalhousie",
+    "Cyril Radcliffe"
+   ],
+   "answer": "B",
+   "explanation": "On 13 March 1940 at Caxton Hall, London, Udham Singh shot Sir Michael O'Dwyer, whom he held responsible for the Amritsar massacre. He was hanged at Pentonville Prison on 31 July 1940.",
+   "source": "The Open University - Making Britain: Udham Singh",
+   "url": "https://www5.open.ac.uk/research-projects/making-britain/content/udham-singh",
+   "url2": null,
+   "note": "Distractor Reginald Dyer is the general who ordered the firing; O'Dwyer was the Lt Governor.",
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

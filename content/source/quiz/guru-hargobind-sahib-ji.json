@@ -1,0 +1,405 @@
+{
+ "topic": "guru-hargobind-sahib-ji",
+ "questions": [
+  {
+   "id": "Q101",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "What do the two swords worn by Guru Hargobind Sahib Ji represent?",
+   "options": [
+    "Deg and Tegh",
+    "Hukam and Raza",
+    "Miri and Piri (temporal and spiritual authority)",
+    "Sach and Sanjam"
+   ],
+   "answer": "C",
+   "explanation": "At his accession Guru Hargobind Sahib Ji wore two swords: Miri for temporal authority and Piri for spiritual authority.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.britannica.com/biography/Hargobind",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q102",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "Which institution, facing Sri Harmandir Sahib, did Guru Hargobind Sahib Ji establish?",
+   "options": [
+    "Takht Sri Patna Sahib",
+    "Sri Akal Takht Sahib",
+    "Takht Sri Kesgarh Sahib",
+    "Takht Sri Damdama Sahib"
+   ],
+   "answer": "B",
+   "explanation": "Guru Hargobind Sahib Ji raised the Akal Takht opposite Sri Harmandir Sahib and conducted the community's temporal affairs from there.",
+   "source": "The Sikh Encyclopedia: Akal Takht",
+   "url": "https://www.thesikhencyclopedia.com/akal-takht/",
+   "url2": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "note": "Founding year not asked (1606 vs 1609 in sources).",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q103",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "In which fort did Emperor Jahangir imprison Guru Hargobind Sahib Ji?",
+   "options": [
+    "Gwalior Fort",
+    "Lahore Fort",
+    "Agra Fort",
+    "Red Fort, Delhi"
+   ],
+   "answer": "A",
+   "explanation": "Jahangir had Guru Hargobind Sahib Ji detained in the fort at Gwalior.",
+   "source": "The Sikh Encyclopedia: Gwalior",
+   "url": "https://www.thesikhencyclopedia.com/gwalior/",
+   "url2": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "note": "Dates of imprisonment vary by source; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q104",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "According to Sikh tradition, how many imprisoned kings and princes were freed along with Guru Hargobind Sahib Ji from Gwalior?",
+   "options": [
+    "40",
+    "11",
+    "84",
+    "52"
+   ],
+   "answer": "D",
+   "explanation": "The Guru refused to leave alone; holding the 52 tassels of his cloak, 52 captive chiefs and princes walked out with him.",
+   "source": "The Sikh Encyclopedia: Gwalior",
+   "url": "https://www.thesikhencyclopedia.com/gwalior/",
+   "url2": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q105",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "What title did Guru Hargobind Sahib Ji earn after securing the release of fellow prisoners at Gwalior?",
+   "options": [
+    "Hind di Chadar",
+    "Sarbans Dani",
+    "Dasmesh Pita",
+    "Bandi Chhor (the Deliverer)"
+   ],
+   "answer": "D",
+   "explanation": "He became known as Data Bandi Chhor, 'the Munificent Deliverer', for freeing the captives held with him.",
+   "source": "The Sikh Encyclopedia: Gwalior",
+   "url": "https://www.thesikhencyclopedia.com/gwalior/",
+   "url2": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q106",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "Which Sikh observance celebrates Guru Hargobind Sahib Ji's release from Gwalior and his return to Amritsar?",
+   "options": [
+    "Hola Mohalla",
+    "Vaisakhi",
+    "Bandi Chhor Divas",
+    "Maghi"
+   ],
+   "answer": "C",
+   "explanation": "Amritsar was lit up on his return, and Sikhs celebrate Bandi Chhor Divas at Diwali time.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.thesikhencyclopedia.com/divali/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q107",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "Who was the father of Guru Hargobind Sahib Ji?",
+   "options": [
+    "Guru Arjan Dev Ji",
+    "Guru Ram Das Ji",
+    "Guru Amar Das Ji",
+    "Guru Har Rai Ji"
+   ],
+   "answer": "A",
+   "explanation": "Guru Hargobind Sahib Ji was the only son of Guru Arjan Dev Ji and Mata Ganga Ji.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.britannica.com/biography/Hargobind",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q108",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "easy",
+   "question": "Whom did Guru Hargobind Sahib Ji name as his successor, the seventh Guru?",
+   "options": [
+    "His son, Guru Tegh Bahadur Ji",
+    "His grandson, Guru Har Rai Ji",
+    "His son, Baba Gurditta Ji",
+    "His grandson, Dhir Mal"
+   ],
+   "answer": "B",
+   "explanation": "Before passing away, Guru Hargobind Sahib Ji named his grandson Har Rai, son of Baba Gurditta Ji, as the Seventh Nanak.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://eos.learnpunjabi.org/GURDITTA%20BABA%20(1613-1638).html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q109",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "At about what age did Guru Hargobind Sahib Ji become Guru?",
+   "options": [
+    "11",
+    "5",
+    "18",
+    "25"
+   ],
+   "answer": "A",
+   "explanation": "He succeeded Guru Arjan Dev Ji in 1606 at the age of eleven, after his father's martyrdom.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.britannica.com/biography/Hargobind",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q110",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "Through his first hukamnama after raising the Akal Takht, what did Guru Hargobind Sahib Ji ask Sikhs to bring as offerings?",
+   "options": [
+    "Gold and silver",
+    "Handwritten pothis",
+    "Grain for the langar",
+    "Weapons and horses"
+   ],
+   "answer": "D",
+   "explanation": "His hukamnama to distant sangats asked Sikhs to include weapons and horses in their offerings from then on.",
+   "source": "The Sikh Encyclopedia: Akal Takht",
+   "url": "https://www.thesikhencyclopedia.com/akal-takht/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q111",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "Where did Guru Hargobind Sahib Ji spend his last years and leave his body in 1644?",
+   "options": [
+    "Kartarpur",
+    "Kiratpur Sahib",
+    "Amritsar",
+    "Goindwal"
+   ],
+   "answer": "B",
+   "explanation": "From 1635 he lived at Kiratpur Sahib in the Shivalik foothills, and passed away there in 1644.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.britannica.com/biography/Hargobind",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q112",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "Which son of Guru Hargobind Sahib Ji founded the town of Kiratpur Sahib on his father's instructions?",
+   "options": [
+    "Baba Atal Rai Ji",
+    "Baba Suraj Mal Ji",
+    "Baba Gurditta Ji",
+    "Baba Ani Rai Ji"
+   ],
+   "answer": "C",
+   "explanation": "Baba Gurditta Ji, the Guru's eldest son, founded Kiratpur in the Shivalik foothills under his father's instructions.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University): Gurditta, Baba",
+   "url": "https://eos.learnpunjabi.org/GURDITTA%20BABA%20(1613-1638).html",
+   "url2": "https://www.thesikhencyclopedia.com/amritsar/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q113",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "Which Sikh recovered the horses Dilbagh and Gulbagh, meant for Guru Hargobind Sahib Ji, from the Lahore governor's stables?",
+   "options": [
+    "Bhai Gurdas",
+    "Bhai Bidhi Chand",
+    "Bhai Mani Singh",
+    "Baba Buddha Ji"
+   ],
+   "answer": "B",
+   "explanation": "Bhai Bidhi Chand, a commander in the Guru's army, recovered Dilbagh disguised as a hay-seller and Gulbagh disguised as an astrologer.",
+   "source": "The Sikh Encyclopedia: Bidhi Chand, Bhai",
+   "url": "https://www.thesikhencyclopedia.com/bidhi-chand-bhai/",
+   "url2": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q114",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "Gurdwara Baba Atal in Amritsar, built in memory of Guru Hargobind Sahib Ji's son Baba Atal Rai, has how many storeys?",
+   "options": [
+    "Nine",
+    "Five",
+    "Seven",
+    "Eleven"
+   ],
+   "answer": "A",
+   "explanation": "The nine-storey octagonal tower recalls the nine years of Baba Atal Rai's short life.",
+   "source": "The Sikh Encyclopedia: Atal Rai, Baba",
+   "url": "https://www.thesikhencyclopedia.com/atal-rai-baba/",
+   "url2": "https://incredibleindia.gov.in/en/punjab/amritsar/gurudwara-baba-atal-sahib",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q115",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "Which Pathan commander, once close to Guru Hargobind Sahib Ji, turned against him and was killed in the battle of Kartarpur?",
+   "options": [
+    "Wazir Khan",
+    "Abdullah Khan",
+    "Painda Khan",
+    "Qamar Beg"
+   ],
+   "answer": "C",
+   "explanation": "Painda Khan, a childhood friend and commander in the Guru's army, deserted to the Mughals and was killed at Kartarpur in 1635.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://thesikhencyclopedia.com/uncategorised/kartarpur-2",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q116",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "medium",
+   "question": "What was the name of Guru Hargobind Sahib Ji's only daughter?",
+   "options": [
+    "Bibi Bhani Ji",
+    "Bibi Amro Ji",
+    "Bibi Dani Ji",
+    "Bibi Viro Ji"
+   ],
+   "answer": "D",
+   "explanation": "Guru Hargobind Sahib Ji had one daughter, Bibi Viro Ji, and five sons.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.thesikhencyclopedia.com/viro-bibi/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q117",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "hard",
+   "question": "Where was Guru Hargobind Sahib Ji born?",
+   "options": [
+    "Goindwal",
+    "Kiratpur Sahib",
+    "Guru ki Wadali",
+    "Kartarpur"
+   ],
+   "answer": "C",
+   "explanation": "Guru Hargobind Sahib Ji was born in 1595 at Guru ki Wadali in Amritsar district.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.britannica.com/biography/Hargobind",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q118",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "hard",
+   "question": "Which small fort did Guru Hargobind Sahib Ji build at Amritsar?",
+   "options": [
+    "Lohgarh",
+    "Anandgarh",
+    "Fatehgarh",
+    "Gobindgarh"
+   ],
+   "answer": "A",
+   "explanation": "Guru Hargobind Sahib Ji built a wall around Amritsar and the small fort of Lohgarh on the town's western side.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.thesikhencyclopedia.com/amritsar/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q119",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "hard",
+   "question": "According to SGPC, the battle at Amritsar between Guru Hargobind Sahib Ji's Sikhs and Mughal troops began with a dispute over what?",
+   "options": [
+    "Two horses",
+    "A piece of land",
+    "A marriage proposal",
+    "A royal hawk"
+   ],
+   "answer": "D",
+   "explanation": "A quarrel over a royal hawk led Mukhlis Khan to attack the Sikhs at Amritsar; the Sikhs repulsed the attack and Mukhlis Khan was killed.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": "https://www.thesikhencyclopedia.com/amritsar/",
+   "note": "Year of the Amritsar battle differs (1629 vs 1634) by source; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q120",
+   "topic": "guru-hargobind-sahib-ji",
+   "difficulty": "hard",
+   "question": "Which sarovar did Guru Hargobind Sahib Ji have built near Mehraj to mark victory in the battle of the Lakhi Jungle?",
+   "options": [
+    "Santokhsar",
+    "Gurusar",
+    "Ramsar",
+    "Bibeksar"
+   ],
+   "answer": "B",
+   "explanation": "After the Sikh victory near Mehraj and Lahira, the Guru built the Gurusar tank to mark the occasion.",
+   "source": "SGPC: Sri Guru Hargobind Sahib Ji",
+   "url": "https://sgpc.net/ten-guru-sahibs/guru-hargobind-sahib/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

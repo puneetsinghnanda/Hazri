@@ -93,3 +93,13 @@ export const FUNCTION_DEFAULTS = {
   maxInstances: 10,
   minInstances: 0,
 } as const;
+
+// 14-quiz.md.
+export const QUIZ_QUESTIONS = 5;
+export const QUIZ_POINTS_PER_RIGHT = 10;
+export const QUIZ_SESSIONS_PER_DAY = 30;
+export const QUIZ_MIN_SECONDS = 10;
+export const QUIZ_MAX_SECONDS = 30 * 60;
+export const QUIZ_BOARD_SECONDS = 120;
+export const QUIZ_BOARD_SIZE = 20;
+export const QUIZ_DAYS_KEPT = 62;

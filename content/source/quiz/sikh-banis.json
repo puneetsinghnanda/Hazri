@@ -1,0 +1,405 @@
+{
+ "topic": "sikh-banis",
+ "questions": [
+  {
+   "id": "Q261",
+   "topic": "sikh-banis",
+   "difficulty": "easy",
+   "question": "Who composed Japji Sahib, the opening bani of Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Guru Angad Dev Ji",
+    "Guru Nanak Dev Ji",
+    "Guru Arjan Dev Ji",
+    "Guru Amar Das Ji"
+   ],
+   "answer": "B",
+   "explanation": "Japji Sahib is universally accepted as the composition of Guru Nanak Dev Ji and stands at the very beginning of Sri Guru Granth Sahib Ji.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University): Japu",
+   "url": "https://eos.learnpunjabi.org/JAPU.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q262",
+   "topic": "sikh-banis",
+   "difficulty": "easy",
+   "question": "How many pauris (stanzas) make up Japji Sahib, not counting its opening and closing saloks?",
+   "options": [
+    "24",
+    "40",
+    "38",
+    "52"
+   ],
+   "answer": "C",
+   "explanation": "Japji Sahib has 38 pauris, framed by an opening salok and a concluding salok.",
+   "source": "Encyclopaedia of Sikhism: Japu",
+   "url": "https://eos.learnpunjabi.org/JAPU.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q263",
+   "topic": "sikh-banis",
+   "difficulty": "hard",
+   "question": "In which raag is Japji Sahib written?",
+   "options": [
+    "Raag Asa",
+    "Raag Sri",
+    "Raag Gauri",
+    "It is not assigned to any raag"
+   ],
+   "answer": "D",
+   "explanation": "Unlike almost all other compositions in Sri Guru Granth Sahib Ji, Japji Sahib is not set to any raag; it is meant for recitation rather than singing.",
+   "source": "Encyclopaedia of Sikhism: Japu",
+   "url": "https://eos.learnpunjabi.org/JAPU.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q264",
+   "topic": "sikh-banis",
+   "difficulty": "easy",
+   "question": "Asa Di Var is principally the composition of which Guru?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Arjan Dev Ji",
+    "Guru Ram Das Ji",
+    "Guru Amar Das Ji"
+   ],
+   "answer": "A",
+   "explanation": "Asa Di Var is by Guru Nanak Dev Ji: its pauris and most of its saloks are his, with some saloks by Guru Angad Dev Ji.",
+   "source": "Encyclopaedia of Sikhism – Asa ki Var",
+   "url": "https://eos.learnpunjabi.org/ASA%20KI%20VAR.html",
+   "url2": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q265",
+   "topic": "sikh-banis",
+   "difficulty": "hard",
+   "question": "How many verses does Jaap Sahib contain?",
+   "options": [
+    "108",
+    "199",
+    "150",
+    "24"
+   ],
+   "answer": "B",
+   "explanation": "Jaap Sahib by Guru Gobind Singh Ji consists of 199 verses praising the attributes and names of Akal Purakh.",
+   "source": "SikhNet: Jaap Sahib",
+   "url": "https://www.sikhnet.com/oldsikhnet/JaapSahib/jaap.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q266",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "The Tav-Prasad Savaiye (Ten Savaiye) of the morning Nitnem are taken from which larger composition of Guru Gobind Singh Ji?",
+   "options": [
+    "Bachittar Natak",
+    "Zafarnama",
+    "Akal Ustat",
+    "Chandi di Var"
+   ],
+   "answer": "C",
+   "explanation": "The ten Tav-Prasad Savaiye form part of Akal Ustat, a composition of Guru Gobind Singh Ji in Sri Dasam Granth.",
+   "source": "SikhNet: Tav Prasad Savaiye",
+   "url": "https://sikhnet.com/node/72445",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q267",
+   "topic": "sikh-banis",
+   "difficulty": "easy",
+   "question": "According to the Sikh Rehat Maryada, which banis are recited in the morning Nitnem?",
+   "options": [
+    "Rehras Sahib, Kirtan Sohila and Anand Sahib",
+    "Sukhmani Sahib, Asa Di Var and Japji Sahib",
+    "Japji Sahib, Sukhmani Sahib and Rehras Sahib",
+    "Japji Sahib, Jaap Sahib and the Ten Savaiye"
+   ],
+   "answer": "D",
+   "explanation": "The Rehat Maryada prescribes Japji Sahib, Jaap Sahib and the Ten Savaiye (beginning 'Sravag sudh') in the morning, followed by Ardas.",
+   "source": "Sikh Rehat Maryada (Article IV)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q268",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "Rehras Sahib begins with a hymn from Sri Guru Granth Sahib Ji whose opening word is:",
+   "options": [
+    "So Dar",
+    "Ik Oankar",
+    "Aad Sach",
+    "Pritham"
+   ],
+   "answer": "A",
+   "explanation": "Per the Rehat Maryada, Sodar Rehras begins with nine hymns from Sri Guru Granth Sahib Ji, the first of which starts with 'So Dar'.",
+   "source": "Sikh Rehat Maryada (Article IV)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q269",
+   "topic": "sikh-banis",
+   "difficulty": "easy",
+   "question": "When does the Sikh Rehat Maryada prescribe the recitation of Kirtan Sohila?",
+   "options": [
+    "At sunrise",
+    "At midday",
+    "At night before going to bed",
+    "Only at weddings"
+   ],
+   "answer": "C",
+   "explanation": "Kirtan Sohila is the bedtime prayer; the Rehat Maryada says it is to be recited at night before going to sleep.",
+   "source": "Sikh Rehat Maryada (Article IV)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q270",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "How many shabads (hymns) make up Kirtan Sohila?",
+   "options": [
+    "Five",
+    "Three",
+    "Eight",
+    "Ten"
+   ],
+   "answer": "A",
+   "explanation": "Kirtan Sohila has five hymns: three by Guru Nanak Dev Ji, one by Guru Ram Das Ji and one by Guru Arjan Dev Ji.",
+   "source": "Encyclopaedia of Sikhism: Sohila",
+   "url": "https://eos.learnpunjabi.org/SOHILA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q271",
+   "topic": "sikh-banis",
+   "difficulty": "easy",
+   "question": "Which Guru composed Anand Sahib?",
+   "options": [
+    "Guru Ram Das Ji",
+    "Guru Amar Das Ji",
+    "Guru Angad Dev Ji",
+    "Guru Arjan Dev Ji"
+   ],
+   "answer": "B",
+   "explanation": "Anand Sahib was composed by Guru Amar Das Ji in Raag Ramkali and is recited at the conclusion of congregational services.",
+   "source": "Encyclopaedia of Sikhism: Anandu",
+   "url": "https://eos.learnpunjabi.org/ANANDU.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q272",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "Anand Sahib has 40 pauris. How many are recited in its short form at the end of congregational services?",
+   "options": [
+    "Five",
+    "Eight",
+    "Six",
+    "Ten"
+   ],
+   "answer": "C",
+   "explanation": "The short form of Anand Sahib has six pauris: the first five and the last (40th), as stated in the Rehat Maryada.",
+   "source": "Sikh Rehat Maryada (Articles XII, XVII)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": "https://eos.learnpunjabi.org/ANANDU.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q273",
+   "topic": "sikh-banis",
+   "difficulty": "easy",
+   "question": "At what time is Asa Di Var traditionally sung in Sikh congregations?",
+   "options": [
+    "At sunset, with Rehras Sahib",
+    "In the early morning service",
+    "At midnight",
+    "At midday"
+   ],
+   "answer": "B",
+   "explanation": "Asa Di Var, with its 24 pauris, is sung in the pre-dawn Raag Asa during the early morning service in Gurdwaras.",
+   "source": "Encyclopaedia of Sikhism – Asa ki Var",
+   "url": "https://eos.learnpunjabi.org/ASA%20KI%20VAR.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q274",
+   "topic": "sikh-banis",
+   "difficulty": "hard",
+   "question": "The Barah Maha in Raag Majh in Sri Guru Granth Sahib Ji was composed by which Guru?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Amar Das Ji",
+    "Guru Tegh Bahadur Ji",
+    "Guru Arjan Dev Ji"
+   ],
+   "answer": "D",
+   "explanation": "Guru Arjan Dev Ji composed Barah Maha Majh (Angs 133-136). Guru Nanak Dev Ji's Barah Maha is a different composition, in Raag Tukhari.",
+   "source": "Encyclopaedia of Sikhism – Barah Maha",
+   "url": "https://eos.learnpunjabi.org/BARAH%20MAHA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q275",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "Which Guru composed Siddh Gosht ('discourse with the Siddhas')?",
+   "options": [
+    "Guru Amar Das Ji",
+    "Guru Arjan Dev Ji",
+    "Guru Ram Das Ji",
+    "Guru Nanak Dev Ji"
+   ],
+   "answer": "D",
+   "explanation": "Siddh Gosht is one of Guru Nanak Dev Ji's compositions in Sri Guru Granth Sahib Ji, alongside Japji Sahib, Asa Di Var, Dakhni Oankar and Patti.",
+   "source": "Sikh Missionary Society UK – Guru Nanak Dev Ji",
+   "url": "https://www.sikhmissionarysociety.org/sms/smssikhism/gurus/gurunanakdevji/",
+   "url2": null,
+   "note": "Only authorship asked; raag and dialogue details not confirmed in an opened source.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q276",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "Who composed the 57 saloks (Salok Mahalla 9) that appear near the end of Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Guru Tegh Bahadur Ji",
+    "Guru Har Rai Ji",
+    "Guru Hargobind Ji",
+    "Guru Gobind Singh Ji"
+   ],
+   "answer": "A",
+   "explanation": "Salok Mahalla 9 consists of 57 saloks by Guru Tegh Bahadur Ji and is recited at the conclusion (bhog) of a complete reading of Sri Guru Granth Sahib Ji.",
+   "source": "Encyclopaedia of Sikhism: Salok Mahalla 9",
+   "url": "https://eos.learnpunjabi.org/SALOK%20MAHALLA%209%20.html",
+   "url2": null,
+   "note": "Timing of composition is debated; only authorship asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q277",
+   "topic": "sikh-banis",
+   "difficulty": "hard",
+   "question": "Which bani by Guru Arjan Dev Ji is the shortest of the 22 vars in Sri Guru Granth Sahib Ji, with only three pauris?",
+   "options": [
+    "Asa Di Var",
+    "Basant Ki Var",
+    "Var Majh",
+    "Var Malar"
+   ],
+   "answer": "B",
+   "explanation": "Basant Ki Var by Guru Arjan Dev Ji has just three pauris and, unusually, no saloks attached, making it the shortest var in the Guru Granth Sahib.",
+   "source": "Encyclopaedia of Sikhism: Basant Ki Var",
+   "url": "https://eos.learnpunjabi.org/BASANT%20KI%20VAR.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q278",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "The first hymn of Shabad Hazare (in Raag Majh) is traditionally understood as letters written by Guru Arjan Dev Ji to whom?",
+   "options": [
+    "Baba Buddha Ji",
+    "Bhai Gurdas Ji",
+    "Guru Ram Das Ji",
+    "Mata Ganga Ji"
+   ],
+   "answer": "C",
+   "explanation": "Tradition holds that Guru Arjan Dev Ji wrote these verses as letters from Lahore to his father, Guru Ram Das Ji, expressing longing to see him.",
+   "source": "Encyclopaedia of Sikhism: Shabad Hazare",
+   "url": "https://eos.learnpunjabi.org/SHABAD%20(SABAD)%20HAJARE.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q279",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "The opening stanza of the Ardas, invoking Akal Purakh and the first nine Gurus, is taken from which composition of Guru Gobind Singh Ji?",
+   "options": [
+    "Jaap Sahib",
+    "Akal Ustat",
+    "Zafarnama",
+    "Var Sri Bhagauti Ji Ki (Chandi di Var)"
+   ],
+   "answer": "D",
+   "explanation": "The Ardas begins with the prelude to Var Sri Bhagauti Ji Ki (also called Chandi di Var) by Guru Gobind Singh Ji.",
+   "source": "Encyclopaedia of Sikhism: Ardas",
+   "url": "https://eos.learnpunjabi.org/ARDAS.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q280",
+   "topic": "sikh-banis",
+   "difficulty": "medium",
+   "question": "Benti Chaupai Sahib, also recited within Rehras Sahib, is a composition of which Guru found in which granth?",
+   "options": [
+    "Guru Gobind Singh Ji, Sri Dasam Granth",
+    "Guru Arjan Dev Ji, Sri Guru Granth Sahib Ji",
+    "Guru Tegh Bahadur Ji, Sri Guru Granth Sahib Ji",
+    "Guru Hargobind Ji, Sri Dasam Granth"
+   ],
+   "answer": "A",
+   "explanation": "Benti Chaupai was composed by Guru Gobind Singh Ji and is found in Sri Dasam Granth; the Rehat Maryada includes it in the evening Rehras.",
+   "source": "SikhNet: Benti Chaupai",
+   "url": "https://www.sikhnet.com/node/99883",
+   "url2": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

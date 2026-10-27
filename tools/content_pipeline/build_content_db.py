@@ -27,10 +27,15 @@ VERIFIED_FILE = os.path.join(TIMINGS_DIR, "verified.json")
 VICHAR_DIR = os.path.join(ROOT, "content", "source", "vichar")
 SAAKHI_DIR = os.path.join(ROOT, "content", "source", "saakhi")
 SAAKHI_ASSETS = os.path.join(ROOT, "assets", "saakhi")
+QUIZ_DIR = os.path.join(ROOT, "content", "source", "quiz")
+ARTICLES_DIR = os.path.join(ROOT, "tools", "site", "articles")
+# The quiz's answer key goes to the api Function too, as the Vichar library does
+# (14-quiz.md QZ4): the server draws and scores, the phone shows.
+QUIZ_BANK_OUT = os.path.join(ROOT, "functions", "src", "quiz-bank.json")
 # The order Today's row and the library show them in (owner, 2026-10-25).
 SAAKHI_ORDER = ["bhai-lalo-malik-bhago", "anand-bhaya-meri-maaye", "why-was-the-hut-broken", "the-saint-soldier"]
 
-CONTENT_VERSION = 9
+CONTENT_VERSION = 10
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -123,6 +128,24 @@ CREATE TABLE quote(
 -- per saakhi because the reader always wants the whole of one; `sort` is the
 -- order Today and the library list them in.
 CREATE TABLE saakhi(id TEXT PRIMARY KEY, sort INTEGER NOT NULL, json TEXT NOT NULL);
+
+-- The Gurmat Quiz (14-quiz.md). Topics, the owner's question bank, and which
+-- calendar events have a quiz. Sources and reviewer's notes are not shipped
+-- (QZ7); `has_note` only keeps a noted question out of the insights (QZ10).
+CREATE TABLE quiz_topic(
+  id TEXT PRIMARY KEY, category TEXT NOT NULL, sort INTEGER NOT NULL,
+  name_en TEXT NOT NULL, name_pa TEXT NOT NULL, name_hi TEXT NOT NULL,
+  glyph TEXT NOT NULL, slug TEXT);
+CREATE TABLE quiz_question(
+  id TEXT PRIMARY KEY, topic_id TEXT NOT NULL REFERENCES quiz_topic(id),
+  difficulty TEXT NOT NULL, question TEXT NOT NULL,
+  option_a TEXT NOT NULL, option_b TEXT NOT NULL, option_c TEXT NOT NULL, option_d TEXT NOT NULL,
+  answer TEXT NOT NULL, explanation TEXT NOT NULL,
+  has_note INTEGER NOT NULL, retired INTEGER NOT NULL, since INTEGER NOT NULL);
+CREATE INDEX quiz_question_topic ON quiz_question(topic_id);
+CREATE TABLE quiz_day(
+  event_name TEXT PRIMARY KEY, label_en TEXT NOT NULL, label_pa TEXT NOT NULL, label_hi TEXT NOT NULL,
+  topic_id TEXT NOT NULL REFERENCES quiz_topic(id), slug TEXT);
 
 CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT NOT NULL);
 """
@@ -790,6 +813,113 @@ def build_saakhis(con: sqlite3.Connection, report: dict) -> None:
     report["saakhis"] = built
 
 
+QUIZ_CATEGORIES = ("gurus", "gurdwaras", "banis", "heroes", "culture")
+QUIZ_DIFFICULTIES = ("easy", "medium", "hard")
+
+
+def has_gurmukhi(text: str) -> bool:
+    return any("\u0a00" <= ch <= "\u0a7f" for ch in text)
+
+
+def build_quiz(con: sqlite3.Connection, report: dict) -> None:
+    """The Gurmat Quiz (14-quiz.md QZ4): topics, questions and the day map.
+
+    Fails on any broken reference: an unknown topic, an event that is not in
+    the calendar, a Vichar page that is not in tools/site/articles/, an answer
+    that is not one of the four, or Gurmukhi in a question, option or
+    explanation (QZ2). Writes the same questions, with their answers, to
+    functions/src/quiz-bank.json for the api Function.
+    """
+    with open(os.path.join(QUIZ_DIR, "topics.json"), encoding="utf-8") as fh:
+        topics = json.load(fh)["topics"]
+    with open(os.path.join(QUIZ_DIR, "days.json"), encoding="utf-8") as fh:
+        days = json.load(fh)["days"]
+    slugs: set[str] = set()
+    for name in sorted(os.listdir(ARTICLES_DIR)):
+        if name.endswith(".json"):
+            with open(os.path.join(ARTICLES_DIR, name), encoding="utf-8") as fh:
+                slugs.update(a["slug"] for a in json.load(fh))
+    events = {r[0] for r in con.execute("SELECT name_en FROM calendar_event")}
+
+    topic_ids = set()
+    for t in topics:
+        if t["category"] not in QUIZ_CATEGORIES:
+            raise SystemExit(f"quiz: topic {t['id']} has an unknown category {t['category']}")
+        if t["slug"] is not None and t["slug"] not in slugs:
+            raise SystemExit(f"quiz: topic {t['id']} names Vichar page {t['slug']}, which does not exist")
+        topic_ids.add(t["id"])
+        con.execute(
+            "INSERT INTO quiz_topic(id,category,sort,name_en,name_pa,name_hi,glyph,slug) VALUES(?,?,?,?,?,?,?,?)",
+            (t["id"], t["category"], t["sort"], t["name"]["en"], t["name"]["pa"], t["name"]["hi"],
+             t["glyph"], t["slug"]))
+
+    bank = []
+    seen = set()
+    for t in sorted(topics, key=lambda t: t["sort"]):
+        with open(os.path.join(QUIZ_DIR, f"{t['id']}.json"), encoding="utf-8") as fh:
+            questions = json.load(fh)["questions"]
+        live = {d: 0 for d in QUIZ_DIFFICULTIES}
+        for q in questions:
+            qid = q["id"]
+            if qid in seen:
+                raise SystemExit(f"quiz: {qid} appears twice")
+            seen.add(qid)
+            if q["topic"] != t["id"]:
+                raise SystemExit(f"quiz: {qid} is in {t['id']}.json but names topic {q['topic']}")
+            if q["difficulty"] not in QUIZ_DIFFICULTIES:
+                raise SystemExit(f"quiz: {qid} has difficulty {q['difficulty']}")
+            if q["answer"] not in ("A", "B", "C", "D") or len(q["options"]) != 4 or not all(q["options"]):
+                raise SystemExit(f"quiz: {qid} needs four options and an answer among A to D")
+            if not q["question"] or not q["explanation"]:
+                raise SystemExit(f"quiz: {qid} has no question or no explanation")
+            if any(has_gurmukhi(x) for x in [q["question"], q["explanation"], *q["options"]]):
+                raise SystemExit(f"quiz: {qid} carries Gurmukhi; a question never quotes Gurbani (QZ2)")
+            if not q["retired"]:
+                live[q["difficulty"]] += 1
+            con.execute(
+                "INSERT INTO quiz_question(id,topic_id,difficulty,question,option_a,option_b,option_c,option_d,"
+                "answer,explanation,has_note,retired,since) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (qid, t["id"], q["difficulty"], q["question"], *q["options"], q["answer"],
+                 q["explanation"], 1 if q.get("note") else 0, 1 if q["retired"] else 0, q["since"]))
+            bank.append({"id": qid, "topic": t["id"], "difficulty": q["difficulty"], "answer": q["answer"],
+                         "retired": q["retired"], "since": q["since"]})
+        if sum(live.values()) < 5:
+            raise SystemExit(f"quiz: topic {t['id']} has fewer than five live questions")
+    missing = topic_ids - {q["topic"] for q in bank}
+    if missing:
+        raise SystemExit(f"quiz: topics with no questions: {sorted(missing)}")
+
+    named = set()
+    for d in days:
+        if d["event"] in named:
+            raise SystemExit(f"quiz: {d['event']} appears twice in days.json")
+        named.add(d["event"])
+        if d["event"] not in events:
+            raise SystemExit(f"quiz: days.json names {d['event']!r}, which is not in the calendar")
+        if d["topic"] not in topic_ids:
+            raise SystemExit(f"quiz: days.json maps {d['event']!r} to unknown topic {d['topic']}")
+        if d["slug"] is not None and d["slug"] not in slugs:
+            raise SystemExit(f"quiz: days.json names Vichar page {d['slug']}, which does not exist")
+        con.execute(
+            "INSERT INTO quiz_day(event_name,label_en,label_pa,label_hi,topic_id,slug) VALUES(?,?,?,?,?,?)",
+            (d["event"], d["label"]["en"], d["label"]["pa"], d["label"]["hi"], d["topic"], d["slug"]))
+
+    # QZ7: the bank is credited once in About, not question by question.
+    con.execute(
+        "INSERT INTO source(id,name,author,kind,licence,url,notes) VALUES(?,?,?,?,?,?,?)",
+        ("QUIZBANK", "Gurmat Quiz question bank", None, "quiz", None, None,
+         "Prepared for Hazri and checked against published references, among them the "
+         "Encyclopaedia of Sikhism (Punjabi University), The Sikh Encyclopedia, SGPC, "
+         "Britannica and Sikhs.org."))
+
+    with open(QUIZ_BANK_OUT, "w", encoding="utf-8") as fh:
+        json.dump({"contentVersion": CONTENT_VERSION,
+                   "topics": [t["id"] for t in sorted(topics, key=lambda t: t["sort"])],
+                   "questions": bank}, fh, ensure_ascii=False, separators=(",", ":"))
+        fh.write("\n")
+    report["quiz"] = {"topics": len(topics), "questions": len(bank), "days": len(days)}
+
+
 def source_digest() -> str:
     """sha256 over every input that can change the database."""
     h = hashlib.sha256()
@@ -800,7 +930,7 @@ def source_digest() -> str:
         os.path.join(os.path.dirname(__file__), "cities.json"),
         os.path.abspath(__file__),
     ]
-    for folder in (TIMINGS_DIR, SIMRAN_DIR, VICHAR_DIR, SAAKHI_DIR):
+    for folder in (TIMINGS_DIR, SIMRAN_DIR, VICHAR_DIR, SAAKHI_DIR, QUIZ_DIR, ARTICLES_DIR):
         if os.path.isdir(folder):
             inputs += sorted(
                 os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".json")
@@ -833,6 +963,7 @@ def main() -> int:
     build_calendar(con, report)
     build_cities(con, report)
     build_saakhis(con, report)
+    build_quiz(con, report)
 
     con.execute("INSERT INTO meta(key,value) VALUES('content_version',?)", (str(CONTENT_VERSION),))
     # A digest of the inputs rather than a wall-clock timestamp, so the same

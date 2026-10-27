@@ -1,0 +1,405 @@
+{
+ "topic": "guru-angad-dev-ji",
+ "questions": [
+  {
+   "id": "Q21",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "easy",
+   "question": "What was Guru Angad Dev Ji's name before he became Guru?",
+   "options": [
+    "Bhai Lehna",
+    "Bhai Jetha",
+    "Bhai Jodha",
+    "Bhai Buddha"
+   ],
+   "answer": "A",
+   "explanation": "Guru Angad Dev Ji was born Lehna (Lahina); Guru Nanak Dev Ji renamed him Angad on choosing him as successor.",
+   "source": "Britannica – Guru Angad",
+   "url": "https://www.britannica.com/biography/Angad",
+   "url2": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q22",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "In which village was Guru Angad Dev Ji born?",
+   "options": [
+    "Basarke",
+    "Rai Bhoi di Talwandi",
+    "Matte di Sarai (now Sarai Naga, near Muktsar)",
+    "Goindwal"
+   ],
+   "answer": "C",
+   "explanation": "Guru Angad Dev Ji was born in 1504 at Matte di Sarai, now called Sarai Naga, near Muktsar in Punjab.",
+   "source": "Britannica – Guru Angad",
+   "url": "https://www.britannica.com/biography/Angad",
+   "url2": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q23",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "Before meeting Guru Nanak Dev Ji, Bhai Lehna was a devotee of which deity, leading pilgrims to her shrine?",
+   "options": [
+    "Lord Shiva",
+    "Goddess Durga",
+    "Lord Rama",
+    "Lord Krishna"
+   ],
+   "answer": "B",
+   "explanation": "Bhai Lehna was a devotee of the goddess Durga and used to lead pilgrims to her shrine at Jwalamukhi before he became a Sikh.",
+   "source": "Sikhs.org – Guru Angad",
+   "url": "https://www.sikhs.org/guru2.htm",
+   "url2": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q24",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "hard",
+   "question": "Bhai Lehna was inspired to seek Guru Nanak Dev Ji after hearing which Sikh of Khadur recite Guru Nanak's bani?",
+   "options": [
+    "Bhai Mardana",
+    "Bhai Bala",
+    "Bhai Lalo",
+    "Bhai Jodha"
+   ],
+   "answer": "D",
+   "explanation": "Bhai Jodha, a Sikh living in Khadur, recited Guru Nanak's bani; hearing it, Bhai Lehna set out to meet Guru Nanak Dev Ji at Kartarpur.",
+   "source": "Sikhs.org – Guru Angad",
+   "url": "https://www.sikhs.org/guru2.htm",
+   "url2": "https://eos.learnpunjabi.org/KHADUR%20SAHIB.html",
+   "note": "The Sikh Encyclopedia notes two versions of the conversion; the Bhai Jodha account is the common one.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q25",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "What does the name 'Angad', given by Guru Nanak Dev Ji to Bhai Lehna, signify?",
+   "options": [
+    "A part of his own body (ang, limb)",
+    "One who conquers anger",
+    "Bearer of the light",
+    "Servant of the Sangat"
+   ],
+   "answer": "A",
+   "explanation": "Guru Nanak Dev Ji named him Angad to signify that the disciple had become as much a part of him as his own limbs (ang).",
+   "source": "The Sikh Encyclopedia – Angad Dev, Guru",
+   "url": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q26",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "easy",
+   "question": "Which town became the centre of the Sikh faith during Guru Angad Dev Ji's Guruship?",
+   "options": [
+    "Kartarpur",
+    "Khadur Sahib",
+    "Goindwal Sahib",
+    "Amritsar"
+   ],
+   "answer": "B",
+   "explanation": "After succeeding Guru Nanak Dev Ji, Guru Angad Dev Ji moved to Khadur, which became the centre of the Sikh faith as Kartarpur had been.",
+   "source": "The Sikh Encyclopedia – Angad Dev, Guru",
+   "url": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "url2": "https://eos.learnpunjabi.org/KHADUR%20SAHIB.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q27",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "easy",
+   "question": "Guru Angad Dev Ji is credited with standardising and popularising which script?",
+   "options": [
+    "Devanagari",
+    "Shahmukhi",
+    "Gurmukhi",
+    "Sharada"
+   ],
+   "answer": "C",
+   "explanation": "Guru Angad Dev Ji standardised and popularised the Gurmukhi script, teaching its letters to children; much of Sri Guru Granth Sahib Ji is written in it.",
+   "source": "Britannica – Guru Angad",
+   "url": "https://www.britannica.com/biography/Angad",
+   "url2": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q28",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "easy",
+   "question": "Mata Khivi Ji, remembered for her loving service in the langar, was the wife of which Guru?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Amar Das Ji",
+    "Guru Ram Das Ji",
+    "Guru Angad Dev Ji"
+   ],
+   "answer": "D",
+   "explanation": "Mata Khivi, wife of Guru Angad Dev Ji, supervised the langar at Khadur, which came to be called 'Mata Khivi Ji ka Langar'.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Khivi, Mata",
+   "url": "https://eos.learnpunjabi.org/KHIVI%20MATA%20(D.1582).html",
+   "url2": "https://www.sikhs.org/guru2.htm",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q29",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "hard",
+   "question": "The bards Balvand and Satta praise Mata Khivi in Sri Guru Granth Sahib Ji for distributing which food in the langar?",
+   "options": [
+    "Kheer (rice cooked in milk, enriched with ghee)",
+    "Karah Prashad",
+    "Dal and roti only",
+    "Fruits and sweets"
+   ],
+   "answer": "A",
+   "explanation": "Balvand's verse (Ang 967) describes Mata Khivi comforting all and distributing kheer rich with ghee — a rare mention of a woman by name in Gurbani.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Khivi, Mata",
+   "url": "https://eos.learnpunjabi.org/KHIVI%20MATA%20(D.1582).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q30",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "easy",
+   "question": "What activity is the Mal Akhara at Khadur Sahib associated with?",
+   "options": [
+    "Copying of scriptures",
+    "Wrestling and physical training of youth",
+    "Kirtan practice",
+    "Training of horses"
+   ],
+   "answer": "B",
+   "explanation": "Gurdwara Mal Akhara marks the spot where Guru Angad Dev Ji had youth take part in wrestling, reflecting his emphasis on physical as well as spiritual health.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Khadur Sahib",
+   "url": "https://eos.learnpunjabi.org/KHADUR%20SAHIB.html",
+   "url2": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q31",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "According to Sikh tradition, which Mughal emperor came to Khadur to seek Guru Angad Dev Ji's blessing?",
+   "options": [
+    "Babar",
+    "Akbar",
+    "Humayun",
+    "Jahangir"
+   ],
+   "answer": "C",
+   "explanation": "Sikh tradition records that Humayun, retreating after losing his throne, came to Khadur and sought Guru Angad Dev Ji's blessing.",
+   "source": "The Sikh Encyclopedia – Angad Dev, Guru",
+   "url": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "url2": "https://www.sikhs.org/guru2.htm",
+   "note": "Presented as Sikh tradition.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q32",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "hard",
+   "question": "Emperor Humayun visited Khadur after being defeated by whom?",
+   "options": [
+    "Ibrahim Lodi",
+    "Daulat Khan Lodi",
+    "Rana Sanga",
+    "Sher Shah Suri"
+   ],
+   "answer": "D",
+   "explanation": "Humayun, defeated by Sher Shah Suri, was retreating when he came to Khadur; Guru Angad Dev Ji rebuked him when he reached for his sword in anger.",
+   "source": "Sikhs.org – Guru Angad",
+   "url": "https://www.sikhs.org/guru2.htm",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q33",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "What were the names of Guru Angad Dev Ji's two sons?",
+   "options": [
+    "Dasu and Datu",
+    "Sri Chand and Lakhmi Das",
+    "Mohan and Mohri",
+    "Suraj Mal and Ani Rai"
+   ],
+   "answer": "A",
+   "explanation": "Guru Angad Dev Ji and Mata Khivi had two sons, Dasu and Datu, and a daughter, Bibi Amro.",
+   "source": "The Sikh Encyclopedia – Angad Dev, Guru",
+   "url": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "url2": "https://www.sikhs.org/guru2.htm",
+   "note": "Some writers list a second daughter, Anokhi; only the sons are asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q34",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "In what form is Guru Angad Dev Ji's bani recorded in Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Ashtapadis",
+    "Saloks, mostly within the vars",
+    "A long chhant in Raag Suhi",
+    "Svaiyye"
+   ],
+   "answer": "B",
+   "explanation": "Guru Angad Dev Ji's bani consists of saloks (63 by the Sikh Encyclopedia's count) found within the vars of Guru Nanak Dev Ji and Guru Amar Das Ji.",
+   "source": "The Sikh Encyclopedia – Angad Dev, Guru",
+   "url": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "url2": null,
+   "note": "Count given as 63 (some count 62); count not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q35",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "After Guru Nanak Dev Ji's passing, Guru Angad Dev Ji secluded himself at Khadur. Who persuaded him to come out and lead the Sikhs?",
+   "options": [
+    "Bhai Mardana",
+    "Bebe Nanaki Ji",
+    "Baba Buddha Ji",
+    "Baba Sri Chand"
+   ],
+   "answer": "C",
+   "explanation": "Guru Angad Dev Ji stayed in seclusion until Baba Buddha Ji found him and brought the Sikhs to him; Gurdwara Mai Bharai at Khadur marks the place.",
+   "source": "Sikhs.org – Guru Angad",
+   "url": "https://www.sikhs.org/guru2.htm",
+   "url2": "https://eos.learnpunjabi.org/KHADUR%20SAHIB.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q36",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "hard",
+   "question": "How did Guru Angad Dev Ji's family earn their simple living at Khadur?",
+   "options": [
+    "Selling cloth",
+    "Collecting revenue from villages",
+    "Twisting munj reed fibre into string",
+    "Working as scribes for the court"
+   ],
+   "answer": "C",
+   "explanation": "Guru Angad Dev Ji lived on honest labour; the family ate simple meals earned by twisting munj reed fibre into string.",
+   "source": "The Sikh Encyclopedia – Angad Dev, Guru",
+   "url": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q37",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "easy",
+   "question": "Who succeeded Guru Angad Dev Ji as the third Sikh Guru?",
+   "options": [
+    "Guru Ram Das Ji",
+    "Baba Datu",
+    "Baba Buddha Ji",
+    "Guru Amar Das Ji"
+   ],
+   "answer": "D",
+   "explanation": "Guru Angad Dev Ji chose his devoted disciple Amar Das as successor, placing a coconut and five coins before him; Baba Buddha Ji applied the tilak.",
+   "source": "The Sikh Encyclopedia – Amar Das, Guru",
+   "url": "https://www.thesikhencyclopedia.com/amar-das-guru/",
+   "url2": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q38",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "During which period did Guru Angad Dev Ji serve as Guru?",
+   "options": [
+    "1469 to 1539",
+    "1539 to 1552",
+    "1552 to 1574",
+    "1574 to 1581"
+   ],
+   "answer": "B",
+   "explanation": "Guru Angad Dev Ji was Guru from 1539, when Guru Nanak Dev Ji installed him, until his passing at Khadur in 1552.",
+   "source": "Britannica – Guru Angad",
+   "url": "https://www.britannica.com/biography/Angad",
+   "url2": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q39",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "medium",
+   "question": "According to tradition, Guru Angad Dev Ji invited which companion of Guru Nanak Dev Ji to Khadur to narrate the Guru's life story?",
+   "options": [
+    "Bhai Bala",
+    "Bhai Mardana",
+    "Bhai Mansukh",
+    "Rai Bular"
+   ],
+   "answer": "A",
+   "explanation": "Tradition holds that Bhai Bala's recollections were written down in Gurmukhi in Guru Angad Dev Ji's presence, forming the Bhai Bale Vali Janam Sakhi.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Bala, Bhai",
+   "url": "https://eos.learnpunjabi.org/BALA%20BHAI%20(1466-1544).html",
+   "url2": "https://www.sikhs.org/guru2.htm",
+   "note": "Modern scholars question Bhai Bala's historicity and this Janam Sakhi's authenticity; question explicitly framed as tradition.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q40",
+   "topic": "guru-angad-dev-ji",
+   "difficulty": "easy",
+   "question": "Guru Angad Dev Ji was which Guru in the line of Sikh Gurus?",
+   "options": [
+    "First",
+    "Third",
+    "Fourth",
+    "Second"
+   ],
+   "answer": "D",
+   "explanation": "Guru Angad Dev Ji was the second Sikh Guru, succeeding Guru Nanak Dev Ji.",
+   "source": "Britannica – Guru Angad",
+   "url": "https://www.britannica.com/biography/Angad",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

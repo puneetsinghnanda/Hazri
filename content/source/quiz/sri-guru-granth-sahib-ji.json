@@ -1,0 +1,405 @@
+{
+ "topic": "sri-guru-granth-sahib-ji",
+ "questions": [
+  {
+   "id": "Q241",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "easy",
+   "question": "Which Guru compiled the Adi Granth, the first version of Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Arjan Dev Ji",
+    "Guru Amar Das Ji",
+    "Guru Gobind Singh Ji"
+   ],
+   "answer": "B",
+   "explanation": "Guru Arjan Dev Ji compiled the Adi Granth, gathering the bani of the earlier Gurus along with his own and that of the Bhagats.",
+   "source": "SGPC: Guru Granth Sahib",
+   "url": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "url2": "https://www.britannica.com/topic/Adi-Granth-Sikh-sacred-scripture",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q242",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "Mundavani, near the close of Sri Guru Granth Sahib Ji ('In this dish are placed three things: Truth, Contentment and Wisdom'), was composed by which Guru?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Ram Das Ji",
+    "Guru Tegh Bahadur Ji",
+    "Guru Arjan Dev Ji"
+   ],
+   "answer": "D",
+   "explanation": "In the Mundavani, Guru Arjan Dev Ji sums up the nature of Sri Guru Granth Sahib Ji, likening it to a dish holding Truth, Contentment and Wisdom.",
+   "source": "SGPC – Sri Guru Granth Sahib",
+   "url": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q243",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "easy",
+   "question": "In 1604, where was the Adi Granth first installed (Parkash)?",
+   "options": [
+    "Sri Harmandir Sahib, Amritsar",
+    "Goindwal Sahib",
+    "Kartarpur (Ravi)",
+    "Anandpur Sahib"
+   ],
+   "answer": "A",
+   "explanation": "Guru Arjan Dev Ji installed the Adi Granth at Sri Harmandir Sahib in August 1604.",
+   "source": "District Amritsar: Sri Harmandir Sahib",
+   "url": "https://amritsar.nic.in/tourist-place/sri-harmandir-sahib/",
+   "url2": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q244",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "easy",
+   "question": "Who was appointed the first Granthi of Sri Harmandir Sahib when the Adi Granth was installed?",
+   "options": [
+    "Bhai Gurdas Ji",
+    "Bhai Mani Singh Ji",
+    "Baba Buddha Ji",
+    "Bhai Bala Ji"
+   ],
+   "answer": "C",
+   "explanation": "At the first Parkash in 1604, Guru Arjan Dev Ji appointed Baba Buddha Ji as the first Granthi.",
+   "source": "District Amritsar: Sri Harmandir Sahib",
+   "url": "https://amritsar.nic.in/tourist-place/sri-harmandir-sahib/",
+   "url2": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q245",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "The bani of which Guru was added by Guru Gobind Singh Ji at Damdama Sahib to complete Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Guru Hargobind Sahib Ji",
+    "Guru Har Rai Ji",
+    "Guru Tegh Bahadur Ji",
+    "Guru Har Krishan Ji"
+   ],
+   "answer": "C",
+   "explanation": "Guru Gobind Singh Ji added the bani of his father, Guru Tegh Bahadur Ji, to the Granth; Bhai Mani Singh Ji wrote this version.",
+   "source": "SGPC: Takht Sri Damdama Sahib",
+   "url": "https://sgpc.net/takhat-sri-damdama-sahib-guru-kanshi-sabo-ki-talwandi/",
+   "url2": "https://www.britannica.com/topic/Adi-Granth-Sikh-sacred-scripture",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q246",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "In which year did Guru Gobind Singh Ji bestow eternal Guruship (Gurgaddi) on Sri Guru Granth Sahib Ji?",
+   "options": [
+    "1708",
+    "1604",
+    "1699",
+    "1716"
+   ],
+   "answer": "A",
+   "explanation": "In 1708 at Nanded (Hazur Sahib), Guru Gobind Singh Ji declared that the Granth would be the Guru after him.",
+   "source": "Basics of Sikhi: Guru Granth Sahib Ji",
+   "url": "https://www.basicsofsikhi.com/post/guru-granth-sahib-ji",
+   "url2": "https://hazursahib.com/web/history",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q247",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "easy",
+   "question": "How many Angs (pages) does the standard Saroop of Sri Guru Granth Sahib Ji have?",
+   "options": [
+    "1340",
+    "1430",
+    "1460",
+    "1104"
+   ],
+   "answer": "B",
+   "explanation": "The standard Saroop of Sri Guru Granth Sahib Ji has 1430 Angs, ending with Raagmala on Angs 1429-1430.",
+   "source": "SGPC: Guru Granth Sahib",
+   "url": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "url2": "https://sikhs.org/granth3.htm",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q248",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "Into how many main Raags is the bani of Sri Guru Granth Sahib Ji arranged?",
+   "options": [
+    "22",
+    "36",
+    "84",
+    "31"
+   ],
+   "answer": "D",
+   "explanation": "Of the many Raags and Raginis, the Gurus used 31 main Raags to arrange the bani of Sri Guru Granth Sahib Ji.",
+   "source": "SGPC: Guru Granth Sahib",
+   "url": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "url2": "https://sikhs.org/granth3.htm",
+   "note": "Some count 60+ including mixed forms; question says 'main Raags'.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q249",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "hard",
+   "question": "Which Raag opens the Raag section of Sri Guru Granth Sahib Ji (from Ang 14)?",
+   "options": [
+    "Sri Raag",
+    "Raag Asa",
+    "Raag Gauri",
+    "Raag Jaijavanti"
+   ],
+   "answer": "A",
+   "explanation": "The Raag section begins on Ang 14 with Sri Raag and ends with Raag Jaijavanti.",
+   "source": "Sikhs.org: Arrangement and Layout of SGGS",
+   "url": "https://sikhs.org/granth3.htm",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q250",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "easy",
+   "question": "With which words does the Mool Mantar begin?",
+   "options": [
+    "Sat Naam",
+    "Waheguru",
+    "So Dar",
+    "Ik Oankar"
+   ],
+   "answer": "D",
+   "explanation": "The Mool Mantar, the basic creed at the opening of Sri Guru Granth Sahib Ji, begins 'Ik Oankar, Sat Naam, Karta Purakh, Nirbhau, Nirvair...'.",
+   "source": "Sikh Rehat Maryada (English translation) – Asia Samachar",
+   "url": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q251",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "Which composition appears at the very end of Sri Guru Granth Sahib Ji (Angs 1429-1430)?",
+   "options": [
+    "Japji Sahib",
+    "Raagmala",
+    "Sukhmani Sahib",
+    "Asa di Var"
+   ],
+   "answer": "B",
+   "explanation": "Raagmala, an index of musical measures, is the final composition, following the Mundavani on Ang 1429.",
+   "source": "Sikhs.org: Arrangement and Layout of SGGS",
+   "url": "https://sikhs.org/granth3.htm",
+   "url2": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q252",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "Sri Guru Granth Sahib Ji contains the bani of how many Sikh Gurus?",
+   "options": [
+    "Five",
+    "Seven",
+    "Six",
+    "Ten"
+   ],
+   "answer": "C",
+   "explanation": "It contains the bani of the first five Gurus and the ninth Guru, Guru Tegh Bahadur Ji.",
+   "source": "SGPC: Guru Granth Sahib",
+   "url": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "url2": "https://www.britannica.com/topic/Adi-Granth-Sikh-sacred-scripture",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q253",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "Which Guru contributed the largest number of hymns to Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Guru Arjan Dev Ji",
+    "Guru Nanak Dev Ji",
+    "Guru Amar Das Ji",
+    "Guru Ram Das Ji"
+   ],
+   "answer": "A",
+   "explanation": "Guru Arjan Dev Ji contributed the most hymns (2,218 by the SGPC's count), followed by Guru Nanak Dev Ji.",
+   "source": "SGPC: Guru Granth Sahib",
+   "url": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q254",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "Among the Bhagats, whose bani has the largest share in Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Bhagat Namdev Ji",
+    "Bhagat Ravidas Ji",
+    "Bhagat Kabir Ji",
+    "Sheikh Farid Ji"
+   ],
+   "answer": "C",
+   "explanation": "Bhagat Kabir Ji has the largest number of hymns among the Bhagats included in Sri Guru Granth Sahib Ji.",
+   "source": "SGPC: Guru Granth Sahib",
+   "url": "https://old.sgpc.net/sikhism/guru-granth-sahib.asp",
+   "url2": "https://www.britannica.com/topic/Bhagat-Bani",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q255",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "hard",
+   "question": "Sheikh Farid, whose Shaloks are included in Sri Guru Granth Sahib Ji, belonged to which tradition?",
+   "options": [
+    "Nath Yogi tradition",
+    "Chishti Sufi order",
+    "Varkari tradition",
+    "Udasi sampardai"
+   ],
+   "answer": "B",
+   "explanation": "Sheikh Farid was a Sufi mystic of the Chishti order and the first recorded poet of Punjabi; his shabads and shaloks are in Sri Guru Granth Sahib Ji.",
+   "source": "The Sikh Encyclopedia: Farid, Shaikh",
+   "url": "https://www.thesikhencyclopedia.com/farid-shaikh/",
+   "url2": "https://sikhs.org/granth3.htm",
+   "note": "Count of Farid's shaloks varies; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q256",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "hard",
+   "question": "Bhagat Namdev Ji, whose hymns are in Sri Guru Granth Sahib Ji, is also famous for devotional poetry in which language?",
+   "options": [
+    "Bengali",
+    "Tamil",
+    "Sindhi",
+    "Marathi"
+   ],
+   "answer": "D",
+   "explanation": "Namdev was a medieval poet-saint who wrote Marathi abhangas; some of his verses are included in Sri Guru Granth Sahib Ji.",
+   "source": "Britannica: Namdev",
+   "url": "https://www.britannica.com/biography/Namdev",
+   "url2": "https://www.basicsofsikhi.com/post/guru-granth-sahib-ji",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q257",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "easy",
+   "question": "In which script is Sri Guru Granth Sahib Ji written?",
+   "options": [
+    "Devanagari",
+    "Shahmukhi",
+    "Sharada",
+    "Gurmukhi"
+   ],
+   "answer": "D",
+   "explanation": "Sri Guru Granth Sahib Ji is written in Gurmukhi script, though its hymns use several languages including Punjabi, Braj, Persian and Sanskrit.",
+   "source": "Sikhs.org: Arrangement and Layout of SGGS",
+   "url": "https://sikhs.org/granth3.htm",
+   "url2": "https://www.basicsofsikhi.com/post/guru-granth-sahib-ji",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q258",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "easy",
+   "question": "An Akhand Path, the continuous reading of Sri Guru Granth Sahib Ji by a relay of readers, takes about how long?",
+   "options": [
+    "24 hours",
+    "48 hours",
+    "7 days",
+    "40 days"
+   ],
+   "answer": "B",
+   "explanation": "An Akhand Path is a non-stop recitation by a relay of readers, completed in about 48 hours.",
+   "source": "Encyclopaedia of Sikhism: Akhand Path",
+   "url": "https://eos.learnpunjabi.org/AKHAND%20PATH%20.html",
+   "url2": "https://old.sgpc.net/sikhism/paths.asp",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q259",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "medium",
+   "question": "What is the ceremony called when Sri Guru Granth Sahib Ji is respectfully closed and put to rest, usually in the evening?",
+   "options": [
+    "Sukhasan",
+    "Parkash",
+    "Hukamnama",
+    "Bhog"
+   ],
+   "answer": "A",
+   "explanation": "Sukhasan is the evening ceremony of putting Sri Guru Granth Sahib Ji to rest; Parkash is the morning opening ceremony.",
+   "source": "WaheguruNet: Guru Granth Closing Ceremony",
+   "url": "https://www.wahegurunet.com/guru-granth-closing-ceremony",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q260",
+   "topic": "sri-guru-granth-sahib-ji",
+   "difficulty": "hard",
+   "question": "The Savaiye in Sri Guru Granth Sahib Ji, composed in praise of the Gurus, were written by which group of poets?",
+   "options": [
+    "The Rababis",
+    "The Udasis",
+    "The Bhatts",
+    "The Nirmalas"
+   ],
+   "answer": "C",
+   "explanation": "The Bhatts, a group of bards, composed the Savaiye, near the end of the Granth, praising the Gurus.",
+   "source": "Basics of Sikhi: Guru Granth Sahib Ji",
+   "url": "https://www.basicsofsikhi.com/post/guru-granth-sahib-ji",
+   "url2": "https://sikhs.org/granth3.htm",
+   "note": "Number of Bhatts (11 vs 17) is disputed; not asked.",
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

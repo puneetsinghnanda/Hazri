@@ -304,7 +304,12 @@
       ]
     }
   ],
-  "content_version": 9,
-  "source_digest": "9df3926ee6e3a5fd",
-  "bytes": 4849664
+  "quiz": {
+    "topics": 17,
+    "questions": 340,
+    "days": 92
+  },
+  "content_version": 10,
+  "source_digest": "4ad80340755fd291",
+  "bytes": 5029888
 }

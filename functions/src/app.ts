@@ -12,6 +12,7 @@ import { backupRouter } from './routes/backup';
 import { miscRouter } from './routes/misc';
 import { presenceRouter } from './routes/presence';
 import { profileRouter } from './routes/profile';
+import { quizRouter } from './routes/quiz';
 import { sangatRouter } from './routes/sangat';
 import { tokensRouter } from './routes/tokens';
 
@@ -35,6 +36,7 @@ export function createApp(deps: Deps): express.Express {
   app.use(presenceRouter(deps));
   app.use(sangatRouter(deps));
   app.use(backupRouter(deps));
+  app.use(quizRouter(deps));
   app.use(miscRouter(deps));
   app.use(adminRouter(deps));
 

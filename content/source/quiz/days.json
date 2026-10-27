@@ -1,0 +1,925 @@
+{
+ "_note": "Calendar events that have a Gurmat Quiz (14-quiz.md QZ8, QZ-2): the event's exact English name in calendar-558.json, the card's short label (Punjabi and Hindi are Claude's draft for review), its topic, and the Vichar page Know more opens. Accepted by the owner on 2026-10-27. Events not listed (Sangrand, Masya, Puranmashi, the Bhagats, and political and modern anniversaries) take the day's rotation.",
+ "days": [
+  {
+   "event": "Gurgaddi Purab – Sri Guru Tegh Bahadur Sahib Ji",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-tegh-bahadur-ji",
+   "slug": "gurgaddi-purab-guru-tegh-bahadur-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Harkrishan Sahib Ji",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-har-krishan-ji",
+   "slug": "joti-jot-purab-guru-harkrishan-sahib-ji"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Tegh Bahadur Sahib Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-tegh-bahadur-ji",
+   "slug": "prakash-purab-guru-tegh-bahadur-ji"
+  },
+  {
+   "event": "Birth anniversary – Sahibzada Baba Jujhar Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "sahibzada-baba-jujhar-singh-ji"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Arjan Dev Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-arjan-dev-ji",
+   "slug": "prakash-purab-guru-arjan-dev-ji"
+  },
+  {
+   "event": "Sikh Dastaar Divas / World Sikh Turban Day",
+   "label": {
+    "en": "Sikh Dastaar Divas",
+    "pa": "ਸਿੱਖ ਦਸਤਾਰ ਦਿਵਸ",
+    "hi": "सिख दस्तार दिवस"
+   },
+   "topic": "sikh-culture",
+   "slug": "sikh-dastaar-divas-world-turban-day"
+  },
+  {
+   "event": "Khalsa Saajna Divas / Vaisakhi – Creation of Khalsa Panth",
+   "label": {
+    "en": "Vaisakhi",
+    "pa": "ਵਿਸਾਖੀ",
+    "hi": "वैसाखी"
+   },
+   "topic": "guru-gobind-singh-ji",
+   "slug": "vaisakhi-khalsa-saajna-divas"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Angad Dev Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-angad-dev-ji",
+   "slug": "prakash-purab-guru-angad-dev-ji"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Amar Das Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-amar-das-ji",
+   "slug": "prakash-purab-guru-amar-das-ji"
+  },
+  {
+   "event": "Sri Muktsar Sahib Jorh Mela / Shaheedi Divas",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "maghi-sri-muktsar-sahib-chali-mukte"
+  },
+  {
+   "event": "Birth anniversary – Sardar Jassa Singh Ramgarhia",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "jassa-singh-ramgarhia"
+  },
+  {
+   "event": "Victory at Sirhind – Banda Singh Bahadur & Baba Deep Singh",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "victory-at-sirhind-chappar-chiri-1710"
+  },
+  {
+   "event": "Chhota Ghallughara – Kahnuwan (Gurdaspur)",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "chhota-ghallughara-1746-kahnuwan"
+  },
+  {
+   "event": "Birth anniversary – Sardar Jassa Singh Ahluwalia",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "jassa-singh-ahluwalia"
+  },
+  {
+   "event": "Shaheedi Saka Paonta Sahib",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "shaheedi-saka-paonta-sahib"
+  },
+  {
+   "event": "Birth anniversary – Bhai Mohkam Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-mohkam-singh-ji"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Hargobind Sahib Ji",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-hargobind-sahib-ji",
+   "slug": "gurgaddi-purab-guru-hargobind-sahib-ji"
+  },
+  {
+   "event": "Birth anniversary – Bhai Sahib Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-sahib-singh-ji"
+  },
+  {
+   "event": "Shaheedi Purab – Sri Guru Arjan Dev Ji",
+   "label": {
+    "en": "Shaheedi Purab",
+    "pa": "ਸ਼ਹੀਦੀ ਪੁਰਬ",
+    "hi": "शहीदी पुरब"
+   },
+   "topic": "guru-arjan-dev-ji",
+   "slug": "shaheedi-purab-guru-arjan-dev-ji"
+  },
+  {
+   "event": "Shaheedi – Baba Banda Singh Bahadur Ji",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "shaheedi-baba-banda-singh-bahadur"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Hargobind Sahib Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-hargobind-sahib-ji",
+   "slug": "prakash-purab-guru-hargobind-sahib-ji"
+  },
+  {
+   "event": "Foundation Stone / Sirjana Divas – Sri Akal Takht Sahib",
+   "label": {
+    "en": "Foundation Day",
+    "pa": "ਸਥਾਪਨਾ ਦਿਵਸ",
+    "hi": "स्थापना दिवस"
+   },
+   "topic": "five-takhts",
+   "slug": "sri-akal-takht-sahib-foundation-day"
+  },
+  {
+   "event": "Foundation Stone of Sachkhand Sri Harmandir Sahib, Amritsar",
+   "label": {
+    "en": "Foundation Day",
+    "pa": "ਸਥਾਪਨਾ ਦਿਵਸ",
+    "hi": "स्थापना दिवस"
+   },
+   "topic": "historic-gurdwaras",
+   "slug": "harmandir-sahib-foundation-stone"
+  },
+  {
+   "event": "Shaheedi Purab – Bhai Mani Singh Ji",
+   "label": {
+    "en": "Shaheedi Purab",
+    "pa": "ਸ਼ਹੀਦੀ ਪੁਰਬ",
+    "hi": "शहीदी पुरब"
+   },
+   "topic": "sikh-heroes",
+   "slug": "shaheedi-purab-bhai-mani-singh-ji"
+  },
+  {
+   "event": "Shaheedi Purab – Bhai Taru Singh Ji",
+   "label": {
+    "en": "Shaheedi Purab",
+    "pa": "ਸ਼ਹੀਦੀ ਪੁਰਬ",
+    "hi": "शहीदी पुरब"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-taru-singh-ji"
+  },
+  {
+   "event": "Miri-Piri Divas – Sixth Patshahi",
+   "label": {
+    "en": "Miri-Piri Divas",
+    "pa": "ਮੀਰੀ-ਪੀਰੀ ਦਿਵਸ",
+    "hi": "मीरी-पीरी दिवस"
+   },
+   "topic": "guru-hargobind-sahib-ji",
+   "slug": "miri-piri-divas"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Harkrishan Sahib Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-har-krishan-ji",
+   "slug": "prakash-purab-guru-harkrishan-sahib-ji"
+  },
+  {
+   "event": "Morcha Guru Ka Bagh, Amritsar",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "morcha-guru-ka-bagh-1922"
+  },
+  {
+   "event": "Birth anniversary – Bhai Daya Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-daya-singh-ji"
+  },
+  {
+   "event": "Jorh Mela – Baba Bakala Sahib / Guru Ladho Re",
+   "label": {
+    "en": "Jorh Mela",
+    "pa": "ਜੋੜ ਮੇਲਾ",
+    "hi": "जोड़ मेला"
+   },
+   "topic": "guru-tegh-bahadur-ji",
+   "slug": "baba-bakala-rakhar-puniya-jor-mela"
+  },
+  {
+   "event": "Sampuranta Divas – Sri Guru Granth Sahib Ji at Sri Harmandir Sahib",
+   "label": {
+    "en": "Sampuranta Divas",
+    "pa": "ਸੰਪੂਰਨਤਾ ਦਿਵਸ",
+    "hi": "संपूर्णता दिवस"
+   },
+   "topic": "sri-guru-granth-sahib-ji",
+   "slug": "sampuranta-divas-guru-granth-sahib-ji"
+  },
+  {
+   "event": "First Prakash Purab – Sri Guru Granth Sahib Ji (1604)",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "sri-guru-granth-sahib-ji",
+   "slug": "pehla-prakash-purab-guru-granth-sahib-ji"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Arjan Dev Ji",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-arjan-dev-ji",
+   "slug": "gurgaddi-purab-guru-arjan-dev-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Ram Das Sahib Ji",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-ram-das-ji",
+   "slug": "joti-jot-purab-guru-ram-das-ji"
+  },
+  {
+   "event": "Jorh Mela Gurdwara Kandh Sahib / Marriage of Guru Nanak Dev Ji",
+   "label": {
+    "en": "Viah Purab",
+    "pa": "ਵਿਆਹ ਪੁਰਬ",
+    "hi": "विवाह पुरब"
+   },
+   "topic": "guru-nanak-dev-ji",
+   "slug": "kandh-sahib-batala-guru-nanak-marriage"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Ram Das Sahib Ji",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-ram-das-ji",
+   "slug": "gurgaddi-purab-guru-ram-das-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Amar Das Ji / Goindwal Sahib Jorh Mela",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-amar-das-ji",
+   "slug": "joti-jot-purab-guru-amar-das-ji"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Angad Dev Ji",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-angad-dev-ji",
+   "slug": "gurgaddi-purab-guru-angad-dev-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Nanak Dev Ji",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-nanak-dev-ji",
+   "slug": "joti-jot-purab-guru-nanak-dev-ji"
+  },
+  {
+   "event": "Jorh Mela – Baba Budha Ji, Thatha (Day 1)",
+   "label": {
+    "en": "Jorh Mela",
+    "pa": "ਜੋੜ ਮੇਲਾ",
+    "hi": "जोड़ मेला"
+   },
+   "topic": "sikh-heroes",
+   "slug": "baba-budha-ji"
+  },
+  {
+   "event": "Jorh Mela – Baba Budha Ji, Thatha (Day 2)",
+   "label": {
+    "en": "Jorh Mela",
+    "pa": "ਜੋੜ ਮੇਲਾ",
+    "hi": "जोड़ मेला"
+   },
+   "topic": "sikh-heroes",
+   "slug": "baba-budha-ji"
+  },
+  {
+   "event": "Birth anniversary – Bhai Taru Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-taru-singh-ji"
+  },
+  {
+   "event": "Darbar Khalsa (Dussehra)",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "darbar-khalsa-dussehra"
+  },
+  {
+   "event": "Birth anniversary – Baba Budha Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "baba-budha-ji"
+  },
+  {
+   "event": "Birth anniversary – Bhai Dharam Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-dharam-singh-ji"
+  },
+  {
+   "event": "Passing of Sardar Jassa Singh Ahluwalia",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-heroes",
+   "slug": "jassa-singh-ahluwalia"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Ram Das Sahib Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-ram-das-ji",
+   "slug": "prakash-purab-guru-ram-das-ji"
+  },
+  {
+   "event": "Birth anniversary – Mata Sahib Kaur Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "mata-sahib-kaur-ji"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Harkrishan Sahib Ji",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-har-krishan-ji",
+   "slug": "gurgaddi-purab-guru-harkrishan-sahib-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Har Rai Sahib Ji",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-har-rai-ji",
+   "slug": "joti-jot-purab-guru-har-rai-sahib-ji"
+  },
+  {
+   "event": "Bandi Chhor Divas / Diwali",
+   "label": {
+    "en": "Bandi Chhor Divas",
+    "pa": "ਬੰਦੀ ਛੋੜ ਦਿਵਸ",
+    "hi": "बंदी छोड़ दिवस"
+   },
+   "topic": "guru-hargobind-sahib-ji",
+   "slug": "bandi-chhor-divas"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Granth Sahib Ji (Nanded, 1708)",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "sri-guru-granth-sahib-ji",
+   "slug": "gurta-gaddi-diwas-guru-granth-sahib-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Gobind Singh Sahib Ji",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-gobind-singh-ji",
+   "slug": "joti-jot-purab-guru-gobind-singh-ji"
+  },
+  {
+   "event": "Shaheedi Purab – Baba Deep Singh Ji",
+   "label": {
+    "en": "Shaheedi Purab",
+    "pa": "ਸ਼ਹੀਦੀ ਪੁਰਬ",
+    "hi": "शहीदी पुरब"
+   },
+   "topic": "sikh-heroes",
+   "slug": "baba-deep-singh-ji"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Nanak Dev Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-nanak-dev-ji",
+   "slug": "prakash-purab-guru-nanak-dev-ji"
+  },
+  {
+   "event": "Akāl Chāṇā / Merging of Bhai Mardana Ji",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-mardana-ji-akal-chalana"
+  },
+  {
+   "event": "Birth anniversary – Sahibzada Baba Zorawar Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "sahibzada-baba-zorawar-singh-ji"
+  },
+  {
+   "event": "Shaheedi – Baba Gurbakhsh Singh Ji",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "shaheedi-baba-gurbakhsh-singh-ji"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Gobind Singh Sahib Ji",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-gobind-singh-ji",
+   "slug": "gurgaddi-purab-guru-gobind-singh-ji"
+  },
+  {
+   "event": "Shaheedi – Bhai Dyala Ji, Bhai Mati Das Ji & Bhai Sati Das Ji",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "shaheedi-bhai-mati-das-sati-das-dyala-ji"
+  },
+  {
+   "event": "Birth anniversary – Sahibzada Baba Fateh Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "sahibzada-baba-fateh-singh-ji"
+  },
+  {
+   "event": "Guruship conferred to Panj Pyare / Guru Khalsa at Chamkaur Sahib",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "guru-khalsa-panj-pyare-chamkaur-sahib"
+  },
+  {
+   "event": "Shaheedi Purab – Sri Guru Tegh Bahadur Sahib Ji",
+   "label": {
+    "en": "Shaheedi Purab",
+    "pa": "ਸ਼ਹੀਦੀ ਪੁਰਬ",
+    "hi": "शहीदी पुरब"
+   },
+   "topic": "guru-tegh-bahadur-ji",
+   "slug": "shaheedi-purab-guru-tegh-bahadur-ji"
+  },
+  {
+   "event": "Leaving of Sri Anandpur Sahib Fort",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "leaving-anandpur-sahib-fort-1704"
+  },
+  {
+   "event": "Family separation at Sirsa River",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "parivar-vichhora-sirsa-river"
+  },
+  {
+   "event": "Shaheedi – Bhai Jivan Singh (Bhai Jaita Ji)",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "shaheedi-bhai-jaita-ji-bhai-jivan-singh"
+  },
+  {
+   "event": "Saka Chamkaur Sahib",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "saka-chamkaur-sahib"
+  },
+  {
+   "event": "Shaheedi – Sahibzada Baba Ajit Singh Ji (Saka Chamkaur)",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "saka-chamkaur-sahib"
+  },
+  {
+   "event": "Shaheedi – Sahibzada Baba Jujhar Singh Ji (Saka Chamkaur)",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "saka-chamkaur-sahib"
+  },
+  {
+   "event": "Shaheedi – Bhai Sangat Singh Ji",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "shaheedi-bhai-sangat-singh-ji"
+  },
+  {
+   "event": "Shaheedi – Mata Gujri Ji",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "saka-sirhind-chhote-sahibzade-mata-gujri-ji"
+  },
+  {
+   "event": "Shaheedi – Sahibzada Baba Fateh Singh Ji",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "saka-sirhind-chhote-sahibzade-mata-gujri-ji"
+  },
+  {
+   "event": "Shaheedi – Sahibzada Baba Zorawar Singh Ji",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "saka-sirhind-chhote-sahibzade-mata-gujri-ji"
+  },
+  {
+   "event": "Sri Muktsar Sahib Jorh Mela (Maaghi)",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "maghi-sri-muktsar-sahib-chali-mukte"
+  },
+  {
+   "event": "Prakash Purab – Sri Guru Gobind Singh Sahib Ji",
+   "label": {
+    "en": "Prakash Purab",
+    "pa": "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ",
+    "hi": "प्रकाश पुरब"
+   },
+   "topic": "guru-gobind-singh-ji",
+   "slug": "prakash-purab-guru-gobind-singh-ji"
+  },
+  {
+   "event": "Birth anniversary – Bhai Himmat Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "bhai-himmat-singh-ji"
+  },
+  {
+   "event": "Chabiyan Da Morcha, Amritsar",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "chabiyan-da-morcha-1922"
+  },
+  {
+   "event": "Birth anniversary – Baba Deep Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "baba-deep-singh-ji"
+  },
+  {
+   "event": "Wadda Ghallughara – Kup Rohira, Sangrur",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "wadda-ghallughara-kup-rohira"
+  },
+  {
+   "event": "Marriage Purab – Sri Guru Gobind Singh Ji & Mata Jito Ji (Guru Ka Lahore)",
+   "label": {
+    "en": "Viah Purab",
+    "pa": "ਵਿਆਹ ਪੁਰਬ",
+    "hi": "विवाह पुरब"
+   },
+   "topic": "guru-gobind-singh-ji",
+   "slug": "guru-gobind-singh-ji-mata-jito-ji-marriage-guru-ka-lahore"
+  },
+  {
+   "event": "Birth anniversary – Sahibzada Baba Ajit Singh Ji",
+   "label": {
+    "en": "Birth anniversary",
+    "pa": "ਜਨਮ ਦਿਹਾੜਾ",
+    "hi": "जन्म दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "sahibzada-baba-ajit-singh-ji"
+  },
+  {
+   "event": "Jaito Da Morcha / Mela, Faridkot",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "jaito-da-morcha-1923-1925"
+  },
+  {
+   "event": "Saka Nankana Sahib",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "saka-nankana-sahib-1921"
+  },
+  {
+   "event": "Annual Jorh Mela remembering Wadda Ghallughara – Gahil, Barnala (supplementary cross-check)",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "wadda-ghallughara-kup-rohira"
+  },
+  {
+   "event": "Annual Chola Sahib Jorh Mela – Dera Baba Nanak (supplementary cross-check)",
+   "label": {
+    "en": "Jorh Mela",
+    "pa": "ਜੋੜ ਮੇਲਾ",
+    "hi": "जोड़ मेला"
+   },
+   "topic": "guru-nanak-dev-ji",
+   "slug": "chola-sahib-jor-mela-dera-baba-nanak"
+  },
+  {
+   "event": "Nanakshahi Samvat 559 / Sikh New Year (Chet Sangrand)",
+   "label": {
+    "en": "Nanakshahi New Year",
+    "pa": "ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ",
+    "hi": "नानकशाही नव वर्ष"
+   },
+   "topic": "sikh-culture",
+   "slug": "nanakshahi-new-year-chet-sangrand"
+  },
+  {
+   "event": "Sardar Baghel Singh – conquest of Delhi (fixed solar anniversary)",
+   "label": {
+    "en": "Today in Sikh history",
+    "pa": "ਅੱਜ ਦਾ ਇਤਿਹਾਸ",
+    "hi": "आज का इतिहास"
+   },
+   "topic": "sikh-history",
+   "slug": "sardar-baghel-singh-delhi-1783"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Har Rai Sahib Ji (fixed solar anniversary)",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-har-rai-ji",
+   "slug": "gurgaddi-purab-guru-har-rai-sahib-ji"
+  },
+  {
+   "event": "Gurgaddi Purab – Sri Guru Amar Das Sahib Ji (fixed solar anniversary)",
+   "label": {
+    "en": "Gurgaddi Purab",
+    "pa": "ਗੁਰਗੱਦੀ ਪੁਰਬ",
+    "hi": "गुरगद्दी पुरब"
+   },
+   "topic": "guru-amar-das-ji",
+   "slug": "gurgaddi-purab-guru-amar-das-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Angad Dev Ji (fixed solar anniversary)",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-angad-dev-ji",
+   "slug": "joti-jot-purab-guru-angad-dev-ji"
+  },
+  {
+   "event": "Joti Jot Purab – Sri Guru Hargobind Sahib Ji (fixed solar anniversary)",
+   "label": {
+    "en": "Joti Jot Purab",
+    "pa": "ਜੋਤੀ ਜੋਤ ਪੁਰਬ",
+    "hi": "जोती जोत पुरब"
+   },
+   "topic": "guru-hargobind-sahib-ji",
+   "slug": "joti-jot-purab-guru-hargobind-sahib-ji"
+  },
+  {
+   "event": "Shaheedi – Bhai Subeg Singh & Bhai Shahbaz Singh (fixed solar anniversary)",
+   "label": {
+    "en": "Shaheedi Divas",
+    "pa": "ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ",
+    "hi": "शहीदी दिवस"
+   },
+   "topic": "sikh-heroes",
+   "slug": "shaheedi-bhai-subeg-singh-bhai-shahbaz-singh"
+  }
+ ]
+}

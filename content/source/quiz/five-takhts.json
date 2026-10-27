@@ -1,0 +1,405 @@
+{
+ "topic": "five-takhts",
+ "questions": [
+  {
+   "id": "Q201",
+   "topic": "five-takhts",
+   "difficulty": "easy",
+   "question": "What does the name 'Akal Takht' mean?",
+   "options": [
+    "Throne of the Timeless One (God)",
+    "Seat of the Gurus' teachings",
+    "Fort of the Khalsa",
+    "Throne of the Emperor"
+   ],
+   "answer": "A",
+   "explanation": "'Akal' means timeless or beyond time, and 'Takht' (Persian) means throne, so Akal Takht is the 'Throne of the Timeless One', i.e. of Akal Purakh.",
+   "source": "The Sikh Encyclopedia – Akal Takht",
+   "url": "https://www.thesikhencyclopedia.com/akal-takht/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q202",
+   "topic": "five-takhts",
+   "difficulty": "hard",
+   "question": "Which two revered Sikhs completed the construction of the original Akal Takht platform?",
+   "options": [
+    "Bhai Mani Singh Ji and Baba Deep Singh Ji",
+    "Bhai Nand Lal Ji and Bhai Daya Singh Ji",
+    "Baba Buddha Ji and Bhai Gurdas Ji",
+    "Baba Banda Singh Bahadur and Bhai Bidhi Chand Ji"
+   ],
+   "answer": "C",
+   "explanation": "According to the Encyclopaedia of Sikhism, Baba Buddha Ji and Bhai Gurdas Ji completed the construction of the Akal Takht for Guru Hargobind Sahib Ji.",
+   "source": "Encyclopaedia of Sikhism: Akal Takht",
+   "url": "https://eos.learnpunjabi.org/AKAL%20TAKHT.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q203",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "The Jathedar of which Takht alone can summon a Sarbat Khalsa, and whose hukamnamas take precedence over those of other Takhts?",
+   "options": [
+    "Takht Sri Kesgarh Sahib",
+    "Sri Akal Takht Sahib",
+    "Takht Sri Patna Sahib",
+    "Takht Sri Damdama Sahib"
+   ],
+   "answer": "B",
+   "explanation": "Sri Akal Takht Sahib is the highest seat of Sikh temporal authority; its edicts issued in the name of the Panth are binding on Sikhs worldwide.",
+   "source": "The Sikh Encyclopedia: Takht",
+   "url": "https://www.thesikhencyclopedia.com/philosophy-spirituality-and-ethics/political-philosophy/takht",
+   "url2": "https://www.sikhmissionarysociety.org/sms/smssikhism/takhts/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q204",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "The Akal Takht building was destroyed in June 1984 during which Indian Army action?",
+   "options": [
+    "Operation Black Thunder",
+    "Operation Woodrose",
+    "Operation Vijay",
+    "Operation Blue Star"
+   ],
+   "answer": "D",
+   "explanation": "The Akal Takht was destroyed in the army action of early June 1984 (Operation Blue Star); a new building was later raised through kar sewa.",
+   "source": "Encyclopaedia of Sikhism: Akal Takht",
+   "url": "https://eos.learnpunjabi.org/AKAL%20TAKHT.html",
+   "url2": "https://en.wikipedia.org/wiki/Panj_Takht",
+   "note": "Operation name widely documented; Black Thunder (1986/88) is a later operation, used as distractor.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q205",
+   "topic": "five-takhts",
+   "difficulty": "easy",
+   "question": "What does the Persian word 'Takht' mean?",
+   "options": [
+    "Temple",
+    "Throne",
+    "Fortress",
+    "Assembly"
+   ],
+   "answer": "B",
+   "explanation": "'Takht' is a Persian word meaning throne; the five Takhts are seats of Sikh religious and temporal authority.",
+   "source": "Sikh Missionary Society UK: Takhts",
+   "url": "https://www.sikhmissionarysociety.org/sms/smssikhism/takhts/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q206",
+   "topic": "five-takhts",
+   "difficulty": "easy",
+   "question": "At which Takht did Guru Gobind Singh Ji create the Khalsa on Vaisakhi 1699?",
+   "options": [
+    "Sri Akal Takht Sahib",
+    "Takht Sri Damdama Sahib",
+    "Takht Sri Hazur Sahib",
+    "Takht Sri Kesgarh Sahib"
+   ],
+   "answer": "D",
+   "explanation": "Takht Sri Kesgarh Sahib at Anandpur Sahib is revered as the birthplace of the Khalsa, where the Panj Pyare were initiated with Amrit.",
+   "source": "SGPC: Takht Sri Kesgarh Sahib",
+   "url": "https://sgpc.net/five-takht-sahibs/takhat-sri-keshgarh-sahib-sri-anandpur-sahib/",
+   "url2": "https://www.discoversikhism.com/sikh_gurdwaras/takht_sri_keshgarh_sahib.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q207",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "Which relic used to prepare Amrit in 1699 is preserved at Takht Sri Kesgarh Sahib?",
+   "options": [
+    "The historic Khanda",
+    "The Kartarpur Pothi",
+    "Guru Nanak Dev Ji's chola",
+    "Guru Hargobind Sahib Ji's Miri sword"
+   ],
+   "answer": "A",
+   "explanation": "Among the weapons and relics preserved at Kesgarh Sahib is the khanda with which Guru Gobind Singh Ji prepared Amrit at the creation of the Khalsa.",
+   "source": "Discover Sikhism: Takht Sri Keshgarh Sahib",
+   "url": "https://www.discoversikhism.com/sikh_gurdwaras/takht_sri_keshgarh_sahib.html",
+   "url2": "https://sikhs.org/gurdwaras/guru10_7.htm",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q208",
+   "topic": "five-takhts",
+   "difficulty": "easy",
+   "question": "Takht Sri Patna Sahib is in Patna, a city on the south bank of which river?",
+   "options": [
+    "Yamuna",
+    "Godavari",
+    "Ganga",
+    "Sutlej"
+   ],
+   "answer": "C",
+   "explanation": "Patna extends along the south bank of the Ganga. Takht Sri Harimandir Sahib there marks the birthplace of Guru Gobind Singh Ji.",
+   "source": "Encyclopaedia Britannica – Patna",
+   "url": "https://www.britannica.com/place/Patna",
+   "url2": "https://www.thesikhencyclopedia.com/other-historical-places/india/patna/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q209",
+   "topic": "five-takhts",
+   "difficulty": "easy",
+   "question": "Takht Sri Damdama Sahib is located in which town?",
+   "options": [
+    "Anandpur Sahib",
+    "Kiratpur Sahib",
+    "Talwandi Sabo (near Bathinda)",
+    "Tarn Taran"
+   ],
+   "answer": "C",
+   "explanation": "Takht Sri Damdama Sahib is at Talwandi Sabo, about 28 km south-east of Bathinda in Punjab, where Guru Gobind Singh Ji stayed after the battles of Chamkaur and Muktsar.",
+   "source": "Encyclopaedia of Sikhism: Damdama Sahib",
+   "url": "https://eos.learnpunjabi.org/DAMDAMA%20SAHIB.html",
+   "url2": "https://sgpc.net/takhat-sri-damdama-sahib-guru-kanshi-sabo-ki-talwandi/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q210",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "In which year did the SGPC formally recognise Damdama Sahib as the fifth Takht?",
+   "options": [
+    "1966",
+    "1925",
+    "1947",
+    "1984"
+   ],
+   "answer": "A",
+   "explanation": "The SGPC approved Damdama Sahib as a Takht by Resolution No. 32 dated 18 November 1966.",
+   "source": "Encyclopaedia of Sikhism: Damdama Sahib",
+   "url": "https://eos.learnpunjabi.org/DAMDAMA%20SAHIB.html",
+   "url2": "https://www.thesikhencyclopedia.com/philosophy-spirituality-and-ethics/political-philosophy/takht",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q211",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "Guru Gobind Singh Ji came to Talwandi Sabo (Damdama Sahib) in January 1706 after which battle?",
+   "options": [
+    "Chamkaur",
+    "Bhangani",
+    "Anandpur",
+    "Muktsar (Khidrana)"
+   ],
+   "answer": "D",
+   "explanation": "After his last battle at Khidrana (Muktsar) in late December 1705, Guru Gobind Singh Ji reached Talwandi Sabo, stayed about a year, and prepared the final recension of Sri Guru Granth Sahib Ji there.",
+   "source": "Sikhs.org – Takht Sri Damdama Sahib",
+   "url": "https://sikhs.org/gurdwaras/guru10_25.htm",
+   "url2": "https://eos.learnpunjabi.org/GOBIND%20SINGH%20GURU%20(1666-1708).html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q212",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "Which Takht is renowned as 'Guru ki Kashi', a seat of Sikh learning?",
+   "options": [
+    "Takht Sri Patna Sahib",
+    "Takht Sri Damdama Sahib",
+    "Takht Sri Kesgarh Sahib",
+    "Sri Akal Takht Sahib"
+   ],
+   "answer": "B",
+   "explanation": "Talwandi Sabo, seat of Takht Sri Damdama Sahib, is called Guru ki Kashi; tradition holds it would become home to scholars and copyists of Gurbani.",
+   "source": "Encyclopaedia of Sikhism: Damdama Sahib",
+   "url": "https://eos.learnpunjabi.org/DAMDAMA%20SAHIB.html",
+   "url2": "https://sgpc.net/takhat-sri-damdama-sahib-guru-kanshi-sabo-ki-talwandi/",
+   "note": "Who first used the name is not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q213",
+   "topic": "five-takhts",
+   "difficulty": "hard",
+   "question": "Which great martyr headed Damdama Sahib as a centre of Gurbani learning and is believed to have written copies of Sri Guru Granth Sahib Ji there?",
+   "options": [
+    "Bhai Taru Singh Ji",
+    "Bhai Bota Singh Ji",
+    "Baba Gurbakhsh Singh Ji",
+    "Baba Deep Singh Ji"
+   ],
+   "answer": "D",
+   "explanation": "Baba Deep Singh Ji led the teaching of Gurbani at Damdama Sahib and was its chief ministrant; he is credited with preparing copies of the Granth.",
+   "source": "SGPC: Takht Sri Damdama Sahib",
+   "url": "https://sgpc.net/takhat-sri-damdama-sahib-guru-kanshi-sabo-ki-talwandi/",
+   "url2": "https://eos.learnpunjabi.org/DAMDAMA%20SAHIB.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q214",
+   "topic": "five-takhts",
+   "difficulty": "easy",
+   "question": "Takht Sri Patna Sahib marks the birthplace of which Guru?",
+   "options": [
+    "Guru Tegh Bahadur Ji",
+    "Guru Gobind Singh Ji",
+    "Guru Har Krishan Ji",
+    "Guru Hargobind Sahib Ji"
+   ],
+   "answer": "B",
+   "explanation": "Takht Sri Harimandir Ji Patna Sahib in Bihar marks the birthplace of Guru Gobind Singh Ji (1666), who spent his early childhood there.",
+   "source": "The Sikh Encyclopedia: Patna",
+   "url": "https://www.thesikhencyclopedia.com/other-historical-places/india/patna/",
+   "url2": "https://www.sikhmissionarysociety.org/sms/smssikhism/takhts/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q215",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "Which two of the five Takhts are located outside the state of Punjab?",
+   "options": [
+    "Patna Sahib and Damdama Sahib",
+    "Hazur Sahib and Kesgarh Sahib",
+    "Patna Sahib and Hazur Sahib",
+    "Akal Takht and Hazur Sahib"
+   ],
+   "answer": "C",
+   "explanation": "Takht Sri Patna Sahib is in Bihar and Takht Sri Hazur Sahib is at Nanded in Maharashtra; the other three Takhts are in Punjab.",
+   "source": "Sikh Missionary Society UK: Takhts",
+   "url": "https://www.sikhmissionarysociety.org/sms/smssikhism/takhts/",
+   "url2": "https://www.thesikhencyclopedia.com/philosophy-spirituality-and-ethics/political-philosophy/takht",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q216",
+   "topic": "five-takhts",
+   "difficulty": "hard",
+   "question": "The central building of Takht Sri Patna Sahib was seriously damaged by an earthquake in which year, leading to the present building?",
+   "options": [
+    "1934",
+    "1905",
+    "1950",
+    "2001"
+   ],
+   "answer": "A",
+   "explanation": "The Bihar earthquake of 1934 seriously damaged the central building; the present structure was completed in 1957.",
+   "source": "The Sikh Encyclopedia: Patna",
+   "url": "https://www.thesikhencyclopedia.com/other-historical-places/india/patna/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q217",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "On the banks of which river does Takht Sachkhand Sri Hazur Sahib stand?",
+   "options": [
+    "Godavari",
+    "Krishna",
+    "Narmada",
+    "Ganga"
+   ],
+   "answer": "A",
+   "explanation": "Takht Sachkhand Sri Hazur Abchal Nagar Sahib stands near the Godavari river in Nanded, Maharashtra.",
+   "source": "Takht Sachkhand Sri Hazur Sahib: History",
+   "url": "https://hazursahib.com/web/history",
+   "url2": "https://maharashtratourism.gov.in/?p=8248",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q218",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "Guru Gobind Singh Ji gave the Nanded region a name meaning 'steadfast city', which appears in the full title of Takht Sachkhand Sri Hazur Sahib. What is it?",
+   "options": [
+    "Anandgarh",
+    "Ramdaspur",
+    "Kiratpur",
+    "Abchal Nagar"
+   ],
+   "answer": "D",
+   "explanation": "Guru Gobind Singh Ji named Nanded 'Abchal Nagar' (steadfast city); the shrine is revered as Sachkhand Sri Hazur Abchal Nagar Sahib.",
+   "source": "Takht Sachkhand Sri Hazur Sahib – History",
+   "url": "https://hazursahib.com/web/history",
+   "url2": "https://www.tribuneindia.com/news/punjab/sgpc-demands-rollback-of-changes-in-gurdwara-act-589492",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q219",
+   "topic": "five-takhts",
+   "difficulty": "medium",
+   "question": "Which ruler built the shrine of Takht Sachkhand Sri Hazur Sahib (c. 1832-1837)?",
+   "options": [
+    "Maharaja Kharak Singh",
+    "Maharaja Ala Singh of Patiala",
+    "Maharaja Ranjit Singh",
+    "Nizam of Hyderabad"
+   ],
+   "answer": "C",
+   "explanation": "Maharaja Ranjit Singh had the shrine built at the site where Guru Gobind Singh Ji left this world; construction took about five years.",
+   "source": "Takht Sachkhand Sri Hazur Sahib: History",
+   "url": "https://hazursahib.com/web/history",
+   "url2": "https://en.wikipedia.org/wiki/Panj_Takht",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q220",
+   "topic": "five-takhts",
+   "difficulty": "hard",
+   "question": "Takht Sri Hazur Sahib is managed not by the SGPC but by a board constituted under a law of which state?",
+   "options": [
+    "Punjab",
+    "Maharashtra",
+    "Bihar",
+    "Karnataka"
+   ],
+   "answer": "B",
+   "explanation": "Hazur Sahib is administered by a board under the Nanded Sikh Gurdwara Sachkhand Shri Hazur Abchalnagar Sahib Act, 1956, a Maharashtra state law.",
+   "source": "The Tribune: SGPC on Hazur Sahib Act",
+   "url": "https://www.tribuneindia.com/news/punjab/sgpc-demands-rollback-of-changes-in-gurdwara-act-589492",
+   "url2": null,
+   "note": "Act has been amended/proposed for replacement; question tests only that it is a Maharashtra state law, not board composition.",
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

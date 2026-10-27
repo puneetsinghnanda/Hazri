@@ -15,6 +15,7 @@ import { BrevoMailer } from './email/mailer';
 import { runBadgeGoalReached } from './jobs/badges';
 import { runBuildGlobeSnapshot } from './jobs/globe';
 import { runSangatDispatch, runSangatMilestone } from './jobs/notify';
+import { runQuizProfileSync } from './jobs/quiz';
 import { runSangatProfileSync, runSangatRollover, runSangatTotals } from './jobs/sangat';
 import { FcmMessenger } from './notifications/messenger';
 import { systemClock } from './time';
@@ -57,6 +58,8 @@ export const sangatRollover = onSchedule(
 /** Profile name or city change → the member's rows (name, sortName, cityId). */
 export const sangatProfileSync = onDocumentUpdated({ ...FUNCTION_DEFAULTS, document: 'profiles/{profileId}' }, async (event) => {
   await runSangatProfileSync(db, event.params.profileId, event.data?.before.data(), event.data?.after.data());
+  // The quiz's name and city on the current boards (14-quiz.md QZ31).
+  await runQuizProfileSync(db, event.params.profileId, event.data?.before.data(), event.data?.after.data(), new Date());
 });
 
 /** Hourly at :00: the 21:00 digest, the creator's 20:00 joins, held 07:00 milestones. */

@@ -1,0 +1,405 @@
+{
+ "topic": "historic-gurdwaras",
+ "questions": [
+  {
+   "id": "Q221",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "Gurdwara Kandh Sahib in Batala preserves an old mud wall linked to which event in Guru Nanak Dev Ji's life?",
+   "options": [
+    "His enlightenment at the Bein rivulet",
+    "His first meeting with Bhai Mardana Ji",
+    "His marriage to Mata Sulakhni Ji",
+    "His discourse with the Siddhas"
+   ],
+   "answer": "C",
+   "explanation": "Guru Nanak Dev Ji's marriage to Mata Sulakhni Ji took place at Batala. Tradition holds a plot was made to topple a mud wall on him; the Guru said the wall would not fall for centuries, and it is preserved at Gurdwara Kandh Sahib.",
+   "source": "SGPC – Historical Gurdwaras of Guru Nanak Sahib",
+   "url": "https://old.sgpc.net/historical-gurdwaras/nanak.asp",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q222",
+   "topic": "historic-gurdwaras",
+   "difficulty": "easy",
+   "question": "Gurdwara Pathar Sahib near Leh, Ladakh, built around a boulder said to bear an imprint of the Guru, is dedicated to which Guru?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Har Rai Ji",
+    "Guru Hargobind Sahib Ji",
+    "Guru Tegh Bahadur Ji"
+   ],
+   "answer": "A",
+   "explanation": "Gurdwara Pathar Sahib was built in memory of Guru Nanak Dev Ji's visit to Ladakh. Tradition says a boulder hurled at the Guru turned soft like wax, leaving his imprint; local Lamas also revere the rock.",
+   "source": "Incredible India – Gurudwara Pathar Sahib",
+   "url": "https://www.incredibleindia.gov.in/en/ladakh/leh/gurudwara-pathar-sahib",
+   "url2": null,
+   "note": "Source dates the visit to 1517; year deliberately not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q223",
+   "topic": "historic-gurdwaras",
+   "difficulty": "easy",
+   "question": "Gurdwara Darbar Sahib Kartarpur in Pakistan marks the place where Guru Nanak Dev Ji did what?",
+   "options": [
+    "Was born",
+    "Spent his final years farming and teaching",
+    "Met Wali Qandhari",
+    "Composed Japji Sahib in a cave"
+   ],
+   "answer": "B",
+   "explanation": "Guru Nanak Dev Ji settled at Kartarpur on the banks of the Ravi, farmed the land and taught his followers there until he passed away.",
+   "source": "SGPC: Historical Gurdwaras (Guru Nanak Dev Ji)",
+   "url": "https://old.sgpc.net/historical-gurdwaras/nanak.asp",
+   "url2": "https://www.drishtiias.com/daily-updates/daily-news-analysis/kartarpur-corridor-2/print_manually",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q224",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "The Kartarpur Corridor, opened in November 2019 for Guru Nanak Dev Ji's 550th Parkash Purab, links Kartarpur Sahib with which town in India?",
+   "options": [
+    "Sultanpur Lodhi (Kapurthala)",
+    "Attari (Amritsar)",
+    "Fazilka",
+    "Dera Baba Nanak (Gurdaspur)"
+   ],
+   "answer": "D",
+   "explanation": "The corridor connects Gurdwara Darbar Sahib in Narowal district, Pakistan, with the Dera Baba Nanak shrine in Gurdaspur district, Punjab.",
+   "source": "Drishti IAS: Kartarpur Corridor",
+   "url": "https://www.drishtiias.com/daily-updates/daily-news-analysis/kartarpur-corridor-2/print_manually",
+   "url2": null,
+   "note": "Current operational status of the corridor not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q225",
+   "topic": "historic-gurdwaras",
+   "difficulty": "easy",
+   "question": "Gurdwara Panja Sahib, where a rock bears an imprint attributed to Guru Nanak Dev Ji's hand, is in which town?",
+   "options": [
+    "Nankana Sahib",
+    "Lahore",
+    "Narowal",
+    "Hasan Abdal"
+   ],
+   "answer": "D",
+   "explanation": "Panja Sahib at Hasan Abdal, near Rawalpindi in Pakistan, is named after the handprint ('panja') on a rock; a spring flows from beneath it.",
+   "source": "Dawn: Gurdwara Panja Sahib",
+   "url": "https://www.dawn.com/news/1163729",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q226",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "At Gurdwara Patalpuri Sahib, Kiratpur, the ashes of which Guru were brought from Delhi and immersed in the river Sutlej?",
+   "options": [
+    "Guru Arjan Dev Ji",
+    "Guru Har Krishan Ji",
+    "Guru Ram Das Ji",
+    "Guru Angad Dev Ji"
+   ],
+   "answer": "B",
+   "explanation": "Guru Har Krishan Ji passed away in Delhi in 1664; his ashes were brought to Kiratpur and immersed in the Sutlej at the site of Gurdwara Patalpuri Sahib, where Sikhs still immerse the ashes of their departed.",
+   "source": "Sikhs.org – Gurdwara Patal Puri, Kiratpur",
+   "url": "https://sikhs.org/gurdwaras/guru10_1.htm",
+   "url2": null,
+   "note": "Guru Hargobind Sahib Ji and Guru Har Rai Ji are associated with Kiratpur, so they are deliberately not used as distractors.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q227",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "Gurdwara Parivar Vichhora marks the place where Guru Gobind Singh Ji was separated from his family in December 1705 after leaving Anandpur Sahib. On the bank of which river is it?",
+   "options": [
+    "Beas",
+    "Ravi",
+    "Yamuna",
+    "Sarsa (Sirsa)"
+   ],
+   "answer": "D",
+   "explanation": "After the Mughals broke their oath of safe conduct, they attacked the Guru's party at dawn at the flooded Sarsa river. In the chaos the Guru's family was separated, which the Gurdwara's name ('family separation') commemorates.",
+   "source": "Sikhs.org – Gurdwara Parivar Vichhora",
+   "url": "https://sikhs.org/gurdwaras/guru10_8.htm",
+   "url2": null,
+   "note": "SUBSTITUTE: suggested fact (Nada Sahib, Panchkula) could not be opened in a trusted source.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q228",
+   "topic": "historic-gurdwaras",
+   "difficulty": "easy",
+   "question": "Gurdwara Sis Ganj Sahib in Chandni Chowk, Delhi, marks the site of which event?",
+   "options": [
+    "Martyrdom of Guru Tegh Bahadur Ji",
+    "Birth of Guru Har Krishan Ji",
+    "Martyrdom of Guru Arjan Dev Ji",
+    "Coronation of Banda Singh Bahadur"
+   ],
+   "answer": "A",
+   "explanation": "Guru Tegh Bahadur Ji was executed on Aurangzeb's orders in 1675 at the spot now marked by Gurdwara Sis Ganj Sahib.",
+   "source": "The Tribune: Sis Ganj, Rakab Ganj recount Sikh valour",
+   "url": "https://www.tribuneindia.com/news/delhi/sis-ganj-rakab-ganj-sahib-recount-sikh-valour-sacrifice",
+   "url2": null,
+   "note": "Exact date (11 vs 24 Nov) varies by calendar; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q229",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "Gurdwara Guru Ka Mahl in Amritsar marks the birthplace of which Guru?",
+   "options": [
+    "Guru Tegh Bahadur Ji",
+    "Guru Har Rai Ji",
+    "Guru Har Krishan Ji",
+    "Guru Gobind Singh Ji"
+   ],
+   "answer": "A",
+   "explanation": "Guru Ka Mahl was the Guru family's home in Amritsar, where Guru Tegh Bahadur Ji was born in 1621. Guru Arjan Dev Ji and Guru Hargobind Sahib Ji also married there.",
+   "source": "Sikhs.org – Gurdwara Guru Ka Mahl",
+   "url": "https://sikhs.org/gurdwaras/guru9_1.htm",
+   "url2": null,
+   "note": "SUBSTITUTE: suggested fact (Reetha Sahib, Uttarakhand) could not be opened in a trusted source.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q230",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "Gurdwara Hemkunt Sahib, beside a glacial lake ringed by seven snow peaks, is in which state?",
+   "options": [
+    "Himachal Pradesh",
+    "Uttarakhand",
+    "Jammu and Kashmir",
+    "Sikkim"
+   ],
+   "answer": "B",
+   "explanation": "Hemkunt Sahib lies in the Garhwal Himalayas of Uttarakhand; Guru Gobind Singh Ji's Bachittar Natak describes meditation there in a previous life.",
+   "source": "SikhNet: Hemkunt Sahib",
+   "url": "https://sikhnet.com/node/105617",
+   "url2": null,
+   "note": "Altitude figures vary by source; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q231",
+   "topic": "historic-gurdwaras",
+   "difficulty": "easy",
+   "question": "Gurdwara Fatehgarh Sahib near Sirhind commemorates the martyrdom of whom?",
+   "options": [
+    "The elder Sahibzadas, Ajit Singh Ji and Jujhar Singh Ji",
+    "Bhai Mati Das and Bhai Sati Das",
+    "Baba Deep Singh Ji",
+    "The younger Sahibzadas, Zorawar Singh Ji and Fateh Singh Ji"
+   ],
+   "answer": "D",
+   "explanation": "The younger Sahibzadas were bricked alive on the orders of Wazir Khan, Mughal governor of Sirhind; the Shaheedi Jor Mela is held there every December.",
+   "source": "Incredible India: Gurudwara Sri Fatehgarh Sahib",
+   "url": "https://www.incredibleindia.gov.in/en/punjab/fatehgarh-sahib/gurudwara-sri-fatehgarh-sahib",
+   "url2": null,
+   "note": "Year (1704/1705) varies by source; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q232",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "The two elder Sahibzadas of Guru Gobind Singh Ji attained martyrdom in battle at which place, now marked by Gurdwara Garhi Sahib?",
+   "options": [
+    "Muktsar Sahib",
+    "Machhiwara",
+    "Chamkaur Sahib",
+    "Paonta Sahib"
+   ],
+   "answer": "C",
+   "explanation": "At Chamkaur, Guru Gobind Singh Ji and about 40 Sikhs held a mud fortress (garhi) against a huge army; the two elder Sahibzadas and three of the Panj Pyare fell there.",
+   "source": "Sikhs.org: Gurdwara Garhi Sahib, Chamkaur",
+   "url": "https://sikhs.org/gurdwaras/guru10_9.htm",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q233",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "After the Battle of Chamkaur, which two Pathan brothers dressed Guru Gobind Singh Ji as a Muslim holy man and carried him in a palanquin past Mughal troops?",
+   "options": [
+    "Wazir Khan and Zabardast Khan",
+    "Ghani Khan and Nabi Khan",
+    "Painda Khan and Kale Khan",
+    "Sher Muhammad Khan and Khizar Khan"
+   ],
+   "answer": "B",
+   "explanation": "Ghani Khan and Nabi Khan, horse traders who had known the Guru's kindness, risked their lives to carry him through enemy lines. Gurdwara Ghani Khan Nabi Khan at Machhiwara honours their home.",
+   "source": "Sikhs.org – Gurdwara Ghani Khan Nabi Khan, Machhiwara",
+   "url": "https://sikhs.org/gurdwaras/guru10_13.htm",
+   "url2": null,
+   "note": "SUBSTITUTE: suggested fact (Guru Tegh Bahadur Sahib, Dhubri) could not be opened in a trusted source.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q234",
+   "topic": "historic-gurdwaras",
+   "difficulty": "hard",
+   "question": "Gurdwara Bahadurgarh in Patiala district marks the two-month stay in 1674 of which Guru, as the guest of his friend Nawab Saif Khan?",
+   "options": [
+    "Guru Hargobind Sahib Ji",
+    "Guru Har Rai Ji",
+    "Guru Tegh Bahadur Ji",
+    "Guru Gobind Singh Ji"
+   ],
+   "answer": "C",
+   "explanation": "While travelling through the Malwa region, Guru Tegh Bahadur Ji stayed here with his family for two months as the guest of Saif Khan, Nawab of Saifabad, an old friend.",
+   "source": "Sikhs.org – Gurdwara Bahadurgarh",
+   "url": "https://sikhs.org/gurdwaras/guru9_4.htm",
+   "url2": null,
+   "note": "SUBSTITUTE: suggested fact (Majnu ka Tilla, Delhi) could not be opened in a trusted source.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q235",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "After leaving Chamkaur, Guru Gobind Singh Ji lay down to rest in a garden at the edge of which town, at the spot now marked by Gurdwara Charan Kanwal Sahib?",
+   "options": [
+    "Kiratpur",
+    "Sirhind",
+    "Talwandi Sabo",
+    "Machhiwara"
+   ],
+   "answer": "D",
+   "explanation": "Walking day and night through the jungle after Chamkaur, the Guru reached Machhiwara and slept in a garden, where Bhai Daya Singh, Bhai Dharam Singh and Bhai Man Singh found him. Gurdwara Charan Kanwal Sahib marks the spot.",
+   "source": "Sikhs.org – Gurdwara Charan Kanwal, Machhiwara",
+   "url": "https://sikhs.org/gurdwaras/guru10_11.htm",
+   "url2": null,
+   "note": "'Mittar Pyare Nu' link not stated in the opened source, so it is not asked or mentioned.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q236",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "Gurdwara Paonta Sahib in Sirmaur, where Guru Gobind Singh Ji composed much of his bani and held gatherings of poets, stands on which river?",
+   "options": [
+    "Yamuna",
+    "Satluj",
+    "Beas",
+    "Ravi"
+   ],
+   "answer": "A",
+   "explanation": "Paonta Sahib is on the banks of the Yamuna in Himachal Pradesh; the nearby Kavi Darbar recalls the Guru's court of poets.",
+   "source": "Himachal Tourism: Paonta Sahib",
+   "url": "https://himachaltourism.gov.in/destination/paonta-sahib/",
+   "url2": null,
+   "note": "Length of stay varies by source; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q237",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "Gurdwara Manikaran Sahib, famous for hot springs used to cook langar, is in which valley?",
+   "options": [
+    "Kangra Valley",
+    "Spiti Valley",
+    "Lahaul Valley",
+    "Parvati Valley (Kullu)"
+   ],
+   "answer": "D",
+   "explanation": "Manikaran lies on the Parvati river in Kullu district, Himachal Pradesh; Sikh tradition links its hot spring to Guru Nanak Dev Ji's visit with Bhai Mardana.",
+   "source": "ENVIS CPREEC: Manikaran",
+   "url": "https://ecoheritage.cpreec.org/?p=5775",
+   "url2": null,
+   "note": "Udasi number not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q238",
+   "topic": "historic-gurdwaras",
+   "difficulty": "hard",
+   "question": "Gurdwara Nanak Jhira Sahib, known for a spring that tradition links to Guru Nanak Dev Ji, is in which city?",
+   "options": [
+    "Bidar (Karnataka)",
+    "Nanded (Maharashtra)",
+    "Hyderabad (Telangana)",
+    "Puri (Odisha)"
+   ],
+   "answer": "A",
+   "explanation": "At Bidar in Karnataka, tradition holds that Guru Nanak Dev Ji brought forth a spring (jhira) from laterite rock during a famine; it feeds the Amrit Kund.",
+   "source": "Karnataka Tourism: Guru Nanak Jhira Sahib",
+   "url": "https://www.karnatakatourism.org/tour-item/guru-nanak-jhira-sahib-gurudwara/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q239",
+   "topic": "historic-gurdwaras",
+   "difficulty": "hard",
+   "question": "Gurdwara Dukh Niwaran Sahib in Patiala is associated with the visit of which Guru?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Har Rai Ji",
+    "Guru Tegh Bahadur Ji",
+    "Guru Gobind Singh Ji"
+   ],
+   "answer": "C",
+   "explanation": "Guru Tegh Bahadur Ji stayed by the pond at village Lehal (now Patiala); villagers credited him with ending a plague, hence 'Dukh Niwaran' (remover of suffering).",
+   "source": "Incredible India: Gurdwara Dukhnivaran Sahib",
+   "url": "https://incredibleindia.gov.in/en/punjab/patiala/gurudwara-dukhnivaran-sahib",
+   "url2": "https://sikhs.org/gurdwaras/guru9_3.htm",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q240",
+   "topic": "historic-gurdwaras",
+   "difficulty": "medium",
+   "question": "Gurdwara Ber Sahib at Sultanpur Lodhi stands on the bank of which rivulet, linked to Guru Nanak Dev Ji's enlightenment?",
+   "options": [
+    "Ravi",
+    "Bein (Kali Bein)",
+    "Ghaggar",
+    "Sutlej"
+   ],
+   "answer": "B",
+   "explanation": "Guru Nanak Dev Ji bathed daily in the Bein at Sultanpur Lodhi; after disappearing into it for three days he began preaching. The ber tree he planted still stands.",
+   "source": "SGPC: Historical Gurdwaras (Guru Nanak Dev Ji)",
+   "url": "https://old.sgpc.net/historical-gurdwaras/nanak.asp",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

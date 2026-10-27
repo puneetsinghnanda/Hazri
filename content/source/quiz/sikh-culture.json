@@ -1,0 +1,405 @@
+{
+ "topic": "sikh-culture",
+ "questions": [
+  {
+   "id": "Q281",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "Which of the Five Ks is the shorts-style undergarment worn by Amritdhari Sikhs?",
+   "options": [
+    "Kanga",
+    "Kara",
+    "Kesh",
+    "Kachhera"
+   ],
+   "answer": "D",
+   "explanation": "The Five Ks are Kesh (unshorn hair), Kanga (comb), Kara (steel bracelet), Kirpan and Kachhera, the shorts-style undergarment.",
+   "source": "SGPC: Amrit Sanskar",
+   "url": "https://old.sgpc.net/sikhism/amrit-sanskar.asp",
+   "url2": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q282",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "What metal is the Kara, one of the Five Ks, made of?",
+   "options": [
+    "Gold",
+    "Silver",
+    "Copper",
+    "Steel (iron)"
+   ],
+   "answer": "D",
+   "explanation": "The Kara is a steel bracelet worn on the wrist, a constant reminder of the Sikh's bond with the Guru.",
+   "source": "SGPC: Amrit Sanskar",
+   "url": "https://old.sgpc.net/sikhism/amrit-sanskar.asp",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q283",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "According to the Sikh Rehat Maryada, how should one Sikh greet another?",
+   "options": [
+    "Sat Sri Akal only",
+    "Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh",
+    "Bole So Nihal",
+    "Ram Ram"
+   ],
+   "answer": "B",
+   "explanation": "The Rehat Maryada states that Sikhs, men and women alike, greet each other with 'Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh'.",
+   "source": "Sikh Rehat Maryada (Article XVI)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q284",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "When the jaikara 'Jo Bole So Nihal' is called out, what does the sangat respond?",
+   "options": [
+    "Sat Sri Akal",
+    "Waheguru",
+    "Raj Karega Khalsa",
+    "Akal Sahai"
+   ],
+   "answer": "A",
+   "explanation": "The sangat answers 'Sat Sri Akal' ('Eternal is the Timeless Lord'); the jaikara closes the Ardas and expresses joy or resolve.",
+   "source": "Encyclopaedia of Sikhism: Bole So Nihal",
+   "url": "https://eos.learnpunjabi.org/BOLE%20SO%20NIHAL%20SATI%20SRI%20AKAL.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q285",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "In the langar, what does 'pangat' refer to?",
+   "options": [
+    "The cooking pot used for daal",
+    "The donation box",
+    "Sitting together in rows to eat as equals",
+    "The final Ardas before meals"
+   ],
+   "answer": "C",
+   "explanation": "Pangat means sitting and eating together in a row, so that rich and poor, of every caste and creed, share food as equals.",
+   "source": "Sikh Missionary Society UK: Langar",
+   "url": "https://www.sikhmissionarysociety.org/sms/smssikhism/institutions/langar/",
+   "url2": "https://sikhmissionarysociety.org/sms/smssikhism/institutions/pangat",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q286",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "Per the Sikh Rehat Maryada, what suffix is given to a Sikh girl's name at the naming ceremony?",
+   "options": [
+    "Devi",
+    "Singh",
+    "Rani",
+    "Kaur"
+   ],
+   "answer": "D",
+   "explanation": "The Rehat Maryada directs that a boy's name carry the suffix 'Singh' and a girl's name the suffix 'Kaur'.",
+   "source": "Sikh Rehat Maryada (Article XVII)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q287",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "Who started the institution of the langar (community kitchen)?",
+   "options": [
+    "Guru Nanak Dev Ji",
+    "Guru Gobind Singh Ji",
+    "Guru Hargobind Sahib Ji",
+    "Guru Tegh Bahadur Ji"
+   ],
+   "answer": "A",
+   "explanation": "Guru Nanak Dev Ji introduced the community kitchen to break down barriers of caste and status; Guru Angad Dev Ji and later Gurus expanded it.",
+   "source": "Sikh Missionary Society UK – Langar",
+   "url": "https://www.sikhmissionarysociety.org/sms/smssikhism/institutions/langar/",
+   "url2": null,
+   "note": "Guru Angad Dev Ji and Guru Amar Das Ji deliberately excluded from distractors as they expanded the langar.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q288",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "What emblem is displayed on the Nishan Sahib flown outside every Gurdwara?",
+   "options": [
+    "The Ik Oankar alone",
+    "A lotus flower",
+    "The Khanda",
+    "A crescent and star"
+   ],
+   "answer": "C",
+   "explanation": "The Nishan Sahib is a triangular saffron (or blue) flag bearing the Khanda, and its pole is usually wrapped in the same cloth.",
+   "source": "Sikhs.org: Religious Emblems",
+   "url": "https://sikhs.org/khanda.htm",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q289",
+   "topic": "sikh-culture",
+   "difficulty": "medium",
+   "question": "While preparing Amrit at the Amrit Sanchar, which banis do the Panj Pyare recite?",
+   "options": [
+    "Japji Sahib, Sukhmani Sahib, Asa Di Var, Rehras Sahib and Kirtan Sohila",
+    "Japji Sahib, Jaap Sahib, Ten Savaiye, Benti Chaupai and Anand Sahib",
+    "Jaap Sahib, Akal Ustat, Rehras Sahib, Anand Sahib and Ardas",
+    "Japji Sahib, Laavan, Anand Sahib, Salok Mahalla 9 and Kirtan Sohila"
+   ],
+   "answer": "B",
+   "explanation": "The five recite Japji Sahib, Jaap Sahib, the Ten Savaiye, Benti Chaupai and Anand Sahib while stirring water and patashe in a steel bowl with a khanda.",
+   "source": "SGPC: Amrit Sanskar",
+   "url": "https://old.sgpc.net/sikhism/amrit-sanskar.asp",
+   "url2": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q290",
+   "topic": "sikh-culture",
+   "difficulty": "medium",
+   "question": "Which of the following is one of the four kurehits (cardinal transgressions) listed in the Sikh Rehat Maryada?",
+   "options": [
+    "Using tobacco",
+    "Eating dairy products",
+    "Missing a Gurpurab",
+    "Wearing a watch"
+   ],
+   "answer": "A",
+   "explanation": "The four kurehits are dishonouring the hair, eating kutha meat, adultery, and using tobacco.",
+   "source": "Sikh Rehat Maryada (Article XXIV)",
+   "url": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q291",
+   "topic": "sikh-culture",
+   "difficulty": "medium",
+   "question": "In the Khanda symbol, what do the two curved kirpans on either side represent?",
+   "options": [
+    "Life and death",
+    "Sun and moon",
+    "Miri and Piri (temporal and spiritual authority)",
+    "Guru and Sikh"
+   ],
+   "answer": "C",
+   "explanation": "The two kirpans represent Miri and Piri, temporal and spiritual authority, while the central double-edged sword and the chakkar stand for divine knowledge and God's eternity.",
+   "source": "Sikhs.org: Religious Emblems",
+   "url": "https://sikhs.org/khanda.htm",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q292",
+   "topic": "sikh-culture",
+   "difficulty": "medium",
+   "question": "Hola Mohalla, the festival of martial displays held the day after Holi, was started by Guru Gobind Singh Ji at which place?",
+   "options": [
+    "Talwandi Sabo",
+    "Anandpur Sahib",
+    "Paonta Sahib",
+    "Amritsar"
+   ],
+   "answer": "B",
+   "explanation": "Guru Gobind Singh Ji started Hola Mohalla at Anandpur Sahib; it features processions, Gatka, mock battles and langar.",
+   "source": "RE Online: Hola Mahalla",
+   "url": "https://www.reonline.org.uk/festivals-calendar/hola-mahalla-hola-mohalla/",
+   "url2": null,
+   "note": "Year (1701) per source; not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q293",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "What is the cloth used to cover Sri Guru Granth Sahib Ji called?",
+   "options": [
+    "Chaur Sahib",
+    "Chola",
+    "Rumala (Romala)",
+    "Chandoa"
+   ],
+   "answer": "C",
+   "explanation": "The Sikh Rehat Maryada says Sri Guru Granth Sahib Ji should remain covered with a rumala (romala) when not being read.",
+   "source": "Sikh Rehat Maryada – Fremont Gurdwara",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": "https://asiasamachar.com/2017/02/26/sikh-rehat-maryada-english-translation/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q294",
+   "topic": "sikh-culture",
+   "difficulty": "easy",
+   "question": "What is a Gutka Sahib?",
+   "options": [
+    "A canopy hung over Sri Guru Granth Sahib Ji",
+    "A small book of selected banis, such as the Nitnem",
+    "A steel bowl used to prepare Amrit",
+    "A short sword worn by Amritdhari Sikhs"
+   ],
+   "answer": "B",
+   "explanation": "A Gutka is a small-sized book containing chosen banis from the Sikh scriptures, commonly used for daily Nitnem.",
+   "source": "Encyclopaedia of Sikhism – Gutka",
+   "url": "https://eos.learnpunjabi.org/GUTKA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q295",
+   "topic": "sikh-culture",
+   "difficulty": "medium",
+   "question": "What is meant by 'Hukam laina' (taking the Vak) in a Gurdwara?",
+   "options": [
+    "Reading a shabad from Sri Guru Granth Sahib Ji as the Guru's command",
+    "Receiving Karah Prasad",
+    "Being appointed a granthi",
+    "Reciting the Ardas in unison"
+   ],
+   "answer": "A",
+   "explanation": "Reading a shabad from Sri Guru Granth Sahib Ji as the Guru's order is called Hukam laina, or taking the Vak.",
+   "source": "Sikh Rehat Maryada (Article VII)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q296",
+   "topic": "sikh-culture",
+   "difficulty": "medium",
+   "question": "What is the Chaur Sahib?",
+   "options": [
+    "The canopy above Sri Guru Granth Sahib Ji",
+    "The cloth covering Sri Guru Granth Sahib Ji",
+    "The steel bowl used for Amrit",
+    "A whisk waved over Sri Guru Granth Sahib Ji as a mark of sovereignty"
+   ],
+   "answer": "D",
+   "explanation": "The Chaur Sahib, traditionally of yak or horse hair, is waved over Sri Guru Granth Sahib Ji, a royal custom affirming the Guru as eternal sovereign.",
+   "source": "Asia Samachar: Significance of Chaur Sahib",
+   "url": "https://asiasamachar.com/?p=60724",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q297",
+   "topic": "sikh-culture",
+   "difficulty": "hard",
+   "question": "According to the Sikh Rehat Maryada, in what proportion are the three ingredients of Karah Prasad (wheat flour, sugar and ghee) used?",
+   "options": [
+    "Equal quantities",
+    "Twice as much flour as sugar or ghee",
+    "Twice as much sugar as flour or ghee",
+    "Ghee only half the flour"
+   ],
+   "answer": "A",
+   "explanation": "The Rehat Maryada specifies wheat flour, pure sugar and clarified butter (ghee) in equal quantities.",
+   "source": "Sikh Rehat Maryada (Article XII)",
+   "url": "https://fremontgurdwara.org/sikh-rehat-maryada/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q298",
+   "topic": "sikh-culture",
+   "difficulty": "hard",
+   "question": "During the Amrit Sanchar, how many times is each initiate given Amrit to drink from cupped hands?",
+   "options": [
+    "Once",
+    "Three times",
+    "Five times",
+    "Eleven times"
+   ],
+   "answer": "C",
+   "explanation": "Each initiate drinks Amrit five times; five handfuls are also sprinkled into the eyes and five into the hair.",
+   "source": "SGPC: Amrit Sanskar",
+   "url": "https://old.sgpc.net/sikhism/amrit-sanskar.asp",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q299",
+   "topic": "sikh-culture",
+   "difficulty": "hard",
+   "question": "In the Nanakshahi calendar designed by Pal Singh Purewal, which month begins the year?",
+   "options": [
+    "Vaisakh",
+    "Chet",
+    "Magh",
+    "Poh"
+   ],
+   "answer": "B",
+   "explanation": "The Nanakshahi calendar is a solar calendar whose year begins with Chet (around 14 March) and whose era starts from 1469 CE, the year of Guru Nanak Dev Ji's birth.",
+   "source": "Asia Samachar: Nanakshahi Q&A",
+   "url": "https://asiasamachar.com/?p=50054",
+   "url2": null,
+   "note": "SGPC adoption (2003) and later amendment/rollback are contested; status not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q300",
+   "topic": "sikh-culture",
+   "difficulty": "hard",
+   "question": "Sikh tradition describes three kinds of seva: tan, man and dhan. What does 'dhan' seva mean?",
+   "options": [
+    "Service through physical labour",
+    "Service through one's talents and mind",
+    "Service through singing kirtan",
+    "Service through giving wealth or material means"
+   ],
+   "answer": "D",
+   "explanation": "Tan is physical service, man is service of the mind and talents, and dhan is service through wealth, such as dasvandh given to the community's common funds.",
+   "source": "Encyclopaedia of Sikhism: Seva",
+   "url": "https://eos.learnpunjabi.org/SEVA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

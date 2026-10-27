@@ -1,0 +1,405 @@
+{
+ "topic": "guru-nanak-dev-ji",
+ "questions": [
+  {
+   "id": "Q1",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "Where was Guru Nanak Dev Ji born?",
+   "options": [
+    "Sultanpur Lodhi",
+    "Kartarpur",
+    "Rai Bhoi di Talwandi (now Nankana Sahib)",
+    "Khadur Sahib"
+   ],
+   "answer": "C",
+   "explanation": "Guru Nanak Dev Ji was born in 1469 at Rai Bhoi di Talwandi near Lahore, a town now known as Nankana Sahib in Pakistan.",
+   "source": "Britannica – Guru Nanak",
+   "url": "https://www.britannica.com/biography/Guru-Nanak",
+   "url2": "https://www.sikhmissionarysociety.org/sms/smssikhism/gurus/gurunanakdevji/",
+   "note": "Birth month/date differs by tradition; only place asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q2",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "Who were the parents of Guru Nanak Dev Ji?",
+   "options": [
+    "Mehta Kalu Ji and Mata Tripta Ji",
+    "Bhai Tej Bhan Ji and Mata Bakht Kaur Ji",
+    "Bhai Pheru Ji and Mata Ramo Ji",
+    "Baba Hari Das Ji and Mata Daya Kaur Ji"
+   ],
+   "answer": "A",
+   "explanation": "Guru Nanak Dev Ji's father was Mehta Kalu, a village accountant, and his mother was Mata Tripta.",
+   "source": "Sikh Missionary Society – Guru Nanak Dev Ji",
+   "url": "https://www.sikhmissionarysociety.org/sms/smssikhism/gurus/gurunanakdevji/",
+   "url2": "https://eos.learnpunjabi.org/NANAKI%20BEBE.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q3",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "What was the name of Guru Nanak Dev Ji's elder sister, the first to recognise his spiritual greatness?",
+   "options": [
+    "Bibi Amro Ji",
+    "Bibi Bhani Ji",
+    "Mata Khivi Ji",
+    "Bebe Nanaki Ji"
+   ],
+   "answer": "D",
+   "explanation": "Bebe Nanaki, five years older than Guru Nanak Dev Ji, is remembered as the first person to recognise her brother's spiritual eminence.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Nanaki, Bebe",
+   "url": "https://eos.learnpunjabi.org/NANAKI%20BEBE.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q4",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "At Sultanpur Lodhi, Guru Nanak Dev Ji worked as keeper of the provision stores of which nawab?",
+   "options": [
+    "Sultan Ibrahim Lodi",
+    "Nawab Daulat Khan Lodi",
+    "Sher Shah Suri",
+    "Nawab Wazir Khan"
+   ],
+   "answer": "B",
+   "explanation": "Guru Nanak Dev Ji took charge of the provision stores (modikhana) of Nawab Daulat Khan Lodi at Sultanpur Lodhi; Gurdwara Hatt Sahib marks the spot.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Sultanpur Lodhi",
+   "url": "https://eos.learnpunjabi.org/SULTANPUR%20LODHI%20(31%C2%BA-13'N,%2075%C2%BA-12'E).html",
+   "url2": "https://www.sikhs.org/guru1.htm",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q5",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "hard",
+   "question": "Who was Bebe Nanaki Ji's husband, through whose recommendation Guru Nanak Dev Ji found employment at Sultanpur Lodhi?",
+   "options": [
+    "Rai Bular",
+    "Bhai Lalo",
+    "Jai Ram",
+    "Bhai Jodha"
+   ],
+   "answer": "C",
+   "explanation": "Jai Ram, an official of Nawab Daulat Khan Lodi and husband of Bebe Nanaki, recommended his brother-in-law Guru Nanak Dev Ji for service at Sultanpur.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Nanaki, Bebe",
+   "url": "https://eos.learnpunjabi.org/NANAKI%20BEBE.html",
+   "url2": "https://eos.learnpunjabi.org/SULTANPUR%20LODHI%20(31%C2%BA-13'N,%2075%C2%BA-12'E).html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q6",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "Guru Nanak Dev Ji went into the Bein (Vein) rivulet at Sultanpur Lodhi and was not seen for some time. When did he reappear?",
+   "options": [
+    "The same evening",
+    "On the third day",
+    "On the seventh day",
+    "After forty days"
+   ],
+   "answer": "B",
+   "explanation": "According to the Janam Sakhis, Guru Nanak Dev Ji disappeared into the Kali Bein and re-emerged on the third day; Gurdwara Sant Ghat marks the spot where he reappeared.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Sultanpur Lodhi",
+   "url": "https://eos.learnpunjabi.org/SULTANPUR%20LODHI%20(31%C2%BA-13'N,%2075%C2%BA-12'E).html",
+   "url2": "https://incredibleindia.gov.in/en/punjab/kapurthala/gurudwara-sri-sant-ghat-sahib",
+   "note": "Sources say 'three days' or 'two days, reappearing on the third' — phrased as 'third day' to fit both.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q7",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "What were Guru Nanak Dev Ji's first words on re-emerging from the Bein rivulet?",
+   "options": [
+    "\"Ik Oankar\"",
+    "\"Waheguru Ji Ka Khalsa\"",
+    "\"Sat Sri Akal\"",
+    "\"There is no Hindu, there is no Musalman\""
+   ],
+   "answer": "D",
+   "explanation": "On re-emerging, Guru Nanak Dev Ji declared, \"There is no Hindu, there is no Musalman,\" stressing one humanity under one God.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Sultanpur Lodhi",
+   "url": "https://eos.learnpunjabi.org/SULTANPUR%20LODHI%20(31%C2%BA-13'N,%2075%C2%BA-12'E).html",
+   "url2": "https://www.sikhs.org/guru1.htm",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q8",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "In the Sacha Sauda ('true bargain') sakhi, what did young Nanak do with the money his father gave him for trade?",
+   "options": [
+    "He fed a group of hungry sadhus",
+    "He bought cattle for the family farm",
+    "He built a dharamsal at Talwandi",
+    "He gave it to the village school"
+   ],
+   "answer": "A",
+   "explanation": "Given twenty rupees to make a profitable bargain, young Nanak spent it all feeding hungry ascetics and called it the best (true) bargain he could make.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Sachcha Sauda Gurdwara",
+   "url": "https://eos.learnpunjabi.org/SACHCHA%20SAUDA%20GURDWARA.html",
+   "url2": "https://www.sikhmissionarysociety.org/sms/smssikhism/gurus/gurunanakdevji/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q9",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "As a boy, which Hindu ceremony did Guru Nanak Dev Ji decline, asking instead for a thread of compassion, contentment and truth?",
+   "options": [
+    "Shaving the head (mundan)",
+    "Bathing at the Ganges",
+    "Wearing the sacred thread (janeu)",
+    "Fasting on Ekadashi"
+   ],
+   "answer": "C",
+   "explanation": "When the family priest came to invest him with the janeu, young Nanak refused it, describing a spiritual thread made of compassion, contentment and truth.",
+   "source": "Sikhs.org – Guru Nanak",
+   "url": "https://www.sikhs.org/guru1.htm",
+   "url2": "https://www.sikhmissionarysociety.org/sms/smssikhism/gurus/gurunanakdevji/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q10",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "What were the names of Guru Nanak Dev Ji's two sons?",
+   "options": [
+    "Dasu and Datu",
+    "Mohan and Mohri",
+    "Prithi Chand and Mahadev",
+    "Sri Chand and Lakhmi Das"
+   ],
+   "answer": "D",
+   "explanation": "Guru Nanak Dev Ji and Mata Sulakhni had two sons, Sri Chand and Lakhmi Das. Guru Nanak Dev Ji passed over both when choosing his successor.",
+   "source": "Sikhs.org – Guru Nanak",
+   "url": "https://www.sikhs.org/guru1.htm",
+   "url2": "https://eos.learnpunjabi.org/NANAKI%20BEBE.html",
+   "note": "Lakhmi Das is also spelt Lakhmi Chand / Lakshmi Chand in some sources.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q11",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "Which instrument did Bhai Mardana play as Guru Nanak Dev Ji sang the Divine Word?",
+   "options": [
+    "Rabab",
+    "Sarangi",
+    "Taus",
+    "Dhadd"
+   ],
+   "answer": "A",
+   "explanation": "Bhai Mardana, a Muslim bard and childhood friend, accompanied Guru Nanak Dev Ji on his travels and played the rabab while the Guru sang.",
+   "source": "Sikhs.org – Guru Nanak",
+   "url": "https://www.sikhs.org/guru1.htm",
+   "url2": "https://www.sikhmissionarysociety.org/sms/smssikhism/gurus/gurunanakdevji/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q12",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "At Mecca, what did a qazi object to when he found Guru Nanak Dev Ji resting?",
+   "options": [
+    "He was singing with a musical instrument",
+    "His feet were pointing towards the Kaaba",
+    "He was not wearing a cap",
+    "He was sitting on the qazi's prayer mat"
+   ],
+   "answer": "B",
+   "explanation": "Qazi Rukn-ud-Din rebuked Guru Nanak Dev Ji for resting with his feet towards the Kaaba; the Guru asked him to turn his feet towards a direction where God's house is not.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Rukn-ud-Din, Qazi",
+   "url": "https://eos.learnpunjabi.org/RUKN%20UD-DIN%20QAZI.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q13",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "At Haridwar, when pilgrims were throwing water east towards the sun for their ancestors, what did Guru Nanak Dev Ji do?",
+   "options": [
+    "Refused to enter the river",
+    "Threw water towards the sky",
+    "Threw water towards the west, saying he was watering his fields in Punjab",
+    "Poured the water back into a pitcher"
+   ],
+   "answer": "C",
+   "explanation": "Guru Nanak Dev Ji splashed water westwards, saying he was watering his drought-hit fields; if it could not reach a few hundred miles, how could theirs reach the sun?",
+   "source": "Sikh Missionary Society – Guru Nanak for Children",
+   "url": "https://www.sikhmissionarysociety.org/sms/smspublications/gurunanakforchildren/chapter7/",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q14",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "At Achal near Batala, Guru Nanak Dev Ji held a long discourse with which group?",
+   "options": [
+    "Sufi pirs of Multan",
+    "Nath yogis (Siddhas) led by Bhangar Nath",
+    "Brahmin priests of Kashi",
+    "Buddhist monks of Tibet"
+   ],
+   "answer": "B",
+   "explanation": "At Achal, during the Shivratri fair, Guru Nanak Dev Ji discoursed with Nath yogis led by Bhangar Nath and rejected their display of miracles in favour of the Word.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Achal Sahib Gurdwara",
+   "url": "https://eos.learnpunjabi.org/ACHAL%20SAHIB%20GURDWARA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q15",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "hard",
+   "question": "Which king of Sri Lanka (Ceylon) became a devotee of Guru Nanak Dev Ji according to the Janam Sakhi tradition?",
+   "options": [
+    "Raja Shivnabh",
+    "Raja Janak",
+    "Raja Harish Chandra",
+    "Raja Bhoj"
+   ],
+   "answer": "A",
+   "explanation": "According to the Puratan Janam Sakhi, Raja Shivnabh of Ceylon, his queen and son became disciples, and he set up a dharamsal for congregational singing.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Shivnabh, Raja",
+   "url": "https://eos.learnpunjabi.org/SHIVNABH%20RAJA.html",
+   "url2": null,
+   "note": "Based on Janam Sakhi tradition; question framed accordingly.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q16",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "hard",
+   "question": "How many hymns of Guru Nanak Dev Ji alluding to Babar's invasions are known as Babarvani?",
+   "options": [
+    "Two",
+    "Seven",
+    "Twelve",
+    "Four"
+   ],
+   "answer": "D",
+   "explanation": "Babarvani comprises four hymns of Guru Nanak Dev Ji — three in Raag Asa and one in Raag Tilang — describing the suffering caused by Babar's invasions.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Babarvani",
+   "url": "https://eos.learnpunjabi.org/BABARVANI%20(BABAR'S%20COMMAND%20OR%20SWAY).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q17",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "hard",
+   "question": "Bhai Lalo, with whom Guru Nanak Dev Ji stayed at Saidpur (Eminabad) in preference to a rich official's feast, was by profession a…",
+   "options": [
+    "Carpenter",
+    "Goldsmith",
+    "Weaver",
+    "Moneylender"
+   ],
+   "answer": "A",
+   "explanation": "Bhai Lalo was a humble carpenter of Saidpur; Guru Nanak Dev Ji chose his honest bread over Malik Bhago's lavish feast.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Lalo, Bhai",
+   "url": "https://eos.learnpunjabi.org/LALO%20BHAI.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q18",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "medium",
+   "question": "Kartarpur, the town where Guru Nanak Dev Ji settled after his travels, stands on the bank of which river?",
+   "options": [
+    "Beas",
+    "Sutlej",
+    "Ravi",
+    "Chenab"
+   ],
+   "answer": "C",
+   "explanation": "Guru Nanak Dev Ji founded Kartarpur on the right bank of the Ravi (now in Pakistan) and spent his last years there.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) – Kartarpur",
+   "url": "https://eos.learnpunjabi.org/KARTARPUR.html",
+   "url2": "https://www.sikhs.org/guru1.htm",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q19",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "To whom did Guru Nanak Dev Ji pass on the Guruship?",
+   "options": [
+    "Baba Sri Chand",
+    "Bhai Lehna (Guru Angad Dev Ji)",
+    "Baba Buddha Ji",
+    "Bhai Mardana"
+   ],
+   "answer": "B",
+   "explanation": "Bypassing his own sons, Guru Nanak Dev Ji installed his devoted disciple Bhai Lehna as his successor, naming him Angad.",
+   "source": "The Sikh Encyclopedia – Angad Dev, Guru",
+   "url": "https://www.thesikhencyclopedia.com/angad-dev-guru/",
+   "url2": "https://eos.learnpunjabi.org/KARTARPUR.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q20",
+   "topic": "guru-nanak-dev-ji",
+   "difficulty": "easy",
+   "question": "Which bani, composed by Guru Nanak Dev Ji, appears at the very beginning of Sri Guru Granth Sahib Ji?",
+   "options": [
+    "Anand Sahib",
+    "Sukhmani Sahib",
+    "Jaap Sahib",
+    "Japji Sahib"
+   ],
+   "answer": "D",
+   "explanation": "Japji Sahib, composed by Guru Nanak Dev Ji, opens Sri Guru Granth Sahib Ji and is recited by Sikhs every morning.",
+   "source": "Sikhs.org – Guru Nanak",
+   "url": "https://www.sikhs.org/guru1.htm",
+   "url2": "https://www.sikhmissionarysociety.org/sms/smssikhism/gurus/gurunanakdevji/",
+   "note": null,
+   "retired": false,
+   "since": 10
+  }
+ ]
+}

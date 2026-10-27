@@ -20,6 +20,13 @@ describe('composite indexes the queries need', () => {
   it('admin dashboard: sum(countedCount) of contributions where day == and retracted ==', () => {
     expect(has('contributions', ['day', 'retracted', 'countedCount'])).toBe(true);
   });
+  // src/quiz/boards.ts: buildBoard's top twenty and placeOf's count (14-quiz QZ28).
+  it('quiz board: quizScores where boardId == order by score desc, reachedAt', () => {
+    expect(has('quizScores', ['boardId', 'score', 'reachedAt'])).toBe(true);
+  });
+  it('quiz place: count of quizScores where boardId == and score >', () => {
+    expect(has('quizScores', ['boardId', 'score'])).toBe(true);
+  });
 });
 
 // --- Queries recorded from the code itself -----------------------------------

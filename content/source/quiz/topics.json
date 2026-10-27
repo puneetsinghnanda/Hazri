@@ -1,0 +1,22 @@
+{
+ "_note": "The seventeen Gurmat Quiz topics (14-quiz.md §3.1). Punjabi and Hindi names are Claude's draft for review. `slug` is the Vichar page Know more opens on a day with no event (QZ11); `glyph` is the row's mark: a Gurmukhi numeral for a Guru, ੴ for Sri Guru Granth Sahib Ji, else the category's drawing.",
+ "topics": [
+  {"id": "guru-nanak-dev-ji", "category": "gurus", "sort": 1, "glyph": "੧", "slug": "prakash-purab-guru-nanak-dev-ji", "name": {"en": "Guru Nanak Dev Ji", "pa": "ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", "hi": "गुरु नानक देव जी"}},
+  {"id": "guru-angad-dev-ji", "category": "gurus", "sort": 2, "glyph": "੨", "slug": "prakash-purab-guru-angad-dev-ji", "name": {"en": "Guru Angad Dev Ji", "pa": "ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", "hi": "गुरु अंगद देव जी"}},
+  {"id": "guru-amar-das-ji", "category": "gurus", "sort": 3, "glyph": "੩", "slug": "prakash-purab-guru-amar-das-ji", "name": {"en": "Guru Amar Das Ji", "pa": "ਗੁਰੂ ਅਮਰਦਾਸ ਜੀ", "hi": "गुरु अमरदास जी"}},
+  {"id": "guru-ram-das-ji", "category": "gurus", "sort": 4, "glyph": "੪", "slug": "prakash-purab-guru-ram-das-ji", "name": {"en": "Guru Ram Das Ji", "pa": "ਗੁਰੂ ਰਾਮਦਾਸ ਜੀ", "hi": "गुरु रामदास जी"}},
+  {"id": "guru-arjan-dev-ji", "category": "gurus", "sort": 5, "glyph": "੫", "slug": "prakash-purab-guru-arjan-dev-ji", "name": {"en": "Guru Arjan Dev Ji", "pa": "ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", "hi": "गुरु अर्जन देव जी"}},
+  {"id": "guru-hargobind-sahib-ji", "category": "gurus", "sort": 6, "glyph": "੬", "slug": "prakash-purab-guru-hargobind-sahib-ji", "name": {"en": "Guru Hargobind Sahib Ji", "pa": "ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਸਾਹਿਬ ਜੀ", "hi": "गुरु हरगोबिंद साहिब जी"}},
+  {"id": "guru-har-rai-ji", "category": "gurus", "sort": 7, "glyph": "੭", "slug": "gurgaddi-purab-guru-har-rai-sahib-ji", "name": {"en": "Guru Har Rai Ji", "pa": "ਗੁਰੂ ਹਰਿਰਾਇ ਜੀ", "hi": "गुरु हर राय जी"}},
+  {"id": "guru-har-krishan-ji", "category": "gurus", "sort": 8, "glyph": "੮", "slug": "prakash-purab-guru-harkrishan-sahib-ji", "name": {"en": "Guru Har Krishan Ji", "pa": "ਗੁਰੂ ਹਰਿਕ੍ਰਿਸ਼ਨ ਜੀ", "hi": "गुरु हरकृष्ण जी"}},
+  {"id": "guru-tegh-bahadur-ji", "category": "gurus", "sort": 9, "glyph": "੯", "slug": "prakash-purab-guru-tegh-bahadur-ji", "name": {"en": "Guru Tegh Bahadur Ji", "pa": "ਗੁਰੂ ਤੇਗ ਬਹਾਦਰ ਜੀ", "hi": "गुरु तेग बहादुर जी"}},
+  {"id": "guru-gobind-singh-ji", "category": "gurus", "sort": 10, "glyph": "੧੦", "slug": "prakash-purab-guru-gobind-singh-ji", "name": {"en": "Guru Gobind Singh Ji", "pa": "ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", "hi": "गुरु गोबिंद सिंह जी"}},
+  {"id": "sri-guru-granth-sahib-ji", "category": "gurus", "sort": 11, "glyph": "ੴ", "slug": "pehla-prakash-purab-guru-granth-sahib-ji", "name": {"en": "Sri Guru Granth Sahib Ji", "pa": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", "hi": "श्री गुरु ग्रंथ साहिब जी"}},
+  {"id": "five-takhts", "category": "gurdwaras", "sort": 12, "glyph": "gurdwaras", "slug": "sri-akal-takht-sahib-foundation-day", "name": {"en": "Five Takhts", "pa": "ਪੰਜ ਤਖ਼ਤ", "hi": "पाँच तख़्त"}},
+  {"id": "historic-gurdwaras", "category": "gurdwaras", "sort": 13, "glyph": "gurdwaras", "slug": "harmandir-sahib-foundation-stone", "name": {"en": "Historic Gurdwaras", "pa": "ਇਤਿਹਾਸਕ ਗੁਰਦੁਆਰੇ", "hi": "ऐतिहासिक गुरुद्वारे"}},
+  {"id": "sikh-banis", "category": "banis", "sort": 14, "glyph": "banis", "slug": null, "name": {"en": "Sikh Banis", "pa": "ਬਾਣੀਆਂ", "hi": "बाणियाँ"}},
+  {"id": "sikh-heroes", "category": "heroes", "sort": 15, "glyph": "heroes", "slug": null, "name": {"en": "Sikh Heroes", "pa": "ਸਿੱਖ ਸੂਰਮੇ", "hi": "सिख सूरमे"}},
+  {"id": "sikh-history", "category": "heroes", "sort": 16, "glyph": "heroes", "slug": "vaisakhi-khalsa-saajna-divas", "name": {"en": "Sikh History", "pa": "ਸਿੱਖ ਇਤਿਹਾਸ", "hi": "सिख इतिहास"}},
+  {"id": "sikh-culture", "category": "culture", "sort": 17, "glyph": "culture", "slug": "sikh-dastaar-divas-world-turban-day", "name": {"en": "Sikh Culture and Practices", "pa": "ਸਿੱਖ ਸਭਿਆਚਾਰ ਤੇ ਰਹਿਤ", "hi": "सिख संस्कृति और रहत"}}
+ ]
+}

@@ -1,0 +1,405 @@
+{
+ "topic": "sikh-history",
+ "questions": [
+  {
+   "id": "Q321",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "The Chhota Ghallughara (1746) was a campaign against the Sikhs led by which Lahore official, seeking revenge for his brother's death?",
+   "options": [
+    "Wazir Khan",
+    "Diwan Lakhpat Rai",
+    "Ahmad Shah Durrani",
+    "Mir Mannu"
+   ],
+   "answer": "B",
+   "explanation": "Diwan Lakhpat Rai, avenging his brother Jaspat Rai, surrounded the Sikhs in the Kahnuwan forest in 1746; about 7,000 were killed and 3,000 captured.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Chhota Ghallughara",
+   "url": "https://eos.learnpunjabi.org/CHHOTA%20GHALLUGHARA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q322",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "The Vadda Ghallughara (Great Holocaust) of February 1762 was inflicted on the Sikhs by which invader?",
+   "options": [
+    "Nadir Shah",
+    "Zakariya Khan",
+    "Aurangzeb",
+    "Ahmad Shah Durrani (Abdali)"
+   ],
+   "answer": "D",
+   "explanation": "On 5 February 1762 Ahmad Shah Durrani overtook the Sikhs near Kup, close to Malerkotla; estimates of those killed range from 20,000 to 50,000.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Vadda Ghallughara",
+   "url": "https://eos.learnpunjabi.org/VADDA%20GHALLUGHARA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q323",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "How many misls (Sikh confederacies) are traditionally counted in 18th-century Punjab?",
+   "options": [
+    "12",
+    "5",
+    "10",
+    "22"
+   ],
+   "answer": "A",
+   "explanation": "Twelve misls are traditionally counted; eleven formed the Dal Khalsa in 1748, and the twelfth, the Phulkian misl, stayed outside its command.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Misls",
+   "url": "https://eos.learnpunjabi.org/MISLS.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q324",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "In the 18th century, what was the 'Sarbat Khalsa'?",
+   "options": [
+    "The Mughal tax on Sikh gatherings",
+    "The treasury of Maharaja Ranjit Singh",
+    "A general assembly of the whole Sikh community, usually at Amritsar",
+    "A Sikh military fort"
+   ],
+   "answer": "C",
+   "explanation": "The Sarbat Khalsa met about twice a year at Amritsar, often at Baisakhi and Diwali, to pass gurmatas, elect the Dal Khalsa leader and settle disputes.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Misls",
+   "url": "https://eos.learnpunjabi.org/MISLS.html",
+   "url2": "https://eos.learnpunjabi.org/AKAL%20TAKHT.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q325",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "Which city was the capital of Maharaja Ranjit Singh's Sikh Empire?",
+   "options": [
+    "Amritsar",
+    "Peshawar",
+    "Lahore",
+    "Gujranwala"
+   ],
+   "answer": "C",
+   "explanation": "Maharaja Ranjit Singh made Lahore his capital from 1799, with his headquarters in the Lahore Fort.",
+   "source": "Columbia University (F. Pritchett) - Ranjit Singh and his Sikh kingdom",
+   "url": "https://franpritchett.com/00routesdata/1800_1899/ranjitsingh/ranjitsingh.html",
+   "url2": "https://www.britannica.com/print/article/491193",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q326",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "Sri Harmandir Sahib came to be called the 'Golden Temple' after its upper part was covered in gold-plated copper during whose reign?",
+   "options": [
+    "Maharaja Ranjit Singh",
+    "Nawab Kapur Singh",
+    "Maharaja Duleep Singh",
+    "Jassa Singh Ahluwalia"
+   ],
+   "answer": "A",
+   "explanation": "The gilding of Sri Harmandir Sahib with gold-plated copper sheets was carried out during the reign of Maharaja Ranjit Singh and completed around 1830.",
+   "source": "The Tribune - 119 Years of Trust",
+   "url": "https://tribuneindia.com/1999/99apr17/saturday/head1.htm",
+   "url2": null,
+   "note": "Exact year not asked.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q327",
+   "topic": "sikh-history",
+   "difficulty": "hard",
+   "question": "From whom did Maharaja Ranjit Singh obtain the Koh-i-Noor diamond in 1813?",
+   "options": [
+    "The Mughal emperor in Delhi",
+    "The British East India Company",
+    "The Nizam of Hyderabad",
+    "Shah Shuja, the exiled Afghan ruler"
+   ],
+   "answer": "D",
+   "explanation": "Shah Shuja, the deposed Durrani ruler of Afghanistan who had fled to India, gave the Koh-i-Noor to Maharaja Ranjit Singh in 1813. It passed to the British after the annexation of 1849.",
+   "source": "World History Encyclopedia - Koh-i-Noor",
+   "url": "https://worldhistory.org/Koh-i-Noor",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q328",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "The two Anglo-Sikh Wars (1845-46 and 1848-49) ended with what outcome?",
+   "options": [
+    "The independence of the Sikh Empire",
+    "The British annexation of the Punjab in 1849",
+    "The founding of the SGPC",
+    "The Treaty of Amritsar giving Kashmir to the Sikhs"
+   ],
+   "answer": "B",
+   "explanation": "The Second Anglo-Sikh War ended in March 1849, and the British then annexed the Punjab, ending the Sikh Empire.",
+   "source": "Britannica - Sikh Wars",
+   "url": "https://www.britannica.com/topic/Sikh-Wars",
+   "url2": "https://eos.learnpunjabi.org/DULEEP%20SINGH%20MAHARAJA%20(1838-1893).html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q329",
+   "topic": "sikh-history",
+   "difficulty": "hard",
+   "question": "Where did Maharaja Duleep Singh, the last Sikh ruler of the Punjab, re-embrace Sikhi by taking amrit in 1886?",
+   "options": [
+    "Amritsar",
+    "London",
+    "Paris",
+    "Aden"
+   ],
+   "answer": "D",
+   "explanation": "Duleep Singh, exiled to England after 1849, took Sikh initiation at Aden in 1886 after being prevented from travelling on to India. He died in Paris in 1893.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Duleep Singh, Maharaja",
+   "url": "https://eos.learnpunjabi.org/DULEEP%20SINGH%20MAHARAJA%20(1838-1893).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q330",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "The first Singh Sabha, which began the Singh Sabha reform movement, was founded in 1873 in which city?",
+   "options": [
+    "Lahore",
+    "Amritsar",
+    "Ludhiana",
+    "Patiala"
+   ],
+   "answer": "B",
+   "explanation": "The Sri Guru Singh Sabha was formed at Amritsar in 1873 to restore Sikhism to its original purity and promote education; the Lahore Singh Sabha followed in 1879.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Singh Sabha Movement",
+   "url": "https://eos.learnpunjabi.org/SINGH%20SABHA%20MOVEMENT.html",
+   "url2": "https://eos.learnpunjabi.org/KHALSA%20DIWAN%20AMRITSAR.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q331",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "In which year was the Shiromani Gurdwara Parbandhak Committee (SGPC) first formed?",
+   "options": [
+    "1873",
+    "1909",
+    "1920",
+    "1947"
+   ],
+   "answer": "C",
+   "explanation": "The SGPC was elected at a Sikh assembly on 15-16 November 1920 and held its first meeting at the Akal Takht in December 1920; the Sikh Gurdwaras Act of 1925 later gave it statutory form.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Shiromani Gurdwara Parbandhak Committee",
+   "url": "https://eos.learnpunjabi.org/SHIROMANI%20GURDWARA%20PARBANDHAK%20COMMITTEE.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q332",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "The Nankana Sahib massacre of 20 February 1921, in which reformist Sikhs were killed at the Gurdwara, was carried out by men of which mahant?",
+   "options": [
+    "Mahant Narain Das",
+    "Mahant Sundar Das",
+    "Mahant Harnam Das",
+    "Mahant Ram Das"
+   ],
+   "answer": "A",
+   "explanation": "Mahant Narain Das, custodian of the shrines at Nankana Sahib, had the jatha of Bhai Lachhman Singh Dharowali attacked on 20 February 1921. The massacre gave great momentum to the Gurdwara Reform Movement.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Hukam Singh, Bhai",
+   "url": "https://eos.learnpunjabi.org/HUKAM%20SINGH%20BHAI%20(D.%201921).html",
+   "url2": "https://www.britannica.com/print/article/543898",
+   "note": "Mahant Sundar Das (distractor) was the mahant at Guru ka Bagh.",
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q333",
+   "topic": "sikh-history",
+   "difficulty": "hard",
+   "question": "What triggered the Guru ka Bagh Morcha of 1922?",
+   "options": [
+    "The mahant objected to Sikhs cutting firewood for the langar from the gurdwara's land",
+    "The British banned the carrying of kirpans",
+    "Police interrupted an Akhand Path at Jaito",
+    "The Komagata Maru was turned back from Canada"
+   ],
+   "answer": "A",
+   "explanation": "Mahant Sundar Das claimed the garden land at Guru ka Bagh as his own; Sikhs arrested for cutting firewood for the langar led to daily non-violent jathas, whose beatings were witnessed by C.F. Andrews.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Guru ka Bagh Morcha",
+   "url": "https://eos.learnpunjabi.org/GURU%20KA%20BAGH%20MORCHA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q334",
+   "topic": "sikh-history",
+   "difficulty": "hard",
+   "question": "The Jaito Morcha (1923-25) was launched mainly to protest the forced abdication of which ruler?",
+   "options": [
+    "Maharaja Duleep Singh",
+    "Maharaja Bhupinder Singh of Patiala",
+    "Maharaja Ripudaman Singh of Nabha",
+    "Raja Bikram Singh of Faridkot"
+   ],
+   "answer": "C",
+   "explanation": "The British pressured Maharaja Ripudaman Singh of Nabha, sympathetic to the Akalis, to abdicate in July 1923; police interruption of an Akhand Path at Jaito escalated the agitation.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Jaito Morcha",
+   "url": "https://eos.learnpunjabi.org/JAITO%20MORCHA.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q335",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "Which 1925 law placed historic Sikh gurdwaras under the control of an elected Sikh body, ending the rule of hereditary mahants?",
+   "options": [
+    "The Anand Marriage Act",
+    "The Sikh Gurdwaras Act",
+    "The Rowlatt Act",
+    "The Government of India Act"
+   ],
+   "answer": "B",
+   "explanation": "The Sikh Gurdwaras Act was passed by the Punjab Legislative Council in July 1925 and created an elected central board, later called the SGPC, to manage the shrines.",
+   "source": "Britannica - Sikh Gurdwara Act",
+   "url": "https://www.britannica.com/print/article/543898",
+   "url2": "https://eos.learnpunjabi.org/SHIROMANI%20GURDWARA%20PARBANDHAK%20COMMITTEE.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q336",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "The Jallianwala Bagh massacre took place in Amritsar on Baisakhi day in which year?",
+   "options": [
+    "1909",
+    "1921",
+    "1947",
+    "1919"
+   ],
+   "answer": "D",
+   "explanation": "On 13 April 1919, Baisakhi day, troops under General Reginald Dyer fired on an unarmed crowd in Jallianwala Bagh, Amritsar, which had only one narrow exit.",
+   "source": "Mahatma Gandhi resources (mkgandhi.org) - Jallianwala Bagh Massacre",
+   "url": "https://www.mkgandhi.org/articles/jallianwala-bagh-massacre.php",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q337",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "In 1914 the ship Komagata Maru, renamed 'Guru Nanak Jahaz' by Baba Gurdit Singh, was refused entry by which country?",
+   "options": [
+    "Australia",
+    "United States",
+    "South Africa",
+    "Canada"
+   ],
+   "answer": "D",
+   "explanation": "The ship carried Punjabi emigrants from Hong Kong to Vancouver, where Canadian authorities barred nearly all from landing. On its return, passengers were fired on at Budge Budge near Calcutta in September 1914.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Gurdit Singh, Baba",
+   "url": "https://eos.learnpunjabi.org/GURDIT%20SINGH%20BABA%20(1861-1954).html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q338",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "The Ghadar Party, formed by Punjabi emigrants to overthrow British rule in India, was founded in 1913 in which country?",
+   "options": [
+    "Canada",
+    "Japan",
+    "United States",
+    "England"
+   ],
+   "answer": "C",
+   "explanation": "The Ghadar movement was founded in California in 1913 by expatriate Punjabis, many of them Sikhs, with Har Dayal among its organisers.",
+   "source": "Harvard Pluralism Project - The Ghadar Party",
+   "url": "https://pluralism.org/the-ghadar-party-freedom-for-india",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q339",
+   "topic": "sikh-history",
+   "difficulty": "easy",
+   "question": "In which year did the Anand Marriage Act give legal recognition to the Sikh marriage ceremony (Anand Karaj)?",
+   "options": [
+    "1909",
+    "1873",
+    "1925",
+    "1950"
+   ],
+   "answer": "A",
+   "explanation": "The Anand Marriage Act was placed on the statute book on 22 October 1909, giving legal validity to Sikh marriages performed by the Anand ceremony.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Anand Marriage Act",
+   "url": "https://eos.learnpunjabi.org/ANAND%20MARRIAGE%20ACT.html",
+   "url2": "https://eos.learnpunjabi.org/SINGH%20SABHA%20MOVEMENT.html",
+   "note": null,
+   "retired": false,
+   "since": 10
+  },
+  {
+   "id": "Q340",
+   "topic": "sikh-history",
+   "difficulty": "medium",
+   "question": "Who chaired the Punjab Boundary Commission that drew the line dividing Punjab between India and Pakistan in 1947?",
+   "options": [
+    "Lord Mountbatten",
+    "Sir Cyril Radcliffe",
+    "Lord Dalhousie",
+    "Sir Malcolm Hailey"
+   ],
+   "answer": "B",
+   "explanation": "Sir Cyril Radcliffe chaired the Punjab Boundary Commission; his award dated 12 August 1947 divided the Punjab and left many Sikh holy places in Pakistan.",
+   "source": "Encyclopaedia of Sikhism (Punjabi University) - Radcliffe Award",
+   "url": "https://eos.learnpunjabi.org/RADCLIFFE%20AWARD.html",
+   "url2": null,
+   "note": null,
+   "retired": false,
+   "since": 10
+  }
+ ]
+}
