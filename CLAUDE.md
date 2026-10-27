@@ -502,7 +502,10 @@ is true of the code now, then what is live, then what is still open.
   `/` is a redirect, not a screen.
 - **Saakhis** (`13-saakhi.md`, built 2026-10-25): four saakhis on the phone,
   `content.db` table `saakhi` (content version 9) from
-  `content/source/saakhi/*.json`, pictures and narration under
+  `content/source/saakhi/*.json` (content version 11 adds the owner's
+  Punjabi narration, 2026-10-27, and a saakhi opens in Punjabi in every app
+  language, SK9a; the Punjabi page timings are Claude's and want an ear,
+  SK-23), pictures and narration under
   `assets/saakhi/` made by `tools/saakhi/build_assets.py` from the owner's
   masters in `saakhi-handoff/`. The reader turns pages with the narration
   (just_audio, its own player), the lesson is design D, Share makes a

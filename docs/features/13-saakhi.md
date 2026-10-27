@@ -76,6 +76,11 @@ says the narration is coming.
 hi and en (CLAUDE.md rule 5). A saakhi's own text ships in the languages it
 has; the first ships in English and Punjabi, with English narration first.
 
+**SK9a. Punjabi first** (owner, 2026-10-27). A saakhi opens in Punjabi, text
+and narration, in every app language, whenever it has Punjabi; English only
+for one that does not. The language switch on the cover still changes it for
+that reading. The library card says "Punjabi and English narration".
+
 **SK10. Share** is a labelled button at the bottom of every story page and the
 main button of the lesson page, never only an icon in the top bar. It makes a
 1080 x 1920 image of the current page (or the cover, for the whole saakhi):
@@ -160,7 +165,7 @@ narration. The two Gurbani checks stay listed because SK3 asks for them.
 | SK-4 | Where Share's link leads | `hazri.me` today; a Play Store link or a per-saakhi page later |
 | SK-5 | The recording ends while the voice is still speaking (2:12) | **Closed**: accepted by the owner, 2026-10-21 |
 | SK-6 | The big lesson line and the family question are Claude's wording | Approved by the owner with design D |
-| SK-7 | Punjabi narration | **Open**: the owner is recording it |
+| SK-7 | Punjabi narration | **Closed**: recorded by the owner, 2026-10-27; page timings placed by Claude, open under SK-23 |
 
 ### Anand Bhaya Meri Maaye
 
@@ -168,7 +173,7 @@ narration. The two Gurbani checks stay listed because SK3 asks for them.
 |---|---|---|
 | SK-8 | Images: the Guru as a figure, the cover's teacher and painted title, the Khanda on page 1, the teacher's age on page 3 | **Closed**: accepted by the owner, 2026-10-21 |
 | SK-9 | The Anand Sahib line on page 4 (about 0:43) must be a person's recording | **Open under SK3**: confirm before release |
-| SK-14 | Punjabi narration | **Open**: the owner is recording it |
+| SK-14 | Punjabi narration | **Closed**: recorded by the owner, 2026-10-27, a person's voice, so the Anand Sahib line is read by a person in Punjabi (SK-9 stays open for the English) |
 | SK-10 | The Punjabi text is Claude's draft, and the source's Punjabi meaning of the line opens "ਹੇ ਭਾਈ ਮਾਂ!" | **Closed**: accepted by the owner, 2026-10-21 |
 | SK-11 | The recording may hold only one of the lesson page's two sentences (1:42 to 1:49) | **Closed**: accepted by the owner, 2026-10-21 |
 | SK-12 | A second pankti the owner supplied is not used | **Closed**: the Anand Sahib line is the saakhi's Gurbani |
@@ -180,7 +185,7 @@ narration. The two Gurbani checks stay listed because SK3 asks for them.
 |---|---|---|
 | SK-19 | The cover's painted Punjabi title reads ਝੌਂਪੜੀ ਕਿਉਂ ਟੁੱਟੀ ਸੀ?; the chosen title is ਕੁੱਲੀ ਕਿਉਂ ਢਾਹੀ ਗਈ? | **Open**: a text-free cover, or the owner picks one title |
 | SK-20 | The recording ends before the family question (2:17 to 2:28) | The question shows on screen |
-| SK-21 | Punjabi text is Claude's draft; Punjabi narration | **Open**: the owner checks the text and records it |
+| SK-21 | Punjabi text is Claude's draft; Punjabi narration | **Closed**: the owner recorded it, 2026-10-27 (`sone_di_khaan`); timings under SK-23 |
 | SK-22 | No shabad | None unless the owner sends one with its Ang |
 
 ### The Saint-Soldier
@@ -190,7 +195,13 @@ narration. The two Gurbani checks stay listed because SK3 asks for them.
 | SK-15 | The pankti ਸੂਰਾ ਸੋ ਪਹਿਚਾਨੀਐ ... has no Ang or English meaning from a named source yet | **Open under SK3**: no Gurbani row until both come |
 | SK-16 | The recording ends before the family question (2:25 to 2:32) | The question shows on screen; the owner listens |
 | SK-17 | The Khanda emblem on flags and turbans is later than 1757 | Accepted as on the second saakhi |
-| SK-18 | Punjabi text is Claude's draft; Punjabi narration | **Open**: the owner checks the text and records it |
+| SK-18 | Punjabi text is Claude's draft; Punjabi narration | **Closed**: the owner recorded it, 2026-10-27; timings under SK-23 |
+
+### All four
+
+| # | Item | Default |
+|---|---|---|
+| SK-23 | The Punjabi page timings were placed by Claude, 2026-10-27, from each page's share of the Punjabi text snapped to the nearest long pause; nobody has listened yet | **Open**: the owner listens and corrects any page that turns early or late. The Punjabi lesson page has no `meaning_at`, so its Gurbani row does not open by itself |
 
 ## 5. Storage
 

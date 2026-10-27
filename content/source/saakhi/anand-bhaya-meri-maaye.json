@@ -165,7 +165,15 @@
       "timing_note": "Pages 3-8 at the owner's times, 2026-10-20; page 2 from the recording's pause.",
       "voice": "text to speech, chosen by the owner; the Anand Sahib line on page 4 must be a person's recording"
     },
-    "pa": null,
+    "pa": {
+      "file": "anand-bhaya-meri-maaye.pa.mp3",
+      "master": "saakhi-handoff/audio (SK13)",
+      "duration": 111.07,
+      "page_starts": [0.0, 22.84, 44.22, 53.14, 57.38, 69.74, 84.32, 107.37],
+      "meaning_at": null,
+      "timing_note": "Placed by Claude, 2026-10-27, from each page's share of the Punjabi text, snapped to the nearest long pause in the recording; for the owner to correct by ear.",
+      "voice": "the owner's Punjabi recording, 2026-10-27"
+    },
     "human_clip": "anand_line: one person reading the line, played between en_p4a and en_p4b, and pa_p4a and pa_p4b"
   },
   "images": {

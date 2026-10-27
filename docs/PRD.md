@@ -817,7 +817,8 @@ people. *Rules: `11-admin.md`. Data: ARCHITECTURE §6.6, §8.5.*
 ### 4.20 Saakhis
 
 Added 2026-10-19. Stories from Sikh history in a few illustrated pages, to
-read or listen to with a child: on the phone, in the reader's language, the
+read or listen to with a child: on the phone, in Punjabi first (text and the
+owner's narration, in every app language, 2026-10-27; English one tap away), the
 Guru's face never shown (only light where it would be, SK2), and any Gurbani from a named source.
 Narration turns the pages; the lesson page is one line, a question for the
 family and the shabad on tap (design D, the same for every saakhi); Share

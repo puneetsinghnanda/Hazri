@@ -149,7 +149,15 @@
       "timing_note": "Placed by Claude, 2026-10-25, by matching every sentence of the script to a pause in the recording; for the owner to correct by ear.",
       "voice": "text to speech, chosen by the owner"
     },
-    "pa": null
+    "pa": {
+      "file": "the-saint-soldier.pa.mp3",
+      "master": "saakhi-handoff/audio (SK13)",
+      "duration": 162.43,
+      "page_starts": [0.0, 18.76, 36.63, 62.53, 87.61, 111.77, 141.51, 154.95],
+      "meaning_at": null,
+      "timing_note": "Placed by Claude, 2026-10-27, from each page's share of the Punjabi text, snapped to the nearest long pause in the recording; for the owner to correct by ear.",
+      "voice": "the owner's Punjabi recording, 2026-10-27"
+    }
   },
   "images": {
     "cover": {

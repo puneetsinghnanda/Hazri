@@ -276,7 +276,8 @@
       "pages": 7,
       "shabad": true,
       "narration": [
-        "en"
+        "en",
+        "pa"
       ]
     },
     {
@@ -284,7 +285,8 @@
       "pages": 7,
       "shabad": true,
       "narration": [
-        "en"
+        "en",
+        "pa"
       ]
     },
     {
@@ -292,7 +294,8 @@
       "pages": 7,
       "shabad": false,
       "narration": [
-        "en"
+        "en",
+        "pa"
       ]
     },
     {
@@ -300,7 +303,8 @@
       "pages": 7,
       "shabad": false,
       "narration": [
-        "en"
+        "en",
+        "pa"
       ]
     }
   ],
@@ -309,7 +313,7 @@
     "questions": 340,
     "days": 92
   },
-  "content_version": 10,
-  "source_digest": "4ad80340755fd291",
-  "bytes": 5029888
+  "content_version": 11,
+  "source_digest": "17fa1e91e4d60c40",
+  "bytes": 5033984
 }

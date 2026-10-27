@@ -38,7 +38,15 @@ void main() {
       expect(s.pageCount, 8, reason: 'seven pages and the lesson');
       expect(s.title.has('en') && s.title.has('pa'), isTrue, reason: s.id);
       expect(s.narrationIn('en'), isNotNull, reason: s.id);
-      expect(s.narrationIn('pa'), isNull, reason: 'the Punjabi recordings are still to come (SK-7)');
+      // The owner's Punjabi recordings, 2026-10-27 (SK8): a start for every
+      // page and the lesson, in order, inside the recording.
+      final pa = s.narrationIn('pa');
+      expect(pa, isNotNull, reason: s.id);
+      expect(pa!.pageStarts, hasLength(8), reason: s.id);
+      for (var i = 1; i < pa.pageStarts.length; i++) {
+        expect(pa.pageStarts[i], greaterThan(pa.pageStarts[i - 1]), reason: '${s.id} page ${i + 1}');
+      }
+      expect(pa.pageStarts.last, lessThan(pa.duration), reason: s.id);
     }
   });
 

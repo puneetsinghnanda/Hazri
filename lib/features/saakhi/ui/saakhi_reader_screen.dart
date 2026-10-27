@@ -63,12 +63,10 @@ class _SaakhiReaderScreenState extends ConsumerState<SaakhiReaderScreen> {
     super.dispose();
   }
 
-  /// SK9: Punjabi when the app is in Punjabi and the saakhi has it; English
-  /// otherwise (the saakhis ship in English and Punjabi).
-  String _defaultLanguage(Saakhi s) {
-    final app = Localizations.localeOf(context).languageCode;
-    return app == 'pa' && s.title.has('pa') ? 'pa' : 'en';
-  }
+  /// SK9: Punjabi, text and voice, in every app language whenever the saakhi
+  /// has it (owner, 2026-10-27); English only for a saakhi without Punjabi.
+  /// The switch on the cover still changes it.
+  String _defaultLanguage(Saakhi s) => s.title.has('pa') ? 'pa' : 'en';
 
   Future<AudioPlayer?> _ensurePlayer(SaakhiNarration n) async {
     if (_player != null && _loadedAsset == n.asset) return _player;

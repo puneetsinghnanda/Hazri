@@ -67,8 +67,9 @@ void main() {
       await tester.tap(find.byTooltip(l.saakhiNextPage));
       await settle(tester);
     }
-    expect(find.text('Honest bread is sweet like milk.'), findsOneWidget);
-    expect(find.text(l.saakhiTalkTogether.toUpperCase()), findsOneWidget);
+    // Punjabi by default, whatever the app's language (SK9, owner 2026-10-27).
+    expect(find.text('ਇਮਾਨਦਾਰੀ ਦੀ ਰੋਟੀ ਦੁੱਧ ਵਰਗੀ ਮਿੱਠੀ ਹੈ।'), findsOneWidget);
+    expect(find.text(l.saakhiTalkTogether), findsOneWidget); // a Punjabi page's eyebrow is not upper-cased
     expect(find.text(l.saakhiReadAgain), findsOneWidget);
     expect(find.text(l.saakhiAng(105)), findsOneWidget);
     expect(find.textContaining('ਰੁਖੀ ਰੋਟੀ'), findsNothing, reason: 'the row starts closed');
@@ -77,15 +78,16 @@ void main() {
     expect(find.textContaining('ਰੁਖੀ ਰੋਟੀ'), findsOneWidget);
   });
 
-  testWidgets('No recording yet: in Punjabi the play button is off and says why (SK8)', (tester) async {
-    final l = await pumpAt(tester, '/saakhis/the-saint-soldier', locale: const Locale('pa'));
+  testWidgets('in an English app a saakhi opens in Punjabi, with its Punjabi narration (SK9)', (tester) async {
+    final l = await pumpAt(tester, '/saakhis/bhai-lalo-malik-bhago');
     await tester.tap(find.text(l.saakhiRead));
     await settle(tester);
-    expect(find.text(l.saakhiPunjabiNarrationComing), findsOneWidget);
+    expect(find.textContaining('ਜਦੋਂ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ'), findsOneWidget);
+    expect(find.text(l.saakhiPunjabiNarrationComing), findsNothing);
     final play = tester.widget<InkWell>(
       find.descendant(of: find.byTooltip(l.saakhiPlay), matching: find.byType(InkWell)),
     );
-    expect(play.onTap, isNull);
+    expect(play.onTap, isNotNull);
   });
 
   testWidgets('the library lists every saakhi with its pages and length', (tester) async {

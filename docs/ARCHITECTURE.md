@@ -327,8 +327,8 @@ Built by `tools/content_pipeline/build_content_db.py` from `content/source/`
 and bundled at `assets/content/content.db`. On first run, and whenever
 `meta.content_version` differs from the stamp file `content.version`, it is
 copied to `getApplicationSupportDirectory()/content.db` and opened read-only
-(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 9 at the time
-of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`, 2026-10-27). **Nothing in it is ever written by the app** (rule 3).
+(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 11 at the time
+of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`, 2026-10-27; 11 the saakhis' Punjabi narration). **Nothing in it is ever written by the app** (rule 3).
 
 | Table | Columns | Holds |
 |---|---|---|

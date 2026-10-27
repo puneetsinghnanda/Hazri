@@ -1900,6 +1900,9 @@ class LHi extends L {
   }
 
   @override
+  String get saakhiNarrationPunjabi => 'पंजाबी और अंग्रेज़ी आवाज़';
+
+  @override
   String get saakhiNarrationEnglish => 'अंग्रेज़ी आवाज़';
 
   @override

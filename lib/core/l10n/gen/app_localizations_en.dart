@@ -1903,6 +1903,9 @@ class LEn extends L {
   }
 
   @override
+  String get saakhiNarrationPunjabi => 'Punjabi and English narration';
+
+  @override
   String get saakhiNarrationEnglish => 'English narration';
 
   @override

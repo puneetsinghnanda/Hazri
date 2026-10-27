@@ -35,7 +35,7 @@ QUIZ_BANK_OUT = os.path.join(ROOT, "functions", "src", "quiz-bank.json")
 # The order Today's row and the library show them in (owner, 2026-10-25).
 SAAKHI_ORDER = ["bhai-lalo-malik-bhago", "anand-bhaya-meri-maaye", "why-was-the-hut-broken", "the-saint-soldier"]
 
-CONTENT_VERSION = 10
+CONTENT_VERSION = 11
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1

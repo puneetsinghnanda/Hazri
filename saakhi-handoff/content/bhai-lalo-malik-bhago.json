@@ -137,6 +137,7 @@
       "en": "One who meditates as he eats dry bread, sees the Blessed Lord inwardly and outwardly. Know this well, that one who eats and eats while practicing evil, is like a field of poisonous plants."
     },
     "provenance": "Transcribed from the owner's screenshot of a Gurbani app, 2026-10-19. The English is the translation that screenshot shows. Check both against BaniDB (or another named source) before release: SK-3.",
+    "checked": {"source": "BaniDB v2 (api.banidb.com), Ang 105, verses 4211-4213, shabad 306", "on": "2026-10-25", "result": "The Gurmukhi and the English (BaniDB's default English translation) match this file word for word."},
     "source": {
       "en": "Sri Guru Granth Sahib Ji",
       "pa": "ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ"
@@ -160,7 +161,15 @@
       "meaning_at": 125.3,
       "voice": "text to speech, chosen by the owner; the pankti is not voiced"
     },
-    "pa": null
+    "pa": {
+      "file": "bhai-lalo-malik-bhago.pa.mp3",
+      "master": "saakhi-handoff/audio (SK13)",
+      "duration": 130.51,
+      "page_starts": [0.0, 15.29, 28.17, 47.03, 64.67, 81.76, 108.53, 125.26],
+      "meaning_at": null,
+      "timing_note": "Placed by Claude, 2026-10-27, from each page's share of the Punjabi text, snapped to the nearest long pause in the recording; for the owner to correct by ear.",
+      "voice": "the owner's Punjabi recording, 2026-10-27"
+    }
   },
   "images": {
     "cover": {

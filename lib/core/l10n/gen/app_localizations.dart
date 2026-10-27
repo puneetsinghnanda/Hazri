@@ -3489,6 +3489,12 @@ abstract class L {
   /// **'{count} min'**
   String saakhiMinutes(int count);
 
+  /// No description provided for @saakhiNarrationPunjabi.
+  ///
+  /// In en, this message translates to:
+  /// **'Punjabi and English narration'**
+  String get saakhiNarrationPunjabi;
+
   /// No description provided for @saakhiNarrationEnglish.
   ///
   /// In en, this message translates to:

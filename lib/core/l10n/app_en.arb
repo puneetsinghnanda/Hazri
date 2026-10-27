@@ -975,6 +975,7 @@
   "@saakhiPages": {"placeholders": {"count": {"type": "int"}}},
   "saakhiMinutes": "{count} min",
   "@saakhiMinutes": {"placeholders": {"count": {"type": "int"}}},
+  "saakhiNarrationPunjabi": "Punjabi and English narration",
   "saakhiNarrationEnglish": "English narration",
   "saakhiNarrationComing": "Narration coming soon",
   "saakhiPunjabiNarrationComing": "The Punjabi narration is coming soon",

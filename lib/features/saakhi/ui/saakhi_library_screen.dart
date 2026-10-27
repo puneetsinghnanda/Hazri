@@ -58,7 +58,8 @@ class SaakhiCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
-    final narrated = saakhi.narrationIn('en') != null;
+    final punjabi = saakhi.narrationIn('pa') != null;
+    final narrated = punjabi || saakhi.narrationIn('en') != null;
     return HazriCard(
       padding: const EdgeInsets.all(10),
       onTap: () => context.push(Routes.saakhi(saakhi.id)),
@@ -100,7 +101,11 @@ class SaakhiCard extends StatelessWidget {
                 Text(
                   [
                     l.saakhiPages(saakhi.pageCount),
-                    narrated ? l.saakhiNarrationEnglish : l.saakhiNarrationComing,
+                    punjabi
+                        ? l.saakhiNarrationPunjabi
+                        : narrated
+                        ? l.saakhiNarrationEnglish
+                        : l.saakhiNarrationComing,
                   ].join(' · '),
                   style: HazriText.caption.copyWith(color: c.muted, fontSize: 12.5),
                 ),

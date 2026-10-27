@@ -1901,6 +1901,9 @@ class LPa extends L {
   }
 
   @override
+  String get saakhiNarrationPunjabi => 'ਪੰਜਾਬੀ ਅਤੇ ਅੰਗਰੇਜ਼ੀ ਆਵਾਜ਼';
+
+  @override
   String get saakhiNarrationEnglish => 'ਅੰਗਰੇਜ਼ੀ ਆਵਾਜ਼';
 
   @override
