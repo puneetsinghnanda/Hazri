@@ -3766,6 +3766,26 @@ class LPa extends L {
   String get quizNext => 'ਅੱਗੇ';
 
   @override
+  String get quizNextQuestion => 'ਅਗਲਾ ਸਵਾਲ';
+
+  @override
+  String quizTheAnswerIs(String answer) {
+    return 'ਸਹੀ ਜਵਾਬ: $answer';
+  }
+
+  @override
+  String get quizEasy => 'ਆਸਾਨ';
+
+  @override
+  String get quizMedium => 'ਦਰਮਿਆਨਾ';
+
+  @override
+  String get quizHard => 'ਔਖਾ';
+
+  @override
+  String get quizTenPoints => '10 ਅੰਕ';
+
+  @override
   String get quizSeeResult => 'ਆਪਣਾ ਨਤੀਜਾ ਵੇਖੋ';
 
   @override

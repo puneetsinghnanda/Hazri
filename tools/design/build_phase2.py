@@ -4010,26 +4010,52 @@ def _option(letter: str, text: str, state: str = "open") -> str:
 
 
 def quiz_question() -> str:
-    """A question, answered right (QZ15): four options in the bank's order, marked
-    at once, the explanation word for word and no source (QZ7), then Next."""
-    opts = (_option("A", "Goindwal", "faded") + _option("B", "Khadur Sahib", "faded")
-            + _option("C", "Lahore", "right") + _option("D", "Kartarpur", "faded"))
+    """A question, answered wrong, design A of round 8 (owner, 2026-10-28;
+    QZ15): the question on a navy stage with the topic's drawing and five
+    bars; the options as white cards over its foot, in the bank's order,
+    marked at once; the explanation word for word with no source (QZ7); and
+    only then Next question."""
+    def opt(letter, text, state=""):
+        bg, ring, mark_bg, mark_fg, mark = {
+            "": ("var(--card)", "none", "var(--kesriSoft)", "var(--kesriInk)", letter),
+            "r": ("var(--sageSoft)", "inset 0 0 0 2px var(--sage)", "var(--sage)", "#fff", icon("check", 15)),
+            "w": ("rgba(179,38,30,.12)", "inset 0 0 0 2px #C2463D", "#C2463D", "#fff", "✕"),
+            "f": ("var(--card)", "none", "var(--kesriSoft)", "var(--kesriInk)", letter),
+        }[state]
+        return (f'<div class="row" style="gap:12px;min-height:60px;padding:10px 14px;border-radius:18px;background:{bg};'
+                f'box-shadow:{ring if state in ("r", "w") else "var(--shadow)"};font-size:16px;font-weight:600;'
+                f'{"opacity:.5;" if state == "f" else ""}">'
+                f'<div style="width:34px;height:34px;border-radius:17px;flex:none;background:{mark_bg};color:{mark_fg};'
+                f'display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">{mark}</div>{text}</div>')
+    bars = "".join(f'<div style="flex:1;height:6px;border-radius:3px;background:{"#F08A80" if i == 0 else "rgba(255,255,255,.18)"}"></div>'
+                   for i in range(5))
+    close = ('<svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>')
     return f"""
-{_quiz_top("Guru Ram Das Ji", "Question 2 of 5")}
-<div style="margin:0 20px;height:6px;border-radius:4px;background:var(--card2);overflow:hidden">
-  <div style="width:40%;height:100%;background:var(--kesri);border-radius:4px"></div></div>
-<div class="col" style="padding:18px 20px 0;gap:10px">
-  <div class="disp" style="font-size:21px;font-weight:700;line-height:1.3;margin-bottom:8px">
-    In which city was Guru Ram Das Ji born?</div>
-  {opts}
-  <div class="card col" style="background:var(--sageSoft);box-shadow:none;padding:14px 16px;gap:4px;margin-top:4px">
-    <div style="font-weight:700;color:var(--sage)">Right</div>
-    <div style="font-size:14px;line-height:1.45;color:var(--ink2)">Guru Ram Das Ji was born in Chuna Mandi,
-      Lahore (now in Pakistan), to Baba Hari Das and Mata Daya Kaur.</div>
+<div class="col" style="padding:22px 20px 50px;color:#fff;border-radius:0 0 30px 30px;
+  background:linear-gradient(180deg,#2E3577,#1A1E48)">
+  <div class="row" style="gap:12px">
+    <div style="{ON_BAND}">{close}</div>
+    <div class="row" style="gap:6px;flex:1">{bars}</div>
+  </div>
+  <div class="row" style="gap:10px;margin-top:14px">
+    <div style="width:44px;height:44px;border-radius:13px;background:#FFF1DE;display:flex;align-items:center;
+      justify-content:center;flex:none">{_drawing("heroes", 36)}</div>
+    <div class="col"><div class="eyebrow" style="color:#F2A24E">Sikh Heroes</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,.78)">Question 1 of 5 · Easy · 10 points</div></div>
+  </div>
+  <div class="disp" style="font-size:22px;font-weight:700;line-height:1.25;margin-top:14px">In which city did Bhagat
+    Puran Singh Ji establish the Pingalwara, a home for destitute and disabled people?</div>
+</div>
+<div class="col" style="gap:10px;padding:0 20px;margin-top:-34px">
+  {opt("A", "Lahore", "w")}{opt("B", "Ludhiana", "f")}{opt("C", "Amritsar", "r")}{opt("D", "Delhi", "f")}
+  <div class="card col" style="background:var(--kesriSoft);box-shadow:none;padding:14px 16px;gap:4px">
+    <div style="font-weight:700;color:var(--kesriInk)">The answer is Amritsar</div>
+    <div style="font-size:14px;line-height:1.45;color:var(--ink2)">After Partition in 1947, Bhagat Puran Singh Ji
+      settled in Amritsar and set up the Pingalwara to care for the destitute and disabled.</div>
   </div>
 </div>
 <div style="position:absolute;left:20px;right:20px;bottom:24px">
-  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">Next</div></div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">Next question</div></div>
 """
 
 
@@ -4305,7 +4331,7 @@ SCREENS = [
     ("111-SaakhiLibrary", "Saakhis — the library", saakhi_library),
     ("112-MenuSaakhis", "Menu — the left drawer, with Saakhis", menu_saakhis),
     ("113-TodayQuiz", "Today — scrolled to the quiz and the saakhis", today_quiz),
-    ("114-QuizQuestion", "Gurmat Quiz — a question, answered", quiz_question),
+    ("114-QuizQuestion", "Gurmat Quiz — a question, answered wrong", quiz_question),
     ("115-QuizResult", "Gurmat Quiz — your answers", quiz_result),
     ("116-QuizBoard", "Gurmat Quiz — one quiz's leaderboard", quiz_board),
     ("117-QuizBoardNoProfile", "Gurmat Quiz — everyone, without a profile", quiz_board_no_profile),

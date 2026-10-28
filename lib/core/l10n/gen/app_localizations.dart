@@ -6628,6 +6628,42 @@ abstract class L {
   /// **'Next'**
   String get quizNext;
 
+  /// No description provided for @quizNextQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Next question'**
+  String get quizNextQuestion;
+
+  /// No description provided for @quizTheAnswerIs.
+  ///
+  /// In en, this message translates to:
+  /// **'The answer is {answer}'**
+  String quizTheAnswerIs(String answer);
+
+  /// No description provided for @quizEasy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get quizEasy;
+
+  /// No description provided for @quizMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get quizMedium;
+
+  /// No description provided for @quizHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get quizHard;
+
+  /// No description provided for @quizTenPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'10 points'**
+  String get quizTenPoints;
+
   /// No description provided for @quizSeeResult.
   ///
   /// In en, this message translates to:

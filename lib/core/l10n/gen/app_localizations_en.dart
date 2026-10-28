@@ -3777,6 +3777,26 @@ class LEn extends L {
   String get quizNext => 'Next';
 
   @override
+  String get quizNextQuestion => 'Next question';
+
+  @override
+  String quizTheAnswerIs(String answer) {
+    return 'The answer is $answer';
+  }
+
+  @override
+  String get quizEasy => 'Easy';
+
+  @override
+  String get quizMedium => 'Medium';
+
+  @override
+  String get quizHard => 'Hard';
+
+  @override
+  String get quizTenPoints => '10 points';
+
+  @override
   String get quizSeeResult => 'See your result';
 
   @override

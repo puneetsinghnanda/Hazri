@@ -155,7 +155,14 @@ runs exactly the same, without points (QZ31).
 
 **QZ15. Each answer is marked at once on the phone:** the right option in
 green, a wrong choice in red with the right one in green, then the
-explanation, then **Next** (on the fifth, **See your result**). Options are
+explanation under **Right** or **The answer is {answer}**, and only then
+**Next question** (on the fifth, **See your result**); there is no button
+before an answer. The screen is design A of round 8 (owner, 2026-10-28, from
+four drawn at <https://claude.ai/artifact/5km4WFCna3yGmLRDHw6iWp>, design
+114): the question on a navy stage with the topic's mark, five bars that turn
+green or red as each answer is marked, "Question n of 5", the level and,
+when the quiz can earn them, "10 points"; the options as white cards over the
+stage's foot, each with a saffron letter. Options are
 shown in the bank's order, because two of them say "both of the above".
 There is no timer and no hint.
 

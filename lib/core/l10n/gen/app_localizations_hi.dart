@@ -3759,6 +3759,26 @@ class LHi extends L {
   String get quizNext => 'आगे';
 
   @override
+  String get quizNextQuestion => 'अगला सवाल';
+
+  @override
+  String quizTheAnswerIs(String answer) {
+    return 'सही जवाब: $answer';
+  }
+
+  @override
+  String get quizEasy => 'आसान';
+
+  @override
+  String get quizMedium => 'मध्यम';
+
+  @override
+  String get quizHard => 'कठिन';
+
+  @override
+  String get quizTenPoints => '10 अंक';
+
+  @override
   String get quizSeeResult => 'अपना परिणाम देखें';
 
   @override

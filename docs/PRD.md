@@ -1456,7 +1456,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `114-QuizQuestion` | A question, answered | **new** | Straight in from Start; four options in the bank's order, marked at once, the explanation word for word and no source; Next. QZ7, QZ12, QZ15 |
+| `114-QuizQuestion` | A question, answered wrong | **new** | Design A, chosen 28 Oct: the question on a navy stage with the topic's drawing and five bars; the options as white cards over its foot, marked at once; the explanation word for word, then Next question. QZ7, QZ12, QZ15 |
 | `115-QuizResult` | Your answers | **new** | Result 4B, chosen 27 Oct: the score and points (or why none), the five answers, the challenge and Share the quiz, then See the leaderboard and Done. QZ23-QZ26 |
 | `116-QuizBoard` | One quiz's leaderboard | **new** | Leaderboard 5A: Today, Week, Month; Everyone, then today's topic, then the rest; the top twenty, your row marked. QZ27-QZ30 |
 | `117-QuizBoardNoProfile` | Everyone, without a profile | **new** | Leaderboard 5B: the same board with Make a profile above it. QZ14, QZ29 |

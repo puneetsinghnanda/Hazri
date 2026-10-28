@@ -185,11 +185,20 @@ void main() {
     expect(find.text(l.quizQuestionOf(1, 5)), findsOneWidget);
     for (var i = 0; i < 5; i++) {
       // Next waits for an answer.
-      final next = find.text(i == 4 ? l.quizSeeResult : l.quizNext);
+      final next = find.text(i == 4 ? l.quizSeeResult : l.quizNextQuestion);
+      expect(next, findsNothing);
+      await tester.ensureVisible(find.text('A'));
+      await tester.pump();
       await tester.tap(find.text('A'));
       await tester.pump();
       expect(find.text('A'), findsNothing); // marked: the letters give way to ticks and crosses
-      expect(find.textContaining(RegExp('^(${l.quizRight}|${l.quizWrong})\$')), findsOneWidget);
+      // Marked at once: Right, or the answer named (design A, 2026-10-28).
+      expect(
+        find.textContaining(RegExp('^(${l.quizRight}|${RegExp.escape(l.quizTheAnswerIs('')).trim()})')),
+        findsOneWidget,
+      );
+      // Next question appears only once an answer is in (no greyed-out button).
+      expect(find.text(i == 4 ? l.quizSeeResult : l.quizNextQuestion), findsOneWidget);
       await tester.tap(next);
       await settle(tester);
     }
@@ -204,6 +213,8 @@ void main() {
 
   testWidgets('leaving part-way asks first (QZ17)', (tester) async {
     final l = await pumpAt(tester, '/quiz/play/five-takhts');
+    await tester.ensureVisible(find.text('B'));
+    await tester.pump();
     await tester.tap(find.text('B'));
     await tester.pump();
     await tester.tap(find.byTooltip(l.actionClose));
@@ -211,7 +222,7 @@ void main() {
     expect(find.text(l.quizLeaveTitle), findsOneWidget);
     await tester.tap(find.text(l.quizKeepGoing));
     await settle(tester);
-    expect(find.text(l.quizNext), findsOneWidget);
+    expect(find.text(l.quizNextQuestion), findsOneWidget);
   });
 
   testWidgets('the board without a profile asks for one and says it needs a connection (QZ29, QZ30)', (tester) async {
