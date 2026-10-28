@@ -37,12 +37,7 @@ class _QuizBoardScreenState extends ConsumerState<QuizBoardScreen> {
     final topics = ref.watch(quizTopicsProvider).value ?? const <QuizTopic>[];
     final today = ref.watch(todayQuizProvider).value?.topic.id;
     // Everyone, then today's topic, then the chosen one, then the rest (QZ28).
-    final order = <String>{
-      'all',
-      ?today,
-      _scope,
-      for (final t in topics) t.id,
-    }.toList();
+    final order = <String>{'all', ?today, _scope, for (final t in topics) t.id}.toList();
     final view = ref.watch(quizBoardProvider((_period, _scope)));
 
     Widget chip(String label, bool on, VoidCallback onTap) => Padding(
@@ -103,7 +98,11 @@ class _QuizBoardScreenState extends ConsumerState<QuizBoardScreen> {
 
   Widget _note(BuildContext context, String text) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 28),
-    child: Text(text, textAlign: TextAlign.center, style: HazriText.body.copyWith(color: context.colors.muted)),
+    child: Text(
+      text,
+      textAlign: TextAlign.center,
+      style: HazriText.body.copyWith(color: context.colors.muted),
+    ),
   );
 
   List<Widget> _rows(BuildContext context, QuizBoardView view) {
@@ -112,7 +111,20 @@ class _QuizBoardScreenState extends ConsumerState<QuizBoardScreen> {
     final language = Localizations.localeOf(context).languageCode;
     final board = view.board;
     if (board == null) return [_note(context, l.quizBoardOffline)];
-    if (board.rows.isEmpty) return [_note(context, l.quizBoardEmpty)];
+    if (board.rows.isEmpty) {
+      // Today's board starts empty at midnight IST, so an earlier quiz is
+      // only on the week's and the month's (QZ28a, owner 2026-10-28).
+      final next = switch (_period) {
+        QuizPeriod.day => (l.quizBoardEmptyToday, l.quizSeeWeek, QuizPeriod.week),
+        QuizPeriod.week => (l.quizBoardEmptyWeek, l.quizSeeMonth, QuizPeriod.month),
+        QuizPeriod.month => null,
+      };
+      if (next == null) return [_note(context, l.quizBoardEmpty)];
+      return [
+        _note(context, next.$1),
+        PrimaryButton(label: next.$2, secondary: true, onPressed: () => setState(() => _period = next.$3)),
+      ];
+    }
     final mine = board.rows.any((r) => r.you);
     Widget row(QuizBoardRow r) => _BoardRow(
       place: r.place,
@@ -188,10 +200,7 @@ class _BoardRow extends StatelessWidget {
         children: [
           SizedBox(
             width: 30,
-            child: Text(
-              '$place',
-              style: HazriText.bodyStrong.copyWith(color: place <= 3 ? c.kesriInk : c.muted),
-            ),
+            child: Text('$place', style: HazriText.bodyStrong.copyWith(color: place <= 3 ? c.kesriInk : c.muted)),
           ),
           QuizAvatar(initials, highlight: you),
           const SizedBox(width: 12),
@@ -199,7 +208,12 @@ class _BoardRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: HazriText.bodyStrong.copyWith(color: c.ink)),
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: HazriText.bodyStrong.copyWith(color: c.ink),
+                ),
                 if (city.isNotEmpty) Text(city, style: HazriText.caption.copyWith(color: c.muted)),
               ],
             ),

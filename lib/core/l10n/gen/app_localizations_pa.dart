@@ -3887,6 +3887,20 @@ class LPa extends L {
   String get quizBoardOffline => 'ਲੀਡਰਬੋਰਡ ਲਈ ਇੰਟਰਨੈੱਟ ਚਾਹੀਦਾ ਹੈ।';
 
   @override
+  String get quizBoardEmptyToday =>
+      'ਅੱਜ ਹਾਲੇ ਕਿਸੇ ਨੇ ਇਹ ਕੁਇਜ਼ ਨਹੀਂ ਖੇਡਿਆ। ਅੱਜ ਦਾ ਬੋਰਡ ਅੱਧੀ ਰਾਤ (IST) ਨੂੰ ਨਵਾਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ; ਪਹਿਲਾਂ ਦੇ ਕੁਇਜ਼ ਹਫ਼ਤੇ ਅਤੇ ਮਹੀਨੇ ਦੇ ਬੋਰਡ \'ਤੇ ਹਨ।';
+
+  @override
+  String get quizBoardEmptyWeek =>
+      'ਇਸ ਹਫ਼ਤੇ ਹਾਲੇ ਕਿਸੇ ਨੇ ਇਹ ਕੁਇਜ਼ ਨਹੀਂ ਖੇਡਿਆ। ਪਹਿਲਾਂ ਦੇ ਕੁਇਜ਼ ਮਹੀਨੇ ਦੇ ਬੋਰਡ \'ਤੇ ਹਨ।';
+
+  @override
+  String get quizSeeWeek => 'ਇਹ ਹਫ਼ਤਾ ਵੇਖੋ';
+
+  @override
+  String get quizSeeMonth => 'ਇਹ ਮਹੀਨਾ ਵੇਖੋ';
+
+  @override
   String get quizBoardEmpty => 'ਹਾਲੇ ਕਿਸੇ ਨੇ ਅੰਕ ਨਹੀਂ ਲਏ। ਪਹਿਲੇ ਬਣੋ।';
 
   @override

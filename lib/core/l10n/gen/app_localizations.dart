@@ -6832,6 +6832,30 @@ abstract class L {
   /// **'The leaderboard needs a connection.'**
   String get quizBoardOffline;
 
+  /// No description provided for @quizBoardEmptyToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on the week\'s and the month\'s.'**
+  String get quizBoardEmptyToday;
+
+  /// No description provided for @quizBoardEmptyWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has played this one this week yet. Earlier quizzes are on the month\'s board.'**
+  String get quizBoardEmptyWeek;
+
+  /// No description provided for @quizSeeWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'See this week'**
+  String get quizSeeWeek;
+
+  /// No description provided for @quizSeeMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'See this month'**
+  String get quizSeeMonth;
+
   /// No description provided for @quizBoardEmpty.
   ///
   /// In en, this message translates to:

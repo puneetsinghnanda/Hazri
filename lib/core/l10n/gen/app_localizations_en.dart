@@ -3899,6 +3899,20 @@ class LEn extends L {
   String get quizBoardOffline => 'The leaderboard needs a connection.';
 
   @override
+  String get quizBoardEmptyToday =>
+      'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on the week\'s and the month\'s.';
+
+  @override
+  String get quizBoardEmptyWeek =>
+      'Nobody has played this one this week yet. Earlier quizzes are on the month\'s board.';
+
+  @override
+  String get quizSeeWeek => 'See this week';
+
+  @override
+  String get quizSeeMonth => 'See this month';
+
+  @override
   String get quizBoardEmpty => 'Nobody has scored yet. Be the first.';
 
   @override

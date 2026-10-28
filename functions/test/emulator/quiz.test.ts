@@ -155,6 +155,21 @@ describeEmu('Gurmat Quiz', () => {
     expect(day.body.rows[0].score).toBe(10);
   });
 
+  it('a quiz from yesterday is on this week\'s and month\'s boards, not today\'s (QZ21, owner 2026-10-28)', async () => {
+    await createProfile(h, 'u1');
+    await play('u1', 3);
+    h.clock.set('2026-10-28T05:46:00Z'); // 11:16 IST the next day, without playing
+    for (const scope of ['all', TOPIC]) {
+      const day = await h.as('u1').get(`/api/v1/quiz/board?period=day&scope=${scope}`);
+      expect(day.body.rows).toEqual([]);
+      for (const period of ['week', 'month']) {
+        const b = await h.as('u1').get(`/api/v1/quiz/board?period=${period}&scope=${scope}`);
+        expect(b.body.rows).toEqual([{ place: 1, name: 'Harpreet K.', cityId: 'amritsar', score: 30, you: true }]);
+        expect(b.body.me).toEqual({ score: 30, place: 1 });
+      }
+    }
+  });
+
   it('boards list the top twenty, places, and the caller below them; any install can read (QZ28, QZ29)', async () => {
     const letters = 'abcdefghijklmnopqrstuv';
     for (let i = 0; i < 22; i++) {

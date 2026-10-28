@@ -22,7 +22,13 @@ import '../app_harness.dart';
 void main() {
   late TestApp app;
 
-  Future<L> pumpAt(WidgetTester tester, String location, {bool elder = false, DateTime? now}) async {
+  Future<L> pumpAt(
+    WidgetTester tester,
+    String location, {
+    bool elder = false,
+    DateTime? now,
+    List<Override> more = const [],
+  }) async {
     app = await TestApp.create(
       prefs: {'onboarding_done': true, if (elder) 'elder_mode': true},
       now: now ?? DateTime(2026, 10, 27, 9),
@@ -30,6 +36,7 @@ void main() {
         // No profile: the quiz never reaches for the server (QZ14).
         quizOnlineProvider.overrideWithValue(false),
         quizApiProvider.overrideWith((ref) => throw StateError('the quiz called the server without a profile')),
+        ...more,
       ],
     );
     addTearDown(app.dispose);
@@ -145,6 +152,32 @@ void main() {
     await pumpAt(tester, '/today', elder: true);
     expect(find.byType(QuizTodayCard, skipOffstage: false), findsOneWidget);
     expect(find.byType(QuizPickCard, skipOffstage: false), findsOneWidget);
+  });
+
+  testWidgets('an empty Today board points to the week, where yesterday\'s quiz is (QZ28a)', (tester) async {
+    final asked = <QuizPeriod>[];
+    final l = await pumpAt(
+      tester,
+      '/quiz/board?scope=guru-ram-das-ji',
+      now: DateTime(2026, 10, 28, 11),
+      more: [
+        quizBoardProvider.overrideWith((ref, key) async {
+          asked.add(key.$1);
+          return QuizBoardView(
+            key.$1 == QuizPeriod.day
+                ? const QuizBoard(played: 0, rows: [])
+                : const QuizBoard(played: 1, rows: [QuizBoardRow(place: 1, name: 'Puneet S.', score: 30)]),
+          );
+        }),
+      ],
+    );
+    expect(find.text(l.quizBoardEmptyToday), findsOneWidget);
+    expect(find.text('Puneet S.'), findsNothing);
+    await tester.tap(find.text(l.quizSeeWeek));
+    await settle(tester);
+    expect(asked.last, QuizPeriod.week);
+    expect(find.text('Puneet S.'), findsOneWidget);
+    expect(find.text(l.quizBoardEmptyToday), findsNothing);
   });
 
   testWidgets('without a profile a quiz plays on the phone, marks each answer, and earns no points', (tester) async {

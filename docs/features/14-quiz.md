@@ -241,6 +241,15 @@ its place when it is not among them. Under the list: "Top 20 · {n} played
 today · resets at midnight IST". Equal points share a place; within it, who
 reached the score first is listed first.
 
+**QZ28a. An empty board points to the next one** (owner, 2026-10-28: a quiz
+taken yesterday was nowhere on the board). The board opens on Today, and
+Today's starts empty at midnight IST, so an earlier quiz is only on the
+week's and the month's. An empty Today board says "Nobody has played this
+one today yet. Today's board starts again at midnight IST; earlier quizzes
+are on the week's and the month's." with **See this week**; an empty Week
+board says so with **See this month**; an empty Month board says "Nobody has
+scored yet. Be the first."
+
 **QZ29. Without a profile the board is design 5B**: the same board, with a
 card above it, **Make a profile to be on the leaderboard**, "Your quiz points
 count from the day you make one. Just a name and your city.", and **Make a

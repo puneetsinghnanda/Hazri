@@ -3880,6 +3880,20 @@ class LHi extends L {
   String get quizBoardOffline => 'लीडरबोर्ड के लिए इंटरनेट चाहिए।';
 
   @override
+  String get quizBoardEmptyToday =>
+      'आज अभी किसी ने यह क्विज़ नहीं खेला। आज का बोर्ड आधी रात (IST) को फिर से शुरू होता है; पहले के क्विज़ हफ़्ते और महीने के बोर्ड पर हैं।';
+
+  @override
+  String get quizBoardEmptyWeek =>
+      'इस हफ़्ते अभी किसी ने यह क्विज़ नहीं खेला। पहले के क्विज़ महीने के बोर्ड पर हैं।';
+
+  @override
+  String get quizSeeWeek => 'यह हफ़्ता देखें';
+
+  @override
+  String get quizSeeMonth => 'यह महीना देखें';
+
+  @override
   String get quizBoardEmpty => 'अभी किसी ने अंक नहीं लिए। पहले बनिए।';
 
   @override
