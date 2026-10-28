@@ -55,7 +55,8 @@ abstract final class Routes {
 
   /// One day in the diary (design 56). Inside the Diary branch, so the bottom
   /// nav stays put and back goes to the month.
-  static String diaryDay(DateTime date) => '/diary/'
+  static String diaryDay(DateTime date) =>
+      '/diary/'
       '${date.year.toString().padLeft(4, '0')}-'
       '${date.month.toString().padLeft(2, '0')}-'
       '${date.day.toString().padLeft(2, '0')}';
@@ -71,6 +72,7 @@ abstract final class Routes {
   static String libraryEntry(String id) => '/library/$id';
   // The Gurmat Quiz (14-quiz.md).
   static const quiz = '/quiz';
+  static String quizCategory(String category) => '/quiz?category=$category';
   static String quizPlay(String topicId) => '/quiz/play/$topicId';
   static String quizBoard({String? scope}) => '/quiz/board${scope == null ? '' : '?scope=$scope'}';
   static const quizMe = '/quiz/me';
@@ -117,10 +119,7 @@ abstract final class Routes {
   static String setup(int step) => '/setup/$step';
 
   static String reader(String slug, {int? line, bool autoplay = false}) {
-    final q = <String>[
-      if (line != null) 'line=$line',
-      if (autoplay) 'autoplay=1',
-    ];
+    final q = <String>[if (line != null) 'line=$line', if (autoplay) 'autoplay=1'];
     return '/reader/$slug${q.isEmpty ? '' : '?${q.join('&')}'}';
   }
 }
@@ -142,8 +141,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.intro, builder: (_, _) => const WelcomeScreen()),
       GoRoute(
         path: '/setup/:step',
-        builder: (_, state) =>
-            SetupScreen(step: int.tryParse(state.pathParameters['step'] ?? '1') ?? 1),
+        builder: (_, state) => SetupScreen(step: int.tryParse(state.pathParameters['step'] ?? '1') ?? 1),
       ),
       StatefulShellRoute.indexedStack(
         builder: (_, _, shell) => HomeShell(shell: shell),
@@ -169,12 +167,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: ':date',
                     builder: (_, state) {
-                      final date =
-                          DateTime.tryParse(state.pathParameters['date'] ?? '');
+                      final date = DateTime.tryParse(state.pathParameters['date'] ?? '');
                       return date == null
                           ? const DiaryScreen()
-                          : DiaryDayScreen(
-                              date: DateTime(date.year, date.month, date.day));
+                          : DiaryDayScreen(date: DateTime(date.year, date.month, date.day));
                     },
                   ),
                 ],
@@ -197,16 +193,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.saakhis, builder: (_, _) => const SaakhiLibraryScreen()),
       GoRoute(
         path: '/saakhis/:id',
-        builder: (_, state) => SaakhiReaderScreen(
-          id: state.pathParameters['id']!,
-          listen: state.uri.queryParameters['listen'] == '1',
-        ),
+        builder: (_, state) =>
+            SaakhiReaderScreen(id: state.pathParameters['id']!, listen: state.uri.queryParameters['listen'] == '1'),
       ),
       GoRoute(
         path: '/library/:id',
         builder: (_, state) => LibraryEntryScreen(id: state.pathParameters['id']!),
       ),
-      GoRoute(path: Routes.quiz, builder: (_, _) => const QuizHomeScreen()),
+      GoRoute(
+        path: Routes.quiz,
+        builder: (_, state) => QuizHomeScreen(category: state.uri.queryParameters['category']),
+      ),
       GoRoute(
         path: '/quiz/play/:topic',
         parentNavigatorKey: _rootKey,
@@ -225,10 +222,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.settings, builder: (_, _) => const SettingsScreen()),
       GoRoute(path: Routes.licences, builder: (_, _) => const LicencesScreen()),
       GoRoute(path: Routes.notifications, builder: (_, _) => const NotificationsScreen()),
-      GoRoute(
-        path: Routes.notificationDiagnostics,
-        builder: (_, _) => const NotificationDiagnosticsScreen(),
-      ),
+      GoRoute(path: Routes.notificationDiagnostics, builder: (_, _) => const NotificationDiagnosticsScreen()),
       GoRoute(path: Routes.batteryHelp, builder: (_, _) => const BatteryHelpScreen()),
       GoRoute(path: Routes.sangatCreate, builder: (_, _) => const CreateGroupScreen()),
       GoRoute(
@@ -237,10 +231,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/sangat-group/:id',
-        builder: (_, state) => GroupScreen(
-          groupId: state.pathParameters['id']!,
-          offerShare: state.uri.queryParameters['share'] == '1',
-        ),
+        builder: (_, state) =>
+            GroupScreen(groupId: state.pathParameters['id']!, offerShare: state.uri.queryParameters['share'] == '1'),
       ),
       GoRoute(path: Routes.badges, builder: (_, _) => const BadgesScreen()),
       GoRoute(
@@ -252,9 +244,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.profileEdit, builder: (_, _) => const ProfileEditScreen()),
       GoRoute(
         path: Routes.emailSent,
-        builder: (_, state) => state.extra is EmailSentArgs
-            ? EmailSentScreen(args: state.extra! as EmailSentArgs)
-            : const ProfileScreen(),
+        builder: (_, state) =>
+            state.extra is EmailSentArgs ? EmailSentScreen(args: state.extra! as EmailSentArgs) : const ProfileScreen(),
       ),
       GoRoute(
         path: '/link-result',

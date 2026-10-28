@@ -3961,6 +3961,23 @@ class LEn extends L {
   String get quizRowLineNoProfile => '5 random questions';
 
   @override
+  String get quizAllQuizzes => 'All quizzes';
+
+  @override
+  String get quizPickAnother => 'Or pick another';
+
+  @override
+  String get quizCardLine => '5 questions · 10 points each';
+
+  @override
+  String get quizCardLineNoProfile => '5 questions · plays on this phone';
+
+  @override
+  String quizPointsToday(int points) {
+    return '+$points today';
+  }
+
+  @override
   String quizPointsShort(int points) {
     return '$points pts';
   }

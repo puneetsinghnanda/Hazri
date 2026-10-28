@@ -3936,6 +3936,23 @@ class LHi extends L {
   String get quizRowLineNoProfile => '5 प्रश्न हर बार नए';
 
   @override
+  String get quizAllQuizzes => 'सभी क्विज़';
+
+  @override
+  String get quizPickAnother => 'या कोई और चुनें';
+
+  @override
+  String get quizCardLine => '5 सवाल · हर एक के 10 अंक';
+
+  @override
+  String get quizCardLineNoProfile => '5 सवाल · इसी फ़ोन पर खेलें';
+
+  @override
+  String quizPointsToday(int points) {
+    return 'आज +$points';
+  }
+
+  @override
   String quizPointsShort(int points) {
     return '$points अंक';
   }

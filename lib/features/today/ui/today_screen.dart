@@ -78,9 +78,12 @@ class TodayScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     _CtaButton(cta: ref.watch(todayCtaProvider)),
                     // 14-quiz QZ9, design 1A: after the button, above the saakhis;
-                    // in elder mode too (owner, 2026-10-27).
+                    // in elder mode too (owner, 2026-10-27). Then the quiz's own
+                    // card, design D (QZ12, owner 2026-10-28).
                     const SizedBox(height: 12),
                     const QuizTodayCard(),
+                    const SizedBox(height: 12),
+                    const QuizPickCard(),
                     // 13-saakhi SK11, option 1A: after the button, before ਅੱਜ ਦਾ ਵਿਚਾਰ.
                     // Shown in elder mode too (SK15, owner 2026-10-27).
                     const SizedBox(height: 18),

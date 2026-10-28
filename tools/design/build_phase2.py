@@ -3902,13 +3902,13 @@ def _numeral(glyph: str, size: int = 46) -> str:
 
 
 def quiz_card() -> str:
-    """Design 1A on Today (14-quiz.md QZ9-QZ12): a calendar leaf, the day's event,
-    the topic, one explanation word for word, Know more and Take the quiz.
-
-    Only the buttons act (owner, 2026-10-27); they sit side by side when both
-    labels fit whole and stack, Take the quiz first, when they do not.
-    """
+    """The calendar leaf on Today (14-quiz.md QZ9-QZ11, design 1A): the date,
+    the day's event, the topic and one explanation word for word. No buttons
+    (owner, 2026-10-28); on a day with an event the whole card opens its
+    Vichar page, and the arrow by the eyebrow says so."""
     small = "font-size:11px;font-weight:700;letter-spacing:.1em"
+    arrow = ('<svg class="i" width="16" height="16" viewBox="0 0 24 24" style="color:var(--kesriInk)">'
+             '<path d="M9 6l6 6-6 6"/></svg>')
     return f"""
   <div class="card row" style="padding:0;overflow:hidden;align-items:stretch">
     <div class="col" style="width:78px;flex:none;background:var(--kesri);color:#1C1206;
@@ -3920,30 +3920,63 @@ def quiz_card() -> str:
       <div style="font-size:12px;font-weight:700">11</div>
       <div style="font-size:10.5px;font-weight:700">Katak</div>
     </div>
-    <div class="col" style="padding:12px 14px;flex:1;min-width:0">
-      <div class="eyebrow" style="color:var(--kesriInk)">Did you know?</div>
+    <div class="col" style="padding:12px 14px 14px;flex:1;min-width:0">
+      <div class="row" style="justify-content:space-between">
+        <div class="eyebrow" style="color:var(--kesriInk)">Prakash Purab</div>{arrow}</div>
       <div class="disp" style="font-size:20px;font-weight:700;line-height:1.15;margin-top:4px">Guru Ram Das Ji</div>
       <div style="font-size:13.5px;line-height:1.4;color:var(--ink2);margin-top:6px">Guru Ram Das Ji was named
         Jetha (meaning 'firstborn') as a child and later became known as Ram Das.</div>
-      <div class="row" style="gap:10px;margin-top:10px">
-        <div class="btn" style="flex:1;min-height:44px;font-size:14.5px;background:var(--card2);color:var(--ink)">Know more</div>
-        <div class="btn" style="flex:1.25;min-height:44px;font-size:14.5px;background:var(--primary);color:var(--onPrimary)">Take the quiz</div>
-      </div>
     </div>
   </div>"""
 
 
-def today_quiz() -> str:
-    """Today scrolled past the band and the goal: the Nitnem button, the quiz
-    card, the saakhis card in option C, and Today's Vichar below
-    (05-today.md 6a, 6b; SK11). In elder mode too (QZ9, SK15)."""
+def quiz_pick_card() -> str:
+    """The quiz's own card on Today, design D (owner, 2026-10-28; QZ9, QZ12):
+    Gurmat Quiz with your points and All quizzes, today's topic highlighted
+    with Start, then the other categories as drawn tiles."""
+    tiles = "".join(
+        f'<div class="col" style="width:76px;flex:none;align-items:center;gap:4px">'
+        f'<div style="width:64px;height:64px;border-radius:20px;background:var(--kesriSoft);display:flex;'
+        f'align-items:center;justify-content:center">{_drawing(k, 44)}</div>'
+        f'<div style="font-size:11.5px;font-weight:700;color:var(--ink2)">{label}</div></div>'
+        for k, label in [("gurdwaras", "Gurdwaras"), ("banis", "Banis"), ("heroes", "Heroes"),
+                         ("culture", "Culture"), ("all", "All")])
     return f"""
-<div class="col" style="gap:13px;padding:16px 20px 0">
+  <div class="card col" style="padding:12px 0 14px 16px">
+    <div class="row" style="gap:8px;padding-right:12px">
+      <div class="disp" style="font-size:19px;font-weight:700;flex:1">Gurmat Quiz</div>
+      <div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk);padding:3px 10px">120 pts</div>
+      <div class="row" style="font-size:13px;font-weight:700;color:var(--kesriInk)">All quizzes{chev(14).replace("var(--muted)", "var(--kesriInk)")}</div>
+    </div>
+    <div class="row" style="gap:12px;margin:8px 16px 0 0;padding:12px;border-radius:18px;border:2px solid var(--kesri);
+      background:linear-gradient(90deg,var(--kesriSoft),var(--card))">
+      <div style="width:60px;height:60px;border-radius:30px;background:var(--card);display:flex;align-items:center;
+        justify-content:center;flex:none">{_numeral("੪", 48)}</div>
+      <div class="col" style="flex:1;min-width:0">
+        <div class="eyebrow" style="color:var(--kesriInk)">Today</div>
+        <div class="disp" style="font-size:19px;font-weight:700;line-height:1.15">Guru Ram Das Ji</div>
+        <div style="font-size:12.5px;color:var(--ink2)">5 questions · 10 points each</div>
+      </div>
+      <div class="btn" style="min-height:44px;padding:0 16px;font-size:14.5px;border-radius:14px;
+        background:var(--primary);color:var(--onPrimary)">Start</div>
+    </div>
+    <div class="eyebrow" style="margin-top:12px">Or pick another</div>
+    <div class="row" style="gap:8px;margin-top:8px;overflow:hidden">{tiles}</div>
+  </div>"""
+
+
+def today_quiz() -> str:
+    """Today scrolled past the band and the goal: the Nitnem button, the
+    calendar leaf (1A, no buttons), the quiz card (D), then the saakhis card
+    in option C (05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; SK11). In elder
+    mode too (QZ9, SK15)."""
+    return f"""
+<div class="col" style="gap:12px;padding:16px 20px 0">
   <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
     {icon("nitnem", 20)}<div>Start your Nitnem</div></div>
   {quiz_card()}
+  {quiz_pick_card()}
   {saakhi_card()}
-  {vichar_card()}
 </div>
 {nav("today")}
 """

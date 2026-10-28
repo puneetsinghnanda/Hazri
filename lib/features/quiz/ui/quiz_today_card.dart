@@ -8,13 +8,19 @@ import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/time/date_format.dart';
+import '../../../core/theme/icon_data.dart';
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../data/quiz_repository.dart';
 import '../domain/quiz.dart';
+import 'quiz_widgets.dart';
 
-/// Design 1A on Today (14-quiz.md QZ9-QZ12): a calendar leaf with the date,
-/// then the day's event (or "Did you know?"), the topic, one explanation from
-/// the bank word for word, Know more and Take the quiz.
+/// Design 1A on Today (14-quiz.md QZ9-QZ11): a calendar leaf with the date,
+/// then the day's event (or "Did you know?"), the topic and one explanation
+/// from the bank word for word. No buttons (owner, 2026-10-28): the quiz has
+/// its own card below ([QuizPickCard]). On a day with an event that has a
+/// Vichar page, the whole card opens it, with an arrow (Know more, QZ11);
+/// on other days it is still.
 class QuizTodayCard extends ConsumerWidget {
   const QuizTodayCard({super.key});
 
@@ -23,79 +29,85 @@ class QuizTodayCard extends ConsumerWidget {
     final quiz = ref.watch(todayQuizProvider).value;
     if (quiz == null) return const SizedBox.shrink();
     final c = context.colors;
+    final l = L.of(context);
     final language = Localizations.localeOf(context).languageCode;
     final dates = HazriDates.of(context);
     final ns = ref.watch(nanakshahiCalendarProvider).value?.dateFor(quiz.date);
     const leafInk = Color(0xFF1C1206);
     final leafSmall = HazriText.captionStrong.copyWith(color: leafInk, fontSize: 11, letterSpacing: 1.1);
+    final slug = quiz.day != null ? quiz.slug : null;
 
-    // Only the buttons act: a tap on the words is reading, not starting
-    // (owner, 2026-10-27).
-    return HazriCard(
-      padding: EdgeInsets.zero,
-      // The leaf fills the card's left edge whatever height the words take;
-      // a Stack rather than IntrinsicHeight, because the buttons measure the
-      // width they are given (_Buttons) and intrinsics cannot.
-      child: Stack(
-        children: [
-          ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: _leafMinHeight),
-            child: Padding(
-              padding: const EdgeInsets.only(left: _leafWidth),
-              child: _Words(quiz: quiz),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: _leafWidth,
-            child: Container(
-              color: c.kesri,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(dates.weekdayAbbr(quiz.date).toUpperCase(), style: leafSmall),
-                  Text(
-                    '${quiz.date.day}',
-                    style: HazriText.display34.copyWith(color: leafInk, fontSize: 36, height: 1.05),
-                  ),
-                  Text(dates.monthAbbrUpper(quiz.date), style: leafSmall),
-                  if (ns != null) ...[
-                    Container(
-                      width: 40,
-                      height: 1,
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      color: leafInk.withValues(alpha: 0.3),
-                    ),
-                    Text('${ns.day}', style: HazriText.captionStrong.copyWith(color: leafInk, fontSize: 12)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        ns.monthName(language),
-                        textAlign: TextAlign.center,
-                        style: HazriText.captionStrong.copyWith(color: leafInk, fontSize: 10.5),
-                      ),
-                    ),
-                  ],
-                ],
+    return Semantics(
+      button: slug != null,
+      hint: slug != null ? l.quizKnowMore : null,
+      child: HazriCard(
+        padding: EdgeInsets.zero,
+        onTap: slug == null ? null : () => context.push(Routes.libraryEntry(slug)),
+        // The leaf fills the card's left edge whatever height the words take.
+        child: Stack(
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: _leafMinHeight),
+              child: Padding(
+                padding: const EdgeInsets.only(left: _leafWidth),
+                child: _Words(quiz: quiz, linked: slug != null),
               ),
             ),
-          ),
-        ],
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: _leafWidth,
+              child: Container(
+                color: c.kesri,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(dates.weekdayAbbr(quiz.date).toUpperCase(), style: leafSmall),
+                    Text(
+                      '${quiz.date.day}',
+                      style: HazriText.display34.copyWith(color: leafInk, fontSize: 36, height: 1.05),
+                    ),
+                    Text(dates.monthAbbrUpper(quiz.date), style: leafSmall),
+                    if (ns != null) ...[
+                      Container(
+                        width: 40,
+                        height: 1,
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        color: leafInk.withValues(alpha: 0.3),
+                      ),
+                      Text('${ns.day}', style: HazriText.captionStrong.copyWith(color: leafInk, fontSize: 12)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          ns.monthName(language),
+                          textAlign: TextAlign.center,
+                          style: HazriText.captionStrong.copyWith(color: leafInk, fontSize: 10.5),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 const double _leafWidth = 78;
-const double _leafMinHeight = 172;
+const double _leafMinHeight = 150;
 
 class _Words extends StatelessWidget {
-  const _Words({required this.quiz});
+  const _Words({required this.quiz, required this.linked});
 
   final TodayQuiz quiz;
+
+  /// Whether the card opens the day's Vichar page, so the arrow shows.
+  final bool linked;
 
   @override
   Widget build(BuildContext context) {
@@ -103,13 +115,20 @@ class _Words extends StatelessWidget {
     final l = L.of(context);
     final language = Localizations.localeOf(context).languageCode;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            (quiz.day?.label(language) ?? l.quizDidYouKnow).toUpperCase(),
-            style: HazriText.eyebrow.copyWith(color: c.kesriInk),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  (quiz.day?.label(language) ?? l.quizDidYouKnow).toUpperCase(),
+                  style: HazriText.eyebrow.copyWith(color: c.kesriInk),
+                ),
+              ),
+              if (linked) AppIcon(HazriIconData.chevronRight, size: 16, color: c.kesriInk),
+            ],
           ),
           const SizedBox(height: 4),
           Text(
@@ -121,22 +140,140 @@ class _Words extends StatelessWidget {
             // QZ10: word for word from the bank, which is English (QZ6).
             Text(quiz.insight!.explanation, style: HazriText.bodySmall.copyWith(color: c.ink2, height: 1.4)),
           ],
-          const SizedBox(height: 10),
-          _Buttons(
-            knowMore: quiz.slug == null
-                ? null
-                : PrimaryButton(
-                    label: l.quizKnowMore,
-                    secondary: true,
-                    minHeight: 44,
-                    onPressed: () => context.push(Routes.libraryEntry(quiz.slug!)),
+        ],
+      ),
+    );
+  }
+}
+
+/// Design D on Today (owner, 2026-10-28; 14-quiz.md QZ12): the quiz's own
+/// card. Gurmat Quiz with your points and All quizzes; today's topic as a
+/// highlighted tile with Start; then the other categories as drawn tiles,
+/// each opening the quiz page on that category. Nothing here fetches: the
+/// points are the ones the phone already holds (`quiz_me_v1`).
+class QuizPickCard extends ConsumerWidget {
+  const QuizPickCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final quiz = ref.watch(todayQuizProvider).value;
+    if (quiz == null) return const SizedBox.shrink();
+    final c = context.colors;
+    final l = L.of(context);
+    final language = Localizations.localeOf(context).languageCode;
+    final online = ref.watch(quizOnlineProvider);
+    final me = online ? ref.watch(quizMeProvider) : null;
+    final d = quiz.date;
+    final key =
+        '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+    final pointsToday = me?.days[key] ?? 0;
+    final others = [
+      for (final cat in const ['gurus', 'gurdwaras', 'banis', 'heroes', 'culture'])
+        if (cat != quiz.topic.category.name) cat,
+      'all',
+    ];
+
+    return HazriCard(
+      padding: const EdgeInsets.fromLTRB(16, 12, 0, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(l.quizTitle, style: HazriText.display22.copyWith(color: c.ink, fontSize: 19)),
+                ),
+                if (me != null)
+                  HazriChip(
+                    label: pointsToday > 0 ? l.quizPointsToday(pointsToday) : l.quizPointsShort(me.points),
+                    background: pointsToday > 0 ? c.sageSoft : c.kesriSoft,
+                    foreground: pointsToday > 0 ? c.sage : c.kesriInk,
+                    minHeight: 28,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                   ),
-            takeQuiz: PrimaryButton(
-              label: l.quizTakeQuiz,
-              minHeight: 44,
-              onPressed: () => context.push(Routes.quizPlay(quiz.topic.id)),
+                TextButton(
+                  onPressed: () => context.push(Routes.quiz),
+                  style: TextButton.styleFrom(
+                    foregroundColor: c.kesriInk,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(l.quizAllQuizzes, style: HazriText.captionStrong.copyWith(color: c.kesriInk, fontSize: 13)),
+                      AppIcon(HazriIconData.chevronRight, size: 14, color: c.kesriInk),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            labels: [if (quiz.slug != null) l.quizKnowMore, l.quizTakeQuiz],
+          ),
+          const SizedBox(height: 6),
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: c.kesri, width: 2),
+                gradient: LinearGradient(colors: [c.kesriSoft, c.card]),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(color: c.card, shape: BoxShape.circle),
+                    alignment: Alignment.center,
+                    child: QuizTopicGlyph(quiz.topic, size: 48),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l.quizPeriodToday.toUpperCase(), style: HazriText.eyebrow.copyWith(color: c.kesriInk)),
+                        Text(
+                          quiz.topic.name(language),
+                          style: HazriText.display22.copyWith(color: c.ink, fontSize: 19, height: 1.15),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          online ? l.quizCardLine : l.quizCardLineNoProfile,
+                          style: HazriText.caption.copyWith(color: c.ink2),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  PrimaryButton(
+                    label: l.quizStart,
+                    expanded: false,
+                    minHeight: 44,
+                    onPressed: () => context.push(Routes.quizPlay(quiz.topic.id)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(l.quizPickAnother.toUpperCase(), style: HazriText.eyebrow.copyWith(color: c.muted)),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 96,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                for (final cat in others)
+                  _CategoryTile(
+                    category: cat,
+                    label: categoryLabel(l, cat),
+                    onTap: () => context.push(Routes.quizCategory(cat)),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
@@ -144,52 +281,48 @@ class _Words extends StatelessWidget {
   }
 }
 
-/// Know more and Take the quiz side by side when both labels fit whole, as
-/// design 1A draws them; stacked, Take the quiz first, when they do not. A
-/// narrow phone, a long translation or a large font must never squeeze a
-/// label to nothing.
-class _Buttons extends StatelessWidget {
-  const _Buttons({required this.knowMore, required this.takeQuiz, required this.labels});
+class _CategoryTile extends StatelessWidget {
+  const _CategoryTile({required this.category, required this.label, required this.onTap});
 
-  final Widget? knowMore;
-  final Widget takeQuiz;
-  final List<String> labels;
-
-  /// PrimaryButton's padding either side of its label.
-  static const _padding = 2 * 18.0;
-  static const _gap = 10.0;
+  final String category;
+  final String label;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    if (knowMore == null) return takeQuiz;
-    final scaler = MediaQuery.textScalerOf(context);
-    final widths = [
-      for (final label in labels)
-        (TextPainter(
-              text: TextSpan(text: label, style: HazriText.button),
-              textDirection: TextDirection.ltr,
-              textScaler: scaler,
-              maxLines: 1,
-            )..layout()).width +
-            _padding,
-    ];
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final need = widths.fold(0.0, (a, b) => a + b) + _gap;
-        if (need <= constraints.maxWidth) {
-          return Row(
-            children: [
-              Expanded(flex: widths[0].ceil(), child: knowMore!),
-              const SizedBox(width: _gap),
-              Expanded(flex: widths[1].ceil(), child: takeQuiz),
-            ],
-          );
-        }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [takeQuiz, const SizedBox(height: 8), knowMore!],
-        );
-      },
+    final c = context.colors;
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: Semantics(
+        button: true,
+        label: label,
+        excludeSemantics: true,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: SizedBox(
+            width: 76,
+            child: Column(
+              children: [
+                Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(color: c.kesriSoft, borderRadius: BorderRadius.circular(20)),
+                  alignment: Alignment.center,
+                  child: QuizCategoryDrawing(category, size: 44),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: HazriText.captionStrong.copyWith(color: c.ink2, fontSize: 11.5),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

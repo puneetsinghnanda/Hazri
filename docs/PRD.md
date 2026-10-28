@@ -333,9 +333,11 @@ Top to bottom:
 6. **The call to action**: a paath in progress (Continue at the saved line);
    else the first unmet goal item; else the current slot's first bani not done;
    else the next slot's (T4).
-7. **The Gurmat Quiz card** (design 1A, 2026-10-27, drawn as 113): the day's topic, one
-   insight, Know more and Take the quiz (§4.21, `14-quiz.md` QZ9). In elder
-   mode too.
+7. **The Gurmat Quiz cards** (drawn as 113): the calendar leaf (design 1A)
+   with the day's topic and one insight and no buttons, which on a day with
+   an event opens its Vichar page; then the quiz's own card (design D,
+   2026-10-28): today's topic with Start, and the other categories to pick
+   from (§4.21, `14-quiz.md` QZ9-QZ12). In elder mode too.
 8. **The Saakhis card** (option C, design 113, replacing 110's row on
    2026-10-27; `13-saakhi.md` SK11). In elder mode too (owner, 2026-10-27).
 9. **ਅੱਜ ਦਾ ਵਿਚਾਰ** card (§4.15).
@@ -838,11 +840,15 @@ ARCHITECTURE §3.2, §5.13, §6.7.*
   Heroes, Sikh History) and Culture. Bundled in `content.db` through the
   pipeline; English until reviewed translations exist; no question quotes
   Gurbani.
-- **Today** (design 1A, drawn as 113, above the Saakhis card): a calendar leaf with the
-  day's event or "Did you know?", the day's topic, one explanation from the
-  bank word for word, **Know more** (the day's Vichar page) and **Take the
-  quiz** (straight to the first question). Shown in elder mode too. The topic is the calendar
-  event's, or a rotation by date, the same on every phone.
+- **Today** (drawn as 113, above the Saakhis card): the calendar leaf
+  (design 1A) with the day's event or "Did you know?", the day's topic and one
+  explanation from the bank word for word, and no buttons; on a day with an
+  event the whole leaf opens the day's Vichar page (Know more). Below it the
+  quiz's own card (design D, 2026-10-28): today's topic with **Start**
+  (straight to the first question), your points with a profile, **All
+  quizzes**, and the other categories as drawn tiles. Both in elder mode
+  too. The topic is the calendar event's, or a rotation by date, the same on
+  every phone.
 - **A quiz:** five questions drawn new each time (two easy, two medium, one
   hard), each marked at once with its explanation and no source. **Points
   only with a profile** (owner, 2026-10-27): ten a right answer, drawn and
@@ -1342,7 +1348,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `85-TodayAppBar` | Today, with the app bar and streak | **new** | App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12 |
-| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The Gurmat Quiz card 1A (a calendar leaf, the day's event or Did you know?, the topic, one explanation, Know more and Take the quiz; only the buttons act), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
+| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with no buttons (on an event day it opens the Vichar page), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
 | `86-TodayNoProfile` | Today, first day, no profile | **new** | The profile banner overlaps the app bar; no streak yet. 05-today.md T-a |
 | `61-GoalComplete` | All of today's goals are done | current | Shown once a day when the goal is met. 04-goals.md CE1 |
 | `58-TodayHazri` | Today, hazri marked | superseded | Replaced by 85 |
@@ -1450,7 +1456,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `114-QuizQuestion` | A question, answered | **new** | Straight in from Take the quiz; four options in the bank's order, marked at once, the explanation word for word and no source; Next. QZ7, QZ12, QZ15 |
+| `114-QuizQuestion` | A question, answered | **new** | Straight in from Start; four options in the bank's order, marked at once, the explanation word for word and no source; Next. QZ7, QZ12, QZ15 |
 | `115-QuizResult` | Your answers | **new** | Result 4B, chosen 27 Oct: the score and points (or why none), the five answers, the challenge and Share the quiz, then See the leaderboard and Done. QZ23-QZ26 |
 | `116-QuizBoard` | One quiz's leaderboard | **new** | Leaderboard 5A: Today, Week, Month; Everyone, then today's topic, then the rest; the top twenty, your row marked. QZ27-QZ30 |
 | `117-QuizBoardNoProfile` | Everyone, without a profile | **new** | Leaderboard 5B: the same board with Make a profile above it. QZ14, QZ29 |

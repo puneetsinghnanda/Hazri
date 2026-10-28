@@ -18,14 +18,18 @@ import 'quiz_widgets.dart';
 /// Design 6A (14-quiz.md QZ33): the total, Coming up on the calendar, the
 /// featured categories as drawn tiles, and the chosen category's quizzes.
 class QuizHomeScreen extends ConsumerStatefulWidget {
-  const QuizHomeScreen({super.key});
+  const QuizHomeScreen({super.key, this.category});
+
+  /// The category to open on, from a tile on Today's quiz card; null for
+  /// today's topic's.
+  final String? category;
 
   @override
   ConsumerState<QuizHomeScreen> createState() => _QuizHomeScreenState();
 }
 
 class _QuizHomeScreenState extends ConsumerState<QuizHomeScreen> {
-  String? _category;
+  late String? _category = widget.category;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,11 @@ class _QuizHomeScreenState extends ConsumerState<QuizHomeScreen> {
         if (topics.isEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 40),
-            child: Text(l.quizEmpty, textAlign: TextAlign.center, style: HazriText.body.copyWith(color: c.muted)),
+            child: Text(
+              l.quizEmpty,
+              textAlign: TextAlign.center,
+              style: HazriText.body.copyWith(color: c.muted),
+            ),
           )
         else ...[
           if (!online)
@@ -150,7 +158,10 @@ class _QuizHomeScreenState extends ConsumerState<QuizHomeScreen> {
           Row(
             children: [
               Expanded(
-                child: Text(categoryLabel(l, category), style: HazriText.display22.copyWith(color: c.ink, fontSize: 18)),
+                child: Text(
+                  categoryLabel(l, category),
+                  style: HazriText.display22.copyWith(color: c.ink, fontSize: 18),
+                ),
               ),
               Text(l.quizCount(shown.length), style: HazriText.caption.copyWith(color: c.muted)),
             ],
@@ -243,7 +254,10 @@ class _ComingRow extends StatelessWidget {
           child: Column(
             children: [
               Text(day, style: HazriText.display22.copyWith(color: c.onPrimary, fontSize: 22, height: 1)),
-              Text(month, style: HazriText.captionStrong.copyWith(color: c.onPrimary.withValues(alpha: 0.7), fontSize: 10.5)),
+              Text(
+                month,
+                style: HazriText.captionStrong.copyWith(color: c.onPrimary.withValues(alpha: 0.7), fontSize: 10.5),
+              ),
             ],
           ),
         ),

@@ -6934,6 +6934,36 @@ abstract class L {
   /// **'5 random questions'**
   String get quizRowLineNoProfile;
 
+  /// No description provided for @quizAllQuizzes.
+  ///
+  /// In en, this message translates to:
+  /// **'All quizzes'**
+  String get quizAllQuizzes;
+
+  /// No description provided for @quizPickAnother.
+  ///
+  /// In en, this message translates to:
+  /// **'Or pick another'**
+  String get quizPickAnother;
+
+  /// No description provided for @quizCardLine.
+  ///
+  /// In en, this message translates to:
+  /// **'5 questions · 10 points each'**
+  String get quizCardLine;
+
+  /// No description provided for @quizCardLineNoProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'5 questions · plays on this phone'**
+  String get quizCardLineNoProfile;
+
+  /// No description provided for @quizPointsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'+{points} today'**
+  String quizPointsToday(int points);
+
   /// No description provided for @quizPointsShort.
   ///
   /// In en, this message translates to:

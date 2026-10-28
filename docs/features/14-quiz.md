@@ -99,27 +99,40 @@ decides it from `content.db` with no network, by the local date:
 2. otherwise the topics in their `sort` order, by days since 1970-01-01
    modulo the number of topics (as ਅੱਜ ਦਾ ਵਿਚਾਰ picks its line).
 
-**QZ9. The Today card is design 1A**, the calendar leaf: the weekday, the day
-and the month, the Nanakshahi day and month, then the event's short label
-from `days.json` as the eyebrow (or **Did you know?** on a day without one), the topic's name, one
-insight, and two buttons, **Know more** and **Take the quiz**. It sits after
-the Nitnem button and before the Saakhis row (owner, 2026-10-26: "above
-saakhis"). It is shown in elder mode too, at elder sizes, as the Saakhis row
-is (owner, 2026-10-27). Only the two buttons act; a tap on the words does
-nothing (owner, 2026-10-27). The buttons sit side by side when both labels fit
-whole, and are stacked, Take the quiz first, when they do not.
+**QZ9. Today has two quiz cards**, both after the Nitnem button and before
+the Saakhis card (owner, 2026-10-26: "above saakhis"), both in elder mode too,
+at elder sizes (owner, 2026-10-27).
+
+*The calendar leaf* (design 1A): the weekday, the day and the month, the
+Nanakshahi day and month, then the event's short label from `days.json` as the
+eyebrow (or **Did you know?** on a day without one), the topic's name and one
+insight. **It has no buttons** (owner, 2026-10-28: "this card is fine without
+a button").
+
+*The quiz card* (design D, owner 2026-10-28, from four options drawn at
+<https://claude.ai/artifact/JcMB8TS6bEBCDnY6trRXKL>): **Gurmat Quiz** with,
+with a profile, your points (or **+N today** once you have earned some today)
+and **All quizzes**, which opens the quiz page; then today's topic as a
+highlighted tile, its mark, **Today**, its name, "5 questions · 10 points
+each" (without a profile "5 questions · plays on this phone") and **Start**;
+then **Or pick another** and the other categories as drawn tiles (the five
+that are not today's topic's, then All), each opening the quiz page on that
+category. Nothing on it fetches: the points are those the phone already holds
+(`quiz_me_v1`, ARCHITECTURE §3.9.4), so Today still costs no read.
 
 **QZ10. The insight is the explanation of one of the topic's questions,
 word for word**, never written for the card. It is chosen by the date from
 the topic's easy questions that carry no reviewer's note, in id order.
 
-**QZ11. Know more opens the day's Vichar page** (`/library/<slug>`, design
-107): the event's page from `days.json`, or on a day with no event the
-topic's page from `topics.json`. Where neither names a page, Know more is not
-shown and Take the quiz fills the row.
+**QZ11. Know more is the calendar leaf itself, on a day with an event**
+(owner, 2026-10-28): when the day's event in `days.json` names a Vichar page,
+a tap anywhere on the leaf opens it (`/library/<slug>`, design 107) and a small
+arrow beside the eyebrow says so. On a day with no event the leaf is still: a
+tap on it does nothing. (Until 2026-10-28 it was a Know more button, shown on
+every day with a page, the topic's on a day with no event.)
 
-**QZ12. Take the quiz goes straight into the first question** (owner,
-2026-10-26), with no intermediate screen.
+**QZ12. Start goes straight into the first question** (owner, 2026-10-26),
+with no intermediate screen.
 
 ## 5. A quiz
 
@@ -308,11 +321,19 @@ link opens the website's 404 rather than the quiz.
 **Today on a Gurpurab.** Given 27 October 2026, Prakash Purab of Sri Guru Ram
 Das Sahib Ji, mapped to the topic Guru Ram Das Ji, when Today opens, then the
 card shows TUE 27 OCT, 11 Katak, "Prakash Purab", "Guru Ram Das Ji", an
-explanation from that topic word for word, Know more and Take the quiz.
+explanation from that topic word for word, an arrow and no button; a tap on
+the card opens the Prakash Purab's Vichar page. The quiz card below shows
+Guru Ram Das Ji with Start, and Gurdwaras, Banis, Heroes, Culture and All to
+pick from, not Gurus.
 
 **Today with no event.** Given a date with no mapped event, when Today opens,
 then the card shows "Did you know?" and the topic QZ8 picks for that date,
-and every phone shows the same topic on that date.
+with no arrow, and a tap on it does nothing; every phone shows the same topic
+on that date.
+
+**A category from Today.** Given the quiz card, when the player taps
+Gurdwaras, then the quiz page opens with Gurdwaras chosen: Five Takhts and
+Historic Gurdwaras.
 
 **Two events.** Given 14 December 2026, with Shaheedi Purab of Sri Guru Tegh
 Bahadur Sahib Ji and a Sahibzada's birth anniversary, when Today opens, then
@@ -335,7 +356,7 @@ and today's Everyone board count them at 40.
 **A lower replay.** Given a best of 40 today on a topic, when the player
 scores 20 on it, then their total rises by 20 and no board changes.
 
-**Offline.** Given no connection, when the player taps Take the quiz, then
+**Offline.** Given no connection, when the player taps Start, then
 five questions show within the 5-second limit, the quiz runs, and the
 result says "Points need a connection" with no leaderboard button.
 

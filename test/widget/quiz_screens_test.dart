@@ -22,10 +22,10 @@ import '../app_harness.dart';
 void main() {
   late TestApp app;
 
-  Future<L> pumpAt(WidgetTester tester, String location, {bool elder = false}) async {
+  Future<L> pumpAt(WidgetTester tester, String location, {bool elder = false, DateTime? now}) async {
     app = await TestApp.create(
       prefs: {'onboarding_done': true, if (elder) 'elder_mode': true},
-      now: DateTime(2026, 10, 27, 9),
+      now: now ?? DateTime(2026, 10, 27, 9),
       extra: [
         // No profile: the quiz never reaches for the server (QZ14).
         quizOnlineProvider.overrideWithValue(false),
@@ -38,62 +38,113 @@ void main() {
       initialLocation: location,
       routes: [
         GoRoute(path: '/today', builder: (_, _) => const TodayScreen()),
-        GoRoute(path: '/quiz', builder: (_, _) => const QuizHomeScreen()),
-        GoRoute(path: '/quiz/play/:t', builder: (_, s) => QuizScreen(topicId: s.pathParameters['t']!)),
-        GoRoute(path: '/quiz/board', builder: (_, s) => QuizBoardScreen(scope: s.uri.queryParameters['scope'])),
-        GoRoute(path: '/profile-setup', builder: (_, _) => const Scaffold(body: Text('setup'))),
+        GoRoute(
+          path: '/quiz',
+          builder: (_, s) => QuizHomeScreen(category: s.uri.queryParameters['category']),
+        ),
+        GoRoute(
+          path: '/library/:id',
+          builder: (_, s) => Scaffold(body: Text('vichar ${s.pathParameters['id']}')),
+        ),
+        GoRoute(
+          path: '/quiz/play/:t',
+          builder: (_, s) => QuizScreen(topicId: s.pathParameters['t']!),
+        ),
+        GoRoute(
+          path: '/quiz/board',
+          builder: (_, s) => QuizBoardScreen(scope: s.uri.queryParameters['scope']),
+        ),
+        GoRoute(
+          path: '/profile-setup',
+          builder: (_, _) => const Scaffold(body: Text('setup')),
+        ),
       ],
     );
-    await tester.pumpWidget(UncontrolledProviderScope(
-      container: app.container,
-      child: MaterialApp.router(
-        locale: const Locale('en'),
-        localizationsDelegates: L.localizationsDelegates,
-        supportedLocales: L.supportedLocales,
-        theme: HazriTheme.light(),
-        routerConfig: router,
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: app.container,
+        child: MaterialApp.router(
+          locale: const Locale('en'),
+          localizationsDelegates: L.localizationsDelegates,
+          supportedLocales: L.supportedLocales,
+          theme: HazriTheme.light(),
+          routerConfig: router,
+        ),
       ),
-    ));
+    );
     await settle(tester);
     return L.delegate.load(const Locale('en'));
   }
 
-  testWidgets('Today shows the day\'s quiz as a calendar leaf with Know more and Take the quiz (1A)', (tester) async {
+  Future<void> scrollTo(WidgetTester tester, Finder finder) =>
+      tester.scrollUntilVisible(finder, 300, scrollable: find.byType(Scrollable).first);
+
+  testWidgets('the calendar leaf has no buttons; on a Gurpurab the card opens the day\'s Vichar page (QZ11)', (
+    tester,
+  ) async {
     final l = await pumpAt(tester, '/today');
-    final card = find.byType(QuizTodayCard, skipOffstage: false);
-    await tester.scrollUntilVisible(find.text(l.quizTakeQuiz), 300, scrollable: find.byType(Scrollable).first);
-    expect(find.descendant(of: card, matching: find.text('PRAKASH PURAB')), findsOneWidget);
+    final card = find.byType(QuizTodayCard);
+    await scrollTo(tester, find.descendant(of: card, matching: find.text('PRAKASH PURAB')));
     expect(find.descendant(of: card, matching: find.text('Guru Ram Das Ji')), findsOneWidget);
-    expect(find.text(l.quizKnowMore), findsOneWidget);
+    expect(find.descendant(of: card, matching: find.byType(FilledButton)), findsNothing);
+    expect(find.text(l.quizTakeQuiz), findsNothing);
+    await tester.tap(find.descendant(of: card, matching: find.text('Guru Ram Das Ji')));
+    await settle(tester);
+    expect(find.textContaining('vichar '), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('on a day with no event the leaf says Did you know? and a tap does nothing', (tester) async {
+    final l = await pumpAt(tester, '/today', now: DateTime(2026, 10, 28, 9));
+    final card = find.byType(QuizTodayCard);
+    await scrollTo(tester, find.descendant(of: card, matching: find.text(l.quizDidYouKnow.toUpperCase())));
+    await tester.tap(find.descendant(of: card, matching: find.text(l.quizDidYouKnow.toUpperCase())));
+    await settle(tester);
+    expect(find.textContaining('vichar '), findsNothing);
+    expect(find.byType(QuizScreen), findsNothing);
+  });
+
   for (final width in [360.0, 390.0, 412.0]) {
-    testWidgets('at ${width.toInt()} dp both buttons show their whole label, and only they act', (tester) async {
+    testWidgets('at ${width.toInt()} dp the quiz card (design D) lays out and Start opens today\'s quiz', (
+      tester,
+    ) async {
       final l = await pumpAt(tester, '/today');
       tester.view.physicalSize = Size(width * 3, 844 * 3);
       await settle(tester);
-      await tester.scrollUntilVisible(find.text(l.quizTakeQuiz), 300, scrollable: find.byType(Scrollable).first);
+      final pick = find.byType(QuizPickCard);
+      await scrollTo(tester, find.descendant(of: pick, matching: find.text(l.quizStart)));
       await settle(tester);
-      for (final label in [l.quizKnowMore, l.quizTakeQuiz]) {
-        // The test font is a block font far wider than the app's, so a long
-        // label may not fit whole here; it must still be given real room,
-        // never squeezed to a sliver as it was on a 360 dp phone (2026-10-27).
-        final text = tester.renderObject<RenderParagraph>(find.text(label));
-        final whole = text.getMaxIntrinsicWidth(double.infinity);
-        expect(text.size.width, greaterThanOrEqualTo(min(whole, 150) - 0.5), reason: label);
-      }
-      // A tap on the words is reading, not starting (owner, 2026-10-27).
-      await tester.tap(find.descendant(of: find.byType(QuizTodayCard), matching: find.text('Guru Ram Das Ji')));
-      await settle(tester);
-      expect(find.byType(QuizScreen), findsNothing);
+      expect(find.descendant(of: pick, matching: find.text('Guru Ram Das Ji')), findsOneWidget);
+      expect(find.descendant(of: pick, matching: find.text(l.quizCardLineNoProfile)), findsOneWidget);
+      // No profile: no points on the card (QZ14).
+      expect(find.descendant(of: pick, matching: find.textContaining(RegExp(r'pts|today$'))), findsNothing);
+      final start = tester.renderObject<RenderParagraph>(find.descendant(of: pick, matching: find.text(l.quizStart)));
+      expect(start.size.width, greaterThanOrEqualTo(min(start.getMaxIntrinsicWidth(double.infinity), 60) - 0.5));
       expect(tester.takeException(), isNull);
+      await tester.tap(find.descendant(of: pick, matching: find.text(l.quizStart)));
+      await settle(tester);
+      expect(find.byType(QuizScreen), findsOneWidget);
     });
   }
 
-  testWidgets('the quiz card stays on Today in elder mode (QZ9)', (tester) async {
+  testWidgets('the quiz card offers the other categories, and a tile opens the quiz page on it', (tester) async {
+    final l = await pumpAt(tester, '/today');
+    final pick = find.byType(QuizPickCard);
+    // Today's topic is a Guru, so Gurus is not offered again.
+    await scrollTo(tester, find.descendant(of: pick, matching: find.text(l.quizPickAnother.toUpperCase())));
+    await settle(tester);
+    expect(find.descendant(of: pick, matching: find.text(l.quizCatGurus)), findsNothing);
+    await tester.tap(find.descendant(of: pick, matching: find.text(l.quizCatGurdwaras)));
+    await settle(tester);
+    expect(find.byType(QuizHomeScreen), findsOneWidget);
+    expect(find.text('Five Takhts'), findsWidgets);
+    expect(find.text('Guru Nanak Dev Ji'), findsNothing);
+  });
+
+  testWidgets('both quiz cards stay on Today in elder mode (QZ9)', (tester) async {
     await pumpAt(tester, '/today', elder: true);
     expect(find.byType(QuizTodayCard, skipOffstage: false), findsOneWidget);
+    expect(find.byType(QuizPickCard, skipOffstage: false), findsOneWidget);
   });
 
   testWidgets('without a profile a quiz plays on the phone, marks each answer, and earns no points', (tester) async {

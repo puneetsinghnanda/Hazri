@@ -208,7 +208,7 @@ each:
 | Goals as one page (2026-10-19) | 106 | Option C of four: the day as a timeline, every paath at its own time; once a day each, reminders always on and movable (`04-goals.md` GI10, RM1, 7.2); replaces 47 |
 | Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
 | Saakhis (2026-10-25) | 111, 112 (110 superseded) | The library, and the menu as a left drawer, option A (replaces 99; Gurmat Quiz under Saakhis since 2026-10-27). Today's option 1A, a row of covers (110), was **replaced 2026-10-27 by option C**, one card with the day's saakhi large and the others small, drawn in 113; the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
-| Gurmat Quiz (2026-10-27) | 113-119 | Today 1A, a calendar leaf above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
+| Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A with no buttons and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -531,9 +531,12 @@ is true of the code now, then what is live, then what is still open.
   `quizScores` and `quizBoards` (`deleteAt` TTL); every attempt adds to your
   total, a board counts your best per topic per IST day, and a first attempt
   at 0 still counts as played. **Without a profile the quiz plays on the
-  phone, sends nothing and earns nothing** (QZ14). Only the card's buttons
-  act; they sit side by side when both labels fit and stack when not
-  (`_Buttons`, tested at 360, 390 and 412 dp). A shared link is
+  phone, sends nothing and earns nothing** (QZ14). Today has two quiz cards
+  (QZ9, 2026-10-28): the calendar leaf with the day's insight and no buttons,
+  which on a day with an event opens its Vichar page (Know more, QZ11), and
+  `QuizPickCard`, design D: today's topic with Start, your points, All
+  quizzes, and the other categories as tiles opening the quiz page on that
+  category (`/quiz?category=`). Neither fetches anything. A shared link is
   `<kSiteBase>/q/<topic>` and opens that quiz (`IncomingLink`).
 
 ### What is live, and what is deployed by hand

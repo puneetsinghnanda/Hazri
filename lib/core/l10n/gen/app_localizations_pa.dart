@@ -3943,6 +3943,23 @@ class LPa extends L {
   String get quizRowLineNoProfile => '5 ਸਵਾਲ ਹਰ ਵਾਰ ਨਵੇਂ';
 
   @override
+  String get quizAllQuizzes => 'ਸਾਰੇ ਕੁਇਜ਼';
+
+  @override
+  String get quizPickAnother => 'ਜਾਂ ਕੋਈ ਹੋਰ ਚੁਣੋ';
+
+  @override
+  String get quizCardLine => '5 ਸਵਾਲ · ਹਰ ਇੱਕ ਦੇ 10 ਅੰਕ';
+
+  @override
+  String get quizCardLineNoProfile => '5 ਸਵਾਲ · ਇਸੇ ਫ਼ੋਨ \'ਤੇ ਖੇਡੋ';
+
+  @override
+  String quizPointsToday(int points) {
+    return 'ਅੱਜ +$points';
+  }
+
+  @override
   String quizPointsShort(int points) {
     return '$points ਅੰਕ';
   }
