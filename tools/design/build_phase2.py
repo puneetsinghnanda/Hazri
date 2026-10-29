@@ -4317,9 +4317,10 @@ def _bani_pa() -> dict:
 
 
 def nitnem_tinted() -> str:
-    """Design 2A (owner, 2026-10-29; 06-nitnem.md B9): one card per part of
-    the day, tinted by its light and fading to the card; Before sleep in a
-    soft lavender, never navy."""
+    """Design 2A (owner, 2026-10-29; 06-nitnem.md B9, B10): the saffron goals
+    banner (1C, 2026-10-30), then one card per part of the day, tinted by its
+    light and fading to the card; Before sleep in a soft lavender, never navy;
+    More banis, below the fold, in sage."""
     pa = _bani_pa()
     sun = ('<svg class="i" width="22" height="22" viewBox="0 0 24 24"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 6v3M5 10l2 2M19 10l-2 2"/></svg>')
     sunset = ('<svg class="i" width="22" height="22" viewBox="0 0 24 24"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 5v6M9 8l3 3 3-3"/></svg>')
@@ -4348,6 +4349,16 @@ def nitnem_tinted() -> str:
 <style>.app{{--dusk:#F8D9C4;--lav:#E3E4F6}}.app.dark{{--dusk:#40261C;--lav:#262A55}}</style>
 <div style="padding:16px 18px 10px">{header("Nitnem", "SGPC version", left="menu")}</div>
 <div class="col" style="gap:14px;padding:0 20px">
+  <div class="card col" style="padding:14px 16px;gap:8px;color:#2A1404;
+    background:linear-gradient(135deg,#F7C88E,#F2A24E 55%,#E58A2E)">
+    <div class="row" style="gap:10px"><div class="col" style="flex:1;line-height:1.15">
+      <div class="eyebrow" style="color:rgba(42,20,4,.75)">My paath goals</div>
+      <div class="disp" style="font-size:24px;font-weight:700">0 of 7 today</div></div>
+      <div class="chip" style="background:rgba(255,255,255,.45);color:#2A1404">Change</div></div>
+    <div style="height:8px;border-radius:4px;background:rgba(255,255,255,.4);overflow:hidden">
+      <div style="width:3%;height:100%;background:#2A1404"></div></div>
+    <div style="font-size:13px;font-weight:700">Next: Rehras Sahib at 6 PM</div>
+  </div>
   {slot("var(--kesriSoft)", sun, "Amrit Vela", "5 banis · about 66 min", morning, True)}
   {slot("var(--dusk)", sunset, "Evening", "At sunset · 5:40 PM", bani("rehras-sahib", "Rehras Sahib", "15 min"))}
   {slot("var(--lav)", moon, "Before sleep", "Kirtan Sohila", bani("kirtan-sohila", "Kirtan Sohila", "4 min"))}

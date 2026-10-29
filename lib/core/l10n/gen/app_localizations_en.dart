@@ -4073,4 +4073,15 @@ class LEn extends L {
   String goalNextLine(String name, String time) {
     return 'Next: $name at $time';
   }
+
+  @override
+  String nitnemGoalsCount(int done, int total) {
+    return '$done of $total today';
+  }
+
+  @override
+  String get nitnemGoalsChange => 'Change';
+
+  @override
+  String get slotAnyTime => 'Any time of day';
 }

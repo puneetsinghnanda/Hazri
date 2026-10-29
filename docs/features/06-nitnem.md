@@ -79,8 +79,16 @@ reader on that bani at its saved line (`02-notifications.md` AV3, GR4).
 <https://claude.ai/artifact/6WhAUJtt97RenQZku5nwi3>): Amrit Vela in dawn
 saffron, Evening in sunset peach, Before sleep in a soft lavender (never the
 navy of a dark card, owner 2026-10-29), each fading to the card's own colour;
-More banis plain. The header, Play all and the bani rows inside are
-unchanged.
+More banis, which belong to no time of day, in sage green with "Any time of
+day" under its title (2A of 2026-10-30). The header, Play all and the bani
+rows inside are unchanged.
+
+**B10. My paath goals is a saffron banner** (design 1C, owner 2026-10-30,
+from four at <https://claude.ai/artifact/BhQron4nnapUzTuevFNA6t>): the
+eyebrow, the count large (`nitnemGoalsCount`), a bar, and "Next: {name} at
+{time}" for the next goal item not yet met whose time is still to come;
+Change and the card both open the Goals page. With no goal it stays the Set a
+goal row.
 
 ## 6.4 Scenarios
 

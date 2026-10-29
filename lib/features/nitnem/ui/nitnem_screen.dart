@@ -9,6 +9,8 @@ import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
+import '../../../core/db/user_db.dart' show GoalItem, ItemType;
+import '../../../core/time/clock.dart';
 import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/progress_ring.dart';
@@ -43,6 +45,7 @@ class NitnemScreen extends ConsumerWidget {
       }
       // Rehras at sunset; the per-slot reminders and their own times went
       // with 02-notifications N-2, so bedtime carries no time of its own.
+      if (slot == BaniSlot.none) return l.slotAnyTime;
       final at = slotTimes?[slot];
       if (at == null || slot != BaniSlot.evening) return null;
       return l.nitnemAtSunset(dates.time(at));
@@ -128,33 +131,98 @@ class _GoalsSummaryCard extends ConsumerWidget {
       );
     }
 
-    return HazriCard(
-      onTap: () => context.push(Routes.goals),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: Row(
-        children: [
-          // Design 12: a soft kesri square with the goal mark.
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(color: c.kesriSoft, borderRadius: BorderRadius.circular(12)),
-            child: Center(child: AppIcon(HazriIconData.sparkle, size: 20, color: c.kesriInk)),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
+    // Design 1C (owner, 2026-10-30): a saffron banner with the count large,
+    // a bar, the next paath not yet met and Change. The whole card opens the
+    // Goals page, as Change does.
+    const ink = Color(0xFF2A1404);
+    final now = ref.watch(clockProvider).now();
+    final rows = ref.watch(todayRowsProvider).value;
+    final banis = ref.watch(banisProvider).value ?? const <Bani>[];
+    DateTime? at(GoalItem i) {
+      final p = i.reminderTime?.split(':');
+      if (p == null || p.length != 2) return null;
+      final h = int.tryParse(p[0]), m = int.tryParse(p[1]);
+      return h == null || m == null ? null : DateTime(now.year, now.month, now.day, h, m);
+    }
+
+    final next = ([...ref.watch(itemsInScopeTodayProvider)]..sort((a, b) => (at(a) ?? now).compareTo(at(b) ?? now)))
+        .where((i) => !itemToday(i, rows).met && (at(i)?.isAfter(now) ?? false))
+        .firstOrNull;
+    final nextName = next == null
+        ? null
+        : next.itemType == ItemType.simran
+        ? l.goalNaamSimran
+        : banis.where((b) => b.id == next.baniId).firstOrNull?.name(l.localeName);
+    final fraction = summary.total == 0 ? 0.0 : summary.doneToday / summary.total;
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(HazriRadius.card),
+        boxShadow: c.shadows,
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFF7C88E), Color(0xFFF2A24E), Color(0xFFE58A2E)],
+          stops: [0, 0.55, 1],
+        ),
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(HazriRadius.card),
+          onTap: () => context.push(Routes.goals),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l.goalsSummaryCard, style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 16)),
-                Text(
-                  l.goalsSummaryLine(summary.doneToday, summary.total),
-                  style: HazriText.caption.copyWith(color: c.muted),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l.goalsSummaryCard.toUpperCase(),
+                            style: HazriText.eyebrow.copyWith(color: ink.withValues(alpha: 0.75)),
+                          ),
+                          Text(
+                            l.nitnemGoalsCount(summary.doneToday, summary.total),
+                            style: HazriText.display22.copyWith(color: ink, fontSize: 24, height: 1.15),
+                          ),
+                        ],
+                      ),
+                    ),
+                    HazriChip(
+                      label: l.nitnemGoalsChange,
+                      background: Colors.white.withValues(alpha: 0.45),
+                      foreground: ink,
+                      minHeight: 36,
+                      onTap: () => context.push(Routes.goals),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 10),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: fraction,
+                    minHeight: 8,
+                    color: ink,
+                    backgroundColor: Colors.white.withValues(alpha: 0.4),
+                  ),
+                ),
+                if (next != null && nextName != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    l.goalNextLine(nextName, HazriDates.of(context).timeCompact(at(next)!)),
+                    style: HazriText.captionStrong.copyWith(color: ink, fontSize: 13),
+                  ),
+                ],
               ],
             ),
           ),
-          AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
-        ],
+        ),
       ),
     );
   }
@@ -177,6 +245,7 @@ class _Section extends ConsumerWidget {
     final playable = ref.watch(audioTracksProvider).value ?? const {};
     final canPlayAll =
         ref.watch(audioHandlerProvider) != null && banis.where((b) => playable.containsKey(b.id)).length > 1;
+    final iconColour = slot == BaniSlot.none ? c.sage : c.kesriInk;
     final icon = switch (slot) {
       BaniSlot.morning => HazriIconData.sunArc,
       BaniSlot.evening => HazriIconData.sunset,
@@ -192,7 +261,8 @@ class _Section extends ConsumerWidget {
       BaniSlot.morning => c.kesriSoft,
       BaniSlot.evening => dark ? const Color(0xFF40261C) : const Color(0xFFF8D9C4),
       BaniSlot.bedtime => dark ? const Color(0xFF262A55) : const Color(0xFFE3E4F6),
-      BaniSlot.none => c.card,
+      // More banis, any time of day: sage (design 2A, owner 2026-10-30).
+      BaniSlot.none => c.sageSoft,
     };
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -210,7 +280,7 @@ class _Section extends ConsumerWidget {
           children: [
             Row(
               children: [
-                AppIcon(icon, size: 22, color: c.kesriInk),
+                AppIcon(icon, size: 22, color: iconColour),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

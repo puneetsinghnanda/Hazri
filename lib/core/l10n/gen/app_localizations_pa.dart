@@ -4055,4 +4055,15 @@ class LPa extends L {
   String goalNextLine(String name, String time) {
     return 'ਅਗਲਾ: $name, $time ਵਜੇ';
   }
+
+  @override
+  String nitnemGoalsCount(int done, int total) {
+    return 'ਅੱਜ $total ਵਿੱਚੋਂ $done';
+  }
+
+  @override
+  String get nitnemGoalsChange => 'ਬਦਲੋ';
+
+  @override
+  String get slotAnyTime => 'ਦਿਨ ਦੇ ਕਿਸੇ ਵੀ ਵੇਲੇ';
 }

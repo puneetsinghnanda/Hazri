@@ -4048,4 +4048,15 @@ class LHi extends L {
   String goalNextLine(String name, String time) {
     return 'अगला: $name, $time बजे';
   }
+
+  @override
+  String nitnemGoalsCount(int done, int total) {
+    return 'आज $total में से $done';
+  }
+
+  @override
+  String get nitnemGoalsChange => 'बदलें';
+
+  @override
+  String get slotAnyTime => 'दिन में किसी भी समय';
 }

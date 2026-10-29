@@ -2409,5 +2409,9 @@
   "goalNow": "Now",
   "goalMissed": "Missed",
   "goalNextLine": "Next: {name} at {time}",
-  "@goalNextLine": {"placeholders": {"name": {"type": "String"}, "time": {"type": "String"}}}
+  "@goalNextLine": {"placeholders": {"name": {"type": "String"}, "time": {"type": "String"}}},
+  "nitnemGoalsCount": "{done} of {total} today",
+  "@nitnemGoalsCount": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
+  "nitnemGoalsChange": "Change",
+  "slotAnyTime": "Any time of day"
 }

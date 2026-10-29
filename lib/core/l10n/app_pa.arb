@@ -1200,5 +1200,8 @@
   "goalDoneCount": "{count} ਹੋ ਗਏ",
   "goalNow": "ਹੁਣ",
   "goalMissed": "ਰਹਿ ਗਿਆ",
-  "goalNextLine": "ਅਗਲਾ: {name}, {time} ਵਜੇ"
+  "goalNextLine": "ਅਗਲਾ: {name}, {time} ਵਜੇ",
+  "nitnemGoalsCount": "ਅੱਜ {total} ਵਿੱਚੋਂ {done}",
+  "nitnemGoalsChange": "ਬਦਲੋ",
+  "slotAnyTime": "ਦਿਨ ਦੇ ਕਿਸੇ ਵੀ ਵੇਲੇ"
 }

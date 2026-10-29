@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/diary/ui/diary_screen.dart';
 import 'package:hazri/features/nitnem/ui/nitnem_screen.dart';
@@ -19,27 +20,36 @@ void main() {
   late TestApp app;
 
   setUp(() async {
-    app = await TestApp.create(
-      prefs: {'onboarding_done': true},
-      now: DateTime(2026, 9, 12, 6, 30),
-    );
+    app = await TestApp.create(prefs: {'onboarding_done': true}, now: DateTime(2026, 9, 12, 6, 30));
   });
 
   tearDown(() => app.dispose());
 
   const locales = [Locale('en'), Locale('pa'), Locale('hi')];
 
-  Future<void> pumpScreen(
-    WidgetTester tester,
-    Widget screen, {
-    required Locale locale,
-    required bool dark,
-  }) async {
+  Future<void> pumpScreen(WidgetTester tester, Widget screen, {required Locale locale, required bool dark}) async {
     usePhoneFrame(tester);
     await tester.pumpWidget(app.wrap(screen, locale: locale, dark: dark));
     await settle(tester);
     expect(tester.takeException(), isNull);
   }
+
+  testWidgets('Nitnem: the goals banner (1C) names the next paath; More banis says any time (2A)', (tester) async {
+    final repo = app.container.read(userRepositoryProvider);
+    await tester.runAsync(() async {
+      await repo.addItem(const GoalItemSpec.bani('JAPJ', reminderTime: '06:00'));
+      await repo.addItem(const GoalItemSpec.bani('REHR', reminderTime: '18:00'));
+    });
+    await pumpScreen(tester, const NitnemScreen(), locale: const Locale('en'), dark: false);
+    final l = await L.delegate.load(const Locale('en'));
+    expect(find.text(l.nitnemGoalsCount(0, 2)), findsOneWidget);
+    expect(find.text(l.nitnemGoalsChange), findsOneWidget);
+    // 6:30 AM: Japji at 6 has passed, so Rehras Sahib at 6 PM is next.
+    expect(find.textContaining('Next: Rehras Sahib at'), findsOneWidget);
+    expect(find.text(l.goalNextLine('Japji Sahib', '6 AM')), findsNothing);
+    await tester.scrollUntilVisible(find.text(l.slotAnyTime), 300, scrollable: find.byType(Scrollable).first);
+    expect(find.text(l.slotAnyTime), findsOneWidget);
+  });
 
   for (final locale in locales) {
     for (final dark in [false, true]) {

@@ -7125,6 +7125,24 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Next: {name} at {time}'**
   String goalNextLine(String name, String time);
+
+  /// No description provided for @nitnemGoalsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} today'**
+  String nitnemGoalsCount(int done, int total);
+
+  /// No description provided for @nitnemGoalsChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get nitnemGoalsChange;
+
+  /// No description provided for @slotAnyTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Any time of day'**
+  String get slotAnyTime;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {
