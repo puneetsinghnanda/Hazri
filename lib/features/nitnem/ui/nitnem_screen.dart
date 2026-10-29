@@ -76,12 +76,7 @@ class NitnemScreen extends ConsumerWidget {
               const SizedBox(height: 10),
               const _GoalsSummaryCard(),
               const SizedBox(height: 14),
-              for (final slot in [
-                BaniSlot.morning,
-                BaniSlot.evening,
-                BaniSlot.bedtime,
-                BaniSlot.none,
-              ])
+              for (final slot in [BaniSlot.morning, BaniSlot.evening, BaniSlot.bedtime, BaniSlot.none])
                 if ((sections[slot] ?? const []).isNotEmpty)
                   _Section(
                     slot: slot,
@@ -166,12 +161,7 @@ class _GoalsSummaryCard extends ConsumerWidget {
 }
 
 class _Section extends ConsumerWidget {
-  const _Section({
-    required this.slot,
-    required this.title,
-    required this.subtitle,
-    required this.banis,
-  });
+  const _Section({required this.slot, required this.title, required this.subtitle, required this.banis});
 
   final BaniSlot slot;
   final String title;
@@ -185,19 +175,35 @@ class _Section extends ConsumerWidget {
     // "Play all" queues every bani in the slot that has a recitation, gapless
     // (PRD 1.4).
     final playable = ref.watch(audioTracksProvider).value ?? const {};
-    final canPlayAll = ref.watch(audioHandlerProvider) != null &&
-        banis.where((b) => playable.containsKey(b.id)).length > 1;
+    final canPlayAll =
+        ref.watch(audioHandlerProvider) != null && banis.where((b) => playable.containsKey(b.id)).length > 1;
     final icon = switch (slot) {
       BaniSlot.morning => HazriIconData.sunArc,
       BaniSlot.evening => HazriIconData.sunset,
       BaniSlot.bedtime => HazriIconData.moon,
       BaniSlot.none => HazriIconData.book,
     };
-    // Design 12: the slot's header sits inside its card, with its icon, and
-    // Play all is a navy pill.
+    // Design 2A (owner, 2026-10-29): each part of the day its own card,
+    // tinted by its light (dawn, sunset, a soft night that is never navy),
+    // fading to the card's own colour; the header sits inside it, with its
+    // icon, and Play all is a navy pill.
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final tint = switch (slot) {
+      BaniSlot.morning => c.kesriSoft,
+      BaniSlot.evening => dark ? const Color(0xFF40261C) : const Color(0xFFF8D9C4),
+      BaniSlot.bedtime => dark ? const Color(0xFF262A55) : const Color(0xFFE3E4F6),
+      BaniSlot.none => c.card,
+    };
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: HazriCard(
+        key: ValueKey('nitnem-slot-${slot.name}'),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [tint, c.card],
+          stops: const [0, 0.6],
+        ),
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,8 +238,10 @@ class _Section extends ConsumerWidget {
                             children: [
                               AppIcon(HazriIconData.play, size: 14, color: c.onPrimary),
                               const SizedBox(width: 8),
-                              Text(l.nitnemPlayAll,
-                                  style: HazriText.captionStrong.copyWith(color: c.onPrimary, fontSize: 13)),
+                              Text(
+                                l.nitnemPlayAll,
+                                style: HazriText.captionStrong.copyWith(color: c.onPrimary, fontSize: 13),
+                              ),
                             ],
                           ),
                         ),
@@ -243,10 +251,7 @@ class _Section extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 10),
-            for (final b in banis) ...[
-              Divider(height: 1, color: c.rule),
-              BaniRow(bani: b),
-            ],
+            for (final b in banis) ...[Divider(height: 1, color: c.rule), BaniRow(bani: b)],
           ],
         ),
       ),
@@ -269,9 +274,7 @@ class BaniRow extends ConsumerWidget {
 
     final doneToday = dayProgress?.completedBaniIds.contains(bani.id) ?? false;
     final resume = bani.versionId == null ? null : progressMap[bani.versionId];
-    final fraction = (resume == null || bani.lineCount == 0)
-        ? 0.0
-        : (resume.lineIdx / bani.lineCount).clamp(0.0, 1.0);
+    final fraction = (resume == null || bani.lineCount == 0) ? 0.0 : (resume.lineIdx / bani.lineCount).clamp(0.0, 1.0);
 
     // A bani whose text has not shipped says so; otherwise the row shows where
     // the reader left off (design 12: "2:04 in", in kesri, from the saved
@@ -312,10 +315,7 @@ class BaniRow extends ConsumerWidget {
                         bani.name(l.localeName),
                         style: HazriText.body.copyWith(color: c.ink, fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      Text(
-                        bani.nativeName,
-                        style: HazriText.gurmukhi(14).copyWith(color: c.ink2, height: 1.4),
-                      ),
+                      Text(bani.nativeName, style: HazriText.gurmukhi(14).copyWith(color: c.ink2, height: 1.4)),
                     ],
                   ),
                 ),

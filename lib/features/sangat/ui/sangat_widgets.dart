@@ -144,11 +144,15 @@ class SangatActionTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(label,
-                        style: HazriText.bodyStrong.copyWith(color: foreground, fontSize: 16, height: 1.3)),
-                    Text(sub,
-                        style: HazriText.caption.copyWith(
-                            color: foreground.withValues(alpha: 0.9), fontSize: 12.5, height: 1.3)),
+                    Text(label, style: HazriText.bodyStrong.copyWith(color: foreground, fontSize: 16, height: 1.3)),
+                    Text(
+                      sub,
+                      style: HazriText.caption.copyWith(
+                        color: foreground.withValues(alpha: 0.9),
+                        fontSize: 12.5,
+                        height: 1.3,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -199,8 +203,10 @@ class GroupGridTile extends ConsumerWidget {
                     colour: ringColour,
                     child: g == null
                         ? null
-                        : Text('${g.pct}%',
-                            style: HazriText.caption.copyWith(fontSize: 11, fontWeight: FontWeight.w700, color: c.ink)),
+                        : Text(
+                            '${g.pct}%',
+                            style: HazriText.caption.copyWith(fontSize: 11, fontWeight: FontWeight.w700, color: c.ink),
+                          ),
                   ),
                   const SizedBox(width: 6),
                   if (ended)
@@ -226,14 +232,18 @@ class GroupGridTile extends ConsumerWidget {
               if (g == null)
                 Text(l.sangatNoGoalYet, style: HazriText.caption.copyWith(color: line, height: 1.3))
               else ...[
-                Text(goalTotalOf(l, g),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: HazriText.caption.copyWith(color: line, height: 1.3)),
-                Text(goalWhen(context, group),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: HazriText.caption.copyWith(color: line, height: 1.3)),
+                Text(
+                  goalTotalOf(l, g),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: HazriText.caption.copyWith(color: line, height: 1.3),
+                ),
+                Text(
+                  goalWhen(context, group),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: HazriText.caption.copyWith(color: line, height: 1.3),
+                ),
               ],
             ],
           ),
@@ -275,8 +285,9 @@ class TwoColumnGrid extends StatelessWidget {
 }
 
 /// Design 102: a built-in group as a full-width row of the Join the sangat
-/// card (VS2): its icon, name, goal on one line, member count, and Join or
-/// Leave.
+/// card (VS2): its icon, name, goal on one line, member count, and Join, or
+/// a green Joined chip once you are in it (design 3E, owner 2026-10-29).
+/// Leave is inside the group, in its ⋮ menu, with a confirmation.
 class BuiltInGroupRow extends ConsumerWidget {
   const BuiltInGroupRow({
     super.key,
@@ -300,7 +311,9 @@ class BuiltInGroupRow extends ConsumerWidget {
     final g = group.goal;
     final small = HazriText.caption.copyWith(color: c.ink2, fontSize: 12.5, height: 1.35);
     return DecoratedBox(
-      decoration: BoxDecoration(border: divider ? Border(top: BorderSide(color: c.rule)) : null),
+      decoration: BoxDecoration(
+        border: divider ? Border(top: BorderSide(color: c.rule)) : null,
+      ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 8, 12, 8),
         child: Row(
@@ -314,8 +327,10 @@ class BuiltInGroupRow extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(group.displayName(l.localeName),
-                        style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 14.5, height: 1.3)),
+                    Text(
+                      group.displayName(l.localeName),
+                      style: HazriText.bodyStrong.copyWith(color: c.ink, fontSize: 14.5, height: 1.3),
+                    ),
                     Text(
                       g == null ? l.sangatNoGoalYet : goalSummary(context, ref, g),
                       maxLines: 1,
@@ -335,12 +350,17 @@ class BuiltInGroupRow extends ConsumerWidget {
                 height: 44,
                 child: Center(child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))),
               )
+            else if (group.isMember)
+              HazriChip(
+                icon: HazriIconData.check,
+                label: l.sangatJoinedChip,
+                background: c.sageSoft,
+                foreground: c.sage,
+                minHeight: 36,
+                onTap: onTap,
+              )
             else
-              _PillButton(
-                label: group.isMember ? l.sangatLeave : l.sangatJoin,
-                ghost: group.isMember,
-                onPressed: onToggle,
-              ),
+              _PillButton(label: l.sangatJoin, onPressed: onToggle),
           ],
         ),
       ),
@@ -348,20 +368,19 @@ class BuiltInGroupRow extends ConsumerWidget {
   }
 }
 
-/// Join (saffron) or Leave (an outline), 44 dp high and fully round.
+/// Join (saffron), 44 dp high and fully round.
 class _PillButton extends StatelessWidget {
-  const _PillButton({required this.label, required this.onPressed, this.ghost = false});
+  const _PillButton({required this.label, required this.onPressed});
 
   final String label;
   final VoidCallback onPressed;
-  final bool ghost;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final shape = StadiumBorder(side: ghost ? BorderSide(color: c.rule, width: 1.5) : BorderSide.none);
+    const shape = StadiumBorder();
     return Material(
-      color: ghost ? Colors.transparent : c.kesriSoft,
+      color: c.kesriSoft,
       shape: shape,
       child: InkWell(
         onTap: onPressed,
@@ -374,7 +393,7 @@ class _PillButton extends StatelessWidget {
               widthFactor: 1,
               child: Text(
                 label,
-                style: HazriText.chip.copyWith(fontSize: 14, fontWeight: FontWeight.w700, color: ghost ? c.ink2 : c.kesriInk),
+                style: HazriText.chip.copyWith(fontSize: 14, fontWeight: FontWeight.w700, color: c.kesriInk),
               ),
             ),
           ),
@@ -396,16 +415,18 @@ Future<void> shareInvite(BuildContext context, WidgetRef ref, SangatGroup group)
     final goal = g == null
         ? ''
         : g.isSimran
-            ? l.sangatSimranMinutesUnit
-            : banis.where((b) => b.id == g.baniId).firstOrNull?.name(l.localeName) ?? '';
-    await Share.share(l.sangatInviteMessage(
-      group.displayName(l.localeName),
-      g?.target ?? 0,
-      goal,
-      g == null ? '' : dates.shortDate(parseLocalDateKey(g.endDay)),
-      invite.link,
-      invite.code,
-    ));
+        ? l.sangatSimranMinutesUnit
+        : banis.where((b) => b.id == g.baniId).firstOrNull?.name(l.localeName) ?? '';
+    await Share.share(
+      l.sangatInviteMessage(
+        group.displayName(l.localeName),
+        g?.target ?? 0,
+        goal,
+        g == null ? '' : dates.shortDate(parseLocalDateKey(g.endDay)),
+        invite.link,
+        invite.code,
+      ),
+    );
   } on Object catch (e) {
     if (context.mounted) ProfileMessages.snack(context, ProfileMessages.of(l, e));
   }
@@ -424,10 +445,7 @@ class UpdatedLine extends StatelessWidget {
     final c = context.colors;
     final l = L.of(context);
     final at = savedAt;
-    final parts = [
-      if (offline) l.sangatOffline,
-      if (at != null) l.sangatUpdatedAt(HazriDates.of(context).time(at)),
-    ];
+    final parts = [if (offline) l.sangatOffline, if (at != null) l.sangatUpdatedAt(HazriDates.of(context).time(at))];
     if (parts.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),

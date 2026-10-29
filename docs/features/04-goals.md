@@ -196,6 +196,14 @@ The goal widget shows:
 - **Header:** `goalWidgetTitle` and `goalWidgetProgress` (`itemsMet` of `itemsInScope` from `verdictOn(today)`), with a ring filled to `itemsMet / itemsInScope`. Tapping the header opens the Goals screen.
 - **One row per in-scope item:** the bani name from `content.db` (simran: the existing localised label). Bani progress uses `goalTimesOfTarget`, e.g. "1 of 3". Simran shows `goalSimranMinutes` and a tick once met.
 - **Row tap:** opens the reader for a bani, or the Simran menu for simran.
+- **More than three items fold** (design 1A, owner 2026-10-29): the card
+  shows at most three not yet met, in this order: the one due now (the latest
+  whose reminder time has passed, marked `goalNow` and its time), the next one,
+  the earliest missed (`goalMissed` and its time); then more of the next, then
+  more of the missed. Under the header, `goalNextLine` names the next one.
+  Below the rows, `goalShowAll` opens the full list in place (`goalShowFewer`
+  folds it again) and `goalDoneCount` says how many are met. With three items
+  or fewer every row shows, as before. `foldGoalRows` is the rule.
 
 The existing hazri banner on Home is unchanged. It is shown to everybody and reads only `hazri(today)`.
 

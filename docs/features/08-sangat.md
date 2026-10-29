@@ -128,7 +128,7 @@ A Sangat group is a set of people working together toward one shared goal with a
 ### 4.6 What members see
 
 - **VS1. My groups:** active groups first, then inactive ones, muted and marked `sangatEndedHeading` (design 102, 2026-10-10: one grid, not a second list). Each shows its percentage in a ring, name, total of target, and days left or "Ended on {date}".
-- **VS2. Built-in groups:** every active built-in group, with its goal, member count and Join or Leave.
+- **VS2. Built-in groups:** every active built-in group, with its goal, member count, and Join, or a green **Joined** chip once you are in it (design 3E, owner 2026-10-29). There is no Leave on the Sangat page: Leave is inside the group, in its ⋮ menu, with a confirmation.
 - **VS3. A group:** name; goal (bani or Naam Simran with minutes, target, start and end); total, percentage, today's total, days left or "Ended on {date}"; member count; and the member list. Design 103 (2026-10-10) adds what this phone did toward the goal: **yours today**, counted on the phone from `user.db` the way the server counts it (CT1: today's paath of the goal's bani, or the whole minutes of today's sittings), and **yours toward the goal**, the member row marked `isYou`.
 - **VS4. The member list** shows at most 50 members: those with a profile first, alphabetically by name, then "Sangat member" rows. Each row shows the name and that member's contribution to the goal. After 50, one line reads `sangatAndMore` ("and 450 more"). No further loading.
 - **VS5.** Nobody is shown a position, a rank, or who has not contributed.
@@ -175,7 +175,7 @@ The tab follows **design 102** ("dashboard tiles", owner, 2026-10-10).
 
 1. **Create group** (navy, "One goal, an end date") and **Join group** (saffron, "With a link or code", opening Join) as two tiles side by side.
 2. **My groups** (VS1) as a grid two tiles wide. A tile opens the group.
-3. **Join the sangat**: the built-in groups (VS2) as full-width rows in one card, each with its icon, name, goal on one line, member count and Join or Leave. A row opens the group once joined.
+3. **Join the sangat**: the built-in groups (VS2) as full-width rows in one card, each with its icon, name, goal on one line, member count and Join or Joined (VS2). A joined row, or its Joined chip, opens the group.
 4. With no network and no copy yet, `sangatOffline`.
 
 ### 8.2 Screens

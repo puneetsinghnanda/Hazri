@@ -4028,4 +4028,31 @@ class LPa extends L {
   @override
   String get privacyProfileLeaderboard =>
       'ਕੁਇਜ਼ ਲੀਡਰਬੋਰਡ ਉੱਤੇ, ਜੋ ਹਰ Hazri ਵਰਤੋਂਕਾਰ ਵੇਖ ਸਕਦਾ ਹੈ: ਤੁਹਾਡਾ ਪਹਿਲਾ ਨਾਮ, ਆਖ਼ਰੀ ਨਾਮ ਦਾ ਪਹਿਲਾ ਅੱਖਰ, ਤੁਹਾਡਾ ਸ਼ਹਿਰ ਅਤੇ ਤੁਹਾਡੇ ਕੁਇਜ਼ ਅੰਕ';
+
+  @override
+  String get sangatJoinedChip => 'ਜੁੜੇ ਹੋਏ';
+
+  @override
+  String goalShowAll(int count) {
+    return 'ਸਾਰੇ $count ਵੇਖੋ';
+  }
+
+  @override
+  String get goalShowFewer => 'ਘੱਟ ਵੇਖੋ';
+
+  @override
+  String goalDoneCount(int count) {
+    return '$count ਹੋ ਗਏ';
+  }
+
+  @override
+  String get goalNow => 'ਹੁਣ';
+
+  @override
+  String get goalMissed => 'ਰਹਿ ਗਿਆ';
+
+  @override
+  String goalNextLine(String name, String time) {
+    return 'ਅਗਲਾ: $name, $time ਵਜੇ';
+  }
 }

@@ -7083,6 +7083,48 @@ abstract class L {
   /// In en, this message translates to:
   /// **'On the quiz leaderboards, which every Hazri user can see: your first name, the first letter of your last name, your city and your quiz points'**
   String get privacyProfileLeaderboard;
+
+  /// No description provided for @sangatJoinedChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get sangatJoinedChip;
+
+  /// No description provided for @goalShowAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all {count}'**
+  String goalShowAll(int count);
+
+  /// No description provided for @goalShowFewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Show fewer'**
+  String get goalShowFewer;
+
+  /// No description provided for @goalDoneCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} done'**
+  String goalDoneCount(int count);
+
+  /// No description provided for @goalNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get goalNow;
+
+  /// No description provided for @goalMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get goalMissed;
+
+  /// No description provided for @goalNextLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {name} at {time}'**
+  String goalNextLine(String name, String time);
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

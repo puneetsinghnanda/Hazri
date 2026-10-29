@@ -208,7 +208,11 @@ class _GroupScreenState extends ConsumerState<GroupScreen> with WidgetsBindingOb
     if (g == null) {
       return HazriScreen(
         title: l.sangatTitle,
-        children: const [Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator()))],
+        children: const [
+          Center(
+            child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator()),
+          ),
+        ],
       );
     }
     final goal = g.goal;
@@ -245,10 +249,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> with WidgetsBindingOb
                             _Timeline(group: g, goal: goal),
                             const SizedBox(height: 10),
                             _Figures(group: g, goal: goal),
-                            if (g.isMember && !ended) ...[
-                              const SizedBox(height: 10),
-                              SitForButton(goal: goal),
-                            ],
+                            if (g.isMember && !ended) ...[const SizedBox(height: 10), SitForButton(goal: goal)],
                           ],
                           if (widget.offerShare && shareBelow) ...[
                             const SizedBox(height: 10),
@@ -301,15 +302,12 @@ class _BandSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(13),
-        ),
-        alignment: Alignment.center,
-        child: AppIcon(icon, size: 20, color: Colors.white),
-      );
+    width: 44,
+    height: 44,
+    decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(13)),
+    alignment: Alignment.center,
+    child: AppIcon(icon, size: 20, color: Colors.white),
+  );
 }
 
 /// Design 103's band: back, the name over "Built-in group · N members", the
@@ -396,8 +394,10 @@ class _GroupBand extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  Text(formatCount(lang, goal.total),
-                      style: HazriText.display22.copyWith(color: white, fontSize: 26, height: 1)),
+                  Text(
+                    formatCount(lang, goal.total),
+                    style: HazriText.display22.copyWith(color: white, fontSize: 26, height: 1),
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     goal.isSimran
@@ -411,16 +411,16 @@ class _GroupBand extends ConsumerWidget {
               ),
             ),
           ],
-          if (key != null) ...[
-            const SizedBox(height: 4),
-            GroupGlobeKey(counts: key, withYou: drawing.viewer != null),
-          ],
+          if (key != null) ...[const SizedBox(height: 4), GroupGlobeKey(counts: key, withYou: drawing.viewer != null)],
           const SizedBox(height: 10),
           Text(
             goal == null ? l.sangatNoGoalYet : goalSummary(context, ref, goal),
             textAlign: TextAlign.center,
-            style: HazriText.bodyStrong
-                .copyWith(color: white.withValues(alpha: 0.92), fontSize: 14.5, fontWeight: FontWeight.w600),
+            style: HazriText.bodyStrong.copyWith(
+              color: white.withValues(alpha: 0.92),
+              fontSize: 14.5,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -446,24 +446,23 @@ class _Timeline extends StatelessWidget {
     final navy = dark ? c.ink2 : c.primary;
     final start = parseLocalDateKey(goal.startDay);
     final end = parseLocalDateKey(goal.endDay);
-    final days = DateTime.utc(end.year, end.month, end.day)
-            .difference(DateTime.utc(start.year, start.month, start.day))
-            .inDays +
+    final days =
+        DateTime.utc(end.year, end.month, end.day).difference(DateTime.utc(start.year, start.month, start.day)).inDays +
         1;
     final ended = groupEnded(group);
     final day = (days - goal.daysLeft + 1).clamp(1, days);
     final next = DateTime(end.year, end.month, end.day + 1);
 
     Widget dot({Color? fill, Color? ring, bool halo = false}) => Container(
-          width: 18,
-          height: 18,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: fill ?? c.card,
-            border: ring == null ? null : Border.all(color: ring, width: 2),
-            boxShadow: halo ? [BoxShadow(color: c.kesriSoft, spreadRadius: 4)] : null,
-          ),
-        );
+      width: 18,
+      height: 18,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: fill ?? c.card,
+        border: ring == null ? null : Border.all(color: ring, width: 2),
+        boxShadow: halo ? [BoxShadow(color: c.kesriSoft, spreadRadius: 4)] : null,
+      ),
+    );
 
     Widget node(Widget mark, String t1, String t2, CrossAxisAlignment align, {bool hl = false}) {
       final text = switch (align) {
@@ -477,11 +476,20 @@ class _Timeline extends StatelessWidget {
           children: [
             mark,
             const SizedBox(height: 6),
-            Text(t1,
-                textAlign: text,
-                style: HazriText.captionStrong
-                    .copyWith(fontSize: 13, fontWeight: FontWeight.w700, color: hl ? c.kesriInk : c.ink)),
-            Text(t2, textAlign: text, style: HazriText.caption.copyWith(color: hl ? c.kesriInk : c.ink2, height: 1.25)),
+            Text(
+              t1,
+              textAlign: text,
+              style: HazriText.captionStrong.copyWith(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: hl ? c.kesriInk : c.ink,
+              ),
+            ),
+            Text(
+              t2,
+              textAlign: text,
+              style: HazriText.caption.copyWith(color: hl ? c.kesriInk : c.ink2, height: 1.25),
+            ),
           ],
         ),
       );
@@ -497,21 +505,17 @@ class _Timeline extends StatelessWidget {
             children: [
               Flexible(child: Eyebrow(l.sangatThisGoal, colour: c.ink2)),
               const SizedBox(width: 8),
-              Text(ended ? goalWhen(context, group) : l.sangatDayOf(day, days),
-                  style: HazriText.captionStrong.copyWith(color: c.ink2, fontSize: 12.5)),
+              Text(
+                ended ? goalWhen(context, group) : l.sangatDayOf(day, days),
+                style: HazriText.captionStrong.copyWith(color: c.ink2, fontSize: 12.5),
+              ),
             ],
           ),
           const SizedBox(height: 10),
           LayoutBuilder(
             builder: (context, box) => Stack(
               children: [
-                Positioned(
-                  left: 9,
-                  right: 9,
-                  top: 8,
-                  height: 2,
-                  child: ColoredBox(color: c.rule),
-                ),
+                Positioned(left: 9, right: 9, top: 8, height: 2, child: ColoredBox(color: c.rule)),
                 Positioned(
                   left: 9,
                   width: ended ? box.maxWidth - 18 : box.maxWidth / 2 - 9,
@@ -524,17 +528,21 @@ class _Timeline extends StatelessWidget {
                   children: [
                     node(dot(fill: navy), dates.shortDate(start), l.sangatStarted, CrossAxisAlignment.start),
                     if (!ended)
-                      node(dot(fill: c.kesri, halo: true), l.today, l.sangatDaysLeft(goal.daysLeft),
-                          CrossAxisAlignment.center,
-                          hl: true),
+                      node(
+                        dot(fill: c.kesri, halo: true),
+                        l.today,
+                        l.sangatDaysLeft(goal.daysLeft),
+                        CrossAxisAlignment.center,
+                        hl: true,
+                      ),
                     node(
                       ended ? dot(fill: navy) : dot(ring: c.muted.withValues(alpha: 0.5)),
                       dates.shortDate(end),
                       group.isBuiltIn && !ended
                           ? l.sangatEndsNewGoal(dates.shortDate(next))
                           : ended
-                              ? l.sangatEndedHeading
-                              : l.sangatEnds,
+                          ? l.sangatEndedHeading
+                          : l.sangatEnds,
                       CrossAxisAlignment.end,
                     ),
                   ],
@@ -702,7 +710,9 @@ class _MembersCard extends StatelessWidget {
             ),
           if (group.moreMembers > 0)
             DecoratedBox(
-              decoration: BoxDecoration(border: Border(top: BorderSide(color: c.rule))),
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: c.rule)),
+              ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
                 child: Text(
@@ -742,7 +752,9 @@ class _MemberRow extends StatelessWidget {
     final l = L.of(context);
     final name = member.name ?? l.sangatAnonymousName;
     return DecoratedBox(
-      decoration: BoxDecoration(border: divider ? Border(top: BorderSide(color: c.rule)) : null),
+      decoration: BoxDecoration(
+        border: divider ? Border(top: BorderSide(color: c.rule)) : null,
+      ),
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 44),
         child: Padding(
@@ -753,9 +765,13 @@ class _MemberRow extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(member.isYou ? '$name (${l.sangatYou})' : name,
-                        style: HazriText.body
-                            .copyWith(fontWeight: FontWeight.w600, color: member.hasLeft ? c.muted : c.ink)),
+                    Text(
+                      member.isYou ? '$name (${l.sangatYou})' : name,
+                      style: HazriText.body.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: member.hasLeft ? c.muted : c.ink,
+                      ),
+                    ),
                     if (member.isCreator)
                       Text(l.sangatCreatorLabel, style: HazriText.caption.copyWith(color: c.kesriInk)),
                     if (member.hasLeft) Text(l.sangatLeft, style: HazriText.caption.copyWith(color: c.muted)),
@@ -763,7 +779,10 @@ class _MemberRow extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Text(figure, style: HazriText.body.copyWith(fontWeight: FontWeight.w600, color: c.ink2)),
+              Text(
+                figure,
+                style: HazriText.body.copyWith(fontWeight: FontWeight.w600, color: c.ink2),
+              ),
               if (canRemove)
                 IconButton(
                   tooltip: l.sangatRemoveMember,
@@ -780,10 +799,10 @@ class _MemberRow extends StatelessWidget {
 
 /// RP1–RP3: four reasons; Other takes an optional note of up to 200.
 Future<void> showReportSheet(BuildContext context, String groupId) => showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (_) => _ReportSheet(groupId: groupId),
-    );
+  context: context,
+  isScrollControlled: true,
+  builder: (_) => _ReportSheet(groupId: groupId),
+);
 
 class _ReportSheet extends ConsumerStatefulWidget {
   const _ReportSheet({required this.groupId});
@@ -811,7 +830,9 @@ class _ReportSheetState extends ConsumerState<_ReportSheet> {
     final messenger = ScaffoldMessenger.of(context);
     setState(() => _busy = true);
     try {
-      await ref.read(sangatApiProvider).report(
+      await ref
+          .read(sangatApiProvider)
+          .report(
             widget.groupId,
             _reason,
             note: _reason == 'OTHER' && _note.text.trim().isNotEmpty ? _note.text.trim() : null,
@@ -846,9 +867,7 @@ class _ReportSheetState extends ConsumerState<_ReportSheet> {
             groupValue: _reason,
             onChanged: (v) => setState(() => _reason = v ?? _reason),
             child: Column(
-              children: [
-                for (final e in reasons.entries) RadioListTile<String>(value: e.key, title: Text(e.value)),
-              ],
+              children: [for (final e in reasons.entries) RadioListTile<String>(value: e.key, title: Text(e.value))],
             ),
           ),
           if (_reason == 'OTHER')
@@ -858,7 +877,9 @@ class _ReportSheetState extends ConsumerState<_ReportSheet> {
               decoration: InputDecoration(labelText: l.sangatReportNote),
             ),
           const SizedBox(height: 12),
-          _busy ? const Center(child: CircularProgressIndicator()) : PrimaryButton(label: l.sangatReportSend, onPressed: _send),
+          _busy
+              ? const Center(child: CircularProgressIndicator())
+              : PrimaryButton(label: l.sangatReportSend, onPressed: _send),
         ],
       ),
     );

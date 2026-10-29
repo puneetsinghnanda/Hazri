@@ -64,10 +64,7 @@ class TodayScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (hasBanner) ...[
-                      const ProfileBanner(),
-                      const SizedBox(height: 12),
-                    ],
+                    if (hasBanner) ...[const ProfileBanner(), const SizedBox(height: 12)],
                     const HazriBanner(),
                     // T12: only at 2 days or more; nothing said below that.
                     if (streak != null && streak.current >= 2) ...[
@@ -125,18 +122,18 @@ class _TodayAppBar extends ConsumerWidget {
     final date = [dates.longDate(now), ?ns?.labelWithYear(l.localeName)].join(' · ');
 
     Widget round(Widget child, String tooltip, VoidCallback onTap, {bool circle = false}) => Tooltip(
-          message: tooltip,
-          child: Material(
-            color: white.withValues(alpha: 0.12),
-            shape: circle ? const CircleBorder() : RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            child: InkWell(
-              customBorder: circle ? const CircleBorder() : null,
-              borderRadius: circle ? null : BorderRadius.circular(14),
-              onTap: onTap,
-              child: SizedBox.square(dimension: 44, child: Center(child: child)),
-            ),
-          ),
-        );
+      message: tooltip,
+      child: Material(
+        color: white.withValues(alpha: 0.12),
+        shape: circle ? const CircleBorder() : RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        child: InkWell(
+          customBorder: circle ? const CircleBorder() : null,
+          borderRadius: circle ? null : BorderRadius.circular(14),
+          onTap: onTap,
+          child: SizedBox.square(dimension: 44, child: Center(child: child)),
+        ),
+      ),
+    );
 
     return Container(
       decoration: BoxDecoration(
@@ -154,13 +151,14 @@ class _TodayAppBar extends ConsumerWidget {
               const AppMark(size: 28, arcColor: white, sunColor: Color(0xFFF2A24E)),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  l.appBarTitle,
-                  style: HazriText.brand.copyWith(fontSize: 22, color: white),
-                ),
+                child: Text(l.appBarTitle, style: HazriText.brand.copyWith(fontSize: 22, color: white)),
               ),
-              round(const Icon(Icons.person, size: 22, color: white), l.profileTitle,
-                  () => context.push(Routes.profile), circle: true),
+              round(
+                const Icon(Icons.person, size: 22, color: white),
+                l.profileTitle,
+                () => context.push(Routes.profile),
+                circle: true,
+              ),
             ],
           ),
           const SizedBox(height: 18),
@@ -206,10 +204,11 @@ class _StreakCard extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l.todayStreakDays(streak.current),
-                    style: HazriText.display22.copyWith(color: c.kesri, fontSize: 30, height: 1.1)),
-                Text(l.todayStreakCaption,
-                    maxLines: 3, style: HazriText.caption.copyWith(color: c.muted)),
+                Text(
+                  l.todayStreakDays(streak.current),
+                  style: HazriText.display22.copyWith(color: c.kesri, fontSize: 30, height: 1.1),
+                ),
+                Text(l.todayStreakCaption, maxLines: 3, style: HazriText.caption.copyWith(color: c.muted)),
               ],
             ),
           ),
@@ -253,8 +252,53 @@ class _StreakCard extends ConsumerWidget {
 /// Simran is one of the rows rather than a card of its own: a goal is a goal,
 /// and splitting them by whether they are counted in paath or minutes put the
 /// same question in two places on the same screen.
-class _GoalsCard extends ConsumerWidget {
+class _GoalsCard extends ConsumerStatefulWidget {
   const _GoalsCard();
+
+  @override
+  ConsumerState<_GoalsCard> createState() => _GoalsCardState();
+}
+
+/// How a row on the folded goal card is marked (design 1A).
+enum GoalTag { now, missed, none }
+
+/// Design 1A (owner, 2026-10-29): with more than three items in the goal,
+/// the card shows at most three that are not yet met, in this order: the one
+/// due now (the latest whose time has passed), the next one, the earliest
+/// missed; then more of the next ones, then more of the missed. Items with no
+/// time count as coming. Show all opens the full list in place.
+@visibleForTesting
+List<(GoalItem, GoalTag)> foldGoalRows(
+  List<GoalItem> sorted, {
+  required DateTime? Function(GoalItem) at,
+  required bool Function(GoalItem) met,
+  required DateTime now,
+}) {
+  final open = [
+    for (final i in sorted)
+      if (!met(i)) i,
+  ];
+  final due = [
+    for (final i in open)
+      if (at(i) != null && !at(i)!.isAfter(now)) i,
+  ];
+  final coming = [
+    for (final i in open)
+      if (!due.contains(i)) i,
+  ];
+  final missed = due.isEmpty ? <GoalItem>[] : due.sublist(0, due.length - 1);
+  final picks = <(GoalItem, GoalTag)>[
+    if (due.isNotEmpty) (due.last, GoalTag.now),
+    if (coming.isNotEmpty) (coming.first, GoalTag.none),
+    if (missed.isNotEmpty) (missed.first, GoalTag.missed),
+    for (final i in coming.skip(1)) (i, GoalTag.none),
+    for (final i in missed.skip(1)) (i, GoalTag.missed),
+  ];
+  return picks.take(3).toList();
+}
+
+class _GoalsCardState extends ConsumerState<_GoalsCard> {
+  bool _expanded = false;
 
   /// "HH:mm" against [day], or null when the goal has no time set.
   static DateTime? _at(String? hhmm, DateTime day) {
@@ -268,7 +312,7 @@ class _GoalsCard extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
     final dates = HazriDates.of(context);
@@ -290,11 +334,11 @@ class _GoalsCard extends ConsumerWidget {
 
     String nameOf(GoalItem item) => item.itemType == ItemType.simran
         ? l.goalNaamSimran
-        : (banis.where((b) => b.id == item.baniId).map((b) => b.name(l.localeName)).firstOrNull ??
-            '');
+        : (banis.where((b) => b.id == item.baniId).map((b) => b.name(l.localeName)).firstOrNull ?? '');
 
     // Timed items in clock order, then the untimed ones.
-    final sorted = [...items]..sort((a, b) {
+    final sorted = [...items]
+      ..sort((a, b) {
         final at = _at(a.reminderTime, now);
         final bt = _at(b.reminderTime, now);
         if (at == null && bt == null) return 0;
@@ -303,6 +347,12 @@ class _GoalsCard extends ConsumerWidget {
         return at.compareTo(bt);
       });
     final fraction = verdict.itemsInScope == 0 ? 0.0 : verdict.itemsMet / verdict.itemsInScope;
+    bool metOf(GoalItem i) => itemToday(i, rows.value).met;
+    final folds = sorted.length > 3;
+    final shown = folds && !_expanded
+        ? foldGoalRows(sorted, at: (i) => _at(i.reminderTime, now), met: metOf, now: now)
+        : [for (final i in sorted) (i, GoalTag.none)];
+    final next = sorted.where((i) => !metOf(i) && (_at(i.reminderTime, now)?.isAfter(now) ?? false)).firstOrNull;
 
     return HazriCard(
       padding: const EdgeInsets.all(16),
@@ -322,27 +372,28 @@ class _GoalsCard extends ConsumerWidget {
                         l.goalWidgetProgress(verdict.itemsMet, verdict.itemsInScope),
                         style: HazriText.display22.copyWith(color: c.ink, fontSize: 20),
                       ),
+                      if (folds && next != null)
+                        Text(
+                          l.goalNextLine(nameOf(next), dates.timeCompact(_at(next.reminderTime, now)!)),
+                          style: HazriText.caption.copyWith(color: c.muted),
+                        ),
                     ],
                   ),
                 ),
-                ProgressRing(
-                  progress: fraction,
-                  size: 56,
-                  strokeWidth: 7,
-                  done: verdict.goalState == GoalState.met,
-                ),
+                ProgressRing(progress: fraction, size: 56, strokeWidth: 7, done: verdict.goalState == GoalState.met),
               ],
             ),
           ),
           const SizedBox(height: 11),
           Divider(height: 1, color: c.rule),
           const SizedBox(height: 5),
-          for (final item in sorted)
+          for (final (item, tag) in shown)
             _GoalRow(
               item: item,
               name: nameOf(item),
               progress: itemToday(item, rows.value),
               at: _at(item.reminderTime, now),
+              tag: tag,
               dates: dates,
               onTap: () {
                 if (item.itemType == ItemType.simran) {
@@ -352,6 +403,29 @@ class _GoalsCard extends ConsumerWidget {
                 final bani = banis.where((b) => b.id == item.baniId).firstOrNull;
                 if (bani != null) context.push(Routes.reader(bani.slug));
               },
+            ),
+          if (folds)
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () => setState(() => _expanded = !_expanded),
+                  style: TextButton.styleFrom(
+                    foregroundColor: c.kesriInk,
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    minimumSize: const Size(0, 40),
+                  ),
+                  child: Text(
+                    _expanded ? l.goalShowFewer : l.goalShowAll(sorted.length),
+                    style: HazriText.captionStrong.copyWith(color: c.kesriInk, fontSize: 13.5),
+                  ),
+                ),
+                const Spacer(),
+                if (!_expanded && verdict.itemsMet > 0)
+                  Text(
+                    '${l.goalDoneCount(verdict.itemsMet)} ✓',
+                    style: HazriText.caption.copyWith(color: c.sage, fontWeight: FontWeight.w600),
+                  ),
+              ],
             ),
         ],
       ),
@@ -368,12 +442,14 @@ class _GoalRow extends StatelessWidget {
     required this.at,
     required this.dates,
     required this.onTap,
+    this.tag = GoalTag.none,
   });
 
   final GoalItem item;
   final String name;
   final ({int done, int target, bool met}) progress;
   final DateTime? at;
+  final GoalTag tag;
   final HazriDates dates;
   final VoidCallback onTap;
 
@@ -381,8 +457,7 @@ class _GoalRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final l = L.of(context);
-    final fraction =
-        progress.target == 0 ? 0.0 : (progress.done / progress.target).clamp(0.0, 1.0);
+    final fraction = progress.target == 0 ? 0.0 : (progress.done / progress.target).clamp(0.0, 1.0);
     final amount = item.itemType == ItemType.simran
         ? l.goalSimranMinutes(progress.done)
         : l.goalTimesOfTarget(progress.done, progress.target);
@@ -405,8 +480,15 @@ class _GoalRow extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              at == null || progress.met ? amount : '$amount · ${dates.timeCompact(at!)}',
-              style: HazriText.caption.copyWith(color: c.muted, fontWeight: FontWeight.w600),
+              switch (tag) {
+                GoalTag.now when at != null => '${l.goalNow} · ${dates.timeCompact(at!)}',
+                GoalTag.missed when at != null => '${l.goalMissed} · ${dates.timeCompact(at!)}',
+                _ => at == null || progress.met ? amount : '$amount · ${dates.timeCompact(at!)}',
+              },
+              style: HazriText.caption.copyWith(
+                color: tag == GoalTag.now ? c.kesriInk : c.muted,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -450,17 +532,13 @@ class _CtaButton extends ConsumerWidget {
       TodayCtaKind.continueBani => l.ctaContinueBani(bani!.name(l.localeName)),
       _ => l.ctaStartBani(bani!.name(l.localeName)),
     };
-    final trailing = cta!.kind == TodayCtaKind.continueBani
-        ? l.minutesLeft(cta!.minutes)
-        : l.minutes(cta!.minutes);
+    final trailing = cta!.kind == TodayCtaKind.continueBani ? l.minutesLeft(cta!.minutes) : l.minutes(cta!.minutes);
 
     return PrimaryButton(
       label: label,
       icon: HazriIconData.play,
       trailing: trailing,
-      onPressed: bani == null
-          ? null
-          : () => context.push(Routes.reader(bani.slug, line: cta!.line)),
+      onPressed: bani == null ? null : () => context.push(Routes.reader(bani.slug, line: cta!.line)),
     );
   }
 }
@@ -509,13 +587,8 @@ class _GurpurabCard extends ConsumerWidget {
           Container(
             width: 44,
             height: 44,
-            decoration: BoxDecoration(
-              color: c.kesriSoft,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Center(
-              child: AppIcon(HazriIconData.calendar, size: 22, color: c.kesriInk),
-            ),
+            decoration: BoxDecoration(color: c.kesriSoft, borderRadius: BorderRadius.circular(14)),
+            child: Center(child: AppIcon(HazriIconData.calendar, size: 22, color: c.kesriInk)),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -540,10 +613,7 @@ class _GurpurabCard extends ConsumerWidget {
                 // somewhere to go.
                 if (next != null && ns != null) ...[
                   const SizedBox(height: 2),
-                  Text(
-                    ns.labelWithYear(lang),
-                    style: HazriText.caption.copyWith(color: c.muted),
-                  ),
+                  Text(ns.labelWithYear(lang), style: HazriText.caption.copyWith(color: c.muted)),
                 ],
               ],
             ),

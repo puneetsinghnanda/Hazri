@@ -43,9 +43,9 @@ class _JoinScreenState extends ConsumerState<JoinScreen> {
     final data = await Clipboard.getData(Clipboard.kTextPlain);
     final text = data?.text ?? '';
     // A whole invite message pasted: take the code out of it.
-    final match = RegExp(r'[A-Za-z2-9]{4}-?[A-Za-z2-9]{4}').allMatches(text).map((m) => m.group(0)!).where(
-          (c) => normalizeInviteCode(c) != null,
-        );
+    final match = RegExp(
+      r'[A-Za-z2-9]{4}-?[A-Za-z2-9]{4}',
+    ).allMatches(text).map((m) => m.group(0)!).where((c) => normalizeInviteCode(c) != null);
     setState(() {
       _code.text = match.isEmpty ? text.trim() : formatInviteCode(normalizeInviteCode(match.last)!);
       _error = null;

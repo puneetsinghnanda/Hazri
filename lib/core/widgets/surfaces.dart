@@ -13,6 +13,7 @@ class HazriCard extends StatelessWidget {
     this.padding = const EdgeInsets.all(16),
     this.onTap,
     this.colour,
+    this.gradient,
     this.border,
     this.radius = HazriRadius.card,
   });
@@ -21,6 +22,9 @@ class HazriCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final VoidCallback? onTap;
   final Color? colour;
+
+  /// Painted over [colour] when given (the Nitnem slots, design 2A).
+  final Gradient? gradient;
   final BoxBorder? border;
   final double radius;
 
@@ -31,6 +35,7 @@ class HazriCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colour ?? c.card,
+        gradient: gradient,
         borderRadius: shape,
         boxShadow: c.shadows,
         border: border,
@@ -161,17 +166,13 @@ class PrimaryButton extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: Row(
                   mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
-                  mainAxisAlignment:
-                      trailing == null ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: trailing == null ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
                   children: [
                     Flexible(
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          if (icon != null) ...[
-                            AppIcon(icon!, size: 22, color: fg),
-                            const SizedBox(width: 10),
-                          ],
+                          if (icon != null) ...[AppIcon(icon!, size: 22, color: fg), const SizedBox(width: 10)],
                           Flexible(
                             child: Text(
                               label,
@@ -185,8 +186,10 @@ class PrimaryButton extends StatelessWidget {
                     if (trailing != null)
                       Text(
                         trailing!,
-                        style: HazriText.bodySmall
-                            .copyWith(color: fg.withValues(alpha: 0.75), fontWeight: FontWeight.w500),
+                        style: HazriText.bodySmall.copyWith(
+                          color: fg.withValues(alpha: 0.75),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                   ],
                 ),
@@ -250,9 +253,7 @@ class CardIconButton extends StatelessWidget {
         ),
       ),
     );
-    return tooltip == null
-        ? Semantics(button: true, child: button)
-        : Tooltip(message: tooltip!, child: button);
+    return tooltip == null ? Semantics(button: true, child: button) : Tooltip(message: tooltip!, child: button);
   }
 }
 
@@ -264,10 +265,8 @@ class Eyebrow extends StatelessWidget {
   final Color? colour;
 
   @override
-  Widget build(BuildContext context) => Text(
-    text.toUpperCase(),
-    style: HazriText.eyebrow.copyWith(color: colour ?? context.colors.muted),
-  );
+  Widget build(BuildContext context) =>
+      Text(text.toUpperCase(), style: HazriText.eyebrow.copyWith(color: colour ?? context.colors.muted));
 }
 
 /// Keeps content to a phone-width column on tablets (PRD §4.1).

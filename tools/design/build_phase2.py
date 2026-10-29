@@ -3067,7 +3067,7 @@ def sangat_tiles() -> str:
     for k, (ic, name, goal, members, joined) in enumerate(BUILT_IN):
         btn = ('<div class="row" style="min-height:44px;min-width:72px;justify-content:center;'
                'padding:0 16px;border-radius:999px;font-size:14px;font-weight:700;flex:none;'
-               + ('box-shadow:inset 0 0 0 1.5px var(--rule);color:var(--ink2)">Leave' if joined else
+               + ('background:var(--sageSoft);color:var(--sage)">✓ Joined' if joined else
                   'background:var(--kesriSoft);color:var(--kesriInk)">Join') + '</div>')
         rows += (
             f'<div class="row" style="gap:12px;padding:8px 12px 8px 14px;'
@@ -4269,6 +4269,93 @@ def quiz_me() -> str:
 """
 
 
+# ------------------------------------------------------- Today and Nitnem, 2026-10-29
+
+def goal_folded() -> str:
+    """Design 1A (owner, 2026-10-29; 04-goals.md 7.1): with more than three
+    items the goal card folds to the one due now, the next and the earliest
+    missed, with Show all and how many are done."""
+    def row(name, right, colour="var(--muted)", now=False):
+        mark = ('<div style="width:24px;height:24px;border-radius:12px;flex:none;border:3px solid '
+                + ('var(--kesri)' if now else 'var(--rule)') + '"></div>')
+        return (f'<div class="row" style="gap:10px;min-height:34px">{mark}'
+                f'<div style="font-size:14px;font-weight:600;flex:1">{name}</div>'
+                f'<div style="font-size:13px;color:{colour};font-weight:600">{right}</div></div>')
+    return f"""
+{app_bar("Welcome, Puneet Singh")}
+<div class="col" style="gap:13px;padding:0 20px;margin-top:-32px">
+  {streak_strip()}
+  <div class="card col" style="padding:16px;gap:8px">
+    <div class="row" style="justify-content:space-between">
+      <div class="col">
+        <div class="eyebrow">Today’s goal</div>
+        <div class="disp" style="font-size:20px;font-weight:700;line-height:1.15">2 of 7 done</div>
+        <div style="font-size:12.5px;color:var(--muted)">Next: Kirtan Sohila at 7 PM</div>
+      </div>
+      {ring(2 / 7, 52, 7)}
+    </div>
+    <div class="col" style="gap:2px;border-top:1px solid var(--rule);padding-top:8px">
+      {row("Rehras Sahib", "Now · 6 PM", "var(--kesriInk)", True)}
+      {row("Kirtan Sohila", "0 of 1 · 7 PM")}
+      {row("Tav Prasad Savaiye", "Missed · 6:30 AM")}
+    </div>
+    <div class="row" style="justify-content:space-between;font-size:13.5px;font-weight:700">
+      <span style="color:var(--kesriInk)">Show all 7</span><span style="color:var(--sage)">2 done ✓</span></div>
+  </div>
+  <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
+    {icon("nitnem", 20)}<div>Read Rehras Sahib</div></div>
+</div>
+{nav("today")}
+"""
+
+
+def _bani_pa() -> dict:
+    """Bani names in Gurmukhi, from content.db (never typed here)."""
+    import sqlite3
+    db = sqlite3.connect(os.path.join(ROOT, "assets", "content", "content.db"))
+    return {slug: pa for slug, pa in db.execute("select slug, name_pa from bani")}
+
+
+def nitnem_tinted() -> str:
+    """Design 2A (owner, 2026-10-29; 06-nitnem.md B9): one card per part of
+    the day, tinted by its light and fading to the card; Before sleep in a
+    soft lavender, never navy."""
+    pa = _bani_pa()
+    sun = ('<svg class="i" width="22" height="22" viewBox="0 0 24 24"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 6v3M5 10l2 2M19 10l-2 2"/></svg>')
+    sunset = ('<svg class="i" width="22" height="22" viewBox="0 0 24 24"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 5v6M9 8l3 3 3-3"/></svg>')
+    moon = ('<svg class="i" width="22" height="22" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>')
+
+    def bani(slug, en, right, going=False):
+        ring_ = ('<div style="width:26px;height:26px;border-radius:13px;flex:none;border:3px solid '
+                 + ('var(--kesri)' if going else 'var(--rule)') + '"></div>')
+        return (f'<div class="row" style="gap:12px;min-height:54px;border-top:1px solid var(--rule)">{ring_}'
+                f'<div class="col" style="flex:1;min-width:0;line-height:1.2"><div style="font-size:15px;font-weight:700">{en}</div>'
+                f'<div class="gur" style="font-size:13px;color:var(--ink2)">{pa[slug]}</div></div>'
+                f'<div style="font-size:13px;font-weight:600;color:{"var(--kesriInk)" if going else "var(--muted)"}">{right}</div></div>')
+
+    def slot(tint, ic, title, sub, rows, play=False):
+        pill = (f'<div class="row" style="gap:6px;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;'
+                f'background:var(--primary);color:var(--onPrimary)">{icon("play", 13)}Play all</div>' if play else "")
+        return (f'<div class="card col" style="padding:14px 16px 4px;background:linear-gradient(135deg,{tint},var(--card) 60%)">'
+                f'<div class="row" style="gap:12px;margin-bottom:8px"><div style="color:var(--kesriInk)">{ic}</div>'
+                f'<div class="col" style="flex:1;line-height:1.15"><div style="font-size:16px;font-weight:700">{title}</div>'
+                f'<div style="font-size:12px;color:var(--muted)">{sub}</div></div>{pill}</div>{rows}</div>')
+
+    morning = (bani("japji-sahib", "Japji Sahib", "18:59 in", True) + bani("jaap-sahib", "Jaap Sahib", "0:15 in", True)
+               + bani("tav-prasad-savaiye", "Tav Prasad Savaiye", "4 min") + bani("chaupai-sahib", "Chaupai Sahib", "4 min")
+               + bani("anand-sahib", "Anand Sahib", "22 min"))
+    return f"""
+<style>.app{{--dusk:#F8D9C4;--lav:#E3E4F6}}.app.dark{{--dusk:#40261C;--lav:#262A55}}</style>
+<div style="padding:16px 18px 10px">{header("Nitnem", "SGPC version", left="menu")}</div>
+<div class="col" style="gap:14px;padding:0 20px">
+  {slot("var(--kesriSoft)", sun, "Amrit Vela", "5 banis · about 66 min", morning, True)}
+  {slot("var(--dusk)", sunset, "Evening", "At sunset · 5:40 PM", bani("rehras-sahib", "Rehras Sahib", "15 min"))}
+  {slot("var(--lav)", moon, "Before sleep", "Kirtan Sohila", bani("kirtan-sohila", "Kirtan Sohila", "4 min"))}
+</div>
+{nav("nitnem")}
+"""
+
+
 SCREENS = [
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
@@ -4337,6 +4424,8 @@ SCREENS = [
     ("117-QuizBoardNoProfile", "Gurmat Quiz — everyone, without a profile", quiz_board_no_profile),
     ("118-QuizHome", "Gurmat Quiz — the quiz page", quiz_home),
     ("119-QuizMe", "Gurmat Quiz — your quiz", quiz_me),
+    ("120-TodayGoalFolded", "Today — a goal of seven, folded", goal_folded),
+    ("121-NitnemTinted", "Nitnem — each part of the day in its light", nitnem_tinted),
 ]
 
 

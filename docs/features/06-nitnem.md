@@ -73,6 +73,15 @@ at its line and audio position.
 **B8. Opening from a notification.** "Open {bani}" in a notification opens the
 reader on that bani at its saved line (`02-notifications.md` AV3, GR4).
 
+**B9. The list is one card per part of the day, tinted by its light**
+(design 2A, owner 2026-10-29, from options at
+<https://claude.ai/artifact/TeEFvQWsDLcdPGzbP1qsws> and
+<https://claude.ai/artifact/6WhAUJtt97RenQZku5nwi3>): Amrit Vela in dawn
+saffron, Evening in sunset peach, Before sleep in a soft lavender (never the
+navy of a dark card, owner 2026-10-29), each fading to the card's own colour;
+More banis plain. The header, Play all and the bani rows inside are
+unchanged.
+
 ## 6.4 Scenarios
 
 | # | Given | When | Then |

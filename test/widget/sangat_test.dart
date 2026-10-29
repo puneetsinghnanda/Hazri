@@ -21,18 +21,27 @@ void main() {
   setUpAll(() async => l = await L.delegate.load(const Locale('en')));
 
   Map<String, Object?> builtIn({bool member = false}) => {
-        'groupId': 'simran',
-        'kind': 'BUILT_IN',
-        'names': {'en': 'Simran Sangat', 'pa': 'ਸਿਮਰਨ ਸੰਗਤ', 'hi': 'सिमरन संगत'},
-        'status': 'ACTIVE',
-        'memberCount': 120,
-        'isMember': member,
-        'role': member ? 'MEMBER' : null,
-        'goal': {
-          'goalId': 'g0001', 'type': 'SIMRAN', 'simranMinutes': null, 'target': 1000, 'startDay': '2026-10-01',
-          'endDay': '2026-10-31', 'status': 'ACTIVE', 'total': 250, 'pct': 25, 'todayTotal': 9, 'daysLeft': 23,
-        },
-      };
+    'groupId': 'simran',
+    'kind': 'BUILT_IN',
+    'names': {'en': 'Simran Sangat', 'pa': 'ਸਿਮਰਨ ਸੰਗਤ', 'hi': 'सिमरन संगत'},
+    'status': 'ACTIVE',
+    'memberCount': 120,
+    'isMember': member,
+    'role': member ? 'MEMBER' : null,
+    'goal': {
+      'goalId': 'g0001',
+      'type': 'SIMRAN',
+      'simranMinutes': null,
+      'target': 1000,
+      'startDay': '2026-10-01',
+      'endDay': '2026-10-31',
+      'status': 'ACTIVE',
+      'total': 250,
+      'pct': 25,
+      'todayTotal': 9,
+      'daysLeft': 23,
+    },
+  };
 
   Future<void> boot(WidgetTester tester, Widget screen) async {
     app = await TestApp.create(prefs: {'onboarding_done': true}, extra: server.overrides());
@@ -47,7 +56,9 @@ void main() {
     server = FakeServer();
     server.on('GET', '/profile', 404, errorJson('NO_PROFILE'));
     server.on('GET', '/sangat/groups/mine', 200, {'groups': []});
-    server.on('GET', '/sangat/groups/built-in', 200, {'groups': [builtIn()]});
+    server.on('GET', '/sangat/groups/built-in', 200, {
+      'groups': [builtIn()],
+    });
     server.on('POST', '/sangat/contributions', 200, {'processed': []});
   });
 
@@ -60,7 +71,9 @@ void main() {
   });
 
   testWidgets('SG-1: a Simran goal reads in minutes of Naam Simran', (tester) async {
-    server.on('GET', '/sangat/groups/mine', 200, {'groups': [builtIn(member: true)]});
+    server.on('GET', '/sangat/groups/mine', 200, {
+      'groups': [builtIn(member: true)],
+    });
     await boot(tester, const SangatScreen());
     // The built-in row's goal line, and the tile's total of target.
     expect(find.textContaining('1000 minutes of Naam Simran by'), findsOneWidget);
@@ -91,17 +104,34 @@ void main() {
 
   testWidgets('VS1, design 102: my groups are a 2 x 2 grid, an ended one last and marked', (tester) async {
     Map<String, Object?> custom(String id, String name, {String status = 'ACTIVE'}) => {
-          'groupId': id, 'kind': 'CUSTOM', 'name': name, 'status': status, 'memberCount': 4, 'isMember': true,
-          'role': 'MEMBER', 'endedOn': status == 'ACTIVE' ? null : '2026-10-05',
-          'goal': {
-            'goalId': 'g$id', 'type': 'BANI', 'baniId': 'JAPJ', 'target': 100, 'startDay': '2026-09-01',
-            'endDay': status == 'ACTIVE' ? '2026-12-31' : '2026-10-05',
-            'status': status == 'ACTIVE' ? 'ACTIVE' : 'COMPLETED', 'total': status == 'ACTIVE' ? 40 : 100,
-            'pct': status == 'ACTIVE' ? 40 : 100, 'todayTotal': 2, 'daysLeft': 80,
-          },
-        };
+      'groupId': id,
+      'kind': 'CUSTOM',
+      'name': name,
+      'status': status,
+      'memberCount': 4,
+      'isMember': true,
+      'role': 'MEMBER',
+      'endedOn': status == 'ACTIVE' ? null : '2026-10-05',
+      'goal': {
+        'goalId': 'g$id',
+        'type': 'BANI',
+        'baniId': 'JAPJ',
+        'target': 100,
+        'startDay': '2026-09-01',
+        'endDay': status == 'ACTIVE' ? '2026-12-31' : '2026-10-05',
+        'status': status == 'ACTIVE' ? 'ACTIVE' : 'COMPLETED',
+        'total': status == 'ACTIVE' ? 40 : 100,
+        'pct': status == 'ACTIVE' ? 40 : 100,
+        'todayTotal': 2,
+        'daysLeft': 80,
+      },
+    };
     server.on('GET', '/sangat/groups/mine', 200, {
-      'groups': [custom('a', 'Gill Parivar Ended', status: 'INACTIVE'), custom('b', 'Gill Parivar'), builtIn(member: true)],
+      'groups': [
+        custom('a', 'Gill Parivar Ended', status: 'INACTIVE'),
+        custom('b', 'Gill Parivar'),
+        builtIn(member: true),
+      ],
     });
     await boot(tester, const SangatScreen());
     final tiles = find.byType(GroupGridTile);
@@ -121,8 +151,9 @@ void main() {
   testWidgets('a paath waiting in the outbox is sent before the totals are read', (tester) async {
     await boot(tester, const SizedBox());
     final repo = app.container.read(userRepositoryProvider)..queueForSangat = true;
-    await tester.runAsync(() => repo.logCompletion(
-          baniId: 'JAPJ', slot: BaniSlotValue.morning, source: CompletionSource.reader));
+    await tester.runAsync(
+      () => repo.logCompletion(baniId: 'JAPJ', slot: BaniSlotValue.morning, source: CompletionSource.reader),
+    );
     server.requests.clear();
     await tester.pumpWidget(app.wrapRouted(const SangatScreen()));
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 300)));
@@ -135,13 +166,29 @@ void main() {
   testWidgets('S-2: Join a built-in group → member, and the outbox turns on', (tester) async {
     server.on('POST', '/sangat/groups/simran/join', 200, {'result': 'JOINED', 'groupId': 'simran'});
     await boot(tester, const SangatScreen());
-    server.on('GET', '/sangat/groups/built-in', 200, {'groups': [builtIn(member: true)]});
+    server.on('GET', '/sangat/groups/built-in', 200, {
+      'groups': [builtIn(member: true)],
+    });
     await tester.tap(find.text(l.sangatJoin));
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 150)));
     await settle(tester);
     expect(server.requests, contains('POST /sangat/groups/simran/join'));
-    expect(find.text(l.sangatLeave), findsOneWidget);
+    // Design 3E (2026-10-29): Joined, never Leave, on the Sangat page.
+    expect(find.text(l.sangatJoinedChip), findsOneWidget);
+    expect(find.text(l.sangatLeave), findsNothing);
     expect(app.container.read(sangatMemberProvider), isTrue);
+  });
+
+  testWidgets('a joined built-in group says Joined; a tap opens it and leaves nothing', (tester) async {
+    server.on('GET', '/sangat/groups/built-in', 200, {
+      'groups': [builtIn(member: true)],
+    });
+    await boot(tester, const SangatScreen());
+    expect(find.text(l.sangatLeave), findsNothing);
+    server.requests.clear();
+    await tester.tap(find.text(l.sangatJoinedChip));
+    await settle(tester);
+    expect(server.requests.where((r) => r.contains('/leave')), isEmpty);
   });
 
   testWidgets('S-28: offline with no copy says so', (tester) async {

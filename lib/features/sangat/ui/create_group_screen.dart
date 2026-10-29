@@ -74,9 +74,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
       setState(() => _busy = false);
       ProfileMessages.snack(
         context,
-        e.code == 'GROUP_LIMIT_REACHED'
-            ? l.sangatLimitReached(e.limit ?? 5)
-            : ProfileMessages.of(l, e),
+        e.code == 'GROUP_LIMIT_REACHED' ? l.sangatLimitReached(e.limit ?? 5) : ProfileMessages.of(l, e),
       );
     } on NetworkException {
       if (!mounted) return;
@@ -127,9 +125,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                   initialValue: _baniId,
                   isExpanded: true,
                   decoration: InputDecoration(labelText: l.sangatChooseBani, errorText: _baniError),
-                  items: [
-                    for (final b in banis) DropdownMenuItem(value: b.id, child: Text(b.name(l.localeName))),
-                  ],
+                  items: [for (final b in banis) DropdownMenuItem(value: b.id, child: Text(b.name(l.localeName)))],
                   onChanged: _busy ? null : (v) => setState(() => _baniId = v),
                 ),
               const SizedBox(height: 12),

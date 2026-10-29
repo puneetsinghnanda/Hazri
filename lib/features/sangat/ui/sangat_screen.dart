@@ -79,12 +79,10 @@ class _SangatScreenState extends ConsumerState<SangatScreen> with WidgetsBinding
     final api = ref.read(sangatApiProvider);
     setState(() => _busy.add(g.groupId));
     try {
-      if (g.isMember) {
-        await api.leave(g.groupId);
-      } else {
-        await api.joinBuiltIn(g.groupId);
-        await ref.read(sangatListsProvider.notifier).setMember(true);
-      }
+      // Leave is inside the group (design 3E, 2026-10-29); this row only joins.
+      if (g.isMember) return;
+      await api.joinBuiltIn(g.groupId);
+      await ref.read(sangatListsProvider.notifier).setMember(true);
       await _refresh();
     } on Object catch (e) {
       if (mounted) ProfileMessages.snack(context, ProfileMessages.of(l, e));
@@ -122,8 +120,12 @@ class _SangatScreenState extends ConsumerState<SangatScreen> with WidgetsBinding
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: view == null
-                        ? const Center(child: Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator()))
-                        : HazriCard(child: Text(l.sangatOffline, style: HazriText.body.copyWith(color: c.ink2))),
+                        ? const Center(
+                            child: Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator()),
+                          )
+                        : HazriCard(
+                            child: Text(l.sangatOffline, style: HazriText.body.copyWith(color: c.ink2)),
+                          ),
                   ),
                 // Design 102: Create (navy) and Join (saffron) side by side.
                 IntrinsicHeight(
@@ -231,4 +233,3 @@ class _SangatScreenState extends ConsumerState<SangatScreen> with WidgetsBinding
     );
   }
 }
-

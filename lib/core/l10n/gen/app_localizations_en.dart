@@ -4046,4 +4046,31 @@ class LEn extends L {
   @override
   String get privacyProfileLeaderboard =>
       'On the quiz leaderboards, which every Hazri user can see: your first name, the first letter of your last name, your city and your quiz points';
+
+  @override
+  String get sangatJoinedChip => 'Joined';
+
+  @override
+  String goalShowAll(int count) {
+    return 'Show all $count';
+  }
+
+  @override
+  String get goalShowFewer => 'Show fewer';
+
+  @override
+  String goalDoneCount(int count) {
+    return '$count done';
+  }
+
+  @override
+  String get goalNow => 'Now';
+
+  @override
+  String get goalMissed => 'Missed';
+
+  @override
+  String goalNextLine(String name, String time) {
+    return 'Next: $name at $time';
+  }
 }

@@ -2399,5 +2399,15 @@
   "@quizMonthTotal": {"placeholders": {"points": {"type": "int"}}},
   "quizEmpty": "The quiz is not on this phone yet.",
   "privacyProfileQuiz": "When you take a Gurmat Quiz online: its topic and your five answers, scored on the server. Without a profile the quiz stays on this phone and sends nothing",
-  "privacyProfileLeaderboard": "On the quiz leaderboards, which every Hazri user can see: your first name, the first letter of your last name, your city and your quiz points"
+  "privacyProfileLeaderboard": "On the quiz leaderboards, which every Hazri user can see: your first name, the first letter of your last name, your city and your quiz points",
+  "sangatJoinedChip": "Joined",
+  "goalShowAll": "Show all {count}",
+  "@goalShowAll": {"placeholders": {"count": {"type": "int"}}},
+  "goalShowFewer": "Show fewer",
+  "goalDoneCount": "{count} done",
+  "@goalDoneCount": {"placeholders": {"count": {"type": "int"}}},
+  "goalNow": "Now",
+  "goalMissed": "Missed",
+  "goalNextLine": "Next: {name} at {time}",
+  "@goalNextLine": {"placeholders": {"name": {"type": "String"}, "time": {"type": "String"}}}
 }

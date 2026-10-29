@@ -4021,4 +4021,31 @@ class LHi extends L {
   @override
   String get privacyProfileLeaderboard =>
       'क्विज़ लीडरबोर्ड पर, जिसे हर Hazri उपयोगकर्ता देख सकता है: आपका पहला नाम, अंतिम नाम का पहला अक्षर, आपका शहर और आपके क्विज़ अंक';
+
+  @override
+  String get sangatJoinedChip => 'जुड़े हुए';
+
+  @override
+  String goalShowAll(int count) {
+    return 'सभी $count देखें';
+  }
+
+  @override
+  String get goalShowFewer => 'कम देखें';
+
+  @override
+  String goalDoneCount(int count) {
+    return '$count हो गए';
+  }
+
+  @override
+  String get goalNow => 'अभी';
+
+  @override
+  String get goalMissed => 'छूट गया';
+
+  @override
+  String goalNextLine(String name, String time) {
+    return 'अगला: $name, $time बजे';
+  }
 }
