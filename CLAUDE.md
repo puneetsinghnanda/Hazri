@@ -596,11 +596,13 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
-- **The quiz's `/q/` page needs a hosting deploy.** `public/q/index.html`
-  and its `firebase.json` rewrite reach the website only with
-  `firebase deploy --only hosting:public`; nobody has confirmed that has
-  been run since 2026-10-27, and until it has, a shared quiz link lands on
-  the website's 404. The questions are English for now (QZ6), and the
+- **The website's `/privacy` and `/delete-account` pages are live** (deployed
+  2026-10-30, the hosting deploy that also put `/q/` up). They are the Play
+  Store's privacy policy and account deletion URLs; deletion is by email to
+  `support@hazri.me` (forwarded to the owner) and done by hand, because the
+  app has no delete button yet, and Play also wants one inside the app.
+  `/privacy` is PRD §8 in the reader's words and changes with it and the Data
+  safety form. The questions are English for now (QZ6), and the
   Punjabi and Hindi topic names and labels are Claude's draft.
 - **The Punjabi saakhi page timings want an ear** (SK-23). They were
   estimated from each page's share of the text and snapped to long pauses,
