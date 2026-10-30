@@ -4059,4 +4059,15 @@ class LHi extends L {
 
   @override
   String get slotAnyTime => 'दिन में किसी भी समय';
+
+  @override
+  String get privacyAccountTitle => 'आपका खाता';
+
+  @override
+  String get privacyDeleteHow =>
+      'hazri.me खुलेगा, जहाँ आप ईमेल से माँग सकते हैं। आपकी डायरी इसी फ़ोन में रहेगी।';
+
+  @override
+  String get privacyDeleteNoBrowser =>
+      'ब्राउज़र नहीं खुल सका। पेज है hazri.me/delete-account';
 }

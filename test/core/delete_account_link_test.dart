@@ -43,7 +43,7 @@ void main() {
 
     Future<void> tapDelete(WidgetTester tester) async {
       usePhoneFrame(tester);
-      await tester.pumpWidget(app.wrap(const PrivacyScreen()));
+      await tester.pumpWidget(app.wrapRouted(const PrivacyScreen()));
       await settle(tester);
       final row = find.text('Delete my account and data');
       await tester.scrollUntilVisible(row, 200, scrollable: find.byType(Scrollable).first);
