@@ -312,6 +312,23 @@ id is not reusable for about five minutes after a delete. Nothing in the app
 changed: `google-services.json` does not encode the region and the SDK finds
 it.
 
+## Branches
+
+**`main` is the branch to start from and to merge into** (created
+2026-10-30 from `claude/modest-ptolemy-6vwl5y` at `40a7633`, which then held
+everything). Before it, the repository had no `main` and no pull request:
+each session carried the work forward on its own `claude/...` branch, the
+default branch sat 45 commits behind, and a session could start from a copy
+that was missing a week of work without knowing it.
+
+So: start a session's branch from `origin/main`; before starting, check that
+no other `claude/...` branch is ahead of `main` (`git branch -r
+--sort=-committerdate`), and bring it in first if one is; and come back to
+`main` through a pull request, never by pushing to it. A build of `main`
+started by hand publishes as `apk-main`. The older branches
+(`claude/japji-sahib-app-anypeh`, `claude/pensive-hawking-k87ese`) are
+history: `main` contains all of both.
+
 ## Builds
 
 `.github/workflows/build.yml` analyzes, tests and builds the release APK on
