@@ -1,0 +1,52 @@
+{
+  "_comment": "Google Play listing images. Each slide is one current design screen (design/canvas.html) in a phone with a headline. English only for now; no Gurbani in any caption (CLAUDE.md rule 3). The screens show what the app does, so a slide whose screen is superseded on the canvas must be changed with it.",
+  "slides": [
+    {
+      "screen": "85-TodayAppBar.light",
+      "title": "Mark your Hazri to Waheguru, every day",
+      "sub": "Your streak, today's goal and your next paath on one page.",
+      "chips": ["No ads", "No login", "Works offline", "Private diary"]
+    },
+    {
+      "screen": "13-ReaderFollowing.light",
+      "title": "Read along as the paath is recited",
+      "sub": "Each line lights up with the recitation, its meaning a tap away."
+    },
+    {
+      "screen": "121-NitnemTinted.light",
+      "title": "Your whole Nitnem, from Amrit Vela to night",
+      "sub": "Every bani in its part of the day, reminded at your own time."
+    },
+    {
+      "screen": "89-SimranSitting.dark",
+      "title": "Sit in Simran with the sangat of the world",
+      "sub": "See who is in Simran right now, city by city. Never by name.",
+      "tone": "night"
+    },
+    {
+      "screen": "104-GroupGlobe.light",
+      "title": "Do paath together as a sangat",
+      "sub": "Set a shared goal with family and friends and watch it fill."
+    },
+    {
+      "screen": "111-SaakhiLibrary.light",
+      "title": "Saakhis to read and listen to together",
+      "sub": "Illustrated stories, narrated in Punjabi, for every age."
+    },
+    {
+      "screen": "118-QuizHome.light",
+      "title": "Learn with the Gurmat Quiz",
+      "sub": "The Gurus, Gurdwaras, banis and Sikh history, five questions at a time."
+    },
+    {
+      "screen": "22-GurpurabCalendar.light",
+      "title": "The Nanakshahi calendar, every Gurpurab",
+      "sub": "Reminders on the morning of Gurpurabs and Sikh days."
+    }
+  ],
+  "feature": {
+    "title": "Hazri",
+    "sub": "Nitnem, Simran and Sangat, every day",
+    "screens": ["13-ReaderFollowing.light", "85-TodayAppBar.light", "89-SimranSitting.dark"]
+  }
+}
