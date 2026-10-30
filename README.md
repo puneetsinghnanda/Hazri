@@ -73,7 +73,7 @@ ahead of the Play Store.
 | [`docs/PRD.md`](docs/PRD.md) | **Start here.** The product, every feature and its decided behaviour, privacy, and the implementation plan. Wins over everything else |
 | [`docs/features/`](docs/features) | One file per feature: numbered rules, exact strings in three languages, scenarios, acceptance |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How it is built and where data lives: the app's layers, every table on the phone, preferences, Firestore, the API, the Functions, deployment, cost |
-| [`design/canvas.html`](design/canvas.html) | Every screen by feature, marked new, current or superseded ([published](https://claude.ai/artifact/Fz2WJs5tPF9nUWPgkgBkR8), private to the owner) |
+| [`design/canvas.html`](design/canvas.html) | Every screen by feature, marked new, current or superseded ([published](https://claude.ai/artifact/WS5cf2iNPdc9txvEccZQAC), private to the owner) |
 | [`CLAUDE.md`](CLAUDE.md) | Working rules for every change, and what is known about the code as it is |
 | [`audio/README.md`](audio/README.md) | Rebuilding the recitations and checking their timings |
 

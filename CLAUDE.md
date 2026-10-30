@@ -185,7 +185,9 @@ a day. `maxInstances` is the real protection; the cap is the last line.
 *new*, *current*, *superseded* or *reference*, with the feature file it
 follows and, for a superseded one, what replaced it. It opens on "Current
 only". It is published as an artifact at
-<https://claude.ai/artifact/Fz2WJs5tPF9nUWPgkgBkR8>; republish it after
+<https://claude.ai/artifact/WS5cf2iNPdc9txvEccZQAC> (since 2026-10-30; the
+earlier `Fz2WJs5tPF9nUWPgkgBkR8` could no longer be opened from the owner's
+account, so it was published afresh with designs up to 121); republish it after
 changing it, with every new or changed `design/html/` file. PRD Appendix A
 is the same list in text, generated from it.
 
