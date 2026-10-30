@@ -78,3 +78,12 @@ const String kSiteBase = 'https://hazri-dfcc1.web.app';
 
 /// Where the email verification link lands.
 const String kVerificationUrl = '$kSiteBase/verify';
+
+/// The website's account deletion page, which Google Play asks an app with
+/// accounts to link from inside it (`01-accounts.md` §12, 2026-10-30).
+///
+/// On hazri.me, **not** [kSiteBase]: the manifest claims every path on
+/// [kSiteBase] as an App Link with no path filter, so opening this there would
+/// hand the link straight back to Hazri instead of a browser.
+/// `test/core/delete_account_link_test.dart` holds that.
+const String kDeleteAccountUrl = 'https://hazri.me/delete-account';

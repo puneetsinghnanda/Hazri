@@ -128,6 +128,20 @@ class MainActivity : AudioServiceActivity() {
                             result.success(true)
                         }
                     }
+                    // 01-accounts §12: a web page in the browser, for the
+                    // account deletion page. False when no app can open it.
+                    "openUrl" -> {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            android.net.Uri.parse(call.argument<String>("url") ?: ""),
+                        ).addCategory(Intent.CATEGORY_BROWSABLE)
+                        try {
+                            startActivity(intent)
+                            result.success(true)
+                        } catch (_: android.content.ActivityNotFoundException) {
+                            result.success(false)
+                        }
+                    }
                     // 08-sangat IV6: the Play install referrer, once. Answers
                     // null when Play has none or the service is missing.
                     "installReferrer" -> readInstallReferrer(result)
