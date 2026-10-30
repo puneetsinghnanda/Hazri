@@ -1,47 +1,82 @@
 {
-  "_comment": "Google Play listing images. Each slide is one current design screen (design/canvas.html) in a phone with a headline. English only for now; no Gurbani in any caption (CLAUDE.md rule 3). The screens show what the app does, so a slide whose screen is superseded on the canvas must be changed with it.",
+  "_comment": "Google Play listing images, drawn by build.js in three styles (a, b, c). Each slide is one current design screen (design/canvas.html). `key` is the word in the title a style picks out; `pop` is a card lifted out of the screen, as [x, y, w, h] in the screen's 390 x 844 dp; `sticker` is the label a style may pin on. English only for now, and no caption quotes Gurbani (CLAUDE.md rule 3). A slide whose screen is superseded on the canvas changes with it.",
   "slides": [
     {
       "screen": "85-TodayAppBar.light",
-      "title": "Mark your Hazri to Waheguru, every day",
+      "kicker": "Every day",
+      "title": "Mark your Hazri",
+      "key": "Hazri",
       "sub": "Your streak, today's goal and your next paath on one page.",
-      "chips": ["No ads", "No login", "Works offline", "Private diary"]
+      "sticker": "Daily Hazri",
+      "pop": [20, 140, 350, 74],
+      "pop2": [20, 227, 350, 80],
+      "chips": ["No ads", "No login", "Works offline"],
+      "laurels": [["No ads", "ever"], ["Works", "offline"]]
     },
     {
       "screen": "13-ReaderFollowing.light",
-      "title": "Read along as the paath is recited",
-      "sub": "Each line lights up with the recitation, its meaning a tap away."
+      "kicker": "Paath with audio",
+      "title": "Read along",
+      "key": "along",
+      "sub": "Each line lights up as it is recited, its meaning a tap away.",
+      "sticker": "Follows the recitation",
+      "pop": [14, 248, 362, 59]
     },
     {
       "screen": "121-NitnemTinted.light",
-      "title": "Your whole Nitnem, from Amrit Vela to night",
-      "sub": "Every bani in its part of the day, reminded at your own time."
+      "kicker": "Morning to night",
+      "title": "Your whole Nitnem",
+      "key": "Nitnem",
+      "sub": "Every bani in its part of the day, reminded at your own time.",
+      "sticker": "Reminders at your time",
+      "pop": [20, 72, 350, 112]
     },
     {
       "screen": "89-SimranSitting.dark",
-      "title": "Sit in Simran with the sangat of the world",
-      "sub": "See who is in Simran right now, city by city. Never by name.",
+      "kicker": "Live globe",
+      "title": "Simran with the world",
+      "key": "world",
+      "sub": "See the sangat in Simran right now, city by city. Never by name.",
+      "sticker": "Never your name",
+      "chips": ["You", "Live now", "Here today"],
       "tone": "night"
     },
     {
       "screen": "104-GroupGlobe.light",
-      "title": "Do paath together as a sangat",
-      "sub": "Set a shared goal with family and friends and watch it fill."
+      "kicker": "Sangat groups",
+      "title": "Paath together",
+      "key": "together",
+      "sub": "Share a goal with family and friends and watch it fill.",
+      "sticker": "Shared goals",
+      "pop": [83, 375, 224, 34]
     },
     {
       "screen": "111-SaakhiLibrary.light",
-      "title": "Saakhis to read and listen to together",
-      "sub": "Illustrated stories, narrated in Punjabi, for every age."
+      "kicker": "Listen and read",
+      "title": "Saakhis for all ages",
+      "key": "Saakhis",
+      "sub": "Illustrated stories, narrated in Punjabi.",
+      "sticker": "Narrated in Punjabi",
+      "pop": [20, 82, 350, 138],
+      "covers": ["bhai-lalo-malik-bhago", "anand-bhaya-meri-maaye", "the-saint-soldier"]
     },
     {
       "screen": "118-QuizHome.light",
-      "title": "Learn with the Gurmat Quiz",
-      "sub": "The Gurus, Gurdwaras, banis and Sikh history, five questions at a time."
+      "kicker": "Learn every day",
+      "title": "Gurmat Quiz",
+      "key": "Quiz",
+      "sub": "The Gurus, Gurdwaras, banis and Sikh history, five questions at a time.",
+      "sticker": "Five questions a day",
+      "pop": [20, 68, 350, 212]
     },
     {
       "screen": "22-GurpurabCalendar.light",
-      "title": "The Nanakshahi calendar, every Gurpurab",
-      "sub": "Reminders on the morning of Gurpurabs and Sikh days."
+      "kicker": "Nanakshahi calendar",
+      "title": "Every Gurpurab",
+      "key": "Gurpurab",
+      "sub": "Reminders on the morning of Gurpurabs and Sikh days.",
+      "sticker": "Nanakshahi 558",
+      "pop": [16, 68, 358, 99]
     }
   ],
   "feature": {

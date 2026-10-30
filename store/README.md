@@ -1,19 +1,25 @@
 # Google Play listing images
 
 `play/` is what goes into Play Console -> Grow -> Store presence -> Main store
-listing. It is **drawn, not edited**: change `tools/store/slides.json` (the
-headlines and which screen each slide shows) or `tools/store/build.js` (the
-layout), then run
+listing, in three styles to choose from:
+
+| Folder | Style |
+|---|---|
+| `play/a/` | **Airy**: light lavender, a huge two-line headline, the phone tilted with the slide's card lifted out of it |
+| `play/b/` | **Bold**: white, an all-caps headline with one word ringed, a dashed path to the sun-arc mark, chips around the phone |
+| `play/c/` | **Saffron**: a saffron sky, a pinned sticker, the headline at the top or bottom, the phone tilted off the edge |
+
+Each folder has `screenshot-1.png` ... `screenshot-8.png` (1080 x 1920, upload in
+this order) and `feature-graphic.png` (1024 x 500). `play/icon-512.png` is the
+512 x 512 app icon, the launcher mark from `make_icons.py`, for all three.
+
+They are **drawn, not edited**: change `tools/store/slides.json` (headlines,
+which screen each slide shows, the card lifted out of it) or
+`tools/store/build.js` (the three layouts), then run
 
 ```bash
 node tools/store/build.js
 ```
-
-| File | Size | Play Console field |
-|---|---|---|
-| `icon-512.png` | 512 x 512 | App icon (the launcher mark from `make_icons.py`) |
-| `feature-graphic.png` | 1024 x 500 | Feature graphic |
-| `screenshot-1.png` ... `screenshot-8.png` | 1080 x 1920 | Phone screenshots, in this order |
 
 Each screenshot is a **current** screen from `design/html/` (see
 `design/canvas.html`). Play wants screenshots to show the app as it is, so
