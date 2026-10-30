@@ -45,6 +45,18 @@ been cut to a single 94 MiB file. **Release assets are not counted against
 that quota at all.** The artifact upload is kept as a convenience and marked
 `continue-on-error`, so the quota can no longer fail a build.
 
-The APK is signed with the standard Android debug key, which is fine for
-testing and cannot be uploaded to Google Play. A Play build uses Play App
-Signing with an upload key kept outside this repository.
+The APK is signed with the release key from the four `ANDROID_*` secrets
+(`docs/signing.md`), or with a throwaway debug key when they are absent.
+
+## Getting a Play Store bundle
+
+A run started by hand also builds **`app-release.aab`**, the app bundle Google
+Play takes, and attaches it to the same `apk-<branch>` pre-release. It is
+built only when the release key is present, because Play binds the app to the
+first upload key it sees. Its build number (`versionCode`) is the workflow's
+run number, so each bundle is higher than the one before and Play never
+refuses it as a repeat; the version name still comes from `pubspec.yaml`. The
+log step *Build the Play Store bundle* prints the SHA-256 of the key that
+signed it: that is the **upload key**. Play re-signs what it ships with its
+own app signing key, whose SHA-256 (Play Console -> Setup -> App signing) also
+has to go into `public/.well-known/assetlinks.json` and Firebase.

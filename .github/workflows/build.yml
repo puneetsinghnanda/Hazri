@@ -237,6 +237,29 @@ jobs:
           bash .github/check_notification_icons.sh \
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 
+      - name: Build the Play Store bundle
+        # Google Play takes an app bundle, not an APK. Built only on a run
+        # started by hand, because it is a second full Gradle build and a push
+        # has no use for it. Every ABI, not arm64 alone: Play cuts each phone
+        # its own slice from the bundle.
+        #
+        # The build number is the run number, so every bundle uploaded is
+        # higher than the last -- Play refuses a versionCode it has seen -- and
+        # nobody has to remember to bump pubspec.yaml's `+1`.
+        #
+        # Only with the release key. Play binds the app to the first upload
+        # key it sees; a bundle signed by the throwaway debug key would be
+        # refused, or worse, accepted as the key from then on.
+        if: github.event_name == 'workflow_dispatch' && env.HAS_KEYSTORE == 'true'
+        run: |
+          set -euo pipefail
+          flutter build appbundle --release --build-number=${{ github.run_number }}
+          AAB=build/app/outputs/bundle/release/app-release.aab
+          # The upload key Play will see, read out of the bundle itself.
+          keytool -printcert -jarfile "$AAB" | tee /tmp/aab-cert.txt
+          grep -i 'SHA256' /tmp/aab-cert.txt
+          ls -lh "$AAB"
+
       - name: Name the artifact
         # always(), so an APK that built is still kept when a later check fails
         # -- that is the build you most want to put on a phone and look at.
@@ -276,6 +299,11 @@ jobs:
             || gh release edit "$TAG" --prerelease --target "$GITHUB_SHA" \
               --title "$TITLE" --notes "$NOTES"
           gh release upload "$TAG" "$APK" --clobber
+          # The Play Store bundle, when this run built one.
+          AAB=build/app/outputs/bundle/release/app-release.aab
+          if [ -f "$AAB" ]; then
+            gh release upload "$TAG" "$AAB" --clobber
+          fi
 
       - uses: actions/upload-artifact@v4
         # A convenience on the run page, nothing more. The release above is the
