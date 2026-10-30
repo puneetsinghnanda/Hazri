@@ -208,7 +208,7 @@ each:
 | Goals as one page (2026-10-19) | 106 | Option C of four: the day as a timeline, every paath at its own time; once a day each, reminders always on and movable (`04-goals.md` GI10, RM1, 7.2); replaces 47 |
 | Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
 | Saakhis (2026-10-25) | 111, 112 (110 superseded) | The library, and the menu as a left drawer, option A (replaces 99; Gurmat Quiz under Saakhis since 2026-10-27). Today's option 1A, a row of covers (110), was **replaced 2026-10-27 by option C**, one card with the day's saakhi large and the others small, drawn in 113; the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
-| Today, Nitnem and Sangat (2026-10-29) | 120, 121, 102 | The goal card folds a goal of more than three to now, next and missed with Show all (1A, 120); Nitnem as one card per part of the day tinted by its light, Before sleep lavender not navy (2A, 121, replaces 12); the built-in groups say Joined, not Leave, on the Sangat page, and Leave is inside the group (3E, drawn in 102) |
+| Today, Nitnem and Sangat (2026-10-29, 2026-10-30) | 120, 121, 102 | The goal card folds a goal of more than three to now, next and missed with Show all (1A, 120); Nitnem as one card per part of the day tinted by its light, Before sleep lavender not navy, More banis sage green with "Any time of day" (2A, 121, replaces 12); My paath goals on Nitnem as a saffron banner with the count, a bar, the next paath and Change (1C, 2026-10-30, drawn in 121); the built-in groups say Joined, not Leave, on the Sangat page, and Leave is inside the group (3E, drawn in 102) |
 | Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A with no buttons and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
@@ -411,11 +411,12 @@ timings and verify the alignment acoustically.
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
-## State of the build (2026-10-27)
+## State of the build (2026-10-30)
 
 **Phase 2 is built**: all ten steps of PRD §11, in that order, on this
-branch, and since then Saakhis (2026-10-25) and the Gurmat Quiz
-(2026-10-27). The older code each step replaced -- the first sangat (listed groups,
+branch, and since then Saakhis (2026-10-25), the Gurmat Quiz
+(2026-10-27), and the owner's redesign of Today's goal card, Nitnem and the
+Sangat page (2026-10-29 and 2026-10-30, designs 120, 121 and 102). The older code each step replaced -- the first sangat (listed groups,
 counted-on-read totals, the join banner), diary sync, the 45-second presence
 read, the Settings city, the branded splash and intro pages, elder Today as a
 fork, the Rehras / Kirtan Sohila / Daily Simran reminders -- is gone, and
@@ -462,7 +463,10 @@ is true of the code now, then what is live, then what is still open.
   Back up now and Restore on the Profile screen. The watermark compares with
   `>=` because drift keeps seconds; a repeat row is harmless (BK8).
 - **Sangat** (step 6, `08-sangat.md`), all through the `api` Function:
-  three built-in groups with Join/Leave, private custom groups with one goal
+  three built-in groups -- on the Sangat page a row offers Join, or a green
+  **Joined** chip once you are in (VS2, 3E, 2026-10-29); the chip or the
+  row opens the group, and **Leave is only inside the group**, in its ⋮
+  menu with a confirmation -- private custom groups with one goal
   and an end date, invites by link or code, the outbox in `user.db` (queued
   only while `sangat_member_v1` says the install is in a group), reports, and
   the push token. Totals are **maintained by the server** from shards
@@ -496,7 +500,20 @@ is true of the code now, then what is live, then what is still open.
   serifs by design.
 - **Today and Nitnem** (step 8): the navy band on Today only (T11) -- every
   other tab draws its own header -- the streak card with the week strip
-  (T12), the CTA order of T4, elder mode as one tree.
+  (T12), the CTA order of T4, elder mode as one tree. **Today's goal card
+  folds** a goal of more than three items (04-goals 7.1, design 120,
+  2026-10-29): at most three not yet met -- the one due now, the next, the
+  earliest missed -- with "Next: ... at ..." under the header, then Show all
+  N in place and how many are done; `foldGoalRows` in
+  `lib/features/today/ui/today_screen.dart` is the rule, tested in
+  `test/features/goal_fold_test.dart`. **Nitnem** (design 121, replaces 12)
+  is one card per part of the day tinted by its light and fading to the
+  card (B9: dawn saffron, sunset peach, lavender before sleep, never navy;
+  More banis sage green, "Any time of day"), drawn with `HazriCard`'s
+  `gradient`; **My paath goals** is a saffron banner (B10, 2026-10-30): the
+  count large, a bar, "Next: {name} at {time}" for the next unmet item still
+  to come, and Change, the card and Change opening the Goals page; with no
+  goal it stays the Set a goal row.
 - **Badges** (step 9): `evaluateBadges` runs after every write, at start,
   after the Sangat facts and silently after a restore; the sheet waits until
   a tab is showing and never interrupts a sitting (UI7). Badge names live in
