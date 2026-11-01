@@ -603,9 +603,9 @@ answers `500 INTERNAL` from the endpoint that needs it.
   Production unlocks after 12 testers stay opted in for 14 days in a row.
   Play re-signs what it ships, so `public/.well-known/assetlinks.json` names
   two keys: ours (CI's APKs) and Play's app signing key (2026-11-01,
-  `docs/signing.md`). It works only once hosting is deployed and both
-  fingerprints are in Firebase; until then a verification or restore link
-  opens a browser for anybody who installed from Play.
+  `docs/signing.md`). Deployed and confirmed on 2026-11-01: Google's
+  Digital Asset Links API reads both for `hazri-dfcc1.web.app`. Both
+  fingerprints also belong in Firebase (Project settings -> app.hazri).
 
 - **The website's `/privacy` and `/delete-account` pages are live** (deployed
   2026-10-30, the hosting deploy that also put `/q/` up). They are the Play
