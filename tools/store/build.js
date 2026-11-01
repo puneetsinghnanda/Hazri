@@ -95,6 +95,34 @@ function feature() {
     <svg width="400" height="200" style="position:absolute;left:520px;top:30px" viewBox="0 0 400 200"><path d="M10 170 C 120 40, 220 200, 330 60" fill="none" stroke="${INK}" stroke-width="5" stroke-dasharray="3 18" stroke-linecap="round"/></svg>
     ${phone(b, 270, 690, 70, frameB)}</div>`;
 }
+// ---- the developer page ------------------------------------------------------
+// Play Console -> Settings -> Developer page. The developer is Puneet Singh
+// Nanda, for every app, so the monogram is the one that outlives Hazri; the
+// mark is the one that matches it while it is the only app.
+function devMonogram() {
+  return `<div class="stage" style="width:512px;height:512px;background:${NAVY};display:flex;align-items:center;justify-content:center">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:46%;background:radial-gradient(60% 90% at 50% 100%, rgba(242,162,78,.55), transparent 70%)"></div>
+    <div style="position:relative;text-align:center;color:#fff">
+      <div class="disp" style="font-size:176px;font-weight:900;letter-spacing:-.03em;line-height:1">PSN</div>
+      <div style="height:16px;width:300px;margin:26px auto 0;border-radius:8px;background:${KESRI}"></div>
+    </div></div>`;
+}
+function devMark() {
+  return `<div class="stage" style="width:512px;height:512px;background:${NAVY};display:flex;align-items:center;justify-content:center">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:50%;background:radial-gradient(60% 90% at 50% 100%, rgba(242,162,78,.45), transparent 70%)"></div>
+    <div style="position:relative">${mark(340, '#fff', KESRI)}</div></div>`;
+}
+// The header: 4096 x 2304, drawn at a quarter and scaled up by the page.
+function devHeader() {
+  const [a, b, c] = cfg.feature.screens;
+  return `<div class="stage" style="width:1024px;height:576px;color:${INK};background:radial-gradient(90% 90% at 50% 40%, #FFFFFF, #ECEDF2)">
+    <div style="position:absolute;left:80px;top:170px;width:470px">
+      <div style="display:flex;align-items:center;gap:14px">${mark(60, NAVY, KESRI)}<span style="font-size:40px;font-weight:700">Hazri</span></div>
+      <h1 class="disp" style="font-size:62px;line-height:1.02;font-weight:900;letter-spacing:-.02em;margin-top:22px">NITNEM, SIMRAN AND ${ring('SANGAT')}</h1>
+      <p style="font-size:24px;margin-top:22px;color:#3a3d5c">Every day, on your phone.<br>No ads, no login.</p></div>
+    ${phone(a, 230, 560, 150, frameB, 'transform:rotate(-8deg)')}${phone(c, 230, 790, 160, frameB, 'transform:rotate(8deg)')}${phone(b, 250, 670, 90, frameB, 'z-index:2')}</div>`;
+}
+
 (async () => {
   const browser = await chromium.launch();
   const names = new Set([...cfg.slides.map((s) => s.screen), ...cfg.feature.screens]);
@@ -117,6 +145,15 @@ function feature() {
   fs.mkdirSync(out, { recursive: true });
   for (let i = 0; i < cfg.slides.length; i++) await render(slide(cfg.slides[i], i), 1080, 1920, `screenshot-${i + 1}.png`);
   await render(feature(), 1024, 500, 'feature-graphic.png');
+  fs.mkdirSync(path.join(out, 'developer'), { recursive: true });
+  await render(devMonogram(), 512, 512, 'developer/icon-monogram.png');
+  await render(devMark(), 512, 512, 'developer/icon-mark.png');
+  // Play takes at most 1 MB here, so a JPEG, drawn at 4x for 4096 x 2304.
+  const big = await browser.newPage({ viewport: { width: 1024, height: 576 }, deviceScaleFactor: 4 });
+  await big.setContent(`<!doctype html><style>${css}</style>${devHeader()}`, { waitUntil: 'load' });
+  await big.evaluate(() => document.fonts.ready);
+  await big.screenshot({ path: path.join(out, 'developer', 'header.jpg'), type: 'jpeg', quality: 86 });
+  console.log('developer/header.jpg');
   await browser.close();
 
   // The icon is the launcher's own mark, drawn by the same code at 512.

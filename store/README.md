@@ -11,6 +11,9 @@ screen.
 | `icon-512.png` | 512 x 512 | App icon (the launcher mark from `make_icons.py`) |
 | `feature-graphic.png` | 1024 x 500 | Feature graphic |
 | `screenshot-1.png` ... `screenshot-8.png` | 1080 x 1920 | Phone screenshots, in this order |
+| `developer/icon-monogram.png` | 512 x 512 | Developer page icon: PSN, for every app Puneet Singh Nanda publishes |
+| `developer/icon-mark.png` | 512 x 512 | Developer page icon, the alternative: Hazri's mark |
+| `developer/header.jpg` | 4096 x 2304 | Developer page header image (under 1 MB, as Play asks) |
 
 They are **drawn, not edited**: change `tools/store/slides.json` (headlines,
 the ringed word, which screen each slide shows, the card lifted out of it) or
