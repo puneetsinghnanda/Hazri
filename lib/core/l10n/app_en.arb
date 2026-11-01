@@ -2413,5 +2413,8 @@
   "nitnemGoalsCount": "{done} of {total} today",
   "@nitnemGoalsCount": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
   "nitnemGoalsChange": "Change",
-  "slotAnyTime": "Any time of day"
+  "slotAnyTime": "Any time of day",
+  "privacyAccountTitle": "Your account",
+  "privacyDeleteHow": "Opens hazri.me, where you ask for it by email. Your diary stays on this phone.",
+  "privacyDeleteNoBrowser": "Could not open a browser. The page is hazri.me/delete-account"
 }

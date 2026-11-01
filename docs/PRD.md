@@ -1004,7 +1004,10 @@ rewritten again in the change that ships the Gurmat Quiz: that with a
 profile, starting a quiz online sends its answers, and that with a profile your first name,
 initial, city and quiz points are on the leaderboards. In Phase 3
 it names analytics as a fourth category and points at the switch. It must
-match Google Play's Data safety form exactly.
+match Google Play's Data safety form exactly. Since 2026-10-30 it ends with
+**Delete my account and data**, which opens the website's deletion request
+page (`01-accounts.md` §12), and the website's `/privacy` page is this
+section again as Google Play's privacy policy URL: the three change together.
 
 ---
 

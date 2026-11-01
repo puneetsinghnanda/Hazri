@@ -2,12 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/backend/backend.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
+import '../../audio/data/notification_access.dart';
 import '../../settings/ui/screen_scaffold.dart';
 
 /// Design 35, as PRD §8.3 words it: what stays on the phone, what a profile
@@ -60,6 +62,24 @@ class PrivacyScreen extends ConsumerWidget {
           colour: c.card2,
           child: Text(l.privacyGlobe, style: HazriText.bodySmall.copyWith(color: c.ink2)),
         ),
+        // 01-accounts §12 (2026-10-30): Google Play wants a way to ask for the
+        // account's deletion from inside the app. Until the app can delete it
+        // itself, the row opens the website's request page.
+        SettingsSection(title: l.privacyAccountTitle, children: [
+          SettingsRow(
+            title: l.privacyDelete,
+            subtitle: l.privacyDeleteHow,
+            danger: true,
+            trailing: AppIcon(HazriIconData.chevronRight, size: 18, color: c.muted),
+            onTap: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              final opened = await ref.read(systemSettingsProvider).openUrl(kDeleteAccountUrl);
+              if (!opened) {
+                messenger.showSnackBar(SnackBar(content: Text(l.privacyDeleteNoBrowser)));
+              }
+            },
+          ),
+        ]),
       ],
     );
   }

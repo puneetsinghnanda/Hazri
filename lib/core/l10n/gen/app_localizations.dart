@@ -7143,6 +7143,24 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Any time of day'**
   String get slotAnyTime;
+
+  /// No description provided for @privacyAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account'**
+  String get privacyAccountTitle;
+
+  /// No description provided for @privacyDeleteHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens hazri.me, where you ask for it by email. Your diary stays on this phone.'**
+  String get privacyDeleteHow;
+
+  /// No description provided for @privacyDeleteNoBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open a browser. The page is hazri.me/delete-account'**
+  String get privacyDeleteNoBrowser;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

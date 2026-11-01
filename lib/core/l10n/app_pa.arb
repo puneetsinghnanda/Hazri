@@ -1203,5 +1203,8 @@
   "goalNextLine": "ਅਗਲਾ: {name}, {time} ਵਜੇ",
   "nitnemGoalsCount": "ਅੱਜ {total} ਵਿੱਚੋਂ {done}",
   "nitnemGoalsChange": "ਬਦਲੋ",
-  "slotAnyTime": "ਦਿਨ ਦੇ ਕਿਸੇ ਵੀ ਵੇਲੇ"
+  "slotAnyTime": "ਦਿਨ ਦੇ ਕਿਸੇ ਵੀ ਵੇਲੇ",
+  "privacyAccountTitle": "ਤੁਹਾਡਾ ਖਾਤਾ",
+  "privacyDeleteHow": "hazri.me ਖੁੱਲ੍ਹੇਗਾ, ਜਿੱਥੇ ਤੁਸੀਂ ਈਮੇਲ ਰਾਹੀਂ ਮੰਗ ਸਕਦੇ ਹੋ। ਤੁਹਾਡੀ ਡਾਇਰੀ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹੇਗੀ।",
+  "privacyDeleteNoBrowser": "ਬ੍ਰਾਊਜ਼ਰ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕਿਆ। ਪੰਨਾ ਹੈ hazri.me/delete-account"
 }

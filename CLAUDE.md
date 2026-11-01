@@ -631,13 +631,29 @@ answers `500 INTERNAL` from the endpoint that needs it.
   turn off click tracking in Brevo (Transactional -> Settings -> Tracking),
   so the mailed link is Hazri's own address rather than Brevo's, and
   `firebase deploy --only hosting:public`, which puts the new `/verify`
-  page and its Open in Hazri button on the site.
-- **The quiz's `/q/` page needs a hosting deploy.** `public/q/index.html`
-  and its `firebase.json` rewrite reach the website only with
-  `firebase deploy --only hosting:public`; nobody has confirmed that has
-  been run since 2026-10-27, and until it has, a shared quiz link lands on
-  the website's 404. The questions are English for now (QZ6), and the
-  Punjabi and Hindi topic names and labels are Claude's draft.
+  page and its Open in Hazri button on the site. That deploy is safe now
+  that git's `assetlinks.json` names Play's key too; before, a deploy from
+  git would have dropped it and broken the links of every Play install.
+- **Google Play: the first closed test is published** (submitted and approved 2026-11-01,
+  build 281 / 0.1.0, developer account `hazriapp.dev@gmail.com`, developer
+  name Puneet Singh Nanda, package `app.hazri`). The listing, its images and
+  its text in en-US, pa and hi-IN are `store/` (drawn by `tools/store/`).
+  Production unlocks after 12 testers stay opted in for 14 days in a row.
+  Play re-signs what it ships, so `public/.well-known/assetlinks.json` names
+  two keys: ours (CI's APKs) and Play's app signing key (2026-11-01,
+  `docs/signing.md`). Deployed and confirmed on 2026-11-01: Google's
+  Digital Asset Links API reads both for `hazri-dfcc1.web.app`. Both
+  fingerprints also belong in Firebase (Project settings -> app.hazri).
+
+- **The website's `/privacy` and `/delete-account` pages are live** (deployed
+  2026-10-30, the hosting deploy that also put `/q/` up). They are the Play
+  Store's privacy policy and account deletion URLs; deletion is by email to
+  `support@hazri.me` (forwarded to the owner) and done by hand, because the
+  app has no delete button yet, and Play also wants one inside the app.
+  `/privacy` is PRD §8 in the reader's words and changes with it and the Data
+  safety form.
+- **The quiz's questions are English for now** (QZ6), and the Punjabi and
+  Hindi topic names and labels are Claude's draft.
 - **The Punjabi saakhi page timings want an ear** (SK-23). They were
   estimated from each page's share of the text and snapped to long pauses,
   not heard; a page that turns early or late is corrected in

@@ -571,6 +571,15 @@ Anything not listed in Sections 1–11 is out of scope. Specifically:
 - Login, sign-up, passwords, Google/phone sign-in, or linking the anonymous account to another provider.
 
 - Editing the phone number; deleting or exporting a profile. *(Amended: name, email and city can be edited, §13 D11.)*
+  *(Amended 2026-10-30, for Google Play's account deletion policy: Privacy &
+  my data carries a row, **Delete my account and data**, with the subtitle
+  `privacyDeleteHow`, that opens `kDeleteAccountUrl`
+  (`https://hazri.me/delete-account`) in the browser; with no browser it
+  shows `privacyDeleteNoBrowser`. The page takes the request by email to
+  `support@hazri.me` and the owner deletes the profile by hand within 30
+  days. It is on hazri.me and not `kSiteBase` because the App Link filter
+  claims every path on `kSiteBase`. Deleting in the app itself is still not
+  built.)*
 
 - Phone number verification (OTP).
 

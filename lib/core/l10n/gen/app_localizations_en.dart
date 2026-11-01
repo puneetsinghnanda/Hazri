@@ -4084,4 +4084,15 @@ class LEn extends L {
 
   @override
   String get slotAnyTime => 'Any time of day';
+
+  @override
+  String get privacyAccountTitle => 'Your account';
+
+  @override
+  String get privacyDeleteHow =>
+      'Opens hazri.me, where you ask for it by email. Your diary stays on this phone.';
+
+  @override
+  String get privacyDeleteNoBrowser =>
+      'Could not open a browser. The page is hazri.me/delete-account';
 }

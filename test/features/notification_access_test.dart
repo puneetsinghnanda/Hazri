@@ -20,6 +20,14 @@ class FakeSystemSettings implements SystemSettings {
 
   @override
   Future<String?> installReferrer() async => null;
+
+  final List<String> urls = [];
+
+  @override
+  Future<bool> openUrl(String url) async {
+    urls.add(url);
+    return true;
+  }
 }
 
 /// The lock-screen controls are the playback service's notification, so this is

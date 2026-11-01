@@ -4066,4 +4066,15 @@ class LPa extends L {
 
   @override
   String get slotAnyTime => 'ਦਿਨ ਦੇ ਕਿਸੇ ਵੀ ਵੇਲੇ';
+
+  @override
+  String get privacyAccountTitle => 'ਤੁਹਾਡਾ ਖਾਤਾ';
+
+  @override
+  String get privacyDeleteHow =>
+      'hazri.me ਖੁੱਲ੍ਹੇਗਾ, ਜਿੱਥੇ ਤੁਸੀਂ ਈਮੇਲ ਰਾਹੀਂ ਮੰਗ ਸਕਦੇ ਹੋ। ਤੁਹਾਡੀ ਡਾਇਰੀ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹੇਗੀ।';
+
+  @override
+  String get privacyDeleteNoBrowser =>
+      'ਬ੍ਰਾਊਜ਼ਰ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕਿਆ। ਪੰਨਾ ਹੈ hazri.me/delete-account';
 }
