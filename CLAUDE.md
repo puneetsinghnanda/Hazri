@@ -596,7 +596,7 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
-- **Google Play: the first closed test is in review** (submitted 2026-11-01,
+- **Google Play: the first closed test is published** (submitted and approved 2026-11-01,
   build 281 / 0.1.0, developer account `hazriapp.dev@gmail.com`, developer
   name Puneet Singh Nanda, package `app.hazri`). The listing, its images and
   its text in en-US, pa and hi-IN are `store/` (drawn by `tools/store/`).
