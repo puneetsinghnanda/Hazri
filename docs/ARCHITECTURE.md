@@ -1877,6 +1877,28 @@ Shown only when Android does not hand the link to the app (app not installed, or
 
 - Self-contained HTML, inline CSS, no external resources.
 
+*Amended 2026-11-01, as built (`public/verify/index.html` and `verify.js`).*
+The page is in Punjabi, Hindi and English, styled by the site's own
+`/style.css` and `/lang.js`. **With a token** (`?token=` of 43 base64url
+characters, from the query or the fragment) it says *Open this link in Hazri*
+and its button is the intent above, always on `{{FIREBASE_PROJECT_ID}}.web.app`,
+the host the App Link filter declares, whichever host served the page.
+**Without one** it says the link is not complete and sends the reader back to
+the email on the phone that has Hazri. There is no Google Play link until the
+app is on Google Play, and no "paste the link into Hazri" step, because the
+app has no field that takes one. `functions/test/unit/verify-page.test.ts`
+holds `verify.js` to the link `linkFor()` mails.
+
+The page shipped from 2026-09-27 to 2026-11-01 was written for Firebase's
+`oobCode` links and looked for `oobCode=`, while the server mailed `?token=`,
+so every real link that reached a browser was told it "carries no code" and
+was told to paste it into a field that does not exist. **The usual reason a
+link reaches the browser at all is Brevo's click tracking**, which is on by
+default for transactional mail: it rewrites the link to Brevo's own address,
+so the tap opens a browser and the redirect to `/verify` happens inside it,
+where no App Link can fire. Brevo's API has no per-message switch; it is
+turned off in Brevo under Transactional -> Settings -> Tracking.
+
 ### 8.4 Android build settings
 
 *Moved here from `docs/features/01-accounts.md` §10.3 on 2026-10-08, word for word. Section numbers and bare references inside it are that file's.*

@@ -601,7 +601,18 @@ answers `500 INTERNAL` from the endpoint that needs it.
   `public/.well-known/assetlinks.json` matching the key CI signs with, and
   that file being **deployed**. Hosting's default `"**/.*"` ignore rule once
   excluded `.well-known` silently; `test/android/firebase_hosting_test.dart`
-  holds that now. `IncomingLink` keys on the `oobCode`, not the path.
+  holds that now. `IncomingLink` keys on the `token`, not the path.
+- **A tracked link never opens the app.** Brevo rewrites every link in a
+  transactional mail to its own click-tracking address unless tracking is
+  off in Brevo (Transactional -> Settings -> Tracking; the API has no
+  per-message switch). The tap then opens a browser, the redirect to
+  `/verify` happens inside it, and no App Link can fire, however right the
+  four things above are. `/verify` is the net under that: with a token it
+  offers **Open in Hazri**, an `intent://` address naming the package
+  (ARCHITECTURE §8.3). Until 2026-11-01 that page still looked for
+  Firebase's `oobCode=` while the server mailed `?token=`, so it told every
+  real link it "carries no code"; `functions/test/unit/verify-page.test.ts`
+  holds the two together now, and was watched failing on the old check.
 - **`ScheduledNotificationReceiver` must be declared in the manifest** for
   the plugin path that remains. Its absence once meant no reminder ever
   arrived while `pendingNotificationRequests()` looked healthy, and four
@@ -613,6 +624,11 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
+- **The `/verify` fix of 2026-11-01 is live only after two hand steps**:
+  turn off click tracking in Brevo (Transactional -> Settings -> Tracking),
+  which is what makes the mailed link open the app at all, and
+  `firebase deploy --only hosting:public`, which puts the new `/verify`
+  page and its Open in Hazri button on the site.
 - **The quiz's `/q/` page needs a hosting deploy.** `public/q/index.html`
   and its `firebase.json` rewrite reach the website only with
   `firebase deploy --only hosting:public`; nobody has confirmed that has

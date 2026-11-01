@@ -11,6 +11,8 @@ on:
       - 'firebase.json'
       - 'firestore.rules'
       - 'firestore.indexes.json'
+      # verify-page.test.ts loads the /verify page's script.
+      - 'public/verify/**'
       - '.github/workflows/functions.yml'
   workflow_dispatch:
 
