@@ -602,12 +602,15 @@ answers `500 INTERNAL` from the endpoint that needs it.
   that file being **deployed**. Hosting's default `"**/.*"` ignore rule once
   excluded `.well-known` silently; `test/android/firebase_hosting_test.dart`
   holds that now. `IncomingLink` keys on the `token`, not the path.
-- **A tracked link never opens the app.** Brevo rewrites every link in a
-  transactional mail to its own click-tracking address unless tracking is
-  off in Brevo (Transactional -> Settings -> Tracking; the API has no
-  per-message switch). The tap then opens a browser, the redirect to
-  `/verify` happens inside it, and no App Link can fire, however right the
-  four things above are. `/verify` is the net under that: with a token it
+- **The same link can open the app on one phone and a browser on
+  another** (2026-11-01, two phones). The four things above are per
+  project; what varies is per phone: whether Android verified the App Link
+  for that install (Settings -> Apps -> Hazri -> Open by default), the mail
+  app and the browser, and Brevo's click tracking, which wraps the link in
+  Brevo's own address unless it is off in Brevo (Transactional -> Settings
+  -> Tracking; the API has no per-message switch), leaving it to the
+  browser whether the redirect reaches the app. `/verify` is the net under
+  all of it: with a token it
   offers **Open in Hazri**, an `intent://` address naming the package
   (ARCHITECTURE §8.3). Until 2026-11-01 that page still looked for
   Firebase's `oobCode=` while the server mailed `?token=`, so it told every
@@ -626,7 +629,7 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 - **The `/verify` fix of 2026-11-01 is live only after two hand steps**:
   turn off click tracking in Brevo (Transactional -> Settings -> Tracking),
-  which is what makes the mailed link open the app at all, and
+  so the mailed link is Hazri's own address rather than Brevo's, and
   `firebase deploy --only hosting:public`, which puts the new `/verify`
   page and its Open in Hazri button on the site.
 - **The quiz's `/q/` page needs a hosting deploy.** `public/q/index.html`

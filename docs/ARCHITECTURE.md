@@ -1892,12 +1892,16 @@ holds `verify.js` to the link `linkFor()` mails.
 The page shipped from 2026-09-27 to 2026-11-01 was written for Firebase's
 `oobCode` links and looked for `oobCode=`, while the server mailed `?token=`,
 so every real link that reached a browser was told it "carries no code" and
-was told to paste it into a field that does not exist. **The usual reason a
-link reaches the browser at all is Brevo's click tracking**, which is on by
-default for transactional mail: it rewrites the link to Brevo's own address,
-so the tap opens a browser and the redirect to `/verify` happens inside it,
-where no App Link can fire. Brevo's API has no per-message switch; it is
-turned off in Brevo under Transactional -> Settings -> Tracking.
+was told to paste it into a field that does not exist. **Why a link reaches
+the browser differs by phone** (2026-11-01: the same mail opened the app on
+some phones and a browser on two). What decides it is on the phone: whether
+Android verified the App Link for this install (Settings -> Apps -> Hazri ->
+Open by default), which mail app and browser handle the tap, and whether
+Brevo's click tracking has wrapped the link -- on by default for
+transactional mail, it sends the tap to Brevo's address first, and whether
+a browser then hands the redirect to the app depends on the browser. Brevo's
+API has no per-message switch; tracking is turned off under Transactional ->
+Settings -> Tracking. The page is the net under all of these.
 
 ### 8.4 Android build settings
 
