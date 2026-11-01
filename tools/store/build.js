@@ -160,7 +160,7 @@ function devHeader() {
   execFileSync('python3', ['-c', `
 import sys; sys.path.insert(0, ${JSON.stringify(path.join(root, 'tools', 'content_pipeline'))})
 from make_icons import draw_mark, BG, NAVY, KESRI
-draw_mark(512, inset=0.66, background=BG, arc_colour=NAVY, sun_colour=KESRI).convert('RGB').save(${JSON.stringify(path.join(out, 'icon-512.png'))})
+draw_mark(512, inset=0.66, background=BG, arc_colour=NAVY, sun_colour=KESRI).convert('RGBA').save(${JSON.stringify(path.join(out, 'icon-512.png'))})
 `]);
   console.log('icon-512.png');
 })();
