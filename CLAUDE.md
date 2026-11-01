@@ -596,6 +596,16 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
+- **Google Play: the first closed test is in review** (submitted 2026-11-01,
+  build 281 / 0.1.0, developer account `hazriapp.dev@gmail.com`, developer
+  name Puneet Singh Nanda, package `app.hazri`). The listing, its images and
+  its text in en-US, pa and hi-IN are `store/` (drawn by `tools/store/`).
+  Production unlocks after 12 testers stay opted in for 14 days in a row.
+  Still to do: the **App signing key SHA-256** from Play Console has to be
+  added to `public/.well-known/assetlinks.json` and Firebase, and hosting
+  redeployed, or verification and restore links open a browser for anybody
+  who installed from Play.
+
 - **The website's `/privacy` and `/delete-account` pages are live** (deployed
   2026-10-30, the hosting deploy that also put `/q/` up). They are the Play
   Store's privacy policy and account deletion URLs; deletion is by email to
