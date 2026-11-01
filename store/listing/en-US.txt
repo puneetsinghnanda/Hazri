@@ -1,55 +1,70 @@
 APP NAME (max 30)
-Hazri: Nitnem, Simran & Sangat
+Hazri: Nitnem & Gurbani Path
 
 SHORT DESCRIPTION (max 80)
-Nitnem with audio, Simran, Gurpurab calendar and Sangat. No ads, no login.
+Nitnem Gurbani with audio: Japji Sahib, Sukhmani Sahib, Simran, Gurpurab dates
 
 FULL DESCRIPTION (max 4000)
-Hazri is a daily companion for your Sikh practice. Read and hear your Nitnem, sit in Naam Simran, keep a private diary of your paath and do paath together with your family and sangat. Mark your Hazri to Waheguru, every day.
+Hazri is a Nitnem and Gurbani app for your daily Sikh path. Read and listen to Japji Sahib, Jaap Sahib, Rehras Sahib, Kirtan Sohila and Sukhmani Sahib with audio, follow the Nanakshahi calendar of Gurpurab dates, sit in Waheguru Simran and do path together with your family and sangat. Mark your Hazri to Waheguru, every day.
 
-No ads. No login. No password. Reading a bani, hearing it, seeing the calendar and keeping your diary all happen on your phone and work with no internet.
+No ads. No login. No password. Your Nitnem gutka, the Gurbani audio, the calendar and your diary are all on your phone and work offline.
 
-READ ALONG AS THE PAATH IS RECITED
-• Japji Sahib, Jaap Sahib, Tav Prasad Savaiye, Chaupai Sahib, Anand Sahib, Rehras Sahib, Kirtan Sohila, Sukhmani Sahib and Ardas, each with its own recitation
-• Every line lights up as it is recited, so you never lose your place
-• Meanings in English and Punjabi, and in Hindi for the banis from Sri Guru Granth Sahib Ji
-• Listen with the screen off, with controls on the lock screen
+NITNEM GURBANI WITH AUDIO
+Every bani of the daily Nitnem, in Gurmukhi, each with its own recitation:
+• Japji Sahib
+• Jaap Sahib
+• Tav Prasad Savaiye
+• Chaupai Sahib
+• Anand Sahib
+• Rehras Sahib
+• Kirtan Sohila (Sohila Sahib)
+• Sukhmani Sahib
+• Ardas
 
-YOUR WHOLE NITNEM, MORNING TO NIGHT
-• Each bani in its part of the day: Amrit Vela, evening and before sleep
-• Set your daily paath and get a gentle reminder at the time you choose
-• An Amrit Vela reminder, and reminders on the morning of Gurpurabs and Sikh days
+READ ALONG AS THE PATH IS RECITED
+• Each line of Gurbani lights up as it is recited, so you never lose your place
+• Gurmukhi with Hindi (Devanagari) and English transliteration, Larivaar and vishraam pause marks
+• Gurbani meanings (arth) in English and Punjabi, and in Hindi for the banis from Sri Guru Granth Sahib Ji
+• Adjustable text size and a dark mode for Amrit Vela
+• Gurbani audio keeps playing with the screen off: lock screen and Bluetooth controls, playback speed and a sleep timer
 
-A DIARY THAT STAYS ON YOUR PHONE
-• Every day you marked your Hazri, your streak now and your longest
-• Badges for steady practice, earned quietly from your own diary
-• Optional weekly backup, so a new phone can bring it all back
+YOUR NITNEM, MORNING TO NIGHT
+• The banis of each part of the day: Amrit Vela, Rehras at evening and Kirtan Sohila before sleep
+• Set a daily path goal and get a reminder at the time you choose
+• An Amrit Vela reminder every morning
 
-SIMRAN WITH THE SANGAT OF THE WORLD
-• Sit in Naam Simran with a gentle recitation and a timer
+NANAKSHAHI CALENDAR AND GURPURAB DATES
+• Every Gurpurab of the year: Prakash Purab, Gurgaddi Divas, Joti Jot and Shaheedi Purab
+• Sangrand, Masya and Puranmashi dates, Jor Melas and days of Sikh history
+• Today's Nanakshahi date, and a reminder on the morning of each Gurpurab
+• Stories of the Gurpurabs, historic Gurdwaras and days of Sikh history
+
+WAHEGURU SIMRAN
+• Sit in Naam Simran with a gentle Waheguru recitation and a timer
 • A live globe shows where the sangat is in Simran right now, city by city. Never by name
 
-PAATH TOGETHER
-• Join the Sangat groups, or make a private group for your family and friends
-• Set a shared goal and watch it fill as everyone does their paath
-• Invite with a link or a code. Only the people you invite can see your group
-
-SAAKHIS FOR EVERY DAY
-• Illustrated saakhis from Sikh history to read and listen to, narrated in Punjabi
-• A lesson at the end of each one
+SIKH SAAKHIS (SAKHIS)
+• Illustrated saakhis from Sikh history and the lives of the Gurus
+• Read them or listen, narrated in Punjabi, with a lesson at the end of each
 
 GURMAT QUIZ
-• 340 questions on the Gurus, Gurdwaras, banis, Sikh heroes and history, in 17 topics
+• 340 Sikh quiz questions in 17 topics: the ten Gurus, Sri Guru Granth Sahib Ji, the Five Takhts, historic Gurdwaras, Sikh banis, Sikh heroes, Sikh history and culture
 • Five questions at a time, with a new topic each day
-• Make a profile to earn points and appear on the daily, weekly and monthly leaderboards
+• Make a profile to earn points and climb the daily, weekly and monthly leaderboards
 
-THE NANAKSHAHI CALENDAR
-• Every Gurpurab and Sikh day of the year, with today's Nanakshahi date
-• Stories of the Gurpurabs, Gurdwaras and days of Sikh history
+DO PATH TOGETHER WITH THE SANGAT
+• Join the Sangat groups for Japji Sahib, Sukhmani Sahib and Naam Simran
+• Make a private group for your family, Gurdwara or friends, with a shared goal: so many Japji Sahib or Sukhmani Sahib path, or minutes of Naam Simran, by a date you choose
+• Watch the goal fill as everyone does their path. Invite with a link or a code
+
+A DIARY OF YOUR PATH
+• Every day you marked your Hazri, your streak now and your longest
+• Badges for steady practice, earned from your own diary
 • Today's Vichar: a line from Sri Guru Granth Sahib Ji each day, to read and share
+• Optional weekly backup, so a new phone can bring it all back
 
-IN YOUR LANGUAGE
-Hazri speaks Punjabi, Hindi and English.
+PUNJABI, HINDI AND ENGLISH
+Use Hazri in Punjabi, Hindi or English.
 
 YOUR PRIVACY
 Nothing leaves your phone unless you make a profile or join a group, and then only what is needed for them to work. Hazri has no ads, no advertising ID and no tracking, and never sells or shares your data. Read exactly what is sent, and when, at hazri.me/privacy.
