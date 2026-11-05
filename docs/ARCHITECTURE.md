@@ -1896,12 +1896,12 @@ was told to paste it into a field that does not exist. **Why a link reaches
 the browser differs by phone** (2026-11-01: the same mail opened the app on
 some phones and a browser on two). What decides it is on the phone: whether
 Android verified the App Link for this install (Settings -> Apps -> Hazri ->
-Open by default), which mail app and browser handle the tap, and whether
-Brevo's click tracking has wrapped the link -- on by default for
-transactional mail, it sends the tap to Brevo's address first, and whether
-a browser then hands the redirect to the app depends on the browser. Brevo's
-API has no per-message switch; tracking is turned off under Transactional ->
-Settings -> Tracking. The page is the net under all of these.
+Open by default), and which mail app and browser handle the tap. The two
+phones were Play installs verified before Play's app signing key was in
+`assetlinks.json` (`docs/signing.md`). Brevo's click tracking, which would
+send the tap to Brevo's own address first, is off (owner, 2026-11-05) and
+must stay off: its API has no per-message switch. The page is the net under
+all of these.
 
 ### 8.4 Android build settings
 

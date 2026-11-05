@@ -3,8 +3,8 @@
  * A verification or restore link is meant to open the app directly (an App
  * Link). This page is where it lands when Android hands it to a browser
  * instead: the app is not installed, the link was opened on a computer, or
- * the mail service wrapped it in its own click-tracking address, after which
- * the redirect to us happens inside the browser and no App Link can fire.
+ * Android's one check of the App Link failed for that install (an install
+ * from Play before Play's signing key was in assetlinks.json, 2026-11-01).
  *
  * With a token, Open in Hazri is an intent:// address naming the app's
  * package, which Chrome hands straight to the app with the same link. The
