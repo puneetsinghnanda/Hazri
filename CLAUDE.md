@@ -628,11 +628,14 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
-- **The `/verify` fix of 2026-11-01 is live only after
-  `firebase deploy --only hosting:public`**, which puts the new `/verify`
-  page and its Open in Hazri button on the site. That deploy is safe now
-  that git's `assetlinks.json` names Play's key too; before, a deploy from
-  git would have dropped it and broken the links of every Play install.
+- **Two Play testers' phones still open links in a browser** until the
+  next Play update re-runs Android's App Link check (or they add
+  `hazri-dfcc1.web.app` under Settings -> Apps -> Hazri -> Open by default).
+  Meanwhile `/verify`'s Open in Hazri finishes the link for them: the new
+  page was deployed on 2026-11-05 with both keys in `assetlinks.json`, and
+  Google's Digital Asset Links API reads both on both hosts. Deploy hosting
+  only from a branch whose `assetlinks.json` names both keys; one without
+  Play's would break the links of every Play install.
 - **Google Play: the first closed test is published** (submitted and approved 2026-11-01,
   build 281 / 0.1.0, developer account `hazriapp.dev@gmail.com`, developer
   name Puneet Singh Nanda, package `app.hazri`). The listing, its images and
