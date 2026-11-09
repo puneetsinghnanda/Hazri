@@ -657,9 +657,11 @@ answers `500 INTERNAL` from the endpoint that needs it.
   Explorer, filtered on `profile: NO_PROFILE`, shows the uid behind each one.
 - **The Functions run on Node 22** (2026-11-09): Node 20 was decommissioned
   for Cloud Functions on 2026-10-30 and `firebase deploy` refuses it.
-- **A hand-started Build is cancelled by the next push to its branch**
-  (`concurrency: cancel-in-progress`), so push nothing to the branch while one
-  runs (2026-11-09, run 291).
+- **A hand-started Build is cancelled by the next push to its branch that
+  starts a build** (`concurrency: cancel-in-progress`), so while one runs push
+  nothing that matches build.yml's `paths` -- `firebase.json` is on that list,
+  which is how the Node 22 change cancelled run 291 (2026-11-09). Docs and
+  `CLAUDE.md` are not.
 - **Two Play testers' phones still open links in a browser** until the
   next Play update re-runs Android's App Link check (or they add
   `hazri-dfcc1.web.app` under Settings -> Apps -> Hazri -> Open by default).
