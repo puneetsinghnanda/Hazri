@@ -173,3 +173,16 @@ describe("the group's globe (08-sangat §6.4a, §6.6): every query it runs has i
     expect(uncovered([wrongDir])).toEqual([wrongDir]);
   });
 });
+
+// src/jobs/sangat.ts totalsDue: collectionGroup('shards').where('at', '>=', since).
+// A collection-group range filter needs a COLLECTION_GROUP single-field index,
+// which Firestore does not make by itself; without it the probe fails and every
+// minute recounts (the guard in totalsDue), which is the cost it exists to save.
+describe('single-field overrides the queries need', () => {
+  type Override = { collectionGroup: string; fieldPath: string; indexes: Array<{ order?: string; queryScope: string }> };
+  const overrides: Override[] = JSON.parse(readFileSync(join(__dirname, '../../../firestore.indexes.json'), 'utf8')).fieldOverrides ?? [];
+  it('sangatTotals probe: shards.at ascending across the collection group', () => {
+    const o = overrides.find((x) => x.collectionGroup === 'shards' && x.fieldPath === 'at');
+    expect(o?.indexes).toContainEqual({ order: 'ASCENDING', queryScope: 'COLLECTION_GROUP' });
+  });
+});

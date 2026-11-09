@@ -179,16 +179,24 @@ describeEmu('presence (07-simran §6)', () => {
     expect(after.get('updatedAt').isEqual(before)).toBe(true);
   });
 
-  it('globe: 503 before the first build; counts across a day change; built twice is the same (G-7, G-14)', async () => {
-    expect((await h.as('x').get('/api/v1/presence/globe')).body.error.code).toBe('GLOBE_NOT_READY');
+  it('globe: built on the first look; counts across a day change; built twice is the same (G-7, G-14)', async () => {
+    // Nobody has looked yet: nothing is stored, and the first GET builds it.
+    expect((await h.db.doc('presenceSnapshot/current').get()).exists).toBe(false);
+    const empty = await h.as('x').get('/api/v1/presence/globe');
+    expect(empty.status).toBe(200);
+    expect(JSON.parse(empty.text)).toMatchObject({ day: '2026-10-08', live: 0, counted: 0, countries: {} });
+    expect(JSON.parse(empty.text)).not.toHaveProperty('countedAt');
     await createProfile(h, 'a', { email: 'a@example.com', cityId: 'new_delhi' });
     await createProfile(h, 'b', { email: 'b@example.com', cityId: 'new_delhi' });
     await createProfile(h, 'c', { email: 'c@example.com', cityId: 'amritsar' });
     await h.as('a').post('/api/v1/presence/attendance');
-    expect(await runBuildGlobeSnapshot(h.db, h.clock.now())).toEqual({ live: 1, counted: 3 });
-    expect(await runBuildGlobeSnapshot(h.db, h.clock.now())).toEqual({ live: 1, counted: 3 });
+    const first = await runBuildGlobeSnapshot(h.db, h.clock.now());
+    expect(first).toMatchObject({ live: 1, counted: 3, profiles: 3 });
+    expect(await runBuildGlobeSnapshot(h.db, h.clock.now(), first)).toMatchObject({ live: 1, counted: 3 });
+    expect(await runBuildGlobeSnapshot(h.db, h.clock.now())).toMatchObject({ live: 1, counted: 3 });
 
-    const res = await request(h.app).get('/api/v1/presence/globe').set('Authorization', 'Bearer anon:x').set('Accept-Encoding', 'gzip').buffer(true).parse((r, cb) => {
+    // A fresh instance: `h` holds the empty one in memory for GLOBE_CACHE_SECONDS.
+    const res = await request(harness().app).get('/api/v1/presence/globe').set('Authorization', 'Bearer anon:x').set('Accept-Encoding', 'gzip').buffer(true).parse((r, cb) => {
       const chunks: Buffer[] = [];
       r.on('data', (c: Buffer) => chunks.push(c));
       r.on('end', () => cb(null, Buffer.concat(chunks)));
@@ -201,7 +209,38 @@ describeEmu('presence (07-simran §6)', () => {
     expect(body.countries.IN.s['IN-XX'].k).toEqual({ new_delhi: [1, 2], amritsar: [0, 1] });
 
     // Next IST day: nobody is live until they open the app again.
-    expect(await runBuildGlobeSnapshot(h.db, new Date('2026-10-08T18:31:00Z'))).toEqual({ live: 0, counted: 3 });
+    expect(await runBuildGlobeSnapshot(h.db, new Date('2026-10-08T18:31:00Z'), first)).toMatchObject({ live: 0, counted: 3 });
+  });
+
+  it('globe: reuses the counted totals within the hour, counts again when a profile is added (§5.4)', async () => {
+    await createProfile(h, 'a', { email: 'a@example.com', cityId: 'new_delhi' });
+    const first = await runBuildGlobeSnapshot(h.db, h.clock.now());
+    // A stored count of 5 in Delhi stands in for an hour-old one: reused while profiles stay at 1.
+    const faked = { ...first, countries: { IN: { l: 0, c: 5, s: { 'IN-XX': { l: 0, c: 5, k: { new_delhi: [0, 5] as [number, number] } } } } } };
+    const later = new Date(h.clock.now().getTime() + 30 * 60 * 1000);
+    expect(await runBuildGlobeSnapshot(h.db, later, faked)).toMatchObject({ counted: 5 });
+    // A new profile changes the profile count: every city is counted again.
+    await createProfile(h, 'b', { email: 'b@example.com', cityId: 'amritsar' });
+    expect(await runBuildGlobeSnapshot(h.db, later, faked)).toMatchObject({ counted: 2, profiles: 2 });
+    // An hour on, the counts are taken again whatever the profile count says.
+    const second = await runBuildGlobeSnapshot(h.db, later);
+    expect(await runBuildGlobeSnapshot(h.db, new Date(later.getTime() + 3600 * 1000), { ...second, countries: faked.countries })).toMatchObject({ counted: 2 });
+  });
+
+  it('globe: a stored snapshot younger than 2 minutes is served without a build (GB2)', async () => {
+    await createProfile(h, 'a', { email: 'a@example.com', cityId: 'new_delhi' });
+    await h.as('x').get('/api/v1/presence/globe');
+    const built = (await h.db.doc('presenceSnapshot/current').get()).get('builtAt');
+    await createProfile(h, 'b', { email: 'b@example.com', cityId: 'amritsar' });
+    // Another instance (a fresh app, so a fresh in-memory cache) inside the 2 minutes: the stored one.
+    const other = harness();
+    other.clock.set('2026-10-08T06:01:00Z');
+    expect(JSON.parse((await other.as('x').get('/api/v1/presence/globe')).text).counted).toBe(1);
+    expect((await h.db.doc('presenceSnapshot/current').get()).get('builtAt').isEqual(built)).toBe(true);
+    // Past 2 minutes it is built again and sees the second profile.
+    const third = harness();
+    third.clock.set('2026-10-08T06:02:00Z');
+    expect(JSON.parse((await third.as('x').get('/api/v1/presence/globe')).text).counted).toBe(2);
   });
 });
 

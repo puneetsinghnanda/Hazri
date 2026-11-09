@@ -61,7 +61,8 @@ Each counted user is drawn exactly once:
 | --- | --- |
 | `SIMRAN_DEFAULT_MINUTES` | 5 (shared with `04-goals.md` §3) |
 | `GLOBE_REFRESH_SECONDS` | 120 |
-| `GLOBE_SNAPSHOT_SECONDS` | 120 (how often the server rebuilds the globe) |
+| `GLOBE_SNAPSHOT_SECONDS` | 120 (how old the stored globe may be before a request builds it again) |
+| `GLOBE_COUNTED_SECONDS` | 3600 (how long the per-city counted totals are reused; a new profile counts again at once) |
 | `GLOBE_CACHE_SECONDS` | 60 (how long a function instance serves the snapshot from memory) |
 | `DOT_YOU_RADIUS_PX` / `DOT_MAX_RADIUS_PX` | 4 / 14 (one person is the size of your dot) |
 | `DOT_FULL_AT` | 25 people: a dot this full or fuller is the maximum |
@@ -87,7 +88,7 @@ Each counted user is drawn exactly once:
 ### 4.3 Fetching the globe
 
 - **GB1.** Opening the Simran tab calls `GET /api/v1/presence/globe` (6.2) at once, then every `GLOBE_REFRESH_SECONDS` while the tab is visible, and again on return to the foreground. It stops when the tab is not visible.
-- **GB2.** The response is one snapshot for everybody, built by the server every `GLOBE_SNAPSHOT_SECONDS` (5.4), so the call costs the same whether one person or a million are watching. It is not personalised: the app works out "You" itself (2.1).
+- **GB2.** The response is one snapshot for everybody, built by the server when somebody asks for it and the stored one is older than `GLOBE_SNAPSHOT_SECONDS` (5.4), so the call costs the same whether one person or a million are watching, and nothing at all while nobody is (2026-11-09). It is not personalised: the app works out "You" itself (2.1).
 - **GB3.** While a fetch fails, the globe keeps the last snapshot it had and shows `globeStale` under the legend once the snapshot is more than 10 minutes old. With no snapshot at all, only your own dot is drawn and the presence line reads `globeOffline`.
 
 ### 4.4 Drawing
@@ -115,7 +116,7 @@ Each counted user is drawn exactly once:
 
 ### 4.5a Counting you (owner's report, 2026-10-17)
 
-- **CT1.** The server rebuilds the snapshot every `GLOBE_SNAPSHOT_SECONDS`, so for up to that long after your attendance is marked, the snapshot still counts you under Here today. The app keeps the time of its mark (`presence_attendance_at_v1`) and treats the snapshot as counting you live only when it was built at or after that time. Until then you come off your city's blue, not its green; after, off its green. Either way you are drawn once, as the orange dot, and nobody else is taken off. A mark kept before its time was recorded is treated as counted.
+- **CT1.** The server keeps a snapshot for up to `GLOBE_SNAPSHOT_SECONDS`, so for up to that long after your attendance is marked, the snapshot still counts you under Here today. The app keeps the time of its mark (`presence_attendance_at_v1`) and treats the snapshot as counting you live only when it was built at or after that time. Until then you come off your city's blue, not its green; after, off its green. Either way you are drawn once, as the orange dot, and nobody else is taken off. A mark kept before its time was recorded is treated as counted.
 - **CT2.** The presence line is the people live today as the dots show them: the snapshot's `live`, plus 1 for you while CT1 says the snapshot has not caught up. Green dots plus your dot always add up to it.
 - **CT3 (owner, 2026-11-09, designs 123 and 124).** Beside it, the people **here today** as the blue dots show them: `counted` − `live`, less 1 for you while you have a profile and CT1 says the snapshot still has you in the blue. The blue dots always add up to it. Here today keeps its meaning (S-1): everyone counted who has not opened the app today. At rest the two are figures side by side, live in green and here today in blue, with a rule between (`globeLiveLabel`, `globeHereLabel`; read out as `globeLiveCount` and `globeHereCount`). During a sitting both stay, smaller, either side of the countdown. With no snapshot (GB3) neither is shown. `globeHereTotal` in `lib/features/simran/domain/simran_presence.dart` is the rule.
 
@@ -201,7 +202,7 @@ Unchanged layout (0.2), drawn as designs 88, 89 and 90. The legend shows the thr
 - [ ] Widget: DR6 threads to every visible dot, none to the far side. Unit: DR7's web reaches every dot (one connected component) and draws each pair once.
 - [ ] Unit: AT1 calls at most once per `dayIst`, sets the flag only on success, and AT2 never calls without a profile.
 - [ ] Unit: SM1 length from the goal, else 5.
-- [ ] Backend (emulator): attendance statuses and idempotence, and that it leaves `updatedAt` alone; the snapshot counts live and counted correctly across a day change; `GLOBE_NOT_READY` before the first build.
+- [ ] Backend (emulator): attendance statuses and idempotence, and that it leaves `updatedAt` alone; the snapshot counts live and counted correctly across a day change; the first request builds it; a stored one younger than `GLOBE_SNAPSHOT_SECONDS` is served without a build; counted totals are reused within `GLOBE_COUNTED_SECONDS` and taken again when a profile is added.
 - [ ] Rules test: clients cannot read or write `profiles` or `presenceSnapshot`.
 - [ ] Pipeline: fails when a city has no `state`.
 - [ ] Device: two phones in two cities show each other as green within 4 minutes of opening the app.

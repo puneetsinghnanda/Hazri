@@ -13,6 +13,7 @@ import { goalDto, GoalDoc, GroupDoc } from '../sangat/model';
 import { parseNames, parseTemplate, writeGoalFromTemplate } from '../sangat/goals';
 import { addDays, dayIst, istDayStart, toIso } from '../time';
 import { emailHashOf, emailNormalizedOf, normalizeEmail } from '../validation';
+import { runSangatTotals } from '../jobs/sangat';
 import { deleteGroupEverywhere } from './sangat';
 
 const notFound = () => Errors.notFound('Not found');
@@ -256,6 +257,9 @@ export function adminRouter(deps: Deps): Router {
         return { before, after };
       });
       await audit(db, by(res), 'UPDATE_GROUP', `groups/${id}`, out.before, out.after);
+      // A target at or under the total completes the goal now: sangatTotals
+      // only recounts when a shard moves or on the hour (08-sangat §7.14).
+      if (out.after.currentGoal) await runSangatTotals(db, clock.now(), { force: true });
       const g = (await ref.get()).data() as GroupDoc;
       res.json({ group: adminGroupDto(id, g, await currentGoal(db, id, g), dayIst(clock.now())) });
     }),

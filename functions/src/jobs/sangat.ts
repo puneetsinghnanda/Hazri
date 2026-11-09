@@ -2,19 +2,46 @@
 // Each is a plain function over Firestore and a time, so a test can run it
 // twice (FN4, FN6); src/index.ts wraps them as Functions.
 import type { DocumentReference, Firestore } from 'firebase-admin/firestore';
-import { AggregateField, FieldPath, FieldValue } from 'firebase-admin/firestore';
+import { AggregateField, FieldPath, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
+import { SANGAT_TOTALS_LOOKBACK_SECONDS } from '../config';
 import { addDays, dayIst } from '../time';
 import { writeGoalFromTemplate } from '../sangat/goals';
 import { GoalDoc, GroupDoc, MemberDoc, sortNameOf } from '../sangat/model';
+
+/**
+ * §7.14, every minute: whether this run has anything to add. True when a
+ * shard was written in the last SANGAT_TOTALS_LOOKBACK_SECONDS (one read, a
+ * collection-group query on `shards.at`), and on the run at minute 0 of every
+ * hour whatever the shards say, which catches a missed run, a day change and
+ * shards written before they carried `at`. A failed probe (the index not yet
+ * deployed) recounts rather than skips.
+ */
+export async function totalsDue(db: Firestore, now: Date): Promise<boolean> {
+  if (now.getUTCMinutes() === 0) return true;
+  try {
+    const since = Timestamp.fromMillis(now.getTime() - SANGAT_TOTALS_LOOKBACK_SECONDS * 1000);
+    const recent = await db.collectionGroup('shards').where('at', '>=', since).select().limit(1).get();
+    return !recent.empty;
+  } catch (e) {
+    logger.warn('sangatTotals: shard probe failed, recounting', { error: String(e) });
+    return true;
+  }
+}
 
 /**
  * Every minute: adds each active built-in goal's shards into `total` (and
  * today's and yesterday's day totals), and marks the goal COMPLETED at its
  * target. Recomputed from the shards each time, so running twice changes
  * nothing (FN4). Uses sum() aggregations: about one read per goal per field.
+ * Skipped, at one read, when no shard moved (`totalsDue`; `force` recounts).
  */
-export async function runSangatTotals(db: Firestore, now: Date): Promise<{ goalsUpdated: number }> {
+export async function runSangatTotals(
+  db: Firestore,
+  now: Date,
+  opts: { force?: boolean } = {},
+): Promise<{ goalsUpdated: number; skipped?: true }> {
+  if (!opts.force && !(await totalsDue(db, now))) return { goalsUpdated: 0, skipped: true };
   const today = dayIst(now);
   const yesterday = addDays(today, -1);
   const groups = await db.collection('groups').where('kind', '==', 'BUILT_IN').where('status', '==', 'ACTIVE').get();

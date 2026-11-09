@@ -1206,7 +1206,8 @@ The order is dependency, not preference: each step needs the ones before it.
 **Step 7 — Simran and the globe.**
 - *Content:* a state code for each of the 92 cities in `cities.json`; the
   pipeline writes `state_code` and `functions/src/cities.json`.
-- *Server:* `lastSeenDay`; `buildGlobeSnapshot`; the presence endpoints.
+- *Server:* `lastSeenDay`; the snapshot (built on demand since 2026-11-09,
+  `buildGlobeSnapshot` before); the presence endpoints.
 - *App:* attendance once a day with its flag; the snapshot every 2 minutes
   while Simran is open; the legend You, Live, Here today; dot sizes; the
   threads, and the web and banner without a profile; the sitting's length

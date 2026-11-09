@@ -311,7 +311,7 @@ As `02-notifications.md` §4.5 and §8, plus the two added on 2026-10-07: "{name
 
 ## 12. Acceptance checklist
 
-- [ ] Backend (emulator): every endpoint and error of Section 7; idempotent contributions; Diary cap; retraction; join by expired, reset and valid codes; group full; creator rules; profile creation adopting `u_` memberships; `sangatTotals` and `sangatRollover` across a day change and a reset.
+- [ ] Backend (emulator): every endpoint and error of Section 7; idempotent contributions; Diary cap; retraction; join by expired, reset and valid codes; group full; creator rules; profile creation adopting `u_` memberships; `sangatTotals` and `sangatRollover` across a day change and a reset; `sangatTotals` skipping a minute in which no shard moved and recounting on the hour.
 - [ ] Rules test: no client can read or write any collection in Section 6.
 - [ ] App: outbox add, send, retry and delete; cache shown first and replaced; Join filled from an App Link and from a fake install referrer; every screen of 8.2.
 - [ ] Every key of 8.3 in `pa`, `hi` and `en`.

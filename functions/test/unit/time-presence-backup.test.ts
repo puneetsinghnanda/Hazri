@@ -1,5 +1,5 @@
 import { addDays, dayAtOffset, dayIst, diffDays, isValidDay, localMinuteOfDay, offsetRangesForLocalHour, utcOffsetMinutes, weekIdOf } from '../../src/time';
-import { buildSnapshot, splitCity } from '../../src/presence/snapshot';
+import { buildSnapshot, countedIsFresh, countedOf, snapshotIsFresh, splitCity } from '../../src/presence/snapshot';
 import { approxSize, canonical, fromStored, mergeBadge, mergeInto, mergeRow, toStored, validateRow } from '../../src/backup/rows';
 import { parseBackup } from '../../src/routes/backup';
 import { ApiError } from '../../src/errors';
@@ -182,5 +182,36 @@ describe('backup rows (10-backup BK9, 12-badges §5.9)', () => {
     const ok = parseBackup({ completions: [completion(1, '2026-10-08T01:00:00Z')], final: true });
     expect(ok.rows).toBe(1);
     expect(ok.final).toBe(true);
+  });
+});
+
+describe('globe snapshot built on demand (07-simran §5.4, 2026-11-09)', () => {
+  const at = (iso: string) => ({ toMillis: () => new Date(iso).getTime() });
+  const now = new Date('2026-10-08T06:00:00Z');
+
+  it('serves a snapshot of this IST day younger than the limit, and builds anything else', () => {
+    expect(snapshotIsFresh({ day: '2026-10-08', builtAt: at('2026-10-08T05:58:01Z') }, '2026-10-08', now, 120)).toBe(true);
+    expect(snapshotIsFresh({ day: '2026-10-08', builtAt: at('2026-10-08T05:58:00Z') }, '2026-10-08', now, 120)).toBe(false);
+    expect(snapshotIsFresh({ day: '2026-10-07', builtAt: at('2026-10-08T05:59:59Z') }, '2026-10-08', now, 120)).toBe(false);
+    expect(snapshotIsFresh({ day: '2026-10-08' }, '2026-10-08', now, 120)).toBe(false);
+    expect(snapshotIsFresh(null, '2026-10-08', now, 120)).toBe(false);
+  });
+
+  it('reuses the counted totals for an hour, and not once the number of profiles changes', () => {
+    const stored = { countedAt: at('2026-10-08T05:01:00Z'), profiles: 15 };
+    expect(countedIsFresh(stored, 15, now, 3600)).toBe(true);
+    expect(countedIsFresh(stored, 16, now, 3600)).toBe(false);
+    expect(countedIsFresh({ ...stored, countedAt: at('2026-10-08T05:00:00Z') }, 15, now, 3600)).toBe(false);
+    expect(countedIsFresh({ profiles: 15 }, 15, now, 3600)).toBe(false);
+  });
+
+  it('reads the counted totals back out of a stored snapshot', () => {
+    const s = buildSnapshot('2026-10-08', [
+      { cityId: 'new_delhi', live: 1, counted: 2 },
+      { cityId: 'amritsar', live: 0, counted: 1 },
+      { cityId: 'ludhiana', live: 0, counted: 0 },
+    ]);
+    expect(Object.fromEntries(countedOf(s))).toEqual({ new_delhi: 2, amritsar: 1 });
+    expect(countedOf(null).size).toBe(0);
   });
 });

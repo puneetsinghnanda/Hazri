@@ -1,11 +1,14 @@
 // Presence (07-simran §6, ARCHITECTURE §6.2).
 import { gzipSync } from 'node:zlib';
 import { Router } from 'express';
+import { logger } from 'firebase-functions';
 import { callerUid } from '../auth';
-import { GLOBE_CACHE_SECONDS } from '../config';
+import { GLOBE_CACHE_SECONDS, GLOBE_SNAPSHOT_SECONDS } from '../config';
 import type { Deps } from '../deps';
-import { ApiError, Errors } from '../errors';
+import { Errors } from '../errors';
 import { h } from '../http';
+import { runBuildGlobeSnapshot, StoredSnapshot } from '../jobs/globe';
+import { snapshotIsFresh } from '../presence/snapshot';
 import { dayIst, toIso } from '../time';
 
 interface CachedGlobe {
@@ -36,16 +39,28 @@ export function presenceRouter(deps: Deps): Router {
     }),
   );
 
-  // §6.2 GET /presence/globe: the snapshot as stored, builtAt as ISO, gzip.
+  // §6.2 GET /presence/globe: the snapshot, built again first when it is older
+  // than GLOBE_SNAPSHOT_SECONDS or was built for another day (§5.4); builtAt as
+  // ISO, gzip. Nobody looking means nothing built and nothing read.
   r.get(
     '/api/v1/presence/globe',
     h(async (req, res) => {
-      const nowMs = clock.now().getTime();
+      const now = clock.now();
+      const nowMs = now.getTime();
       if (!cache || nowMs - cache.at >= GLOBE_CACHE_SECONDS * 1000) {
         const snap = await db.doc('presenceSnapshot/current').get();
-        if (!snap.exists) throw new ApiError(503, 'GLOBE_NOT_READY', 'The globe has not been built yet');
-        const data = snap.data() ?? {};
-        const json = JSON.stringify({ ...data, builtAt: toIso(data.builtAt) });
+        let data = (snap.exists ? snap.data() : null) as Partial<StoredSnapshot> | null;
+        if (!snapshotIsFresh(data, dayIst(now), now, GLOBE_SNAPSHOT_SECONDS)) {
+          try {
+            data = await runBuildGlobeSnapshot(db, now, data);
+          } catch (e) {
+            // An older snapshot is better than none (GB3 keeps the app's last one too).
+            if (!data) throw e;
+            logger.warn('presence/globe: rebuild failed, serving the stored snapshot', { error: String(e) });
+          }
+        }
+        const { countedAt: _c, profiles: _p, ...body } = data ?? {};
+        const json = JSON.stringify({ ...body, builtAt: toIso(body.builtAt) });
         cache = { at: nowMs, json, gzip: gzipSync(json) };
       }
       res.setHeader('Content-Type', 'application/json; charset=utf-8');

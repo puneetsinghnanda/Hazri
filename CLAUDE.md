@@ -498,7 +498,8 @@ is true of the code now, then what is live, then what is still open.
   and an end date, invites by link or code, the outbox in `user.db` (queued
   only while `sangat_member_v1` says the install is in a group), reports, and
   the push token. Totals are **maintained by the server** from shards
-  (`sangatTotals`, every minute) -- never written by a client. **Each group
+  (`sangatTotals`, every minute, skipping a minute in which no shard moved)
+  -- never written by a client. **Each group
   has its own globe** (GG1-GG10, designs 104/105): members as counts per
   city, every dot tied to the ring by a dashed line (GG4a), the last hour's
   paath arriving as light along it, rebuilt by the server at most every 2
@@ -647,6 +648,17 @@ answers `500 INTERNAL` from the endpoint that needs it.
   The notifications screen says so when reminders cannot arrive.
 
 ### Still open
+
+- **The cost fix of 2026-11-09 needs a deploy**: `firebase deploy --only
+  functions,firestore:indexes`. The first bill (₹112 for 26 Oct - 9 Nov, with
+  about fifteen users) was two scheduled Functions running whether anybody
+  looked or not -- `buildGlobeSnapshot` (132,000 reads a day) and
+  `sangatTotals` -- and every background Function holding a whole vCPU
+  (ARCHITECTURE §5.2, FN7). The deploy deletes `buildGlobeSnapshot` (answer
+  yes when asked) and adds the `shards.at` index. Until the index is built
+  `sangatTotals` recounts every minute as before, so nothing breaks in
+  between. A built-in group's own globe (7.15) still runs two counts per city
+  of the list on a rebuild, but only while somebody has the group open.
 
 - **The website's `/privacy` changed on 2026-11-09** (it now says the
   globe and the Vichar stories are fetched with the anonymous sign-in, as the

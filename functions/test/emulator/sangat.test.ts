@@ -66,6 +66,26 @@ describeEmu('sangat (08-sangat §7)', () => {
     expect((await h.as('anon1').get('/api/v1/sangat/groups/mine')).body.groups).toEqual([]);
   });
 
+  it('sangatTotals skips a minute in which no shard moved, and recounts on the hour (§7.14)', async () => {
+    const gid = await builtInGroup(h, { type: 'BANI', baniId: 'JAPJ', target: 100, lengthDays: 30 });
+    await h.as('anon1').post(`/api/v1/sangat/groups/${gid}/join`);
+    h.clock.set('2026-10-08T06:10:00Z');
+    expect(await runSangatTotals(h.db, h.clock.now())).toEqual({ goalsUpdated: 0, skipped: true });
+    await h.as('anon1').post('/api/v1/sangat/contributions', { items: [japji(1)] });
+    // Within the lookback the contribution is counted, and a second run changes nothing (FN6).
+    h.clock.set('2026-10-08T06:12:00Z');
+    expect(await runSangatTotals(h.db, h.clock.now())).toEqual({ goalsUpdated: 1 });
+    expect(await runSangatTotals(h.db, h.clock.now())).toEqual({ goalsUpdated: 0 });
+    // Long after, a quiet minute is skipped at one read...
+    h.clock.set('2026-10-08T06:30:00Z');
+    expect(await runSangatTotals(h.db, h.clock.now())).toEqual({ goalsUpdated: 0, skipped: true });
+    // ...and minute 0 of the hour recounts whatever the shards say.
+    await h.db.doc(`groups/${gid}/goals/g0001`).update({ total: 0 });
+    h.clock.set('2026-10-08T07:00:00Z');
+    expect(await runSangatTotals(h.db, h.clock.now())).toEqual({ goalsUpdated: 1 });
+    expect((await h.db.doc(`groups/${gid}/goals/g0001`).get()).get('total')).toBe(1);
+  });
+
   it('profile creation adopts u_ memberships, contributions, caps and facts (MB2, SF3, S-3)', async () => {
     const gid = await builtInGroup(h, { type: 'BANI', baniId: 'JAPJ', target: 100, lengthDays: 30 });
     await h.as('u1').post(`/api/v1/sangat/groups/${gid}/join`);

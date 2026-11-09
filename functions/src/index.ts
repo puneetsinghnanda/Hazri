@@ -10,10 +10,9 @@ import { onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import { onRequest } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { createApp } from './app';
-import { BREVO_SECRET_NAME, FUNCTION_DEFAULTS } from './config';
+import { BACKGROUND_DEFAULTS, BREVO_SECRET_NAME, FUNCTION_DEFAULTS } from './config';
 import { BrevoMailer } from './email/mailer';
 import { runBadgeGoalReached } from './jobs/badges';
-import { runBuildGlobeSnapshot } from './jobs/globe';
 import { runSangatDispatch, runSangatMilestone } from './jobs/notify';
 import { runQuizProfileSync } from './jobs/quiz';
 import { runSangatProfileSync, runSangatRollover, runSangatTotals } from './jobs/sangat';
@@ -39,9 +38,9 @@ export const api = onRequest(
   }),
 );
 
-/** Every minute: built-in goals' shards into `total` (08-sangat §7.14). */
+/** Every minute: built-in goals' shards into `total`, when a shard moved (08-sangat §7.14). */
 export const sangatTotals = onSchedule(
-  { ...FUNCTION_DEFAULTS, schedule: 'every 1 minutes', timeZone: 'Asia/Kolkata' },
+  { ...BACKGROUND_DEFAULTS, schedule: 'every 1 minutes', timeZone: 'Asia/Kolkata' },
   async () => {
     await runSangatTotals(db, new Date());
   },
@@ -49,14 +48,14 @@ export const sangatTotals = onSchedule(
 
 /** 00:05 IST daily: expiries, ended custom groups, built-in resets. */
 export const sangatRollover = onSchedule(
-  { ...FUNCTION_DEFAULTS, schedule: '5 0 * * *', timeZone: 'Asia/Kolkata', timeoutSeconds: 540, memory: '512MiB' },
+  { ...BACKGROUND_DEFAULTS, schedule: '5 0 * * *', timeZone: 'Asia/Kolkata', timeoutSeconds: 540, memory: '512MiB' },
   async () => {
     await runSangatRollover(db, new Date());
   },
 );
 
 /** Profile name or city change → the member's rows (name, sortName, cityId). */
-export const sangatProfileSync = onDocumentUpdated({ ...FUNCTION_DEFAULTS, document: 'profiles/{profileId}' }, async (event) => {
+export const sangatProfileSync = onDocumentUpdated({ ...BACKGROUND_DEFAULTS, document: 'profiles/{profileId}' }, async (event) => {
   await runSangatProfileSync(db, event.params.profileId, event.data?.before.data(), event.data?.after.data());
   // The quiz's name and city on the current boards (14-quiz.md QZ31).
   await runQuizProfileSync(db, event.params.profileId, event.data?.before.data(), event.data?.after.data(), new Date());
@@ -64,7 +63,7 @@ export const sangatProfileSync = onDocumentUpdated({ ...FUNCTION_DEFAULTS, docum
 
 /** Hourly at :00: the 21:00 digest, the creator's 20:00 joins, held 07:00 milestones. */
 export const sangatDispatch = onSchedule(
-  { ...FUNCTION_DEFAULTS, schedule: '0 * * * *', timeZone: 'Etc/UTC', timeoutSeconds: 540, memory: '512MiB' },
+  { ...BACKGROUND_DEFAULTS, schedule: '0 * * * *', timeZone: 'Etc/UTC', timeoutSeconds: 540, memory: '512MiB' },
   async () => {
     await runSangatDispatch(db, messenger, new Date());
   },
@@ -72,7 +71,7 @@ export const sangatDispatch = onSchedule(
 
 /** A goal's total moved: milestone notices at 25/50/75/100 %. */
 export const sangatMilestone = onDocumentUpdated(
-  { ...FUNCTION_DEFAULTS, document: 'groups/{groupId}/goals/{goalId}' },
+  { ...BACKGROUND_DEFAULTS, document: 'groups/{groupId}/goals/{goalId}' },
   async (event) => {
     await runSangatMilestone(
       db,
@@ -88,7 +87,7 @@ export const sangatMilestone = onDocumentUpdated(
 
 /** A goal's status became COMPLETED: Sevadar facts (12-badges SF1). */
 export const badgeGoalReached = onDocumentUpdated(
-  { ...FUNCTION_DEFAULTS, document: 'groups/{groupId}/goals/{goalId}', timeoutSeconds: 300 },
+  { ...BACKGROUND_DEFAULTS, document: 'groups/{groupId}/goals/{goalId}', timeoutSeconds: 300 },
   async (event) => {
     await runBadgeGoalReached(
       db,
@@ -100,10 +99,5 @@ export const badgeGoalReached = onDocumentUpdated(
   },
 );
 
-/** Every GLOBE_SNAPSHOT_SECONDS (120): presenceSnapshot/current. */
-export const buildGlobeSnapshot = onSchedule(
-  { ...FUNCTION_DEFAULTS, schedule: 'every 2 minutes', timeZone: 'Asia/Kolkata' },
-  async () => {
-    await runBuildGlobeSnapshot(db, new Date());
-  },
-);
+// buildGlobeSnapshot is gone (2026-11-09): GET /presence/globe builds the
+// snapshot when it is stale, so nothing is counted while nobody is looking.

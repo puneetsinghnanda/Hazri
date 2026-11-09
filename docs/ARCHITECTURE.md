@@ -781,7 +781,7 @@ roles, `presence/{day}/cities/...` with heartbeats, `aggregates`, client-read
 | Spend cap | **₹2,000 / month**, Firebase-generated caps per cappable service |
 | Cappable services | Cloud Run, Cloud Run Functions, Gemini API, Vertex AI |
 | Project budget alert | `Firebase Project hazri-dfcc1`, monthly, 50 / 90 / 100% |
-| Expected actual spend | **₹0.** The free allowance does not go away on Blaze |
+| Expected actual spend | **₹0 was the estimate, and it was wrong.** The first bill (26 Oct - 9 Nov 2026, ₹112 with about fifteen users) was ₹64 of Functions CPU and ₹47 of Firestore reads, nearly all from two scheduled Functions that ran whether anybody was looking or not: `buildGlobeSnapshot` (184 counts every 2 minutes, about 132,000 reads a day against 50,000 free) and `sangatTotals` (about 26,000). Fixed 2026-11-09: the globe is built on demand (§5.5 below, 07-simran §5.4), `sangatTotals` skips a minute in which no shard moved (08-sangat §7.14), and the background Functions run on a sixth of a vCPU (FN7) |
 
 Three things about that cap which matter more than the number:
 
@@ -864,6 +864,18 @@ The move, for the record: delete protection was already off, so it was
 retry; do not reach for a different database name.
 
 **FN6 — every Function has an emulator test, including being run twice.**
+
+**FN7 — a schedule pays whether or not anybody is looking** (2026-11-09).
+A scheduled Function's reads and CPU are a fixed cost per run, multiplied by
+1,440 a day for every minute, so work that only matters while somebody is
+looking is done on request and kept for its freshness window instead (the
+Simran globe, a group's globe, the quiz boards), and a schedule that must
+stay checks first, at one read, whether there is anything to do
+(`sangatTotals`). The scheduled and triggered Functions also run on
+`cpu: 'gcf_gen1'` (`BACKGROUND_DEFAULTS` in `functions/src/config.ts`): a
+sixth of a vCPU at 256 MiB instead of a whole one, because they wait on
+Firestore and Cloud Run bills the CPU allocated, not used. The `api` keeps
+the default, because a person waits on it.
 
 ### 5.4 Profiles: `profiles`, `emailIndex`, `owners`, `verificationTokens`, `mail`
 
@@ -1002,21 +1014,26 @@ No new collection. Two fields of the profile (`01-accounts.md` §4.1, amended by
 
 #### 07-simran §5.4 `presenceSnapshot/current`
 
-One document, rebuilt by the scheduled function `buildGlobeSnapshot` every `GLOBE_SNAPSHOT_SECONDS`:
+One document, built by `GET /presence/globe` (6.2) when the stored one is older than `GLOBE_SNAPSHOT_SECONDS` or was built for another IST day, so nothing is counted while nobody is looking (2026-11-09; until then the scheduled function `buildGlobeSnapshot` rebuilt it every 2 minutes with 184 counts, about 132,000 reads a day, which was most of the first bill):
 
-1. For each city in `cities.json`, two `count()` aggregation queries on `profiles`: `cityId == city` (counted) and `cityId == city && lastSeenDay == today` (live).
-2. Cities with a counted total of 0 are left out.
-3. The result is written as below. It replaces the previous document.
+1. One `count()` of all `profiles`.
+2. Counted: when the stored `countedAt` is younger than `GLOBE_COUNTED_SECONDS` and the stored `profiles` equals that count, the per-city counted totals of the stored snapshot are reused; otherwise one `count()` per city in `cities.json` with `cityId == city`. A new or deleted profile therefore counts every city again at once; a changed city shows within the hour.
+3. Live: for each city with anybody counted, one `count()` with `cityId == city && lastSeenDay == today`. A city's counted total is never drawn under its live total.
+4. Cities with a counted total of 0 are left out, and the result is written as below. It replaces the previous document.
+
+With fifteen people in five cities a build is six reads. Two instances building at once write the same numbers (FN4).
 
 | Field | Type | Rule |
 | --- | --- | --- |
 | `day` | string | `dayIst` it was built for |
-| `builtAt` | timestamp | Server time |
+| `builtAt` | timestamp | When it was built (the Function's clock) |
+| `countedAt` | timestamp | When the per-city counted totals were last taken (step 2) |
+| `profiles` | number | `count()` of all profiles at that build; not sent to the app |
 | `live` | number | Total live users |
 | `counted` | number | Total counted users |
 | `countries` | map | `{ "IN": { "l": 480, "c": 950, "s": { "IN-DL": { "l": 25, "c": 40, "k": { "new_delhi": [25, 40] } } } } }`: `l` live, `c` counted, `s` states, `k` cities as `[live, counted]` |
 
-Counting on a schedule rather than keeping counters means no document is written by more than one attendance, so a burst at Amrit Vela cannot run into Firestore's per-document write limit, and the numbers can never drift.
+Counting on demand rather than keeping counters means no document is written by more than one attendance, so a burst at Amrit Vela cannot run into Firestore's per-document write limit, and the numbers can never drift.
 
 ### 5.6 Sangat: groups, goals, members, totals
 
@@ -1081,7 +1098,7 @@ Contributions to earlier goals of a built-in group are kept in `groups/{groupId}
 
 - `contributions/{memberKey}_{id}`: one document per received outbox row: `{ memberKey, kind, baniId, durationS, source, day, at, retracted, countedIn: [ "groupId/goalId", ... ], groupIds, countedCount, cityId, createdAt }`. `cityId` (since 2026-10-17) is the caller's profile city when it was received, or null, for the light of GG4. It makes sending idempotent and lets a retraction find what to take back.
 - A custom group's goal `total` and the member's `contribution` are incremented in the same transaction as the contribution document.
-- A built-in goal could receive thousands of writes a minute, past Firestore's limit of about one write a second on one document. Its total is kept in 20 shards, `groups/{groupId}/goals/{goalId}/shards/{0..19}` `{ count }`, each contribution incrementing one chosen at random, and the scheduled Function `sangatTotals` adds them into `total` once a minute.
+- A built-in goal could receive thousands of writes a minute, past Firestore's limit of about one write a second on one document. Its total is kept in 20 shards, `groups/{groupId}/goals/{goalId}/shards/{0..19}` `{ count, days, at }`, each contribution incrementing one chosen at random and stamping `at`, and the scheduled Function `sangatTotals` adds them into `total` once a minute when a shard moved in the last `SANGAT_TOTALS_LOOKBACK_SECONDS` (one collection-group read on `shards.at`, indexed in `firestore.indexes.json`), and at minute 0 of every hour regardless.
 - Diary cap (CT4): `contributionCaps/{memberKey}_{groupId}_{dayIst}` `{ diaryCount }` is read and incremented in the same transaction.
 
 #### 08-sangat §6.4a `groups/{groupId}/globe/current` (2026-10-17, GG1–GG9)
@@ -1594,14 +1611,14 @@ Returns the snapshot of 5.4 exactly as stored, with `builtAt` as an ISO string. 
 | Status | Body |
 | --- | --- |
 | 200 | The snapshot, gzip-compressed |
-| 503 | `GLOBE_NOT_READY` when no snapshot has been built yet |
+| 503 | `GLOBE_NOT_READY` is no longer sent: the first request builds the snapshot. If a build fails, the stored snapshot is served; with none stored the error is a 500 |
 
 #### 07-simran §6.3 Cost
 
 | Item | Firestore cost |
 | --- | --- |
 | Attendance | 2 reads + ≤ 1 write per user per day |
-| Snapshot | 2 aggregations per city every 2 minutes (each 1 read per 1,000 users matched, minimum 1): about 2 × cities × 720 reads a day |
+| Snapshot | Only while somebody is looking, at most every 2 minutes: 1 count of all profiles, 1 live count per city with anybody in it, and once an hour (or when a profile is added) 1 count per city of the list. Each count is 1 read per 1,000 users matched, minimum 1. Nobody looking: 0 |
 | Globe reads | ≤ 10 instances × 1 read a minute |
 
 ### 6.3 Sangat, and its scheduled and triggered Functions
@@ -1636,7 +1653,7 @@ All follow `00-platform.md` §0.1 (`maxInstances: 10`, idempotent, never writing
 
 | Function | Trigger | Does |
 | --- | --- | --- |
-| `sangatTotals` | Every minute | Adds each active built-in goal's shards into `total`; marks a goal `COMPLETED` when `total` reaches `target` |
+| `sangatTotals` | Every minute | When a shard was written in the last 3 minutes, or at minute 0 of the hour: adds each active built-in goal's shards into `total`; marks a goal `COMPLETED` when `total` reaches `target`. Otherwise one read and nothing more (2026-11-09). An admin edit of a running goal recounts at once |
 | `sangatRollover` | 00:05 IST daily | Expires goals past `endDay`; makes custom groups `INACTIVE` (CG6); starts the next goal of each built-in group whose goal completed or expired (BI4) |
 | `sangatProfileSync` | Profile name change | Updates `name` and `sortName` on that member's rows |
 | `sangatMilestone`, `sangatDispatch` | As `02-notifications.md` §8.2 | Sangat notifications |
@@ -1770,17 +1787,17 @@ players taking three quizzes a day is about 30,000 writes a day.
 
 All obey the contract of §5.3: `maxInstances: 10`, `minInstances: 0`,
 idempotent, never writing what triggers them, an emulator test that runs
-each twice.
+each twice, and FN7 (`cpu: 'gcf_gen1'`). `buildGlobeSnapshot` was removed
+on 2026-11-09: `GET /presence/globe` builds the snapshot when it is stale (§5.5).
 
 | Function | Trigger | Does | Defined in |
 |---|---|---|---|
-| `sangatTotals` | Every minute | Adds built-in goals' shards into `total`; marks a goal completed at its target | §6.3 (`08-sangat.md` §7.14) |
+| `sangatTotals` | Every minute | When a shard moved (or on the hour): adds built-in goals' shards into `total`; marks a goal completed at its target | §6.3 (`08-sangat.md` §7.14) |
 | `sangatRollover` | 00:05 IST daily | Expires goals past their end day, makes ended custom groups inactive, starts built-in groups' next goal | §6.3 |
 | `sangatProfileSync` | Profile name change | Updates the member's name on their rows, and the quiz player's name and city on the current boards (§5.13) | §6.3 |
 | `sangatDispatch` | Hourly | The 21:00 digest, the creator's 20:00 new-members message, waiting milestone notices | §7.2 |
 | `sangatMilestone` | Firestore update | Milestone notices at 25/50/75/100 % | §7.2 |
 | `badgeGoalReached` | A goal's `status` becomes `COMPLETED` | Adds the goal to each contributor's `badgeFacts.goalsReached`; joins are counted inside the join transaction | `12-badges.md` SF1–SF2, §5.8 |
-| `buildGlobeSnapshot` | Every `GLOBE_SNAPSHOT_SECONDS` | Rebuilds `presenceSnapshot/current` from `count()` queries on `profiles` | §5.5 |
 
 The earlier list of Functions (`onMemberWrite`, `setRole`, `approveListing`,
 `expirePresence`, `healAdminless` and the rest) belonged to the retired

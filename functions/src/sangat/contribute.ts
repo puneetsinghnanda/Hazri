@@ -1,7 +1,7 @@
 // POST /sangat/contributions (08-sangat 7.12): one transaction per outbox row,
 // idempotent by `contributions/{memberKey}_{id}` (§6.4).
 import type { DocumentReference, DocumentSnapshot, Firestore, Transaction } from 'firebase-admin/firestore';
-import { FieldPath, FieldValue } from 'firebase-admin/firestore';
+import { FieldPath, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { BUILT_IN_SHARDS } from '../config';
 import { dayIst } from '../time';
 import { amountFor, capDocId, contributionDocId, countDecision, groupDayOf, OutboxItem } from './counting';
@@ -31,7 +31,8 @@ function bumpGoal(tx: Transaction, t: Target, day: string, delta: number, rand: 
   const inc = FieldValue.increment(delta);
   if (t.group.kind === 'BUILT_IN') {
     const shard = t.goalRef.collection('shards').doc(String(rand(BUILT_IN_SHARDS)));
-    tx.set(shard, { count: inc, days: { [day]: inc } }, { merge: true });
+    // `at` lets sangatTotals skip a minute in which no shard moved (§7.14).
+    tx.set(shard, { count: inc, days: { [day]: inc }, at: Timestamp.fromDate(now) }, { merge: true });
     return;
   }
   const completes = delta > 0 && t.goal.total + delta >= t.goal.target;

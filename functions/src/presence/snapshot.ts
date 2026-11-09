@@ -52,3 +52,54 @@ export function splitCity(
   if (viewer.markedToday) return { you: 1, live: Math.max(0, city.live - 1), here };
   return { you: 1, live: city.live, here: Math.max(0, here - 1) };
 }
+
+/** The `[live, counted]` pairs of a stored snapshot, back to counted per city. */
+export function countedOf(stored: Partial<Pick<SnapshotBody, 'countries'>> | null | undefined): Map<string, number> {
+  const out = new Map<string, number>();
+  for (const country of Object.values(stored?.countries ?? {})) {
+    for (const state of Object.values(country?.s ?? {})) {
+      for (const [cityId, pair] of Object.entries(state?.k ?? {})) {
+        const c = Array.isArray(pair) ? Number(pair[1]) : 0;
+        if (c > 0) out.set(cityId, c);
+      }
+    }
+  }
+  return out;
+}
+
+/** Milliseconds of a stored Timestamp (or anything with toMillis), else null. */
+export function millisOf(t: unknown): number | null {
+  return t && typeof (t as { toMillis?: unknown }).toMillis === 'function' ? (t as { toMillis(): number }).toMillis() : null;
+}
+
+/**
+ * §5.4: the stored snapshot can be served while it was built for this IST
+ * day less than `seconds` ago. A snapshot from the future (a clock that went
+ * back) is treated by its distance, as the group's globe does (GG6).
+ */
+export function snapshotIsFresh(
+  stored: { day?: unknown; builtAt?: unknown } | null | undefined,
+  day: string,
+  now: Date,
+  seconds: number,
+): boolean {
+  if (!stored || stored.day !== day) return false;
+  const at = millisOf(stored.builtAt);
+  return at !== null && Math.abs(now.getTime() - at) < seconds * 1000;
+}
+
+/**
+ * §5.4: the counted totals of the stored snapshot can be reused while they
+ * are younger than `seconds` and the number of profiles has not changed
+ * since (a new or deleted profile counts every city again at once).
+ */
+export function countedIsFresh(
+  stored: { countedAt?: unknown; profiles?: unknown } | null | undefined,
+  profiles: number,
+  now: Date,
+  seconds: number,
+): boolean {
+  if (!stored || stored.profiles !== profiles) return false;
+  const at = millisOf(stored.countedAt);
+  return at !== null && Math.abs(now.getTime() - at) < seconds * 1000;
+}

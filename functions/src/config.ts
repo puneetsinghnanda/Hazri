@@ -42,6 +42,8 @@ export const EMAIL_WINDOW_SECONDS = 86400;
 // 07-simran.md §3.
 export const GLOBE_SNAPSHOT_SECONDS = 120;
 export const GLOBE_CACHE_SECONDS = 60;
+/** How long the per-city counted totals are reused before all cities are counted again (§5.4). */
+export const GLOBE_COUNTED_SECONDS = 3600;
 
 // 08-sangat.md §3.
 export const GROUP_NAME_MAX = 64;
@@ -62,6 +64,8 @@ export const DIARY_DAILY_CAP = 3;
 export const REPORT_NOTE_MAX = 200;
 export const CONTRIBUTIONS_MAX_PER_REQUEST = 200;
 export const BUILT_IN_SHARDS = 20;
+/** sangatTotals recounts only when a shard was written this recently (§7.14). */
+export const SANGAT_TOTALS_LOOKBACK_SECONDS = 180;
 /** GG6: a group's globe is built again when older than this. */
 export const GROUP_GLOBE_SECONDS = 120;
 /** GG4: the paath a group's globe replays as light: the last 60 minutes, at most 12. */
@@ -92,6 +96,17 @@ export const FUNCTION_DEFAULTS = {
   region: FUNCTIONS_REGION,
   maxInstances: 10,
   minInstances: 0,
+} as const;
+
+/**
+ * The scheduled and triggered Functions (FN7): a sixth of a vCPU at 256 MiB
+ * instead of the default whole one. They spend their time waiting on
+ * Firestore, and CPU time is what Cloud Run bills (2026-11-09: ₹64 of a
+ * ₹112 fortnight was CPU). The `api` keeps the default: a person waits on it.
+ */
+export const BACKGROUND_DEFAULTS = {
+  ...FUNCTION_DEFAULTS,
+  cpu: 'gcf_gen1',
 } as const;
 
 // 14-quiz.md.
