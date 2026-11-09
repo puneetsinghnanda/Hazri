@@ -87,3 +87,6 @@ key.properties
 !.env.example
 /functions/.runtimeconfig.json
 /functions/.env*
+
+# Instagram posts drawn by tools/social/build.js (social/samples/ is kept)
+/social/out/
