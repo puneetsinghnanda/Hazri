@@ -220,7 +220,22 @@ Startup (ProfileController.build() returns ProfileLoading and starts \_bootstrap
 
     - Any other error → keep ProfileLoaded(cached, true) if cached, else ProfileUnavailable.
 
-Controller methods: refresh() (step 3 only, same rules), setProfile(Profile p) (cache.write + ProfileLoaded(p, false)), markNone() (cache.clear + ProfileNone).
+Controller methods: refresh() (step 3 only, same rules), setProfile(Profile p) (cache.write + ProfileLoaded(p, false)), markNone() (cache.clear + ProfileNone), confirmGone() (R2).
+
+*Amended 2026-11-05.* The owner set up a profile, skipped confirming the email, and later found "No profile found" until the Profile screen fetched it again; the same happened after confirming. The phone had thrown its profile away on one stray `NO_PROFILE`. Four rules hold that now:
+
+- **R1. Only the newest answer counts.** Every refresh, setProfile and markNone moves a version on; a GET /profile answer that comes back after any of them is dropped. Two refreshes are routinely out at once (start-up and the Profile screen), and one sent before setup can be answered after it.
+- **R2. Only GET /profile can say the profile is gone.** A `NO_PROFILE` from any other endpoint (the backup, sending the verification mail, editing, changing the email, a link) calls confirmGone(), which asks GET /profile and clears only on its `NO_PROFILE`. The background backup worker does the same before it clears the cache.
+- **R3. No uid, no verdict.** Reading the cache before the uid is known (signed out, or the backup worker's isolate) returns nothing and keeps the cache; only a different uid drops it.
+- **R4. The server logs each `NO_PROFILE` with the uid that asked** (anonymous, no PII), and for GET /profile the profile it found and that profile's owner, so a phone that says "No profile found" can be matched against the profile in Cloud Logging.
+
+| # | Given | When | Then |
+| --- | --- | --- | --- |
+| PR-a | A GET /profile is out, sent before the profile existed | Setup finishes, then that GET answers `NO_PROFILE` | The profile stays, cached (R1) |
+| PR-b | Two refreshes out; the older will answer `NO_PROFILE` | The newer answers 200 first | The profile stays when the older arrives (R1) |
+| PR-c | A profile on the phone | The backup answers `NO_PROFILE`, GET /profile answers 200 | The profile stays; the backup stays scheduled (R2) |
+| PR-d | A profile on the phone | The backup and GET /profile both answer `NO_PROFILE` | No profile; the cache and the backup job are cleared (R2) |
+| PR-e | A cached profile; the background worker starts before the uid is known | It reads the cache | Nothing is deleted (R3) |
 
 main.dart order: WidgetsFlutterBinding.ensureInitialized() → Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform) → runApp(ProviderScope(child: App())) → in the root widget's first addPostFrameCallback, start DeepLinkService.
 

@@ -617,6 +617,17 @@ answers `500 INTERNAL` from the endpoint that needs it.
   Firebase's `oobCode=` while the server mailed `?token=`, so it told every
   real link it "carries no code"; `functions/test/unit/verify-page.test.ts`
   holds the two together now, and was watched failing on the old check.
+- **One `NO_PROFILE` must never throw a profile away** (2026-11-05). The
+  owner set up a profile, skipped or finished confirming the email, and later
+  saw "No profile found" until the Profile screen fetched it again; setting
+  up again then hit "email exists", because the first profile was still on
+  the server. The phone had cleared its profile on a single answer: an old
+  GET that arrived after setup, or any endpoint's `NO_PROFILE`.
+  `01-accounts.md` §8.3 R1-R4: only the newest answer counts, only
+  GET /profile can say the profile is gone (`confirmGone()`), no uid means
+  no verdict on the cache, and the server logs every `NO_PROFILE` with the
+  uid that asked. What sent the first `NO_PROFILE` is not known yet; those
+  logs are how to find out.
 - **`ScheduledNotificationReceiver` must be declared in the manifest** for
   the plugin path that remains. Its absence once meant no reminder ever
   arrived while `pendingNotificationRequests()` looked healthy, and four
@@ -628,6 +639,13 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
+- **The profile fix of 2026-11-05 needs a Play release and a Functions
+  deploy.** The app side (R1-R3) reaches testers only in a new closed-test
+  build: a hand-started Build run, then its `.aab` uploaded to the same
+  closed testing track (an update does not restart the 14 days). The
+  server's `NO_PROFILE` logging (R4) is live only after
+  `firebase deploy --only functions`; then Logs Explorer, filtered on
+  `profile: NO_PROFILE`, shows the uid behind each one.
 - **Two Play testers' phones still open links in a browser** until the
   next Play update re-runs Android's App Link check (or they add
   `hazri-dfcc1.web.app` under Settings -> Apps -> Hazri -> Open by default).

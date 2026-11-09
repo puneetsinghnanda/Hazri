@@ -117,7 +117,7 @@ class _LinkResultScreenState extends ConsumerState<LinkResultScreen> {
       if (e.code == 'EMAIL_ALREADY_VERIFIED') {
         await ref.read(profileControllerProvider.notifier).refresh();
       } else if (e.code == 'NO_PROFILE') {
-        await ref.read(profileControllerProvider.notifier).markNone();
+        await ref.read(profileControllerProvider.notifier).confirmGone();
       } else if (mounted) {
         ProfileMessages.snack(context, ProfileMessages.of(l, e));
       }

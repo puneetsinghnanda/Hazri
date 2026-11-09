@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +28,13 @@ class FakeServer {
   final requests = <String>[];
   bool offline = false;
 
+  /// The next request to each key is answered as the server stood when it
+  /// was sent, but only delivered once the returned completer completes: an
+  /// old answer that arrives late.
+  final _holds = <String, Completer<void>>{};
+
+  Completer<void> hold(String method, String path) => _holds['$method $path'] = Completer<void>();
+
   void on(String method, String path, int status, Object body) =>
       routes['$method $path'] = (_) => http.Response(jsonEncode(body), status,
           headers: {'content-type': 'application/json; charset=utf-8'});
@@ -38,7 +46,10 @@ class FakeServer {
         final r = routes[key];
         if (r == null) return http.Response('{"error":{"code":"NOT_FOUND","message":"x"}}', 404);
         final body = req.body.isEmpty ? <String, Object?>{} : jsonDecode(req.body) as Map<String, Object?>;
-        return r(body);
+        final response = r(body);
+        final held = _holds.remove(key);
+        if (held != null) await held.future;
+        return response;
       });
 
   List<Override> overrides({String uid = 'uid-1'}) {

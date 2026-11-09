@@ -18,10 +18,12 @@ class ProfileCache {
       _prefs.setString(key, jsonEncode({...p.toJson(), 'ownerUid': ownerUid}));
 
   /// Null, and the key deleted, when missing, not valid JSON, or owned by
-  /// another uid.
+  /// another uid. With no uid yet (signed out, or a background isolate before
+  /// sign-in is known) it is null and the key is kept: nothing says the
+  /// cache is not this install's (R3).
   Profile? read({required String? currentUid}) {
     final raw = _prefs.getString(key);
-    if (raw == null) return null;
+    if (raw == null || currentUid == null) return null;
     try {
       final j = jsonDecode(raw) as Map<String, Object?>;
       if (j['ownerUid'] != currentUid) {
