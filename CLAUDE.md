@@ -649,15 +649,16 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
-- **The cost fix of 2026-11-09 needs a deploy**: `firebase deploy --only
-  functions,firestore:indexes`. The first bill (₹112 for 26 Oct - 9 Nov, with
+- **The cost fix of 2026-11-09 is live** (deployed by the owner the same
+  day with `firebase deploy --only functions,firestore:indexes`;
+  `buildGlobeSnapshot` deleted). On Windows that deploy timed out loading the
+  code until `set FUNCTIONS_DISCOVERY_TIMEOUT=60` was given first. The first bill (₹112 for 26 Oct - 9 Nov, with
   about fifteen users) was two scheduled Functions running whether anybody
   looked or not -- `buildGlobeSnapshot` (132,000 reads a day) and
   `sangatTotals` -- and every background Function holding a whole vCPU
-  (ARCHITECTURE §5.2, FN7). The deploy deletes `buildGlobeSnapshot` (answer
-  yes when asked) and adds the `shards.at` index. Until the index is built
-  `sangatTotals` recounts every minute as before, so nothing breaks in
-  between. A built-in group's own globe (7.15) still runs two counts per city
+  (ARCHITECTURE §5.2, FN7). Until the `shards.at` index finished building,
+  `sangatTotals` recounted every minute as before. Check the cost chart two
+  or three days on: Firestore reads should sit inside the free 50,000 a day. A built-in group's own globe (7.15) still runs two counts per city
   of the list on a rebuild, but only while somebody has the group open.
 
 - **The website's `/privacy` changed on 2026-11-09** (it now says the
