@@ -649,13 +649,17 @@ answers `500 INTERNAL` from the endpoint that needs it.
   globe and the Vichar stories are fetched with the anonymous sign-in, as the
   app's Privacy page does) and is live only after
   `firebase deploy --only hosting:public`.
-- **The profile fix of 2026-11-05 needs a Play release and a Functions
-  deploy.** The app side (R1-R3) reaches testers only in a new closed-test
-  build: a hand-started Build run, then its `.aab` uploaded to the same
-  closed testing track (an update does not restart the 14 days). The
-  server's `NO_PROFILE` logging (R4) is live only after
-  `firebase deploy --only functions`; then Logs Explorer, filtered on
-  `profile: NO_PROFILE`, shows the uid behind each one.
+- **The profile fix of 2026-11-05 needs a Play release.** The app side
+  (R1-R3) reaches testers only in a new closed-test build: a hand-started
+  Build run, then its `.aab` uploaded to the same closed testing track (an
+  update does not restart the 14 days). The server's `NO_PROFILE` logging
+  (R4) **is live** (Functions deployed by the owner 2026-11-09): Logs
+  Explorer, filtered on `profile: NO_PROFILE`, shows the uid behind each one.
+- **The Functions run on Node 22** (2026-11-09): Node 20 was decommissioned
+  for Cloud Functions on 2026-10-30 and `firebase deploy` refuses it.
+- **A hand-started Build is cancelled by the next push to its branch**
+  (`concurrency: cancel-in-progress`), so push nothing to the branch while one
+  runs (2026-11-09, run 291).
 - **Two Play testers' phones still open links in a browser** until the
   next Play update re-runs Android's App Link check (or they add
   `hazri-dfcc1.web.app` under Settings -> Apps -> Hazri -> Open by default).
