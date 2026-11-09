@@ -1459,7 +1459,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `111-SaakhiLibrary` | Saakhis, the library | **new** | A card per saakhi: cover, Punjabi and English name, pages, Punjabi and English narration, Listen and Read. SK11 |
 | `110-TodaySaakhis` | Today, with the saakhis row | superseded | Option 1A, chosen 25 Oct; replaced by option C, one card with the day's saakhi large and the others small (113, 27 Oct) |
-| `43-Vichar` | Vichar | current |  |
+| `122-VicharLibrary` | Vichar, the library | **new** | Option 1, chosen 9 Nov: dawn header with ੴ, search, four picture tiles, article cards with a picture by kind of day. docs/vichar-content.md Library |
+| `43-Vichar` | Vichar | superseded | Replaced by 122 |
 | `107-ArticleCalendar` | Vichar, a Gurpurab | **new** | Layout A, chosen 19 Oct: the calendar card, the countdown, what comes next. docs/vichar-content.md |
 | `108-ArticlePhoto` | Vichar, a place | **new** | Layout B: a drawn Gurdwara under the place's name, chips, previous and next |
 | `109-ArticleTimeline` | Vichar, a day of history | **new** | Layout C: the dates in the calendar, the story's sections as steps on a line |

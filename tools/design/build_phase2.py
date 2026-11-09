@@ -1524,6 +1524,79 @@ def vichar_home() -> str:
 """
 
 
+def _vichar_img(name: str) -> str:
+    """A bundled Vichar picture (assets/vichar/), embedded so the design shows
+    exactly what the app ships."""
+    import base64
+    from pathlib import Path
+    data = (Path(__file__).resolve().parents[2] / "assets" / "vichar" / name).read_bytes()
+    return "data:image/jpeg;base64," + base64.b64encode(data).decode()
+
+
+def vichar_library() -> str:
+    """Vichar from the left menu, option 1 of the owner's mock-up (2026-11-09):
+    the header with the dawn Harmandir Sahib and ੴ, the search, four topic
+    tiles, and each story as a card -- its topic and date, the headline, three
+    lines of its opening, the reading time, and its picture on the right.
+    Headlines, openings and times are the stories' own; each picture is the
+    one its kind of day takes (docs/vichar-content.md, Home). Replaces 43."""
+    book = ('<svg class="i" width="15" height="15" viewBox="0 0 24 24"><path d="M3 5.5c3-1.3 6-1.3 9 .5 '
+            '3-1.8 6-1.8 9-.5v13c-3-1.3-6-1.3-9 .5-3-1.8-6-1.8-9-.5z"/><path d="M12 6v13"/></svg>')
+    cal = ('<svg class="i" width="24" height="24" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" '
+           'height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>')
+    tiles = [("Sikh days", f'<div style="color:var(--kesri);height:28px;display:flex;align-items:center">{cal}</div>', True),
+             ("Gurdwaras", f'<img src="{_vichar_img("dawn.jpg")}" alt="" style="width:34px;height:28px;object-fit:cover;border-radius:7px">', False),
+             ("Guru Sahibans", f'<img src="{_vichar_img("palki.jpg")}" alt="" style="width:34px;height:28px;object-fit:cover;border-radius:7px">', False),
+             ("Banis", f'<div style="color:var(--primary);height:28px;display:flex;align-items:center">{book.replace("15", "24")}</div>', False)]
+    tile_html = "".join(
+        f'<div class="col" style="flex:1;align-items:center;gap:5px;padding:9px 2px;border-radius:14px;'
+        f'background:{"var(--kesriSoft)" if on else "var(--card)"};box-shadow:0 1px 3px rgba(27,29,58,.07);'
+        f'font-size:12px;font-weight:600;text-align:center;line-height:1.15">{icon_}<div>{t}</div></div>'
+        for t, icon_, on in tiles)
+    stories = [
+        ("Gurdwaras · 9 Nov", "Masya", "What Masya, the new moon day, means in Sikh practice, why sangats gather "
+         "at Tarn Taran Sahib and other gurdwaras, and every Masya date of Nanakshahi 558.", 1, "night.jpg"),
+        ("Guru Sahibans · 11 Nov", "Gurgaddi Purab – Sri Guru Granth Sahib Ji (Nanded, 1708)",
+         "In 1708 at Nanded, Sri Guru Gobind Singh Ji ended the line of human Gurus and gave the Guruship "
+         "to Sri Guru Granth Sahib Ji.", 1, "palki.jpg"),
+        ("Guru Sahibans · 14 Nov", "Joti Jot Purab – Sri Guru Gobind Singh Sahib Ji",
+         "Sri Guru Gobind Singh Ji completed his life at Nanded in 1708 after passing the Guruship to "
+         "Sri Guru Granth Sahib Ji and the Khalsa.", 1, "guru-light.jpg"),
+        ("Gurdwaras · 15 Nov", "Baba Deep Singh Ji", "Baba Deep Singh Ji copied Sri Guru Granth Sahib Ji at "
+         "Damdama Sahib, led the Shaheedan Misl, and in 1757, aged 75, fell fighting to free Sri Harmandir Sahib.",
+         1, "shaheed.jpg"),
+    ]
+    cards = "".join(
+        f'<div class="card row" style="padding:12px;gap:12px;align-items:center">'
+        f'<div class="col" style="flex:1;gap:5px;min-width:0">'
+        f'<div style="align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;'
+        f'padding:3px 9px;border-radius:999px;background:var(--card2);color:var(--primary)">{k}</div>'
+        f'<div class="disp" style="font-size:16px;font-weight:700;line-height:1.2">{t}</div>'
+        f'<div style="font-size:13px;line-height:1.45;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:3;'
+        f'-webkit-box-orient:vertical;overflow:hidden">{x}</div>'
+        f'<div class="row" style="gap:6px;font-size:12px;color:var(--muted);font-weight:600">{book}<div>{m} min read</div></div></div>'
+        f'<img src="{_vichar_img(img)}" alt="" style="width:92px;height:92px;border-radius:14px;object-fit:cover;flex:none"></div>'
+        for k, t, x, m, img in stories)
+    return f"""
+<div class="pad col" style="gap:12px">
+  <div class="row" style="gap:12px;position:relative;min-height:62px">
+    <div style="width:38px;height:38px;border-radius:12px;background:var(--card);display:flex;align-items:center;
+      justify-content:center;box-shadow:0 1px 3px rgba(27,29,58,.08);flex:none">{icon("back", 18)}</div>
+    <div class="col" style="gap:1px;z-index:1"><div class="disp" style="font-size:26px;font-weight:700;line-height:1">Vichar</div>
+      <div style="font-size:13px;color:var(--muted)">Read, and look things up</div></div>
+    <img src="{_vichar_img("dawn.jpg")}" alt="" style="position:absolute;right:34px;top:-4px;width:150px;height:70px;
+      object-fit:cover;opacity:.6;-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%,#000 70%,transparent);
+      mask-image:linear-gradient(90deg,transparent,#000 35%,#000 70%,transparent)">
+    <div class="gur" style="position:absolute;right:0;top:4px;font-size:26px;color:var(--kesri)">ੴ</div>
+  </div>
+  {searchbox("Search articles, gurdwaras, banis…")}
+  <div class="row" style="gap:7px">{tile_html}</div>
+  {cards}
+  <div style="height:16px"></div>
+</div>
+"""
+
+
 def vichar_article() -> str:
     """One article, read inside the app rather than bounced to a browser."""
     body = [
@@ -4461,6 +4534,7 @@ SCREENS = [
     ("119-QuizMe", "Gurmat Quiz — your quiz", quiz_me),
     ("120-TodayGoalFolded", "Today — a goal of seven, folded", goal_folded),
     ("121-NitnemTinted", "Nitnem — each part of the day in its light", nitnem_tinted),
+    ("122-VicharLibrary", "Vichar — the library: articles to read, with search", vichar_library),
 ]
 
 

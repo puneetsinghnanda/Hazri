@@ -12,7 +12,8 @@ it is empty and says so rather than pretending.
 
 ## The four chips (owner, 2026-10-19)
 
-The screen has four chips and no others: **Sikh days**, **Gurdwaras**, **Guru
+The screen has four chips (drawn as four picture tiles in one row since
+2026-11-09, design 122) and no others: **Sikh days**, **Gurdwaras**, **Guru
 Sahibans**, **Banis**, in that order. Sikh days is selected when the screen
 opens and lists **every** entry, because every story page is a day in the
 calendar. Each of the others lists the entries tagged with it (`tags`), or,
@@ -20,7 +21,32 @@ for an entry with no tags, whose `kind` it is. There is no "All" chip and no
 "Articles" chip; `article` survives only as the label of an entry that names
 no topic. Within a chip, the days still to come are listed first, soonest
 first, then the days already past, then anything without a date, by title.
-Designs 43 and 46 show the older six chips; this file wins.
+Design 46 shows the older six chips; this file wins.
+
+## Library (owner, 2026-11-09, design 122)
+
+Option 1, from the owner's mock-up; replaces design 43. The header carries
+Harmandir Sahib at dawn fading into the page and ੴ in saffron, then the
+search box, then the four topics as tiles in one row: Sikh days (calendar
+icon), Gurdwaras (the dawn picture), Guru Sahibans (the palki), Banis (book
+icon); the selected one is saffron. Every entry is an **article card**: its
+kind and the date it is about (the next one, or the last when all are past)
+as a pill, the headline, three lines of the summary, the minutes to read with
+a book icon, and a picture on the right.
+
+The pictures are five, bundled in `assets/vichar/` from the owner's images
+and shared by the kind of day (`label`), never fetched (PRD §8):
+
+| `label` | Picture |
+|---|---|
+| Masya, Puranmashi, Sangrand | `night` — Harmandir Sahib under the moon |
+| Gurgaddi of Sri Guru Granth Sahib Ji (`id` contains `granth`) | `palki` |
+| Prakash Purab, Joti Jot, any other Gurgaddi | `guru-light` — the figure with light where the face would be |
+| Shaheedi, Day in history | `shaheed` |
+| anything else | `dawn` |
+
+`vicharPictureFor` in `lib/features/library/domain/vichar_picture.dart` is the
+rule, tested in `test/features/vichar_picture_test.dart`.
 
 ## Where entries come from
 
