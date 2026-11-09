@@ -1254,7 +1254,7 @@ The ignore list must not contain \*\*/.\*, otherwise .well-known/assetlinks.json
 ```json
 {
 "firestore": { "rules": "firestore.rules", "indexes": "firestore.indexes.json" },
-"functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs20" }],
+"functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs22" }],
 "hosting": {
 "public": "hosting/public",
 "ignore": ["firebase.json", "**/node_modules/**"],

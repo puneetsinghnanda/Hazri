@@ -4,7 +4,7 @@
   "description": "Hazri server: the api Function and the scheduled and triggered Functions (docs/ARCHITECTURE.md §6, §7)",
   "main": "lib/index.js",
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

@@ -1121,7 +1121,7 @@ The order is dependency, not preference: each step needs the ones before it.
 ### 11.4 Each step
 
 **Step 1 — Platform.**
-- *Add:* `functions/` (Node 20, TypeScript, Express), the one `api` Function
+- *Add:* `functions/` (Node 22, TypeScript, Express), the one `api` Function
   in `asia-south1` behind the Hosting rewrite `/api/**`; the common rules of
   ARCHITECTURE §6.1 (`01-accounts.md` §6.0): token check, error shape, rate
   limits; the Functions contract (`maxInstances: 10`, `minInstances: 0`); the
