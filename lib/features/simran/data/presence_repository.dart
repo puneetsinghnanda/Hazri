@@ -130,6 +130,7 @@ class GlobeDrawing {
     required this.threads,
     required this.arcs,
     required this.liveTotal,
+    required this.hereTotal,
     this.youLive = false,
   });
 
@@ -140,6 +141,9 @@ class GlobeDrawing {
   final List<GlobeThread> threads;
   final List<List<double>> arcs;
   final int liveTotal;
+
+  /// CT3: the blue dots added up.
+  final int hereTotal;
 }
 
 final globeDrawingProvider = Provider<GlobeDrawing>((ref) {
@@ -160,6 +164,7 @@ final globeDrawingProvider = Provider<GlobeDrawing>((ref) {
     threads: threads,
     arcs: globeArcs(dots, threads),
     liveTotal: globeLiveTotal(snapshot, marked: yourCity != null && marked, countedLive: countedLive),
+    hereTotal: globeHereTotal(snapshot, hasCity: yourCity != null, countedLive: countedLive),
     youLive: yourCity != null && marked,
   );
 });

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -302,23 +303,53 @@ class _SimranSky extends ConsumerWidget {
                     _gutter(Column(
                       children: [
                     if (active) ...[
-                      // The countdown takes the place of the presence line
-                      // while a sitting is open: it is the one number that
-                      // matters then, and it stays on screen while paused so
-                      // the time already sat is never in doubt.
-                      Text(
-                        HazriDates.duration(session.remaining),
-                        style: SimranText.countdown
-                            .copyWith(color: session.paused ? white70 : white),
-                      ),
-                      Text(
-                        session.paused
-                            ? l.simranPaused
-                            : l.simranLeftOf(HazriDates.duration(session.total)),
-                        style: HazriText.caption.copyWith(color: white55),
+                      // The countdown takes the middle while a sitting is
+                      // open: it is the one number that matters then, and it
+                      // stays on screen while paused so the time already sat
+                      // is never in doubt. The two counts sit either side of
+                      // it, smaller (design 124, CT3).
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (globe.snapshot != null)
+                            Expanded(
+                              child: _Count(
+                                count: drawing.liveTotal,
+                                colour: _liveText,
+                                label: l.globeLiveLabel,
+                                spoken: l.globeLiveCount(drawing.liveTotal),
+                                size: 22,
+                              ),
+                            ),
+                          Column(
+                            children: [
+                              Text(
+                                HazriDates.duration(session.remaining),
+                                style: SimranText.countdown
+                                    .copyWith(color: session.paused ? white70 : white),
+                              ),
+                              Text(
+                                session.paused
+                                    ? l.simranPaused
+                                    : l.simranLeftOf(HazriDates.duration(session.total)),
+                                style: HazriText.caption.copyWith(color: white55),
+                              ),
+                            ],
+                          ),
+                          if (globe.snapshot != null)
+                            Expanded(
+                              child: _Count(
+                                count: drawing.hereTotal,
+                                colour: _hereText,
+                                label: l.globeHereLabel,
+                                spoken: l.globeHereCount(drawing.hereTotal),
+                                size: 22,
+                              ),
+                            ),
+                        ],
                       ),
                     ] else ...[
-                      _Presence(globe: globe, live: drawing.liveTotal, colour: _live),
+                      _Presence(globe: globe, live: drawing.liveTotal, here: drawing.hereTotal),
                     ],
                     const SizedBox(height: 8),
                     Wrap(
@@ -529,25 +560,103 @@ class _OnkarRule extends StatelessWidget {
   }
 }
 
-/// DR5 as amended (CT2): the people live today, counted the way the dots
-/// show them; GB3: offline with no snapshot at all.
+// The counts' figures, a shade lighter than their dots to read on the sky.
+const _liveText = Color(0xFF6FE3A6);
+const _hereText = Color(0xFF8FB2FF);
+
+/// DR5 as amended (CT2, CT3; design 123): the people live today and the
+/// people here today, counted the way the dots show them, as two figures with
+/// a rule between; GB3: offline with no snapshot at all.
 class _Presence extends StatelessWidget {
-  const _Presence({required this.globe, required this.live, required this.colour});
+  const _Presence({required this.globe, required this.live, required this.here});
 
   final GlobeState globe;
   final int live;
-  final Color colour;
+  final int here;
 
   @override
   Widget build(BuildContext context) {
     final l = L.of(context);
-    final snapshot = globe.snapshot;
-    return Text(
-      snapshot == null ? l.globeOffline : l.globeLiveCount(live),
-      textAlign: TextAlign.center,
-      style: SimranText.presence.copyWith(color: snapshot == null ? Colors.white : colour),
+    if (globe.snapshot == null) {
+      return Text(
+        l.globeOffline,
+        textAlign: TextAlign.center,
+        style: SimranText.presence.copyWith(color: Colors.white),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Expanded(
+              child: _Count(
+                count: live,
+                colour: _liveText,
+                label: l.globeLiveLabel,
+                spoken: l.globeLiveCount(live),
+              ),
+            ),
+            Container(
+              width: 1,
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              color: Colors.white.withValues(alpha: 0.18),
+            ),
+            Expanded(
+              child: _Count(
+                count: here,
+                colour: _hereText,
+                label: l.globeHereLabel,
+                spoken: l.globeHereCount(here),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
+}
+
+/// One figure and what it counts, read out as one sentence.
+class _Count extends StatelessWidget {
+  const _Count({
+    required this.count,
+    required this.colour,
+    required this.label,
+    required this.spoken,
+    this.size = 28,
+  });
+
+  final int count;
+  final Color colour;
+  final String label;
+  final String spoken;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+        label: spoken,
+        excludeSemantics: true,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              NumberFormat.decimalPattern(L.of(context).localeName).format(count),
+              style: SimranText.presence.copyWith(color: colour, fontSize: size, height: 1),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: HazriText.caption.copyWith(
+                color: Colors.white.withValues(alpha: 0.7),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      );
 }
 
 /// A fixed field of stars.

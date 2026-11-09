@@ -1254,7 +1254,7 @@ The ignore list must not contain \*\*/.\*, otherwise .well-known/assetlinks.json
 ```json
 {
 "firestore": { "rules": "firestore.rules", "indexes": "firestore.indexes.json" },
-"functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs20" }],
+"functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs22" }],
 "hosting": {
 "public": "hosting/public",
 "ignore": ["firebase.json", "**/node_modules/**"],
@@ -1876,6 +1876,32 @@ Shown only when Android does not hand the link to the app (app not installed, or
 - Link Get the app on Google Play → https://play.google.com/store/apps/details?id={{ANDROID_PACKAGE_NAME}}.
 
 - Self-contained HTML, inline CSS, no external resources.
+
+*Amended 2026-11-01, as built (`public/verify/index.html` and `verify.js`).*
+The page is in Punjabi, Hindi and English, styled by the site's own
+`/style.css` and `/lang.js`. **With a token** (`?token=` of 43 base64url
+characters, from the query or the fragment) it says *Open this link in Hazri*
+and its button is the intent above, always on `{{FIREBASE_PROJECT_ID}}.web.app`,
+the host the App Link filter declares, whichever host served the page.
+**Without one** it says the link is not complete and sends the reader back to
+the email on the phone that has Hazri. There is no Google Play link until the
+app is on Google Play, and no "paste the link into Hazri" step, because the
+app has no field that takes one. `functions/test/unit/verify-page.test.ts`
+holds `verify.js` to the link `linkFor()` mails.
+
+The page shipped from 2026-09-27 to 2026-11-01 was written for Firebase's
+`oobCode` links and looked for `oobCode=`, while the server mailed `?token=`,
+so every real link that reached a browser was told it "carries no code" and
+was told to paste it into a field that does not exist. **Why a link reaches
+the browser differs by phone** (2026-11-01: the same mail opened the app on
+some phones and a browser on two). What decides it is on the phone: whether
+Android verified the App Link for this install (Settings -> Apps -> Hazri ->
+Open by default), and which mail app and browser handle the tap. The two
+phones were Play installs verified before Play's app signing key was in
+`assetlinks.json` (`docs/signing.md`). Brevo's click tracking, which would
+send the tap to Brevo's own address first, is off (owner, 2026-11-05) and
+must stay off: its API has no per-message switch. The page is the net under
+all of these.
 
 ### 8.4 Android build settings
 

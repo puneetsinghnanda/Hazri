@@ -101,7 +101,9 @@ decides it from `content.db` with no network, by the local date:
 
 **QZ9. Today has two quiz cards**, both after the Nitnem button and before
 the Saakhis card (owner, 2026-10-26: "above saakhis"), both in elder mode too,
-at elder sizes (owner, 2026-10-27).
+at elder sizes (owner, 2026-10-27). Since 2026-11-09 they are not side by
+side: the Sikh calendar sits above the leaf and ਅੱਜ ਦਾ ਵਿਚਾਰ between the leaf
+and the quiz card (`05-today.md` §5.3).
 
 *The calendar leaf* (design 1A): the weekday, the day and the month, the
 Nanakshahi day and month, then the event's short label from `days.json` as the

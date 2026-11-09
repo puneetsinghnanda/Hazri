@@ -542,9 +542,9 @@ Data: ARCHITECTURE §4, §5.10, §7.2.*
 | Kind | When (phone time) | Condition | By |
 |---|---|---|---|
 | **Amrit Vela** | 04:00 | Every day; seven weekday messages; opens the first goal bani, else Japji Sahib; with a profile, the sunrise picture for the profile city | Phone |
-| **Goal bani** | The item's own reminder time | The item is in scope and not yet met; one 15-minute snooze | Phone |
-| **Gurpurab** | 06:00 on the day | Prakash, Gurgaddi, Joti Jot events the calendar flags, or the reader switched on | Phone |
-| **Sikh event** | 07:00 on the day | Any other flagged or switched-on event, Shaheedi Purabs included | Phone |
+| **Goal bani** | The item's own reminder time, and an hour later if still not met (owner, 2026-11-09) | The item is in scope and not yet met; one 15-minute snooze of the first | Phone |
+| **Sikh calendar, evening before** | 20:00 the day before | Every event the calendar flags, or the reader switched on (owner, 2026-11-09) | Phone |
+| **Sikh calendar, on the day** | 06:30 on the day | The same events, every kind (owner, 2026-11-09; was Gurpurab 06:00, events 07:00) | Phone |
 | **Hazri nudge** | 07:00 | No active goal and no hazri yet today; seven messages; opens a 5-minute sitting | Phone |
 | **Sangat digest** | 21:00, the member's own time | Member of a group with an active goal and paath recorded that day; final-days wording on the last two | FCM |
 | **Sangat milestones** | At once, 07:00–20:59, else held to 07:00 | 25, 50, 75 % and completion, each once | FCM |
@@ -786,14 +786,26 @@ system font scale is respected up to 1.3×.
   Dark; elder mode); About (credits, privacy, the analytics switch shown as
   off and inert, licences, version). **Removed:** the reminder rows, the
   sunrise-and-sunset city, the diary-sync row.
-- **About and credits:** what Hazri is; every source from `content.db`'s
-  `source` table (text, transliteration, meanings and teeka, calendar); city
-  data; fonts (SIL OFL); the recitation (bundled, never streamed; the paathi
-  uncredited until a credit is agreed, D9); "Works offline · No login · No ads
-  on Gurbani".
+- **About and credits** (owner, 2026-11-09): what Hazri is; the calendar
+  (SGPC jantri, Nanakshahi 558, in a sentence rather than the source row);
+  city data; fonts (SIL OFL); the recitation (bundled, never streamed; the
+  paathi uncredited until a credit is agreed, D9); Today's Vichar (lines from
+  Sri Guru Granth Sahib Ji, the English a rendering of the Punjabi); "Works
+  offline · No login · No ads on Gurbani". No sections for the Gurbani text,
+  transliteration or meanings, and no credits for the saakhis or the quiz.
+- **How Hazri works** (the help sheet, owner 2026-11-09): seven tips, one
+  each for Hazri, goals, the reader, Naam Simran, the Diary, the Sangat and
+  learning, then a link to About.
 - **Privacy and my data** (design 35): the reader's copy of §8. Rewritten in
   the same release that ships the profile, attendance and the backup.
-- **Licences:** Flutter's licence page with the font licences.
+  Amended 2026-11-09 (owner): it says the globe and the Vichar stories are
+  fetched with the anonymous sign-in, lists badges, hearted saakhis and
+  offline quizzes among what stays on the phone, and says a deletion asked
+  for at hazri.me is done within 30 days (as `/delete-account` does).
+- **Licences:** Flutter's licence page with the font licences, and the MIT
+  notices of the Shabad OS Database and `gurmukhi-utils`, whose data ships in
+  `content.db` (`registerDataLicences()`); About no longer names them, and
+  the MIT licence needs the notice somewhere in the app.
 
 ### 4.19 Admin website
 
@@ -1004,7 +1016,10 @@ rewritten again in the change that ships the Gurmat Quiz: that with a
 profile, starting a quiz online sends its answers, and that with a profile your first name,
 initial, city and quiz points are on the leaderboards. In Phase 3
 it names analytics as a fourth category and points at the switch. It must
-match Google Play's Data safety form exactly.
+match Google Play's Data safety form exactly. Since 2026-10-30 it ends with
+**Delete my account and data**, which opens the website's deletion request
+page (`01-accounts.md` §12), and the website's `/privacy` page is this
+section again as Google Play's privacy policy URL: the three change together.
 
 ---
 
@@ -1106,7 +1121,7 @@ The order is dependency, not preference: each step needs the ones before it.
 ### 11.4 Each step
 
 **Step 1 — Platform.**
-- *Add:* `functions/` (Node 20, TypeScript, Express), the one `api` Function
+- *Add:* `functions/` (Node 22, TypeScript, Express), the one `api` Function
   in `asia-south1` behind the Hosting rewrite `/api/**`; the common rules of
   ARCHITECTURE §6.1 (`01-accounts.md` §6.0): token check, error shape, rate
   limits; the Functions contract (`maxInstances: 10`, `minInstances: 0`); the
@@ -1413,8 +1428,10 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `88-Simran` | Simran, at rest | **new** | Threads from your dot to every other, as design 29. Legend You, Live, Here today. 07-simran.md SM1, DR1-DR6 |
-| `89-SimranSitting` | Simran, a sitting running | **new** | The countdown takes the presence line's place; Pause and End. ਵਾਹਿਗੁਰੂ drifts off the globe |
+| `123-SimranCounts` | Simran, at rest, with both counts | **new** | Option C, chosen 9 Nov: live today and here today as two figures. 07-simran.md CT3 |
+| `124-SimranCountsSitting` | Simran, a sitting, with both counts | **new** | Both counts either side of the countdown. 07-simran.md CT3 |
+| `88-Simran` | Simran, at rest | superseded | Replaced by 123 |
+| `89-SimranSitting` | Simran, a sitting running | superseded | Replaced by 124 |
 | `90-SimranNoProfile` | Simran, no profile | **new** | No orange dot, so the threads join every dot into one web; the profile banner under the legend. 07-simran.md NP1-NP3, DR7 |
 | `29-Simran` | Simran, Phase 2 | superseded | Replaced by 88 |
 | `21-DailySimran` | Daily Simran, Phase 1 | superseded | Replaced by 88 and 89 |
@@ -1444,7 +1461,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `111-SaakhiLibrary` | Saakhis, the library | **new** | A card per saakhi: cover, Punjabi and English name, pages, Punjabi and English narration, Listen and Read. SK11 |
 | `110-TodaySaakhis` | Today, with the saakhis row | superseded | Option 1A, chosen 25 Oct; replaced by option C, one card with the day's saakhi large and the others small (113, 27 Oct) |
-| `43-Vichar` | Vichar | current |  |
+| `122-VicharLibrary` | Vichar, the library | **new** | Option 1, chosen 9 Nov: dawn header with ੴ, search, four picture tiles, article cards with a picture by kind of day. docs/vichar-content.md Library |
+| `43-Vichar` | Vichar | superseded | Replaced by 122 |
 | `107-ArticleCalendar` | Vichar, a Gurpurab | **new** | Layout A, chosen 19 Oct: the calendar card, the countdown, what comes next. docs/vichar-content.md |
 | `108-ArticlePhoto` | Vichar, a place | **new** | Layout B: a drawn Gurdwara under the place's name, chips, previous and next |
 | `109-ArticleTimeline` | Vichar, a day of history | **new** | Layout C: the dates in the calendar, the story's sections as steps on a line |

@@ -84,7 +84,7 @@ figcaption{display:flex;flex-direction:column;gap:3px;width:calc(390px * var(--s
 <div class="wrap">
   <header>
     <h1>Hazri Screens</h1>
-    <p class="lede">Every design screen in <code>design/html/</code>, grouped by feature, at 390 × 844 dp. Screens marked <b>New</b> were chosen or drawn between 7 and 30 October 2026. <b>Superseded</b> screens are hidden; Include superseded shows them, each with a note naming what replaces it. Where a screen and a spec in <code>docs/features/</code> disagree, the spec wins.</p>
+    <p class="lede">Every design screen in <code>design/html/</code>, grouped by feature, at 390 × 844 dp. Screens marked <b>New</b> were chosen or drawn between 7 October and 9 November 2026. <b>Superseded</b> screens are hidden; Include superseded shows them, each with a note naming what replaces it. Where a screen and a spec in <code>docs/features/</code> disagree, the spec wins.</p>
   </header>
 
   <div class="bar" role="toolbar" aria-label="View">
@@ -113,7 +113,7 @@ const SECTIONS = [
   { id: 'today', name: 'Today', spec: '05-today.md',
     screens: [
       ['85-TodayAppBar', 'Today, with the app bar and streak', 'new', 'App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12'],
-      ['113-TodayQuiz', 'Today, scrolled to the quiz and the saakhis', 'new', 'Below the Nitnem button: the calendar leaf, design 1A, with the day\'s event or Did you know?, the topic and one explanation from the bank word for word, and no buttons (owner, 2026-10-28); on a day with an event the whole leaf opens its Vichar page, with an arrow. Then the quiz\'s own card, design D (owner, 2026-10-28, from four options): Gurmat Quiz with your points and All quizzes, today\'s topic highlighted with Start, and the other categories as drawn tiles. Then the Saakhis card in option C (2026-10-27). All in elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11, SK15'],
+      ['113-TodayQuiz', 'Today, scrolled to the quiz and the saakhis', 'new', 'Order since 2026-11-09 (owner): the Nitnem button, the Sikh calendar, the calendar leaf (Did you know?), Today\'s Vichar, the quiz card, the saakhis; the calendar and the Vichar step aside in elder mode (05-today.md 5.3). Below the Nitnem button: the calendar leaf, design 1A, with the day\'s event or Did you know?, the topic and one explanation from the bank word for word, and no buttons (owner, 2026-10-28); on a day with an event the whole leaf opens its Vichar page, with an arrow. Then the quiz\'s own card, design D (owner, 2026-10-28, from four options): Gurmat Quiz with your points and All quizzes, today\'s topic highlighted with Start, and the other categories as drawn tiles. Then the Saakhis card in option C (2026-10-27). All in elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11, SK15'],
       ['120-TodayGoalFolded', 'Today, a goal of seven, folded', 'new', 'Design 1A (owner, 2026-10-29, from three): with more than three items the goal card shows the one due now, the next and the earliest missed, Next under the header, then Show all and how many are done. 04-goals.md 7.1'],
       ['86-TodayNoProfile', 'Today, first day, no profile', 'new', 'The profile banner overlaps the app bar; no streak yet. 05-today.md T-a'],
       ['61-GoalComplete', "All of today's goals are done", 'current', 'Shown once a day when the goal is met. 04-goals.md CE1'],
@@ -171,8 +171,10 @@ const SECTIONS = [
   { id: 'simran', name: 'Simran', spec: '07-simran.md',
     note: 'Drawn on 8 October 2026 from the Simran tab as it ships (the 20 September mock-up) and the legend and banner of 07-simran.md.',
     screens: [
-      ['88-Simran', 'Simran, at rest', 'new', 'Threads from your dot to every other, as design 29. Legend You, Live, Here today. 07-simran.md SM1, DR1-DR6'],
-      ['89-SimranSitting', 'Simran, a sitting running', 'new', 'The countdown takes the presence line\'s place; Pause and End. ਵਾਹਿਗੁਰੂ drifts off the globe'],
+      ['123-SimranCounts', 'Simran, at rest, with both counts', 'new', 'Option C (owner, 2026-11-09, from four): live today and here today as two figures, green and blue, with a rule between; here today keeps its meaning, everyone counted who has not opened the app today. Replaces 88. 07-simran.md CT3'],
+      ['124-SimranCountsSitting', 'Simran, a sitting, with both counts', 'new', 'The two counts stay during a sitting, smaller, either side of the countdown (owner, 2026-11-09). Replaces 89. 07-simran.md CT3'],
+      ['88-Simran', 'Simran, at rest', 'superseded', 'Replaced by 123. Threads from your dot to every other, as design 29. Legend You, Live, Here today. 07-simran.md SM1, DR1-DR6'],
+      ['89-SimranSitting', 'Simran, a sitting running', 'superseded', 'Replaced by 124. The countdown takes the presence line\'s place; Pause and End. ਵਾਹਿਗੁਰੂ drifts off the globe'],
       ['90-SimranNoProfile', 'Simran, no profile', 'new', 'No orange dot, so the threads join every dot into one web; the profile banner under the legend. 07-simran.md NP1-NP3, DR7'],
       ['29-Simran', 'Simran, Phase 2', 'superseded', 'Replaced by 88'],
       ['21-DailySimran', 'Daily Simran, Phase 1', 'superseded', 'Replaced by 88 and 89'],
@@ -214,10 +216,11 @@ const SECTIONS = [
     ]},
   { id: 'vichar', name: 'Vichar', spec: '',
     screens: [
-      ['43-Vichar', 'Vichar', 'current', ''],
+      ['122-VicharLibrary', 'Vichar, the library', 'new', 'Option 1 (owner, 2026-11-09, from the owner\'s mock-up): a header with the dawn art and ੴ, the search box, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis), then each entry as an article card: its kind and date as a pill, the headline, three lines of the opening, the minutes to read and a picture by kind of day, bundled in assets/vichar/. Replaces 43. docs/vichar-content.md Library'],
       ['107-ArticleCalendar', 'Vichar, a Gurpurab', 'new', 'Layout A (owner, 2026-10-19): the navy calendar card with the date, the countdown, the title and the opening; headings with a kesri bar; the facts; what comes next in the calendar. For every Gurpurab (Prakash, Gurgaddi, Joti Jot). docs/vichar-content.md Layouts'],
       ['108-ArticlePhoto', 'Vichar, a place', 'new', 'Layout B (owner, 2026-10-19): a drawn Gurdwara under the place it is about, kind and topics as chips, the story, previous and next. For a Gurdwara story with a photo on the website; the app draws its picture rather than fetching one (PRD 8). docs/vichar-content.md Layouts'],
       ['109-ArticleTimeline', 'Vichar, a day of history', 'new', 'Layout C (owner, 2026-10-19): a navy band with the dates in the calendar, the opening, then each section of the story as a step on a line, the first in kesri. For Shaheedi, the days of the Panth and the monthly days. docs/vichar-content.md Layouts'],
+      ['43-Vichar', 'Vichar', 'superseded', 'Replaced by 122'],
       ['44-VicharArticle', 'Vichar, an article', 'current', 'The plain reader, for an entry that names no layout'],
       ['45-VicharTopic', 'Vichar, a reference entry', 'current', ''],
       ['46-VicharSearch', 'Vichar, search', 'current', ''],

@@ -129,8 +129,9 @@ header with the earned set under the name and city (5C, replacing 37).
 
 **Notifications are built to their specification**
 (`docs/features/02-notifications.md`, 2026-10-07): Amrit Vela at 04:00, a
-reminder per goal item at its own time, Gurpurabs at 06:00 and other Sikh
-events at 07:00, a hazri nudge at 07:00 with no goal and no hazri, and three
+reminder per goal item at its own time and again an hour later if it is
+still not met, every Sikh calendar event at 20:00 the evening before and at
+06:30 on the day (owner, 2026-11-09), a hazri nudge at 07:00 with no goal and no hazri, and three
 pushes by Cloud Function -- the Sangat at 21:00, new members to a group's
 creator, a group ending. Reminders are on by default and Android's permission
 prompt comes at app start. Every notification that must reach *everybody*
@@ -188,7 +189,9 @@ only". It is published as an artifact at
 <https://claude.ai/artifact/WS5cf2iNPdc9txvEccZQAC> (since 2026-10-30; the
 earlier `Fz2WJs5tPF9nUWPgkgBkR8` could no longer be opened from the owner's
 account, so it was published afresh with designs up to 121); republish it after
-changing it, with every new or changed `design/html/` file. PRD Appendix A
+changing it, with every new or changed `design/html/` file **published at
+`html/<name>`** (the path the canvas loads; under `design/html/` the screen
+shows as unavailable, 2026-11-09). PRD Appendix A
 is the same list in text, generated from it.
 
 The Phase 2 screens are **drawn by `tools/design/build_phase2.py`**, never by
@@ -202,7 +205,7 @@ each:
 |---|---|---|
 | Today | 85, 86 | App bar D (navy, Today only) and streak option 3 (the week strip) |
 | Diary | 87 | Streak option 2: now and longest |
-| Simran | 88, 89, 90 | The screen as it ships, with design 29's threads; a web of threads without a profile |
+| Simran | 88, 89, 90 | The screen as it ships, with design 29's threads; a web of threads without a profile (88 and 89 replaced by 123 and 124, 2026-11-09) |
 | First run | 91, 92, 93, 94 | Android's splash only; Welcome option D, "a day with Hazri" |
 | Badges | 95, 96, 97, 98, 99 | 1C sheet, 2A page, 3B one badge, 4B profile section, 5C menu header |
 | Profile and Sangat (2026-10-10) | 100, 101, 102, 103 | Profile D (identity card and badge shelf, replaces 98), Edit profile C (Today in your city, then one card of fields), Sangat C (dashboard tiles, built-ins as rows), group H (ring in a navy band, timeline, Sit for the paath) |
@@ -211,6 +214,9 @@ each:
 | Vichar articles (2026-10-19) | 107, 108, 109 | A calendar card for a Gurpurab, photo-led for a gurdwara, a timeline for a day of history (`docs/vichar-content.md` Layouts) |
 | Saakhis (2026-10-25) | 111, 112 (110 superseded) | The library, and the menu as a left drawer, option A (replaces 99; Gurmat Quiz under Saakhis since 2026-10-27). Today's option 1A, a row of covers (110), was **replaced 2026-10-27 by option C**, one card with the day's saakhi large and the others small, drawn in 113; the reader is `design/saakhi/reader.template.html` (`13-saakhi.md`) |
 | Today, Nitnem and Sangat (2026-10-29, 2026-10-30) | 120, 121, 102 | The goal card folds a goal of more than three to now, next and missed with Show all (1A, 120); Nitnem as one card per part of the day tinted by its light, Before sleep lavender not navy, More banis sage green with "Any time of day" (2A, 121, replaces 12); My paath goals on Nitnem as a saffron banner with the count, a bar, the next paath and Change (1C, 2026-10-30, drawn in 121); the built-in groups say Joined, not Leave, on the Sangat page, and Leave is inside the group (3E, drawn in 102) |
+| Today's order (2026-11-09) | 113 | The Sikh calendar above "Did you know?", Today's Vichar under it, then the quiz card and the saakhis (`05-today.md` §5.3) |
+| Vichar library (2026-11-09) | 122 | Option 1, from the owner's mock-up: the dawn header with ੴ, search, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis), each entry an article card with a kind-and-date pill, headline, three lines, minutes and a picture by kind of day from `assets/vichar/` (replaces 43, `docs/vichar-content.md` Library) |
+| Simran counts (2026-11-09) | 123, 124 | Option C of four: live today and here today as two figures, green and blue (here today keeps its meaning, everyone counted who has not opened the app today); during a sitting both stay, smaller, either side of the countdown (`07-simran.md` CT3; replace 88 and 89) |
 | Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A with no buttons and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
@@ -311,6 +317,23 @@ test data, so it was deleted and remade rather than designed around.
 id is not reusable for about five minutes after a delete. Nothing in the app
 changed: `google-services.json` does not encode the region and the SDK finds
 it.
+
+## Branches
+
+**`main` is the branch to start from and to merge into** (created
+2026-10-30 from `claude/modest-ptolemy-6vwl5y` at `40a7633`, which then held
+everything). Before it, the repository had no `main` and no pull request:
+each session carried the work forward on its own `claude/...` branch, the
+default branch sat 45 commits behind, and a session could start from a copy
+that was missing a week of work without knowing it.
+
+So: start a session's branch from `origin/main`; before starting, check that
+no other `claude/...` branch is ahead of `main` (`git branch -r
+--sort=-committerdate`), and bring it in first if one is; and come back to
+`main` through a pull request, never by pushing to it. A build of `main`
+started by hand publishes as `apk-main`. The older branches
+(`claude/japji-sahib-app-anypeh`, `claude/pensive-hawking-k87ese`) are
+history: `main` contains all of both.
 
 ## Builds
 
@@ -413,12 +436,15 @@ timings and verify the alignment acoustically.
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
-## State of the build (2026-10-30)
+## State of the build (2026-11-09)
 
 **Phase 2 is built**: all ten steps of PRD §11, in that order, on this
 branch, and since then Saakhis (2026-10-25), the Gurmat Quiz
-(2026-10-27), and the owner's redesign of Today's goal card, Nitnem and the
-Sangat page (2026-10-29 and 2026-10-30, designs 120, 121 and 102). The older code each step replaced -- the first sangat (listed groups,
+(2026-10-27), the owner's redesign of Today's goal card, Nitnem and the
+Sangat page (2026-10-29 and 2026-10-30, designs 120, 121 and 102), and on
+2026-11-09 the evening-before calendar notice and the second goal reminder,
+Today's new order, the Vichar library (122), the Simran counts (123, 124),
+and the rewritten Privacy, About and How Hazri works pages. The older code each step replaced -- the first sangat (listed groups,
 counted-on-read totals, the join banner), diary sync, the 45-second presence
 read, the Settings city, the branded splash and intro pages, elder Today as a
 fork, the Rehras / Kirtan Sohila / Daily Simran reminders -- is gone, and
@@ -439,7 +465,7 @@ is true of the code now, then what is live, then what is still open.
   turns an older goal into that shape without touching a past day.
 - **Notifications** (`02-notifications.md`): five local kinds --
   `amritVela`, `goalBani` (one per goal item at its own time), `calendar`
-  (Gurpurabs 06:00, other Sikh events 07:00), `hazriNudge`, `sangat` --
+  (every event 20:00 the evening before and 06:30 on the day), `hazriNudge`, `sangat` --
   planned by the pure `ReminderPlanner.plan` for 7 days every time anything
   is written (`UserRepository.onChanged`). They are **scheduled and posted by
   Hazri's own Android code** (`android/.../Reminders.kt`, DP7, 2026-10-11),
@@ -492,7 +518,7 @@ is true of the code now, then what is live, then what is still open.
   (one person is your dot's size, full at 25); threads from your dot (DR6)
   and a web joining the rest (DR7), as arcs with light along them (DR8);
   pinch or double tap to zoom (ZM1-ZM3); tap a dot for its city (TT1-TT3).
-  The presence line counts you the way the dots do (CT1, CT2). ਵਾਹਿਗੁਰੂ drifts
+  The presence line counts you the way the dots do (CT1, CT2), and since 2026-11-09 shows here today beside live today, also during a sitting (CT3, designs 123/124). ਵਾਹਿਗੁਰੂ drifts
   off the globe during a sitting, one word per utterance from
   `SimranTrack.onsets`; with no recitation there are no words. The screen's
   serif wordmark, ੴ rule and verse come from the owner's mock-up of
@@ -563,7 +589,7 @@ is true of the code now, then what is live, then what is still open.
 
 | Thing | Where | How it changes |
 |---|---|---|
-| Test APK | rolling pre-release `apk-claude/pensive-hawking-k87ese` | Actions -> Build -> Run workflow |
+| Test APK and Play bundle | rolling pre-release `apk-claude/modest-ptolemy-6vwl5y` (`app-arm64-v8a-release.apk` and `app-release.aab`; build 293 on 2026-11-09) | Actions -> Build -> Run workflow on the branch |
 | Website, `/verify`, `/j/`, `assetlinks.json` | `https://hazri.me` (and `www.hazri.me`, redirecting) and `https://hazri-dfcc1.web.app` | `firebase deploy --only hosting:public` |
 | Admin website | `https://hazri-admin-d4b72.web.app` | `npm --prefix admin run build && firebase deploy --only hosting:admin` |
 | `api` and the scheduled / triggered Functions | `asia-south1` | `firebase deploy --only functions` |
@@ -584,7 +610,33 @@ answers `500 INTERNAL` from the endpoint that needs it.
   `public/.well-known/assetlinks.json` matching the key CI signs with, and
   that file being **deployed**. Hosting's default `"**/.*"` ignore rule once
   excluded `.well-known` silently; `test/android/firebase_hosting_test.dart`
-  holds that now. `IncomingLink` keys on the `oobCode`, not the path.
+  holds that now. `IncomingLink` keys on the `token`, not the path.
+- **The same link can open the app on one phone and a browser on
+  another** (2026-11-01, two phones). The four things above are per
+  project; what varies is per phone: whether Android verified the App Link
+  for that install (Settings -> Apps -> Hazri -> Open by default), and the
+  mail app and the browser. The two phones of 2026-11-01 were Play installs
+  checked before Play's app signing key was in `assetlinks.json`; Android
+  checks once, at install, and does not retry until the next update. (Brevo's
+  click tracking would wrap the link in Brevo's own address; it is off,
+  confirmed by the owner 2026-11-05, and must stay off.) `/verify` is the
+  net under all of it: with a token it
+  offers **Open in Hazri**, an `intent://` address naming the package
+  (ARCHITECTURE §8.3). Until 2026-11-01 that page still looked for
+  Firebase's `oobCode=` while the server mailed `?token=`, so it told every
+  real link it "carries no code"; `functions/test/unit/verify-page.test.ts`
+  holds the two together now, and was watched failing on the old check.
+- **One `NO_PROFILE` must never throw a profile away** (2026-11-05). The
+  owner set up a profile, skipped or finished confirming the email, and later
+  saw "No profile found" until the Profile screen fetched it again; setting
+  up again then hit "email exists", because the first profile was still on
+  the server. The phone had cleared its profile on a single answer: an old
+  GET that arrived after setup, or any endpoint's `NO_PROFILE`.
+  `01-accounts.md` §8.3 R1-R4: only the newest answer counts, only
+  GET /profile can say the profile is gone (`confirmGone()`), no uid means
+  no verdict on the cache, and the server logs every `NO_PROFILE` with the
+  uid that asked. What sent the first `NO_PROFILE` is not known yet; those
+  logs are how to find out.
 - **`ScheduledNotificationReceiver` must be declared in the manifest** for
   the plugin path that remains. Its absence once meant no reminder ever
   arrived while `pendingNotificationRequests()` looked healthy, and four
@@ -596,12 +648,58 @@ answers `500 INTERNAL` from the endpoint that needs it.
 
 ### Still open
 
-- **The quiz's `/q/` page needs a hosting deploy.** `public/q/index.html`
-  and its `firebase.json` rewrite reach the website only with
-  `firebase deploy --only hosting:public`; nobody has confirmed that has
-  been run since 2026-10-27, and until it has, a shared quiz link lands on
-  the website's 404. The questions are English for now (QZ6), and the
-  Punjabi and Hindi topic names and labels are Claude's draft.
+- **The website's `/privacy` changed on 2026-11-09** (it now says the
+  globe and the Vichar stories are fetched with the anonymous sign-in, as the
+  app's Privacy page does) and **is live** (hosting deployed by the owner the
+  same day).
+- **The profile fix of 2026-11-05 needs a Play release.** The app side
+  (R1-R3) reaches testers only in a new closed-test build: a hand-started
+  Build run, then its `.aab` uploaded to the same closed testing track (an
+  update does not restart the 14 days). The server's `NO_PROFILE` logging
+  (R4) **is live** (Functions deployed by the owner 2026-11-09): Logs
+  Explorer, filtered on `profile: NO_PROFILE`, shows the uid behind each one.
+- **The Functions run on Node 22** (2026-11-09): Node 20 was decommissioned
+  for Cloud Functions on 2026-10-30 and `firebase deploy` refuses it.
+- **A hand-started Build is cancelled by the next push to its branch that
+  starts a build** (`concurrency: cancel-in-progress`), so while one runs push
+  nothing that matches build.yml's `paths` -- `firebase.json` is on that list,
+  which is how the Node 22 change cancelled run 291 (2026-11-09). Docs and
+  `CLAUDE.md` are not.
+- **Two Play testers' phones still open links in a browser** until the
+  next Play update re-runs Android's App Link check (or they add
+  `hazri-dfcc1.web.app` under Settings -> Apps -> Hazri -> Open by default).
+  Meanwhile `/verify`'s Open in Hazri finishes the link for them: the new
+  page was deployed on 2026-11-05 with both keys in `assetlinks.json`, and
+  Google's Digital Asset Links API reads both on both hosts. Deploy hosting
+  only from a branch whose `assetlinks.json` names both keys; one without
+  Play's would break the links of every Play install.
+- **Google Play: the first closed test is published** (submitted and approved 2026-11-01,
+  build 281 / 0.1.0; build 293 uploaded to internal testing on 2026-11-09, and
+  internal testing has its own tester list and opt-in link, separate from the
+  closed track's; developer account `hazriapp.dev@gmail.com`, developer
+  name Puneet Singh Nanda, package `app.hazri`). The listing, its images and
+  its text in en-US, pa and hi-IN are `store/` (drawn by `tools/store/`).
+  Production unlocks after 12 testers stay opted in for 14 days in a row.
+  Play re-signs what it ships, so `public/.well-known/assetlinks.json` names
+  two keys: ours (CI's APKs) and Play's app signing key (2026-11-01,
+  `docs/signing.md`). Deployed and confirmed on 2026-11-01: Google's
+  Digital Asset Links API reads both for `hazri-dfcc1.web.app`. Both
+  fingerprints also belong in Firebase (Project settings -> app.hazri).
+
+- **The website's `/privacy` and `/delete-account` pages are live** (deployed
+  2026-10-30, the hosting deploy that also put `/q/` up). They are the Play
+  Store's privacy policy and account deletion URLs; deletion is by email to
+  `support@hazri.me` (forwarded to the owner) and done by hand, because the
+  app has no delete button yet, and Play also wants one inside the app.
+  `/privacy` is PRD §8 in the reader's words and changes with it and the Data
+  safety form.
+- **The quiz's questions are English for now** (QZ6), and the Punjabi and
+  Hindi topic names and labels are Claude's draft.
+- **Picture rights for `assets/vichar/`.** The five pictures are the owner's
+  (2026-11-09); the night Harmandir Sahib looks like a third-party painting,
+  so its rights want checking before production.
+- **The Punjabi and Hindi Simran count labels** (`globeLiveLabel`,
+  `globeHereLabel`, `globeHereCount`) are Claude's draft.
 - **The Punjabi saakhi page timings want an ear** (SK-23). They were
   estimated from each page's share of the text and snapped to long pauses,
   not heard; a page that turns early or late is corrected in
@@ -613,7 +711,9 @@ answers `500 INTERNAL` from the endpoint that needs it.
   link already in somebody's inbox has to keep working.
 - **The Vichar library is the website's 102 story pages** (2026-10-19),
   bundled with the `api` Function from `tools/site/articles/` and shown under
-  four chips, Sikh days first (`docs/vichar-content.md`); nothing in it is
+  four picture tiles, Sikh days first, each entry an article card with a
+  bundled picture by kind of day (design 122, `vicharPictureFor`;
+  `docs/vichar-content.md`); nothing in it is
   written in Dart, and it reaches phones only after `firebase deploy --only functions`.
   The last list is saved on the phone and opens offline; a fresh one is
   fetched behind it once a session. Each entry names its **layout** --

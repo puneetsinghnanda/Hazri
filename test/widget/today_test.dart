@@ -4,8 +4,10 @@ import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/core/time/clock.dart';
+import 'package:hazri/features/quiz/ui/quiz_today_card.dart';
 import 'package:hazri/features/saakhi/ui/saakhi_library_screen.dart';
 import 'package:hazri/features/today/ui/today_screen.dart';
+import 'package:hazri/features/vichar/ui/vichar_card.dart';
 
 import '../app_harness.dart';
 
@@ -59,6 +61,29 @@ void main() {
     // 13-saakhi SK15 (owner, 2026-10-27): the saakhis stay in elder mode.
     expect(find.byType(SaakhiTodayRow, skipOffstage: false), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  // §5.3 (owner, 2026-11-09): the Sikh calendar above "Did you know?", and
+  // ਅੱਜ ਦਾ ਵਿਚਾਰ under it, then the quiz card and the saakhis.
+  testWidgets('§5.3: calendar, Did you know?, Vichar, quiz card, saakhis, in that order', (tester) async {
+    await pump(tester);
+    double top(Finder f) => tester.getTopLeft(f).dy;
+    final calendar = top(find.byKey(TodayScreen.calendarKey, skipOffstage: false));
+    final leaf = top(find.byType(QuizTodayCard, skipOffstage: false));
+    final vichar = top(find.byType(VicharCard, skipOffstage: false));
+    final quiz = top(find.byType(QuizPickCard, skipOffstage: false));
+    final saakhis = top(find.byType(SaakhiTodayRow, skipOffstage: false));
+    expect(calendar, lessThan(leaf), reason: 'the calendar sits above Did you know?');
+    expect(leaf, lessThan(vichar), reason: 'Today\'s Vichar sits under Did you know?');
+    expect(vichar, lessThan(quiz));
+    expect(quiz, lessThan(saakhis));
+  });
+
+  testWidgets('§5.3, T5: in elder mode the calendar and the Vichar step aside', (tester) async {
+    await pump(tester, elder: true);
+    expect(find.byKey(TodayScreen.calendarKey, skipOffstage: false), findsNothing);
+    expect(find.byType(VicharCard, skipOffstage: false), findsNothing);
+    expect(find.byType(QuizTodayCard, skipOffstage: false), findsOneWidget);
   });
 
   for (final dark in [false, true]) {

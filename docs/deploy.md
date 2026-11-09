@@ -18,7 +18,7 @@ firebase login
 firebase use hazri-dfcc1             # .firebaserc already names it
 ```
 
-Node 20 is what the Functions run on (`functions/package.json` `engines`).
+Node 22 is what the Functions run on (Node 20 was decommissioned on 2026-10-30) (`functions/package.json` `engines`).
 
 ## 1. The admin Hosting site
 

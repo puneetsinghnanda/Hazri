@@ -19,89 +19,70 @@
   </div>
 </header>
 
-<!-- Shown when the address carries the code. The whole address is what the
-     app wants, so the button copies location.href rather than any part of it. -->
+<!-- Shown when the address carries a token (ARCHITECTURE.md §8.3). The link
+     was meant to open the app and a browser got it instead, most often
+     because Android's App Link check failed for that install.
+     Open in Hazri hands the same link to the app (verify.js). -->
 <section id="has-code" hidden>
 
   <div data-lang="pa">
-    <h1>ਬੱਸ ਇੱਕ ਕਦਮ ਬਾਕੀ ਹੈ</h1>
-    <p class="lede">ਹੇਠਾਂ ਦਿੱਤਾ ਪੂਰਾ ਪਤਾ ਕਾਪੀ ਕਰੋ ਅਤੇ ਹਜ਼ਰੀ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।</p>
+    <h1>ਇਹ ਲਿੰਕ ਹਜ਼ਰੀ ਵਿੱਚ ਖੋਲ੍ਹੋ</h1>
+    <p class="lede">ਤੁਹਾਡੀ ਈਮੇਲ ਪੱਕੀ ਕਰਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤਾ ਬਟਨ ਦਬਾਓ। ਬਾਕੀ ਕੰਮ ਹਜ਼ਰੀ ਆਪ ਕਰੇਗੀ।</p>
   </div>
   <div data-lang="hi">
-    <h1>बस एक कदम बाकी है</h1>
-    <p class="lede">नीचे दिया पूरा पता कॉपी करें और हज़री में पेस्ट करें।</p>
+    <h1>यह लिंक हज़री में खोलें</h1>
+    <p class="lede">अपना ईमेल पक्का करने के लिए नीचे दिया बटन दबाएँ। बाकी काम हज़री खुद करेगी।</p>
   </div>
   <div data-lang="en">
-    <h1>One step left</h1>
-    <p class="lede">Copy the whole address below and paste it into Hazri.</p>
+    <h1>Open this link in Hazri</h1>
+    <p class="lede">Tap the button to finish confirming your email. Hazri does the rest.</p>
   </div>
 
-  <div class="card">
-    <code class="code" id="link">&nbsp;</code>
-    <button type="button" id="copy">
-      <span data-lang="pa">ਪਤਾ ਕਾਪੀ ਕਰੋ</span>
-      <span data-lang="hi">पता कॉपी करें</span>
-      <span data-lang="en">Copy the address</span>
-    </button>
-  </div>
+  <a class="button" id="open" href="#" style="margin: 8px 0 20px">
+    <span data-lang="pa">ਹਜ਼ਰੀ ਵਿੱਚ ਖੋਲ੍ਹੋ</span>
+    <span data-lang="hi">हज़री में खोलें</span>
+    <span data-lang="en">Open in Hazri</span>
+  </a>
 
   <div data-lang="pa">
-    <h2>ਫਿਰ ਹਜ਼ਰੀ ਵਿੱਚ</h2>
-    <ol>
-      <li>ਹਜ਼ਰੀ ਖੋਲ੍ਹੋ।</li>
-      <li>ਸੈਟਿੰਗਾਂ &rarr; ਖਾਤਾ &rarr; ਈਮੇਲ ਪੱਕੀ ਕਰੋ।</li>
-      <li>ਲਿੰਕ ਵਾਲੇ ਖ਼ਾਨੇ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।</li>
-    </ol>
+    <p class="note">ਕੰਪਿਊਟਰ ਉੱਤੇ ਹੋ? ਈਮੇਲ ਉਸ ਐਂਡਰਾਇਡ ਫ਼ੋਨ ਉੱਤੇ ਖੋਲ੍ਹੋ ਜਿਸ ਵਿੱਚ ਹਜ਼ਰੀ ਹੈ, ਅਤੇ ਲਿੰਕ ਉੱਥੇ ਦਬਾਓ।</p>
   </div>
   <div data-lang="hi">
-    <h2>फिर हज़री में</h2>
-    <ol>
-      <li>हज़री खोलें।</li>
-      <li>सेटिंग्स &rarr; खाता &rarr; ईमेल की पुष्टि करें।</li>
-      <li>लिंक वाले खाने में पेस्ट करें।</li>
-    </ol>
+    <p class="note">कंप्यूटर पर हैं? ईमेल उस एंड्रॉयड फ़ोन पर खोलें जिसमें हज़री है, और लिंक वहीं दबाएँ।</p>
   </div>
   <div data-lang="en">
-    <h2>Then, in Hazri</h2>
-    <ol>
-      <li>Open Hazri.</li>
-      <li>Settings &rarr; Account &rarr; Confirm your email.</li>
-      <li>Paste it into the box that asks for the link.</li>
-    </ol>
+    <p class="note">On a computer? Open the email on the Android phone that has Hazri, and tap the link there.</p>
   </div>
 
 </section>
 
-<!-- Shown when it does not: somebody opened /verify directly, or the code was
-     dropped on the way here. Sending them back to the email is the only
-     honest answer; the link in the mail is the thing that carries the code. -->
+<!-- Shown when it does not: somebody opened /verify directly, or the token
+     was dropped on the way here. The link in the mail is the thing that
+     carries it, so the only honest answer is to go back to the mail. -->
 <section id="no-code" hidden>
 
   <div data-lang="pa">
-    <h1>ਲਿੰਕ ਈਮੇਲ ਵਿੱਚੋਂ ਹੀ ਚਾਹੀਦਾ ਹੈ</h1>
+    <h1>ਇਹ ਲਿੰਕ ਪੂਰਾ ਨਹੀਂ ਹੈ</h1>
     <p class="lede">ਇਸ ਪਤੇ ਵਿੱਚ ਕੋਡ ਨਹੀਂ ਹੈ, ਇਸ ਲਈ ਇਹ ਖਾਤਾ ਪੱਕਾ ਨਹੀਂ ਕਰ ਸਕਦਾ।</p>
     <ol>
-      <li>ਹਜ਼ਰੀ ਵੱਲੋਂ ਆਈ ਈਮੇਲ ਦੁਬਾਰਾ ਖੋਲ੍ਹੋ।</li>
-      <li>ਲਿੰਕ ਨੂੰ ਦਬਾ ਕੇ ਰੱਖੋ ਅਤੇ <em>ਲਿੰਕ ਦਾ ਪਤਾ ਕਾਪੀ ਕਰੋ</em> ਚੁਣੋ।</li>
-      <li>ਹਜ਼ਰੀ ਵਿੱਚ ਸੈਟਿੰਗਾਂ &rarr; ਖਾਤਾ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।</li>
+      <li>ਹਜ਼ਰੀ ਵੱਲੋਂ ਆਈ ਈਮੇਲ ਉਸ ਫ਼ੋਨ ਉੱਤੇ ਖੋਲ੍ਹੋ ਜਿਸ ਵਿੱਚ ਹਜ਼ਰੀ ਹੈ।</li>
+      <li>ਈਮੇਲ ਵਿਚਲਾ ਲਿੰਕ ਦਬਾਓ।</li>
     </ol>
   </div>
   <div data-lang="hi">
-    <h1>लिंक ईमेल से ही चाहिए</h1>
+    <h1>यह लिंक पूरा नहीं है</h1>
     <p class="lede">इस पते में कोड नहीं है, इसलिए यह खाते की पुष्टि नहीं कर सकता।</p>
     <ol>
-      <li>हज़री से आया ईमेल फिर से खोलें।</li>
-      <li>लिंक को दबाकर रखें और <em>लिंक का पता कॉपी करें</em> चुनें।</li>
-      <li>हज़री में सेटिंग्स &rarr; खाता में पेस्ट करें।</li>
+      <li>हज़री से आया ईमेल उस फ़ोन पर खोलें जिसमें हज़री है।</li>
+      <li>ईमेल में दिया लिंक दबाएँ।</li>
     </ol>
   </div>
   <div data-lang="en">
-    <h1>The link has to come from the email</h1>
+    <h1>This link is not complete</h1>
     <p class="lede">This address carries no code, so it cannot confirm an account.</p>
     <ol>
-      <li>Open the email from Hazri again.</li>
-      <li>Press and hold the link, then choose <em>Copy link address</em>.</li>
-      <li>Paste it into Hazri, under Settings &rarr; Account.</li>
+      <li>Open the email from Hazri on the phone that has Hazri.</li>
+      <li>Tap the link in the email.</li>
     </ol>
   </div>
 
@@ -122,59 +103,6 @@
 </main>
 
 <script src="/lang.js"></script>
-<script>
-(function () {
-  var href = location.href;
-  // The code can arrive as a query parameter or inside the fragment,
-  // depending on how the mail client handed the link over. Looking for the
-  // word anywhere is deliberately loose: a false positive shows a copy box
-  // that does not work, a false negative sends somebody back to an email
-  // they already left.
-  var hasCode = /oobCode=/.test(href);
-
-  document.getElementById('has-code').hidden = !hasCode;
-  document.getElementById('no-code').hidden = hasCode;
-
-  if (!hasCode) return;
-
-  document.getElementById('link').textContent = href;
-
-  var button = document.getElementById('copy');
-  var labels = button.querySelectorAll('[data-lang]');
-  var said = {
-    pa: 'ਕਾਪੀ ਹੋ ਗਿਆ',
-    hi: 'कॉपी हो गया',
-    en: 'Copied'
-  };
-
-  button.addEventListener('click', function () {
-    var done = function () {
-      labels.forEach(function (el) {
-        var was = el.textContent;
-        el.textContent = said[el.getAttribute('data-lang')];
-        setTimeout(function () { el.textContent = was; }, 2000);
-      });
-    };
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(href).then(done, select);
-    } else {
-      select();
-    }
-  });
-
-  // Clipboard access is refused over plain http and in some in-app browsers.
-  // Selecting the text is not as good, but it means the button always does
-  // something rather than failing silently.
-  function select() {
-    var node = document.getElementById('link');
-    var range = document.createRange();
-    range.selectNodeContents(node);
-    var selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-})();
-</script>
+<script src="/verify/verify.js"></script>
 </body>
 </html>

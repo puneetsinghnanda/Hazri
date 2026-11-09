@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../../../core/backend/api_client.dart';
+import '../../../core/backend/api_exception.dart';
 import '../../../core/backend/auth_service.dart';
 import '../../../core/backend/firebase_backend.dart';
 import '../../../core/db/user_db.dart';
@@ -27,10 +28,11 @@ void backupCallbackDispatcher() {
     final auth = FirebaseAuthService();
     // BK4: only with a profile this install owns.
     if (ProfileCache(prefs).read(currentUid: auth.uid) == null) return true;
+    final api = ApiClient(auth: auth);
     final db = await UserDb.open();
     try {
       final service = BackupService(
-        api: ApiClient(auth: auth),
+        api: api,
         store: BackupStore(db),
         prefs: prefs,
         clock: const SystemClock(),
@@ -39,6 +41,9 @@ void backupCallbackDispatcher() {
       final scheduler = WorkmanagerBackupScheduler();
       switch (outcome) {
         case BackupNoProfile():
+          // R2: only GET /profile's own NO_PROFILE clears the profile; any
+          // other answer leaves it, and WorkManager tries again later.
+          if (!await profileGone(api)) return false;
           // ST2: the profile moved to another phone; stop.
           await ProfileCache(prefs).clear();
           await prefs.remove(BackupService.kNextDue);
@@ -61,4 +66,17 @@ void backupCallbackDispatcher() {
       await db.close();
     }
   });
+}
+
+/// R2: whether GET /profile itself says this install has no profile. Any
+/// other answer, an error included, is not proof that it has gone.
+Future<bool> profileGone(ApiClient api) async {
+  try {
+    await api.get('/profile');
+    return false;
+  } on ApiException catch (e) {
+    return e.statusCode == 404 && e.code == 'NO_PROFILE';
+  } on Object {
+    return false;
+  }
 }

@@ -77,6 +77,8 @@ ICONS = {
     "mail": '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M4 8l8 5.5L20 8"/>',
     "alert": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5"/><circle cx="12" cy="16.3" r=".9" fill="currentColor" stroke="none"/>',
     "clock": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.4 2"/>',
+    # The app's own (lib/core/theme/icon_data.dart, `calendar`).
+    "calendar": '<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
     "phone": '<rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 18.6h3"/>',
     "share": '<circle cx="17" cy="6" r="2.4"/><circle cx="7" cy="12" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M9.2 10.9l5.6-3.3M9.2 13.1l5.6 3.3"/>',
     # added 2026-10-10 for the profile and sangat screens, 100-103
@@ -1522,6 +1524,79 @@ def vichar_home() -> str:
 """
 
 
+def _vichar_img(name: str) -> str:
+    """A bundled Vichar picture (assets/vichar/), embedded so the design shows
+    exactly what the app ships."""
+    import base64
+    from pathlib import Path
+    data = (Path(__file__).resolve().parents[2] / "assets" / "vichar" / name).read_bytes()
+    return "data:image/jpeg;base64," + base64.b64encode(data).decode()
+
+
+def vichar_library() -> str:
+    """Vichar from the left menu, option 1 of the owner's mock-up (2026-11-09):
+    the header with the dawn Harmandir Sahib and ੴ, the search, four topic
+    tiles, and each story as a card -- its topic and date, the headline, three
+    lines of its opening, the reading time, and its picture on the right.
+    Headlines, openings and times are the stories' own; each picture is the
+    one its kind of day takes (docs/vichar-content.md, Home). Replaces 43."""
+    book = ('<svg class="i" width="15" height="15" viewBox="0 0 24 24"><path d="M3 5.5c3-1.3 6-1.3 9 .5 '
+            '3-1.8 6-1.8 9-.5v13c-3-1.3-6-1.3-9 .5-3-1.8-6-1.8-9-.5z"/><path d="M12 6v13"/></svg>')
+    cal = ('<svg class="i" width="24" height="24" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" '
+           'height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>')
+    tiles = [("Sikh days", f'<div style="color:var(--kesri);height:28px;display:flex;align-items:center">{cal}</div>', True),
+             ("Gurdwaras", f'<img src="{_vichar_img("dawn.jpg")}" alt="" style="width:34px;height:28px;object-fit:cover;border-radius:7px">', False),
+             ("Guru Sahibans", f'<img src="{_vichar_img("palki.jpg")}" alt="" style="width:34px;height:28px;object-fit:cover;border-radius:7px">', False),
+             ("Banis", f'<div style="color:var(--primary);height:28px;display:flex;align-items:center">{book.replace("15", "24")}</div>', False)]
+    tile_html = "".join(
+        f'<div class="col" style="flex:1;align-items:center;gap:5px;padding:9px 2px;border-radius:14px;'
+        f'background:{"var(--kesriSoft)" if on else "var(--card)"};box-shadow:0 1px 3px rgba(27,29,58,.07);'
+        f'font-size:12px;font-weight:600;text-align:center;line-height:1.15">{icon_}<div>{t}</div></div>'
+        for t, icon_, on in tiles)
+    stories = [
+        ("Gurdwaras · 9 Nov", "Masya", "What Masya, the new moon day, means in Sikh practice, why sangats gather "
+         "at Tarn Taran Sahib and other gurdwaras, and every Masya date of Nanakshahi 558.", 1, "night.jpg"),
+        ("Guru Sahibans · 11 Nov", "Gurgaddi Purab – Sri Guru Granth Sahib Ji (Nanded, 1708)",
+         "In 1708 at Nanded, Sri Guru Gobind Singh Ji ended the line of human Gurus and gave the Guruship "
+         "to Sri Guru Granth Sahib Ji.", 1, "palki.jpg"),
+        ("Guru Sahibans · 14 Nov", "Joti Jot Purab – Sri Guru Gobind Singh Sahib Ji",
+         "Sri Guru Gobind Singh Ji completed his life at Nanded in 1708 after passing the Guruship to "
+         "Sri Guru Granth Sahib Ji and the Khalsa.", 1, "guru-light.jpg"),
+        ("Gurdwaras · 15 Nov", "Baba Deep Singh Ji", "Baba Deep Singh Ji copied Sri Guru Granth Sahib Ji at "
+         "Damdama Sahib, led the Shaheedan Misl, and in 1757, aged 75, fell fighting to free Sri Harmandir Sahib.",
+         1, "shaheed.jpg"),
+    ]
+    cards = "".join(
+        f'<div class="card row" style="padding:12px;gap:12px;align-items:center">'
+        f'<div class="col" style="flex:1;gap:5px;min-width:0">'
+        f'<div style="align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;'
+        f'padding:3px 9px;border-radius:999px;background:var(--card2);color:var(--primary)">{k}</div>'
+        f'<div class="disp" style="font-size:16px;font-weight:700;line-height:1.2">{t}</div>'
+        f'<div style="font-size:13px;line-height:1.45;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:3;'
+        f'-webkit-box-orient:vertical;overflow:hidden">{x}</div>'
+        f'<div class="row" style="gap:6px;font-size:12px;color:var(--muted);font-weight:600">{book}<div>{m} min read</div></div></div>'
+        f'<img src="{_vichar_img(img)}" alt="" style="width:92px;height:92px;border-radius:14px;object-fit:cover;flex:none"></div>'
+        for k, t, x, m, img in stories)
+    return f"""
+<div class="pad col" style="gap:12px">
+  <div class="row" style="gap:12px;position:relative;min-height:62px">
+    <div style="width:38px;height:38px;border-radius:12px;background:var(--card);display:flex;align-items:center;
+      justify-content:center;box-shadow:0 1px 3px rgba(27,29,58,.08);flex:none">{icon("back", 18)}</div>
+    <div class="col" style="gap:1px;z-index:1"><div class="disp" style="font-size:26px;font-weight:700;line-height:1">Vichar</div>
+      <div style="font-size:13px;color:var(--muted)">Read, and look things up</div></div>
+    <img src="{_vichar_img("dawn.jpg")}" alt="" style="position:absolute;right:34px;top:-4px;width:150px;height:70px;
+      object-fit:cover;opacity:.6;-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%,#000 70%,transparent);
+      mask-image:linear-gradient(90deg,transparent,#000 35%,#000 70%,transparent)">
+    <div class="gur" style="position:absolute;right:0;top:4px;font-size:26px;color:var(--kesri)">ੴ</div>
+  </div>
+  {searchbox("Search articles, gurdwaras, banis…")}
+  <div class="row" style="gap:7px">{tile_html}</div>
+  {cards}
+  <div style="height:16px"></div>
+</div>
+"""
+
+
 def vichar_article() -> str:
     """One article, read inside the app rather than bounced to a browser."""
     body = [
@@ -2340,7 +2415,14 @@ def stars() -> str:
         for _ in range(90))
 
 
-def simran_sky(state: str = "rest") -> str:
+def _sky_count(n: int, colour: str, label: str, size: int = 28) -> str:
+    serif = "font-family:'Playfair Display','Noto Serif Gurmukhi',serif"
+    return (f'<div class="col" style="align-items:center;flex:1;min-width:0">'
+            f'<div style="{serif};font-size:{size}px;font-weight:500;line-height:1;color:{colour}">{n}</div>'
+            f'<div style="font-size:11.5px;color:rgba(255,255,255,.7);font-weight:600;margin-top:4px">{label}</div></div>')
+
+
+def simran_sky(state: str = "rest", counts: bool = False) -> str:
     """The Simran tab to the reader's mock-up of 2026-09-20, with 07-simran.md.
 
     `rest` with a profile, `sitting` while a sitting runs, `noprofile` for
@@ -2370,6 +2452,13 @@ def simran_sky(state: str = "rest") -> str:
         font-variant-numeric:tabular-nums">7:42</div>
       <div style="font-size:12.5px;color:rgba(255,255,255,.55)">left of 11:00</div>
     </div>"""
+        if counts:
+            # Design 124 (owner, 2026-11-09): the two counts either side of
+            # the countdown, smaller, so neither is lost while you sit.
+            middle = (f'<div class="row" style="align-items:center">'
+                      f'{_sky_count(48, "#6FE3A6", "live today", 22)}'
+                      f'<div style="flex:none">{middle}</div>'
+                      f'{_sky_count(312, "#8FB2FF", "here today", 22)}</div>')
         buttons = f"""
     <div class="row" style="gap:12px">
       <div class="btn" style="flex:1;background:#F2A24E;color:#1C1206">Pause</div>
@@ -2379,6 +2468,13 @@ def simran_sky(state: str = "rest") -> str:
         middle = f"""
     <div style="{serif};font-size:20px;font-weight:500;line-height:1.25;color:#fff;
       text-align:center"><span style="color:#6FE3A6">48</span> live today</div>"""
+        if counts:
+            # Design 123 (option C, owner 2026-11-09): live and here today as
+            # two figures, green and blue, with a rule between.
+            middle = (f'<div class="row" style="align-items:stretch;padding:0 36px">'
+                      f'{_sky_count(48, "#6FE3A6", "live today")}'
+                      f'<div style="width:1px;background:rgba(255,255,255,.18);margin:4px 0"></div>'
+                      f'{_sky_count(312, "#8FB2FF", "here today")}</div>')
         minutes = 5 if state == "noprofile" else 11
         buttons = f"""
     <div class="btn" style="background:#F2A24E;color:#1C1206">
@@ -2437,6 +2533,14 @@ def simran_rest() -> str:
 
 def simran_sitting() -> str:
     return simran_sky("sitting")
+
+
+def simran_counts() -> str:
+    return simran_sky("rest", counts=True)
+
+
+def simran_counts_sitting() -> str:
+    return simran_sky("sitting", counts=True)
 
 
 def simran_no_profile() -> str:
@@ -3965,16 +4069,38 @@ def quiz_pick_card() -> str:
   </div>"""
 
 
+def today_calendar_card() -> str:
+    """The Sikh calendar on Today, as `_GurpurabCard` draws it: the next event
+    within a week (here the day's own, from content/source/gurpurab-558.json),
+    else the Gurpurab calendar and today's Nanakshahi date. It opens the
+    calendar."""
+    return f"""
+  <div class="card row" style="padding:14px;gap:12px">
+    <div style="width:44px;height:44px;border-radius:14px;flex:none;background:var(--kesriSoft);
+      color:var(--kesriInk);display:flex;align-items:center;justify-content:center">{icon("calendar", 22)}</div>
+    <div class="col" style="flex:1;min-width:0;gap:2px">
+      <div style="font-size:12px;font-weight:700;color:var(--kesriInk)">Today · Gurpurab</div>
+      <div style="font-size:15px;font-weight:700;line-height:1.3">Prakash Purab, Guru Ram Das Ji</div>
+      <div style="font-size:12px;color:var(--muted)">11 Katak 558</div>
+    </div>
+    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>"""
+
+
 def today_quiz() -> str:
-    """Today scrolled past the band and the goal: the Nitnem button, the
-    calendar leaf (1A, no buttons), the quiz card (D), then the saakhis card
-    in option C (05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; SK11). In elder
-    mode too (QZ9, SK15)."""
+    """Today scrolled past the band and the goal (05-today.md §5.3, owner
+    2026-11-09): the Nitnem button, the Sikh calendar, the calendar leaf
+    ("Did you know?", 1A, no buttons), ਅੱਜ ਦਾ ਵਿਚਾਰ, the quiz card (D), then
+    the saakhis card in option C (14-quiz.md QZ9-QZ12; SK11). In elder mode
+    the calendar and the Vichar step aside (T5); the rest stays (QZ9,
+    SK15)."""
     return f"""
 <div class="col" style="gap:12px;padding:16px 20px 0">
   <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
     {icon("nitnem", 20)}<div>Start your Nitnem</div></div>
+  {today_calendar_card()}
   {quiz_card()}
+  {vichar_card()}
   {quiz_pick_card()}
   {saakhi_card()}
 </div>
@@ -4437,6 +4563,9 @@ SCREENS = [
     ("119-QuizMe", "Gurmat Quiz — your quiz", quiz_me),
     ("120-TodayGoalFolded", "Today — a goal of seven, folded", goal_folded),
     ("121-NitnemTinted", "Nitnem — each part of the day in its light", nitnem_tinted),
+    ("122-VicharLibrary", "Vichar — the library: articles to read, with search", vichar_library),
+    ("123-SimranCounts", "Simran — live and here today as two figures", simran_counts),
+    ("124-SimranCountsSitting", "Simran — the two counts either side of the countdown", simran_counts_sitting),
 ]
 
 

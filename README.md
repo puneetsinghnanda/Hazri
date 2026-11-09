@@ -28,7 +28,8 @@ ahead of the Play Store.
 | Backend | Firebase `hazri-dfcc1` on Blaze: Anonymous Auth, the `api` Cloud Function plus scheduled and triggered Functions, Firestore and Functions in `asia-south1`, FCM for the Sangat, Brevo for profile mail |
 | Website | **[hazri.me](https://hazri.me)**, the home page, also at `hazri-dfcc1.web.app` |
 | Admin | [hazri-admin-d4b72.web.app](https://hazri-admin-d4b72.web.app), for the one admin account |
-| Test APK | [the latest build](https://github.com/puneetsinghnanda/Hazri/releases/download/apk-claude/pensive-hawking-k87ese/app-arm64-v8a-release.apk) (arm64), replaced on every hand-started run |
+| Test APK | [the latest build](https://github.com/puneetsinghnanda/Hazri/releases/download/apk-claude/modest-ptolemy-6vwl5y/app-arm64-v8a-release.apk) (arm64) and its `app-release.aab` for Play, on the `apk-claude/modest-ptolemy-6vwl5y` pre-release, replaced on every hand-started run (build 293, 2026-11-09). It will not install over a Play install, which Google re-signs |
+| Google Play | Closed test since 2026-11-01 (build 281); build 293 uploaded to internal testing on 2026-11-09 |
 | Phase 3 | Seven items (PRD §2.3). Badges were specified early and are already built |
 
 ## What Phase 2 brought
@@ -39,15 +40,16 @@ ahead of the Play Store.
 | **Goals** | Any bani any number of times a day, and Naam Simran by the minute, each for as long as you choose, each with its own reminder |
 | **Today** | A navy Hazri app bar, the hazri banner, a week-strip streak, the goal widget and the one next thing to do |
 | **Diary** | Two dots a day — hazri and goal — every paath listed, + and − for a week back, the streak now and at its longest |
-| **Notifications** | Amrit Vela at 04:00, one per goal, Gurpurabs and Sikh events on the day, a gentle hazri nudge, and the Sangat's evening digest |
+| **Notifications** | Amrit Vela at 04:00, one per goal item at its own time and again an hour later if it is still not done, every Sikh calendar event at 20:00 the evening before and 06:30 on the day, a gentle hazri nudge, and the Sangat's evening digest |
 | **Profile** | Optional: name, email, city. No password, no sign-in screen; email verified by link; restore on a new phone by link |
 | **Weekly backup** | With a profile, goals and the diary are backed up each Sunday and can be restored |
-| **Simran and the globe** | A sitting of 5 minutes or the goal's length; the sangat on a globe by city — you, those here today, everybody else |
+| **Simran and the globe** | A sitting of 5 minutes or the goal's length; the sangat on a globe by city — you, those live today, those here today — with both counts under the globe, and beside the countdown during a sitting |
 | **Sangat** | Three built-in groups anybody can join, and private groups by invite, each working toward one shared goal |
 | **Badges** | Ten badges for days kept — never points, never a ranking (a Phase 3 item, built early) |
 | **First run** | Android's splash, one Welcome screen, language, how you read — Gurbani in under 30 seconds |
 | **Admin website** | One person runs the built-in groups and acts on reports |
 | **Saakhis** | Four illustrated stories from Sikh history to read and hear, page by page, opening in Punjabi with Punjabi narration in every app language, English one tap away; one a day on Today, the rest in the library |
+| **Vichar** | The library of 102 stories, one for every day of the Sikh calendar: search, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis) and article cards with a picture by kind of day |
 | **Gurmat Quiz** | A quiz a day on Today, by the calendar: five questions on a Guru, a Gurdwara, a bani, the heroes or Sikh culture, from the owner's 340-question bank. With a profile, 10 points a right answer and top-20 leaderboards by day, week and month; without one it plays on the phone and sends nothing. The only points in the app |
 
 ## What else is in the app

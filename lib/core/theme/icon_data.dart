@@ -114,4 +114,6 @@ abstract final class HazriIconData {
   static const String plus = '<path d="M12 5v14M5 12h14"/>';
   /// `code` — 24dp outline, stroke 1.8 (design 102, Join group)
   static const String code = '<rect x="3" y="6" width="18" height="12" rx="3"/><path d="M7 12h.01M10.5 12h.01M14 12h.01M17.5 12h.01"/>';
+  /// `search` — 24dp outline, stroke 1.8 (design 122, Vichar)
+  static const String search = '<circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.4 15.4L20 20"/>';
 }

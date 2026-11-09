@@ -15,6 +15,9 @@ abstract interface class SystemSettings {
 
   /// Google Play's install referrer string, or null (08-sangat IV6).
   Future<String?> installReferrer();
+
+  /// Opens [url] in a browser. False when nothing on the phone can open it.
+  Future<bool> openUrl(String url);
 }
 
 class AndroidSystemSettings implements SystemSettings {
@@ -53,6 +56,18 @@ class AndroidSystemSettings implements SystemSettings {
       return null;
     } on MissingPluginException {
       return null;
+    }
+  }
+
+  @override
+  Future<bool> openUrl(String url) async {
+    try {
+      return await _channel.invokeMethod<bool>('openUrl', {'url': url}) ?? false;
+    } on PlatformException catch (e) {
+      debugPrint('Hazri: could not open $url ($e)');
+      return false;
+    } on MissingPluginException {
+      return false;
     }
   }
 }

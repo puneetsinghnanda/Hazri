@@ -39,6 +39,9 @@ import '../../../core/widgets/progress_ring.dart';
 class TodayScreen extends ConsumerWidget {
   const TodayScreen({super.key});
 
+  /// The Sikh calendar card, for tests that check where it sits (§5.3).
+  static const calendarKey = ValueKey('today-calendar');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // T5: elder mode is a mode, not a screen. Sizes come from the elder
@@ -74,23 +77,26 @@ class TodayScreen extends ConsumerWidget {
                     const _GoalsCard(),
                     const SizedBox(height: 12),
                     _CtaButton(cta: ref.watch(todayCtaProvider)),
-                    // 14-quiz QZ9, design 1A: after the button, above the saakhis;
-                    // in elder mode too (owner, 2026-10-27). Then the quiz's own
-                    // card, design D (QZ12, owner 2026-10-28).
+                    // §5.3 (owner, 2026-11-09): after the button, the Sikh
+                    // calendar, then the quiz's calendar leaf ("Did you know?",
+                    // QZ9 design 1A), then ਅੱਜ ਦਾ ਵਿਚਾਰ, then the quiz card
+                    // (design D, QZ12) and the saakhis. The calendar and the
+                    // Vichar step aside in elder mode (T5); the quiz cards and
+                    // the saakhis stay (QZ9, SK15).
+                    if (!elder) ...[
+                      const SizedBox(height: 12),
+                      const _GurpurabCard(key: TodayScreen.calendarKey),
+                    ],
                     const SizedBox(height: 12),
                     const QuizTodayCard(),
-                    const SizedBox(height: 12),
-                    const QuizPickCard(),
-                    // 13-saakhi SK11, option 1A: after the button, before ਅੱਜ ਦਾ ਵਿਚਾਰ.
-                    // Shown in elder mode too (SK15, owner 2026-10-27).
-                    const SizedBox(height: 18),
-                    const SaakhiTodayRow(),
                     if (!elder) ...[
                       const SizedBox(height: 12),
                       const VicharCard(),
-                      const SizedBox(height: 12),
-                      const _GurpurabCard(),
                     ],
+                    const SizedBox(height: 12),
+                    const QuizPickCard(),
+                    const SizedBox(height: 18),
+                    const SaakhiTodayRow(),
                   ],
                 ),
               ),
@@ -548,7 +554,7 @@ class _CtaButton extends ConsumerWidget {
 /// A card rather than half a row: it has both the next event and today's
 /// Nanakshahi date to show, and neither fits in a tile without truncating.
 class _GurpurabCard extends ConsumerWidget {
-  const _GurpurabCard();
+  const _GurpurabCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

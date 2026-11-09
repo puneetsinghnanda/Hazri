@@ -783,23 +783,89 @@ abstract class L {
   /// **'How Hazri works'**
   String get helpSheetTitle;
 
-  /// No description provided for @helpTip1.
+  /// No description provided for @helpTip1Title.
   ///
   /// In en, this message translates to:
-  /// **'Tap Start my Nitnem on Today and the reader opens where you left off.'**
-  String get helpTip1;
+  /// **'Your Hazri'**
+  String get helpTip1Title;
 
-  /// No description provided for @helpTip2.
+  /// No description provided for @helpTip1Body.
   ///
   /// In en, this message translates to:
-  /// **'In the reader, ਅ / अ / A switches script and Aa opens text size, meanings and pause marks.'**
-  String get helpTip2;
+  /// **'Read any Nitnem bani or sit for five minutes of Naam Simran, and today\'s Hazri is marked.'**
+  String get helpTip1Body;
 
-  /// No description provided for @helpTip3.
+  /// No description provided for @helpTip2Title.
   ///
   /// In en, this message translates to:
-  /// **'Reminders follow sunrise and sunset for your city, or a time you pick yourself.'**
-  String get helpTip3;
+  /// **'Your goals'**
+  String get helpTip2Title;
+
+  /// No description provided for @helpTip2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'On the Goals page, choose your paaths for the day and the time of each. Hazri reminds you at that time.'**
+  String get helpTip2Body;
+
+  /// No description provided for @helpTip3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'The reader'**
+  String get helpTip3Title;
+
+  /// No description provided for @helpTip3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start my Nitnem opens where you left off. ਅ / अ / A switches script; Aa sets text size, meanings and pause marks; play to read along with the recitation.'**
+  String get helpTip3Body;
+
+  /// No description provided for @helpTip4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Naam Simran'**
+  String get helpTip4Title;
+
+  /// No description provided for @helpTip4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'On the Simran tab, set the minutes and sit. The globe shows where the sangat is sitting today.'**
+  String get helpTip4Body;
+
+  /// No description provided for @helpTip5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Diary'**
+  String get helpTip5Title;
+
+  /// No description provided for @helpTip5Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day you mark Hazri is kept on this phone, with your streak.'**
+  String get helpTip5Body;
+
+  /// No description provided for @helpTip6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Sangat'**
+  String get helpTip6Title;
+
+  /// No description provided for @helpTip6Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a group to do paath together toward one goal. This is optional; everything else works without it.'**
+  String get helpTip6Body;
+
+  /// No description provided for @helpTip7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get helpTip7Title;
+
+  /// No description provided for @helpTip7Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A saakhi and a Gurmat Quiz topic on Today, and the Sikh calendar for every Gurpurab.'**
+  String get helpTip7Body;
 
   /// No description provided for @helpAboutLink.
   ///
@@ -1791,18 +1857,6 @@ abstract class L {
   /// **'Hazri is a free, offline Nitnem app in Punjabi, Hindi and English. No ads on Gurbani. No login. Works offline.'**
   String get aboutPurpose;
 
-  /// No description provided for @aboutTextSources.
-  ///
-  /// In en, this message translates to:
-  /// **'Gurbani text & transliteration'**
-  String get aboutTextSources;
-
-  /// No description provided for @aboutMeaningSources.
-  ///
-  /// In en, this message translates to:
-  /// **'Meanings and teeka'**
-  String get aboutMeaningSources;
-
   /// No description provided for @aboutCalendarSource.
   ///
   /// In en, this message translates to:
@@ -1814,6 +1868,24 @@ abstract class L {
   /// In en, this message translates to:
   /// **'City data'**
   String get aboutCityData;
+
+  /// No description provided for @aboutCalendarBody.
+  ///
+  /// In en, this message translates to:
+  /// **'SGPC Nanakshahi calendar (jantri), Nanakshahi 558, 2026–27. Event names in English as the jantri gives them; Punjabi where available.'**
+  String get aboutCalendarBody;
+
+  /// No description provided for @aboutCityDataBody.
+  ///
+  /// In en, this message translates to:
+  /// **'City names, coordinates and time zones are bundled with the app and never sent anywhere.'**
+  String get aboutCityDataBody;
+
+  /// No description provided for @aboutVicharBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Lines from Sri Guru Granth Sahib Ji. Punjabi meanings from the dataset; the English meanings are plain renderings of the Punjabi.'**
+  String get aboutVicharBody;
 
   /// No description provided for @aboutFonts.
   ///
@@ -4167,18 +4239,6 @@ abstract class L {
   /// **'Time for {bani}'**
   String notifGoalBaniTitle(String bani);
 
-  /// No description provided for @notifGoalBaniBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{done} of {target} today. Your goal, day {day} of {days}.'**
-  String notifGoalBaniBody(int done, int target, int day, int days);
-
-  /// No description provided for @notifGoalBaniOpenBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{done} of {target} today.'**
-  String notifGoalBaniOpenBody(int done, int target);
-
   /// No description provided for @notifGoalSimranTitle.
   ///
   /// In en, this message translates to:
@@ -4220,6 +4280,48 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Begin the day with Nitnem and your Hazri.'**
   String get notifEventBody;
+
+  /// 02-notifications CE6: the evening before a Gurpurab or event, 20:00.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow: {event}'**
+  String notifEveTitle(String event);
+
+  /// CE6: the evening before a joti-jot or shaheedi day.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow we remember: {event}'**
+  String notifEveRememberTitle(String event);
+
+  /// CE6: body of the evening-before notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin tomorrow with Nitnem and your Hazri.'**
+  String get notifEveBody;
+
+  /// 5.2: how many of today's goal items are still open, at goal level (owner, 2026-11-09).
+  ///
+  /// In en, this message translates to:
+  /// **'{total, plural, =1{Your goal for today is still open.} other{{open} of your {total} goals still open today.}}'**
+  String notifGoalsOpenBody(int open, int total);
+
+  /// 5.2: added after notifGoalsOpenBody for a goal with an end date.
+  ///
+  /// In en, this message translates to:
+  /// **'Your goal, day {day} of {days}.'**
+  String notifGoalDayOf(int day, int days);
+
+  /// GR5: the second reminder, an hour after the item's time.
+  ///
+  /// In en, this message translates to:
+  /// **'Still time for {bani}'**
+  String notifGoalAgainBaniTitle(String bani);
+
+  /// GR5: the second reminder for a Naam Simran item.
+  ///
+  /// In en, this message translates to:
+  /// **'Still time for {minutes} minutes of Naam Simran'**
+  String notifGoalAgainSimranTitle(int minutes);
 
   /// No description provided for @notifHn1Title.
   ///
@@ -5298,7 +5400,7 @@ abstract class L {
   /// No description provided for @privacyNothingUnless.
   ///
   /// In en, this message translates to:
-  /// **'Nothing leaves this phone unless you make a profile or join a group. Analytics are not collected, and there is no advertising ID and no ads.'**
+  /// **'Your diary, goals and reading never leave this phone unless you make a profile or join a group. Hazri does fetch the globe on the Simran tab and the Vichar stories from its own server, and those requests carry only the anonymous sign-in. Analytics are not collected, and there is no advertising ID and no ads.'**
   String get privacyNothingUnless;
 
   /// No description provided for @privacyPhoneSignIn.
@@ -5306,6 +5408,12 @@ abstract class L {
   /// In en, this message translates to:
   /// **'An anonymous sign-in when the app starts: an install number, never a name'**
   String get privacyPhoneSignIn;
+
+  /// No description provided for @privacyPhoneOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Your badges, the saakhis you heart, and quizzes you play without a profile'**
+  String get privacyPhoneOther;
 
   /// No description provided for @privacyWithProfile.
   ///
@@ -5817,6 +5925,24 @@ abstract class L {
   /// In en, this message translates to:
   /// **'{count} live today'**
   String globeLiveCount(int count);
+
+  /// No description provided for @globeLiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'live today'**
+  String get globeLiveLabel;
+
+  /// No description provided for @globeHereLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'here today'**
+  String get globeHereLabel;
+
+  /// No description provided for @globeHereCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} here today'**
+  String globeHereCount(int count);
 
   /// No description provided for @globeStale.
   ///
@@ -7143,6 +7269,24 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Any time of day'**
   String get slotAnyTime;
+
+  /// No description provided for @privacyAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account'**
+  String get privacyAccountTitle;
+
+  /// No description provided for @privacyDeleteHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens hazri.me, where you ask for it by email. It is done within 30 days. Your diary stays on this phone until you uninstall Hazri.'**
+  String get privacyDeleteHow;
+
+  /// No description provided for @privacyDeleteNoBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open a browser. The page is hazri.me/delete-account'**
+  String get privacyDeleteNoBrowser;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

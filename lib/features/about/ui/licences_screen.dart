@@ -1,9 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../settings/ui/settings_screen.dart' show appVersion;
+
+/// The Gurbani text and its transliteration are MIT-licensed data, shipped in
+/// content.db. About & credits no longer names them (owner, 2026-11-09), so
+/// their notices are kept on this screen, which the MIT licence needs.
+/// Called once, from main().
+void registerDataLicences() {
+  LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(const [
+      'Shabad OS Database',
+    ], await rootBundle.loadString('assets/licences/shabados-database.txt'));
+    yield LicenseEntryWithLineBreaks(const [
+      'gurmukhi-utils',
+    ], await rootBundle.loadString('assets/licences/gurmukhi-utils.txt'));
+  });
+}
 
 /// Open-source licences, using Flutter's own licence registry so every bundled
 /// package and font is listed.

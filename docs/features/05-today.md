@@ -46,10 +46,16 @@ call to action does not know about goals.
 | 4 | Streak card | When the hazri streak is 2 days or more | T12 |
 | 5 | Set Goal card, or the goal widget | Always, one or the other | `04-goals.md` §7.1 |
 | 6 | Call to action | When `content.db` has a bani to offer | T4 |
-| 6a | Gurmat Quiz: the calendar leaf (1A, no buttons) and the quiz card (D), drawn as 113 | When `content.db` has quiz topics; in elder mode too | `14-quiz.md` QZ9 |
-| 6b | Saakhis card (option C, design 113; was 110) | When `content.db` has a saakhi; in elder mode too | `13-saakhi.md` SK11, SK15 |
-| 7 | Vichar card | When the dataset has a line for the date | T6 |
-| 8 | Gurpurab card | When one is near | unchanged |
+| 7 | Sikh calendar card: the next event within a week, else the Gurpurab calendar and today's Nanakshahi date | Always; not in elder mode (T5) | unchanged |
+| 8 | Gurmat Quiz: the calendar leaf, "Did you know?" (1A, no buttons) | When `content.db` has quiz topics; in elder mode too | `14-quiz.md` QZ9 |
+| 9 | Vichar card (ਅੱਜ ਦਾ ਵਿਚਾਰ) | When the dataset has a line for the date; not in elder mode (T5) | T6 |
+| 10 | Gurmat Quiz: the quiz card (D) | When `content.db` has quiz topics; in elder mode too | `14-quiz.md` QZ9, QZ12 |
+| 11 | Saakhis card (option C, design 113; was 110) | When `content.db` has a saakhi; in elder mode too | `13-saakhi.md` SK11, SK15 |
+
+*Amended 2026-11-09 (owner):* the Sikh calendar moved up from the foot to sit
+above "Did you know?", and ਅੱਜ ਦਾ ਵਿਚਾਰ moved to sit under it, so the quiz's
+two cards are no longer side by side. Drawn in design 113; held by
+`test/widget/today_test.dart`.
 
 There is no join-the-sangat banner. The Sangat is reached from its tab and the
 menu (`08-sangat.md` §8.1).

@@ -2,6 +2,7 @@
 // D10, 13.8) and the Profile DTO of §6.0.
 import type { DocumentReference, Firestore, Timestamp, Transaction } from 'firebase-admin/firestore';
 import { Timestamp as Ts } from 'firebase-admin/firestore';
+import { logger } from 'firebase-functions';
 import { Errors } from '../errors';
 import type { EmailQuota } from '../quota';
 import { toIso } from '../time';
@@ -93,7 +94,11 @@ export async function ownedProfile(db: Firestore, uid: string, tx?: Transaction)
 
 export async function requireProfile(db: Firestore, uid: string, tx?: Transaction): Promise<OwnedProfile> {
   const p = await ownedProfile(db, uid, tx);
-  if (!p) throw Errors.noProfile();
+  if (!p) {
+    // 01-accounts §8.3 R4: which uid was refused, for Cloud Logging.
+    logger.warn('profile: NO_PROFILE', { uid });
+    throw Errors.noProfile();
+  }
   return p;
 }
 

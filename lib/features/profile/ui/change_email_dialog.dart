@@ -102,8 +102,7 @@ class _ChangeEmailDialogState extends ConsumerState<_ChangeEmailDialog> {
           messenger.showSnackBar(SnackBar(content: Text(l.changeEmailAlreadyVerified)));
         case 'NO_PROFILE':
           nav.pop();
-          await controller.markNone();
-          router.go(Routes.today);
+          if (await controller.confirmGone()) router.go(Routes.today);
         default:
           setState(() => _busy = false);
           messenger.showSnackBar(SnackBar(content: Text(ProfileMessages.of(l, e))));

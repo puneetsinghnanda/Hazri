@@ -3,17 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
+import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
+import '../../../core/time/clock.dart' show parseLocalDateKey;
+import '../../../core/time/date_format.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/library_repository.dart';
 import '../domain/library_entry.dart';
+import '../domain/vichar_picture.dart';
 
-/// Designs 43 and 46 — the library, and searching it.
+/// Design 122 (option 1, owner 2026-11-09; replaces 43) and 46 — the
+/// library, and searching it: the dawn header with ੴ, the search box, four
+/// picture tiles, and every entry as an article card with a picture.
 ///
 /// Not the daily Vichar: that is one line from Sri Guru Granth Sahib Ji and
 /// lives on Today (PRD 1.11). This is the reading and looking-up section the
@@ -53,6 +59,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     return HazriScreen(
       title: l.libraryTitle,
       subtitle: l.librarySubtitle,
+      actions: [const _HeaderArt()],
       children: [
         const SizedBox(height: 6),
         TextField(
@@ -64,7 +71,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             hintStyle: HazriText.body.copyWith(color: c.muted),
             prefixIcon: Padding(
               padding: const EdgeInsets.fromLTRB(14, 0, 10, 0),
-              child: AppIcon(HazriIconData.help, size: 18, color: c.muted),
+              child: AppIcon(HazriIconData.search, size: 18, color: c.muted),
             ),
             prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
             suffixIcon: query.isEmpty
@@ -91,20 +98,21 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           ),
         ),
         const SizedBox(height: 12),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              for (final k in EntryKind.topics) ...[
-                if (k != EntryKind.topics.first) const SizedBox(width: 8),
-                _KindChip(
+        Row(
+          children: [
+            for (final k in EntryKind.topics) ...[
+              if (k != EntryKind.topics.first) const SizedBox(width: 8),
+              Expanded(
+                child: _KindTile(
+                  key: ValueKey('vichar-tile-${k.name}'),
+                  kind: k,
                   label: kindLabel(l, k),
                   selected: kind == k,
                   onTap: () => ref.read(libraryKindProvider.notifier).state = k,
                 ),
-              ],
+              ),
             ],
-          ),
+          ],
         ),
         const SizedBox(height: 16),
         if (query.isNotEmpty)
@@ -157,9 +165,60 @@ String kindLabel(L l, EntryKind kind) => switch (kind) {
       EntryKind.day => l.libraryKindDay,
     };
 
-class _KindChip extends StatelessWidget {
-  const _KindChip({required this.label, required this.selected, required this.onTap});
+/// The art at the right of the header: Harmandir Sahib at dawn fading into
+/// the page, and ੴ in saffron (design 122).
+class _HeaderArt extends ConsumerWidget {
+  const _HeaderArt();
 
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.colors;
+    final ik = ref.watch(ikOnkarProvider).value ?? '';
+    return ExcludeSemantics(
+      child: SizedBox(
+        width: 140,
+        height: 56,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 104,
+              child: ShaderMask(
+                blendMode: BlendMode.dstIn,
+                shaderCallback: (r) => const RadialGradient(
+                  radius: .62,
+                  colors: [Colors.black, Colors.transparent],
+                  stops: [.55, 1],
+                ).createShader(r),
+                child: Image.asset(VicharPicture.dawn.asset, fit: BoxFit.cover),
+              ),
+            ),
+            if (ik.isNotEmpty)
+              Positioned(
+                right: 0,
+                top: 2,
+                child: Text(ik, style: HazriText.gurmukhi(26).copyWith(color: c.kesri)),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A topic: a picture or an icon over its name. Selected is saffron.
+class _KindTile extends StatelessWidget {
+  const _KindTile({
+    super.key,
+    required this.kind,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final EntryKind kind;
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -167,48 +226,131 @@ class _KindChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    return HazriChip(
-      label: label,
-      background: selected ? c.kesriSoft : c.card,
-      foreground: selected ? c.kesriInk : c.ink2,
-      onTap: onTap,
+    final fg = selected ? c.kesriInk : c.ink;
+    final picture = switch (kind) {
+      EntryKind.gurdwara => VicharPicture.dawn,
+      EntryKind.guru => VicharPicture.palki,
+      _ => null,
+    };
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: HazriCard(
+        colour: selected ? c.kesriSoft : c.card,
+        padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
+        radius: 16,
+        onTap: onTap,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 28,
+              child: picture == null
+                  ? Center(
+                      child: AppIcon(
+                        kind == EntryKind.bani ? HazriIconData.book : HazriIconData.calendar,
+                        size: 22,
+                        color: selected ? c.kesri : c.ink,
+                      ),
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.asset(picture.asset, width: 34, height: 28, fit: BoxFit.cover),
+                    ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: HazriText.caption.copyWith(color: fg, fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _EntryCard extends StatelessWidget {
+/// One entry as an article (design 122): its kind and date as a pill, the
+/// headline, three lines of the opening, the minutes to read, and the
+/// picture for its kind of day.
+class _EntryCard extends ConsumerWidget {
   const _EntryCard({required this.entry});
 
   final LibraryEntry entry;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
+    final today = ref.watch(libraryTodayProvider);
+    final day = entry.nextDate(today) ?? entry.dates.lastOrNull;
+    final pill = [
+      kindLabel(l, entry.kind),
+      if (day != null) HazriDates.of(context).dayMonth(parseLocalDateKey(day)),
+    ].join(' · ');
     return HazriCard(
       onTap: () => context.push(Routes.libraryEntry(entry.id)),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Eyebrow(kindLabel(l, entry.kind)),
-          const SizedBox(height: 6),
-          Text(entry.title, style: HazriText.bodyStrong.copyWith(color: c.ink)),
-          if (entry.place.isNotEmpty)
-            Text(entry.place, style: HazriText.caption.copyWith(color: c.muted)),
-          if (entry.summary.isNotEmpty) ...[
-            const SizedBox(height: 4),
-            Text(
-              entry.summary,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: HazriText.caption.copyWith(color: c.ink2),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: c.card2,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    pill.toUpperCase(),
+                    style: HazriText.eyebrow.copyWith(color: c.primary, fontSize: 10.5),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  entry.title,
+                  style: HazriText.display22.copyWith(color: c.ink, fontSize: 17, height: 1.25),
+                ),
+                if (entry.place.isNotEmpty)
+                  Text(entry.place, style: HazriText.caption.copyWith(color: c.muted)),
+                if (entry.summary.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    entry.summary,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: HazriText.caption.copyWith(color: c.ink2),
+                  ),
+                ],
+                if (entry.minutes > 0) ...[
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      AppIcon(HazriIconData.book, size: 15, color: c.muted),
+                      const SizedBox(width: 6),
+                      Text(l.libraryMinutes(entry.minutes),
+                          style: HazriText.caption.copyWith(color: c.muted)),
+                    ],
+                  ),
+                ],
+              ],
             ),
-          ],
-          if (entry.minutes > 0) ...[
-            const SizedBox(height: 6),
-            Text(l.libraryMinutes(entry.minutes),
-                style: HazriText.caption.copyWith(color: c.muted)),
-          ],
+          ),
+          const SizedBox(width: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.asset(
+              vicharPictureFor(entry).asset,
+              width: 92,
+              height: 92,
+              fit: BoxFit.cover,
+              excludeFromSemantics: true,
+            ),
+          ),
         ],
       ),
     );

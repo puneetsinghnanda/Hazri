@@ -207,9 +207,20 @@
   "gurpurabTileTomorrow": "Tomorrow · Gurpurab",
   "gurpurabTileUpcoming": "Gurpurab",
   "helpSheetTitle": "How Hazri works",
-  "helpTip1": "Tap Start my Nitnem on Today and the reader opens where you left off.",
-  "helpTip2": "In the reader, ਅ / अ / A switches script and Aa opens text size, meanings and pause marks.",
-  "helpTip3": "Reminders follow sunrise and sunset for your city, or a time you pick yourself.",
+  "helpTip1Title": "Your Hazri",
+  "helpTip1Body": "Read any Nitnem bani or sit for five minutes of Naam Simran, and today's Hazri is marked.",
+  "helpTip2Title": "Your goals",
+  "helpTip2Body": "On the Goals page, choose your paaths for the day and the time of each. Hazri reminds you at that time.",
+  "helpTip3Title": "The reader",
+  "helpTip3Body": "Start my Nitnem opens where you left off. ਅ / अ / A switches script; Aa sets text size, meanings and pause marks; play to read along with the recitation.",
+  "helpTip4Title": "Naam Simran",
+  "helpTip4Body": "On the Simran tab, set the minutes and sit. The globe shows where the sangat is sitting today.",
+  "helpTip5Title": "The Diary",
+  "helpTip5Body": "Every day you mark Hazri is kept on this phone, with your streak.",
+  "helpTip6Title": "The Sangat",
+  "helpTip6Body": "Join a group to do paath together toward one goal. This is optional; everything else works without it.",
+  "helpTip7Title": "Learn",
+  "helpTip7Body": "A saakhi and a Gurmat Quiz topic on Today, and the Sikh calendar for every Gurpurab.",
   "helpAboutLink": "About & credits",
   "nitnemTitle": "Nitnem",
   "nitnemVersionLine": "SGPC version",
@@ -615,10 +626,11 @@
   "batteryHelpButton": "Open battery settings",
   "aboutTitle": "About & credits",
   "aboutPurpose": "Hazri is a free, offline Nitnem app in Punjabi, Hindi and English. No ads on Gurbani. No login. Works offline.",
-  "aboutTextSources": "Gurbani text & transliteration",
-  "aboutMeaningSources": "Meanings and teeka",
   "aboutCalendarSource": "Calendar",
   "aboutCityData": "City data",
+  "aboutCalendarBody": "SGPC Nanakshahi calendar (jantri), Nanakshahi 558, 2026–27. Event names in English as the jantri gives them; Punjabi where available.",
+  "aboutCityDataBody": "City names, coordinates and time zones are bundled with the app and never sent anywhere.",
+  "aboutVicharBody": "Lines from Sri Guru Granth Sahib Ji. Punjabi meanings from the dataset; the English meanings are plain renderings of the Punjabi.",
   "aboutFonts": "Fonts",
   "aboutFontsBody": "Mukta, Baloo Paaji 2, Playfair Display, Noto Serif Gurmukhi and Noto Serif Devanagari — SIL Open Font License.",
   "aboutContact": "Contact",
@@ -1238,34 +1250,6 @@
       }
     }
   },
-  "notifGoalBaniBody": "{done} of {target} today. Your goal, day {day} of {days}.",
-  "@notifGoalBaniBody": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "target": {
-        "type": "int"
-      },
-      "day": {
-        "type": "int"
-      },
-      "days": {
-        "type": "int"
-      }
-    }
-  },
-  "notifGoalBaniOpenBody": "{done} of {target} today.",
-  "@notifGoalBaniOpenBody": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "target": {
-        "type": "int"
-      }
-    }
-  },
   "notifGoalSimranTitle": "Your {minutes} minutes of Naam Simran",
   "@notifGoalSimranTitle": {
     "placeholders": {
@@ -1301,6 +1285,20 @@
     }
   },
   "notifEventBody": "Begin the day with Nitnem and your Hazri.",
+  "notifEveTitle": "Tomorrow: {event}",
+  "@notifEveTitle": {"description": "02-notifications CE6: the evening before a Gurpurab or event, 20:00.", "placeholders": {"event": {"type": "String"}}},
+  "notifEveRememberTitle": "Tomorrow we remember: {event}",
+  "@notifEveRememberTitle": {"description": "CE6: the evening before a joti-jot or shaheedi day.", "placeholders": {"event": {"type": "String"}}},
+  "notifEveBody": "Begin tomorrow with Nitnem and your Hazri.",
+  "@notifEveBody": {"description": "CE6: body of the evening-before notice."},
+  "notifGoalsOpenBody": "{total, plural, =1{Your goal for today is still open.} other{{open} of your {total} goals still open today.}}",
+  "@notifGoalsOpenBody": {"description": "5.2: how many of today's goal items are still open, at goal level (owner, 2026-11-09).", "placeholders": {"open": {"type": "int"}, "total": {"type": "int"}}},
+  "notifGoalDayOf": "Your goal, day {day} of {days}.",
+  "@notifGoalDayOf": {"description": "5.2: added after notifGoalsOpenBody for a goal with an end date.", "placeholders": {"day": {"type": "int"}, "days": {"type": "int"}}},
+  "notifGoalAgainBaniTitle": "Still time for {bani}",
+  "@notifGoalAgainBaniTitle": {"description": "GR5: the second reminder, an hour after the item's time.", "placeholders": {"bani": {"type": "String"}}},
+  "notifGoalAgainSimranTitle": "Still time for {minutes} minutes of Naam Simran",
+  "@notifGoalAgainSimranTitle": {"description": "GR5: the second reminder for a Naam Simran item.", "placeholders": {"minutes": {"type": "int"}}},
   "notifHn1Title": "Your Hazri for today is still open",
   "notifHn1Body": "Five minutes of Naam Simran marks it. Begin when you're ready.",
   "notifHn2Title": "{count} of the sangat are here today",
@@ -1660,8 +1658,9 @@
   "changeEmailSame": "This is already your email",
   "changeEmailExists": "An account with this email already exists",
   "changeEmailAlreadyVerified": "Your email is already verified and can't be changed.",
-  "privacyNothingUnless": "Nothing leaves this phone unless you make a profile or join a group. Analytics are not collected, and there is no advertising ID and no ads.",
+  "privacyNothingUnless": "Your diary, goals and reading never leave this phone unless you make a profile or join a group. Hazri does fetch the globe on the Simran tab and the Vichar stories from its own server, and those requests carry only the anonymous sign-in. Analytics are not collected, and there is no advertising ID and no ads.",
   "privacyPhoneSignIn": "An anonymous sign-in when the app starts: an install number, never a name",
+  "privacyPhoneOther": "Your badges, the saakhis you heart, and quizzes you play without a profile",
   "privacyWithProfile": "If you make a profile",
   "privacyProfileDetails": "Your name, email and city, and your phone number if you give it",
   "privacyProfileMail": "Emails only to that address: to confirm it, and to bring your profile back on a new phone",
@@ -1896,6 +1895,16 @@
   "simranLegendLive": "Live",
   "globeLiveCount": "{count} live today",
   "@globeLiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "globeLiveLabel": "live today",
+  "globeHereLabel": "here today",
+  "globeHereCount": "{count} here today",
+  "@globeHereCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -2413,5 +2422,8 @@
   "nitnemGoalsCount": "{done} of {total} today",
   "@nitnemGoalsCount": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
   "nitnemGoalsChange": "Change",
-  "slotAnyTime": "Any time of day"
+  "slotAnyTime": "Any time of day",
+  "privacyAccountTitle": "Your account",
+  "privacyDeleteHow": "Opens hazri.me, where you ask for it by email. It is done within 30 days. Your diary stays on this phone until you uninstall Hazri.",
+  "privacyDeleteNoBrowser": "Could not open a browser. The page is hazri.me/delete-account"
 }

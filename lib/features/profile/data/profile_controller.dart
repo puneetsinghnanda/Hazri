@@ -42,10 +42,17 @@ final profileCacheProvider =
 /// The only source of profile state; every screen reads it, and only the
 /// flows of §8.5–§8.11 change it.
 class ProfileController extends Notifier<ProfileState> {
-  bool _refreshing = false;
+  int _inFlight = 0;
+
+  /// Bumped by every refresh as it starts and by every setProfile and
+  /// markNone, so an answer can tell whether anything newer has happened
+  /// since its request left (01-accounts §8.3 R1). Without it, a GET sent
+  /// before the profile was created and answered after it put the phone back
+  /// to "No profile found" (2026-11-05).
+  int _version = 0;
 
   /// Whether [refresh] is running, for the Profile screen's progress bar.
-  bool get refreshing => _refreshing;
+  bool get refreshing => _inFlight > 0;
 
   AuthService get _auth => ref.read(authServiceProvider);
   ProfileCache get _cache => ref.read(profileCacheProvider);
@@ -75,29 +82,41 @@ class ProfileController extends Notifier<ProfileState> {
     await refresh();
   }
 
-  /// GET /profile with the rules of §8.3 step 3.
+  /// GET /profile with the rules of §8.3 step 3. Only the newest answer
+  /// counts: one that arrives after a later refresh, setProfile or markNone
+  /// is dropped (R1).
   Future<void> refresh() async {
-    _refreshing = true;
+    final mine = ++_version;
+    _inFlight++;
     // Notify listeners that a refresh started without changing the state.
     ref.notifyListeners();
     try {
       final p = await _api.get();
-      await setProfile(p);
+      if (mine == _version) await _show(p);
     } on ApiException catch (e) {
+      if (mine != _version) return;
       if (e.statusCode == 404 && e.code == 'NO_PROFILE') {
-        await markNone();
+        await _clear();
       } else {
         _keepOrUnavailable();
       }
     } on NetworkException {
-      _keepOrUnavailable();
+      if (mine == _version) _keepOrUnavailable();
     } on Object catch (e) {
       debugPrint('Hazri: profile refresh failed ($e)');
-      _keepOrUnavailable();
+      if (mine == _version) _keepOrUnavailable();
     } finally {
-      _refreshing = false;
+      _inFlight--;
       ref.notifyListeners();
     }
+  }
+
+  /// Another endpoint answered NO_PROFILE. That alone does not clear the
+  /// profile: GET /profile is asked, and only its NO_PROFILE does (R2).
+  /// True when the profile is gone.
+  Future<bool> confirmGone() async {
+    await refresh();
+    return state is ProfileNone;
   }
 
   void _keepOrUnavailable() {
@@ -106,11 +125,21 @@ class ProfileController extends Notifier<ProfileState> {
   }
 
   Future<void> setProfile(Profile p) async {
+    _version++;
+    await _show(p);
+  }
+
+  Future<void> markNone() async {
+    _version++;
+    await _clear();
+  }
+
+  Future<void> _show(Profile p) async {
     await _cache.write(p, ownerUid: _auth.uid);
     state = ProfileLoaded(p, isStale: false);
   }
 
-  Future<void> markNone() async {
+  Future<void> _clear() async {
     await _cache.clear();
     state = const ProfileNone();
   }

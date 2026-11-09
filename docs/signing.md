@@ -162,6 +162,22 @@ SHA-256  B3:1B:43:F5:73:9A:8F:DA:DB:E8:20:16:5A:55:8B:5B:83:02:6F:4C:62:D6:0F:83
 SHA-1    AA:79:E1:30:15:EB:64:6A:0F:5F:2C:03:6C:B3:82:BF:2A:68:84:CA
 ```
 
+**Google Play re-signs what it ships** (Play App Signing, 2026-11-01), so a
+copy installed from Play carries Google's app signing key, not this one, and
+`assetlinks.json` names both -- this one for the APKs CI builds, Google's for
+everything Play delivers. From Play Console -> App integrity -> Play App
+Signing, the app signing key certificate:
+
+```
+SHA-256  95:2E:BA:35:F8:D9:48:EF:53:E1:36:F6:A3:F9:D5:7A:CC:AA:BE:7C:A0:F1:4C:02:DE:81:DF:85:44:85:3B:D4
+SHA-1    16:F0:C3:6D:4F:83:3F:55:AB:92:5B:72:A3:74:FE:98:8B:B4:52:E2
+```
+
+The key above is now Play's **upload key**: Play accepts a bundle only if it
+is signed with it, so it matters exactly as much as it did. Both pairs also
+go in Firebase, Project settings -> Your apps -> app.hazri -> Add
+fingerprint.
+
 A fingerprint is safe to write down and safe to publish — `assetlinks.json`
 is served to the whole internet by design. It is the keystore and its
 password that are not.

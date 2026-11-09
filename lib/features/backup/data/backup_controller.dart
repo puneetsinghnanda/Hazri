@@ -46,8 +46,8 @@ class BackupController {
           await _service.setNextDue(next);
           await _scheduler.schedule(next);
         case BackupNoProfile():
-          await _ref.read(profileControllerProvider.notifier).markNone();
-          await onProfileGone();
+          // R2: the backup's NO_PROFILE is checked with GET /profile first.
+          if (await _ref.read(profileControllerProvider.notifier).confirmGone()) await onProfileGone();
         default:
           break;
       }
@@ -61,7 +61,7 @@ class BackupController {
   Future<BackupOutcome> restore() async {
     final outcome = await _service.restore();
     if (outcome is BackupNoProfile) {
-      await _ref.read(profileControllerProvider.notifier).markNone();
+      await _ref.read(profileControllerProvider.notifier).confirmGone();
     }
     return outcome;
   }

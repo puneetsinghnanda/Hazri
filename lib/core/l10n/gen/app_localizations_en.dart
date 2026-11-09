@@ -380,16 +380,53 @@ class LEn extends L {
   String get helpSheetTitle => 'How Hazri works';
 
   @override
-  String get helpTip1 =>
-      'Tap Start my Nitnem on Today and the reader opens where you left off.';
+  String get helpTip1Title => 'Your Hazri';
 
   @override
-  String get helpTip2 =>
-      'In the reader, ਅ / अ / A switches script and Aa opens text size, meanings and pause marks.';
+  String get helpTip1Body =>
+      'Read any Nitnem bani or sit for five minutes of Naam Simran, and today\'s Hazri is marked.';
 
   @override
-  String get helpTip3 =>
-      'Reminders follow sunrise and sunset for your city, or a time you pick yourself.';
+  String get helpTip2Title => 'Your goals';
+
+  @override
+  String get helpTip2Body =>
+      'On the Goals page, choose your paaths for the day and the time of each. Hazri reminds you at that time.';
+
+  @override
+  String get helpTip3Title => 'The reader';
+
+  @override
+  String get helpTip3Body =>
+      'Start my Nitnem opens where you left off. ਅ / अ / A switches script; Aa sets text size, meanings and pause marks; play to read along with the recitation.';
+
+  @override
+  String get helpTip4Title => 'Naam Simran';
+
+  @override
+  String get helpTip4Body =>
+      'On the Simran tab, set the minutes and sit. The globe shows where the sangat is sitting today.';
+
+  @override
+  String get helpTip5Title => 'The Diary';
+
+  @override
+  String get helpTip5Body =>
+      'Every day you mark Hazri is kept on this phone, with your streak.';
+
+  @override
+  String get helpTip6Title => 'The Sangat';
+
+  @override
+  String get helpTip6Body =>
+      'Join a group to do paath together toward one goal. This is optional; everything else works without it.';
+
+  @override
+  String get helpTip7Title => 'Learn';
+
+  @override
+  String get helpTip7Body =>
+      'A saakhi and a Gurmat Quiz topic on Today, and the Sikh calendar for every Gurpurab.';
 
   @override
   String get helpAboutLink => 'About & credits';
@@ -982,16 +1019,22 @@ class LEn extends L {
       'Hazri is a free, offline Nitnem app in Punjabi, Hindi and English. No ads on Gurbani. No login. Works offline.';
 
   @override
-  String get aboutTextSources => 'Gurbani text & transliteration';
-
-  @override
-  String get aboutMeaningSources => 'Meanings and teeka';
-
-  @override
   String get aboutCalendarSource => 'Calendar';
 
   @override
   String get aboutCityData => 'City data';
+
+  @override
+  String get aboutCalendarBody =>
+      'SGPC Nanakshahi calendar (jantri), Nanakshahi 558, 2026–27. Event names in English as the jantri gives them; Punjabi where available.';
+
+  @override
+  String get aboutCityDataBody =>
+      'City names, coordinates and time zones are bundled with the app and never sent anywhere.';
+
+  @override
+  String get aboutVicharBody =>
+      'Lines from Sri Guru Granth Sahib Ji. Punjabi meanings from the dataset; the English meanings are plain renderings of the Punjabi.';
 
   @override
   String get aboutFonts => 'Fonts';
@@ -2300,16 +2343,6 @@ class LEn extends L {
   }
 
   @override
-  String notifGoalBaniBody(int done, int target, int day, int days) {
-    return '$done of $target today. Your goal, day $day of $days.';
-  }
-
-  @override
-  String notifGoalBaniOpenBody(int done, int target) {
-    return '$done of $target today.';
-  }
-
-  @override
   String notifGoalSimranTitle(int minutes) {
     return 'Your $minutes minutes of Naam Simran';
   }
@@ -2335,6 +2368,45 @@ class LEn extends L {
 
   @override
   String get notifEventBody => 'Begin the day with Nitnem and your Hazri.';
+
+  @override
+  String notifEveTitle(String event) {
+    return 'Tomorrow: $event';
+  }
+
+  @override
+  String notifEveRememberTitle(String event) {
+    return 'Tomorrow we remember: $event';
+  }
+
+  @override
+  String get notifEveBody => 'Begin tomorrow with Nitnem and your Hazri.';
+
+  @override
+  String notifGoalsOpenBody(int open, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$open of your $total goals still open today.',
+      one: 'Your goal for today is still open.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifGoalDayOf(int day, int days) {
+    return 'Your goal, day $day of $days.';
+  }
+
+  @override
+  String notifGoalAgainBaniTitle(String bani) {
+    return 'Still time for $bani';
+  }
+
+  @override
+  String notifGoalAgainSimranTitle(int minutes) {
+    return 'Still time for $minutes minutes of Naam Simran';
+  }
 
   @override
   String get notifHn1Title => 'Your Hazri for today is still open';
@@ -2954,11 +3026,15 @@ class LEn extends L {
 
   @override
   String get privacyNothingUnless =>
-      'Nothing leaves this phone unless you make a profile or join a group. Analytics are not collected, and there is no advertising ID and no ads.';
+      'Your diary, goals and reading never leave this phone unless you make a profile or join a group. Hazri does fetch the globe on the Simran tab and the Vichar stories from its own server, and those requests carry only the anonymous sign-in. Analytics are not collected, and there is no advertising ID and no ads.';
 
   @override
   String get privacyPhoneSignIn =>
       'An anonymous sign-in when the app starts: an install number, never a name';
+
+  @override
+  String get privacyPhoneOther =>
+      'Your badges, the saakhis you heart, and quizzes you play without a profile';
 
   @override
   String get privacyWithProfile => 'If you make a profile';
@@ -3263,6 +3339,17 @@ class LEn extends L {
   @override
   String globeLiveCount(int count) {
     return '$count live today';
+  }
+
+  @override
+  String get globeLiveLabel => 'live today';
+
+  @override
+  String get globeHereLabel => 'here today';
+
+  @override
+  String globeHereCount(int count) {
+    return '$count here today';
   }
 
   @override
@@ -4084,4 +4171,15 @@ class LEn extends L {
 
   @override
   String get slotAnyTime => 'Any time of day';
+
+  @override
+  String get privacyAccountTitle => 'Your account';
+
+  @override
+  String get privacyDeleteHow =>
+      'Opens hazri.me, where you ask for it by email. It is done within 30 days. Your diary stays on this phone until you uninstall Hazri.';
+
+  @override
+  String get privacyDeleteNoBrowser =>
+      'Could not open a browser. The page is hazri.me/delete-account';
 }

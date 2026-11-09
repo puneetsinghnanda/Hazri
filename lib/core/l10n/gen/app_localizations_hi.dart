@@ -380,16 +380,53 @@ class LHi extends L {
   String get helpSheetTitle => 'हाज़िरी कैसे काम करती है';
 
   @override
-  String get helpTip1 =>
-      'आज वाले पन्ने पर नितनेम शुरू करें दबाएँ — पाठ वहीं से खुलेगा जहाँ छोड़ा था।';
+  String get helpTip1Title => 'आपकी हाज़री';
 
   @override
-  String get helpTip2 =>
-      'पाठ में ਅ / अ / A से लिपि बदलें और Aa से अक्षरों का आकार, अर्थ और विश्राम खोलें।';
+  String get helpTip1Body =>
+      'नितनेम की कोई भी बाणी पढ़ें या पाँच मिनट नाम सिमरन करें, और आज की हाज़री लग जाती है।';
 
   @override
-  String get helpTip3 =>
-      'याद आपके शहर के सूर्योदय-सूर्यास्त के अनुसार, या आपके चुने समय पर आती है।';
+  String get helpTip2Title => 'आपके लक्ष्य';
+
+  @override
+  String get helpTip2Body =>
+      'लक्ष्य वाले पन्ने पर दिन के पाठ और हर एक का समय चुनें। हाज़री उसी समय याद दिलाती है।';
+
+  @override
+  String get helpTip3Title => 'पाठ का पन्ना';
+
+  @override
+  String get helpTip3Body =>
+      'मेरा नितनेम शुरू करें वहीं से खुलता है जहाँ आपने छोड़ा था। ਅ / अ / A से लिपि बदलें; Aa से अक्षरों का आकार, अर्थ और विश्राम; पाठ चलाकर साथ-साथ पढ़ें।';
+
+  @override
+  String get helpTip4Title => 'नाम सिमरन';
+
+  @override
+  String get helpTip4Body =>
+      'सिमरन टैब पर मिनट चुनें और बैठें। ग्लोब दिखाता है कि आज संगत कहाँ-कहाँ बैठी है।';
+
+  @override
+  String get helpTip5Title => 'डायरी';
+
+  @override
+  String get helpTip5Body =>
+      'हर दिन जब आप हाज़री लगाते हैं, आपकी लड़ी सहित इसी फ़ोन में रखा जाता है।';
+
+  @override
+  String get helpTip6Title => 'संगत';
+
+  @override
+  String get helpTip6Body =>
+      'किसी ग्रुप में जुड़कर एक लक्ष्य की ओर मिलकर पाठ करें। यह आपकी मर्ज़ी है; बाकी सब इसके बिना भी चलता है।';
+
+  @override
+  String get helpTip7Title => 'सीखें';
+
+  @override
+  String get helpTip7Body =>
+      'आज वाले पन्ने पर एक साखी और गुरमत क्विज़ का विषय, और हर गुरपुरब के लिए सिख कैलेंडर।';
 
   @override
   String get helpAboutLink => 'बारे में और आभार';
@@ -977,16 +1014,22 @@ class LHi extends L {
       'हाज़िरी पंजाबी, हिन्दी और अंग्रेज़ी में एक मुफ़्त, बिना-इंटरनेट चलने वाली नितनेम ऐप है। गुरबाणी पर कोई विज्ञापन नहीं। कोई लॉगिन नहीं।';
 
   @override
-  String get aboutTextSources => 'गुरबाणी पाठ और लिप्यंतरण';
-
-  @override
-  String get aboutMeaningSources => 'अर्थ और टीके';
-
-  @override
   String get aboutCalendarSource => 'कैलेंडर';
 
   @override
   String get aboutCityData => 'शहरों का डेटा';
+
+  @override
+  String get aboutCalendarBody =>
+      'SGPC नानकशाही कैलेंडर (जंत्री), नानकशाही 558, 2026–27। दिहाड़ों के नाम जंत्री के अनुसार अंग्रेज़ी में; जहाँ हैं, वहाँ पंजाबी में।';
+
+  @override
+  String get aboutCityDataBody =>
+      'शहरों के नाम, निर्देशांक और समय-क्षेत्र ऐप में ही हैं और कभी कहीं नहीं भेजे जाते।';
+
+  @override
+  String get aboutVicharBody =>
+      'श्री गुरु ग्रंथ साहिब जी की पंक्तियाँ। पंजाबी अर्थ डेटासेट से; अंग्रेज़ी अर्थ पंजाबी का सरल रूप हैं।';
 
   @override
   String get aboutFonts => 'फ़ॉन्ट';
@@ -2292,16 +2335,6 @@ class LHi extends L {
   }
 
   @override
-  String notifGoalBaniBody(int done, int target, int day, int days) {
-    return 'आज $target में से $done। आपका लक्ष्य, $days में से दिन $day।';
-  }
-
-  @override
-  String notifGoalBaniOpenBody(int done, int target) {
-    return 'आज $target में से $done।';
-  }
-
-  @override
   String notifGoalSimranTitle(int minutes) {
     return 'आपके $minutes मिनट नाम सिमरन';
   }
@@ -2327,6 +2360,45 @@ class LHi extends L {
 
   @override
   String get notifEventBody => 'नितनेम और हाज़री के साथ दिन शुरू करें।';
+
+  @override
+  String notifEveTitle(String event) {
+    return 'कल: $event';
+  }
+
+  @override
+  String notifEveRememberTitle(String event) {
+    return 'कल हम याद करेंगे: $event';
+  }
+
+  @override
+  String get notifEveBody => 'कल का दिन नितनेम और हाज़री के साथ शुरू करें।';
+
+  @override
+  String notifGoalsOpenBody(int open, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'आपके $total लक्ष्यों में से $open आज अभी बाकी हैं।',
+      one: 'आज का आपका लक्ष्य अभी बाकी है।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifGoalDayOf(int day, int days) {
+    return 'आपका लक्ष्य, $days में से दिन $day।';
+  }
+
+  @override
+  String notifGoalAgainBaniTitle(String bani) {
+    return '$bani के लिए अभी समय है';
+  }
+
+  @override
+  String notifGoalAgainSimranTitle(int minutes) {
+    return '$minutes मिनट नाम सिमरन के लिए अभी समय है';
+  }
 
   @override
   String get notifHn1Title => 'आपकी आज की हाज़री अभी बाकी है';
@@ -2944,11 +3016,15 @@ class LHi extends L {
 
   @override
   String get privacyNothingUnless =>
-      'जब तक आप प्रोफ़ाइल नहीं बनाते या किसी ग्रुप में नहीं जुड़ते, कुछ भी इस फ़ोन से बाहर नहीं जाता। उपयोग के आँकड़े इकट्ठे नहीं किए जाते, और न कोई विज्ञापन ID है न विज्ञापन।';
+      'जब तक आप प्रोफ़ाइल नहीं बनाते या किसी ग्रुप में नहीं जुड़ते, आपकी डायरी, लक्ष्य और पाठ कभी इस फ़ोन से बाहर नहीं जाते। हाज़री सिमरन टैब का ग्लोब और विचार की कहानियाँ अपने सर्वर से लाती है, और इन अनुरोधों के साथ केवल गुमनाम साइन-इन जाता है। उपयोग के आँकड़े इकट्ठे नहीं किए जाते, और न कोई विज्ञापन ID है न विज्ञापन।';
 
   @override
   String get privacyPhoneSignIn =>
       'ऐप खुलने पर एक गुमनाम साइन-इन: इंस्टॉल का एक नंबर, कभी नाम नहीं';
+
+  @override
+  String get privacyPhoneOther =>
+      'आपके बैज, आपकी पसंद की गई साखियाँ, और बिना प्रोफ़ाइल खेले गए क्विज़';
 
   @override
   String get privacyWithProfile => 'अगर आप प्रोफ़ाइल बनाते हैं';
@@ -3252,6 +3328,17 @@ class LHi extends L {
   @override
   String globeLiveCount(int count) {
     return 'आज $count हाज़िर';
+  }
+
+  @override
+  String get globeLiveLabel => 'आज हाज़िर';
+
+  @override
+  String get globeHereLabel => 'आज यहाँ';
+
+  @override
+  String globeHereCount(int count) {
+    return 'आज $count यहाँ';
   }
 
   @override
@@ -4059,4 +4146,15 @@ class LHi extends L {
 
   @override
   String get slotAnyTime => 'दिन में किसी भी समय';
+
+  @override
+  String get privacyAccountTitle => 'आपका खाता';
+
+  @override
+  String get privacyDeleteHow =>
+      'hazri.me खुलेगा, जहाँ आप ईमेल से माँग सकते हैं। यह 30 दिनों के भीतर हो जाता है। आपकी डायरी इस फ़ोन में तब तक रहती है जब तक आप हाज़री अनइंस्टॉल नहीं करते।';
+
+  @override
+  String get privacyDeleteNoBrowser =>
+      'ब्राउज़र नहीं खुल सका। पेज है hazri.me/delete-account';
 }

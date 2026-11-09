@@ -124,6 +124,13 @@ bool snapshotCountsYou(GlobeSnapshot snapshot, {required bool marked, DateTime? 
 int globeLiveTotal(GlobeSnapshot snapshot, {required bool marked, required bool countedLive}) =>
     snapshot.live + (marked && !countedLive ? 1 : 0);
 
+/// CT3 (owner, 2026-11-09, design 123): the people here today, as the blue
+/// dots show them: everyone counted and not live, less you while the
+/// snapshot still has you in the blue (you are the orange dot instead).
+/// [hasCity]: you have a profile, so you are counted at all (NP1).
+int globeHereTotal(GlobeSnapshot snapshot, {required bool hasCity, required bool countedLive}) =>
+    math.max(0, snapshot.counted - snapshot.live - (hasCity && !countedLive ? 1 : 0));
+
 /// SZ1 as amended (owner, 2026-10-17): one person is the size of your dot,
 /// and a dot grows by area until `DOT_FULL_AT` people, after which it stays
 /// at the maximum. Absolute, so a quiet day does not blow single people up.

@@ -51,13 +51,13 @@ were written by the implementer and await the owner's check
 | # | Kind | Time (phone) | Condition | At most | Sent by | Channel |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Amrit Vela | 04:00 | Every day | 1 a day | Phone | `amrit_vela` |
-| 2 | Goal bani | Each goal item's `reminderTime` | Item in scope and not yet met that day | 1 per item a day, plus one snooze | Phone | `goal_reminders` |
-| 3a | Gurpurab | 06:00 on the day | Event of kind `prakash`, `gurgaddi` or `joti-jot` that the calendar flags or the reader switched on | 1 per Gurpurab | Phone | `sikh_calendar` |
-| 3b | Sikh event | 07:00 on the day | Any other flagged or switched-on event kind | 1 per event | Phone | `sikh_calendar` |
+| 2 | Goal bani | Each goal item's `reminderTime`, and again an hour later (GR5) | Item in scope and not yet met that day | 2 per item a day, plus one snooze of the first | Phone | `goal_reminders` |
+| 3a | Sikh calendar, the evening before | 20:00 the day before | Any event the calendar flags or the reader switched on | 1 per event | Phone | `sikh_calendar` |
+| 3b | Sikh calendar, on the day | 06:30 on the day | The same events, every kind | 1 per event | Phone | `sikh_calendar` |
 | 4 | Hazri nudge | 07:00 | No active goal **and** no Hazri yet today | 1 a day | Phone | `hazri_nudge` |
 | 5 | Sangat | 21:00, each member's own time | Member of a group with an active goal | See 4.5 | FCM | `sangat` |
 
-There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own allowance. Two Gurpurabs on one day are two notifications at 06:00; a Gurpurab and an event are one at 06:00 and one at 07:00. Shaheedi Purabs, including those of the Guru Sahibs, are kind `shaheedi` in the calendar and therefore come at 07:00 as events (owner, 2026-10-07).
+There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own allowance. Two events on one day are two notifications at 06:30, and two the evening before at 20:00 (owner, 2026-11-09: several events on a day stay separate). Shaheedi Purabs, including those of the Guru Sahibs, are kind `shaheedi` and use the remembrance wording.
 
 ## 4. Rules
 
@@ -73,12 +73,14 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 - **GR1.** One notification per goal item, at its `reminderTime`, on each day the item is in scope (`04-goals.md` §4.8). Since 2026-10-19 every item has one, at the paath's own time (Naam Simran 05:30, Japji 06:00 … Kirtan Sohila 19:00), and it cannot be switched off (`04-goals.md` RM1).
 - **GR2.** Not sent on a day the item is already met; it is cancelled as soon as it is met (`04-goals.md` RM3).
 - **GR3.** "In 15 min" re-sends the same notification once, 15 minutes later, without the snooze button. No second snooze.
+- **GR5.** An item still not met an hour after its `reminderTime` is reminded once more (owner, 2026-11-09): `notifGoalAgainBaniTitle` or `notifGoalAgainSimranTitle`, the same body and buttons but no "In 15 min". Not sent when the hour runs past midnight; cancelled, and taken off the screen, once the item is met (GR2).
 - **GR4.** A bani item uses message 5.2-A, a simran item 5.2-B. Tap opens the reader on that bani, or the Simran screen with the goal's minutes.
 
 ### 4.3 Gurpurab and Sikh events
 
 - **CE1.** Events come from `content.db` (`calendar_event`); one is sent when `default_remind` is set, or the reader's own per-event switch says so.
-- **CE2.** Kinds `prakash`, `gurgaddi`, `joti-jot` are Gurpurabs at 06:00; every other kind is an event at 07:00, on the event's date.
+- **CE2.** Every reminded event, whatever its kind, is sent at 06:30 on its date (owner, 2026-11-09; was Gurpurabs 06:00 and other events 07:00).
+- **CE6.** Every reminded event is also announced at 20:00 the evening before (owner, 2026-11-09): `notifEveRememberTitle` for `joti-jot` and `shaheedi`, `notifEveTitle` for every other kind, with `notifEveBody`. An evening already past when the plan is made sends nothing; the day's notice still does.
 - **CE3.** Wording by kind (5.3): `prakash` and `gurgaddi` use the celebration text; `joti-jot` and `shaheedi` use the remembrance text; every other kind uses the plain event text. Never "Happy".
 - **CE4.** `{event}` is the event's name in the reader's language. When that name is missing the English name is used and nothing is machine-translated. Only 10 of 147 events have a Punjabi name and none has Hindi; filling them in is content work, not code.
 - **CE5.** Tap opens the calendar on that day. When the calendar has no data for a date (after 13 Mar 2027 until Nanakshahi 559 is added), nothing is sent.
@@ -134,8 +136,12 @@ Actions: Sun "Open {bani}" and "Start Nitnem"; Thu "Open {bani}"; Fri "Start Nit
 
 | Key | For | English | ਪੰਜਾਬੀ | हिन्दी |
 | --- | --- | --- | --- | --- |
-| `notifGoalBani` (A) | A bani item | **Time for {bani}** / {done} of {target} today. Your goal, day {day} of {days}. | **{bani} ਦਾ ਸਮਾਂ** / ਅੱਜ {target} ਵਿੱਚੋਂ {done}। ਤੁਹਾਡਾ ਟੀਚਾ, {days} ਵਿੱਚੋਂ ਦਿਨ {day}। | **{bani} का समय** / आज {target} में से {done}। आपका लक्ष्य, {days} में से दिन {day}। |
-| `notifGoalBaniOpen` (A, every-day item) | A bani item with no end date | **Time for {bani}** / {done} of {target} today. | **{bani} ਦਾ ਸਮਾਂ** / ਅੱਜ {target} ਵਿੱਚੋਂ {done}। | **{bani} का समय** / आज {target} में से {done}। |
+| `notifGoalBaniTitle` + `notifGoalsOpenBody` (A) | A bani item | **Time for {bani}** / {open} of your {total} goals still open today. (With one item: Your goal for today is still open.) | **{bani} ਦਾ ਸਮਾਂ** / ਤੁਹਾਡੇ {total} ਟੀਚਿਆਂ ਵਿੱਚੋਂ {open} ਅੱਜ ਅਜੇ ਬਾਕੀ ਹਨ। | **{bani} का समय** / आपके {total} लक्ष्यों में से {open} आज अभी बाकी हैं। |
+| `notifGoalDayOf` | Added after the body for an item with an end date | Your goal, day {day} of {days}. | ਤੁਹਾਡਾ ਟੀਚਾ, {days} ਵਿੱਚੋਂ ਦਿਨ {day}। | आपका लक्ष्य, {days} में से दिन {day}। |
+| `notifGoalAgainBaniTitle` | GR5, a bani item | **Still time for {bani}** | **{bani} ਲਈ ਅਜੇ ਸਮਾਂ ਹੈ** | **{bani} के लिए अभी समय है** |
+| `notifGoalAgainSimranTitle` | GR5, a simran item | **Still time for {minutes} minutes of Naam Simran** | **{minutes} ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ ਲਈ ਅਜੇ ਸਮਾਂ ਹੈ** | **{minutes} मिनट नाम सिमरन के लिए अभी समय है** |
+
+*Amended 2026-11-09 (owner):* the body speaks of the goal as a whole, how many of today's items are still open, instead of "{done} of {target} today", which since every paath is once a day always read "0 of 1".
 | `notifGoalSimran` (B) | A simran item | **Your {minutes} minutes of Naam Simran** / One tap and the timer begins. | **ਤੁਹਾਡੇ {minutes} ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ** / ਇੱਕ ਟੈਪ ਨਾਲ ਟਾਈਮਰ ਸ਼ੁਰੂ। | **आपके {minutes} मिनट नाम सिमरन** / एक टैप से टाइमर शुरू। |
 
 Actions: A "Open {bani}" and "In 15 min"; B "Begin {minutes} min" and "In 15 min". The expanded A carries a progress bar of goal items met today out of items in scope.
@@ -144,10 +150,12 @@ Actions: A "Open {bani}" and "In 15 min"; B "Begin {minutes} min" and "In 15 min
 
 | Key | Kinds and time | English | ਪੰਜਾਬੀ | हिन्दी |
 | --- | --- | --- | --- | --- |
-| `notifGurpurab` | `prakash`, `gurgaddi` · 06:00 | **Today: {event}** / Mark the day with Nitnem and your Hazri. | **ਅੱਜ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਮਨਾਓ। | **आज: {event}** / नितनेम और हाज़री के साथ दिन मनाएँ। |
-| `notifGurpurabRemember` | `joti-jot` · 06:00 | **Today we remember: {event}** / Begin the day with Nitnem and your Hazri. | **ਅੱਜ ਅਸੀਂ ਯਾਦ ਕਰਦੇ ਹਾਂ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ। | **आज हम याद करते हैं: {event}** / नितनेम और हाज़री के साथ दिन शुरू करें। |
-| `notifEventRemember` | `shaheedi` · 07:00 | **Today we remember: {event}** / Begin the day with Nitnem and your Hazri. | **ਅੱਜ ਅਸੀਂ ਯਾਦ ਕਰਦੇ ਹਾਂ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ। | **आज हम याद करते हैं: {event}** / नितनेम और हाज़री के साथ दिन शुरू करें। |
-| `notifEvent` | Every other kind · 07:00 | **Today: {event}** / Begin the day with Nitnem and your Hazri. | **ਅੱਜ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ। | **आज: {event}** / नितनेम और हाज़री के साथ दिन शुरू करें। |
+| `notifGurpurab` | `prakash`, `gurgaddi` · 06:30 | **Today: {event}** / Mark the day with Nitnem and your Hazri. | **ਅੱਜ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਮਨਾਓ। | **आज: {event}** / नितनेम और हाज़री के साथ दिन मनाएँ। |
+| `notifGurpurabRemember` | `joti-jot` · 06:30 | **Today we remember: {event}** / Begin the day with Nitnem and your Hazri. | **ਅੱਜ ਅਸੀਂ ਯਾਦ ਕਰਦੇ ਹਾਂ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ। | **आज हम याद करते हैं: {event}** / नितनेम और हाज़री के साथ दिन शुरू करें। |
+| `notifEventRemember` | `shaheedi` · 06:30 | **Today we remember: {event}** / Begin the day with Nitnem and your Hazri. | **ਅੱਜ ਅਸੀਂ ਯਾਦ ਕਰਦੇ ਹਾਂ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ। | **आज हम याद करते हैं: {event}** / नितनेम और हाज़री के साथ दिन शुरू करें। |
+| `notifEvent` | Every other kind · 06:30 | **Today: {event}** / Begin the day with Nitnem and your Hazri. | **ਅੱਜ: {event}** / ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ। | **आज: {event}** / नितनेम और हाज़री के साथ दिन शुरू करें। |
+| `notifEveTitle` | CE6, the evening before, 20:00, every kind but `joti-jot` and `shaheedi` | **Tomorrow: {event}** / Begin tomorrow with Nitnem and your Hazri. | **ਕੱਲ੍ਹ: {event}** / ਕੱਲ੍ਹ ਦਾ ਦਿਨ ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਸ਼ੁਰੂ ਕਰੋ। | **कल: {event}** / कल का दिन नितनेम और हाज़री के साथ शुरू करें। |
+| `notifEveRememberTitle` | CE6, the evening before, 20:00, `joti-jot` and `shaheedi` | **Tomorrow we remember: {event}** / Begin tomorrow with Nitnem and your Hazri. | **ਕੱਲ੍ਹ ਅਸੀਂ ਯਾਦ ਕਰਾਂਗੇ: {event}** / ਕੱਲ੍ਹ ਦਾ ਦਿਨ ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਸ਼ੁਰੂ ਕਰੋ। | **कल हम याद करेंगे: {event}** / कल का दिन नितनेम और हाज़री के साथ शुरू करें। |
 
 Action: "See calendar".
 
@@ -275,11 +283,11 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 | T-6 | Goal: Japji ×3 at 06:40; one paath | 06:40 | "Time for Japji Sahib / 1 of 3 today…" |
 | T-7 | T-6 | "In 15 min" | One copy at 06:55 without a snooze button |
 | T-8 | Goal with three banis at three times | Each time | Three notifications |
-| T-9 | 27 Oct, Prakash Purab | 06:00 | `notifGurpurab` with the event's name |
-| T-10 | 3 Nov, two Gurpurabs | 06:00 | Two notifications |
-| T-11 | 1 Nov, a Shaheedi day | 07:00 | `notifEventRemember` |
+| T-9 | 27 Oct, Prakash Purab | 26 Oct 20:00 and 27 Oct 06:30 | `notifEveTitle`, then `notifGurpurab`, with the event's name |
+| T-10 | 3 Nov, two Gurpurabs | 2 Nov 20:00 and 3 Nov 06:30 | Two notifications each time |
+| T-11 | 1 Nov, a Shaheedi day | 31 Oct 20:00 and 1 Nov 06:30 | `notifEveRememberTitle`, then `notifEventRemember` |
 | T-12 | Reader in Toronto | Any of the above | At the stated time on the Toronto clock |
-| T-13 | Event with no Punjabi name, reader in Punjabi | 06:00 | Punjabi text with the English event name |
+| T-13 | Event with no Punjabi name, reader in Punjabi | 06:30 | Punjabi text with the English event name |
 | T-14 | No goal, nothing done | 07:00 | 5.4 for the weekday |
 | T-15 | No goal, Japji read at 05:30 | 07:00 | Nothing |
 | T-16 | A goal is active | 07:00 | No Hazri nudge |
@@ -293,7 +301,7 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 | T-24 | FCM reports a token unregistered | Sending | Token deleted, no retry |
 | T-24a | Two people joined the creator's group today | 20:00 creator's time | One 5.5-E naming the first and "1 more" |
 | T-24b | A custom group passes its end date unmet | Members' next 21:00 | 5.5-F instead of the digest |
-| T-25 | No network all day | 04:00, goal times, 06:00, 07:00 | All local notifications arrive |
+| T-25 | No network all day | 04:00, goal times, 06:30, 07:00 | All local notifications arrive |
 | T-26 | Permission refused | Notifications screen | The card; nothing pretends to be scheduled |
 | T-27 | Phone rebooted | Boot | Everything re-planned |
 
@@ -316,7 +324,7 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 | N-c | Snooze | **Decided:** one 15-minute snooze on goal reminders |
 | N-d | Daily cap | **Decided:** none; each kind sends at most its own allowance |
 | N-e | Emoji | **Decided:** none |
-| N-f | Gurpurab and events | **Decided:** Gurpurab 06:00, events 07:00, on the day, one notification each; no evening-before or week-ahead message |
+| N-f | Gurpurab and events | **Decided 2026-11-09 (owner), replacing 2026-10-07:** every event at 06:30 on the day and at 20:00 the evening before, one notification each; no week-ahead message |
 | N-g | Phone time or IST | **Decided:** phone time for every local notification |
 | N-h | Shaheedi Purabs of the Guru Sahibs | **Decided:** events at 07:00, as their calendar kind says |
 | N-1 | Monday's Hazri nudge needs today's live count, which the phone rarely has when it plans the night before | **Open.** As written it will usually send the Sunday fallback. Alternatives: say "yesterday", or replace the message |

@@ -219,6 +219,27 @@ describeEmu('profile (01-accounts §6)', () => {
     expect((await h.db.doc(`emailIndex/${emailHashOf('c@example.com')}`).get()).get('reserved')).toBeUndefined();
   });
 
+  it('set up, verify from the same phone, change the city: the profile stays found (2026-11-05)', async () => {
+    // The owner's report: after the link opened the app and showed the name,
+    // the Profile screen said no profile. This is that sequence, server side.
+    const created = await h.as('u1').post('/api/v1/profile', { name: 'Puneet Singh', email: 'p@example.com', phone: '', cityId: 'amritsar' });
+    expect(created.status).toBe(201);
+    await h.as('u1').post('/api/v1/profile/verification-email');
+    const ok = await h.as('u1').post('/api/v1/tokens/verify', { token: lastToken(h.mailer) });
+    expect(ok.body).toMatchObject({ result: 'EMAIL_VERIFIED', isOwner: true, profile: { name: 'Puneet Singh' } });
+    const afterVerify = await h.as('u1').get('/api/v1/profile');
+    expect(afterVerify.status).toBe(200);
+    expect(afterVerify.body.profile).toMatchObject({ name: 'Puneet Singh', emailVerified: true });
+    const moved = await h.as('u1').patch('/api/v1/profile', { cityId: 'new_delhi' });
+    expect(moved.status).toBe(200);
+    const afterCity = await h.as('u1').get('/api/v1/profile');
+    expect(afterCity.status).toBe(200);
+    expect(afterCity.body.profile).toMatchObject({ name: 'Puneet Singh', cityId: 'new_delhi', emailVerified: true });
+    // The one way the same profile reads as missing: a different anonymous uid.
+    const otherUid = await h.as('u2').get('/api/v1/profile');
+    expect(otherUid.body.error.code).toBe('NO_PROFILE');
+  });
+
   it('PATCH /profile: name and city, NOTHING_CHANGED, validation (13.8)', async () => {
     await createProfile(h, 'u1');
     expect((await h.as('u1').patch('/api/v1/profile', { name: 'Harpreet Kaur', cityId: 'amritsar' })).body.error.code).toBe('NOTHING_CHANGED');

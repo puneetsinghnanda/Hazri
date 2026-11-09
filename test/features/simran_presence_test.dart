@@ -77,8 +77,25 @@ void main() {
         expect(sum(DotKind.live), 2);
         expect(sum(DotKind.here), 0, reason: 'you are never drawn blue as well as orange');
         expect(globeLiveTotal(snap, marked: true, countedLive: counted), 3);
+        expect(globeHereTotal(snap, hasCity: true, countedLive: counted), sum(DotKind.here),
+            reason: 'CT3: the here-today figure is the blue dots added up');
       });
     }
+
+    test('CT3: here today equals the blue dots, with and without you', () {
+      final snap = GlobeSnapshot(day: '2026-10-17', live: 30, counted: 50, cities: {
+        'amritsar': (live: 10, counted: 25),
+        'lahore': (live: 20, counted: 25),
+      });
+      for (final (city, countedLive) in [(null, false), ('amritsar', false), ('amritsar', true)]) {
+        final dots = globeDots(snap, at, yourCityId: city, countedLive: countedLive);
+        final blue = dots.where((d) => d.kind == DotKind.here).fold(0, (a, d) => a + d.count);
+        expect(globeHereTotal(snap, hasCity: city != null, countedLive: countedLive), blue,
+            reason: 'city $city, countedLive $countedLive');
+      }
+      expect(globeHereTotal(snap, hasCity: false, countedLive: false), 20);
+      expect(globeHereTotal(snap, hasCity: true, countedLive: false), 19);
+    });
 
     test('not marked yet: the total is the snapshot\'s', () {
       expect(globeLiveTotal(stale, marked: false, countedLive: false), 2);

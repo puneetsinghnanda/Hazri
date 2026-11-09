@@ -380,16 +380,53 @@ class LPa extends L {
   String get helpSheetTitle => 'ਹਾਜ਼ਰੀ ਕਿਵੇਂ ਕੰਮ ਕਰਦੀ ਹੈ';
 
   @override
-  String get helpTip1 =>
-      'ਅੱਜ ਵਾਲੇ ਸਫ਼ੇ ਉੱਤੇ ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ ਦਬਾਓ — ਪਾਠ ਉੱਥੋਂ ਹੀ ਖੁੱਲ੍ਹੇਗਾ ਜਿੱਥੇ ਛੱਡਿਆ ਸੀ।';
+  String get helpTip1Title => 'ਤੁਹਾਡੀ ਹਾਜ਼ਰੀ';
 
   @override
-  String get helpTip2 =>
-      'ਪਾਠ ਵਿੱਚ ਅ / अ / A ਨਾਲ ਲਿਪੀ ਬਦਲੋ ਅਤੇ Aa ਨਾਲ ਅੱਖਰਾਂ ਦਾ ਆਕਾਰ, ਅਰਥ ਤੇ ਵਿਸਰਾਮ ਖੋਲ੍ਹੋ।';
+  String get helpTip1Body =>
+      'ਨਿਤਨੇਮ ਦੀ ਕੋਈ ਵੀ ਬਾਣੀ ਪੜ੍ਹੋ ਜਾਂ ਪੰਜ ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ ਕਰੋ, ਅਤੇ ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ।';
 
   @override
-  String get helpTip3 =>
-      'ਚੇਤੇ ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਦੇ ਸੂਰਜ ਚੜ੍ਹਨ-ਛਿਪਣ ਮੁਤਾਬਕ, ਜਾਂ ਤੁਹਾਡੇ ਚੁਣੇ ਵੇਲੇ ਉੱਤੇ ਆਉਂਦੇ ਹਨ।';
+  String get helpTip2Title => 'ਤੁਹਾਡੇ ਟੀਚੇ';
+
+  @override
+  String get helpTip2Body =>
+      'ਟੀਚਿਆਂ ਵਾਲੇ ਪੰਨੇ ਉੱਤੇ ਦਿਨ ਦੇ ਪਾਠ ਅਤੇ ਹਰ ਇੱਕ ਦਾ ਸਮਾਂ ਚੁਣੋ। ਹਾਜ਼ਰੀ ਉਸੇ ਸਮੇਂ ਯਾਦ ਕਰਾਉਂਦੀ ਹੈ।';
+
+  @override
+  String get helpTip3Title => 'ਪਾਠ ਵਾਲਾ ਪੰਨਾ';
+
+  @override
+  String get helpTip3Body =>
+      'ਮੇਰਾ ਨਿਤਨੇਮ ਸ਼ੁਰੂ ਕਰੋ ਉੱਥੋਂ ਖੁੱਲ੍ਹਦਾ ਹੈ ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ। ਅ / अ / A ਨਾਲ ਲਿਪੀ ਬਦਲੋ; Aa ਨਾਲ ਅੱਖਰਾਂ ਦਾ ਆਕਾਰ, ਅਰਥ ਅਤੇ ਵਿਸ਼ਰਾਮ; ਪਾਠ ਚਲਾ ਕੇ ਨਾਲ-ਨਾਲ ਪੜ੍ਹੋ।';
+
+  @override
+  String get helpTip4Title => 'ਨਾਮ ਸਿਮਰਨ';
+
+  @override
+  String get helpTip4Body =>
+      'ਸਿਮਰਨ ਟੈਬ ਉੱਤੇ ਮਿੰਟ ਚੁਣੋ ਅਤੇ ਬੈਠੋ। ਗਲੋਬ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਅੱਜ ਸੰਗਤ ਕਿੱਥੇ-ਕਿੱਥੇ ਬੈਠੀ ਹੈ।';
+
+  @override
+  String get helpTip5Title => 'ਡਾਇਰੀ';
+
+  @override
+  String get helpTip5Body =>
+      'ਹਰ ਦਿਨ ਜਦੋਂ ਤੁਸੀਂ ਹਾਜ਼ਰੀ ਲਗਾਉਂਦੇ ਹੋ, ਤੁਹਾਡੀ ਲੜੀ ਸਮੇਤ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ ਰੱਖਿਆ ਜਾਂਦਾ ਹੈ।';
+
+  @override
+  String get helpTip6Title => 'ਸੰਗਤ';
+
+  @override
+  String get helpTip6Body =>
+      'ਕਿਸੇ ਗਰੁੱਪ ਵਿੱਚ ਜੁੜ ਕੇ ਇੱਕ ਟੀਚੇ ਵੱਲ ਮਿਲ ਕੇ ਪਾਠ ਕਰੋ। ਇਹ ਤੁਹਾਡੀ ਮਰਜ਼ੀ ਹੈ; ਬਾਕੀ ਸਭ ਇਸ ਤੋਂ ਬਿਨਾਂ ਵੀ ਚੱਲਦਾ ਹੈ।';
+
+  @override
+  String get helpTip7Title => 'ਸਿੱਖੋ';
+
+  @override
+  String get helpTip7Body =>
+      'ਅੱਜ ਵਾਲੇ ਪੰਨੇ ਉੱਤੇ ਇੱਕ ਸਾਖੀ ਅਤੇ ਗੁਰਮਤਿ ਕੁਇਜ਼ ਦਾ ਵਿਸ਼ਾ, ਅਤੇ ਹਰ ਗੁਰਪੁਰਬ ਲਈ ਸਿੱਖ ਕੈਲੰਡਰ।';
 
   @override
   String get helpAboutLink => 'ਬਾਰੇ ਤੇ ਸ਼ੁਕਰਾਨਾ';
@@ -978,16 +1015,22 @@ class LPa extends L {
       'ਹਾਜ਼ਰੀ ਪੰਜਾਬੀ, ਹਿੰਦੀ ਤੇ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਇੱਕ ਮੁਫ਼ਤ, ਬਿਨਾਂ-ਇੰਟਰਨੈੱਟ ਚੱਲਣ ਵਾਲੀ ਨਿਤਨੇਮ ਐਪ ਹੈ। ਗੁਰਬਾਣੀ ਉੱਤੇ ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ। ਕੋਈ ਲੌਗਇਨ ਨਹੀਂ।';
 
   @override
-  String get aboutTextSources => 'ਗੁਰਬਾਣੀ ਪਾਠ ਤੇ ਲਿਪੀਅੰਤਰ';
-
-  @override
-  String get aboutMeaningSources => 'ਅਰਥ ਤੇ ਟੀਕੇ';
-
-  @override
   String get aboutCalendarSource => 'ਕੈਲੰਡਰ';
 
   @override
   String get aboutCityData => 'ਸ਼ਹਿਰਾਂ ਦਾ ਡਾਟਾ';
+
+  @override
+  String get aboutCalendarBody =>
+      'SGPC ਨਾਨਕਸ਼ਾਹੀ ਕੈਲੰਡਰ (ਜੰਤਰੀ), ਨਾਨਕਸ਼ਾਹੀ 558, 2026–27। ਦਿਹਾੜਿਆਂ ਦੇ ਨਾਮ ਜੰਤਰੀ ਮੁਤਾਬਕ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ; ਜਿੱਥੇ ਹਨ, ਉੱਥੇ ਪੰਜਾਬੀ ਵਿੱਚ।';
+
+  @override
+  String get aboutCityDataBody =>
+      'ਸ਼ਹਿਰਾਂ ਦੇ ਨਾਮ, ਨਿਰਦੇਸ਼ਾਂਕ ਅਤੇ ਸਮਾਂ-ਖੇਤਰ ਐਪ ਵਿੱਚ ਹੀ ਹਨ ਅਤੇ ਕਦੇ ਕਿਤੇ ਨਹੀਂ ਭੇਜੇ ਜਾਂਦੇ।';
+
+  @override
+  String get aboutVicharBody =>
+      'ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ ਦੀਆਂ ਪੰਕਤੀਆਂ। ਪੰਜਾਬੀ ਅਰਥ ਡਾਟਾਸੈੱਟ ਤੋਂ; ਅੰਗਰੇਜ਼ੀ ਅਰਥ ਪੰਜਾਬੀ ਦਾ ਸਰਲ ਰੂਪ ਹਨ।';
 
   @override
   String get aboutFonts => 'ਫ਼ੌਂਟ';
@@ -2294,16 +2337,6 @@ class LPa extends L {
   }
 
   @override
-  String notifGoalBaniBody(int done, int target, int day, int days) {
-    return 'ਅੱਜ $target ਵਿੱਚੋਂ $done। ਤੁਹਾਡਾ ਟੀਚਾ, $days ਵਿੱਚੋਂ ਦਿਨ $day।';
-  }
-
-  @override
-  String notifGoalBaniOpenBody(int done, int target) {
-    return 'ਅੱਜ $target ਵਿੱਚੋਂ $done।';
-  }
-
-  @override
   String notifGoalSimranTitle(int minutes) {
     return 'ਤੁਹਾਡੇ $minutes ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ';
   }
@@ -2329,6 +2362,45 @@ class LPa extends L {
 
   @override
   String get notifEventBody => 'ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਦਿਨ ਸ਼ੁਰੂ ਕਰੋ।';
+
+  @override
+  String notifEveTitle(String event) {
+    return 'ਕੱਲ੍ਹ: $event';
+  }
+
+  @override
+  String notifEveRememberTitle(String event) {
+    return 'ਕੱਲ੍ਹ ਅਸੀਂ ਯਾਦ ਕਰਾਂਗੇ: $event';
+  }
+
+  @override
+  String get notifEveBody => 'ਕੱਲ੍ਹ ਦਾ ਦਿਨ ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਸ਼ੁਰੂ ਕਰੋ।';
+
+  @override
+  String notifGoalsOpenBody(int open, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'ਤੁਹਾਡੇ $total ਟੀਚਿਆਂ ਵਿੱਚੋਂ $open ਅੱਜ ਅਜੇ ਬਾਕੀ ਹਨ।',
+      one: 'ਅੱਜ ਦਾ ਤੁਹਾਡਾ ਟੀਚਾ ਅਜੇ ਬਾਕੀ ਹੈ।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifGoalDayOf(int day, int days) {
+    return 'ਤੁਹਾਡਾ ਟੀਚਾ, $days ਵਿੱਚੋਂ ਦਿਨ $day।';
+  }
+
+  @override
+  String notifGoalAgainBaniTitle(String bani) {
+    return '$bani ਲਈ ਅਜੇ ਸਮਾਂ ਹੈ';
+  }
+
+  @override
+  String notifGoalAgainSimranTitle(int minutes) {
+    return '$minutes ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ ਲਈ ਅਜੇ ਸਮਾਂ ਹੈ';
+  }
 
   @override
   String get notifHn1Title => 'ਤੁਹਾਡੀ ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਅਜੇ ਬਾਕੀ ਹੈ';
@@ -2950,11 +3022,15 @@ class LPa extends L {
 
   @override
   String get privacyNothingUnless =>
-      'ਜਦ ਤੱਕ ਤੁਸੀਂ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਬਣਾਉਂਦੇ ਜਾਂ ਕਿਸੇ ਗਰੁੱਪ ਵਿੱਚ ਨਹੀਂ ਜੁੜਦੇ, ਕੁਝ ਵੀ ਇਸ ਫ਼ੋਨ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਜਾਂਦਾ। ਵਰਤੋਂ ਦੇ ਅੰਕੜੇ ਇਕੱਠੇ ਨਹੀਂ ਕੀਤੇ ਜਾਂਦੇ, ਅਤੇ ਨਾ ਕੋਈ ਇਸ਼ਤਿਹਾਰੀ ID ਹੈ ਨਾ ਇਸ਼ਤਿਹਾਰ।';
+      'ਜਦ ਤੱਕ ਤੁਸੀਂ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਬਣਾਉਂਦੇ ਜਾਂ ਕਿਸੇ ਗਰੁੱਪ ਵਿੱਚ ਨਹੀਂ ਜੁੜਦੇ, ਤੁਹਾਡੀ ਡਾਇਰੀ, ਟੀਚੇ ਅਤੇ ਪਾਠ ਕਦੇ ਇਸ ਫ਼ੋਨ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਜਾਂਦੇ। ਹਜ਼ਰੀ ਸਿਮਰਨ ਟੈਬ ਦਾ ਗਲੋਬ ਅਤੇ ਵਿਚਾਰ ਦੀਆਂ ਕਹਾਣੀਆਂ ਆਪਣੇ ਸਰਵਰ ਤੋਂ ਲਿਆਉਂਦੀ ਹੈ, ਅਤੇ ਇਨ੍ਹਾਂ ਬੇਨਤੀਆਂ ਨਾਲ ਸਿਰਫ਼ ਬੇਨਾਮ ਸਾਈਨ-ਇਨ ਜਾਂਦਾ ਹੈ। ਵਰਤੋਂ ਦੇ ਅੰਕੜੇ ਇਕੱਠੇ ਨਹੀਂ ਕੀਤੇ ਜਾਂਦੇ, ਅਤੇ ਨਾ ਕੋਈ ਇਸ਼ਤਿਹਾਰੀ ID ਹੈ ਨਾ ਇਸ਼ਤਿਹਾਰ।';
 
   @override
   String get privacyPhoneSignIn =>
       'ਐਪ ਖੁੱਲ੍ਹਣ ਉੱਤੇ ਇੱਕ ਬੇਨਾਮ ਸਾਈਨ-ਇਨ: ਇੰਸਟਾਲ ਦਾ ਇੱਕ ਨੰਬਰ, ਕਦੇ ਨਾਮ ਨਹੀਂ';
+
+  @override
+  String get privacyPhoneOther =>
+      'ਤੁਹਾਡੇ ਬੈਜ, ਤੁਹਾਡੀਆਂ ਪਸੰਦ ਕੀਤੀਆਂ ਸਾਖੀਆਂ, ਅਤੇ ਬਿਨਾਂ ਪ੍ਰੋਫਾਈਲ ਖੇਡੇ ਕੁਇਜ਼';
 
   @override
   String get privacyWithProfile => 'ਜੇ ਤੁਸੀਂ ਪ੍ਰੋਫਾਈਲ ਬਣਾਉਂਦੇ ਹੋ';
@@ -3258,6 +3334,17 @@ class LPa extends L {
   @override
   String globeLiveCount(int count) {
     return 'ਅੱਜ $count ਹਾਜ਼ਰ';
+  }
+
+  @override
+  String get globeLiveLabel => 'ਅੱਜ ਹਾਜ਼ਰ';
+
+  @override
+  String get globeHereLabel => 'ਅੱਜ ਇੱਥੇ';
+
+  @override
+  String globeHereCount(int count) {
+    return 'ਅੱਜ $count ਇੱਥੇ';
   }
 
   @override
@@ -4066,4 +4153,15 @@ class LPa extends L {
 
   @override
   String get slotAnyTime => 'ਦਿਨ ਦੇ ਕਿਸੇ ਵੀ ਵੇਲੇ';
+
+  @override
+  String get privacyAccountTitle => 'ਤੁਹਾਡਾ ਖਾਤਾ';
+
+  @override
+  String get privacyDeleteHow =>
+      'hazri.me ਖੁੱਲ੍ਹੇਗਾ, ਜਿੱਥੇ ਤੁਸੀਂ ਈਮੇਲ ਰਾਹੀਂ ਮੰਗ ਸਕਦੇ ਹੋ। ਇਹ 30 ਦਿਨਾਂ ਦੇ ਅੰਦਰ ਹੋ ਜਾਂਦਾ ਹੈ। ਤੁਹਾਡੀ ਡਾਇਰੀ ਇਸ ਫ਼ੋਨ ਵਿੱਚ ਉਦੋਂ ਤੱਕ ਰਹਿੰਦੀ ਹੈ ਜਦ ਤੱਕ ਤੁਸੀਂ ਹਜ਼ਰੀ ਅਣਇੰਸਟਾਲ ਨਹੀਂ ਕਰਦੇ।';
+
+  @override
+  String get privacyDeleteNoBrowser =>
+      'ਬ੍ਰਾਊਜ਼ਰ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕਿਆ। ਪੰਨਾ ਹੈ hazri.me/delete-account';
 }

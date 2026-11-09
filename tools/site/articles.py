@@ -349,7 +349,7 @@ def index(arts, cats):
 
 
 def sitemap(arts, cats):
-    urls = ([SITE + '/', SITE + '/gurpurab'] + [f"{SITE}/gurpurab/topic/{c['slug']}" for c in cats]
+    urls = ([SITE + '/', SITE + '/gurpurab', SITE + '/privacy', SITE + '/delete-account'] +[f"{SITE}/gurpurab/topic/{c['slug']}" for c in cats]
             + [f"{SITE}/gurpurab/{a['slug']}" for a in arts])
     body = ''.join(f'<url><loc>{u}</loc><lastmod>{UPDATED}</lastmod></url>' for u in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'

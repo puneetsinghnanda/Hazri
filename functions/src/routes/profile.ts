@@ -1,5 +1,6 @@
 // Profile endpoints: 01-accounts §6.1–6.4, §6.6 and §13.8 (ARCHITECTURE §6.1).
 import { Router } from 'express';
+import { logger } from 'firebase-functions';
 import type { Firestore, Transaction } from 'firebase-admin/firestore';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { callerUid } from '../auth';
@@ -79,9 +80,23 @@ export function profileRouter(deps: Deps): Router {
       const uid = callerUid(res);
       const ownerRef = db.doc(`owners/${uid}`);
       const owner = await ownerRef.get();
-      if (!owner.exists) throw Errors.noProfile();
-      const snap = await db.doc(`profiles/${owner.get('profileId') as string}`).get();
+      // Each NO_PROFILE is logged with the uid that asked (anonymous, no PII),
+      // so a phone that says "No profile found" can be matched to the
+      // profile's ownerUid in Cloud Logging (01-accounts §8.3 R4).
+      if (!owner.exists) {
+        logger.warn('profile: NO_PROFILE, no owner', { uid, route: 'GET /profile' });
+        throw Errors.noProfile();
+      }
+      const profileId = owner.get('profileId') as string;
+      const snap = await db.doc(`profiles/${profileId}`).get();
       if (!snap.exists || (snap.get('ownerUid') as string) !== uid) {
+        logger.warn('profile: NO_PROFILE, owner points elsewhere', {
+          uid,
+          profileId,
+          profileExists: snap.exists,
+          profileOwnerUid: snap.exists ? (snap.get('ownerUid') as string) : null,
+          route: 'GET /profile',
+        });
         await ownerRef.delete();
         throw Errors.noProfile();
       }

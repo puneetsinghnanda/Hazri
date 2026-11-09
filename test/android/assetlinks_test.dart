@@ -55,6 +55,24 @@ void main() {
     }
   });
 
+  test('it names both keys: ours and Google Play\'s app signing key', () {
+    // Play re-signs what it ships with its own key, so an install from Play
+    // carries a different certificate from the APK CI builds. With only ours
+    // here, every Play install opened its links in a browser (2026-11-01);
+    // with only Play's, every CI APK would. Android checks this once, at
+    // install, and does not say when it fails. docs/signing.md.
+    const ours =
+        'B3:1B:43:F5:73:9A:8F:DA:DB:E8:20:16:5A:55:8B:5B:83:02:6F:4C:62:D6:0F:83:37:66:E2:8C:AA:FF:D2:F8';
+    const play =
+        '95:2E:BA:35:F8:D9:48:EF:53:E1:36:F6:A3:F9:D5:7A:CC:AA:BE:7C:A0:F1:4C:02:DE:81:DF:85:44:85:3B:D4';
+    final statements = jsonDecode(file.readAsStringSync()) as List<dynamic>;
+    final prints = ((statements.first as Map)['target']
+        as Map)['sha256_cert_fingerprints'] as List<dynamic>;
+
+    expect(prints, contains(ours), reason: 'the key CI signs APKs with');
+    expect(prints, contains(play), reason: 'the key Google Play signs installs with');
+  });
+
   test('the package name matches the one Gradle builds', () {
     // Two files, one truth. A rename in one and not the other breaks
     // verification without breaking anything a build would notice.

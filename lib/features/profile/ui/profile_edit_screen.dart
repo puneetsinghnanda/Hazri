@@ -92,7 +92,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         }
       });
       if (e.code == 'NO_PROFILE') {
-        await ref.read(profileControllerProvider.notifier).markNone();
+        await ref.read(profileControllerProvider.notifier).confirmGone();
       } else if (e.code == 'NOTHING_CHANGED') {
         // P-3: the button is disabled for this; nothing to say.
       } else if (e.code != 'VALIDATION_ERROR') {

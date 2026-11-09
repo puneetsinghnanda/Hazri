@@ -31,6 +31,9 @@ class HazriDates {
   /// "Fri, 11 Sep"
   String shortDate(DateTime d) => DateFormat('EEE, d MMM', _intlLocale).format(d);
 
+  /// "11 Sep"
+  String dayMonth(DateTime d) => DateFormat('d MMM', _intlLocale).format(d);
+
   /// "Sep 2026"
   String monthYear(DateTime d) => DateFormat('MMM y', _intlLocale).format(d);
 

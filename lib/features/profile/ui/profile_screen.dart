@@ -67,7 +67,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         case 'EMAIL_ALREADY_VERIFIED':
           await controller.refresh();
         case 'NO_PROFILE':
-          await controller.markNone();
+          await controller.confirmGone();
         default:
           ProfileMessages.snack(context, ProfileMessages.of(l, e));
       }
