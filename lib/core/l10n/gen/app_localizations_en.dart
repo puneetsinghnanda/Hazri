@@ -2300,16 +2300,6 @@ class LEn extends L {
   }
 
   @override
-  String notifGoalBaniBody(int done, int target, int day, int days) {
-    return '$done of $target today. Your goal, day $day of $days.';
-  }
-
-  @override
-  String notifGoalBaniOpenBody(int done, int target) {
-    return '$done of $target today.';
-  }
-
-  @override
   String notifGoalSimranTitle(int minutes) {
     return 'Your $minutes minutes of Naam Simran';
   }
@@ -2335,6 +2325,45 @@ class LEn extends L {
 
   @override
   String get notifEventBody => 'Begin the day with Nitnem and your Hazri.';
+
+  @override
+  String notifEveTitle(String event) {
+    return 'Tomorrow: $event';
+  }
+
+  @override
+  String notifEveRememberTitle(String event) {
+    return 'Tomorrow we remember: $event';
+  }
+
+  @override
+  String get notifEveBody => 'Begin tomorrow with Nitnem and your Hazri.';
+
+  @override
+  String notifGoalsOpenBody(int open, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$open of your $total goals still open today.',
+      one: 'Your goal for today is still open.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifGoalDayOf(int day, int days) {
+    return 'Your goal, day $day of $days.';
+  }
+
+  @override
+  String notifGoalAgainBaniTitle(String bani) {
+    return 'Still time for $bani';
+  }
+
+  @override
+  String notifGoalAgainSimranTitle(int minutes) {
+    return 'Still time for $minutes minutes of Naam Simran';
+  }
 
   @override
   String get notifHn1Title => 'Your Hazri for today is still open';

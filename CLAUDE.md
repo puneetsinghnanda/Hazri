@@ -129,8 +129,9 @@ header with the earned set under the name and city (5C, replacing 37).
 
 **Notifications are built to their specification**
 (`docs/features/02-notifications.md`, 2026-10-07): Amrit Vela at 04:00, a
-reminder per goal item at its own time, Gurpurabs at 06:00 and other Sikh
-events at 07:00, a hazri nudge at 07:00 with no goal and no hazri, and three
+reminder per goal item at its own time and again an hour later if it is
+still not met, every Sikh calendar event at 20:00 the evening before and at
+06:30 on the day (owner, 2026-11-09), a hazri nudge at 07:00 with no goal and no hazri, and three
 pushes by Cloud Function -- the Sangat at 21:00, new members to a group's
 creator, a group ending. Reminders are on by default and Android's permission
 prompt comes at app start. Every notification that must reach *everybody*
@@ -457,7 +458,7 @@ is true of the code now, then what is live, then what is still open.
   turns an older goal into that shape without touching a past day.
 - **Notifications** (`02-notifications.md`): five local kinds --
   `amritVela`, `goalBani` (one per goal item at its own time), `calendar`
-  (Gurpurabs 06:00, other Sikh events 07:00), `hazriNudge`, `sangat` --
+  (every event 20:00 the evening before and 06:30 on the day), `hazriNudge`, `sangat` --
   planned by the pure `ReminderPlanner.plan` for 7 days every time anything
   is written (`UserRepository.onChanged`). They are **scheduled and posted by
   Hazri's own Android code** (`android/.../Reminders.kt`, DP7, 2026-10-11),

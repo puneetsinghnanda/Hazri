@@ -192,9 +192,17 @@ abstract final class ReminderPlanner {
   static const maxPending = 60;
 
   static const amritVelaHour = 4;
-  static const gurpurabHour = 6;
-  static const eventHour = 7;
+
+  /// CE2 (owner, 2026-11-09): every reminded event on its day at 06:30, and
+  /// a notice the evening before at 20:00 (CE6).
+  static const eventDayHour = 6;
+  static const eventDayMinute = 30;
+  static const eventEveHour = 20;
   static const hazriNudgeHour = 7;
+
+  /// GR5 (owner, 2026-11-09): a goal item not met an hour after its time
+  /// is reminded once more, the same day.
+  static const secondReminderAfter = Duration(hours: 1);
 
   /// The rotation index for a date: Sunday is 1, Saturday 7 (§2).
   static int rotationDay(DateTime d) => d.weekday % 7 + 1;
@@ -219,11 +227,16 @@ abstract final class ReminderPlanner {
         for (final item in inScopeItems) {
           final n = _goal(l, input, day, item, inScopeItems, verdict);
           if (n != null) out.add(n);
+          final again = _goal(l, input, day, item, inScopeItems, verdict, second: true);
+          if (again != null) out.add(again);
         }
       }
       if (input.enabled.contains(NotificationKind.calendar)) {
+        final tomorrowKey = localDateKey(day.add(const Duration(days: 1)));
         for (final e in input.events) {
-          if (e.date == key && e.remind) out.add(_event(l, e, day));
+          if (!e.remind) continue;
+          if (e.date == key) out.add(_event(l, e, day));
+          if (e.date == tomorrowKey) out.add(_eventEve(l, e, day));
         }
       }
       if (input.enabled.contains(NotificationKind.hazriNudge)) {
@@ -322,30 +335,38 @@ abstract final class ReminderPlanner {
     DateTime day,
     GoalItem item,
     List<GoalItem> inScopeItems,
-    DayVerdict? verdict,
-  ) {
+    DayVerdict? verdict, {
+    bool second = false,
+  }) {
     final time = item.reminderTime;
     if (time == null) return null;
     final parts = time.split(':');
-    final at = DateTime(day.year, day.month, day.day, int.parse(parts[0]), int.parse(parts[1]));
+    final first = DateTime(day.year, day.month, day.day, int.parse(parts[0]), int.parse(parts[1]));
+    // GR5: the second reminder, an hour on, the same day only.
+    final at = second ? first.add(secondReminderAfter) : first;
+    if (at.day != day.day) return null;
     final isToday = verdict != null;
     // GR2/RM3: not on a day the item is already met.
     if (isToday && itemMet(item, input.todayCompletions, input.todaySittings)) return null;
     final progress = isToday ? (verdict.itemsMet, verdict.itemsInScope) : (0, inScopeItems.length);
+    // 5.2 (owner, 2026-11-09): the goal as a whole, how many items are still
+    // open today, rather than this item's count.
+    final open = progress.$2 - progress.$1;
+    final reminderId = '${second ? 'goal-item-again' : 'goal-item'}:${item.id}';
     final snooze = NotificationAction(id: 'snooze', label: l.notifActionSnooze, snooze: true);
 
     if (item.itemType == ItemType.simran) {
       final m = item.simranMinutes ?? 5;
       return PlannedNotification(
-        reminderId: 'goal-item:${item.id}',
+        reminderId: reminderId,
         kind: NotificationKind.goalBani,
         at: at,
-        title: l.notifGoalSimranTitle(m),
+        title: second ? l.notifGoalAgainSimranTitle(m) : l.notifGoalSimranTitle(m),
         body: l.notifGoalSimranBody,
         route: '/simran',
         actions: [
           NotificationAction(id: 'simran', label: l.notifActionBeginMinutes(m), route: '/simran'),
-          snooze,
+          if (!second) snooze,
         ],
         progress: progress,
       );
@@ -354,39 +375,33 @@ abstract final class ReminderPlanner {
     final baniId = item.baniId!;
     final bani = input.banis[baniId] ?? baniId;
     final route = _readerRoute(baniId);
-    final done = isToday
-        ? input.todayCompletions.where((c) => c.deletedAt == null && c.baniId == baniId).length
-        : 0;
     final end = item.endDate;
     final String body;
     if (end == null) {
-      body = l.notifGoalBaniOpenBody(done, item.timesPerDay);
+      body = l.notifGoalsOpenBody(open, progress.$2);
     } else {
       final start = parseLocalDateKey(item.startDate);
       final dayN = day.difference(start).inDays + 1;
       final total = parseLocalDateKey(end).difference(start).inDays + 1;
-      body = l.notifGoalBaniBody(done, item.timesPerDay, dayN, total);
+      body = '${l.notifGoalsOpenBody(open, progress.$2)} ${l.notifGoalDayOf(dayN, total)}';
     }
     return PlannedNotification(
-      reminderId: 'goal-item:${item.id}',
+      reminderId: reminderId,
       kind: NotificationKind.goalBani,
       at: at,
-      title: l.notifGoalBaniTitle(bani),
+      title: second ? l.notifGoalAgainBaniTitle(bani) : l.notifGoalBaniTitle(bani),
       body: body,
       route: route,
       actions: [
         NotificationAction(id: 'open', label: l.notifActionOpenBani(bani), route: route),
-        snooze,
+        if (!second) snooze,
       ],
       progress: progress,
     );
   }
 
-  static const _gurpurabKinds = {'prakash', 'gurgaddi', 'joti-jot'};
-
   static PlannedNotification _event(L l, PlannerEvent e, DateTime day) {
-    final gurpurab = _gurpurabKinds.contains(e.kind);
-    final at = DateTime(day.year, day.month, day.day, gurpurab ? gurpurabHour : eventHour);
+    final at = DateTime(day.year, day.month, day.day, eventDayHour, eventDayMinute);
     // CE3: celebration for prakash and gurgaddi, remembrance for joti-jot and
     // shaheedi, plain otherwise. Never "Happy".
     final (title, body) = switch (e.kind) {
@@ -401,6 +416,21 @@ abstract final class ReminderPlanner {
       at: at,
       title: title,
       body: body,
+      route: '/gurpurab',
+      actions: [NotificationAction(id: 'calendar', label: l.notifActionSeeCalendar, route: '/gurpurab')],
+    );
+  }
+
+  /// CE6: the evening before, at 20:00 of [day], for an event on the next day.
+  /// Remembrance for joti-jot and shaheedi, plain for every other kind.
+  static PlannedNotification _eventEve(L l, PlannerEvent e, DateTime day) {
+    final remember = e.kind == 'joti-jot' || e.kind == 'shaheedi';
+    return PlannedNotification(
+      reminderId: 'event-eve:${e.id}',
+      kind: NotificationKind.calendar,
+      at: DateTime(day.year, day.month, day.day, eventEveHour),
+      title: remember ? l.notifEveRememberTitle(e.name) : l.notifEveTitle(e.name),
+      body: l.notifEveBody,
       route: '/gurpurab',
       actions: [NotificationAction(id: 'calendar', label: l.notifActionSeeCalendar, route: '/gurpurab')],
     );
@@ -486,6 +516,8 @@ abstract final class ReminderPlanner {
             itemMet(i, input.todayCompletions, input.todaySittings)) ...[
           notificationIdFor('goal-item:${i.id}', today),
           notificationIdFor('goal-item:${i.id}', today) ^ snoozeBit,
+          // GR5: the second reminder goes too.
+          notificationIdFor('goal-item-again:${i.id}', today),
         ],
     };
   }

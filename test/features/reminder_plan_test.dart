@@ -100,20 +100,72 @@ void main() {
     );
     final goals = ofKind(p, NotificationKind.goalBani);
     expect(goals.where((n) => n.at.day == 4), isEmpty);
-    expect(goals.where((n) => n.at.day == 5), hasLength(1));
+    // Tomorrow: the reminder and its second, an hour on (GR5).
+    expect(goals.where((n) => n.at.day == 5), hasLength(2));
   });
 
-  test('T-6: Japji ×3, one paath: "1 of 3", a snooze, and progress', () {
+  test('T-6: the body counts the goal\'s open items, with a snooze and progress (5.2)', () {
     final now = DateTime(2026, 10, 4, 6, 20);
     final n = ofKind(
-      plan(now: now, items: [bani('a', 'JAPJ', times: 3, at: '06:40')], completions: [done('JAPJ', DateTime(2026, 10, 4, 6))]),
+      plan(
+        now: now,
+        items: [bani('a', 'JAPJ', at: '06:40'), bani('b', 'REHR', at: '18:00'), bani('c', 'SOHL', at: '21:00')],
+      ),
       NotificationKind.goalBani,
     ).first;
     expect(n.at, DateTime(2026, 10, 4, 6, 40));
     expect(n.title, l.notifGoalBaniTitle('Japji Sahib'));
-    expect(n.body, l.notifGoalBaniOpenBody(1, 3));
+    expect(n.body, '3 of your 3 goals still open today.');
     expect(n.actions.map((a) => a.id), contains('snooze'));
-    expect(n.progress, (0, 1));
+    expect(n.progress, (0, 3));
+  });
+
+  test('5.2: one item reads as the day\'s goal, and a met item lowers the count', () {
+    final now = DateTime(2026, 10, 4, 6, 20);
+    final one = ofKind(plan(now: now, items: [bani('a', 'JAPJ', at: '06:40')]), NotificationKind.goalBani).first;
+    expect(one.body, 'Your goal for today is still open.');
+    final later = ofKind(
+      plan(
+        now: DateTime(2026, 10, 4, 17),
+        items: [bani('a', 'JAPJ', at: '06:40'), bani('b', 'REHR', at: '18:00')],
+        completions: [done('JAPJ', DateTime(2026, 10, 4, 6, 45))],
+      ),
+      NotificationKind.goalBani,
+    ).first;
+    expect(later.reminderId, 'goal-item:b');
+    expect(later.body, '1 of your 2 goals still open today.');
+  });
+
+  test('GR5: a second reminder an hour later, without a snooze, the same day only', () {
+    final now = DateTime(2026, 10, 4, 5);
+    final p = ofKind(
+      plan(now: now, items: [bani('a', 'JAPJ', at: '06:00'), bani('z', 'SOHL', at: '23:30')]),
+      NotificationKind.goalBani,
+    ).where((n) => n.at.day == 4).toList();
+    final again = p.singleWhere((n) => n.reminderId == 'goal-item-again:a');
+    expect(again.at, DateTime(2026, 10, 4, 7));
+    expect(again.title, 'Still time for Japji Sahib');
+    expect(again.actions.map((a) => a.id), isNot(contains('snooze')));
+    // 23:30 + 1 h is tomorrow: no second reminder for that one.
+    expect(p.where((n) => n.reminderId == 'goal-item-again:z'), isEmpty);
+  });
+
+  test('GR5: a met item has no second reminder, and a showing one is taken away', () {
+    final now = DateTime(2026, 10, 4, 6, 20);
+    final items = [bani('a', 'JAPJ', at: '06:00')];
+    final completions = [done('JAPJ', DateTime(2026, 10, 4, 6, 10))];
+    final p = plan(now: now, items: items, completions: completions);
+    expect(p.where((n) => n.reminderId == 'goal-item-again:a' && n.at.day == 4), isEmpty);
+    final dismiss = ReminderPlanner.metToday(PlannerInput(
+      now: now,
+      enabled: NotificationKind.values.toSet(),
+      items: items,
+      todayCompletions: completions,
+      todaySittings: const [],
+      banis: const {},
+      events: const [],
+    ));
+    expect(dismiss, contains(ReminderPlanner.notificationIdFor('goal-item-again:a', now)));
   });
 
   test('T-8: three items at three times are three notifications a day', () {
@@ -122,14 +174,15 @@ void main() {
       bani('b', 'REHR', at: '18:30'),
       bani('c', 'SOHL', at: '21:30'),
     ]);
-    expect(ofKind(p, NotificationKind.goalBani).where((n) => n.at.day == 4), hasLength(3));
+    final firsts = ofKind(p, NotificationKind.goalBani).where((n) => n.reminderId.startsWith('goal-item:'));
+    expect(firsts.where((n) => n.at.day == 4), hasLength(3));
   });
 
   test('RM1: an item with no reminder time sends nothing', () {
     expect(ofKind(plan(items: [bani('a', 'JAPJ')]), NotificationKind.goalBani), isEmpty);
   });
 
-  test('T-9, T-10, T-11: Gurpurabs at 06:00, other events at 07:00, on the day', () {
+  test('CE2, CE6: every event at 06:30 on the day, and at 20:00 the evening before', () {
     final p = plan(events: const [
       PlannerEvent(id: 'p1', date: '2026-10-05', kind: 'prakash', name: 'Prakash A', remind: true),
       PlannerEvent(id: 'p2', date: '2026-10-05', kind: 'gurgaddi', name: 'Gurgaddi B', remind: true),
@@ -137,11 +190,27 @@ void main() {
       PlannerEvent(id: 'x', date: '2026-10-06', kind: 'prakash', name: 'Off', remind: false),
     ]);
     final cal = ofKind(p, NotificationKind.calendar).toList();
-    expect(cal, hasLength(3));
-    expect(cal.where((n) => n.at == DateTime(2026, 10, 5, 6)), hasLength(2));
+    expect(cal, hasLength(6), reason: 'three events, each the evening before and on the day');
+    expect(cal.where((n) => n.at == DateTime(2026, 10, 5, 6, 30)), hasLength(2));
     final shaheedi = cal.singleWhere((n) => n.reminderId == 'event:s1');
-    expect(shaheedi.at, DateTime(2026, 10, 6, 7));
+    expect(shaheedi.at, DateTime(2026, 10, 6, 6, 30));
     expect(shaheedi.title, l.notifRememberTitle('Shaheedi C'));
+    final eve = cal.singleWhere((n) => n.reminderId == 'event-eve:s1');
+    expect(eve.at, DateTime(2026, 10, 5, 20));
+    expect(eve.title, 'Tomorrow we remember: Shaheedi C');
+    final prakashEve = cal.singleWhere((n) => n.reminderId == 'event-eve:p1');
+    expect(prakashEve.at, DateTime(2026, 10, 4, 20));
+    expect(prakashEve.title, 'Tomorrow: Prakash A');
+  });
+
+  test('CE6: an evening notice already past is not sent; the day\'s still is', () {
+    // Saturday 22:00; an event on Sunday: Saturday's 20:00 has gone.
+    final p = plan(events: const [
+      PlannerEvent(id: 'p1', date: '2026-10-04', kind: 'prakash', name: 'Prakash A', remind: true),
+    ]);
+    final cal = ofKind(p, NotificationKind.calendar).toList();
+    expect(cal.map((n) => n.reminderId), ['event:p1']);
+    expect(cal.single.at, DateTime(2026, 10, 4, 6, 30));
   });
 
   test('T-14, T-15, T-16: the hazri nudge only with no goal and no hazri', () {

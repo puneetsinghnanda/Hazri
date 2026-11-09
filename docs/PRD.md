@@ -542,9 +542,9 @@ Data: ARCHITECTURE §4, §5.10, §7.2.*
 | Kind | When (phone time) | Condition | By |
 |---|---|---|---|
 | **Amrit Vela** | 04:00 | Every day; seven weekday messages; opens the first goal bani, else Japji Sahib; with a profile, the sunrise picture for the profile city | Phone |
-| **Goal bani** | The item's own reminder time | The item is in scope and not yet met; one 15-minute snooze | Phone |
-| **Gurpurab** | 06:00 on the day | Prakash, Gurgaddi, Joti Jot events the calendar flags, or the reader switched on | Phone |
-| **Sikh event** | 07:00 on the day | Any other flagged or switched-on event, Shaheedi Purabs included | Phone |
+| **Goal bani** | The item's own reminder time, and an hour later if still not met (owner, 2026-11-09) | The item is in scope and not yet met; one 15-minute snooze of the first | Phone |
+| **Sikh calendar, evening before** | 20:00 the day before | Every event the calendar flags, or the reader switched on (owner, 2026-11-09) | Phone |
+| **Sikh calendar, on the day** | 06:30 on the day | The same events, every kind (owner, 2026-11-09; was Gurpurab 06:00, events 07:00) | Phone |
 | **Hazri nudge** | 07:00 | No active goal and no hazri yet today; seven messages; opens a 5-minute sitting | Phone |
 | **Sangat digest** | 21:00, the member's own time | Member of a group with an active goal and paath recorded that day; final-days wording on the last two | FCM |
 | **Sangat milestones** | At once, 07:00–20:59, else held to 07:00 | 25, 50, 75 % and completion, each once | FCM |

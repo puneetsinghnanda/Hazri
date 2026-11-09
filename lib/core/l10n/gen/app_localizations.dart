@@ -4167,18 +4167,6 @@ abstract class L {
   /// **'Time for {bani}'**
   String notifGoalBaniTitle(String bani);
 
-  /// No description provided for @notifGoalBaniBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{done} of {target} today. Your goal, day {day} of {days}.'**
-  String notifGoalBaniBody(int done, int target, int day, int days);
-
-  /// No description provided for @notifGoalBaniOpenBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{done} of {target} today.'**
-  String notifGoalBaniOpenBody(int done, int target);
-
   /// No description provided for @notifGoalSimranTitle.
   ///
   /// In en, this message translates to:
@@ -4220,6 +4208,48 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Begin the day with Nitnem and your Hazri.'**
   String get notifEventBody;
+
+  /// 02-notifications CE6: the evening before a Gurpurab or event, 20:00.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow: {event}'**
+  String notifEveTitle(String event);
+
+  /// CE6: the evening before a joti-jot or shaheedi day.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow we remember: {event}'**
+  String notifEveRememberTitle(String event);
+
+  /// CE6: body of the evening-before notice.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin tomorrow with Nitnem and your Hazri.'**
+  String get notifEveBody;
+
+  /// 5.2: how many of today's goal items are still open, at goal level (owner, 2026-11-09).
+  ///
+  /// In en, this message translates to:
+  /// **'{total, plural, =1{Your goal for today is still open.} other{{open} of your {total} goals still open today.}}'**
+  String notifGoalsOpenBody(int open, int total);
+
+  /// 5.2: added after notifGoalsOpenBody for a goal with an end date.
+  ///
+  /// In en, this message translates to:
+  /// **'Your goal, day {day} of {days}.'**
+  String notifGoalDayOf(int day, int days);
+
+  /// GR5: the second reminder, an hour after the item's time.
+  ///
+  /// In en, this message translates to:
+  /// **'Still time for {bani}'**
+  String notifGoalAgainBaniTitle(String bani);
+
+  /// GR5: the second reminder for a Naam Simran item.
+  ///
+  /// In en, this message translates to:
+  /// **'Still time for {minutes} minutes of Naam Simran'**
+  String notifGoalAgainSimranTitle(int minutes);
 
   /// No description provided for @notifHn1Title.
   ///

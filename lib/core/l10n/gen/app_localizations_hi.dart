@@ -2292,16 +2292,6 @@ class LHi extends L {
   }
 
   @override
-  String notifGoalBaniBody(int done, int target, int day, int days) {
-    return 'आज $target में से $done। आपका लक्ष्य, $days में से दिन $day।';
-  }
-
-  @override
-  String notifGoalBaniOpenBody(int done, int target) {
-    return 'आज $target में से $done।';
-  }
-
-  @override
   String notifGoalSimranTitle(int minutes) {
     return 'आपके $minutes मिनट नाम सिमरन';
   }
@@ -2327,6 +2317,45 @@ class LHi extends L {
 
   @override
   String get notifEventBody => 'नितनेम और हाज़री के साथ दिन शुरू करें।';
+
+  @override
+  String notifEveTitle(String event) {
+    return 'कल: $event';
+  }
+
+  @override
+  String notifEveRememberTitle(String event) {
+    return 'कल हम याद करेंगे: $event';
+  }
+
+  @override
+  String get notifEveBody => 'कल का दिन नितनेम और हाज़री के साथ शुरू करें।';
+
+  @override
+  String notifGoalsOpenBody(int open, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: 'आपके $total लक्ष्यों में से $open आज अभी बाकी हैं।',
+      one: 'आज का आपका लक्ष्य अभी बाकी है।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifGoalDayOf(int day, int days) {
+    return 'आपका लक्ष्य, $days में से दिन $day।';
+  }
+
+  @override
+  String notifGoalAgainBaniTitle(String bani) {
+    return '$bani के लिए अभी समय है';
+  }
+
+  @override
+  String notifGoalAgainSimranTitle(int minutes) {
+    return '$minutes मिनट नाम सिमरन के लिए अभी समय है';
+  }
 
   @override
   String get notifHn1Title => 'आपकी आज की हाज़री अभी बाकी है';

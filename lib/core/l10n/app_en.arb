@@ -1238,34 +1238,6 @@
       }
     }
   },
-  "notifGoalBaniBody": "{done} of {target} today. Your goal, day {day} of {days}.",
-  "@notifGoalBaniBody": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "target": {
-        "type": "int"
-      },
-      "day": {
-        "type": "int"
-      },
-      "days": {
-        "type": "int"
-      }
-    }
-  },
-  "notifGoalBaniOpenBody": "{done} of {target} today.",
-  "@notifGoalBaniOpenBody": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "target": {
-        "type": "int"
-      }
-    }
-  },
   "notifGoalSimranTitle": "Your {minutes} minutes of Naam Simran",
   "@notifGoalSimranTitle": {
     "placeholders": {
@@ -1301,6 +1273,20 @@
     }
   },
   "notifEventBody": "Begin the day with Nitnem and your Hazri.",
+  "notifEveTitle": "Tomorrow: {event}",
+  "@notifEveTitle": {"description": "02-notifications CE6: the evening before a Gurpurab or event, 20:00.", "placeholders": {"event": {"type": "String"}}},
+  "notifEveRememberTitle": "Tomorrow we remember: {event}",
+  "@notifEveRememberTitle": {"description": "CE6: the evening before a joti-jot or shaheedi day.", "placeholders": {"event": {"type": "String"}}},
+  "notifEveBody": "Begin tomorrow with Nitnem and your Hazri.",
+  "@notifEveBody": {"description": "CE6: body of the evening-before notice."},
+  "notifGoalsOpenBody": "{total, plural, =1{Your goal for today is still open.} other{{open} of your {total} goals still open today.}}",
+  "@notifGoalsOpenBody": {"description": "5.2: how many of today's goal items are still open, at goal level (owner, 2026-11-09).", "placeholders": {"open": {"type": "int"}, "total": {"type": "int"}}},
+  "notifGoalDayOf": "Your goal, day {day} of {days}.",
+  "@notifGoalDayOf": {"description": "5.2: added after notifGoalsOpenBody for a goal with an end date.", "placeholders": {"day": {"type": "int"}, "days": {"type": "int"}}},
+  "notifGoalAgainBaniTitle": "Still time for {bani}",
+  "@notifGoalAgainBaniTitle": {"description": "GR5: the second reminder, an hour after the item's time.", "placeholders": {"bani": {"type": "String"}}},
+  "notifGoalAgainSimranTitle": "Still time for {minutes} minutes of Naam Simran",
+  "@notifGoalAgainSimranTitle": {"description": "GR5: the second reminder for a Naam Simran item.", "placeholders": {"minutes": {"type": "int"}}},
   "notifHn1Title": "Your Hazri for today is still open",
   "notifHn1Body": "Five minutes of Naam Simran marks it. Begin when you're ready.",
   "notifHn2Title": "{count} of the sangat are here today",
