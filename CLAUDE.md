@@ -205,7 +205,7 @@ each:
 |---|---|---|
 | Today | 85, 86 | App bar D (navy, Today only) and streak option 3 (the week strip) |
 | Diary | 87 | Streak option 2: now and longest |
-| Simran | 88, 89, 90 | The screen as it ships, with design 29's threads; a web of threads without a profile |
+| Simran | 88, 89, 90 | The screen as it ships, with design 29's threads; a web of threads without a profile (88 and 89 replaced by 123 and 124, 2026-11-09) |
 | First run | 91, 92, 93, 94 | Android's splash only; Welcome option D, "a day with Hazri" |
 | Badges | 95, 96, 97, 98, 99 | 1C sheet, 2A page, 3B one badge, 4B profile section, 5C menu header |
 | Profile and Sangat (2026-10-10) | 100, 101, 102, 103 | Profile D (identity card and badge shelf, replaces 98), Edit profile C (Today in your city, then one card of fields), Sangat C (dashboard tiles, built-ins as rows), group H (ring in a navy band, timeline, Sit for the paath) |
@@ -436,12 +436,15 @@ timings and verify the alignment acoustically.
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.
 
-## State of the build (2026-10-30)
+## State of the build (2026-11-09)
 
 **Phase 2 is built**: all ten steps of PRD §11, in that order, on this
 branch, and since then Saakhis (2026-10-25), the Gurmat Quiz
-(2026-10-27), and the owner's redesign of Today's goal card, Nitnem and the
-Sangat page (2026-10-29 and 2026-10-30, designs 120, 121 and 102). The older code each step replaced -- the first sangat (listed groups,
+(2026-10-27), the owner's redesign of Today's goal card, Nitnem and the
+Sangat page (2026-10-29 and 2026-10-30, designs 120, 121 and 102), and on
+2026-11-09 the evening-before calendar notice and the second goal reminder,
+Today's new order, the Vichar library (122), the Simran counts (123, 124),
+and the rewritten Privacy, About and How Hazri works pages. The older code each step replaced -- the first sangat (listed groups,
 counted-on-read totals, the join banner), diary sync, the 45-second presence
 read, the Settings city, the branded splash and intro pages, elder Today as a
 fork, the Rehras / Kirtan Sohila / Daily Simran reminders -- is gone, and
@@ -586,7 +589,7 @@ is true of the code now, then what is live, then what is still open.
 
 | Thing | Where | How it changes |
 |---|---|---|
-| Test APK | rolling pre-release `apk-claude/pensive-hawking-k87ese` | Actions -> Build -> Run workflow |
+| Test APK and Play bundle | rolling pre-release `apk-claude/modest-ptolemy-6vwl5y` (`app-arm64-v8a-release.apk` and `app-release.aab`; build 293 on 2026-11-09) | Actions -> Build -> Run workflow on the branch |
 | Website, `/verify`, `/j/`, `assetlinks.json` | `https://hazri.me` (and `www.hazri.me`, redirecting) and `https://hazri-dfcc1.web.app` | `firebase deploy --only hosting:public` |
 | Admin website | `https://hazri-admin-d4b72.web.app` | `npm --prefix admin run build && firebase deploy --only hosting:admin` |
 | `api` and the scheduled / triggered Functions | `asia-south1` | `firebase deploy --only functions` |
@@ -671,7 +674,9 @@ answers `500 INTERNAL` from the endpoint that needs it.
   only from a branch whose `assetlinks.json` names both keys; one without
   Play's would break the links of every Play install.
 - **Google Play: the first closed test is published** (submitted and approved 2026-11-01,
-  build 281 / 0.1.0, developer account `hazriapp.dev@gmail.com`, developer
+  build 281 / 0.1.0; build 293 uploaded to internal testing on 2026-11-09, and
+  internal testing has its own tester list and opt-in link, separate from the
+  closed track's; developer account `hazriapp.dev@gmail.com`, developer
   name Puneet Singh Nanda, package `app.hazri`). The listing, its images and
   its text in en-US, pa and hi-IN are `store/` (drawn by `tools/store/`).
   Production unlocks after 12 testers stay opted in for 14 days in a row.
@@ -690,6 +695,11 @@ answers `500 INTERNAL` from the endpoint that needs it.
   safety form.
 - **The quiz's questions are English for now** (QZ6), and the Punjabi and
   Hindi topic names and labels are Claude's draft.
+- **Picture rights for `assets/vichar/`.** The five pictures are the owner's
+  (2026-11-09); the night Harmandir Sahib looks like a third-party painting,
+  so its rights want checking before production.
+- **The Punjabi and Hindi Simran count labels** (`globeLiveLabel`,
+  `globeHereLabel`, `globeHereCount`) are Claude's draft.
 - **The Punjabi saakhi page timings want an ear** (SK-23). They were
   estimated from each page's share of the text and snapped to long pauses,
   not heard; a page that turns early or late is corrected in
@@ -701,7 +711,9 @@ answers `500 INTERNAL` from the endpoint that needs it.
   link already in somebody's inbox has to keep working.
 - **The Vichar library is the website's 102 story pages** (2026-10-19),
   bundled with the `api` Function from `tools/site/articles/` and shown under
-  four chips, Sikh days first (`docs/vichar-content.md`); nothing in it is
+  four picture tiles, Sikh days first, each entry an article card with a
+  bundled picture by kind of day (design 122, `vicharPictureFor`;
+  `docs/vichar-content.md`); nothing in it is
   written in Dart, and it reaches phones only after `firebase deploy --only functions`.
   The last list is saved on the phone and opens offline; a fresh one is
   fetched behind it once a session. Each entry names its **layout** --
