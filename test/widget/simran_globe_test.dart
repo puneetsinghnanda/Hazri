@@ -51,7 +51,11 @@ void main() {
 
   testWidgets('G-6: no profile → the live count, three legend entries, the banner', (tester) async {
     await pump(tester);
-    expect(find.text(l.globeLiveCount(30)), findsOneWidget);
+    expect(find.bySemanticsLabel(l.globeLiveCount(30)), findsOneWidget);
+    // CT3: everyone counted and not live; without a profile nobody is taken off.
+    expect(find.bySemanticsLabel(l.globeHereCount(20)), findsOneWidget);
+    expect(find.text('30'), findsOneWidget);
+    expect(find.text('20'), findsOneWidget);
     expect(find.text(l.simranLegendYou), findsOneWidget);
     expect(find.text(l.simranLegendLive), findsOneWidget);
     expect(find.text(l.simranLegendHere), findsOneWidget);
@@ -106,13 +110,34 @@ void main() {
 
     testWidgets('a snapshot from before your mark: its 30, plus you', (tester) async {
       await pumpMarked(tester, builtAfterMark: const Duration(seconds: -30));
-      expect(find.text(l.globeLiveCount(31)), findsOneWidget);
+      expect(find.bySemanticsLabel(l.globeLiveCount(31)), findsOneWidget);
+      // CT3: still in the snapshot's blue, so you come off it (you are orange).
+      expect(find.bySemanticsLabel(l.globeHereCount(19)), findsOneWidget);
     });
 
     testWidgets('a snapshot from after it already counts you: 30', (tester) async {
       await pumpMarked(tester, builtAfterMark: const Duration(seconds: 30));
-      expect(find.text(l.globeLiveCount(30)), findsOneWidget);
+      expect(find.bySemanticsLabel(l.globeLiveCount(30)), findsOneWidget);
+      expect(find.bySemanticsLabel(l.globeHereCount(20)), findsOneWidget);
     });
+  });
+
+  testWidgets('CT3, design 124: during a sitting both counts stay, '
+      'either side of the countdown', (tester) async {
+    await pump(tester);
+    await tester.tap(find.text(l.simranBeginMinutes(5)));
+    await tester.pump();
+    final clock = find.text(l.simranLeftOf('5:00'));
+    expect(clock, findsOneWidget);
+    final live = find.bySemanticsLabel(l.globeLiveCount(30));
+    final here = find.bySemanticsLabel(l.globeHereCount(20));
+    expect(live, findsOneWidget);
+    expect(here, findsOneWidget);
+    expect(tester.getCenter(live).dx, lessThan(tester.getCenter(clock).dx));
+    expect(tester.getCenter(here).dx, greaterThan(tester.getCenter(clock).dx));
+    // The session's ticker outlives the tree; end it so no timer is left.
+    await tester.tap(find.text(l.simranEnd));
+    await settle(tester);
   });
 
   group('attendance (AT1–AT4)', () {

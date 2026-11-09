@@ -1901,6 +1901,16 @@
       }
     }
   },
+  "globeLiveLabel": "live today",
+  "globeHereLabel": "here today",
+  "globeHereCount": "{count} here today",
+  "@globeHereCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "globeStale": "Last updated {time}",
   "@globeStale": {
     "placeholders": {

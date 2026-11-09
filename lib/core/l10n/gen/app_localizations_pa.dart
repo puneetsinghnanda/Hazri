@@ -3337,6 +3337,17 @@ class LPa extends L {
   }
 
   @override
+  String get globeLiveLabel => 'ਅੱਜ ਹਾਜ਼ਰ';
+
+  @override
+  String get globeHereLabel => 'ਅੱਜ ਇੱਥੇ';
+
+  @override
+  String globeHereCount(int count) {
+    return 'ਅੱਜ $count ਇੱਥੇ';
+  }
+
+  @override
   String globeStale(String time) {
     return 'ਆਖਰੀ ਵਾਰ ਤਾਜ਼ਾ $time';
   }

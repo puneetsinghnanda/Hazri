@@ -2415,7 +2415,14 @@ def stars() -> str:
         for _ in range(90))
 
 
-def simran_sky(state: str = "rest") -> str:
+def _sky_count(n: int, colour: str, label: str, size: int = 28) -> str:
+    serif = "font-family:'Playfair Display','Noto Serif Gurmukhi',serif"
+    return (f'<div class="col" style="align-items:center;flex:1;min-width:0">'
+            f'<div style="{serif};font-size:{size}px;font-weight:500;line-height:1;color:{colour}">{n}</div>'
+            f'<div style="font-size:11.5px;color:rgba(255,255,255,.7);font-weight:600;margin-top:4px">{label}</div></div>')
+
+
+def simran_sky(state: str = "rest", counts: bool = False) -> str:
     """The Simran tab to the reader's mock-up of 2026-09-20, with 07-simran.md.
 
     `rest` with a profile, `sitting` while a sitting runs, `noprofile` for
@@ -2445,6 +2452,13 @@ def simran_sky(state: str = "rest") -> str:
         font-variant-numeric:tabular-nums">7:42</div>
       <div style="font-size:12.5px;color:rgba(255,255,255,.55)">left of 11:00</div>
     </div>"""
+        if counts:
+            # Design 124 (owner, 2026-11-09): the two counts either side of
+            # the countdown, smaller, so neither is lost while you sit.
+            middle = (f'<div class="row" style="align-items:center">'
+                      f'{_sky_count(48, "#6FE3A6", "live today", 22)}'
+                      f'<div style="flex:none">{middle}</div>'
+                      f'{_sky_count(312, "#8FB2FF", "here today", 22)}</div>')
         buttons = f"""
     <div class="row" style="gap:12px">
       <div class="btn" style="flex:1;background:#F2A24E;color:#1C1206">Pause</div>
@@ -2454,6 +2468,13 @@ def simran_sky(state: str = "rest") -> str:
         middle = f"""
     <div style="{serif};font-size:20px;font-weight:500;line-height:1.25;color:#fff;
       text-align:center"><span style="color:#6FE3A6">48</span> live today</div>"""
+        if counts:
+            # Design 123 (option C, owner 2026-11-09): live and here today as
+            # two figures, green and blue, with a rule between.
+            middle = (f'<div class="row" style="align-items:stretch;padding:0 36px">'
+                      f'{_sky_count(48, "#6FE3A6", "live today")}'
+                      f'<div style="width:1px;background:rgba(255,255,255,.18);margin:4px 0"></div>'
+                      f'{_sky_count(312, "#8FB2FF", "here today")}</div>')
         minutes = 5 if state == "noprofile" else 11
         buttons = f"""
     <div class="btn" style="background:#F2A24E;color:#1C1206">
@@ -2512,6 +2533,14 @@ def simran_rest() -> str:
 
 def simran_sitting() -> str:
     return simran_sky("sitting")
+
+
+def simran_counts() -> str:
+    return simran_sky("rest", counts=True)
+
+
+def simran_counts_sitting() -> str:
+    return simran_sky("sitting", counts=True)
 
 
 def simran_no_profile() -> str:
@@ -4535,6 +4564,8 @@ SCREENS = [
     ("120-TodayGoalFolded", "Today — a goal of seven, folded", goal_folded),
     ("121-NitnemTinted", "Nitnem — each part of the day in its light", nitnem_tinted),
     ("122-VicharLibrary", "Vichar — the library: articles to read, with search", vichar_library),
+    ("123-SimranCounts", "Simran — live and here today as two figures", simran_counts),
+    ("124-SimranCountsSitting", "Simran — the two counts either side of the countdown", simran_counts_sitting),
 ]
 
 

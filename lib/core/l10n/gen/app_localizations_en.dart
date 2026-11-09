@@ -3342,6 +3342,17 @@ class LEn extends L {
   }
 
   @override
+  String get globeLiveLabel => 'live today';
+
+  @override
+  String get globeHereLabel => 'here today';
+
+  @override
+  String globeHereCount(int count) {
+    return '$count here today';
+  }
+
+  @override
   String globeStale(String time) {
     return 'Last updated $time';
   }

@@ -5926,6 +5926,24 @@ abstract class L {
   /// **'{count} live today'**
   String globeLiveCount(int count);
 
+  /// No description provided for @globeLiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'live today'**
+  String get globeLiveLabel;
+
+  /// No description provided for @globeHereLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'here today'**
+  String get globeHereLabel;
+
+  /// No description provided for @globeHereCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} here today'**
+  String globeHereCount(int count);
+
   /// No description provided for @globeStale.
   ///
   /// In en, this message translates to:

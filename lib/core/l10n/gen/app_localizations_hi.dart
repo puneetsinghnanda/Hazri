@@ -3331,6 +3331,17 @@ class LHi extends L {
   }
 
   @override
+  String get globeLiveLabel => 'आज हाज़िर';
+
+  @override
+  String get globeHereLabel => 'आज यहाँ';
+
+  @override
+  String globeHereCount(int count) {
+    return 'आज $count यहाँ';
+  }
+
+  @override
   String globeStale(String time) {
     return 'आख़िरी बार ताज़ा $time';
   }

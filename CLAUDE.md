@@ -214,6 +214,7 @@ each:
 | Today, Nitnem and Sangat (2026-10-29, 2026-10-30) | 120, 121, 102 | The goal card folds a goal of more than three to now, next and missed with Show all (1A, 120); Nitnem as one card per part of the day tinted by its light, Before sleep lavender not navy, More banis sage green with "Any time of day" (2A, 121, replaces 12); My paath goals on Nitnem as a saffron banner with the count, a bar, the next paath and Change (1C, 2026-10-30, drawn in 121); the built-in groups say Joined, not Leave, on the Sangat page, and Leave is inside the group (3E, drawn in 102) |
 | Today's order (2026-11-09) | 113 | The Sikh calendar above "Did you know?", Today's Vichar under it, then the quiz card and the saakhis (`05-today.md` §5.3) |
 | Vichar library (2026-11-09) | 122 | Option 1, from the owner's mock-up: the dawn header with ੴ, search, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis), each entry an article card with a kind-and-date pill, headline, three lines, minutes and a picture by kind of day from `assets/vichar/` (replaces 43, `docs/vichar-content.md` Library) |
+| Simran counts (2026-11-09) | 123, 124 | Option C of four: live today and here today as two figures, green and blue (here today keeps its meaning, everyone counted who has not opened the app today); during a sitting both stay, smaller, either side of the countdown (`07-simran.md` CT3; replace 88 and 89) |
 | Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A with no buttons and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
@@ -512,7 +513,7 @@ is true of the code now, then what is live, then what is still open.
   (one person is your dot's size, full at 25); threads from your dot (DR6)
   and a web joining the rest (DR7), as arcs with light along them (DR8);
   pinch or double tap to zoom (ZM1-ZM3); tap a dot for its city (TT1-TT3).
-  The presence line counts you the way the dots do (CT1, CT2). ਵਾਹਿਗੁਰੂ drifts
+  The presence line counts you the way the dots do (CT1, CT2), and since 2026-11-09 shows here today beside live today, also during a sitting (CT3, designs 123/124). ਵਾਹਿਗੁਰੂ drifts
   off the globe during a sitting, one word per utterance from
   `SimranTrack.onsets`; with no recitation there are no words. The screen's
   serif wordmark, ੴ rule and verse come from the owner's mock-up of

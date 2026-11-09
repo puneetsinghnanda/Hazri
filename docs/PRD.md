@@ -1428,8 +1428,10 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `88-Simran` | Simran, at rest | **new** | Threads from your dot to every other, as design 29. Legend You, Live, Here today. 07-simran.md SM1, DR1-DR6 |
-| `89-SimranSitting` | Simran, a sitting running | **new** | The countdown takes the presence line's place; Pause and End. ਵਾਹਿਗੁਰੂ drifts off the globe |
+| `123-SimranCounts` | Simran, at rest, with both counts | **new** | Option C, chosen 9 Nov: live today and here today as two figures. 07-simran.md CT3 |
+| `124-SimranCountsSitting` | Simran, a sitting, with both counts | **new** | Both counts either side of the countdown. 07-simran.md CT3 |
+| `88-Simran` | Simran, at rest | superseded | Replaced by 123 |
+| `89-SimranSitting` | Simran, a sitting running | superseded | Replaced by 124 |
 | `90-SimranNoProfile` | Simran, no profile | **new** | No orange dot, so the threads join every dot into one web; the profile banner under the legend. 07-simran.md NP1-NP3, DR7 |
 | `29-Simran` | Simran, Phase 2 | superseded | Replaced by 88 |
 | `21-DailySimran` | Daily Simran, Phase 1 | superseded | Replaced by 88 and 89 |
