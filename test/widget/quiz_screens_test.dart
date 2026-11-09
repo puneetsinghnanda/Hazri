@@ -95,7 +95,12 @@ void main() {
     expect(find.descendant(of: card, matching: find.text('Guru Ram Das Ji')), findsOneWidget);
     expect(find.descendant(of: card, matching: find.byType(FilledButton)), findsNothing);
     expect(find.text(l.quizTakeQuiz), findsNothing);
-    await tester.tap(find.descendant(of: card, matching: find.text('Guru Ram Das Ji')));
+    // Since 2026-11-09 the Sikh calendar sits above the leaf (05-today §5.3),
+    // so scrolling to the eyebrow can leave the title under the nav bar.
+    final title = find.descendant(of: card, matching: find.text('Guru Ram Das Ji'));
+    await tester.ensureVisible(title);
+    await settle(tester);
+    await tester.tap(title);
     await settle(tester);
     expect(find.textContaining('vichar '), findsOneWidget);
     expect(tester.takeException(), isNull);
