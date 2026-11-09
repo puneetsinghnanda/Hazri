@@ -40,6 +40,7 @@ class PrivacyScreen extends ConsumerWidget {
           l.privacyPhoneProgress,
           l.privacyPhoneContent,
           l.privacyPhoneSignIn,
+          l.privacyPhoneOther,
         ]),
         _Section(title: l.privacyWithProfile, icon: HazriIconData.mail, items: [
           l.privacyProfileDetails,

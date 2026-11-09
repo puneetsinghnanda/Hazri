@@ -786,14 +786,26 @@ system font scale is respected up to 1.3×.
   Dark; elder mode); About (credits, privacy, the analytics switch shown as
   off and inert, licences, version). **Removed:** the reminder rows, the
   sunrise-and-sunset city, the diary-sync row.
-- **About and credits:** what Hazri is; every source from `content.db`'s
-  `source` table (text, transliteration, meanings and teeka, calendar); city
-  data; fonts (SIL OFL); the recitation (bundled, never streamed; the paathi
-  uncredited until a credit is agreed, D9); "Works offline · No login · No ads
-  on Gurbani".
+- **About and credits** (owner, 2026-11-09): what Hazri is; the calendar
+  (SGPC jantri, Nanakshahi 558, in a sentence rather than the source row);
+  city data; fonts (SIL OFL); the recitation (bundled, never streamed; the
+  paathi uncredited until a credit is agreed, D9); Today's Vichar (lines from
+  Sri Guru Granth Sahib Ji, the English a rendering of the Punjabi); "Works
+  offline · No login · No ads on Gurbani". No sections for the Gurbani text,
+  transliteration or meanings, and no credits for the saakhis or the quiz.
+- **How Hazri works** (the help sheet, owner 2026-11-09): seven tips, one
+  each for Hazri, goals, the reader, Naam Simran, the Diary, the Sangat and
+  learning, then a link to About.
 - **Privacy and my data** (design 35): the reader's copy of §8. Rewritten in
   the same release that ships the profile, attendance and the backup.
-- **Licences:** Flutter's licence page with the font licences.
+  Amended 2026-11-09 (owner): it says the globe and the Vichar stories are
+  fetched with the anonymous sign-in, lists badges, hearted saakhis and
+  offline quizzes among what stays on the phone, and says a deletion asked
+  for at hazri.me is done within 30 days (as `/delete-account` does).
+- **Licences:** Flutter's licence page with the font licences, and the MIT
+  notices of the Shabad OS Database and `gurmukhi-utils`, whose data ships in
+  `content.db` (`registerDataLicences()`); About no longer names them, and
+  the MIT licence needs the notice somewhere in the app.
 
 ### 4.19 Admin website
 
