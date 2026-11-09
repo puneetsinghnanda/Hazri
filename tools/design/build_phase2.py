@@ -77,6 +77,8 @@ ICONS = {
     "mail": '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M4 8l8 5.5L20 8"/>',
     "alert": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5"/><circle cx="12" cy="16.3" r=".9" fill="currentColor" stroke="none"/>',
     "clock": '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.4 2"/>',
+    # The app's own (lib/core/theme/icon_data.dart, `calendar`).
+    "calendar": '<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
     "phone": '<rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 18.6h3"/>',
     "share": '<circle cx="17" cy="6" r="2.4"/><circle cx="7" cy="12" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M9.2 10.9l5.6-3.3M9.2 13.1l5.6 3.3"/>',
     # added 2026-10-10 for the profile and sangat screens, 100-103
@@ -3965,16 +3967,38 @@ def quiz_pick_card() -> str:
   </div>"""
 
 
+def today_calendar_card() -> str:
+    """The Sikh calendar on Today, as `_GurpurabCard` draws it: the next event
+    within a week (here the day's own, from content/source/gurpurab-558.json),
+    else the Gurpurab calendar and today's Nanakshahi date. It opens the
+    calendar."""
+    return f"""
+  <div class="card row" style="padding:14px;gap:12px">
+    <div style="width:44px;height:44px;border-radius:14px;flex:none;background:var(--kesriSoft);
+      color:var(--kesriInk);display:flex;align-items:center;justify-content:center">{icon("calendar", 22)}</div>
+    <div class="col" style="flex:1;min-width:0;gap:2px">
+      <div style="font-size:12px;font-weight:700;color:var(--kesriInk)">Today · Gurpurab</div>
+      <div style="font-size:15px;font-weight:700;line-height:1.3">Prakash Purab, Guru Ram Das Ji</div>
+      <div style="font-size:12px;color:var(--muted)">11 Katak 558</div>
+    </div>
+    <div style="color:var(--muted);transform:rotate(180deg)">{icon("back", 18)}</div>
+  </div>"""
+
+
 def today_quiz() -> str:
-    """Today scrolled past the band and the goal: the Nitnem button, the
-    calendar leaf (1A, no buttons), the quiz card (D), then the saakhis card
-    in option C (05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; SK11). In elder
-    mode too (QZ9, SK15)."""
+    """Today scrolled past the band and the goal (05-today.md §5.3, owner
+    2026-11-09): the Nitnem button, the Sikh calendar, the calendar leaf
+    ("Did you know?", 1A, no buttons), ਅੱਜ ਦਾ ਵਿਚਾਰ, the quiz card (D), then
+    the saakhis card in option C (14-quiz.md QZ9-QZ12; SK11). In elder mode
+    the calendar and the Vichar step aside (T5); the rest stays (QZ9,
+    SK15)."""
     return f"""
 <div class="col" style="gap:12px;padding:16px 20px 0">
   <div class="btn" style="background:var(--primary);color:var(--onPrimary)">
     {icon("nitnem", 20)}<div>Start your Nitnem</div></div>
+  {today_calendar_card()}
   {quiz_card()}
+  {vichar_card()}
   {quiz_pick_card()}
   {saakhi_card()}
 </div>
