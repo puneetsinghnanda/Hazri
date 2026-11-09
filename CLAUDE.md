@@ -189,7 +189,9 @@ only". It is published as an artifact at
 <https://claude.ai/artifact/WS5cf2iNPdc9txvEccZQAC> (since 2026-10-30; the
 earlier `Fz2WJs5tPF9nUWPgkgBkR8` could no longer be opened from the owner's
 account, so it was published afresh with designs up to 121); republish it after
-changing it, with every new or changed `design/html/` file. PRD Appendix A
+changing it, with every new or changed `design/html/` file **published at
+`html/<name>`** (the path the canvas loads; under `design/html/` the screen
+shows as unavailable, 2026-11-09). PRD Appendix A
 is the same list in text, generated from it.
 
 The Phase 2 screens are **drawn by `tools/design/build_phase2.py`**, never by
