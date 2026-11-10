@@ -23,3 +23,10 @@ Every pankti and meaning is read from `assets/content/content.db` by
 `tools/social/export.py`. None is typed, paraphrased or translated (CLAUDE.md
 rule 3). The only pictures are the saakhi covers, which follow SK2. A post
 that needs a new picture of a Guru must show light where the face would be.
+
+## Profile picture
+
+`brand/instagram-profile.png` (light, as the launcher icon) and
+`brand/instagram-profile-navy.png` are the app mark at 1080 x 1080, drawn
+with `draw_mark` from `tools/content_pipeline/make_icons.py` at 60% of the
+square so it stays whole inside Instagram's circle.
