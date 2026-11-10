@@ -30,3 +30,7 @@ that needs a new picture of a Guru must show light where the face would be.
 `brand/instagram-profile-navy.png` are the app mark at 1080 x 1080, drawn
 with `draw_mark` from `tools/content_pipeline/make_icons.py` at 60% of the
 square so it stays whole inside Instagram's circle.
+
+`brand/instagram-profile-navy-wordmark.png` and
+`brand/instagram-profile-wordmark.png` add the word Hazri under the mark
+(Inter Display Bold, the mark at 50% and raised so both sit inside the circle).
