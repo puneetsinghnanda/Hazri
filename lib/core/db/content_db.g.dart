@@ -5399,6 +5399,17 @@ class $CalendarEventsTable extends CalendarEvents
       'CHECK ("supplementary" IN (0, 1))',
     ),
   );
+  static const VerificationMeta _vicharSlugMeta = const VerificationMeta(
+    'vicharSlug',
+  );
+  @override
+  late final GeneratedColumn<String> vicharSlug = GeneratedColumn<String>(
+    'vichar_slug',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -5411,6 +5422,7 @@ class $CalendarEventsTable extends CalendarEvents
     nsLabel,
     defaultRemind,
     supplementary,
+    vicharSlug,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5501,6 +5513,12 @@ class $CalendarEventsTable extends CalendarEvents
     } else if (isInserting) {
       context.missing(_supplementaryMeta);
     }
+    if (data.containsKey('vichar_slug')) {
+      context.handle(
+        _vicharSlugMeta,
+        vicharSlug.isAcceptableOrUnknown(data['vichar_slug']!, _vicharSlugMeta),
+      );
+    }
     return context;
   }
 
@@ -5550,6 +5568,10 @@ class $CalendarEventsTable extends CalendarEvents
         DriftSqlType.bool,
         data['${effectivePrefix}supplementary'],
       )!,
+      vicharSlug: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}vichar_slug'],
+      ),
     );
   }
 
@@ -5580,6 +5602,11 @@ class CalendarEventRow extends DataClass
   /// The source marks this entry as its own cross-check rather than something
   /// the SGPC jantri confirms, so the app says so instead of implying it.
   final bool supplementary;
+
+  /// The Vichar page that tells this event's story, opened from Today's
+  /// calendar card (content version 12, 2026-11-18). Null when no page
+  /// names the event; the card then opens the calendar.
+  final String? vicharSlug;
   const CalendarEventRow({
     required this.id,
     required this.nsYear,
@@ -5591,6 +5618,7 @@ class CalendarEventRow extends DataClass
     this.nsLabel,
     required this.defaultRemind,
     required this.supplementary,
+    this.vicharSlug,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -5611,6 +5639,9 @@ class CalendarEventRow extends DataClass
     }
     map['default_remind'] = Variable<bool>(defaultRemind);
     map['supplementary'] = Variable<bool>(supplementary);
+    if (!nullToAbsent || vicharSlug != null) {
+      map['vichar_slug'] = Variable<String>(vicharSlug);
+    }
     return map;
   }
 
@@ -5632,6 +5663,9 @@ class CalendarEventRow extends DataClass
           : Value(nsLabel),
       defaultRemind: Value(defaultRemind),
       supplementary: Value(supplementary),
+      vicharSlug: vicharSlug == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vicharSlug),
     );
   }
 
@@ -5651,6 +5685,7 @@ class CalendarEventRow extends DataClass
       nsLabel: serializer.fromJson<String?>(json['nsLabel']),
       defaultRemind: serializer.fromJson<bool>(json['defaultRemind']),
       supplementary: serializer.fromJson<bool>(json['supplementary']),
+      vicharSlug: serializer.fromJson<String?>(json['vicharSlug']),
     );
   }
   @override
@@ -5667,6 +5702,7 @@ class CalendarEventRow extends DataClass
       'nsLabel': serializer.toJson<String?>(nsLabel),
       'defaultRemind': serializer.toJson<bool>(defaultRemind),
       'supplementary': serializer.toJson<bool>(supplementary),
+      'vicharSlug': serializer.toJson<String?>(vicharSlug),
     };
   }
 
@@ -5681,6 +5717,7 @@ class CalendarEventRow extends DataClass
     Value<String?> nsLabel = const Value.absent(),
     bool? defaultRemind,
     bool? supplementary,
+    Value<String?> vicharSlug = const Value.absent(),
   }) => CalendarEventRow(
     id: id ?? this.id,
     nsYear: nsYear ?? this.nsYear,
@@ -5692,6 +5729,7 @@ class CalendarEventRow extends DataClass
     nsLabel: nsLabel.present ? nsLabel.value : this.nsLabel,
     defaultRemind: defaultRemind ?? this.defaultRemind,
     supplementary: supplementary ?? this.supplementary,
+    vicharSlug: vicharSlug.present ? vicharSlug.value : this.vicharSlug,
   );
   CalendarEventRow copyWithCompanion(CalendarEventsCompanion data) {
     return CalendarEventRow(
@@ -5709,6 +5747,9 @@ class CalendarEventRow extends DataClass
       supplementary: data.supplementary.present
           ? data.supplementary.value
           : this.supplementary,
+      vicharSlug: data.vicharSlug.present
+          ? data.vicharSlug.value
+          : this.vicharSlug,
     );
   }
 
@@ -5724,7 +5765,8 @@ class CalendarEventRow extends DataClass
           ..write('nameHi: $nameHi, ')
           ..write('nsLabel: $nsLabel, ')
           ..write('defaultRemind: $defaultRemind, ')
-          ..write('supplementary: $supplementary')
+          ..write('supplementary: $supplementary, ')
+          ..write('vicharSlug: $vicharSlug')
           ..write(')'))
         .toString();
   }
@@ -5741,6 +5783,7 @@ class CalendarEventRow extends DataClass
     nsLabel,
     defaultRemind,
     supplementary,
+    vicharSlug,
   );
   @override
   bool operator ==(Object other) =>
@@ -5755,7 +5798,8 @@ class CalendarEventRow extends DataClass
           other.nameHi == this.nameHi &&
           other.nsLabel == this.nsLabel &&
           other.defaultRemind == this.defaultRemind &&
-          other.supplementary == this.supplementary);
+          other.supplementary == this.supplementary &&
+          other.vicharSlug == this.vicharSlug);
 }
 
 class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
@@ -5769,6 +5813,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
   final Value<String?> nsLabel;
   final Value<bool> defaultRemind;
   final Value<bool> supplementary;
+  final Value<String?> vicharSlug;
   final Value<int> rowid;
   const CalendarEventsCompanion({
     this.id = const Value.absent(),
@@ -5781,6 +5826,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     this.nsLabel = const Value.absent(),
     this.defaultRemind = const Value.absent(),
     this.supplementary = const Value.absent(),
+    this.vicharSlug = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CalendarEventsCompanion.insert({
@@ -5794,6 +5840,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     this.nsLabel = const Value.absent(),
     required bool defaultRemind,
     required bool supplementary,
+    this.vicharSlug = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        nsYear = Value(nsYear),
@@ -5813,6 +5860,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     Expression<String>? nsLabel,
     Expression<bool>? defaultRemind,
     Expression<bool>? supplementary,
+    Expression<String>? vicharSlug,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -5826,6 +5874,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
       if (nsLabel != null) 'ns_label': nsLabel,
       if (defaultRemind != null) 'default_remind': defaultRemind,
       if (supplementary != null) 'supplementary': supplementary,
+      if (vicharSlug != null) 'vichar_slug': vicharSlug,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -5841,6 +5890,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     Value<String?>? nsLabel,
     Value<bool>? defaultRemind,
     Value<bool>? supplementary,
+    Value<String?>? vicharSlug,
     Value<int>? rowid,
   }) {
     return CalendarEventsCompanion(
@@ -5854,6 +5904,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
       nsLabel: nsLabel ?? this.nsLabel,
       defaultRemind: defaultRemind ?? this.defaultRemind,
       supplementary: supplementary ?? this.supplementary,
+      vicharSlug: vicharSlug ?? this.vicharSlug,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -5891,6 +5942,9 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     if (supplementary.present) {
       map['supplementary'] = Variable<bool>(supplementary.value);
     }
+    if (vicharSlug.present) {
+      map['vichar_slug'] = Variable<String>(vicharSlug.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -5910,6 +5964,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
           ..write('nsLabel: $nsLabel, ')
           ..write('defaultRemind: $defaultRemind, ')
           ..write('supplementary: $supplementary, ')
+          ..write('vicharSlug: $vicharSlug, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -9990,6 +10045,7 @@ typedef $$CalendarEventsTableCreateCompanionBuilder =
       Value<String?> nsLabel,
       required bool defaultRemind,
       required bool supplementary,
+      Value<String?> vicharSlug,
       Value<int> rowid,
     });
 typedef $$CalendarEventsTableUpdateCompanionBuilder =
@@ -10004,6 +10060,7 @@ typedef $$CalendarEventsTableUpdateCompanionBuilder =
       Value<String?> nsLabel,
       Value<bool> defaultRemind,
       Value<bool> supplementary,
+      Value<String?> vicharSlug,
       Value<int> rowid,
     });
 
@@ -10063,6 +10120,11 @@ class $$CalendarEventsTableFilterComposer
 
   ColumnFilters<bool> get supplementary => $composableBuilder(
     column: $table.supplementary,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get vicharSlug => $composableBuilder(
+    column: $table.vicharSlug,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -10125,6 +10187,11 @@ class $$CalendarEventsTableOrderingComposer
     column: $table.supplementary,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get vicharSlug => $composableBuilder(
+    column: $table.vicharSlug,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CalendarEventsTableAnnotationComposer
@@ -10167,6 +10234,11 @@ class $$CalendarEventsTableAnnotationComposer
 
   GeneratedColumn<bool> get supplementary => $composableBuilder(
     column: $table.supplementary,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get vicharSlug => $composableBuilder(
+    column: $table.vicharSlug,
     builder: (column) => column,
   );
 }
@@ -10212,6 +10284,7 @@ class $$CalendarEventsTableTableManager
                 Value<String?> nsLabel = const Value.absent(),
                 Value<bool> defaultRemind = const Value.absent(),
                 Value<bool> supplementary = const Value.absent(),
+                Value<String?> vicharSlug = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion(
                 id: id,
@@ -10224,6 +10297,7 @@ class $$CalendarEventsTableTableManager
                 nsLabel: nsLabel,
                 defaultRemind: defaultRemind,
                 supplementary: supplementary,
+                vicharSlug: vicharSlug,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -10238,6 +10312,7 @@ class $$CalendarEventsTableTableManager
                 Value<String?> nsLabel = const Value.absent(),
                 required bool defaultRemind,
                 required bool supplementary,
+                Value<String?> vicharSlug = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion.insert(
                 id: id,
@@ -10250,6 +10325,7 @@ class $$CalendarEventsTableTableManager
                 nsLabel: nsLabel,
                 defaultRemind: defaultRemind,
                 supplementary: supplementary,
+                vicharSlug: vicharSlug,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

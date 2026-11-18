@@ -327,8 +327,8 @@ Built by `tools/content_pipeline/build_content_db.py` from `content/source/`
 and bundled at `assets/content/content.db`. On first run, and whenever
 `meta.content_version` differs from the stamp file `content.version`, it is
 copied to `getApplicationSupportDirectory()/content.db` and opened read-only
-(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 11 at the time
-of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`, 2026-10-27; 11 the saakhis' Punjabi narration). **Nothing in it is ever written by the app** (rule 3).
+(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 12 at the time
+of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`, 2026-10-27; 11 the saakhis' Punjabi narration; 12 `calendar_event.vichar_slug`, 2026-11-18). **Nothing in it is ever written by the app** (rule 3).
 
 | Table | Columns | Holds |
 |---|---|---|
@@ -343,7 +343,7 @@ of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`
 | `simran_track` | id, file, duration_ms?, bytes?, json | The 5-minute Naam Simran recitation, with its envelope and onsets |
 | `vichar` | idx, gurmukhi, meaning_pa, meaning_en | The 200 lines of ਅੱਜ ਦਾ ਵਿਚਾਰ |
 | `nanakshahi_month` | (ns_year, idx) PK, name_en/pa/hi, start_date, days | Nanakshahi 558 and the first month of 559 |
-| `calendar_event` | id, ns_year, date, kind, name_en, name_pa?, name_hi?, ns_label?, default_remind, supplementary | 147 events, 52 flagged to remind |
+| `calendar_event` | id, ns_year, date, kind, name_en, name_pa?, name_hi?, ns_label?, default_remind, supplementary, vichar_slug? | 147 events, 52 flagged to remind; `vichar_slug` (content version 12, 2026-11-18) is the Vichar page that tells the event's story, from the `events` each article in `tools/site/articles/` names, and is what Today's calendar card opens |
 | `city` | id, name_en/pa/hi, country_code, lat, lon, tz, **state_code** (added by `07-simran.md` §5.1, here §5.5) | 92 cities; the list a profile's city is chosen from |
 | `quote` | id, gurmukhi, devanagari, roman, attribution_en/pa/hi?, source_id? | Quotations shown in the app |
 | `saakhi` | id PK, sort, json | One row per saakhi (`13-saakhi.md`), resolved by the pipeline from `content/source/saakhi/<id>.json`: titles, pages, lesson, the asset paths, the narration's page starts and meaning cue, and any Gurbani, read from its bani's source file by `ref` or carried with a `checked` record naming the source it was checked against (SK3); a shabad with neither is left out. Read whole with a raw query (`SaakhiRepository`), so drift declares no table for it. `sort` is the order Today and the library show |

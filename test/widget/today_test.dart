@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/db/user_repository.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
+import 'package:hazri/core/theme/hazri_theme.dart';
 import 'package:hazri/core/time/clock.dart';
 import 'package:hazri/features/quiz/ui/quiz_today_card.dart';
 import 'package:hazri/features/saakhi/ui/saakhi_library_screen.dart';
@@ -84,6 +87,53 @@ void main() {
     expect(find.byKey(TodayScreen.calendarKey, skipOffstage: false), findsNothing);
     expect(find.byType(VicharCard, skipOffstage: false), findsNothing);
     expect(find.byType(QuizTodayCard, skipOffstage: false), findsOneWidget);
+  });
+
+  // Owner, 2026-11-18: an event on the calendar card opens the Vichar page
+  // that tells its story (calendar_event.vichar_slug, content version 12);
+  // with no event this week, the calendar.
+  Future<List<String>> tapCalendar(WidgetTester tester, DateTime now) async {
+    final app = await TestApp.create(prefs: {'onboarding_done': true}, now: now);
+    addTearDown(app.dispose);
+    final opened = <String>[];
+    usePhoneFrame(tester);
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: app.container,
+      child: MaterialApp.router(
+        localizationsDelegates: L.localizationsDelegates,
+        supportedLocales: L.supportedLocales,
+        theme: HazriTheme.light(),
+        routerConfig: GoRouter(routes: [
+          GoRoute(path: '/', builder: (_, _) => const TodayScreen()),
+          GoRoute(path: '/library/:id', builder: (_, s) {
+            opened.add('/library/${s.pathParameters['id']}');
+            return const SizedBox();
+          }),
+          GoRoute(path: '/gurpurab', builder: (_, _) {
+            opened.add('/gurpurab');
+            return const SizedBox();
+          }),
+        ]),
+      ),
+    ));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 150)));
+    await settle(tester);
+    final card = find.byKey(TodayScreen.calendarKey, skipOffstage: false);
+    await tester.ensureVisible(card);
+    await settle(tester);
+    await tester.tap(card);
+    await settle(tester);
+    return opened;
+  }
+
+  testWidgets('an event on the calendar card opens its Vichar page', (tester) async {
+    // 10 October 2026: Bhai Taru Singh Ji's birth anniversary is the next event.
+    expect(await tapCalendar(tester, DateTime(2026, 10, 8, 9)), ['/library/bhai-taru-singh-ji']);
+  });
+
+  testWidgets('with no event within a week, the card opens the calendar', (tester) async {
+    // Outside Nanakshahi 558 there are no events, so the card shows the date.
+    expect(await tapCalendar(tester, DateTime(2027, 6, 1, 9)), ['/gurpurab']);
   });
 
   for (final dark in [false, true]) {

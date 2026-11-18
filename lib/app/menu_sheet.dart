@@ -107,6 +107,8 @@ class _MenuDrawer extends ConsumerWidget {
                       // 14-quiz.md QZ33: after Saakhis.
                       _Row(icon: _quizIcon, label: l.quizTitle, onTap: () => go(Routes.quiz)),
                       _Row(icon: HazriIconData.book, label: l.libraryTitle, onTap: () => go(Routes.library)),
+                      // Owner, 2026-11-18: the calendar has its own row, after Vichar.
+                      _Row(icon: HazriIconData.calendar, label: l.gurpurabTitle, onTap: () => go(Routes.gurpurab)),
                       _Row(icon: HazriIconData.sparkle, label: l.badgesTitle, onTap: () => go(Routes.badges)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

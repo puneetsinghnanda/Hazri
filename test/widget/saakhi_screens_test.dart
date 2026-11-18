@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hazri/app/menu_sheet.dart';
+import 'package:hazri/features/gurpurab/ui/gurpurab_screen.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/core/theme/hazri_theme.dart';
 import 'package:hazri/features/saakhi/ui/saakhi_library_screen.dart';
@@ -28,6 +29,7 @@ void main() {
       routes: [
         GoRoute(path: '/today', builder: (_, _) => const TodayScreen()),
         GoRoute(path: '/saakhis', builder: (_, _) => const SaakhiLibraryScreen()),
+        GoRoute(path: '/gurpurab', builder: (_, _) => const GurpurabScreen()),
         GoRoute(
           path: '/saakhis/:id',
           builder: (_, s) => SaakhiReaderScreen(id: s.pathParameters['id']!),
@@ -130,6 +132,17 @@ void main() {
     await tester.tap(find.text(l.saakhiTitle).last);
     await settle(tester);
     expect(find.byType(SaakhiLibraryScreen), findsOneWidget);
+  });
+
+  testWidgets('the menu has Gurpurab calendar after Vichar, and it opens the calendar (owner, 2026-11-18)', (tester) async {
+    final l = await pumpAt(tester, '/today');
+    await tester.tap(find.byTooltip(l.menuTooltip).first);
+    await settle(tester);
+    final row = find.text(l.gurpurabTitle).last;
+    expect(tester.getTopLeft(row).dy, greaterThan(tester.getTopLeft(find.text(l.libraryTitle).last).dy));
+    await tester.tap(row);
+    await settle(tester);
+    expect(find.byType(GurpurabScreen), findsOneWidget);
   });
 
   test('showMenuDrawer is what every tab opens', () => expect(showMenuDrawer, isNotNull));

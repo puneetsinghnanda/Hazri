@@ -35,7 +35,7 @@ QUIZ_BANK_OUT = os.path.join(ROOT, "functions", "src", "quiz-bank.json")
 # The order Today's row and the library show them in (owner, 2026-10-25).
 SAAKHI_ORDER = ["bhai-lalo-malik-bhago", "anand-bhaya-meri-maaye", "why-was-the-hut-broken", "the-saint-soldier"]
 
-CONTENT_VERSION = 11
+CONTENT_VERSION = 12
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -112,7 +112,7 @@ CREATE TABLE calendar_event(
   id TEXT PRIMARY KEY, ns_year INTEGER NOT NULL, date TEXT NOT NULL, kind TEXT NOT NULL,
   name_en TEXT NOT NULL, name_pa TEXT, name_hi TEXT,
   ns_label TEXT, default_remind INTEGER NOT NULL DEFAULT 1,
-  supplementary INTEGER NOT NULL DEFAULT 0);
+  supplementary INTEGER NOT NULL DEFAULT 0, vichar_slug TEXT);
 CREATE INDEX calendar_event_date ON calendar_event(date);
 
 CREATE TABLE city(
@@ -686,6 +686,18 @@ def build_calendar(con: sqlite3.Connection, report: dict) -> None:
     pa_for = {(n["date"], n["en"]): n["pa"] for n in names["names"]}
     seen = set()
 
+    # The Vichar page that tells each event's story (content version 12,
+    # owner 2026-11-18): Today's calendar card opens it. Taken from the
+    # `events` each article in tools/site/articles/ names, by English name,
+    # so it is exact rather than guessed from the date.
+    vichar_for: dict[str, str] = {}
+    for path in sorted(os.listdir(ARTICLES_DIR)):
+        if path.endswith(".json"):
+            with open(os.path.join(ARTICLES_DIR, path), encoding="utf-8") as fh:
+                for a in json.load(fh):
+                    for name in a.get("events", []):
+                        vichar_for[name] = a["slug"]
+
     for i, ev in enumerate(doc["events"]):
         key = (ev["date"], ev["en"])
         pa = pa_for.get(key)
@@ -694,10 +706,10 @@ def build_calendar(con: sqlite3.Connection, report: dict) -> None:
         day_s, month_name, ns_year = ev["nanakshahi"].split()
         con.execute(
             "INSERT INTO calendar_event(id,ns_year,date,kind,name_en,name_pa,name_hi,"
-            "ns_label,default_remind,supplementary) VALUES(?,?,?,?,?,?,?,?,?,?)",
+            "ns_label,default_remind,supplementary,vichar_slug) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
             (f"ev{i:03d}", int(ns_year), ev["date"], ev["type"], ev["en"], pa, None,
              ev["nanakshahi"], 1 if ev.get("remind") else 0,
-             1 if ev.get("supplementary") else 0))
+             1 if ev.get("supplementary") else 0, vichar_for.get(ev["en"])))
 
     unused = sorted(set(pa_for) - seen)
     if unused:

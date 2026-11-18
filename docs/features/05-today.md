@@ -46,7 +46,7 @@ call to action does not know about goals.
 | 4 | Streak card | When the hazri streak is 2 days or more | T12 |
 | 5 | Set Goal card, or the goal widget | Always, one or the other | `04-goals.md` §7.1 |
 | 6 | Call to action | When `content.db` has a bani to offer | T4 |
-| 7 | Sikh calendar card: the next event within a week, else the Gurpurab calendar and today's Nanakshahi date | Always; not in elder mode (T5) | unchanged |
+| 7 | Sikh calendar card: the next event within a week, else the Gurpurab calendar and today's Nanakshahi date. Tapping an event opens its Vichar page (`calendar_event.vichar_slug`); with no event, or none for it, the calendar (owner, 2026-11-18). The calendar also has its own row in the menu, after Vichar | Always; not in elder mode (T5) | 2026-11-18 |
 | 8 | Gurmat Quiz: the calendar leaf, "Did you know?" (1A, no buttons) | When `content.db` has quiz topics; in elder mode too | `14-quiz.md` QZ9 |
 | 9 | Vichar card (ਅੱਜ ਦਾ ਵਿਚਾਰ) | When the dataset has a line for the date; not in elder mode (T5) | T6 |
 | 10 | Gurmat Quiz: the quiz card (D) | When `content.db` has quiz topics; in elder mode too | `14-quiz.md` QZ9, QZ12 |

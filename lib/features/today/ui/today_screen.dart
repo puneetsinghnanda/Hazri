@@ -586,8 +586,11 @@ class _GurpurabCard extends ConsumerWidget {
           };
     final name = next?.nameFor(lang);
 
+    // The event opens the Vichar page that tells its story (owner,
+    // 2026-11-18); with no event this week, or none for it, the calendar.
+    final slug = next?.vicharSlug;
     return HazriCard(
-      onTap: () => context.push(Routes.gurpurab),
+      onTap: () => context.push(slug != null ? Routes.libraryEntry(slug) : Routes.gurpurab),
       child: Row(
         children: [
           Container(
