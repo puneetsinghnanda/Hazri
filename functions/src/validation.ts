@@ -76,7 +76,8 @@ export function emailHashOf(emailNormalized: string): string {
 
 export interface ProfileInput {
   name: string;
-  email: string;
+  /** Optional since 2026-11-18 (owner): null when none was typed. */
+  email: string | null;
   phone: string | null;
   cityId: string;
 }
@@ -90,10 +91,12 @@ export function validateProfileInput(body: Record<string, unknown>): { value: Pr
   const fields: Record<string, string> = {};
   const n = validateName(name);
   if (n) fields.name = n;
-  const e = validateEmail(email);
+  // An email is optional (owner, 2026-11-18): empty is no email, anything
+  // typed must still be a real address.
+  const e = email === '' ? null : validateEmail(email);
   if (e) fields.email = e;
   const c = validateCityId(cityId);
   if (c) fields.cityId = c;
   if (Object.keys(fields).length > 0) return { fields };
-  return { value: { name, email, phone, cityId } };
+  return { value: { name, email: email === '' ? null : email, phone, cityId } };
 }

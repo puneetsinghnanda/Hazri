@@ -95,4 +95,15 @@ describe('POST /profile body', () => {
     const r = validateProfileInput({ name: ' Harpreet  Kaur ', email: ' Harpreet@Example.com ', phone: '98765 43210', cityId: 'amritsar', extra: 1 });
     expect(r).toEqual({ value: { name: 'Harpreet Kaur', email: 'Harpreet@Example.com', phone: '9876543210', cityId: 'amritsar' } });
   });
+  it('takes no email as no email (optional since 2026-11-18), but still refuses a wrong one', () => {
+    expect(validateProfileInput({ name: 'Harpreet Kaur', cityId: 'amritsar' })).toEqual({
+      value: { name: 'Harpreet Kaur', email: null, phone: null, cityId: 'amritsar' },
+    });
+    expect(validateProfileInput({ name: 'Harpreet Kaur', email: '  ', cityId: 'amritsar' })).toEqual({
+      value: { name: 'Harpreet Kaur', email: null, phone: null, cityId: 'amritsar' },
+    });
+    expect(validateProfileInput({ name: 'Harpreet Kaur', email: 'nope', cityId: 'amritsar' })).toEqual({
+      fields: { email: MESSAGES.emailInvalid },
+    });
+  });
 });

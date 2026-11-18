@@ -1515,7 +1515,36 @@
   "profileBannerSubtitle": "Add your name and email to personalise the app.",
   "profileSetupTitle": "Set up profile",
   "profileFieldName": "Name *",
-  "profileFieldEmail": "Email *",
+  "profileFieldEmail": "Email (optional)",
+  "profileNoEmail": "No email yet",
+  "profileAddEmail": "Add email",
+  "profileNoEmailHint": "Add an email to keep your diary safe and bring it back on a new phone.",
+  "setupProfileTitle": "Make your Hazri card",
+  "setupProfileLead": "Your name and city put you on the globe with the sangat. An email keeps your diary safe, if you add one.",
+  "setupProfileCreate": "Create my profile",
+  "setupProfileKept": "No connection. Your details are kept on this phone, and your profile is made when you are back online.",
+  "cardYourName": "Your name",
+  "cardYourCity": "Your city",
+  "cardYourEmail": "Your email",
+  "profileMadeTitle": "Welcome, {name}",
+  "@profileMadeTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileMadeConfirmBody": "Your profile is made. Would you like to confirm {email}? It is optional, and you can do it later from your profile.",
+  "@profileMadeConfirmBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "profileMadeNoEmailBody": "Your profile is made. You can add an email any time from your profile, to keep your diary safe.",
+  "profileMadeLater": "Later, go to Today",
+  "profileMadeToday": "Go to Today",
   "profileFieldPhone": "Phone (optional)",
   "profileFieldCity": "City *",
   "profileSave": "Save Profile",
@@ -1662,7 +1691,7 @@
   "privacyPhoneSignIn": "An anonymous sign-in when the app starts: an install number, never a name",
   "privacyPhoneOther": "Your badges, the saakhis you heart, and quizzes you play without a profile",
   "privacyWithProfile": "If you make a profile",
-  "privacyProfileDetails": "Your name, email and city, and your phone number if you give it",
+  "privacyProfileDetails": "Your name and city, and your email and phone number if you give them",
   "privacyProfileMail": "Emails only to that address: to confirm it, and to bring your profile back on a new phone",
   "privacyProfileAttendance": "Once a day, that you opened the app — which is how your city shows on the globe",
   "privacyProfileBackup": "A weekly backup of your goals, what you recited, your simran and your badges, so a restore can bring them back",

@@ -60,7 +60,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     setState(() => _sending = true);
     try {
       final cooldown = await ref.read(profileApiProvider).sendVerification();
-      if (mounted) await _push(Routes.emailSent, extra: EmailSentArgs(EmailPurpose.verifyEmail, p.email, cooldown));
+      if (mounted) await _push(Routes.emailSent, extra: EmailSentArgs(EmailPurpose.verifyEmail, p.email ?? '', cooldown));
     } on ApiException catch (e) {
       if (!mounted) return;
       switch (e.code) {
@@ -273,19 +273,23 @@ class _IdentityCard extends ConsumerWidget {
                   iconLine(HazriIconData.pin, Text(city == null ? profile.cityId : cityName(city, lang), style: line)),
                   iconLine(
                     HazriIconData.mail,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: profile.email),
-                          const TextSpan(text: '  '),
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: _EmailMark(verified: profile.emailVerified),
+                    profile.email == null
+                        // No email (optional since 2026-11-18): say so, and
+                        // offer to add one below.
+                        ? Text(l.profileNoEmail, style: line.copyWith(color: white.withValues(alpha: 0.7)))
+                        : Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(text: profile.email),
+                                const TextSpan(text: '  '),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: _EmailMark(verified: profile.emailVerified),
+                                ),
+                              ],
+                            ),
+                            style: line,
                           ),
-                        ],
-                      ),
-                      style: line,
-                    ),
                   ),
                   if (profile.pendingEmail != null)
                     Padding(
@@ -297,7 +301,19 @@ class _IdentityCard extends ConsumerWidget {
                     ),
                   // §8.7: an unverified email can be confirmed or corrected
                   // from here; a verified one is changed in Edit profile.
-                  if (!profile.emailVerified) ...[
+                  if (profile.email == null) ...[
+                    const SizedBox(height: 12),
+                    Text(l.profileNoEmailHint, style: HazriText.caption.copyWith(fontSize: 12.5, color: white.withValues(alpha: 0.8))),
+                    const SizedBox(height: 8),
+                    PrimaryButton(
+                      label: l.profileAddEmail,
+                      expanded: false,
+                      minHeight: 44,
+                      background: white,
+                      foreground: const Color(0xFF262C63),
+                      onPressed: () => showChangeEmailDialog(context),
+                    ),
+                  ] else if (!profile.emailVerified) ...[
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,

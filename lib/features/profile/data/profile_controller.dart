@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/backend/api_exception.dart';
 import '../../../core/backend/auth_service.dart';
@@ -36,6 +38,22 @@ class ProfileUnavailable extends ProfileState {
   const ProfileUnavailable();
 }
 
+/// What [ProfileController.create] did: made the profile, or, with no
+/// connection, kept the details on the phone to send at the next start
+/// (03-first-run F10, 2026-11-18).
+sealed class CreateOutcome {
+  const CreateOutcome();
+}
+
+class ProfileCreated extends CreateOutcome {
+  const ProfileCreated(this.profile);
+  final Profile profile;
+}
+
+class ProfileKept extends CreateOutcome {
+  const ProfileKept();
+}
+
 final profileCacheProvider =
     Provider<ProfileCache>((ref) => ProfileCache(ref.watch(sharedPreferencesProvider)));
 
@@ -57,6 +75,7 @@ class ProfileController extends Notifier<ProfileState> {
   AuthService get _auth => ref.read(authServiceProvider);
   ProfileCache get _cache => ref.read(profileCacheProvider);
   ProfileApi get _api => ref.read(profileApiProvider);
+  SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
 
   @override
   ProfileState build() {
@@ -80,6 +99,47 @@ class ProfileController extends Notifier<ProfileState> {
     if (cached != null) state = ProfileLoaded(cached, isStale: true);
     // 3. The server.
     await refresh();
+    // 4. Details kept while offline at first run (F10) are sent now.
+    if (state is ProfileNone) await _submitPending();
+  }
+
+  /// Details typed with no connection, waiting to be sent (F10).
+  static const kPending = 'pending_profile_v1';
+
+  /// POST /profile, or, with no connection, keep the details to send at the
+  /// next start (F10). An [ApiException] (a wrong field, an email that exists)
+  /// is left to the caller.
+  Future<CreateOutcome> create({required String name, String? email, String? phone, required String cityId}) async {
+    try {
+      final p = await _api.create(name: name, email: email, phone: phone, cityId: cityId);
+      await _prefs.remove(kPending);
+      await setProfile(p);
+      return ProfileCreated(p);
+    } on NetworkException {
+      await _prefs.setString(kPending, jsonEncode({'name': name, 'email': email, 'phone': phone, 'cityId': cityId}));
+      return const ProfileKept();
+    }
+  }
+
+  Future<void> _submitPending() async {
+    final raw = _prefs.getString(kPending);
+    if (raw == null) return;
+    final j = jsonDecode(raw) as Map<String, Object?>;
+    try {
+      await create(
+        name: j['name']! as String,
+        email: j['email'] as String?,
+        phone: j['phone'] as String?,
+        cityId: j['cityId']! as String,
+      );
+    } on ApiException catch (e) {
+      // The details were refused (an email already in use, say): drop them,
+      // and the Profile banner offers setup as for anybody without one.
+      debugPrint('Hazri: the kept profile was refused (${e.code})');
+      await _prefs.remove(kPending);
+    } on Object catch (e) {
+      debugPrint('Hazri: the kept profile could not be sent ($e)');
+    }
   }
 
   /// GET /profile with the rules of §8.3 step 3. Only the newest answer

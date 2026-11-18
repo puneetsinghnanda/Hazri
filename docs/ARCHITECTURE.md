@@ -895,6 +895,8 @@ profileId = Firestore auto-generated ID.
 | emailQuota.windowStartAt | timestamp | yes      | Start of current 24 h window                  |
 | emailQuota.countInWindow | number    | no       | 0 on create                                   |
 
+*Amended 2026-11-18 (owner): a profile's `email` and `emailNormalized` may be **null** (an email is optional, `01-accounts.md` §5). Such a profile has no `emailIndex` entry; POST /profile/verification-email answers `409 NO_EMAIL`; restore by email cannot find it; and PATCH /profile/email adds one along the unverified path. `ProfileDto.email` is nullable.*
+
 #### 01-accounts §4.2 emailIndex/{emailHash}
 
 Guarantees one profile per email. emailHash = lowercase hex SHA-256 of emailNormalized.

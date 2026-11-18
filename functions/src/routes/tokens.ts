@@ -83,7 +83,7 @@ export function tokensRouter(deps: Deps): Router {
           if (expired) throw tokenExpired(purpose);
           if (!p.pendingEmailNormalized || p.pendingEmailNormalized !== tok.emailNormalized) throw tokenInvalid(purpose);
           const others = (await activeTokens(db, tx, p.profileId)).filter((d) => d.id !== tokenRef.id);
-          tx.delete(db.doc(`emailIndex/${emailHashOf(p.emailNormalized)}`));
+          if (p.emailNormalized !== null) tx.delete(db.doc(`emailIndex/${emailHashOf(p.emailNormalized)}`));
           tx.set(db.doc(`emailIndex/${emailHashOf(tok.emailNormalized)}`), { profileId: p.profileId, createdAt: now });
           tx.update(profileRef, {
             email: p.pendingEmail,

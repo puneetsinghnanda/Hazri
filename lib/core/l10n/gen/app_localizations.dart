@@ -4920,8 +4920,98 @@ abstract class L {
   /// No description provided for @profileFieldEmail.
   ///
   /// In en, this message translates to:
-  /// **'Email *'**
+  /// **'Email (optional)'**
   String get profileFieldEmail;
+
+  /// No description provided for @profileNoEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'No email yet'**
+  String get profileNoEmail;
+
+  /// No description provided for @profileAddEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Add email'**
+  String get profileAddEmail;
+
+  /// No description provided for @profileNoEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an email to keep your diary safe and bring it back on a new phone.'**
+  String get profileNoEmailHint;
+
+  /// No description provided for @setupProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Make your Hazri card'**
+  String get setupProfileTitle;
+
+  /// No description provided for @setupProfileLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name and city put you on the globe with the sangat. An email keeps your diary safe, if you add one.'**
+  String get setupProfileLead;
+
+  /// No description provided for @setupProfileCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create my profile'**
+  String get setupProfileCreate;
+
+  /// No description provided for @setupProfileKept.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection. Your details are kept on this phone, and your profile is made when you are back online.'**
+  String get setupProfileKept;
+
+  /// No description provided for @cardYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get cardYourName;
+
+  /// No description provided for @cardYourCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Your city'**
+  String get cardYourCity;
+
+  /// No description provided for @cardYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email'**
+  String get cardYourEmail;
+
+  /// No description provided for @profileMadeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {name}'**
+  String profileMadeTitle(String name);
+
+  /// No description provided for @profileMadeConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is made. Would you like to confirm {email}? It is optional, and you can do it later from your profile.'**
+  String profileMadeConfirmBody(String email);
+
+  /// No description provided for @profileMadeNoEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is made. You can add an email any time from your profile, to keep your diary safe.'**
+  String get profileMadeNoEmailBody;
+
+  /// No description provided for @profileMadeLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later, go to Today'**
+  String get profileMadeLater;
+
+  /// No description provided for @profileMadeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Today'**
+  String get profileMadeToday;
 
   /// No description provided for @profileFieldPhone.
   ///
@@ -5424,7 +5514,7 @@ abstract class L {
   /// No description provided for @privacyProfileDetails.
   ///
   /// In en, this message translates to:
-  /// **'Your name, email and city, and your phone number if you give it'**
+  /// **'Your name and city, and your email and phone number if you give them'**
   String get privacyProfileDetails;
 
   /// No description provided for @privacyProfileMail.

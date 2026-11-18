@@ -76,7 +76,7 @@ Around it:
 - **Badges** for days kept, never points.
 - **Notifications** at Amrit Vela, for each goal, for Gurpurabs and Sikh
   events, and for the Sangat.
-- **An optional profile** — name, email, city — that puts the reader on the
+- **An optional profile** — name, city and, if given, email — offered as the last step of setup, that puts the reader on the
   globe, lets them create groups, and keeps a weekly backup they can restore
   on a new phone. There is never a password or a sign-in screen.
 - **ਅੱਜ ਦਾ ਵਿਚਾਰ**, one line of Gurbani a day, and the **Gurpurab and
@@ -999,7 +999,7 @@ sends nothing without a profile. The closed list for Phase 2:
 | What | When | Sent |
 |---|---|---|
 | Anonymous sign-in | At launch | An install id, by Firebase Auth |
-| **A profile** | Only when the reader makes one | Name, email, city (from the list), phone if given; verification and restore mail to that email |
+| **A profile** | Only when the reader makes one (offered as the last step of setup, with Not now, since 2026-11-18) | Name and city (from the list); email and phone if given (email optional since 2026-11-18); verification and restore mail to that email |
 | **Attendance** | Once a day, with a profile | That the profile opened the app on that IST day |
 | **Weekly backup** | With a profile | Goals, goal items, completions, sittings, earned badges |
 | **Sangat contributions** | For a member of a group | Each paath or sitting that could count, from the outbox |
@@ -1532,6 +1532,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
+| `130-SetupProfile` | Setup, your profile | **new** | Option C, chosen 18 Nov: the Hazri card filling in as you type, then name, city and an optional email; Not now. 03-first-run.md F10 |
+| `131-ProfileMade` | Welcome, after a profile is made | **new** | Confirm my email or Later; without an email, Go to Today. Replaces the Profile Saved dialog. 03-first-run.md F10, 01-accounts.md 8.6 |
 | `100-Profile` | Your profile, identity card and badge shelf | **new** | Option D: identity card and badge shelf (owner, 2026-10-10). Name, city, verified email and three figures on a navy card; all ten badges on two shelves, See all opens 96; Edit profile and Back up now. 01-accounts.md 8.7, 12-badges.md UI5 |
 | `101-EditProfile` | Edit profile | **new** | Option C: outlined fields with sunrise preview (owner, 2026-10-10). Today in the chosen city with sunrise and sunset, then Name, City and Email with Change email in the card; Save changes. 01-accounts.md 13.8 |
 | `37-SettingsMenu` | Menu | superseded | Replaced by 99 |

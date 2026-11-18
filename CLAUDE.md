@@ -42,7 +42,8 @@ git history and is not a reference.
    `INTERNET` is removed from the merged manifest. **Phase 2 restores
    `INTERNET`** and adds Firebase. What it may then send is a closed list,
    each item named by a feature file (PRD §8): the anonymous sign-in; **a
-   profile the person chooses to make** (name, email, city, phone if given)
+   profile the person chooses to make** (name and city; email and phone if
+   given; offered as the last step of setup with Not now since 2026-11-18)
    with its verification and restore mail; with a profile, the **daily
    attendance mark** and the **weekly backup**; for a Sangat member, their
    paath toward their groups and an FCM token; with a profile, a **Gurmat
@@ -225,6 +226,7 @@ each:
 | Vichar library (2026-11-09) | 122 | Option 1, from the owner's mock-up: the dawn header with ੴ, search, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis), each entry an article card with a kind-and-date pill, headline, three lines, minutes and a picture by kind of day from `assets/vichar/` (replaces 43, `docs/vichar-content.md` Library) |
 | Simran counts (2026-11-09) | 123, 124 | Option C of four: live today and here today as two figures, green and blue (here today keeps its meaning, everyone counted who has not opened the app today); during a sitting both stay, smaller, either side of the countdown (`07-simran.md` CT3; replace 88 and 89) |
 | Live sangat (2026-11-17, 2026-11-18) | 125-129 | **Designed, not built.** The Sangat tab as two tabs, Discover first and My groups (the default once you are in a group, with Create and Join at the top); three live groups (Naam Simran, Mool Mantar, Chaupai Sahib) as option B's tall cards with their own scenes (the globe, ੴ among the stars, the jot in the shield, drawn by `tools/design/live_scenes.js`); the live page option A with the group in a sheet; a sitting option D (`15-live-sangat.md`; replace 102) |
+| First-run profile (2026-11-18) | 130, 131 | Option C of four: the profile is the last step of setup, Make your Hazri card, the identity card filling in as you type, email optional, Not now; Welcome, {name} after it (`03-first-run.md` F10) |
 | Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A, with Know more and Take the quiz since 2026-11-18 (option B), and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
@@ -485,7 +487,8 @@ is true of the code now, then what is live, then what is still open.
   creator, a group ending) are sent by the `sangatDispatch` Function. A badge
   or a met goal is an in-app sheet, never a notification.
 - **Profile** (step 4): anonymous sign-in, Setup / Profile / Edit / Email
-  sent / Link result, `/verify` links through the router's redirect, the
+  sent / Link result; **the email is optional since 2026-11-18** (`01-accounts.md`
+  §5: no email, no index, `409 NO_EMAIL` to confirm, Add email later), `/verify` links through the router's redirect, the
   profile's city as the only city (without a profile, sunrise times fall
   back to fixed ones). Verification and restore mail is sent by the `api`
   Function through **Brevo** (`BREVO_API_KEY` is a Functions secret, never
@@ -554,8 +557,12 @@ is true of the code now, then what is live, then what is still open.
   after the Sangat facts and silently after a restore; the sheet waits until
   a tab is showing and never interrupts a sitting (UI7). Badge names live in
   `BadgeId` as proper nouns by script; everything else is in the ARB files.
-- **First run** (step 10): Android's splash, Welcome, Language, How you read;
-  `/` is a redirect, not a screen.
+- **First run** (step 10): Android's splash, Welcome, Language, How you read
+  and, since 2026-11-18, **your profile** (`03-first-run.md` F10, design 130):
+  the Hazri card filling in as you type, name, city and an optional email,
+  Not now; then Welcome, {name} (design 131). With no connection the details
+  are kept (`pending_profile_v1`) and sent at the next start. `/` is a
+  redirect, not a screen.
 - **Saakhis** (`13-saakhi.md`, built 2026-10-25): four saakhis on the phone,
   `content.db` table `saakhi` (content version 9) from
   `content/source/saakhi/*.json` (content version 11 adds the owner's

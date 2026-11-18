@@ -17,8 +17,8 @@ import 'city_field.dart';
 import 'email_sent_screen.dart';
 import 'messages.dart';
 
-/// Profile Setup (`01-accounts.md` §8.5): Name, Email, Phone, City and Save
-/// Profile.
+/// Profile Setup (`01-accounts.md` §8.5): Name, Email (optional since
+/// 2026-11-18), Phone, City and Save Profile.
 class ProfileSetupScreen extends ConsumerStatefulWidget {
   const ProfileSetupScreen({super.key});
 
@@ -63,12 +63,14 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
     try {
       final p = await ref.read(profileApiProvider).create(
             name: normalizeName(_name.text),
-            email: normalizeEmail(_email.text),
+            // Optional since 2026-11-18: nothing typed sends no email.
+            email: normalizeEmail(_email.text).isEmpty ? null : normalizeEmail(_email.text),
             phone: normalizePhone(_phone.text),
             cityId: _cityId!,
           );
       await ref.read(profileControllerProvider.notifier).setProfile(p);
-      if (mounted) await showProfileSavedDialog(context, p);
+      // §8.6 as amended (2026-11-18): the Welcome screen, design 131.
+      if (mounted) context.go(Routes.profileMade);
     } on ApiException catch (e) {
       if (!mounted) return;
       setState(() => _busy = false);
@@ -94,10 +96,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
     }
   }
 
-  Future<void> _showEmailExists(String email) => showDialog<void>(
-        context: context,
-        builder: (_) => _EmailExistsDialog(email: email),
-      );
+  Future<void> _showEmailExists(String email) => showEmailExistsDialog(context, email);
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +134,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 decoration: InputDecoration(labelText: l.profileFieldEmail),
-                validator: (v) => fieldError('email', validateEmail, v ?? ''),
+                validator: (v) => normalizeEmail(v ?? '').isEmpty ? null : fieldError('email', validateEmail, v ?? ''),
                 onChanged: (_) => _serverErrors.containsKey('email')
                     ? setState(() => _serverErrors = {..._serverErrors}..remove('email'))
                     : null,
@@ -185,83 +184,13 @@ class _BusyButton extends StatelessWidget {
       : PrimaryButton(label: label, onPressed: onPressed);
 }
 
-/// §8.6. Not dismissible by tapping outside.
-Future<void> showProfileSavedDialog(BuildContext context, Profile p) => showDialog<void>(
+/// §8.8: the email is already a profile's; offer to restore it by email.
+/// Also used by setup's profile step (03-first-run F10).
+Future<void> showEmailExistsDialog(BuildContext context, String email) => showDialog<void>(
       context: context,
-      barrierDismissible: false,
-      builder: (_) => _ProfileSavedDialog(profile: p),
+      builder: (_) => _EmailExistsDialog(email: email),
     );
 
-class _ProfileSavedDialog extends ConsumerStatefulWidget {
-  const _ProfileSavedDialog({required this.profile});
-
-  final Profile profile;
-
-  @override
-  ConsumerState<_ProfileSavedDialog> createState() => _ProfileSavedDialogState();
-}
-
-class _ProfileSavedDialogState extends ConsumerState<_ProfileSavedDialog> {
-  bool _busy = false;
-
-  late final GoRouter _router = GoRouter.of(context);
-
-  void _home() {
-    Navigator.of(context).pop();
-    _router.go(Routes.today);
-  }
-
-  Future<void> _confirm() async {
-    final l = L.of(context);
-    final router = _router;
-    setState(() => _busy = true);
-    try {
-      final cooldown = await ref.read(profileApiProvider).sendVerification();
-      if (!mounted) return;
-      Navigator.of(context).pop();
-      router.pushReplacement(
-        Routes.emailSent,
-        extra: EmailSentArgs(EmailPurpose.verifyEmail, widget.profile.email, cooldown),
-      );
-    } on ApiException catch (e) {
-      if (!mounted) return;
-      if (e.code == 'EMAIL_ALREADY_VERIFIED') {
-        await ref.read(profileControllerProvider.notifier).refresh();
-        if (mounted) _home();
-      } else if (e.code == 'RATE_LIMITED') {
-        setState(() => _busy = false);
-        ProfileMessages.snack(context, ProfileMessages.of(l, e));
-      } else {
-        ProfileMessages.snack(context, e.code == 'EMAIL_NOT_CONFIGURED' ? l.msgEmailNotConfigured : l.profileSendFailed);
-        _home();
-      }
-    } on NetworkException {
-      if (!mounted) return;
-      ProfileMessages.snack(context, l.profileSendFailed);
-      _home();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l = L.of(context);
-    return AlertDialog(
-      title: Text(l.profileSavedTitle),
-      content: Text(l.profileSavedBody(widget.profile.email)),
-      actions: [
-        TextButton(onPressed: _busy ? null : _home, child: Text(l.profileSkipForNow)),
-        _busy
-            ? const Padding(
-                padding: EdgeInsets.all(12),
-                child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
-              )
-            : TextButton(onPressed: _confirm, child: Text(l.profileConfirmEmail)),
-      ],
-    );
-  }
-}
-
-/// §8.8: the email belongs to a profile; offer to restore it here.
 class _EmailExistsDialog extends ConsumerStatefulWidget {
   const _EmailExistsDialog({required this.email});
 

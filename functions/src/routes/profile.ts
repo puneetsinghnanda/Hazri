@@ -112,17 +112,18 @@ export function profileRouter(deps: Deps): Router {
       const v = validateProfileInput(bodyOf(req));
       if ('fields' in v) throw Errors.validation(v.fields);
       const { name, email, phone, cityId } = v.value;
-      const emailNormalized = emailNormalizedOf(email);
-      const emailHash = emailHashOf(emailNormalized);
+      // With no email there is nothing to index, verify or restore by.
+      const emailNormalized = email === null ? null : emailNormalizedOf(email);
+      const emailHash = emailNormalized === null ? null : emailHashOf(emailNormalized);
       const profileRef = db.collection('profiles').doc();
       await db.runTransaction(async (tx) => {
         const ownerSnap = await tx.get(db.doc(`owners/${uid}`));
-        const indexSnap = await tx.get(db.doc(`emailIndex/${emailHash}`));
+        const indexSnap = emailHash === null ? null : await tx.get(db.doc(`emailIndex/${emailHash}`));
         const adoption = await readAdoption(db, tx, uid, profileRef.id);
         if (ownerSnap.exists) {
           throw new ApiError(409, 'PROFILE_ALREADY_EXISTS', 'A profile already exists on this device');
         }
-        if (indexSnap.exists) throw new ApiError(409, 'EMAIL_EXISTS', 'An account with this email already exists');
+        if (indexSnap?.exists) throw new ApiError(409, 'EMAIL_EXISTS', 'An account with this email already exists');
         const now = FieldValue.serverTimestamp();
         tx.create(profileRef, {
           profileId: profileRef.id,
@@ -142,7 +143,7 @@ export function profileRouter(deps: Deps): Router {
           pendingEmail: null,
           pendingEmailNormalized: null,
         });
-        tx.create(db.doc(`emailIndex/${emailHash}`), { profileId: profileRef.id, createdAt: now });
+        if (emailHash !== null) tx.create(db.doc(`emailIndex/${emailHash}`), { profileId: profileRef.id, createdAt: now });
         tx.create(db.doc(`owners/${uid}`), { profileId: profileRef.id, createdAt: now });
         if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, { name, cityId });
       });
@@ -199,6 +200,10 @@ export function profileRouter(deps: Deps): Router {
       let email = '';
       await db.runTransaction(async (tx) => {
         const p = await requireProfile(db, uid, tx);
+        if (p.doc.email === null || p.doc.emailNormalized === null) {
+          throw new ApiError(409, 'NO_EMAIL', 'This profile has no email; add one first');
+        }
+        const address = p.doc.email;
         if (p.doc.emailVerified) throw new ApiError(409, 'EMAIL_ALREADY_VERIFIED', 'Your email is already verified');
         const nowMs = clock.now().getTime();
         const quota = quotaOrThrow(p.doc, nowMs);
@@ -213,8 +218,8 @@ export function profileRouter(deps: Deps): Router {
           nowMs,
         });
         tx.update(p.ref, { emailQuota: quota, updatedAt: FieldValue.serverTimestamp() });
-        email = p.doc.email;
-        sent.q = queueMail(db, tx, p.doc.email, verifyEmailTemplate(p.doc.name, link, locale), {
+        email = address;
+        sent.q = queueMail(db, tx, address, verifyEmailTemplate(p.doc.name, link, locale), {
           template: '7.1-A',
           profileId: p.doc.profileId,
           locale,
@@ -247,7 +252,7 @@ export function profileRouter(deps: Deps): Router {
         const snap = await tx.get(profileRef);
         const p = snap.data() as ProfileDoc | undefined;
         // An address only reserved by a pending change (13.8) restores nothing.
-        if (!p || p.emailNormalized !== emailNormalized) {
+        if (!p || p.email === null || p.emailNormalized !== emailNormalized) {
           throw new ApiError(404, 'EMAIL_NOT_FOUND', 'No account found for this email');
         }
         const nowMs = clock.now().getTime();
@@ -310,8 +315,8 @@ export function profileRouter(deps: Deps): Router {
           if (newIndex.exists) throw new ApiError(409, 'EMAIL_EXISTS', 'An account with this email already exists');
           const quota = quotaOrThrow(p.doc, nowMs);
           const active = await activeTokens(db, tx, profileId);
-          // Writes.
-          tx.delete(db.doc(`emailIndex/${emailHashOf(p.doc.emailNormalized)}`));
+          // Writes. A profile made without an email gets its first here.
+          if (p.doc.emailNormalized !== null) tx.delete(db.doc(`emailIndex/${emailHashOf(p.doc.emailNormalized)}`));
           tx.create(newIndexRef, { profileId, createdAt: now });
           tx.update(p.ref, { email: typed, emailNormalized: newNorm, emailQuota: quota, updatedAt: now });
           for (const t of active) tx.update(t.ref, { status: 'SUPERSEDED' });

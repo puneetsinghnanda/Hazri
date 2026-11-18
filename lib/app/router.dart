@@ -37,6 +37,7 @@ import '../features/profile/ui/email_sent_screen.dart';
 import '../features/profile/ui/link_result_screen.dart';
 import '../features/profile/ui/profile_edit_screen.dart';
 import '../features/profile/ui/profile_screen.dart';
+import '../features/profile/ui/profile_made_screen.dart';
 import '../features/profile/ui/profile_setup_screen.dart';
 import '../features/sangat/ui/create_group_screen.dart';
 import '../features/sangat/ui/group_screen.dart';
@@ -97,6 +98,7 @@ abstract final class Routes {
   /// The profile (`01-accounts.md` §8, ARCHITECTURE §2.4).
   static const profile = '/profile';
   static const profileSetup = '/profile-setup';
+  static const profileMade = '/profile-made';
   static const profileEdit = '/profile-edit';
 
   /// `extra`: an `EmailSentArgs`.
@@ -241,6 +243,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: Routes.profile, builder: (_, _) => const ProfileScreen()),
       GoRoute(path: Routes.profileSetup, builder: (_, _) => const ProfileSetupScreen()),
+      GoRoute(path: Routes.profileMade, builder: (_, _) => const ProfileMadeScreen()),
       GoRoute(path: Routes.profileEdit, builder: (_, _) => const ProfileEditScreen()),
       GoRoute(
         path: Routes.emailSent,

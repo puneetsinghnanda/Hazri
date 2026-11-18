@@ -58,7 +58,8 @@ describe('authentication (§6.0, A2)', () => {
     const res = await request(app).post('/api/v1/profile').set('Authorization', 'Bearer anon').send({ name: 'A' });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('VALIDATION_ERROR');
-    expect(Object.keys(res.body.error.fields).sort()).toEqual(['cityId', 'email', 'name']);
+    // An email is optional since 2026-11-18, so only the name and the city fail.
+    expect(Object.keys(res.body.error.fields).sort()).toEqual(['cityId', 'name']);
   });
   it('an unexpected exception → 500 INTERNAL "Something went wrong" (A3)', async () => {
     // {} as Firestore has no .doc(): the route throws a TypeError.

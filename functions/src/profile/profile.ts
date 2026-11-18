@@ -11,8 +11,9 @@ export interface ProfileDoc {
   profileId: string;
   ownerUid: string;
   name: string;
-  email: string;
-  emailNormalized: string;
+  /** Null for a profile made without an email (2026-11-18). */
+  email: string | null;
+  emailNormalized: string | null;
   phone: string | null;
   cityId: string;
   lastSeenDay: string | null;
@@ -29,7 +30,7 @@ export interface ProfileDoc {
 export interface ProfileDto {
   profileId: string;
   name: string;
-  email: string;
+  email: string | null;
   phone: string | null;
   cityId: string;
   emailVerified: boolean;
@@ -43,7 +44,7 @@ export function profileDto(p: ProfileDoc): ProfileDto {
   return {
     profileId: p.profileId,
     name: p.name,
-    email: p.email,
+    email: p.email ?? null,
     phone: p.phone ?? null,
     cityId: p.cityId,
     emailVerified: p.emailVerified === true,

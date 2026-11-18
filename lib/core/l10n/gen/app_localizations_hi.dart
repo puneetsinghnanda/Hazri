@@ -2748,7 +2748,60 @@ class LHi extends L {
   String get profileFieldName => 'नाम *';
 
   @override
-  String get profileFieldEmail => 'ईमेल *';
+  String get profileFieldEmail => 'ईमेल (वैकल्पिक)';
+
+  @override
+  String get profileNoEmail => 'अभी कोई ईमेल नहीं';
+
+  @override
+  String get profileAddEmail => 'ईमेल जोड़ें';
+
+  @override
+  String get profileNoEmailHint =>
+      'ईमेल जोड़ें ताकि आपकी डायरी सुरक्षित रहे और नए फ़ोन पर वापस आ सके।';
+
+  @override
+  String get setupProfileTitle => 'अपना हाज़री कार्ड बनाएँ';
+
+  @override
+  String get setupProfileLead =>
+      'आपका नाम और शहर आपको संगत के साथ ग्लोब पर लाते हैं। ईमेल जोड़ें तो आपकी डायरी सुरक्षित रहती है।';
+
+  @override
+  String get setupProfileCreate => 'मेरी प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get setupProfileKept =>
+      'कनेक्शन नहीं है। आपके विवरण इस फ़ोन पर रखे गए हैं, और ऑनलाइन होते ही प्रोफ़ाइल बन जाएगी।';
+
+  @override
+  String get cardYourName => 'आपका नाम';
+
+  @override
+  String get cardYourCity => 'आपका शहर';
+
+  @override
+  String get cardYourEmail => 'आपका ईमेल';
+
+  @override
+  String profileMadeTitle(String name) {
+    return 'स्वागत है, $name';
+  }
+
+  @override
+  String profileMadeConfirmBody(String email) {
+    return 'आपकी प्रोफ़ाइल बन गई है। क्या आप $email की पुष्टि करना चाहेंगे? यह वैकल्पिक है, और बाद में प्रोफ़ाइल से भी हो सकता है।';
+  }
+
+  @override
+  String get profileMadeNoEmailBody =>
+      'आपकी प्रोफ़ाइल बन गई है। डायरी सुरक्षित रखने के लिए आप कभी भी प्रोफ़ाइल से ईमेल जोड़ सकते हैं।';
+
+  @override
+  String get profileMadeLater => 'बाद में, आज पर चलें';
+
+  @override
+  String get profileMadeToday => 'आज पर चलें';
 
   @override
   String get profileFieldPhone => 'फ़ोन (वैकल्पिक)';
@@ -3031,7 +3084,7 @@ class LHi extends L {
 
   @override
   String get privacyProfileDetails =>
-      'आपका नाम, ईमेल और शहर, और फ़ोन नंबर अगर आप देते हैं';
+      'आपका नाम और शहर, और ईमेल व फ़ोन नंबर अगर आप देते हैं';
 
   @override
   String get privacyProfileMail =>

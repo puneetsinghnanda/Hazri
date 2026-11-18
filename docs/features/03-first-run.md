@@ -51,13 +51,15 @@ Android system splash
   -> Welcome      (first run only)
   -> Language
   -> How you read
-  -> Today        (profile banner, Set Goal card; 3.5)
+  -> Your profile (Not now allowed; F10, since 2026-11-18)
+  -> Welcome, {name}  (only if a profile was made; design 131)
+  -> Today        (profile banner if none, Set Goal card; 3.5)
   -> Join screen  (only if an invite arrived; F7)
 ```
 
-Nothing else is part of setup. No profile, no city, no reminder and no
-Sangat. The one thing that appears outside these steps is Android's own
-notification prompt at launch (F5, F-5).
+Nothing else is part of setup. No reminder and no Sangat. The one thing that
+appears outside these steps is Android's own notification prompt at launch
+(F5, F-5).
 
 ## 3.4 The behaviour
 
@@ -109,9 +111,11 @@ owner (`01-accounts.md` §13.9).
 
 Then Today. That is the whole of setup, and it needs no network.
 
-**F3. The profile is never part of setup.** Today shows the greeting `Welcome`
-and the non-dismissible profile banner until a profile exists (`01-accounts.md`
-§8.4). Profile Setup is reached from that banner, the person icon on Today, the
+**F3. Superseded by F10 on 2026-11-18** (owner: "a lot of users are not
+creating their profile"): the profile is now the last step of setup, and
+**Not now** keeps it optional. For anybody who passes it, Today shows the
+greeting `Welcome` and the non-dismissible profile banner until a profile
+exists (`01-accounts.md` §8.4). Profile Setup is reached from that banner, the person icon on Today, the
 globe's banner (`07-simran.md` NP3) and Create in the Sangat (`08-sangat.md`
 CG1). Somebody reinstalling restores their profile from Profile Setup by email
 link, and is then offered the data restore (`10-backup.md` §8.3).
@@ -153,6 +157,33 @@ Gurmukhi at the standard size, and Settings has all of it.
 
 **F9. The reader reaches Gurbani in under 30 seconds.** The acceptance bar for
 the whole flow, and it is measurable.
+
+**F10. Your profile is the last step of setup** (owner, 2026-11-18, option C;
+design 130). After How you read, its Continue and its Skip both go on to it.
+"Make your Hazri card": the navy identity card of the Profile screen (design
+100) at the top, filling in as you type (`Your name`, `Your city`, `Your
+email` until each is filled), then Name, City and **Email (optional)** (the
+email became optional the same day, `01-accounts.md` §5). **Create my
+profile** makes it and ends setup on Today with **Welcome, {first name}** on
+top (design 131): with an email, Confirm my email or Later; without one, a
+line that an email can be added from the profile, and Go to Today. **Not
+now**, in the header, ends setup with no profile, as before. Three outcomes
+that are not success:
+
+- *No connection.* The details are kept on the phone (`pending_profile_v1`)
+  and setup ends on Today with a line that the profile is made when the phone
+  is back online; the next start sends them (`ProfileController`). Refused
+  then (an email already in use), they are dropped and the banner offers
+  setup as for anybody without a profile.
+- *The email is already a profile's* (somebody who used Hazri before). The
+  Email already registered dialog offers the restore link (`01-accounts.md`
+  §8.8); setup counts as done first, so the Email sent screen it opens is not
+  sent back to the start.
+- *A field is refused by the server.* Shown under its field, as on Profile
+  Setup.
+
+The profile is never required: reading, listening, the calendar and the diary
+need none (CLAUDE.md rule 4).
 
 ## 3.5 After setup
 

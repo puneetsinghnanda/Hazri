@@ -109,7 +109,7 @@ The same rules run in the app (lib/validation/validators.dart) and on the server
 | Field | Required | Normalize                                        | Valid when                                           | Error message (exact)                                                                      |
 |-------|----------|--------------------------------------------------|------------------------------------------------------|--------------------------------------------------------------------------------------------|
 | Name  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your name · Invalid: Name must be 2–50 letters (spaces, . ' - allowed) |
-| Email | Yes      | Trim (store); trim + lowercase (emailNormalized) | ≤ 254 characters and matches EMAIL_REGEX             | Empty: Please enter your email · Invalid: Please enter a valid email address               |
+| Email | No (since 2026-11-18) | Trim (store); trim + lowercase (emailNormalized); empty → null | Empty, or ≤ 254 characters and matches EMAIL_REGEX | Invalid: Please enter a valid email address |
 | Phone | No       | Remove every character that is not a digit, keeping a leading + if typed; empty → null | Always valid (§13 D2) | none |
 | City  | Yes      | Chosen from the app's city list (§13 D9)          | A known city ID                                      | Empty: Please choose your city                                                             |
 
@@ -133,6 +133,17 @@ Rules:
 - Length checks count Unicode code points after normalization.
 
 - Unknown JSON fields in request bodies are ignored.
+
+- **An email is optional** (owner, 2026-11-18, with the profile step in setup,
+  `03-first-run.md` F10). A profile made without one has `email` and
+  `emailNormalized` null and no `emailIndex` entry, so it cannot be confirmed
+  (POST /profile/verification-email answers `409 NO_EMAIL`) or restored by
+  email until one is added. Adding one is Change email (§8.11, PATCH
+  /profile/email), which for a profile with none is "Add email" and takes the
+  unverified path (§6.6): set at once, with a confirmation link. The Profile
+  screen says "No email yet" with the line `profileNoEmailHint` and Add email
+  (§8.7); Profile Setup labels the field "Email (optional)" (§8.5); and the
+  Profile Saved dialog of §8.6 is replaced by the Welcome screen (design 131).
 
 ## 6. Backend REST API
 

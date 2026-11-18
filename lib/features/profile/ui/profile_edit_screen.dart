@@ -206,10 +206,10 @@ class _EmailRow extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  profile.email,
+                  profile.email ?? l.profileNoEmail,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: HazriText.body.copyWith(fontSize: 15.5, color: c.ink),
+                  style: HazriText.body.copyWith(fontSize: 15.5, color: profile.email == null ? c.muted : c.ink),
                 ),
                 if (profile.pendingEmail != null)
                   Text(
@@ -240,7 +240,7 @@ class _EmailRow extends StatelessWidget {
                   child: Center(
                     widthFactor: 1,
                     child: Text(
-                      l.profileChangeEmail,
+                      profile.email == null ? l.profileAddEmail : l.profileChangeEmail,
                       style: HazriText.bodySmall.copyWith(
                         fontSize: 13.5,
                         fontWeight: FontWeight.w700,

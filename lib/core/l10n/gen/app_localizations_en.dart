@@ -2758,7 +2758,60 @@ class LEn extends L {
   String get profileFieldName => 'Name *';
 
   @override
-  String get profileFieldEmail => 'Email *';
+  String get profileFieldEmail => 'Email (optional)';
+
+  @override
+  String get profileNoEmail => 'No email yet';
+
+  @override
+  String get profileAddEmail => 'Add email';
+
+  @override
+  String get profileNoEmailHint =>
+      'Add an email to keep your diary safe and bring it back on a new phone.';
+
+  @override
+  String get setupProfileTitle => 'Make your Hazri card';
+
+  @override
+  String get setupProfileLead =>
+      'Your name and city put you on the globe with the sangat. An email keeps your diary safe, if you add one.';
+
+  @override
+  String get setupProfileCreate => 'Create my profile';
+
+  @override
+  String get setupProfileKept =>
+      'No connection. Your details are kept on this phone, and your profile is made when you are back online.';
+
+  @override
+  String get cardYourName => 'Your name';
+
+  @override
+  String get cardYourCity => 'Your city';
+
+  @override
+  String get cardYourEmail => 'Your email';
+
+  @override
+  String profileMadeTitle(String name) {
+    return 'Welcome, $name';
+  }
+
+  @override
+  String profileMadeConfirmBody(String email) {
+    return 'Your profile is made. Would you like to confirm $email? It is optional, and you can do it later from your profile.';
+  }
+
+  @override
+  String get profileMadeNoEmailBody =>
+      'Your profile is made. You can add an email any time from your profile, to keep your diary safe.';
+
+  @override
+  String get profileMadeLater => 'Later, go to Today';
+
+  @override
+  String get profileMadeToday => 'Go to Today';
 
   @override
   String get profileFieldPhone => 'Phone (optional)';
@@ -3041,7 +3094,7 @@ class LEn extends L {
 
   @override
   String get privacyProfileDetails =>
-      'Your name, email and city, and your phone number if you give it';
+      'Your name and city, and your email and phone number if you give them';
 
   @override
   String get privacyProfileMail =>

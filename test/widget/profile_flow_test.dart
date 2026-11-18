@@ -42,7 +42,8 @@ void main() {
       await tester.tap(find.text(l.profileSave));
       await settle(tester);
       expect(find.text(l.profileErrNameEmpty), findsOneWidget);
-      expect(find.text(l.profileErrEmailEmpty), findsOneWidget);
+      // An email is optional since 2026-11-18: an empty one is not an error.
+      expect(find.text(l.profileErrEmailEmpty), findsNothing);
       expect(find.text(l.profileErrCityEmpty), findsOneWidget);
       expect(server.requests.where((r) => r.startsWith('POST')), isEmpty);
     });

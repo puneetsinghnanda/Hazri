@@ -144,4 +144,53 @@ void main() {
     expect(sp.getString(ProfileCache.key), isNotNull, reason: 'a background isolate before sign-in must not delete it');
     expect(ProfileCache(sp).read(currentUid: 'uid-1')?.name, 'Cached Name');
   });
+
+  // 03-first-run F10 (owner, 2026-11-18): a profile made with no connection
+  // is kept on the phone and sent at the next start.
+  group('a profile made offline (F10)', () {
+    test('no connection: kept on the phone, nothing lost', () async {
+      server.on('GET', '/profile', 404, errorJson('NO_PROFILE'));
+      final c = await start();
+      server.offline = true;
+      final out = await c.read(profileControllerProvider.notifier).create(name: 'Harpreet Kaur', cityId: 'ludhiana');
+      expect(out, isA<ProfileKept>());
+      final sp = await SharedPreferences.getInstance();
+      expect(jsonDecode(sp.getString(ProfileController.kPending)!), {
+        'name': 'Harpreet Kaur', 'email': null, 'phone': null, 'cityId': 'ludhiana',
+      });
+    });
+
+    test('the next start sends it, and the profile is loaded', () async {
+      server.on('GET', '/profile', 404, errorJson('NO_PROFILE'));
+      server.on('POST', '/profile', 201, {'profile': profileJson(email: null, cityId: 'ludhiana')});
+      final c = await start(prefs: {
+        ProfileController.kPending: jsonEncode({'name': 'Harpreet Kaur', 'email': null, 'phone': null, 'cityId': 'ludhiana'}),
+      });
+      await settle();
+      expect(server.requests, contains('POST /profile'));
+      final s = c.read(profileControllerProvider);
+      expect(s, isA<ProfileLoaded>());
+      expect((s as ProfileLoaded).profile.email, isNull);
+      final sp = await SharedPreferences.getInstance();
+      expect(sp.getString(ProfileController.kPending), isNull);
+    });
+
+    test('refused at the next start (the email is somebody\'s): dropped, no profile', () async {
+      server.on('GET', '/profile', 404, errorJson('NO_PROFILE'));
+      server.on('POST', '/profile', 409, errorJson('EMAIL_EXISTS'));
+      final c = await start(prefs: {
+        ProfileController.kPending: jsonEncode({'name': 'Harpreet Kaur', 'email': 'a@example.com', 'phone': null, 'cityId': 'ludhiana'}),
+      });
+      await settle();
+      expect(c.read(profileControllerProvider), isA<ProfileNone>());
+      final sp = await SharedPreferences.getInstance();
+      expect(sp.getString(ProfileController.kPending), isNull);
+    });
+  });
+
+  test('a profile with no email reads as such (optional since 2026-11-18)', () async {
+    server.on('GET', '/profile', 200, {'profile': profileJson(email: null)});
+    final c = await start();
+    expect((c.read(profileControllerProvider) as ProfileLoaded).profile.email, isNull);
+  });
 }

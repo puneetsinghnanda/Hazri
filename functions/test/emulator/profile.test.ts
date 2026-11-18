@@ -173,6 +173,31 @@ describeEmu('profile (01-accounts §6)', () => {
     expect((await h.as('new').post('/api/v1/tokens/verify', { token: restore })).body.error.code).toBe('DEVICE_HAS_PROFILE');
   });
 
+  // Owner, 2026-11-18: an email is optional. A profile without one has
+  // nothing to confirm or restore by until it adds one, and nothing indexed.
+  it('a profile with no email: 201, no index, NO_EMAIL to confirm, then add one', async () => {
+    const res = await h.as('u1').post('/api/v1/profile', { name: 'Harpreet Kaur', cityId: 'ludhiana' });
+    expect(res.status).toBe(201);
+    expect(res.body.profile).toMatchObject({ name: 'Harpreet Kaur', email: null, emailVerified: false, cityId: 'ludhiana' });
+    const stored = (await h.db.doc(`profiles/${res.body.profile.profileId}`).get()).data();
+    expect(stored?.emailNormalized).toBeNull();
+    expect((await h.db.collection('emailIndex').get()).size).toBe(0);
+    // A second install can make its own profile with no email too.
+    expect((await h.as('u2').post('/api/v1/profile', { name: 'Gurdeep Singh', cityId: 'amritsar' })).status).toBe(201);
+    const confirm = await h.as('u1').post('/api/v1/profile/verification-email');
+    expect(confirm.status).toBe(409);
+    expect(confirm.body.error.code).toBe('NO_EMAIL');
+    expect(h.mailer.sent).toHaveLength(0);
+    // Adding one later goes through Change email, and is then confirmed as usual.
+    const add = await h.as('u1').patch('/api/v1/profile/email', { email: 'Harpreet@example.com' });
+    expect(add.status).toBe(200);
+    expect(add.body).toMatchObject({ result: 'EMAIL_CHANGED', profile: { email: 'Harpreet@example.com', emailVerified: false } });
+    expect((await h.db.doc(`emailIndex/${emailHashOf('harpreet@example.com')}`).get()).exists).toBe(true);
+    const link = lastToken(h.mailer);
+    expect((await h.as('u1').post('/api/v1/tokens/verify', { token: link })).status).toBe(200);
+    expect((await h.as('u1').get('/api/v1/profile')).body.profile.emailVerified).toBe(true);
+  });
+
   it('email change while unverified (§6.6, E1–E4, E7)', async () => {
     await createProfile(h, 'u1', { email: 'old@example.com' });
     await h.as('u1').post('/api/v1/profile/verification-email');

@@ -2752,7 +2752,60 @@ class LPa extends L {
   String get profileFieldName => 'ਨਾਮ *';
 
   @override
-  String get profileFieldEmail => 'ਈਮੇਲ *';
+  String get profileFieldEmail => 'ਈਮੇਲ (ਮਰਜ਼ੀ ਨਾਲ)';
+
+  @override
+  String get profileNoEmail => 'ਹਾਲੇ ਕੋਈ ਈਮੇਲ ਨਹੀਂ';
+
+  @override
+  String get profileAddEmail => 'ਈਮੇਲ ਜੋੜੋ';
+
+  @override
+  String get profileNoEmailHint =>
+      'ਈਮੇਲ ਜੋੜੋ ਤਾਂ ਜੋ ਤੁਹਾਡੀ ਡਾਇਰੀ ਸੁਰੱਖਿਅਤ ਰਹੇ ਅਤੇ ਨਵੇਂ ਫ਼ੋਨ ਉੱਤੇ ਵਾਪਸ ਆ ਸਕੇ।';
+
+  @override
+  String get setupProfileTitle => 'ਆਪਣਾ ਹਾਜ਼ਰੀ ਕਾਰਡ ਬਣਾਓ';
+
+  @override
+  String get setupProfileLead =>
+      'ਤੁਹਾਡਾ ਨਾਮ ਅਤੇ ਸ਼ਹਿਰ ਤੁਹਾਨੂੰ ਸੰਗਤ ਨਾਲ ਗਲੋਬ ਉੱਤੇ ਲੈ ਆਉਂਦੇ ਹਨ। ਈਮੇਲ ਜੋੜੋ ਤਾਂ ਤੁਹਾਡੀ ਡਾਇਰੀ ਸੁਰੱਖਿਅਤ ਰਹਿੰਦੀ ਹੈ।';
+
+  @override
+  String get setupProfileCreate => 'ਮੇਰੀ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ';
+
+  @override
+  String get setupProfileKept =>
+      'ਕਨੈਕਸ਼ਨ ਨਹੀਂ ਹੈ। ਤੁਹਾਡੇ ਵੇਰਵੇ ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਰੱਖੇ ਗਏ ਹਨ, ਅਤੇ ਔਨਲਾਈਨ ਹੁੰਦਿਆਂ ਹੀ ਪ੍ਰੋਫਾਈਲ ਬਣ ਜਾਵੇਗੀ।';
+
+  @override
+  String get cardYourName => 'ਤੁਹਾਡਾ ਨਾਮ';
+
+  @override
+  String get cardYourCity => 'ਤੁਹਾਡਾ ਸ਼ਹਿਰ';
+
+  @override
+  String get cardYourEmail => 'ਤੁਹਾਡੀ ਈਮੇਲ';
+
+  @override
+  String profileMadeTitle(String name) {
+    return 'ਜੀ ਆਇਆਂ ਨੂੰ, $name';
+  }
+
+  @override
+  String profileMadeConfirmBody(String email) {
+    return 'ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਬਣ ਗਈ ਹੈ। ਕੀ ਤੁਸੀਂ $email ਦੀ ਪੁਸ਼ਟੀ ਕਰਨਾ ਚਾਹੋਗੇ? ਇਹ ਲੋੜੀਂਦਾ ਨਹੀਂ, ਅਤੇ ਬਾਅਦ ਵਿੱਚ ਪ੍ਰੋਫਾਈਲ ਤੋਂ ਵੀ ਹੋ ਸਕਦਾ ਹੈ।';
+  }
+
+  @override
+  String get profileMadeNoEmailBody =>
+      'ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਬਣ ਗਈ ਹੈ। ਡਾਇਰੀ ਸੁਰੱਖਿਅਤ ਰੱਖਣ ਲਈ ਤੁਸੀਂ ਕਦੇ ਵੀ ਪ੍ਰੋਫਾਈਲ ਤੋਂ ਈਮੇਲ ਜੋੜ ਸਕਦੇ ਹੋ।';
+
+  @override
+  String get profileMadeLater => 'ਬਾਅਦ ਵਿੱਚ, ਅੱਜ ਵੱਲ ਚੱਲੋ';
+
+  @override
+  String get profileMadeToday => 'ਅੱਜ ਵੱਲ ਚੱਲੋ';
 
   @override
   String get profileFieldPhone => 'ਫ਼ੋਨ (ਲੋੜ ਨਹੀਂ)';
@@ -3037,7 +3090,7 @@ class LPa extends L {
 
   @override
   String get privacyProfileDetails =>
-      'ਤੁਹਾਡਾ ਨਾਮ, ਈਮੇਲ ਅਤੇ ਸ਼ਹਿਰ, ਅਤੇ ਫ਼ੋਨ ਨੰਬਰ ਜੇ ਤੁਸੀਂ ਦਿੰਦੇ ਹੋ';
+      'ਤੁਹਾਡਾ ਨਾਮ ਅਤੇ ਸ਼ਹਿਰ, ਅਤੇ ਈਮੇਲ ਤੇ ਫ਼ੋਨ ਨੰਬਰ ਜੇ ਤੁਸੀਂ ਦਿੰਦੇ ਹੋ';
 
   @override
   String get privacyProfileMail =>

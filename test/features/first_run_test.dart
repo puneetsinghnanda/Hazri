@@ -11,6 +11,11 @@ import 'package:hazri/core/theme/hazri_theme.dart';
 import 'package:hazri/features/onboarding/ui/setup_screen.dart';
 import 'package:hazri/features/onboarding/ui/welcome_screen.dart';
 import 'package:hazri/features/profile/data/incoming_link.dart';
+import 'package:hazri/features/profile/data/profile_controller.dart';
+import 'package:hazri/features/profile/ui/city_field.dart';
+import 'package:hazri/features/profile/ui/profile_made_screen.dart';
+
+import 'profile/profile_fakes.dart';
 
 import '../app_harness.dart';
 
@@ -89,6 +94,11 @@ void main() {
     final l = await L.delegate.load(const Locale('en'));
     await tester.tap(find.text(l.actionSkip));
     await settle(tester);
+    // F10: Skip goes on to the profile step; Not now there ends setup.
+    expect(path(router), Routes.setup(3));
+    expect(find.text(l.setupProfileTitle), findsOneWidget);
+    await tester.tap(find.text(l.actionNotNow));
+    await settle(tester);
 
     final s = app.container.read(settingsProvider);
     expect(s.onboardingDone, isTrue);
@@ -111,5 +121,90 @@ void main() {
     expect(line, isNotNull);
     expect(line!.isHeading, isFalse);
     expect(find.text(line.gurmukhi), findsOneWidget);
+  });
+
+  // F10 (owner, 2026-11-18, option C): the profile is the last step of setup.
+  group('the profile step (F10)', () {
+    late FakeServer server;
+    setUp(() {
+      server = FakeServer();
+      server.on('GET', '/profile', 404, errorJson('NO_PROFILE'));
+    });
+
+    Future<L> openStep(WidgetTester tester) async {
+      app = await TestApp.create(now: DateTime(2026, 10, 8, 6), extra: server.overrides());
+      final router = await pumpRouter(tester);
+      router.go(Routes.setup(3));
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 100)));
+      await settle(tester);
+      return L.delegate.load(const Locale('en'));
+    }
+
+    Future<void> fill(WidgetTester tester, L l, {String email = ''}) async {
+      await tester.enterText(find.byType(TextFormField).first, 'Harpreet Kaur');
+      await tester.tap(find.byType(CityField));
+      await settle(tester);
+      await tester.enterText(find.widgetWithText(TextField, l.cityPickerSearch), 'Ludh');
+      await settle(tester);
+      await tester.tap(find.text('Ludhiana').last);
+      await settle(tester);
+      if (email.isNotEmpty) await tester.enterText(find.byType(TextFormField).last, email);
+      await settle(tester);
+    }
+
+    Future<void> create(WidgetTester tester, L l) async {
+      await tester.tap(find.text(l.setupProfileCreate));
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 150)));
+      await settle(tester);
+    }
+
+    testWidgets('the card fills in as you type', (tester) async {
+      final l = await openStep(tester);
+      expect(find.text(l.cardYourName), findsOneWidget);
+      await tester.enterText(find.byType(TextFormField).first, 'Harpreet Kaur');
+      await settle(tester);
+      expect(find.text(l.cardYourName), findsNothing);
+      expect(find.text('Harpreet Kaur'), findsWidgets);
+    });
+
+    testWidgets('with no email: made, setup done, Welcome on top of Today', (tester) async {
+      server.on('POST', '/profile', 201, {'profile': profileJson(email: null, cityId: 'ludhiana')});
+      final l = await openStep(tester);
+      await fill(tester, l);
+      await create(tester, l);
+      expect(app.container.read(settingsProvider).onboardingDone, isTrue);
+      expect(find.byType(ProfileMadeScreen), findsOneWidget);
+      expect(find.text(l.profileMadeTitle('Harpreet')), findsOneWidget);
+      expect(find.text(l.profileMadeNoEmailBody), findsOneWidget);
+      expect(find.text(l.profileConfirmEmail), findsNothing);
+      await tester.tap(find.text(l.profileMadeToday));
+      await settle(tester);
+      expect(path(app.container.read(routerProvider)), Routes.today);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pump(const Duration(minutes: 5));
+    });
+
+    testWidgets('with an email: Welcome offers Confirm my email', (tester) async {
+      server.on('POST', '/profile', 201, {'profile': profileJson(cityId: 'ludhiana')});
+      final l = await openStep(tester);
+      await fill(tester, l, email: 'harpreet@example.com');
+      await create(tester, l);
+      expect(find.text(l.profileConfirmEmail), findsOneWidget);
+      expect(find.text(l.profileMadeLater), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pump(const Duration(minutes: 5));
+    });
+
+    testWidgets('no connection: kept on the phone, setup ends on Today', (tester) async {
+      final l = await openStep(tester);
+      await fill(tester, l);
+      server.offline = true;
+      await create(tester, l);
+      expect(app.container.read(settingsProvider).onboardingDone, isTrue);
+      expect(find.text(l.setupProfileKept), findsOneWidget);
+      expect(app.container.read(sharedPreferencesProvider).getString(ProfileController.kPending), isNotNull);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pump(const Duration(minutes: 5));
+    });
   });
 }

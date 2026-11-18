@@ -65,7 +65,7 @@ class FakeServer {
 
 Map<String, Object?> profileJson({
   String name = 'Harpreet Kaur',
-  String email = 'harpreet@example.com',
+  String? email = 'harpreet@example.com',
   bool verified = false,
   String cityId = 'new_delhi',
   String? pendingEmail,

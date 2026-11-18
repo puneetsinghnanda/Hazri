@@ -2550,12 +2550,13 @@ def simran_no_profile() -> str:
 # ------------------------------------------------ first run (03-first-run.md)
 
 def steps(at: int) -> str:
-    """Language, then How you read; the current step long. Welcome has none:
-    it is one screen, "no carousel, no dots" (03-first-run.md F2)."""
+    """Language, How you read and, since 2026-11-18, your profile (F10); the
+    current step long. Welcome has none: it is one screen, "no carousel, no
+    dots" (03-first-run.md F2)."""
     return ('<div class="row" style="gap:6px">' + "".join(
         f'<div style="height:6px;border-radius:3px;width:{28 if i == at else 12}px;'
         f'background:{"var(--kesri)" if i <= at else "var(--rule)"}"></div>'
-        for i in range(2)) + '</div>')
+        for i in range(3)) + '</div>')
 
 
 PROMISES = ('<div class="row" style="justify-content:center;gap:12px;font-size:12px;'
@@ -4744,6 +4745,57 @@ def live_sitting() -> str:
 
 
 
+def setup_profile() -> str:
+    """130: setup's last step, your profile (03-first-run.md F10; owner
+    2026-11-18, option C): the Hazri card filling in as you type, then name,
+    city and an optional email; Not now in the header ends setup."""
+    stat = lambda n, l: (f'<div class="col" style="flex:1"><div class="disp" style="font-size:20px;font-weight:700;'
+                         f'line-height:1">{n}</div><div style="font-size:11.5px;opacity:.8">{l}</div></div>')
+    value = lambda t, muted=False: (f'<div style="flex:1;min-width:0;font-size:16px;'
+                                    f'color:{"var(--muted)" if muted else "var(--ink)"}">{t}</div>')
+    return f"""
+{SHARED_STYLE}
+<div class="col" style="height:100%;padding:40px 20px 26px;gap:12px">
+  <div class="row" style="justify-content:space-between">{steps(2)}
+    <div style="font-size:15px;font-weight:700;color:var(--ink2)">Not now</div></div>
+  <div class="disp" style="font-size:26px;font-weight:700;line-height:1.2;margin-top:4px">Make your Hazri card</div>
+  <div style="font-size:13.5px;color:var(--ink2);line-height:1.45">Your name and city put you on the globe with the sangat.
+    An email keeps your diary safe, if you add one.</div>
+  <div class="idcard col" style="position:relative;overflow:hidden;border-radius:24px;padding:16px 18px;color:#fff;gap:8px">
+    <div class="row" style="gap:8px">{app_mark(22, "#fff", "#F2A24E")}<div class="disp" style="font-size:16px;font-weight:700">Hazri</div></div>
+    <div class="disp" style="font-size:26px;font-weight:700;line-height:1.1">Harpreet Kaur</div>
+    <div class="row" style="gap:6px;font-size:13.5px;opacity:.85">{icon("pin", 15)}Ludhiana, Punjab</div>
+    <div class="row" style="gap:6px;font-size:13.5px;opacity:.55">{icon("mail", 15)}Your email</div>
+  </div>
+  <div class="card col" style="padding:20px 14px 14px;gap:18px">
+    {outlined("Name", value("Harpreet Kaur"))}
+    {outlined("City", f'<div style="color:var(--neela)">{icon("pin", 19)}</div>' + value("Ludhiana, Punjab")
+              + f'<div style="color:var(--ink2);padding-right:8px">{icon("search", 18)}</div>')}
+    {outlined("Email (optional)", value("you@example.com", True), focus=True)}
+  </div>
+  <div style="flex:1"></div>
+  {primary("Create my profile")}
+</div>"""
+
+
+def profile_made() -> str:
+    """131: Welcome, after a profile is made (03-first-run F10, 01-accounts
+    8.6 as amended 2026-11-18). With an email, Confirm my email or Later;
+    with none, a line that one can be added, and Go to Today."""
+    return f"""
+<div class="col" style="height:100%;padding:40px 22px 26px;gap:12px;align-items:center;text-align:center">
+  <div style="flex:1"></div>
+  <div style="width:84px;height:84px;border-radius:42px;background:var(--sageSoft);color:var(--sage);display:flex;
+    align-items:center;justify-content:center">{icon("check", 40)}</div>
+  <div class="disp" style="font-size:27px;font-weight:700;line-height:1.2;margin-top:10px">Welcome, Harpreet</div>
+  <div style="font-size:15px;color:var(--ink2);max-width:310px;line-height:1.5">Your profile is made. Would you like to
+    confirm harpreet@example.com? It is optional, and you can do it later from your profile.</div>
+  <div style="flex:1"></div>
+  <div class="col" style="gap:10px;align-self:stretch">{primary("Confirm my email", "mail")}
+    <div class="btn" style="background:var(--card2);color:var(--ink2)">Later, go to Today</div></div>
+</div>"""
+
+
 SCREENS = [
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
@@ -4822,6 +4874,8 @@ SCREENS = [
     ("127-LiveGroup", "A live group — the scene full screen, the group below", live_group),
     ("128-LiveGroupSheet", "A live group — the group's sheet pulled up", live_group_sheet),
     ("129-LiveSitting", "A live group — sitting with the sangat", live_sitting),
+    ("130-SetupProfile", "Setup — your profile, the Hazri card", setup_profile),
+    ("131-ProfileMade", "Welcome, after a profile is made", profile_made),
 ]
 
 
