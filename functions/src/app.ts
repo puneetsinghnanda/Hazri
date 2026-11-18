@@ -9,6 +9,7 @@ import type { Deps } from './deps';
 import { ApiError, Errors } from './errors';
 import { adminRouter } from './routes/admin';
 import { backupRouter } from './routes/backup';
+import { liveRouter } from './routes/live';
 import { miscRouter } from './routes/misc';
 import { presenceRouter } from './routes/presence';
 import { profileRouter } from './routes/profile';
@@ -37,6 +38,7 @@ export function createApp(deps: Deps): express.Express {
   app.use(sangatRouter(deps));
   app.use(backupRouter(deps));
   app.use(quizRouter(deps));
+  app.use(liveRouter(deps));
   app.use(miscRouter(deps));
   app.use(adminRouter(deps));
 
