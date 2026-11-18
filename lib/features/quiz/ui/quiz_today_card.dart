@@ -17,10 +17,9 @@ import 'quiz_widgets.dart';
 
 /// Design 1A on Today (14-quiz.md QZ9-QZ11): a calendar leaf with the date,
 /// then the day's event (or "Did you know?"), the topic and one explanation
-/// from the bank word for word. No buttons (owner, 2026-10-28): the quiz has
-/// its own card below ([QuizPickCard]). On a day with an event that has a
-/// Vichar page, the whole card opens it, with an arrow (Know more, QZ11);
-/// on other days it is still.
+/// from the bank word for word. Under them, since 2026-11-18 (owner, option
+/// B): **Know more**, opening the Vichar page about the day's event or topic,
+/// and **Take the quiz** on that topic, straight into its first question.
 class QuizTodayCard extends ConsumerWidget {
   const QuizTodayCard({super.key});
 
@@ -29,20 +28,13 @@ class QuizTodayCard extends ConsumerWidget {
     final quiz = ref.watch(todayQuizProvider).value;
     if (quiz == null) return const SizedBox.shrink();
     final c = context.colors;
-    final l = L.of(context);
     final language = Localizations.localeOf(context).languageCode;
     final dates = HazriDates.of(context);
     final ns = ref.watch(nanakshahiCalendarProvider).value?.dateFor(quiz.date);
     const leafInk = Color(0xFF1C1206);
     final leafSmall = HazriText.captionStrong.copyWith(color: leafInk, fontSize: 11, letterSpacing: 1.1);
-    final slug = quiz.day != null ? quiz.slug : null;
-
-    return Semantics(
-      button: slug != null,
-      hint: slug != null ? l.quizKnowMore : null,
-      child: HazriCard(
+    return HazriCard(
         padding: EdgeInsets.zero,
-        onTap: slug == null ? null : () => context.push(Routes.libraryEntry(slug)),
         // The leaf fills the card's left edge whatever height the words take.
         child: Stack(
           children: [
@@ -50,7 +42,7 @@ class QuizTodayCard extends ConsumerWidget {
               constraints: const BoxConstraints(minHeight: _leafMinHeight),
               child: Padding(
                 padding: const EdgeInsets.only(left: _leafWidth),
-                child: _Words(quiz: quiz, linked: slug != null),
+                child: _Words(quiz: quiz),
               ),
             ),
             Positioned(
@@ -93,7 +85,6 @@ class QuizTodayCard extends ConsumerWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -102,12 +93,9 @@ const double _leafWidth = 78;
 const double _leafMinHeight = 150;
 
 class _Words extends StatelessWidget {
-  const _Words({required this.quiz, required this.linked});
+  const _Words({required this.quiz});
 
   final TodayQuiz quiz;
-
-  /// Whether the card opens the day's Vichar page, so the arrow shows.
-  final bool linked;
 
   @override
   Widget build(BuildContext context) {
@@ -119,16 +107,9 @@ class _Words extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  (quiz.day?.label(language) ?? l.quizDidYouKnow).toUpperCase(),
-                  style: HazriText.eyebrow.copyWith(color: c.kesriInk),
-                ),
-              ),
-              if (linked) AppIcon(HazriIconData.chevronRight, size: 16, color: c.kesriInk),
-            ],
+          Text(
+            (quiz.day?.label(language) ?? l.quizDidYouKnow).toUpperCase(),
+            style: HazriText.eyebrow.copyWith(color: c.kesriInk),
           ),
           const SizedBox(height: 4),
           Text(
@@ -140,10 +121,86 @@ class _Words extends StatelessWidget {
             // QZ10: word for word from the bank, which is English (QZ6).
             Text(quiz.insight!.explanation, style: HazriText.bodySmall.copyWith(color: c.ink2, height: 1.4)),
           ],
+          const SizedBox(height: 12),
+          // QZ11 (owner, 2026-11-18, option B): the two things the card leads
+          // to, side by side. Know more only where there is a page to open.
+          Row(
+            children: [
+              if (quiz.slug case final String slug) ...[
+                Expanded(
+                  child: _LeafButton(
+                    label: l.quizKnowMore,
+                    background: c.card2,
+                    foreground: c.ink2,
+                    onTap: () => context.push(Routes.libraryEntry(slug)),
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
+              Expanded(
+                child: _LeafButton(
+                  label: l.quizTakeQuiz,
+                  icon: HazriIconData.play,
+                  background: c.primary,
+                  foreground: c.onPrimary,
+                  onTap: () => context.push(Routes.quizPlay(quiz.topic.id)),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
+}
+
+class _LeafButton extends StatelessWidget {
+  const _LeafButton({
+    required this.label,
+    required this.background,
+    required this.foreground,
+    required this.onTap,
+    this.icon,
+  });
+
+  final String label;
+  final Color background;
+  final Color foreground;
+  final VoidCallback onTap;
+  final String? icon;
+
+  @override
+  Widget build(BuildContext context) => Material(
+        color: background,
+        shape: const StadiumBorder(),
+        child: InkWell(
+          customBorder: const StadiumBorder(),
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (icon != null) ...[
+                    AppIcon(icon!, size: 14, color: foreground),
+                    const SizedBox(width: 6),
+                  ],
+                  Flexible(
+                    child: Text(
+                      label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: HazriText.captionStrong.copyWith(color: foreground, fontSize: 13.5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 }
 
 /// Design D on Today (owner, 2026-10-28; 14-quiz.md QZ12): the quiz's own

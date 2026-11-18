@@ -1385,7 +1385,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `85-TodayAppBar` | Today, with the app bar and streak | **new** | App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12 |
 | `120-TodayGoalFolded` | Today, a goal of seven, folded | **new** | Design 1A, chosen 29 Oct: more than three goal items fold to the one due now, the next and the earliest missed, with Show all. 04-goals.md 7.1 |
-| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with no buttons (on an event day it opens the Vichar page), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
+| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with Know more and Take the quiz (option B, 18 Nov), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
 | `86-TodayNoProfile` | Today, first day, no profile | **new** | The profile banner overlaps the app bar; no streak yet. 05-today.md T-a |
 | `61-GoalComplete` | All of today's goals are done | current | Shown once a day when the goal is met. 04-goals.md CE1 |
 | `58-TodayHazri` | Today, hazri marked | superseded | Replaced by 85 |

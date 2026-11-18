@@ -225,7 +225,7 @@ each:
 | Vichar library (2026-11-09) | 122 | Option 1, from the owner's mock-up: the dawn header with ੴ, search, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis), each entry an article card with a kind-and-date pill, headline, three lines, minutes and a picture by kind of day from `assets/vichar/` (replaces 43, `docs/vichar-content.md` Library) |
 | Simran counts (2026-11-09) | 123, 124 | Option C of four: live today and here today as two figures, green and blue (here today keeps its meaning, everyone counted who has not opened the app today); during a sitting both stay, smaller, either side of the countdown (`07-simran.md` CT3; replace 88 and 89) |
 | Live sangat (2026-11-17, 2026-11-18) | 125-129 | **Designed, not built.** The Sangat tab as two tabs, Discover first and My groups (the default once you are in a group, with Create and Join at the top); three live groups (Naam Simran, Mool Mantar, Chaupai Sahib) as option B's tall cards with their own scenes (the globe, ੴ among the stars, the jot in the shield, drawn by `tools/design/live_scenes.js`); the live page option A with the group in a sheet; a sitting option D (`15-live-sangat.md`; replace 102) |
-| Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A with no buttons and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
+| Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A, with Know more and Take the quiz since 2026-11-18 (option B), and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -586,8 +586,8 @@ is true of the code now, then what is live, then what is still open.
   total, a board counts your best per topic per IST day, and a first attempt
   at 0 still counts as played. **Without a profile the quiz plays on the
   phone, sends nothing and earns nothing** (QZ14). Today has two quiz cards
-  (QZ9, 2026-10-28): the calendar leaf with the day's insight and no buttons,
-  which on a day with an event opens its Vichar page (Know more, QZ11), and
+  (QZ9, 2026-10-28): the calendar leaf with the day's insight and, since
+  2026-11-18, Know more and Take the quiz (option B, QZ11), and
   `QuizPickCard`, design D: today's topic with Start, your points, All
   quizzes, and the other categories as tiles opening the quiz page on that
   category (`/quiz?category=`). Neither fetches anything. A shared link is

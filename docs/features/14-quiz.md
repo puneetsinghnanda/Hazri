@@ -108,8 +108,9 @@ and the quiz card (`05-today.md` §5.3).
 *The calendar leaf* (design 1A): the weekday, the day and the month, the
 Nanakshahi day and month, then the event's short label from `days.json` as the
 eyebrow (or **Did you know?** on a day without one), the topic's name and one
-insight. **It has no buttons** (owner, 2026-10-28: "this card is fine without
-a button").
+insight, then **Know more** and **Take the quiz** side by side (owner,
+2026-11-18, option B; it had no buttons from 2026-10-28). Take the quiz starts
+the leaf's own topic, the Guru or event it is about, as Start does (QZ12).
 
 *The quiz card* (design D, owner 2026-10-28, from four options drawn at
 <https://claude.ai/artifact/JcMB8TS6bEBCDnY6trRXKL>): **Gurmat Quiz** with,
@@ -126,12 +127,11 @@ category. Nothing on it fetches: the points are those the phone already holds
 word for word**, never written for the card. It is chosen by the date from
 the topic's easy questions that carry no reviewer's note, in id order.
 
-**QZ11. Know more is the calendar leaf itself, on a day with an event**
-(owner, 2026-10-28): when the day's event in `days.json` names a Vichar page,
-a tap anywhere on the leaf opens it (`/library/<slug>`, design 107) and a small
-arrow beside the eyebrow says so. On a day with no event the leaf is still: a
-tap on it does nothing. (Until 2026-10-28 it was a Know more button, shown on
-every day with a page, the topic's on a day with no event.)
+**QZ11. Know more is a button on the leaf** (owner, 2026-11-18): it opens the
+day's event's Vichar page, or the topic's on a day with no event
+(`/library/<slug>`, design 107), and is left out when there is neither. The
+leaf itself no longer opens anything; only its two buttons act. (From
+2026-10-28 to 2026-11-18 the whole leaf opened the page, on event days only.)
 
 **QZ12. Start goes straight into the first question** (owner, 2026-10-26),
 with no intermediate screen.

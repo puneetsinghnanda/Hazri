@@ -4007,9 +4007,8 @@ def _numeral(glyph: str, size: int = 46) -> str:
 
 def quiz_card() -> str:
     """The calendar leaf on Today (14-quiz.md QZ9-QZ11, design 1A): the date,
-    the day's event, the topic and one explanation word for word. No buttons
-    (owner, 2026-10-28); on a day with an event the whole card opens its
-    Vichar page, and the arrow by the eyebrow says so."""
+    the day's event, the topic and one explanation word for word; then Know
+    more and Take the quiz side by side (owner, 2026-11-18, option B)."""
     small = "font-size:11px;font-weight:700;letter-spacing:.1em"
     arrow = ('<svg class="i" width="16" height="16" viewBox="0 0 24 24" style="color:var(--kesriInk)">'
              '<path d="M9 6l6 6-6 6"/></svg>')
@@ -4025,11 +4024,16 @@ def quiz_card() -> str:
       <div style="font-size:10.5px;font-weight:700">Katak</div>
     </div>
     <div class="col" style="padding:12px 14px 14px;flex:1;min-width:0">
-      <div class="row" style="justify-content:space-between">
-        <div class="eyebrow" style="color:var(--kesriInk)">Prakash Purab</div>{arrow}</div>
+      <div class="eyebrow" style="color:var(--kesriInk)">Prakash Purab</div>
       <div class="disp" style="font-size:20px;font-weight:700;line-height:1.15;margin-top:4px">Guru Ram Das Ji</div>
       <div style="font-size:13.5px;line-height:1.4;color:var(--ink2);margin-top:6px">Guru Ram Das Ji was named
         Jetha (meaning 'firstborn') as a child and later became known as Ram Das.</div>
+      <div class="row" style="gap:8px;margin-top:12px">
+        <div class="row" style="flex:1;min-height:44px;justify-content:center;border-radius:999px;background:var(--card2);
+          color:var(--ink2);font-weight:700;font-size:13.5px">Know more</div>
+        <div class="row" style="flex:1;gap:6px;min-height:44px;justify-content:center;border-radius:999px;
+          background:var(--primary);color:var(--onPrimary);font-weight:700;font-size:13.5px">{icon("play", 14)}Take the quiz</div>
+      </div>
     </div>
   </div>"""
 

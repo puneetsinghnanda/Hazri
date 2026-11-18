@@ -86,27 +86,35 @@ void main() {
   Future<void> scrollTo(WidgetTester tester, Finder finder) =>
       tester.scrollUntilVisible(finder, 300, scrollable: find.byType(Scrollable).first);
 
-  testWidgets('the calendar leaf has no buttons; on a Gurpurab the card opens the day\'s Vichar page (QZ11)', (
-    tester,
-  ) async {
+  // QZ11 (owner, 2026-11-18, option B): Know more and Take the quiz.
+  testWidgets('on a Gurpurab the leaf\'s Know more opens the day\'s Vichar page', (tester) async {
     final l = await pumpAt(tester, '/today');
     final card = find.byType(QuizTodayCard);
     await scrollTo(tester, find.descendant(of: card, matching: find.text('PRAKASH PURAB')));
     expect(find.descendant(of: card, matching: find.text('Guru Ram Das Ji')), findsOneWidget);
-    expect(find.descendant(of: card, matching: find.byType(FilledButton)), findsNothing);
-    expect(find.text(l.quizTakeQuiz), findsNothing);
-    // Since 2026-11-09 the Sikh calendar sits above the leaf (05-today §5.3),
-    // so scrolling to the eyebrow can leave the title under the nav bar.
-    final title = find.descendant(of: card, matching: find.text('Guru Ram Das Ji'));
-    await tester.ensureVisible(title);
+    final more = find.descendant(of: card, matching: find.text(l.quizKnowMore));
+    await tester.ensureVisible(more);
     await settle(tester);
-    await tester.tap(title);
+    await tester.tap(more);
     await settle(tester);
     expect(find.textContaining('vichar '), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('on a day with no event the leaf says Did you know? and a tap does nothing', (tester) async {
+  testWidgets('the leaf\'s Take the quiz starts the day\'s topic, Guru Ram Das Ji', (tester) async {
+    final l = await pumpAt(tester, '/today');
+    final card = find.byType(QuizTodayCard);
+    final take = find.descendant(of: card, matching: find.text(l.quizTakeQuiz));
+    await scrollTo(tester, take);
+    await tester.ensureVisible(take);
+    await settle(tester);
+    await tester.tap(take);
+    await settle(tester);
+    expect(find.byType(QuizScreen), findsOneWidget);
+    expect(find.textContaining('Guru Ram Das Ji'), findsWidgets);
+  });
+
+  testWidgets('a tap on the leaf itself does nothing; only its buttons act', (tester) async {
     final l = await pumpAt(tester, '/today', now: DateTime(2026, 10, 28, 9));
     final card = find.byType(QuizTodayCard);
     await scrollTo(tester, find.descendant(of: card, matching: find.text(l.quizDidYouKnow.toUpperCase())));
@@ -114,6 +122,7 @@ void main() {
     await settle(tester);
     expect(find.textContaining('vichar '), findsNothing);
     expect(find.byType(QuizScreen), findsNothing);
+    expect(find.descendant(of: card, matching: find.text(l.quizTakeQuiz)), findsOneWidget);
   });
 
   for (final width in [360.0, 390.0, 412.0]) {
