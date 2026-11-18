@@ -88,15 +88,23 @@ as a number, never as names. "N cities" is how many cities they are in.
 With no connection the page plays, and the count and cities say they are
 waiting.
 
+**LS7a. Minutes listened** (owner, 2026-11-18). Every minute a live group's
+page plays is counted, for you and for the sangat. Yours are counted on the
+phone, a row per group per day in `user.db`, so they are exact and need no
+connection. The sangat's are counted by the server from the listening marks
+(§8), five minutes a mark, and shown for today and this month (IST). Minutes
+listened are a figure to see, never a goal, a ranking, hazri or a badge.
+
 **LS8. Joined from.** When somebody with a profile joins a live group, the
 page shows "{first name} {initial}. joined from {city}" for a short while, as
-the quiz leaderboards show a name (`14-quiz.md`). Somebody without a profile
-joins without being shown.
+the quiz leaderboards show a name (`14-quiz.md`). Everybody with a profile is
+shown; there is no switch to hide (owner, 2026-11-18). Somebody without a
+profile joins without being shown.
 
-**LS9. The group** (design 128): this month's goal of minutes as a ring
-("212,480 of 500,000 min", the days left), three figures (the sangat today,
-yours today, yours this month) and the members, A to Z. The goal is set by
-the owner once a month and starts again on the 1st.
+**LS9. The group** (design 128): **no goal** (owner, 2026-11-18: a live group
+is always on and has nothing to reach). Instead, **minutes listened** (LS7a):
+the sangat today and this month, large, then yours today and this month;
+then the members, A to Z, each with their minutes this month.
 
 **LS10. Sitting** (design 129, option D): Sit starts a timed sitting with
 the group's recording. The controls go, the scene dims a little, and the
@@ -139,6 +147,12 @@ Neither is typed into Dart (CLAUDE.md rule 3).
 | `liveSwipeUp` | Swipe up for the group |
 | `liveYouAreIn` | Live, you are in |
 | `liveListen` | Listen |
+| `liveYouListened` | You listened {minutes} min today |
+| `liveMinutesListened` | Minutes listened |
+| `liveSangatToday` | The sangat today |
+| `liveSangatMonth` | The sangat this month |
+| `liveYoursToday` | Yours today |
+| `liveYoursMonth` | Yours this month |
 | `liveWaiting` | Waiting for the sangat… |
 | `liveKindMeditation` | Meditation |
 | `liveKindJaap` | Jaap |
@@ -201,6 +215,10 @@ met and hazri is marked.
 **S-8 · Listening is not sitting.** Given somebody listens for an hour without
 Sit, then no simran session, hazri or goal is recorded.
 
+**S-8a · Minutes listened.** Given you listen to Naam Simran for 15 minutes
+with the screen locked, when you open My groups, then it says you listened 15
+min today, offline as well as online.
+
 **S-9 · Battery saver.** Given battery saver on, when a live page opens, then
 the scene is still and the recording plays.
 
@@ -208,11 +226,13 @@ the scene is still and the recording plays.
 
 | # | Question | Default |
 |---|---|---|
-| LS-1 | The three recordings | The owner supplies them; nothing ships without them |
-| LS-2 | Count listeners without a profile, without a city | No: with a profile only, as attendance is |
-| LS-3 | A switch to hide yourself from "joined from" | None, as on the quiz boards; revisit before release |
-| LS-4 | The monthly goal of each live group | 500,000 minutes, set by the owner in the admin website |
-| LS-5 | Punjabi and Hindi for the strings | Claude's draft, to be checked |
+| LS-1 | The three recordings | **Waiting for the owner's recordings**; nothing is built until they arrive |
+| LS-5 | Punjabi and Hindi for the strings | Claude's draft; the owner will check |
+
+**Decided 2026-11-18 (owner):** LS-2, listeners without a profile are not
+counted; LS-3, everybody with a profile is shown in "joined from", with no
+switch; LS-4, live groups have **no goal**: minutes listened are counted and
+shown instead (LS7a, LS9).
 
 ## 11. Acceptance
 

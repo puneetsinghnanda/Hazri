@@ -4633,7 +4633,7 @@ def sangat_my_groups() -> str:
   {_eyebrow_row("Live, you are in", "1")}
   <div class="card row" style="gap:12px;padding:9px 12px 9px 9px">{thumb}
     <div class="col" style="flex:1;gap:2px"><div class="row">{LIVE_PILL}</div><div style="font-size:15px;font-weight:700">{name}</div>
-      <div style="font-size:12px;color:var(--ink2)">{n} listening · you sat 15 min today</div></div>
+      <div style="font-size:12px;color:var(--ink2)">{n} listening · you listened 15 min today</div></div>
     <div class="row" style="gap:6px;min-height:40px;padding:0 14px;border-radius:999px;background:#F2A24E;color:#1C1206;font-weight:700;font-size:14px">Listen</div></div>
   {_eyebrow_row("Running", "3")}
   {running}
@@ -4669,15 +4669,15 @@ def _live_page(sheet_open: bool) -> str:
     <div style="width:40px;height:5px;border-radius:3px;background:var(--rule)"></div>
     {"The group" if sheet_open else "Swipe up for the group"}</div>
   <div class="col" style="gap:10px;padding:2px 16px 0">
-    <div class="card row" style="gap:14px;padding:12px 14px">
-      {ringed(0.42, 70, 8, "<div class='disp' style='font-size:16px;font-weight:700'>42%</div>")}
-      <div class="col" style="gap:2px"><div class="eyebrow" style="color:var(--ink2);font-weight:700">This month's goal</div>
-        <div style="font-size:15px;font-weight:700">212,480 of 500,000 min</div>
-        <div style="font-size:12.5px;color:var(--ink2)">Day 18 of 30 · 12 days left</div></div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-      {"".join(f'<div class="card col" style="border-radius:16px;padding:10px 12px"><div class="disp" style="font-size:20px;font-weight:700;line-height:1.1;{c}">{v}<span style="font-size:12px;font-weight:600"> min</span></div><div style="font-size:12px;color:var(--ink2);font-weight:600;line-height:1.25">{l}</div></div>'
-               for v, l, c in [("6,930", "Sangat today", ""), ("15", "Yours today", "color:var(--kesriInk)"),
-                               ("186", "Yours this month", "color:var(--kesriInk)")])}</div>
+    <div class="card col" style="padding:12px 14px;gap:10px">
+      <div class="eyebrow" style="color:var(--ink2);font-weight:700">Minutes listened</div>
+      <div class="row" style="gap:10px">
+        {"".join(f'<div class="col" style="flex:1"><div class="disp" style="font-size:26px;font-weight:700;line-height:1.05">{v}<span style="font-size:13px;font-weight:600"> min</span></div><div style="font-size:12px;color:var(--ink2);font-weight:600">{l}</div></div>'
+                 for v, l in [("6,930", "The sangat today"), ("212,480", "The sangat this month")])}</div>
+      <div style="height:1px;background:var(--rule)"></div>
+      <div class="row" style="gap:10px">
+        {"".join(f'<div class="col" style="flex:1"><div class="disp" style="font-size:20px;font-weight:700;line-height:1.1;color:var(--kesriInk)">{v}<span style="font-size:12px;font-weight:600"> min</span></div><div style="font-size:12px;color:var(--ink2);font-weight:600">{l}</div></div>'
+                 for v, l in [("15", "Yours today"), ("186", "Yours this month")])}</div></div>
     <div class="card col">
       <div class="row" style="justify-content:space-between;padding:12px 16px 6px">
         <div class="eyebrow" style="color:var(--ink2);font-weight:700">Members</div>
@@ -4711,7 +4711,7 @@ def live_group() -> str:
 
 
 def live_group_sheet() -> str:
-    """128: the same, with the group's sheet pulled up (LS9)."""
+    """128: the same, with the group's sheet pulled up: minutes listened, no goal (LS7a, LS9)."""
     return _live_page(True)
 
 
