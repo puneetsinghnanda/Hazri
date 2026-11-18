@@ -140,6 +140,15 @@ void main() {
       expect(manifest, isNot(contains('android.permission.USE_EXACT_ALARM')));
     });
 
+    test('portrait is not a required hardware feature (Play refused build 300)', () {
+      expect(manifest, contains('android:screenOrientation="portrait"'));
+      expect(
+        RegExp(r'<uses-feature\s+android:name="android.hardware.screen.portrait"\s+android:required="false"\s*/>')
+            .hasMatch(manifest),
+        isTrue,
+      );
+    });
+
     test('the advertising ID is removed from the merged manifest (PRD 13)', () {
       expect(manifest, contains('com.google.android.gms.permission.AD_ID'));
       expect(manifest, contains('tools:node="remove"'));
