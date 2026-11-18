@@ -882,8 +882,8 @@ ARCHITECTURE §3.2, §5.13, §6.7.*
 
 ### 4.22 Live sangat
 
-Designed 2026-11-17 and 2026-11-18 with the owner; **not built**. *Rules:
-`15-live-sangat.md`. Designs 125-129.*
+Designed 2026-11-17 and 2026-11-18 with the owner; **built 2026-11-18**.
+*Rules: `15-live-sangat.md`. Designs 125-129.*
 
 - **Three live groups, always on:** Naam Simran, Mool Mantar and Chaupai
   Sahib, each with the owner's own recording bundled in the app, played in a
@@ -896,9 +896,10 @@ Designed 2026-11-17 and 2026-11-18 with the owner; **not built**. *Rules:
   a sheet, **minutes listened** by the sangat and by you, today and this
   month, and the members. **No goal** (owner, 2026-11-18). Sit counts as Naam
   Simran.
-- **Waits for the owner's three recordings** before anything is built.
-- **Adds one line to §8** when built: a listening mark every five minutes
-  while a live page plays, with a profile only.
+- **The recordings**: the owner's Naam Simran and Mool Mantar, and the app's
+  own Chaupai Sahib, each looped with its seam crossfaded into the file.
+- **Adds two lines to §8**: a listening mark every five minutes while a live
+  page plays, and what joining shows, with a profile only.
 
 ---
 
@@ -1006,13 +1007,16 @@ sends nothing without a profile. The closed list for Phase 2:
 | **An FCM token** | With a profile **and** a group | The device's push token, its language and time zone |
 | **A quiz** | With a profile, when the reader starts a Gurmat Quiz online (added 2026-10-27) | The topic and the content version, then the five answers chosen; the server keeps the points under the profile |
 | **The leaderboards** | With a profile | Shown to every Hazri user on the boards a player has scored on: the profile's first name, the initial of its last name, its city and the points. Nothing else about the profile |
+| **A listening mark** | With a profile, every five minutes while a live group's page plays (added 2026-11-18, `15-live-sangat.md` LS15) | The group; the server takes the city from the profile. It counts the listener for ten minutes and adds five minutes to the sangat's. Minutes listened are counted on the phone and never sent |
+| **Joining a live group** | With a profile, when the reader joins one | Shown to everybody on that group's page: the first name, the initial of the last name, the city, and the minutes there this month (LS8, LS9) |
 | **Analytics** | Never in Phase 2 | Firebase Analytics ships with collection off (`setAnalyticsCollectionEnabled(false)` at start-up); the Settings switch is shown off and inert |
 
 **Never, in any phase:** an advertising ID (`AD_ID` removed from the merged
 manifest), ad personalisation, location (the city is chosen from a list),
 free text in analytics, anything sold or shared. The globe shows a city and
-a count, never a name; the quiz's leaderboards are the one place a name is
-shown beyond a group, and only a first name and an initial; a group's globe shows its members the same, counted
+a count, never a name; the quiz's leaderboards and a live group's page are
+the places a name is shown beyond a group, and only a first name and an
+initial; a group's globe shows its members the same, counted
 per city (`08-sangat.md` GG7); the Sangat shows a member's name only to the
 members of their group.
 
@@ -1034,7 +1038,9 @@ make a profile or join a group; what each of those sends; that analytics are
 not collected; that the globe shows your city and never your name. It is
 rewritten again in the change that ships the Gurmat Quiz: that with a
 profile, starting a quiz online sends its answers, and that with a profile your first name,
-initial, city and quiz points are on the leaderboards. In Phase 3
+initial, city and quiz points are on the leaderboards. It is rewritten
+again in the change that ships the live sangat (2026-11-18): the listening
+mark, and what joining a live group shows. In Phase 3
 it names analytics as a fourth category and points at the switch. It must
 match Google Play's Data safety form exactly. Since 2026-10-30 it ends with
 **Delete my account and data**, which opens the website's deletion request

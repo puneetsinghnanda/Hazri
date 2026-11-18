@@ -7377,6 +7377,252 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Could not open a browser. The page is hazri.me/delete-account'**
   String get privacyDeleteNoBrowser;
+
+  /// No description provided for @sangatTabDiscover.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get sangatTabDiscover;
+
+  /// No description provided for @sangatTabMine.
+  ///
+  /// In en, this message translates to:
+  /// **'My groups · {count}'**
+  String sangatTabMine(int count);
+
+  /// No description provided for @sangatRunningHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get sangatRunningHeading;
+
+  /// No description provided for @sangatOwnGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own group'**
+  String get sangatOwnGroup;
+
+  /// No description provided for @sangatOwnGroupSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Private, by invite only. Set one goal and an end date, and sit together.'**
+  String get sangatOwnGroupSub;
+
+  /// No description provided for @liveTag.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE'**
+  String get liveTag;
+
+  /// No description provided for @liveListening.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} listening'**
+  String liveListening(int count);
+
+  /// No description provided for @liveCities.
+  ///
+  /// In en, this message translates to:
+  /// **'Live sangat · always on · {count} cities'**
+  String liveCities(int count);
+
+  /// No description provided for @liveJoinedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} joined from {city}'**
+  String liveJoinedFrom(String name, String city);
+
+  /// No description provided for @liveJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get liveJoin;
+
+  /// No description provided for @liveJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get liveJoined;
+
+  /// No description provided for @liveJoinedListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined · listening'**
+  String get liveJoinedListening;
+
+  /// No description provided for @liveSwipeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe up for the group'**
+  String get liveSwipeUp;
+
+  /// No description provided for @liveYouAreIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Live, you are in'**
+  String get liveYouAreIn;
+
+  /// No description provided for @liveListen.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get liveListen;
+
+  /// No description provided for @liveYouListened.
+  ///
+  /// In en, this message translates to:
+  /// **'You listened {minutes} min today'**
+  String liveYouListened(int minutes);
+
+  /// No description provided for @liveMinutesListened.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes listened'**
+  String get liveMinutesListened;
+
+  /// No description provided for @liveSangatToday.
+  ///
+  /// In en, this message translates to:
+  /// **'The sangat today'**
+  String get liveSangatToday;
+
+  /// No description provided for @liveSangatMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'The sangat this month'**
+  String get liveSangatMonth;
+
+  /// No description provided for @liveYoursToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours today'**
+  String get liveYoursToday;
+
+  /// No description provided for @liveYoursMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours this month'**
+  String get liveYoursMonth;
+
+  /// No description provided for @liveWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the sangat…'**
+  String get liveWaiting;
+
+  /// No description provided for @liveKindMeditation.
+  ///
+  /// In en, this message translates to:
+  /// **'Meditation'**
+  String get liveKindMeditation;
+
+  /// No description provided for @liveKindJaap.
+  ///
+  /// In en, this message translates to:
+  /// **'Jaap'**
+  String get liveKindJaap;
+
+  /// No description provided for @liveMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members · {count}'**
+  String liveMembers(int count);
+
+  /// No description provided for @liveNoMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has joined yet.'**
+  String get liveNoMembers;
+
+  /// No description provided for @liveMinutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String liveMinutesShort(int minutes);
+
+  /// No description provided for @liveLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave {group}? You can still listen, and join again at any time.'**
+  String liveLeaveConfirm(String group);
+
+  /// No description provided for @liveJoinNeedsProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Make your Hazri card to join a live group. You can listen without one.'**
+  String get liveJoinNeedsProfile;
+
+  /// No description provided for @liveSit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sit'**
+  String get liveSit;
+
+  /// No description provided for @liveSitFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Sit for {minutes} min'**
+  String liveSitFor(int minutes);
+
+  /// No description provided for @liveSitCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'A sitting counts as Naam Simran, toward hazri and your goal. Listening alone counts toward nothing.'**
+  String get liveSitCounts;
+
+  /// No description provided for @liveSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get liveSound;
+
+  /// No description provided for @liveSoundOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound off'**
+  String get liveSoundOff;
+
+  /// No description provided for @liveSleepIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops in {minutes} min'**
+  String liveSleepIn(int minutes);
+
+  /// No description provided for @liveSleepOff.
+  ///
+  /// In en, this message translates to:
+  /// **'No sleep timer'**
+  String get liveSleepOff;
+
+  /// No description provided for @liveSittingLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'left'**
+  String get liveSittingLeft;
+
+  /// No description provided for @liveListeningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'listening'**
+  String get liveListeningLabel;
+
+  /// No description provided for @liveSatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'sat'**
+  String get liveSatLabel;
+
+  /// No description provided for @privacyProfileLive.
+  ///
+  /// In en, this message translates to:
+  /// **'While a live group plays, a listening mark every five minutes: the group, and your profile\'s city. Your minutes listened are counted on this phone'**
+  String get privacyProfileLive;
+
+  /// No description provided for @privacyProfileLiveJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'If you join a live group: your first name, the first letter of your last name and your city, shown to everybody on its page as having joined, with your minutes there this month'**
+  String get privacyProfileLiveJoin;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

@@ -57,6 +57,13 @@ abstract interface class PaathPlayer {
 
   Future<void> setQueue(List<PaathTrack> tracks, {int startIndex, Duration? at});
 
+  /// Loads [track] alone, looped without a gap and parked at [at], for a
+  /// live group (15-live-sangat LS6). A loop is never reported complete.
+  Future<void> setLoop(PaathTrack track, {required Duration at});
+
+  /// True while what is loaded is a live group's loop.
+  bool get isLooping;
+
   Future<void> play();
 
   Future<void> pause();

@@ -264,6 +264,17 @@ utterance, not a timer.
 It reads the shipped file rather than the master, so what was measured is
 exactly what will play.
 
+## The live sangat loops
+
+`assets/live/*.m4a` are the three live groups' recordings
+(`docs/features/15-live-sangat.md` LS1b), each with its end crossfaded into
+its start so it repeats without a seam. `tools/live/build_loops.py` makes
+them; Chaupai Sahib's comes from the bundled `assets/audio/chaupai-sahib.m4a`,
+the other two from the owner's masters (`naam-simran.mp3`,
+`mool-mantar.mp3`, given 2026-11-18), which belong on the `audio-masters`
+release with the others. After a rebuild, the loop lengths in
+`lib/features/live/domain/live_group.dart` must match `ffprobe`'s.
+
 ## Still to do
 
 Line timings are marked `"verified": false`. The PRD requires a human to check

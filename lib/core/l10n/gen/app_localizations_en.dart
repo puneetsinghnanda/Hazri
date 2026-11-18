@@ -4235,4 +4235,152 @@ class LEn extends L {
   @override
   String get privacyDeleteNoBrowser =>
       'Could not open a browser. The page is hazri.me/delete-account';
+
+  @override
+  String get sangatTabDiscover => 'Discover';
+
+  @override
+  String sangatTabMine(int count) {
+    return 'My groups · $count';
+  }
+
+  @override
+  String get sangatRunningHeading => 'Running';
+
+  @override
+  String get sangatOwnGroup => 'Your own group';
+
+  @override
+  String get sangatOwnGroupSub =>
+      'Private, by invite only. Set one goal and an end date, and sit together.';
+
+  @override
+  String get liveTag => 'LIVE';
+
+  @override
+  String liveListening(int count) {
+    return '$count listening';
+  }
+
+  @override
+  String liveCities(int count) {
+    return 'Live sangat · always on · $count cities';
+  }
+
+  @override
+  String liveJoinedFrom(String name, String city) {
+    return '$name joined from $city';
+  }
+
+  @override
+  String get liveJoin => 'Join';
+
+  @override
+  String get liveJoined => 'Joined';
+
+  @override
+  String get liveJoinedListening => 'Joined · listening';
+
+  @override
+  String get liveSwipeUp => 'Swipe up for the group';
+
+  @override
+  String get liveYouAreIn => 'Live, you are in';
+
+  @override
+  String get liveListen => 'Listen';
+
+  @override
+  String liveYouListened(int minutes) {
+    return 'You listened $minutes min today';
+  }
+
+  @override
+  String get liveMinutesListened => 'Minutes listened';
+
+  @override
+  String get liveSangatToday => 'The sangat today';
+
+  @override
+  String get liveSangatMonth => 'The sangat this month';
+
+  @override
+  String get liveYoursToday => 'Yours today';
+
+  @override
+  String get liveYoursMonth => 'Yours this month';
+
+  @override
+  String get liveWaiting => 'Waiting for the sangat…';
+
+  @override
+  String get liveKindMeditation => 'Meditation';
+
+  @override
+  String get liveKindJaap => 'Jaap';
+
+  @override
+  String liveMembers(int count) {
+    return 'Members · $count';
+  }
+
+  @override
+  String get liveNoMembers => 'Nobody has joined yet.';
+
+  @override
+  String liveMinutesShort(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String liveLeaveConfirm(String group) {
+    return 'Leave $group? You can still listen, and join again at any time.';
+  }
+
+  @override
+  String get liveJoinNeedsProfile =>
+      'Make your Hazri card to join a live group. You can listen without one.';
+
+  @override
+  String get liveSit => 'Sit';
+
+  @override
+  String liveSitFor(int minutes) {
+    return 'Sit for $minutes min';
+  }
+
+  @override
+  String get liveSitCounts =>
+      'A sitting counts as Naam Simran, toward hazri and your goal. Listening alone counts toward nothing.';
+
+  @override
+  String get liveSound => 'Sound';
+
+  @override
+  String get liveSoundOff => 'Sound off';
+
+  @override
+  String liveSleepIn(int minutes) {
+    return 'Stops in $minutes min';
+  }
+
+  @override
+  String get liveSleepOff => 'No sleep timer';
+
+  @override
+  String get liveSittingLeft => 'left';
+
+  @override
+  String get liveListeningLabel => 'listening';
+
+  @override
+  String get liveSatLabel => 'sat';
+
+  @override
+  String get privacyProfileLive =>
+      'While a live group plays, a listening mark every five minutes: the group, and your profile\'s city. Your minutes listened are counted on this phone';
+
+  @override
+  String get privacyProfileLiveJoin =>
+      'If you join a live group: your first name, the first letter of your last name and your city, shown to everybody on its page as having joined, with your minutes there this month';
 }

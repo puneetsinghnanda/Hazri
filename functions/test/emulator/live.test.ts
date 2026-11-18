@@ -48,6 +48,7 @@ describeEmu('live sangat', () => {
     expect((await h.as('u1').post('/api/v1/live/naam-simran/listen')).body.result).toBe('COUNTED');
     const g = await group('u1', 'naam-simran');
     expect(g).toMatchObject({ listening: 2, cities: 2, minutesToday: 15, minutesMonth: 15 });
+    expect([...(g.cityIds as string[])].sort()).toEqual(['amritsar', 'ludhiana']);
     // A member's own minutes this month: u1's two marks.
     expect(g.myMinutesMonth).toBe(10);
     expect((await group('u2', 'naam-simran')).joined).toBe(false);

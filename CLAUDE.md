@@ -45,7 +45,10 @@ git history and is not a reference.
    profile the person chooses to make** (name and city; email and phone if
    given; offered as the last step of setup with Not now since 2026-11-18)
    with its verification and restore mail; with a profile, the **daily
-   attendance mark** and the **weekly backup**; for a Sangat member, their
+   attendance mark**, the **weekly backup** and, while a live group plays,
+   a **listening mark** every five minutes (on joining one, the first name,
+   initial and city show on its page, `15-live-sangat.md` LS8, LS15); for a
+   Sangat member, their
    paath toward their groups and an FCM token; with a profile, a **Gurmat
    Quiz** started online (its topic and the five answers), and their first
    name, initial, city and quiz points on the leaderboards. Without a profile
@@ -103,12 +106,19 @@ for nothing else, and no question quotes Gurbani. **Built 2026-10-27**
 `quizScores` indexes, created the three TTL policies, and earned the first
 points. Its screens are designs 113-119.
 
-**Live sangat was designed on 2026-11-17 and 2026-11-18 and is not built**
-(`docs/features/15-live-sangat.md`, PRD §4.22, designs 125-129): three
-always-on groups with the owner's recordings bundled and looped at the same
-second on every phone, real listening counts, and the Sangat tab as two tabs.
-It adds a listening mark to PRD §8 when built, and waits for the owner's
-recordings and go-ahead.
+**Live sangat was designed on 2026-11-17 and 2026-11-18 and built on
+2026-11-18** (`docs/features/15-live-sangat.md`, PRD §4.22, designs
+125-129): three always-on groups (Naam Simran and Mool Mantar from the
+owner's recordings, Chaupai Sahib from the app's own recitation) bundled in
+`assets/live/` with the seam crossfaded into each file by
+`tools/live/build_loops.py`, and played on repeat at `(seconds since 00:00
+IST) mod length` on every phone; real listening counts and joins from
+`functions/src/routes/live.ts` (ARCHITECTURE §5.14, §6.8); minutes listened
+counted on the phone (`user.db` schema 8, `live_listening`); the Sangat tab
+as two tabs, Discover and My groups. It added the listening mark and "joined
+from" to PRD §8 and the privacy screen. **It needs `firebase deploy --only
+functions` before an APK with it goes out**, or every live page says it is
+waiting. The masters are not in git.
 
 **The 23-screen Phase 3 design set is superseded — do not merge it.**
 `claude/eloquent-edison-qsjll0` carries 46 files, `design/html/62-*` to
@@ -225,7 +235,7 @@ each:
 | Today's order (2026-11-09) | 113 | The Sikh calendar above "Did you know?", Today's Vichar under it, then the quiz card and the saakhis (`05-today.md` §5.3) |
 | Vichar library (2026-11-09) | 122 | Option 1, from the owner's mock-up: the dawn header with ੴ, search, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis), each entry an article card with a kind-and-date pill, headline, three lines, minutes and a picture by kind of day from `assets/vichar/` (replaces 43, `docs/vichar-content.md` Library) |
 | Simran counts (2026-11-09) | 123, 124 | Option C of four: live today and here today as two figures, green and blue (here today keeps its meaning, everyone counted who has not opened the app today); during a sitting both stay, smaller, either side of the countdown (`07-simran.md` CT3; replace 88 and 89) |
-| Live sangat (2026-11-17, 2026-11-18) | 125-129 | **Designed, not built.** The Sangat tab as two tabs, Discover first and My groups (the default once you are in a group, with Create and Join at the top); three live groups (Naam Simran, Mool Mantar, Chaupai Sahib) as option B's tall cards with their own scenes (the globe, ੴ among the stars, the jot in the shield, drawn by `tools/design/live_scenes.js`); the live page option A with the group in a sheet; a sitting option D (`15-live-sangat.md`; replace 102) |
+| Live sangat (2026-11-17, 2026-11-18) | 125-129 | **Built 2026-11-18.** The Sangat tab as two tabs, Discover first and My groups (the default once you are in a group, with Create and Join at the top); three live groups (Naam Simran, Mool Mantar, Chaupai Sahib) as option B's tall cards with their own scenes (the globe, ੴ among the stars, the jot in the shield, drawn by `tools/design/live_scenes.js`); the live page option A with the group in a sheet; a sitting option D (`15-live-sangat.md`; replace 102) |
 | First-run profile (2026-11-18) | 130, 131 | Option C of four: the profile is the last step of setup, Make your Hazri card, the identity card filling in as you type, email optional, Not now; Welcome, {name} after it (`03-first-run.md` F10) |
 | Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A, with Know more and Take the quiz since 2026-11-18 (option B), and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 

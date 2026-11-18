@@ -568,6 +568,20 @@ empty. Kept on the phone only: it is not in the weekly backup, because
 nothing about a saakhi is counted (SK7).
 
 
+### 3.6b `user.db`: `live_listening` (schema 8, 2026-11-18)
+
+| Field | Type | Nullable | Rule |
+| --- | --- | --- | --- |
+| `groupId` | TEXT (PK with `localDate`) | no | A live group id: `naam-simran`, `mool-mantar`, `chaupai-sahib` |
+| `localDate` | TEXT | no | The phone's local day, `YYYY-MM-DD` |
+| `seconds` | INTEGER | no | Seconds the group's loop played that day, added every 15 s while it sounds |
+
+Minutes listened, yours (`15-live-sangat.md` LS7a): written straight to the
+table by `UserRepository.addLiveSeconds`, without `onChanged`, because
+listening is not hazri, a goal or a badge and nothing has to be re-planned.
+Migration 7 → 8 creates it empty. Kept on the phone only: never sent and not
+in the weekly backup.
+
 ### 3.7 `user.db`: the other tables, and the schema versions
 
 Drift, file `getApplicationDocumentsDirectory()/user.db`. Version 4 on the
@@ -589,6 +603,8 @@ branch today. Besides the tables of §3.3–3.6:
 | 5 | `goals` rebuilt and `goalItems` added; `completions` and `simranSessions` gain `source`, `updatedAt`, `deletedAt`; `goalTicks` folded into completions and sittings and dropped | `04-goals.md` §5.8 (here §3.3) |
 | 5 | `sangatOutbox` | `08-sangat.md` §5.1 (here §3.5) |
 | 6 | `badges` | `12-badges.md` §4.1 (here §3.6) |
+| 7 | `saakhi_favourites` | `13-saakhi.md` SK12 (here §3.6a) |
+| 8 | `live_listening` | `15-live-sangat.md` LS7a (here §3.6b) |
 
 Every migration runs in one transaction and has a test that opens a database
 of the previous version with real-shaped rows and checks them afterwards.
@@ -618,6 +634,7 @@ added. The *Phase 2* column is the target.
 | `goal_complete_sheet_shown_on` | date | — | Kept (`04-goals.md` CE1) |
 | `notif_on_amrit_vela`, `notif_on_goal_reminders`, `notif_on_sikh_calendar`, `notif_on_hazri_nudge`, `notif_on_sangat` | bool | true | **New.** One switch per kind, keyed by its channel (`02-notifications.md` CM7) |
 | `hazri_banner_closed_v1` | String | — | **New** (2026-10-10). The local date the marked hazri banner was closed on (`05-today.md` T1a) |
+| `live_cache_v1` | String (JSON) | — | **New** (2026-11-18). The last `GET /live` reply (§6.8), shown first on the Sangat tab and a live page (`15-live-sangat.md` LS7) |
 | `city_id` | String | `new_delhi` | **Removed.** One city, the profile's; none without a profile (`03-first-run.md` CY1–CY3) |
 | `simran_minutes` | int | 5 | **Removed.** The sitting is 5 minutes or the goal item's minutes (`07-simran.md` S-7) |
 | `exact_alarm_asked` | bool | false | **Removed.** Exact alarms are never asked (`02-notifications.md` DP2) |
@@ -764,6 +781,11 @@ collection: camelCase fields, server timestamps, rules deny all
 | `quizPlayers/{memberKey}` | A player's own totals, recent questions and daily count | §5.13 |
 | `quizScores/{boardId}_{memberKey}` | A player's score on one board (a period and a topic, or everyone) | §5.13 |
 | `quizBoards/{boardId}` | One board's top twenty, rebuilt at most every 2 minutes | §5.13 |
+| `liveMembers/{groupId}_{profileId}` | A member of a live group: name as shown, city, joined at, minutes per month | §5.14 |
+| `liveListens/{groupId}_{profileId}` | The last listening mark: group, city, `lastAt` | §5.14 |
+| `liveMinutes/{groupId}_{period}_{shard}` | The sangat's minutes for a day or a month, in ten shards | §5.14 |
+| `liveGroups/{groupId}` | The last five joins, for the feed | §5.14 |
+| `liveSnapshot/current` | What `GET /live` answers, rebuilt at most every 2 minutes | §5.14 |
 
 **Retired** (in the earlier design, deployed for test data only, and not to be
 used): `users/{uid}` and its `diary`, the old `groups` member shape with
@@ -1354,6 +1376,33 @@ For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
   `quizPlayers/p_{profileId}` and that member's scores on the current
   boards.
 
+### 5.14 Live sangat (`15-live-sangat.md`, 2026-11-18)
+
+Three always-on groups whose recordings are bundled in the app
+(`assets/live/`, built by `tools/live/build_loops.py` with the seam
+crossfaded into the file) and played at `(seconds since 00:00 IST) mod
+length` on every phone (LS6). The server streams nothing: it keeps who
+joined, who is listening and the minutes. The group ids are fixed in
+`functions/src/routes/live.ts` (`LIVE_GROUPS`) and in
+`lib/features/live/domain/live_group.dart`.
+
+| Collection | Fields | Written by |
+|---|---|---|
+| `liveMembers/{g}_{profileId}` | `groupId`, `profileId`, `name` (first name and initial), `cityId`, `joinedAt`, `minutes: { "YYYY-MM": n }` | Join (create), leave (delete), a counted mark (adds 5 to the month) |
+| `liveListens/{g}_{profileId}` | `groupId`, `cityId`, `lastAt` | Every mark |
+| `liveMinutes/{g}_{period}_{0-9}` | `groupId`, `period` (an IST day or month), `minutes` | A counted mark adds 5 to a random shard of the day and of the month |
+| `liveGroups/{g}` | `joins: [ { name, cityId, at } ]`, newest first, at most 5 | Join |
+| `liveSnapshot/current` | `builtAt`, `groups: { g: { listening, cities, cityIds (≤ 60), members, minutesToday, minutesMonth, joins (3), memberRows (20, A to Z) } }` | `GET /live`, when older than 120 s |
+
+A mark counts the listener for ten minutes (`LIVE_WINDOW_SECONDS`); a mark
+less than four minutes after the last refreshes `lastAt` and adds no
+minutes. **No composite index**: the snapshot reads `liveListens` with one
+range on `lastAt` and `liveMembers` with one equality on `groupId`.
+
+**Cost.** A thousand listeners: 12 marks an hour each, about 3 writes a
+mark, roughly 300,000 writes a day (LS16). Reading is one document per call
+while the snapshot is fresh.
+
 ## 6. The API
 
 One HTTPS Cloud Function, `api` (Express, `asia-south1`), reached through the
@@ -1765,6 +1814,22 @@ writes, plus one `count()` for `placeToday`. A board: 1 read while it is
 fresh; a rebuild is one query of 20 and one `count()`; the caller's place is
 1 read and one `count()`. `/me`: 1 read and three `count()`s. A thousand
 players taking three quizzes a day is about 30,000 writes a day.
+
+### 6.8 Live sangat (`15-live-sangat.md`)
+
+Under `/api/v1/live`, following `01-accounts.md` §6.0. Writes **need a
+profile** and answer `404 NO_PROFILE` without one; the app sends nothing then
+(LS15, S-6). An unknown group answers `404 NOT_FOUND`.
+
+| Method and path | Body | Does |
+|---|---|---|
+| `GET /live` | — | `{ builtAt, groups: [ { id, listening, cities, cityIds, members, minutesToday, minutesMonth, joins, memberRows, joined, myMinutesMonth } ] }`, the three groups in order from the snapshot (§5.14); `joined` and `myMinutesMonth` are the caller's (false and null without a profile) |
+| `POST /live/{id}/join` | — | Idempotent. Creates the member and puts the join at the head of the feed. `{ result: "JOINED" }` |
+| `POST /live/{id}/leave` | — | Deletes the member. `{ result: "LEFT" }` |
+| `POST /live/{id}/listen` | — | The listening mark, every five minutes while the page plays. `{ result: "COUNTED" \| "TOO_SOON", nextInSeconds: 300 }` |
+
+The app keeps the last `GET /live` in preferences under `live_cache_v1` and
+shows it at once, saying it is waiting when the refresh fails (LS7).
 
 ## 7. Scheduled and triggered Functions
 

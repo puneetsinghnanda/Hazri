@@ -52,6 +52,11 @@ void main() {
     await settle(tester);
   }
 
+  Future<void> showTab(WidgetTester tester, {required bool mine}) async {
+    await tester.tap(mine ? find.textContaining('My groups') : find.text(l.sangatTabDiscover));
+    await settle(tester);
+  }
+
   setUp(() {
     server = FakeServer();
     server.on('GET', '/profile', 404, errorJson('NO_PROFILE'));
@@ -65,9 +70,10 @@ void main() {
   testWidgets('S-1: no profile → built-in groups with Join', (tester) async {
     await boot(tester, const SangatScreen());
     expect(find.text('Simran Sangat'), findsOneWidget);
-    expect(find.text(l.sangatJoin), findsOneWidget);
-    expect(find.text(l.sangatNoGroups), findsOneWidget);
+    expect(find.descendant(of: find.byType(BuiltInGroupRow), matching: find.text(l.sangatJoin)), findsOneWidget);
     expect(find.text(l.sangatCreate), findsOneWidget);
+    await showTab(tester, mine: true);
+    expect(find.text(l.sangatNoGroups), findsOneWidget);
   });
 
   testWidgets('SG-1: a Simran goal reads in minutes of Naam Simran', (tester) async {
@@ -75,10 +81,12 @@ void main() {
       'groups': [builtIn(member: true)],
     });
     await boot(tester, const SangatScreen());
-    // The built-in row's goal line, and the tile's total of target.
-    expect(find.textContaining('1000 minutes of Naam Simran by'), findsOneWidget);
+    // The tile's total of target on My groups, and the built-in row's goal
+    // line on Discover.
     expect(find.text('250 of 1,000 min'), findsOneWidget);
     expect(find.text('25%'), findsOneWidget);
+    await showTab(tester, mine: false);
+    expect(find.textContaining('1000 minutes of Naam Simran by'), findsOneWidget);
     expect(find.textContaining('sittings'), findsNothing);
   });
 
@@ -92,8 +100,9 @@ void main() {
     expect(find.descendant(of: row, matching: find.text('120 members')), findsOneWidget);
   });
 
-  testWidgets('design 102: Create group and Join group sit side by side', (tester) async {
+  testWidgets('design 126: Create group and Join group sit side by side at the top of My groups', (tester) async {
     await boot(tester, const SangatScreen());
+    await showTab(tester, mine: true);
     final create = tester.getRect(find.widgetWithText(SangatActionTile, l.sangatCreate));
     final join = tester.getRect(find.widgetWithText(SangatActionTile, l.sangatJoinGroupTile));
     expect(create.top, closeTo(join.top, 0.5));
@@ -169,7 +178,7 @@ void main() {
     server.on('GET', '/sangat/groups/built-in', 200, {
       'groups': [builtIn(member: true)],
     });
-    await tester.tap(find.text(l.sangatJoin));
+    await tester.tap(find.descendant(of: find.byType(BuiltInGroupRow), matching: find.text(l.sangatJoin)));
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 150)));
     await settle(tester);
     expect(server.requests, contains('POST /sangat/groups/simran/join'));
@@ -184,6 +193,7 @@ void main() {
       'groups': [builtIn(member: true)],
     });
     await boot(tester, const SangatScreen());
+    await showTab(tester, mine: false);
     expect(find.text(l.sangatLeave), findsNothing);
     server.requests.clear();
     await tester.tap(find.text(l.sangatJoinedChip));

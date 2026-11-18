@@ -4210,4 +4210,152 @@ class LHi extends L {
   @override
   String get privacyDeleteNoBrowser =>
       'ब्राउज़र नहीं खुल सका। पेज है hazri.me/delete-account';
+
+  @override
+  String get sangatTabDiscover => 'खोजें';
+
+  @override
+  String sangatTabMine(int count) {
+    return 'मेरे समूह · $count';
+  }
+
+  @override
+  String get sangatRunningHeading => 'चल रहे';
+
+  @override
+  String get sangatOwnGroup => 'अपना समूह';
+
+  @override
+  String get sangatOwnGroupSub =>
+      'निजी, केवल न्योते से। एक लक्ष्य और अंतिम तारीख़ रखें, और साथ बैठें।';
+
+  @override
+  String get liveTag => 'लाइव';
+
+  @override
+  String liveListening(int count) {
+    return '$count सुन रहे';
+  }
+
+  @override
+  String liveCities(int count) {
+    return 'लाइव संगत · सदा चालू · $count शहर';
+  }
+
+  @override
+  String liveJoinedFrom(String name, String city) {
+    return '$name $city से जुड़े';
+  }
+
+  @override
+  String get liveJoin => 'जुड़ें';
+
+  @override
+  String get liveJoined => 'जुड़े हुए';
+
+  @override
+  String get liveJoinedListening => 'जुड़े हुए · सुन रहे';
+
+  @override
+  String get liveSwipeUp => 'समूह के लिए ऊपर स्वाइप करें';
+
+  @override
+  String get liveYouAreIn => 'लाइव, जिनमें आप हैं';
+
+  @override
+  String get liveListen => 'सुनें';
+
+  @override
+  String liveYouListened(int minutes) {
+    return 'आज आपने $minutes मिनट सुना';
+  }
+
+  @override
+  String get liveMinutesListened => 'सुने गए मिनट';
+
+  @override
+  String get liveSangatToday => 'आज संगत';
+
+  @override
+  String get liveSangatMonth => 'इस महीने संगत';
+
+  @override
+  String get liveYoursToday => 'आपके आज';
+
+  @override
+  String get liveYoursMonth => 'आपके इस महीने';
+
+  @override
+  String get liveWaiting => 'संगत की प्रतीक्षा…';
+
+  @override
+  String get liveKindMeditation => 'ध्यान';
+
+  @override
+  String get liveKindJaap => 'जाप';
+
+  @override
+  String liveMembers(int count) {
+    return 'सदस्य · $count';
+  }
+
+  @override
+  String get liveNoMembers => 'अभी कोई नहीं जुड़ा।';
+
+  @override
+  String liveMinutesShort(int minutes) {
+    return '$minutes मिनट';
+  }
+
+  @override
+  String liveLeaveConfirm(String group) {
+    return '$group छोड़ना है? आप फिर भी सुन सकते हैं, और कभी भी फिर से जुड़ सकते हैं।';
+  }
+
+  @override
+  String get liveJoinNeedsProfile =>
+      'लाइव समूह से जुड़ने के लिए अपना हाज़री कार्ड बनाएँ। सुनने के लिए इसकी ज़रूरत नहीं।';
+
+  @override
+  String get liveSit => 'बैठें';
+
+  @override
+  String liveSitFor(int minutes) {
+    return '$minutes मिनट बैठें';
+  }
+
+  @override
+  String get liveSitCounts =>
+      'बैठना नाम सिमरन के रूप में गिना जाता है, हाज़री और आपके लक्ष्य की ओर। केवल सुनना किसी में नहीं गिना जाता।';
+
+  @override
+  String get liveSound => 'आवाज़';
+
+  @override
+  String get liveSoundOff => 'आवाज़ बंद';
+
+  @override
+  String liveSleepIn(int minutes) {
+    return '$minutes मिनट में रुकेगा';
+  }
+
+  @override
+  String get liveSleepOff => 'कोई स्लीप टाइमर नहीं';
+
+  @override
+  String get liveSittingLeft => 'बाकी';
+
+  @override
+  String get liveListeningLabel => 'सुन रहे';
+
+  @override
+  String get liveSatLabel => 'बैठे';
+
+  @override
+  String get privacyProfileLive =>
+      'जब कोई लाइव समूह चलता है, हर पाँच मिनट सुनने का निशान: समूह, और आपकी प्रोफ़ाइल का शहर। आपके सुने मिनट इस फ़ोन पर गिने जाते हैं';
+
+  @override
+  String get privacyProfileLiveJoin =>
+      'अगर आप लाइव समूह से जुड़ते हैं: आपका पहला नाम, आख़िरी नाम का पहला अक्षर और शहर, उसके पन्ने पर सबको जुड़े हुए के रूप में दिखते हैं, इस महीने वहाँ आपके मिनटों के साथ';
 }

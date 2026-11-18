@@ -50,6 +50,9 @@ class PrivacyScreen extends ConsumerWidget {
           // 14-quiz.md QZ14, QZ27: the quiz with a profile, and the boards.
           l.privacyProfileQuiz,
           l.privacyProfileLeaderboard,
+          // 15-live-sangat LS15, LS8: the listening mark, and joining.
+          l.privacyProfileLive,
+          l.privacyProfileLiveJoin,
         ]),
         _Section(title: l.privacyWithGroup, icon: HazriIconData.sangat, items: [
           l.privacyGroupCounts,

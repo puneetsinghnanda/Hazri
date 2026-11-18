@@ -4217,4 +4217,152 @@ class LPa extends L {
   @override
   String get privacyDeleteNoBrowser =>
       'ਬ੍ਰਾਊਜ਼ਰ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕਿਆ। ਪੰਨਾ ਹੈ hazri.me/delete-account';
+
+  @override
+  String get sangatTabDiscover => 'ਖੋਜੋ';
+
+  @override
+  String sangatTabMine(int count) {
+    return 'ਮੇਰੇ ਗਰੁੱਪ · $count';
+  }
+
+  @override
+  String get sangatRunningHeading => 'ਚੱਲ ਰਹੇ';
+
+  @override
+  String get sangatOwnGroup => 'ਆਪਣਾ ਗਰੁੱਪ';
+
+  @override
+  String get sangatOwnGroupSub =>
+      'ਨਿੱਜੀ, ਸਿਰਫ਼ ਸੱਦੇ ਨਾਲ। ਇੱਕ ਟੀਚਾ ਅਤੇ ਅੰਤ ਦੀ ਤਾਰੀਖ਼ ਰੱਖੋ, ਅਤੇ ਇਕੱਠੇ ਬੈਠੋ।';
+
+  @override
+  String get liveTag => 'ਲਾਈਵ';
+
+  @override
+  String liveListening(int count) {
+    return '$count ਸੁਣ ਰਹੇ';
+  }
+
+  @override
+  String liveCities(int count) {
+    return 'ਲਾਈਵ ਸੰਗਤ · ਸਦਾ ਚੱਲਦੀ · $count ਸ਼ਹਿਰ';
+  }
+
+  @override
+  String liveJoinedFrom(String name, String city) {
+    return '$name $city ਤੋਂ ਜੁੜੇ';
+  }
+
+  @override
+  String get liveJoin => 'ਜੁੜੋ';
+
+  @override
+  String get liveJoined => 'ਜੁੜੇ ਹੋਏ';
+
+  @override
+  String get liveJoinedListening => 'ਜੁੜੇ ਹੋਏ · ਸੁਣ ਰਹੇ';
+
+  @override
+  String get liveSwipeUp => 'ਗਰੁੱਪ ਲਈ ਉੱਪਰ ਸਵਾਈਪ ਕਰੋ';
+
+  @override
+  String get liveYouAreIn => 'ਲਾਈਵ, ਜਿਨ੍ਹਾਂ ਵਿੱਚ ਤੁਸੀਂ ਹੋ';
+
+  @override
+  String get liveListen => 'ਸੁਣੋ';
+
+  @override
+  String liveYouListened(int minutes) {
+    return 'ਅੱਜ ਤੁਸੀਂ $minutes ਮਿੰਟ ਸੁਣਿਆ';
+  }
+
+  @override
+  String get liveMinutesListened => 'ਸੁਣੇ ਮਿੰਟ';
+
+  @override
+  String get liveSangatToday => 'ਅੱਜ ਸੰਗਤ';
+
+  @override
+  String get liveSangatMonth => 'ਇਸ ਮਹੀਨੇ ਸੰਗਤ';
+
+  @override
+  String get liveYoursToday => 'ਤੁਹਾਡੇ ਅੱਜ';
+
+  @override
+  String get liveYoursMonth => 'ਤੁਹਾਡੇ ਇਸ ਮਹੀਨੇ';
+
+  @override
+  String get liveWaiting => 'ਸੰਗਤ ਦੀ ਉਡੀਕ…';
+
+  @override
+  String get liveKindMeditation => 'ਧਿਆਨ';
+
+  @override
+  String get liveKindJaap => 'ਜਾਪ';
+
+  @override
+  String liveMembers(int count) {
+    return 'ਮੈਂਬਰ · $count';
+  }
+
+  @override
+  String get liveNoMembers => 'ਹਾਲੇ ਕੋਈ ਨਹੀਂ ਜੁੜਿਆ।';
+
+  @override
+  String liveMinutesShort(int minutes) {
+    return '$minutes ਮਿੰਟ';
+  }
+
+  @override
+  String liveLeaveConfirm(String group) {
+    return '$group ਛੱਡਣਾ ਹੈ? ਤੁਸੀਂ ਫਿਰ ਵੀ ਸੁਣ ਸਕਦੇ ਹੋ, ਅਤੇ ਕਦੇ ਵੀ ਮੁੜ ਜੁੜ ਸਕਦੇ ਹੋ।';
+  }
+
+  @override
+  String get liveJoinNeedsProfile =>
+      'ਲਾਈਵ ਗਰੁੱਪ ਨਾਲ ਜੁੜਨ ਲਈ ਆਪਣਾ ਹਾਜ਼ਰੀ ਕਾਰਡ ਬਣਾਓ। ਸੁਣਨ ਲਈ ਇਸ ਦੀ ਲੋੜ ਨਹੀਂ।';
+
+  @override
+  String get liveSit => 'ਬੈਠੋ';
+
+  @override
+  String liveSitFor(int minutes) {
+    return '$minutes ਮਿੰਟ ਬੈਠੋ';
+  }
+
+  @override
+  String get liveSitCounts =>
+      'ਬੈਠਣਾ ਨਾਮ ਸਿਮਰਨ ਵਜੋਂ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ, ਹਾਜ਼ਰੀ ਅਤੇ ਤੁਹਾਡੇ ਟੀਚੇ ਵੱਲ। ਸਿਰਫ਼ ਸੁਣਨਾ ਕਿਸੇ ਵੱਲ ਨਹੀਂ ਗਿਣਿਆ ਜਾਂਦਾ।';
+
+  @override
+  String get liveSound => 'ਆਵਾਜ਼';
+
+  @override
+  String get liveSoundOff => 'ਆਵਾਜ਼ ਬੰਦ';
+
+  @override
+  String liveSleepIn(int minutes) {
+    return '$minutes ਮਿੰਟ ਵਿੱਚ ਰੁਕੇਗਾ';
+  }
+
+  @override
+  String get liveSleepOff => 'ਕੋਈ ਸਲੀਪ ਟਾਈਮਰ ਨਹੀਂ';
+
+  @override
+  String get liveSittingLeft => 'ਬਾਕੀ';
+
+  @override
+  String get liveListeningLabel => 'ਸੁਣ ਰਹੇ';
+
+  @override
+  String get liveSatLabel => 'ਬੈਠੇ';
+
+  @override
+  String get privacyProfileLive =>
+      'ਜਦੋਂ ਕੋਈ ਲਾਈਵ ਗਰੁੱਪ ਚੱਲਦਾ ਹੈ, ਹਰ ਪੰਜ ਮਿੰਟ ਸੁਣਨ ਦਾ ਨਿਸ਼ਾਨ: ਗਰੁੱਪ, ਅਤੇ ਤੁਹਾਡੀ ਪ੍ਰੋਫ਼ਾਈਲ ਦਾ ਸ਼ਹਿਰ। ਤੁਹਾਡੇ ਸੁਣੇ ਮਿੰਟ ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਗਿਣੇ ਜਾਂਦੇ ਹਨ';
+
+  @override
+  String get privacyProfileLiveJoin =>
+      'ਜੇ ਤੁਸੀਂ ਲਾਈਵ ਗਰੁੱਪ ਨਾਲ ਜੁੜਦੇ ਹੋ: ਤੁਹਾਡਾ ਪਹਿਲਾ ਨਾਮ, ਆਖ਼ਰੀ ਨਾਮ ਦਾ ਪਹਿਲਾ ਅੱਖਰ ਅਤੇ ਸ਼ਹਿਰ, ਇਸ ਦੇ ਪੰਨੇ ਉੱਤੇ ਸਭ ਨੂੰ ਜੁੜੇ ਵਜੋਂ ਦਿਸਦੇ ਹਨ, ਇਸ ਮਹੀਨੇ ਉੱਥੇ ਤੁਹਾਡੇ ਮਿੰਟਾਂ ਨਾਲ';
 }

@@ -3,9 +3,11 @@
 Written 2026-11-18 with the owner, after five rounds of design between
 2026-11-17 and 2026-11-18. The screens are designs 125-129, drawn by
 `tools/design/build_phase2.py`; the three scenes are
-`tools/design/live_scenes.js`. **Designed, not built**: nothing here is in the
-app until the owner says to build it, and the privacy change in §8 ships in the
-same release as the feature or not at all.
+`tools/design/live_scenes.js`. **Built 2026-11-18**, once the owner's
+recordings arrived: `lib/features/live/` (the scenes ported to
+`live_scene.dart`), `functions/src/routes/live.ts`, the loops in
+`assets/live/` from `tools/live/build_loops.py`, and the privacy change of
+§8 in the same release.
 
 This file also changes the Sangat tab (`08-sangat.md` §8.1): it becomes two
 tabs, Discover and My groups (LS2-LS4).
@@ -27,13 +29,21 @@ anybody, not edited in the admin website, and never end:
 
 | Group | Kind | Recitation | Scene |
 |---|---|---|---|
-| Naam Simran | Meditation | the owner's 30-second ਵਾਹਿਗੁਰੂ clip | **The globe**: the world turning, a thread of light from every city with a listener up to ਵਾਹਿਗੁਰੂ |
-| Mool Mantar | Meditation | the owner's Mool Mantar clip | **ੴ among the stars**: thirteen stars join into a circle round ੴ through the loop and let go |
-| Chaupai Sahib | Jaap | the owner's Chaupai Sahib clip | **The jot in the shield**: a diya's flame under a turning dome of light |
+| Naam Simran | Meditation | the owner's ਵਾਹਿਗੁਰੂ recording (`Waheguru_Naam_Simran.mp3`), 0-59 s, looped at 56 s | **The globe**: the world turning, a thread of light from every city with a listener up to ਵਾਹਿਗੁਰੂ |
+| Mool Mantar | Meditation | the owner's Mool Mantar recording (`Mool_Mantra_Final.mp3`), whole, looped at 128.65 s | **ੴ among the stars**: thirteen stars join into a circle round ੴ through the loop and let go |
+| Chaupai Sahib | Jaap | the app's own Chaupai Sahib recitation (`assets/audio/chaupai-sahib.m4a`, owner 2026-11-18), 0.45-211 s, looped at 208.04 s | **The jot in the shield**: a diya's flame under a turning dome of light |
 
 The recordings are the owner's, given to the app as files. None is generated,
 paraphrased or made by a machine (CLAUDE.md rule 3), and none is fetched: they
 ship in the APK under `assets/live/`.
+
+**LS1b. The seam** (owner, 2026-11-18: "make some good transition while
+repeating, so it feels natural"). Each loop is baked by
+`tools/live/build_loops.py`: the recording's last seconds are crossfaded,
+equal-power, into its first (3 s for Naam Simran, 4 s for Mool Mantar, 2.5 s
+for Chaupai Sahib), and the file starts just after the faded-in part, so
+playing it on repeat has no gap and no jump in level. The masters are not in
+git (`audio/README.md`).
 
 **LS1a. Live is true, and the audio is on the phone.** The recording is
 bundled and played in a seamless loop; it is not streamed. What is live is
@@ -226,7 +236,7 @@ the scene is still and the recording plays.
 
 | # | Question | Default |
 |---|---|---|
-| LS-1 | The three recordings | **Waiting for the owner's recordings**; nothing is built until they arrive |
+| LS-1 | The three recordings | **Decided 2026-11-18**: two from the owner, and Chaupai Sahib from the app's own recitation (LS1, LS1b) |
 | LS-5 | Punjabi and Hindi for the strings | Claude's draft; the owner will check |
 
 **Decided 2026-11-18 (owner):** LS-2, listeners without a profile are not

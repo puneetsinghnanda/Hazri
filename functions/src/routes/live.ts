@@ -29,6 +29,7 @@ const SHARDS = 10;
 const JOINS_KEPT = 5;
 const MEMBERS_SHOWN = 20;
 const MEMBERS_READ = 500;
+const CITIES_SHOWN = 60;
 
 const isLive = (id: string): id is LiveGroupId => (LIVE_GROUPS as readonly string[]).includes(id);
 const monthOf = (day: string) => day.slice(0, 7);
@@ -48,6 +49,8 @@ export interface LiveMemberRow {
 export interface LiveGroupSnapshot {
   listening: number;
   cities: number;
+  /** The cities with a listener now, for the globe's dots (LS1); at most 60. */
+  cityIds: string[];
   members: number;
   minutesToday: number;
   minutesMonth: number;
@@ -208,9 +211,11 @@ export async function buildSnapshot(db: Firestore, now: Date): Promise<Record<Li
     ]);
     const sum = (period: string) =>
       shards.filter((s) => s.exists && s.get('period') === period).reduce((a, s) => a + ((s.get('minutes') as number) ?? 0), 0);
+    const cityIds = [...new Set(here.map((d) => d.get('cityId') as string | null).filter((c): c is string => !!c))];
     out[id] = {
       listening: here.length,
-      cities: new Set(here.map((d) => d.get('cityId')).filter(Boolean)).size,
+      cities: cityIds.length,
+      cityIds: cityIds.slice(0, CITIES_SHOWN),
       members: count.data().count,
       minutesToday: sum(day),
       minutesMonth: sum(month),

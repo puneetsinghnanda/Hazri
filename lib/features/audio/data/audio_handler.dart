@@ -42,6 +42,12 @@ class HazriAudioHandler extends BaseAudioHandler
 
   DateTime? get sleepEndsAt => _sleepEndsAt;
 
+  /// A live group's loop is loaded (15-live-sangat LS6).
+  bool _looping = false;
+
+  @override
+  bool get isLooping => _looping;
+
   /// True once a bani has been reported complete, so the 95% rule fires once.
   final Set<int> _reportedComplete = {};
 
@@ -158,7 +164,7 @@ class HazriAudioHandler extends BaseAudioHandler
       final index = _player.currentIndex;
       final total = _player.duration;
       if (index == null || total == null || total == Duration.zero) return;
-      if (_reportedComplete.contains(index)) return;
+      if (_looping || _reportedComplete.contains(index)) return;
       if (pos.inMilliseconds >= total.inMilliseconds * 0.95) {
         _reportedComplete.add(index);
         if (index < _tracks.length) _completed.add(_tracks[index].baniId);
@@ -281,6 +287,8 @@ class HazriAudioHandler extends BaseAudioHandler
       ..addAll(tracks);
     _saying = null;
     _reportedComplete.clear();
+    _looping = false;
+    await _player.setLoopMode(LoopMode.off);
     queue.add([for (final t in tracks) _mediaItemFor(t)]);
 
     await _player.setAudioSource(
@@ -291,6 +299,22 @@ class HazriAudioHandler extends BaseAudioHandler
       initialPosition: at ?? Duration.zero,
     );
     if (tracks.isNotEmpty) mediaItem.add(_mediaItemFor(tracks[startIndex]));
+  }
+
+  @override
+  Future<void> setLoop(PaathTrack track, {required Duration at}) async {
+    _tracks
+      ..clear()
+      ..add(track);
+    _saying = null;
+    _reportedComplete.clear();
+    _looping = true;
+    queue.add([_mediaItemFor(track)]);
+    // The recording's seam is baked into the file (tools/live/build_loops.py),
+    // so looping it whole is gapless.
+    await _player.setLoopMode(LoopMode.one);
+    await _player.setAudioSource(AudioSource.asset(track.assetPath), initialPosition: at);
+    mediaItem.add(_mediaItemFor(track));
   }
 
   @override
@@ -331,6 +355,7 @@ class HazriAudioHandler extends BaseAudioHandler
   @override
   Future<void> stop() async {
     _stopSleepTimer();
+    _looping = false;
     await _player.stop();
     await super.stop();
   }
