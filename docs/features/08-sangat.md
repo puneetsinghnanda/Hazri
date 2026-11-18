@@ -171,6 +171,8 @@ A Sangat group is a set of people working together toward one shared goal with a
 
 ### 8.1 Sangat tab
 
+**Designed to change (2026-11-18, not built):** the tab becomes two tabs, Discover and My groups, with the live groups on Discover and Create and Join at the top of My groups (`15-live-sangat.md` LS2-LS4a, designs 125 and 126). Until that is built, the tab is as below.
+
 The tab follows **design 102** ("dashboard tiles", owner, 2026-10-10).
 
 1. **Create group** (navy, "One goal, an end date") and **Join group** (saffron, "With a link or code", opening Join) as two tiles side by side.

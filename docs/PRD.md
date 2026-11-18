@@ -880,6 +880,23 @@ ARCHITECTURE §3.2, §5.13, §6.7.*
   numbers** (7A): the total, the places, and the month.
 - Not a Diary row, not hazri, not a goal, no badge, no notification.
 
+### 4.22 Live sangat
+
+Designed 2026-11-17 and 2026-11-18 with the owner; **not built**. *Rules:
+`15-live-sangat.md`. Designs 125-129.*
+
+- **Three live groups, always on:** Naam Simran, Mool Mantar and Chaupai
+  Sahib, each with the owner's own recording bundled in the app, played in a
+  loop at the same second on every phone, and its own scene: the globe, ੴ
+  among the stars, the jot in the shield.
+- **The Sangat tab becomes two tabs**, Discover first and My groups; it opens
+  on My groups once you are in any group.
+- **A live group** fills the screen with its scene, LIVE, how many are
+  listening and who joined; the group's goal, figures and members in a sheet;
+  Sit counts as Naam Simran.
+- **Adds one line to §8** when built: a listening mark every five minutes
+  while a live page plays, with a profile only.
+
 ---
 
 ## 5. Content and audio
@@ -1346,6 +1363,7 @@ blocks anything (Phase 3 item 3.3).
 | Y-3 | Export the diary | Not built | `09-diary.md` |
 | SK-1–SK-7 | The first saakhi's images, Punjabi text, pankti check, share link, recording end | Fix before it ships | `13-saakhi.md` §4 |
 | QZ-1, QZ-3 | The quiz: the 54 noted questions; Punjabi and Hindi questions | They ship; English until reviewed | `14-quiz.md` §12 |
+| LS-1–LS-5 | Live sangat: the recordings, counting without a profile, hiding from "joined from", the monthly goal, translations | Owner's recordings; profile only; no switch; 500,000 min; drafts | `15-live-sangat.md` §10 |
 
 **Closed:** D13 (Blaze with Cloud Functions, 2026-09-26); D11's names and D14
 (badges, no points, 2026-10-08); P5 (diary sync replaced by the weekly
@@ -1440,7 +1458,12 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `102-SangatHome` | Sangat, dashboard tiles | **new** | Option C: dashboard tiles (owner, 2026-10-10). Create group and Join group tiles, my groups as 2 x 2 tiles with a ring each, then the built-in groups full width with Join or Leave. 08-sangat.md 8.1, VS1, VS2 |
+| `125-SangatDiscover` | Sangat, Discover | **new** | Two tabs, Discover first, 18 Nov: the live groups as tall cards with their scenes, then the built-in groups. Not built yet. 15-live-sangat.md |
+| `126-SangatMyGroups` | Sangat, My groups | **new** | The default once you are in a group: Create and Join at the top, the live group you are in, running, ended. Not built yet. 15-live-sangat.md |
+| `127-LiveGroup` | A live group | **new** | Option A, 17 Nov: the scene full screen, joins down the side, the group in a sheet. Not built yet. 15-live-sangat.md |
+| `128-LiveGroupSheet` | A live group, the group pulled up | **new** | The sheet of 127 open. Not built yet. 15-live-sangat.md |
+| `129-LiveSitting` | Sitting with a live group | **new** | Option D: the countdown with live today and here today. Not built yet. 15-live-sangat.md |
+| `102-SangatHome` | Sangat, dashboard tiles | superseded | Replaced by 125 and 126 (18 Nov); ships until they are built |
 | `104-GroupGlobe` | A private group, with its globe | **new** | Option C (owner, 2026-10-17): the goal ring wraps the group's globe, members as counts per city (green today, blue not yet, you orange), threads and arcs as the Simran globe, and every dot tied to the ring's leading edge by a dashed line in its own colour (GG4a, 2026-10-18); total, percentage and the key under the ring; paath of the last hour arriving as light into the ring, and the line below the band. The rest is 103. 08-sangat.md GG1-GG10 |
 | `105-BuiltInGroupGlobe` | A built-in group, with its globe | **new** | Option C for built-in groups too (owner, 2026-10-17): as 104, for Simran Sangat; minutes of Naam Simran in the last hour. 08-sangat.md GG1-GG10 |
 | `103-BuiltInGroup` | A built-in group | superseded | Replaced by 104 and 105, the globe in the ring (2026-10-17); the band below the ring, the timeline, the figures, Sit for and the members are unchanged |

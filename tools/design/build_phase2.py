@@ -4493,6 +4493,253 @@ def nitnem_tinted() -> str:
 """
 
 
+# ------------------------------------------------------------ live sangat (2026-11-18)
+# Designs 125-129, chosen by the owner on 2026-11-17 and 2026-11-18: the
+# Sangat tab as Discover and My groups (2 tabs, Discover first; My groups
+# opens by default once you are in any group), the live groups as option B's
+# row of tall cards, the live page as option A, and a sitting as option D.
+# The scenes are drawn by tools/design/live_scenes.js.
+
+def _live_script() -> str:
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[2]
+    t = json.loads((root / "tools/geo/countries-110m.json").read_text())
+    sc, tr = t["transform"]["scale"], t["transform"]["translate"]
+    arcs = []
+    for a in t["arcs"]:
+        x = y = 0
+        pts = []
+        for dx, dy in a:
+            x += dx
+            y += dy
+            pt = [round(x * sc[0] + tr[0], 1), round(y * sc[1] + tr[1], 1)]
+            if not pts or pts[-1] != pt:
+                pts.append(pt)
+        if len(pts) > 1:
+            arcs.append(pts)
+    js = (root / "tools/design/live_scenes.js").read_text()
+    return "<script>" + js.replace("__MAP__", json.dumps(arcs, separators=(",", ":"))) + "</script>"
+
+
+LIVE_PILL = ('<div class="row" style="gap:5px;padding:3px 8px;border-radius:7px;background:#E5322D;color:#fff;'
+             'font-size:11px;font-weight:800;letter-spacing:.08em"><div style="width:7px;height:7px;border-radius:4px;'
+             'background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.35)"></div>LIVE</div>')
+WAHEGURU, IK = "ਵਾਹਿਗੁਰੂ", "ੴ"
+LIVE_GROUPS = [  # name, kind, listening, cities, joined, scene, options
+    ("Naam Simran", "Meditation", "1,284", 34, True, "globe",
+     {"cx": .5, "cy": .6, "r": .7, "ly": .2, "ws": .19, "text": WAHEGURU}),
+    ("Mool Mantar", "Meditation", "642", 21, False, "ikonkar", {"cy": .45, "text": IK}),
+    ("Chaupai Sahib", "Jaap", "318", 15, False, "jot", {"by": .56}),
+]
+
+
+def _scene(kind: str, opts: dict, style: str, inner: str = "") -> str:
+    return (f'<div data-scene="{kind}" data-o=\'{json.dumps(opts, ensure_ascii=False)}\' '
+            f'style="position:relative;overflow:hidden;background:#03040F;{style}">{inner}</div>')
+
+
+def _seg(on: str) -> str:
+    tab = lambda k, label: (
+        f'<div style="flex:1;text-align:center;padding:8px 0;border-radius:999px;font-size:14px;font-weight:700;'
+        + ('background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(27,29,58,.14)' if k == on
+           else 'color:var(--ink2)') + f'">{label}</div>')
+    return (f'<div class="row" style="background:var(--card2);border-radius:999px;padding:3px;gap:2px;margin:0 16px">'
+            f'{tab("discover", "Discover")}{tab("mine", "My groups · 4")}</div>')
+
+
+def _join(joined: bool) -> str:
+    return ('<div class="chip" style="background:var(--sageSoft);color:var(--sage)">✓ Joined</div>' if joined
+            else '<div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk)">Join</div>')
+
+
+def _eyebrow_row(left: str, right: str = "") -> str:
+    return (f'<div class="row" style="justify-content:space-between;padding:0 4px">'
+            f'<div class="eyebrow" style="color:var(--ink2);font-weight:700">{left}</div>'
+            f'<div style="font-size:12px;color:var(--ink2);font-weight:600">{right}</div></div>')
+
+
+def sangat_discover() -> str:
+    """125: the Sangat tab, Discover (08-sangat 8.1, 15-live-sangat LS1-LS4)."""
+    cards = ""
+    for name, kind, n, cities, joined, scene, o in LIVE_GROUPS:
+        btn = ('background:rgba(61,190,123,.25);color:#9FF0C4">Joined' if joined
+               else 'background:#F2A24E;color:#1C1206">Join')
+        cards += _scene(scene, o, "flex:1;min-width:0;height:236px;border-radius:18px", f"""
+          <div style="position:absolute;left:7px;top:7px;transform:scale(.88);transform-origin:left top">{LIVE_PILL}</div>
+          <div class="col" style="position:absolute;left:0;right:0;bottom:0;padding:24px 8px 8px;gap:2px;color:#fff;
+            background:linear-gradient(180deg,rgba(3,4,15,0),rgba(3,4,15,.88))">
+            <div style="font-size:9.5px;letter-spacing:.08em;font-weight:700;color:#FFD7A3;text-transform:uppercase">{kind}</div>
+            <div class="disp" style="font-size:15px;font-weight:700;line-height:1.1">{name}</div>
+            <div style="font-size:11px;opacity:.82">{n} listening</div>
+            <div class="row" style="justify-content:center;min-height:32px;border-radius:999px;font-size:12.5px;font-weight:700;margin-top:4px;{btn}</div>
+          </div>""")
+    built = ""
+    for k, (ic, name, goal, members, joined) in enumerate(BUILT_IN):
+        pct = (34, 42, 51)[k]
+        built += (f'<div class="card col" style="padding:12px 14px;gap:8px">'
+                  f'<div class="row" style="gap:12px">{tinted(ic, 40)}<div class="col" style="flex:1;min-width:0">'
+                  f'<div style="font-size:15px;font-weight:700">{name}</div>'
+                  f'<div style="font-size:12.5px;color:var(--ink2)">{goal}</div></div>{_join(joined)}</div>'
+                  f'<div style="height:6px;border-radius:3px;background:var(--card2)"><div style="width:{pct}%;height:6px;'
+                  f'border-radius:3px;background:var(--kesri)"></div></div>'
+                  f'<div class="row" style="justify-content:space-between;font-size:12px;color:var(--ink2);font-weight:600">'
+                  f'<div>{members}</div><div>{pct}% · 22 days left</div></div></div>')
+    return f"""
+{SHARED_STYLE}
+<div style="position:absolute;inset:0 0 78px 0;overflow:hidden">
+<div style="padding:16px 18px 12px">{header("Sangat", left="menu")}</div>
+{_seg("discover")}
+<div class="col" style="gap:10px;padding:14px 16px 0">
+  {_eyebrow_row("Live sangat", "Always on")}
+  <div class="row" style="gap:8px">{cards}</div>
+  {_eyebrow_row("Built-in groups", "Anybody can join")}
+  {built}
+</div></div>
+{nav("sangat")}
+{_live_script()}"""
+
+
+def sangat_my_groups() -> str:
+    """126: the Sangat tab, My groups, the default once you are in a group (LS2)."""
+    running = ""
+    for k, (name, prog, left, pct, ic) in enumerate(MY_GROUPS[:3]):
+        chip = lambda t, bg, fg: (f'<div style="padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;'
+                                  f'background:{bg};color:{fg}">{t}</div>')
+        running += (f'<div class="card col" style="padding:12px 14px;gap:8px">'
+                    f'<div class="row" style="gap:12px">'
+                    f'{ringed(pct, 48, 6, f"<div style=\'font-size:11px;font-weight:700\'>{round(pct * 100)}%</div>")}'
+                    f'<div class="col" style="flex:1"><div style="font-size:15px;font-weight:700">{name}</div>'
+                    f'<div style="font-size:12.5px;color:var(--ink2)">{prog}</div></div>'
+                    f'<div style="color:var(--muted)">{icon("back", 16).replace("<svg", "<svg style=\"transform:rotate(180deg)\"")}</div></div>'
+                    f'<div class="row" style="gap:6px;flex-wrap:wrap">'
+                    f'{chip(left, "var(--card2)", "var(--ink2)")}'
+                    f'{chip(("2 paath", "15 min", "1 paath")[k] + " yours today", "var(--kesriSoft)", "var(--kesriInk)")}'
+                    f'{chip(("24 members", "2,418 members · built-in", "31 members")[k], "var(--card2)", "var(--ink2)")}'
+                    f'</div></div>')
+    name, kind, n, cities, joined, scene, o = LIVE_GROUPS[0]
+    thumb = _scene(scene, {**o, "cy": .5, "r": .47, "ly": .06, "ws": 0}, "width:56px;height:56px;border-radius:15px;flex:none")
+    return f"""
+{SHARED_STYLE}
+<div style="position:absolute;inset:0 0 78px 0;overflow:hidden">
+<div style="padding:16px 18px 12px">{header("Sangat", left="menu")}</div>
+{_seg("mine")}
+<div class="col" style="gap:10px;padding:14px 16px 0">
+  <div class="row" style="gap:10px">
+    <div class="row" style="flex:1;min-height:64px;border-radius:18px;padding:10px 12px;gap:10px;background:var(--primary);color:var(--onPrimary);box-shadow:var(--shadow)">
+      {icon("plus", 20)}<div class="col"><div style="font-size:15px;font-weight:700">Create group</div><div style="font-size:12px;opacity:.85">One goal, an end date</div></div></div>
+    <div class="row" style="flex:1;min-height:64px;border-radius:18px;padding:10px 12px;gap:10px;background:var(--kesriSoft);color:var(--kesriInk)">
+      {icon("code", 20)}<div class="col"><div style="font-size:15px;font-weight:700">Join group</div><div style="font-size:12px;opacity:.85">Link or code</div></div></div>
+  </div>
+  {_eyebrow_row("Live, you are in", "1")}
+  <div class="card row" style="gap:12px;padding:9px 12px 9px 9px">{thumb}
+    <div class="col" style="flex:1;gap:2px"><div class="row">{LIVE_PILL}</div><div style="font-size:15px;font-weight:700">{name}</div>
+      <div style="font-size:12px;color:var(--ink2)">{n} listening · you sat 15 min today</div></div>
+    <div class="row" style="gap:6px;min-height:40px;padding:0 14px;border-radius:999px;background:#F2A24E;color:#1C1206;font-weight:700;font-size:14px">Listen</div></div>
+  {_eyebrow_row("Running", "3")}
+  {running}
+  {_eyebrow_row("Ended", "1")}
+  <div class="card row" style="gap:12px;padding:10px 14px;opacity:.72">
+    {ringed(1.0, 40, 5, "<div style='color:var(--sage);font-weight:800'>✓</div>", "var(--sage)")}
+    <div class="col"><div style="font-size:14.5px;font-weight:700">Gurpurab Simran</div>
+      <div style="font-size:12.5px;color:var(--ink2)">3,000 of 3,000 min · ended on 5 Oct</div></div></div>
+</div></div>
+{nav("sangat")}
+{_live_script()}"""
+
+
+_ONB = ('width:40px;height:40px;border-radius:13px;flex:none;display:flex;align-items:center;'
+        'justify-content:center;background:rgba(255,255,255,.12);color:#fff')
+_JOINS = [("Navjot K.", "Surrey", "now"), ("Amandeep S.", "Southall", "3s"), ("Simran K.", "Melbourne", "6s")]
+
+
+def _live_page(sheet_open: bool) -> str:
+    feed = "".join(
+        f'<div class="row" style="gap:7px;padding:4px 10px 4px 4px;border-radius:13px;background:rgba(0,0,0,.42);'
+        f'font-size:12.5px;width:max-content;opacity:{1 - i * .28:.2f}">'
+        f'<div style="width:22px;height:22px;border-radius:11px;background:#F2A24E;color:#1C1206;font-size:11px;'
+        f'font-weight:800;display:flex;align-items:center;justify-content:center">{nm[0]}</div>'
+        f'<div><b>{nm}</b> joined from {c}</div><div style="opacity:.6">{t}</div></div>'
+        for i, (nm, c, t) in enumerate(_JOINS))
+    name, kind, n, cities, joined, scene, o = LIVE_GROUPS[0]
+    sheet_top = 230 if sheet_open else 766
+    sheet = f"""
+<div class="col" style="position:absolute;left:0;right:0;top:{sheet_top}px;bottom:0;background:var(--bg);
+  border-radius:26px 26px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.25);color:var(--ink)">
+  <div class="col" style="align-items:center;gap:6px;padding:9px 0 8px;font-size:13px;font-weight:600;color:var(--ink2)">
+    <div style="width:40px;height:5px;border-radius:3px;background:var(--rule)"></div>
+    {"The group" if sheet_open else "Swipe up for the group"}</div>
+  <div class="col" style="gap:10px;padding:2px 16px 0">
+    <div class="card row" style="gap:14px;padding:12px 14px">
+      {ringed(0.42, 70, 8, "<div class='disp' style='font-size:16px;font-weight:700'>42%</div>")}
+      <div class="col" style="gap:2px"><div class="eyebrow" style="color:var(--ink2);font-weight:700">This month's goal</div>
+        <div style="font-size:15px;font-weight:700">212,480 of 500,000 min</div>
+        <div style="font-size:12.5px;color:var(--ink2)">Day 18 of 30 · 12 days left</div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      {"".join(f'<div class="card col" style="border-radius:16px;padding:10px 12px"><div class="disp" style="font-size:20px;font-weight:700;line-height:1.1;{c}">{v}<span style="font-size:12px;font-weight:600"> min</span></div><div style="font-size:12px;color:var(--ink2);font-weight:600;line-height:1.25">{l}</div></div>'
+               for v, l, c in [("6,930", "Sangat today", ""), ("15", "Yours today", "color:var(--kesriInk)"),
+                               ("186", "Yours this month", "color:var(--kesriInk)")])}</div>
+    <div class="card col">
+      <div class="row" style="justify-content:space-between;padding:12px 16px 6px">
+        <div class="eyebrow" style="color:var(--ink2);font-weight:700">Members</div>
+        <div style="font-size:12.5px;color:var(--ink2);font-weight:600">8,412 · A to Z</div></div>
+      {"".join(f'<div class="row" style="justify-content:space-between;min-height:42px;padding:0 16px;font-size:14.5px;{"border-top:1px solid var(--rule)" if i else ""}"><div style="font-weight:600">{m}</div><div style="color:var(--ink2);font-weight:600">{v}</div></div>'
+               for i, (m, v) in enumerate([("Amandeep Singh", "240 min"), ("Baljit Kaur", "95 min"), ("Charanjit Singh", "410 min")]))}
+      <div style="padding:8px 16px 12px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink2);font-weight:600">and 8,409 more</div></div>
+  </div></div>"""
+    return f"""
+{SHARED_STYLE}
+{_scene(scene, {**o, "cy": .66, "r": .46, "ly": .2, "ws": .12}, "position:absolute;inset:0", f'''
+  <div class="row" style="position:absolute;left:16px;right:16px;top:16px;gap:8px;color:#fff">
+    <div style="{_ONB}">{icon("back", 20)}</div>{LIVE_PILL}
+    <div style="padding:3px 9px;border-radius:7px;background:rgba(0,0,0,.42);font-size:12px;font-weight:700">{n} listening</div>
+    <div style="flex:1"></div><div style="{_ONB}">{icon("share", 20)}</div></div>
+  <div class="col" style="position:absolute;left:18px;right:18px;top:70px;color:#fff;gap:1px">
+    <div class="disp" style="font-size:22px;font-weight:700;line-height:1.15;text-shadow:0 1px 8px rgba(0,0,0,.6)">{kind} · {name}</div>
+    <div style="font-size:12.5px;opacity:.82">Live sangat · always on · {cities} cities</div></div>
+  <div class="col" style="position:absolute;left:14px;top:300px;gap:6px;color:#fff">{feed}</div>
+  <div class="row" style="position:absolute;left:16px;right:16px;bottom:90px;gap:10px;color:#fff">
+    <div class="row" style="flex:1;justify-content:center;gap:8px;min-height:48px;border-radius:16px;background:rgba(61,190,123,.22);color:#9FF0C4;font-weight:700;font-size:15px">✓ Joined · listening</div>
+    <div style="{_ONB};width:48px;height:48px;border-radius:16px">{icon("bell", 20)}</div>
+    <div style="{_ONB};width:48px;height:48px;border-radius:16px">{icon("clock", 20)}</div></div>
+  {sheet}''')}
+{_live_script()}"""
+
+
+def live_group() -> str:
+    """127: a live group, option A: the scene full screen, the group in a sheet (LS5-LS9)."""
+    return _live_page(False)
+
+
+def live_group_sheet() -> str:
+    """128: the same, with the group's sheet pulled up (LS9)."""
+    return _live_page(True)
+
+
+def live_sitting() -> str:
+    """129: sitting with the live sangat, option D (LS10)."""
+    name, kind, n, cities, joined, scene, o = LIVE_GROUPS[0]
+    serif = "font-family:'Playfair Display',Georgia,serif"
+    return f"""
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&amp;display=swap">
+{_scene(scene, {**o, "cy": .5, "r": .42, "ly": .17, "ws": .12}, "position:absolute;inset:0", f'''
+  <div style="position:absolute;inset:0;background:rgba(3,4,15,.12)"></div>
+  <div class="row" style="position:absolute;left:16px;top:18px;gap:8px;color:#fff">{LIVE_PILL}
+    <div style="padding:3px 9px;border-radius:7px;background:rgba(0,0,0,.42);font-size:12px;font-weight:700">{n} listening</div></div>
+  <div class="col" style="position:absolute;left:18px;right:18px;bottom:28px;gap:16px;color:#fff">
+    <div class="row">
+      <div class="col" style="flex:1;align-items:center"><div style="{serif};font-size:24px;color:#6FE3A6;line-height:1">48</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.7);font-weight:600;margin-top:4px">live today</div></div>
+      <div class="col" style="align-items:center"><div style="font-size:36px;font-weight:500;line-height:1.05;font-variant-numeric:tabular-nums">7:42</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.55)">left of 11:00</div></div>
+      <div class="col" style="flex:1;align-items:center"><div style="{serif};font-size:24px;color:#8FB2FF;line-height:1">312</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.7);font-weight:600;margin-top:4px">here today</div></div></div>
+    <div class="row" style="gap:12px">
+      <div class="btn" style="flex:1;background:#F2A24E;color:#1C1206">Pause</div>
+      <div class="btn" style="flex:1;background:rgba(255,255,255,.10);color:#fff">End</div></div></div>''')}
+{_live_script()}"""
+
+
+
 SCREENS = [
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
@@ -4566,6 +4813,11 @@ SCREENS = [
     ("122-VicharLibrary", "Vichar — the library: articles to read, with search", vichar_library),
     ("123-SimranCounts", "Simran — live and here today as two figures", simran_counts),
     ("124-SimranCountsSitting", "Simran — the two counts either side of the countdown", simran_counts_sitting),
+    ("125-SangatDiscover", "Sangat — Discover: the live groups, the built-in groups", sangat_discover),
+    ("126-SangatMyGroups", "Sangat — My groups, the default once you are in one", sangat_my_groups),
+    ("127-LiveGroup", "A live group — the scene full screen, the group below", live_group),
+    ("128-LiveGroupSheet", "A live group — the group's sheet pulled up", live_group_sheet),
+    ("129-LiveSitting", "A live group — sitting with the sangat", live_sitting),
 ]
 
 
