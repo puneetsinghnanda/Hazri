@@ -503,8 +503,13 @@ is true of the code now, then what is live, then what is still open.
 - **Notifications** (`02-notifications.md`): five local kinds --
   `amritVela`, `goalBani` (one per goal item at its own time), `calendar`
   (every event 20:00 the evening before and 06:30 on the day), `hazriNudge`, `sangat` --
-  planned by the pure `ReminderPlanner.plan` for 7 days every time anything
-  is written (`UserRepository.onChanged`). They are **scheduled and posted by
+  planned by the pure `ReminderPlanner.plan` for **30 days** every time anything
+  is written (`UserRepository.onChanged`), of which Android holds the nearest
+  60 as alarms and arms the next as each fires (`Reminders.armNext`), so
+  they go on for 30 days with the app closed (2026-11-19; they used to stop
+  after 3-7 days). The Notifications page's **Keep reminders coming** card
+  (KA1, KA2) sends people to "Pause app activity if unused" and the phone
+  maker's battery options. They are **scheduled and posted by
   Hazri's own Android code** (`android/.../Reminders.kt`, DP7, 2026-10-11),
   not by `flutter_local_notifications`: on the owner's phone not one reminder
   the plugin scheduled ever showed, while an alarm set straight through

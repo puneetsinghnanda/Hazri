@@ -10,6 +10,7 @@ import '../core/theme/hazri_theme.dart';
 import '../core/time/clock.dart';
 import '../features/audio/data/audio_controller.dart';
 import '../features/audio/data/recitation_downloads.dart';
+import '../features/reminders/ui/keep_reminders_card.dart';
 import '../core/db/content_repository.dart' show audioTracksProvider;
 import '../features/reminders/ui/exact_alarm_card.dart';
 import '../features/hazri/data/hazri_controller.dart';
@@ -44,6 +45,7 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     // screen, never over the reader or a running Simran sitting.
     final router = ref.read(routerProvider);
     router.routerDelegate.addListener(_announceBadge);
+    router.routerDelegate.addListener(_askKeepAwake);
     ref.listenManual(pendingBadgeProvider, (_, _) => _announceBadge());
     ref.listenManual(simranSessionProvider, (_, s) {
       if (!s.active) _announceBadge();
@@ -96,6 +98,21 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     } on Object catch (e) {
       debugPrint('Hazri: no recitation fetch ($e)');
     }
+  }
+
+  bool _keepAwakeTried = false;
+
+  /// KA2: once, on the first tab after setup, the settings that keep
+  /// reminders coming, when one of them is still to switch.
+  void _askKeepAwake() {
+    if (_keepAwakeTried) return;
+    final path = ref.read(routerProvider).routerDelegate.currentConfiguration.uri.path;
+    if (!Routes.tabs.contains(path) || !ref.read(settingsProvider).onboardingDone) return;
+    _keepAwakeTried = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted) unawaited(maybeShowKeepAwakeSheet(context, ref));
+    });
   }
 
   void _announceBadge() {

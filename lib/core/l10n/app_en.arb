@@ -2509,5 +2509,14 @@
   "recitationDownloading": "Downloading · {done} of {total} MB",
   "@recitationDownloading": {"placeholders": {"done": {"type": "String"}, "total": {"type": "String"}}},
   "recitationNoInternet": "No internet. Connect once to download the recitation; the text opens without it.",
-  "recitationDownloadFailed": "The download did not finish."
+  "recitationDownloadFailed": "The download did not finish.",
+  "keepAwakeTitle": "Keep reminders coming",
+  "keepAwakeBody": "Android quietly stops the reminders of apps it thinks are not used. These two settings keep Hazri's coming. A family member can do this once.",
+  "keepAwakeUnusedTitle": "Don't pause Hazri",
+  "keepAwakeUnusedSub": "Turn off “Pause app activity if unused”",
+  "keepAwakeBatteryTitle": "Let Hazri run in the background",
+  "keepAwakeBatterySub": "Under Battery, choose “Unrestricted” or “Allow background activity”",
+  "keepAwakeOpen": "Open",
+  "keepAwakeDone": "Done",
+  "keepAwakeLater": "Not now"
 }

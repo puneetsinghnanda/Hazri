@@ -4372,4 +4372,34 @@ class LHi extends L {
 
   @override
   String get recitationDownloadFailed => 'डाउनलोड पूरा नहीं हुआ।';
+
+  @override
+  String get keepAwakeTitle => 'रिमाइंडर आते रहें';
+
+  @override
+  String get keepAwakeBody =>
+      'Android उन ऐप्स के रिमाइंडर चुपचाप बंद कर देता है जो उसे इस्तेमाल में नहीं लगते। ये दो सेटिंग हाज़री के रिमाइंडर जारी रखती हैं। परिवार का कोई सदस्य एक बार यह कर सकता है।';
+
+  @override
+  String get keepAwakeUnusedTitle => 'हाज़री को न रोकें';
+
+  @override
+  String get keepAwakeUnusedSub =>
+      '“इस्तेमाल न होने पर ऐप गतिविधि रोकें” बंद करें';
+
+  @override
+  String get keepAwakeBatteryTitle => 'हाज़री को बैकग्राउंड में चलने दें';
+
+  @override
+  String get keepAwakeBatterySub =>
+      'बैटरी में “कोई प्रतिबंध नहीं” या “बैकग्राउंड गतिविधि की अनुमति” चुनें';
+
+  @override
+  String get keepAwakeOpen => 'खोलें';
+
+  @override
+  String get keepAwakeDone => 'हो गया';
+
+  @override
+  String get keepAwakeLater => 'अभी नहीं';
 }

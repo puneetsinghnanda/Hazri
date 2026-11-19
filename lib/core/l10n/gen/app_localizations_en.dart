@@ -4397,4 +4397,33 @@ class LEn extends L {
 
   @override
   String get recitationDownloadFailed => 'The download did not finish.';
+
+  @override
+  String get keepAwakeTitle => 'Keep reminders coming';
+
+  @override
+  String get keepAwakeBody =>
+      'Android quietly stops the reminders of apps it thinks are not used. These two settings keep Hazri\'s coming. A family member can do this once.';
+
+  @override
+  String get keepAwakeUnusedTitle => 'Don\'t pause Hazri';
+
+  @override
+  String get keepAwakeUnusedSub => 'Turn off “Pause app activity if unused”';
+
+  @override
+  String get keepAwakeBatteryTitle => 'Let Hazri run in the background';
+
+  @override
+  String get keepAwakeBatterySub =>
+      'Under Battery, choose “Unrestricted” or “Allow background activity”';
+
+  @override
+  String get keepAwakeOpen => 'Open';
+
+  @override
+  String get keepAwakeDone => 'Done';
+
+  @override
+  String get keepAwakeLater => 'Not now';
 }

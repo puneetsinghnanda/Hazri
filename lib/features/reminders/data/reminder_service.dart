@@ -307,9 +307,15 @@ class ReminderService {
       await _nativeCall('cancel', {'id': id});
       await _nativeCall('dismiss', {'id': id});
     }
-    for (final n in planned) {
-      await _schedule(n, channelNames[n.kind] ?? 'Hazri');
-    }
+    // The whole plan in one call: Android stores it and arms the nearest
+    // ReminderPlanner.maxPending, the next as each fires (CM2).
+    final now = DateTime.now();
+    await _nativeCall('scheduleAll', {
+      'reminders': [
+        for (final n in planned)
+          if (n.at.isAfter(now)) _nativeReminder(n, channelNames[n.kind] ?? 'Hazri'),
+      ],
+    });
     lastPlan = planned;
   }
 
@@ -390,11 +396,6 @@ class ReminderService {
       'progress': progress?.$1 ?? 0,
       'maxProgress': progress?.$2 ?? 0,
     };
-  }
-
-  Future<void> _schedule(PlannedNotification n, String channelName) async {
-    if (!n.at.isAfter(DateTime.now())) return;
-    await _nativeCall('schedule', _nativeReminder(n, channelName));
   }
 
   /// Diagnostics: shows [n] now, or in two minutes (DP4).

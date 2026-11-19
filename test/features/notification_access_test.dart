@@ -15,8 +15,27 @@ class FakeSystemSettings implements SystemSettings {
     return true;
   }
 
+  bool? battery;
+  bool? unused;
+  final List<String> openedPages = [];
+
   @override
-  Future<bool?> ignoringBatteryOptimizations() async => null;
+  Future<bool?> ignoringBatteryOptimizations() async => battery;
+
+  @override
+  Future<bool?> unusedAppExempt() async => unused;
+
+  @override
+  Future<bool> openUnusedAppSettings() async {
+    openedPages.add('unused');
+    return true;
+  }
+
+  @override
+  Future<bool> openAppSettings() async {
+    openedPages.add('app');
+    return true;
+  }
 
   @override
   Future<String?> installReferrer() async => null;

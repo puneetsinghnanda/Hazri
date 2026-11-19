@@ -14,6 +14,7 @@ import '../data/notification_switches.dart';
 import '../data/reminders_controller.dart';
 import '../domain/reminder_plan.dart';
 import 'exact_alarm_card.dart';
+import 'keep_reminders_card.dart';
 
 export 'exact_alarm_card.dart' show exactAlarmsAllowedProvider;
 
@@ -60,6 +61,10 @@ class NotificationsScreen extends ConsumerWidget {
           ],
         ),
         const ExactAlarmCard(padding: EdgeInsets.only(top: 12)),
+        // KA1 (owner, 2026-11-19): the two settings that keep reminders
+        // coming when the app goes unused.
+        const SizedBox(height: 12),
+        const KeepRemindersCard(),
         SettingsSection(
           title: l.notifDiagnostics,
           children: [

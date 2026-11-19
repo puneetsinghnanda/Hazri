@@ -13,6 +13,17 @@ abstract interface class SystemSettings {
   /// (02-notifications DP4).
   Future<bool?> ignoringBatteryOptimizations();
 
+  /// Whether Android will leave Hazri alone when it goes unused for months
+  /// ("Pause app activity if unused" off), or null when unknown or the phone
+  /// has no such setting (before Android 11).
+  Future<bool?> unusedAppExempt();
+
+  /// Opens that setting for Hazri.
+  Future<bool> openUnusedAppSettings();
+
+  /// Opens Hazri's own app page, where a phone maker's battery options are.
+  Future<bool> openAppSettings();
+
   /// Google Play's install referrer string, or null (08-sangat IV6).
   Future<String?> installReferrer();
 
@@ -45,6 +56,34 @@ class AndroidSystemSettings implements SystemSettings {
       return null;
     } on MissingPluginException {
       return null;
+    }
+  }
+
+  @override
+  Future<bool?> unusedAppExempt() async {
+    try {
+      return await _channel.invokeMethod<bool>('unusedAppExempt');
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> openUnusedAppSettings() => _open('openUnusedAppSettings');
+
+  @override
+  Future<bool> openAppSettings() => _open('openAppSettings');
+
+  Future<bool> _open(String method) async {
+    try {
+      return await _channel.invokeMethod<bool>(method) ?? false;
+    } on PlatformException catch (e) {
+      debugPrint('Hazri: $method failed ($e)');
+      return false;
+    } on MissingPluginException {
+      return false;
     }
   }
 

@@ -26,6 +26,12 @@ import org.json.JSONObject
  * A reminder: id, at (epoch ms), title, body, channelId, channelName,
  * payload (the Dart NotificationPayload JSON: route and actions), progress,
  * maxProgress.
+ *
+ * The app stores 30 days of reminders but Android holds at most [MAX_ARMED]
+ * alarms of them at once, the nearest (the 60-pending cap, CLAUDE.md rule
+ * 6). Each time one fires, and after a reboot, [armNext] arms the next, so
+ * the reminders go on for the 30 days with the app never opened (owner,
+ * 2026-11-19: they used to stop a few days after the last open).
  */
 object Reminders {
     private const val PREFS = "hazri_reminders"
@@ -33,6 +39,9 @@ object Reminders {
     const val EXTRA_PAYLOAD = "hazri_payload"
     const val EXTRA_ACTION = "hazri_action"
     const val EXTRA_ID = "hazri_id"
+
+    /** Alarms armed at once: the nearest stored reminders (CM2). */
+    const val MAX_ARMED = 60
 
     /** Set on a snoozed copy's id, as in Dart's ReminderPlanner.snoozeBit. */
     const val SNOOZE_BIT = 0x40000000
@@ -51,12 +60,40 @@ object Reminders {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarms.canScheduleExactAlarms()
     }
 
-    /** Stores [reminder] and sets its alarm; replaces one with the same id. */
+    /** Stores [reminder], replacing one with the same id, and arms the nearest. */
     fun schedule(context: Context, reminder: JSONObject) {
-        val id = reminder.getInt("id")
-        val at = reminder.getLong("at")
-        prefs(context).edit().putString("r_$id", reminder.toString()).apply()
-        arm(context, id, at)
+        prefs(context).edit().putString("r_${reminder.getInt("id")}", reminder.toString()).apply()
+        armNext(context)
+    }
+
+    /** Stores every reminder of a plan in one write, then arms the nearest. */
+    fun scheduleAll(context: Context, reminders: List<JSONObject>) {
+        val edit = prefs(context).edit()
+        for (r in reminders) edit.putString("r_${r.getInt("id")}", r.toString())
+        edit.apply()
+        armNext(context)
+    }
+
+    /**
+     * Arms the [MAX_ARMED] nearest stored reminders still to come and disarms
+     * the rest, and forgets any already past. Setting an alarm that is set
+     * already replaces it, so this can run as often as it likes.
+     */
+    fun armNext(context: Context) {
+        val now = System.currentTimeMillis()
+        val alarms = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val all = stored(context)
+        val past = all.filter { it.optLong("at") <= now }
+        if (past.isNotEmpty()) {
+            val edit = prefs(context).edit()
+            for (r in past) edit.remove("r_${r.getInt("id")}")
+            edit.apply()
+        }
+        val future = all.filter { it.optLong("at") > now }.sortedBy { it.getLong("at") }
+        future.forEachIndexed { i, r ->
+            val id = r.getInt("id")
+            if (i < MAX_ARMED) arm(context, id, r.getLong("at")) else alarms.cancel(alarmIntent(context, id))
+        }
     }
 
     private fun arm(context: Context, id: Int, at: Long) {
@@ -93,14 +130,8 @@ object Reminders {
         .filter { it.key.startsWith("r_") }
         .mapNotNull { e -> (e.value as? String)?.let { runCatching { JSONObject(it) }.getOrNull() } }
 
-    /** After a reboot, an update or a clock change: every future alarm again. */
-    fun rearmAll(context: Context) {
-        val now = System.currentTimeMillis()
-        for (r in stored(context)) {
-            val id = r.getInt("id")
-            if (r.optLong("at") > now) arm(context, id, r.getLong("at")) else prefs(context).edit().remove("r_$id").apply()
-        }
-    }
+    /** After a reboot, an update or a clock change: the nearest alarms again. */
+    fun rearmAll(context: Context) = armNext(context)
 
     fun take(context: Context, id: Int): JSONObject? {
         val raw = prefs(context).getString("r_$id", null) ?: return null
@@ -186,9 +217,13 @@ object Reminders {
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val id = intent.getIntExtra(Reminders.EXTRA_ID, 0)
-        val r = Reminders.take(context, id) ?: return
-        Reminders.remember(context, r)
-        Reminders.post(context, r)
+        val r = Reminders.take(context, id)
+        if (r != null) {
+            Reminders.remember(context, r)
+            Reminders.post(context, r)
+        }
+        // One fewer armed: the next stored reminder takes its place.
+        Reminders.armNext(context)
     }
 }
 

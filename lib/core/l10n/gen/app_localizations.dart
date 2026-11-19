@@ -7641,6 +7641,60 @@ abstract class L {
   /// In en, this message translates to:
   /// **'The download did not finish.'**
   String get recitationDownloadFailed;
+
+  /// No description provided for @keepAwakeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep reminders coming'**
+  String get keepAwakeTitle;
+
+  /// No description provided for @keepAwakeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Android quietly stops the reminders of apps it thinks are not used. These two settings keep Hazri\'s coming. A family member can do this once.'**
+  String get keepAwakeBody;
+
+  /// No description provided for @keepAwakeUnusedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t pause Hazri'**
+  String get keepAwakeUnusedTitle;
+
+  /// No description provided for @keepAwakeUnusedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off “Pause app activity if unused”'**
+  String get keepAwakeUnusedSub;
+
+  /// No description provided for @keepAwakeBatteryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let Hazri run in the background'**
+  String get keepAwakeBatteryTitle;
+
+  /// No description provided for @keepAwakeBatterySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Battery, choose “Unrestricted” or “Allow background activity”'**
+  String get keepAwakeBatterySub;
+
+  /// No description provided for @keepAwakeOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get keepAwakeOpen;
+
+  /// No description provided for @keepAwakeDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get keepAwakeDone;
+
+  /// No description provided for @keepAwakeLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get keepAwakeLater;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

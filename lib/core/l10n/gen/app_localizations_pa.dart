@@ -4379,4 +4379,34 @@ class LPa extends L {
 
   @override
   String get recitationDownloadFailed => 'ਡਾਊਨਲੋਡ ਪੂਰਾ ਨਹੀਂ ਹੋਇਆ।';
+
+  @override
+  String get keepAwakeTitle => 'ਯਾਦ-ਸੂਚਨਾਵਾਂ ਆਉਂਦੀਆਂ ਰਹਿਣ';
+
+  @override
+  String get keepAwakeBody =>
+      'Android ਉਹਨਾਂ ਐਪਾਂ ਦੀਆਂ ਯਾਦ-ਸੂਚਨਾਵਾਂ ਚੁੱਪਚਾਪ ਬੰਦ ਕਰ ਦਿੰਦਾ ਹੈ ਜੋ ਉਸ ਨੂੰ ਵਰਤੋਂ ਵਿੱਚ ਨਹੀਂ ਲੱਗਦੀਆਂ। ਇਹ ਦੋ ਸੈਟਿੰਗਾਂ ਹਾਜ਼ਰੀ ਦੀਆਂ ਸੂਚਨਾਵਾਂ ਜਾਰੀ ਰੱਖਦੀਆਂ ਹਨ। ਪਰਿਵਾਰ ਦਾ ਕੋਈ ਜੀਅ ਇੱਕ ਵਾਰ ਇਹ ਕਰ ਸਕਦਾ ਹੈ।';
+
+  @override
+  String get keepAwakeUnusedTitle => 'ਹਾਜ਼ਰੀ ਨੂੰ ਨਾ ਰੋਕੋ';
+
+  @override
+  String get keepAwakeUnusedSub =>
+      '“ਵਰਤੋਂ ਨਾ ਹੋਣ \'ਤੇ ਐਪ ਗਤੀਵਿਧੀ ਰੋਕੋ” ਬੰਦ ਕਰੋ';
+
+  @override
+  String get keepAwakeBatteryTitle => 'ਹਾਜ਼ਰੀ ਨੂੰ ਪਿਛੋਕੜ ਵਿੱਚ ਚੱਲਣ ਦਿਓ';
+
+  @override
+  String get keepAwakeBatterySub =>
+      'ਬੈਟਰੀ ਵਿੱਚ “ਕੋਈ ਪਾਬੰਦੀ ਨਹੀਂ” ਜਾਂ “ਪਿਛੋਕੜ ਗਤੀਵਿਧੀ ਦੀ ਆਗਿਆ” ਚੁਣੋ';
+
+  @override
+  String get keepAwakeOpen => 'ਖੋਲ੍ਹੋ';
+
+  @override
+  String get keepAwakeDone => 'ਹੋ ਗਿਆ';
+
+  @override
+  String get keepAwakeLater => 'ਹੁਣ ਨਹੀਂ';
 }

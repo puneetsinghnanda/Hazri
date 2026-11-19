@@ -644,6 +644,7 @@ added. The *Phase 2* column is the target.
 | `hazri_banner_closed_v1` | String | — | **New** (2026-10-10). The local date the marked hazri banner was closed on (`05-today.md` T1a) |
 | `live_cache_v1` | String (JSON) | — | **New** (2026-11-18). The last `GET /live` reply (§6.8), shown first on the Sangat tab and a live page (`15-live-sangat.md` LS7) |
 | `live_heard_v1` | String (JSON) | — | **New** (2026-11-19). Group id to when this phone last played it, so it counts itself for a day (LS7b). Never sent |
+| `keep_awake_asked_v1` | bool | false | **New** (2026-11-19). The Keep reminders coming sheet was shown once (`02-notifications.md` KA2) |
 | `city_id` | String | `new_delhi` | **Removed.** One city, the profile's; none without a profile (`03-first-run.md` CY1–CY3) |
 | `simran_minutes` | int | 5 | **Removed.** The sitting is 5 minutes or the goal item's minutes (`07-simran.md` S-7) |
 | `exact_alarm_asked` | bool | false | **Removed.** Exact alarms are never asked (`02-notifications.md` DP2) |

@@ -1286,5 +1286,14 @@
   "recitationDownloadOnce": "पाठ की आवाज़ एक बार डाउनलोड होती है। फिर यह आपके फ़ोन में रहती है और इंटरनेट के बिना चलती है।",
   "recitationDownloading": "डाउनलोड हो रहा है · {total} में से {done} MB",
   "recitationNoInternet": "इंटरनेट नहीं है। पाठ की आवाज़ डाउनलोड करने के लिए एक बार जुड़ें; पाठ इसके बिना भी खुलता है।",
-  "recitationDownloadFailed": "डाउनलोड पूरा नहीं हुआ।"
+  "recitationDownloadFailed": "डाउनलोड पूरा नहीं हुआ।",
+  "keepAwakeTitle": "रिमाइंडर आते रहें",
+  "keepAwakeBody": "Android उन ऐप्स के रिमाइंडर चुपचाप बंद कर देता है जो उसे इस्तेमाल में नहीं लगते। ये दो सेटिंग हाज़री के रिमाइंडर जारी रखती हैं। परिवार का कोई सदस्य एक बार यह कर सकता है।",
+  "keepAwakeUnusedTitle": "हाज़री को न रोकें",
+  "keepAwakeUnusedSub": "“इस्तेमाल न होने पर ऐप गतिविधि रोकें” बंद करें",
+  "keepAwakeBatteryTitle": "हाज़री को बैकग्राउंड में चलने दें",
+  "keepAwakeBatterySub": "बैटरी में “कोई प्रतिबंध नहीं” या “बैकग्राउंड गतिविधि की अनुमति” चुनें",
+  "keepAwakeOpen": "खोलें",
+  "keepAwakeDone": "हो गया",
+  "keepAwakeLater": "अभी नहीं"
 }
