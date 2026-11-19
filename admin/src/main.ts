@@ -251,8 +251,57 @@ async function reports(): Promise<void> {
 
 // ------------------------------------------------------------------- people
 
+interface Person {
+  profileId: string;
+  name: string;
+  cityId: string;
+  email: string | null;
+  emailVerified: boolean;
+  phone: string | null;
+  createdAt: string | null;
+  lastSeenDay: string | null;
+  groups: string[];
+}
+
+/** "new_delhi" -> "New Delhi": the app's city ids are its English names. */
+const cityLabel = (id: string) => id.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+function personRow(p: Person): string {
+  const email = p.email
+    ? `${esc(p.email)} ${p.emailVerified ? '<span title="Confirmed">✓</span>' : '<span class="muted">(not confirmed)</span>'}`
+    : '<span class="muted">—</span>';
+  return `<tr><td>${esc(p.name)}</td><td>${esc(cityLabel(p.cityId))}</td><td>${email}</td><td>${esc(p.phone ?? '—')}</td>
+    <td>${esc((p.createdAt ?? '').slice(0, 10))}</td><td>${esc(p.lastSeenDay ?? '—')}</td><td>${p.groups.map(esc).join(', ') || '<span class="muted">—</span>'}</td></tr>`;
+}
+
+/** Everyone who made a profile, newest first, 50 at a time (owner, 2026-11-19). */
+async function everyone(): Promise<void> {
+  const out = document.getElementById('everyone')!;
+  let after: string | null = null;
+  let shown = 0;
+  const load = async () => {
+    const page: { total: number; people: Person[]; next: string | null } = await api(
+      'GET',
+      `/people/all${after ? `?after=${encodeURIComponent(after)}` : ''}`,
+    );
+    shown += page.people.length;
+    document.getElementById('count')!.textContent = `${shown.toLocaleString('en-IN')} of ${page.total.toLocaleString('en-IN')}`;
+    document.getElementById('rows')!.insertAdjacentHTML('beforeend', page.people.map(personRow).join(''));
+    after = page.next;
+    const more = document.getElementById('more') as HTMLButtonElement;
+    more.hidden = after === null;
+  };
+  out.innerHTML = `<div class="row" style="justify-content:space-between"><h3>Everyone registered</h3><span id="count" class="muted"></span></div>
+    <table><thead><tr><th>Name</th><th>City</th><th>Email</th><th>Phone</th><th>Joined</th><th>Last opened</th><th>Groups</th></tr></thead><tbody id="rows"></tbody></table>
+    <button id="more" class="quiet" hidden>Load 50 more</button>`;
+  document.getElementById('more')!.onclick = () => load().catch(fail);
+  await load();
+}
+
 async function people(): Promise<void> {
-  html(`<h2>People</h2><div class="card"><div class="row"><label><span>Email</span><input id="email" type="email" size="32"></label><button id="find">Look up</button></div><div id="person"></div></div>`);
+  html(`<h2>People</h2><div class="card"><div class="row"><label><span>Email</span><input id="email" type="email" size="32"></label><button id="find">Look up</button></div><div id="person"></div></div>
+    <div class="card" id="everyone"><p class="muted">Loading…</p></div>`);
+  void everyone().catch(fail);
   document.getElementById('find')!.onclick = async () => {
     const email = (document.getElementById('email') as HTMLInputElement).value.trim();
     const out = document.getElementById('person')!;

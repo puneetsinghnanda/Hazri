@@ -348,4 +348,25 @@ describeEmu('sangat (08-sangat §7)', () => {
     expect((await h.admin().del(`/api/v1/admin/groups/${gid}`, { confirmName: 'Amrit Vela Sangat' })).body.result).toBe('GROUP_DELETED');
     expect((await h.as('u1').get('/api/v1/sangat/groups/mine')).body.groups).toEqual([]);
   });
+
+  it('the admin lists every registered person, newest first, with groups; nobody else can (owner, 2026-11-19)', async () => {
+    const a = await createProfile(h, 'pa1', { name: 'Harpreet Kaur', cityId: 'ludhiana', email: 'harpreet@example.com', phone: '9876543210' });
+    h.clock.advance(60);
+    await createProfile(h, 'pa2', { name: 'Gurdeep Singh', cityId: 'amritsar', email: '' });
+    const g = await h.as('pa1').post('/api/v1/sangat/groups', { name: 'Gill Parivar' });
+    expect(g.status).toBe(201);
+    const res = await h.admin().get('/api/v1/admin/people/all');
+    expect(res.status).toBe(200);
+    expect(res.body.total).toBe(2);
+    expect(res.body.people.map((p: { name: string }) => p.name)).toEqual(['Gurdeep Singh', 'Harpreet Kaur']);
+    expect(res.body.people[0]).toMatchObject({ email: null, emailVerified: false, cityId: 'amritsar', groups: [] });
+    expect(res.body.people[1]).toMatchObject({
+      profileId: a.profileId,
+      email: 'harpreet@example.com',
+      phone: '9876543210',
+      groups: ['Gill Parivar'],
+    });
+    expect(res.body.next).toBeNull();
+    expect((await h.as('pa1').get('/api/v1/admin/people/all')).status).toBe(403);
+  });
 });

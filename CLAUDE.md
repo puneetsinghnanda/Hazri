@@ -550,7 +550,7 @@ is true of the code now, then what is live, then what is still open.
   referrer is read in `MainActivity.kt` with Google's `installreferrer`
   library directly: the Flutter plugin uses the `kotlinOptions` block Kotlin
   2.4 rejects.
-- **Admin website** (`admin/`, `11-admin.md`): `https://hazri-admin-d4b72.web.app`,
+- **Admin website** (`admin/`, `11-admin.md`): `https://hazri-admin-d4b72.web.app`, and `https://admin.hazri.me` once its domain is connected (`docs/domain-setup.md` §4a; a People page lists everyone registered since 2026-11-19),
   Google sign-in for the one admin address only. Editing a built-in group's
   template changes the **running** goal's target and length at once, and
   its bani from the next goal (owner, 2026-10-18).

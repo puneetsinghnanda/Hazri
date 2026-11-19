@@ -116,6 +116,25 @@ the second is `unauthorized-continue-uri`, which the app currently reports as
 "check your internet" (B18 and A13 of the earlier accounts spec,
 `git show cc1c967:docs/features/01-accounts.md`).
 
+### 4a. The admin website — `admin.hazri.me` (2026-11-19)
+
+The admin website is its own Hosting site (`hazri-admin-d4b72`), so it gets a
+subdomain rather than a path under `hazri.me`:
+
+1. Firebase console → Hosting → the **hazri-admin-d4b72** site → Add custom
+   domain → `admin.hazri.me`. Firebase shows the records to add.
+2. Namecheap → Advanced DNS → add them: usually a **TXT** on host `admin`
+   (verification), then an **A** record on host `admin` with the address
+   Firebase gives (or the CNAME it offers). Do not touch the `@` and `www`
+   records.
+3. Firebase console → Authentication → Settings → Authorized domains → add
+   `admin.hazri.me`, or Google sign-in on the admin page fails.
+4. Deploy the Functions once: `ADMIN_ORIGINS` in `functions/src/config.ts`
+   lets the admin page at that address call the API.
+
+The certificate takes up to a day. `hazri-admin-d4b72.web.app` keeps working
+throughout.
+
 ### 5. DMARC — after the mailbox works
 
 | Type | Host | Value |

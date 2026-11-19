@@ -27,6 +27,9 @@ export const SUPPORT_EMAIL = 'support@hazri.me';
 // Admin website (11-admin.md AC3).
 export const ADMIN_EMAIL = 'puneetsingh1802@gmail.com';
 export const ADMIN_ORIGINS = [
+  // The admin's own address since 2026-11-19 (docs/domain-setup.md); the
+  // web.app one keeps working beside it.
+  'https://admin.hazri.me',
   'https://hazri-admin-d4b72.web.app',
   'https://hazri-admin-d4b72.firebaseapp.com',
   'http://localhost:5173',

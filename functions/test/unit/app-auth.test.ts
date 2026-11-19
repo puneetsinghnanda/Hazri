@@ -94,6 +94,15 @@ describe('admin access (11-admin AC3, §8)', () => {
     expect(res.status).toBe(204);
     expect(res.headers['access-control-allow-origin']).toBe('https://hazri-admin-d4b72.web.app');
   });
+  it('and for admin.hazri.me, the admin address since 2026-11-19', async () => {
+    const res = await request(app)
+      .options('/api/v1/admin/people/all')
+      .set('Origin', 'https://admin.hazri.me')
+      .set('Access-Control-Request-Method', 'GET')
+      .set('Access-Control-Request-Headers', 'authorization');
+    expect(res.status).toBe(204);
+    expect(res.headers['access-control-allow-origin']).toBe('https://admin.hazri.me');
+  });
   it('isAdminToken', () => {
     expect(isAdminToken(tokens.admin)).toBe(true);
     expect(isAdminToken({ ...tokens.admin, email: 'PuneetSingh1802@gmail.com' })).toBe(true);

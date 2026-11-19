@@ -1812,6 +1812,7 @@ All under `/api/v1/admin`, admin-only (AC3), following `01-accounts.md` §6.0.
 | `GET /reports?status=` | Reports, newest first |
 | `PATCH /reports/{reportId}` | `{ status: "DISMISSED" \| "ACTIONED" }` |
 | `GET /people?email=` | The profile of 4.4 |
+| `GET /people/all?after=` | Every profile, newest first, 50 a page: `{ total, people: [ { profileId, name, cityId, email, emailVerified, phone, createdAt, lastSeenDay, groups } ], next }` (11-admin 4.4) |
 | `PUT /people/{profileId}/group-limit` | `{ limit }` |
 | `GET /banis` | Bani IDs and names for the goal form |
 
