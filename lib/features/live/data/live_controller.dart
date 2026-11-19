@@ -174,7 +174,9 @@ class LiveListener extends Notifier<String?> {
       // Paused and resumed: back to where the sangat is now.
       await player.seek(liveOffset(DateTime.now(), def.length));
     }
-    await player.play();
+    // Not awaited: a player's play() may complete only when the sound stops
+    // (just_audio's does), and everything below must happen while it plays.
+    unawaited(player.play());
     state = def.id;
     await ref.read(liveHeardProvider.notifier).heard(def.id, DateTime.now());
     _lastTick = DateTime.now();

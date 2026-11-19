@@ -322,8 +322,14 @@ class HazriAudioHandler extends BaseAudioHandler
   static AudioSource _source(String path) =>
       path.startsWith('/') ? AudioSource.file(path) : AudioSource.asset(path);
 
+  /// Starts playback and returns once it has started. just_audio's own
+  /// `play()` completes only when playback stops, so awaiting it held every
+  /// caller for as long as the sound went on: the live page never counted
+  /// its listener or sent a mark while it played (2026-11-19).
   @override
-  Future<void> play() => _player.play();
+  Future<void> play() async {
+    unawaited(_player.play().catchError((Object e) => debugPrint('Hazri audio: play failed ($e)')));
+  }
 
   @override
   Future<void> pause() => _player.pause();

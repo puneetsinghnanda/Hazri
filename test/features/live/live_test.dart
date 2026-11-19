@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -128,6 +130,29 @@ void main() {
       expect(app.container.read(liveListenerProvider), 'chaupai-sahib');
       // Kept on the phone so it counts itself for a day (LS7b).
       expect(app.container.read(liveHeardProvider)['chaupai-sahib'], isNotNull);
+    });
+
+    test('a player whose play() returns only when the sound stops still counts and marks (2026-11-19)', () async {
+      // just_audio's play() completes when playback stops: the listener must
+      // not wait for it, or nothing below it happens while the sound plays.
+      server.on('GET', '/profile', 200, {'profile': profileJson()});
+      final blocking = _BlockingPlayer();
+      app = await TestApp.create(
+        prefs: {'onboarding_done': true},
+        extra: [...server.overrides(), paathPlayerProvider.overrideWithValue(blocking)],
+      );
+      addTearDown(app.dispose);
+      app.container.read(profileControllerProvider);
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      await app.container
+          .read(liveListenerProvider.notifier)
+          .listen(liveGroups.first, title: 'Naam Simran')
+          .timeout(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(app.container.read(liveListenerProvider), 'naam-simran');
+      expect(app.container.read(liveHeardProvider)['naam-simran'], isNotNull);
+      expect(server.requests, contains('POST /live/naam-simran/listen'));
+      await blocking.stop();
     });
 
     test('S-6: without a profile nothing is sent', () async {
@@ -340,4 +365,28 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(seconds: 1));
   });
+}
+
+/// Plays as just_audio does: play() completes only when the sound stops.
+class _BlockingPlayer extends FakePaathPlayer {
+  Completer<void>? _until;
+
+  @override
+  Future<void> play() async {
+    await super.play();
+    _until = Completer<void>();
+    return _until!.future;
+  }
+
+  @override
+  Future<void> pause() async {
+    await super.pause();
+    _until?.complete();
+  }
+
+  @override
+  Future<void> stop() async {
+    await super.stop();
+    if (!(_until?.isCompleted ?? true)) _until!.complete();
+  }
 }

@@ -65,6 +65,7 @@ abstract interface class PaathPlayer {
   /// True while what is loaded is a live group's loop.
   bool get isLooping;
 
+  /// Starts playback and returns once it has started, not when it ends.
   Future<void> play();
 
   Future<void> pause();
