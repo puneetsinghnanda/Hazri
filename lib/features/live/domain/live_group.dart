@@ -25,7 +25,8 @@ class LiveGroupDef {
   final LiveKind kind;
   final LiveScene scene;
 
-  /// The loop's length, read from the built file (ffprobe).
+  /// The loop's length, as `tools/live/build_loops.py` prints it (samples at
+  /// 48 kHz); a rebuild that changes it must change it here.
   final Duration length;
 
   /// The name is a proper noun by script, as a badge's is.
@@ -33,7 +34,7 @@ class LiveGroupDef {
   final String gurmukhi;
   final String devanagari;
 
-  String get assetPath => 'assets/live/$id.m4a';
+  String get assetPath => 'assets/live/$id.ogg';
 
   /// The media session's id, so it never collides with a bani's slug.
   String get slug => 'live-$id';
@@ -50,7 +51,7 @@ const liveGroups = <LiveGroupDef>[
     id: 'naam-simran',
     kind: LiveKind.meditation,
     scene: LiveScene.globe,
-    length: Duration(milliseconds: 56000),
+    length: Duration(microseconds: 56000000),
     latin: 'Naam Simran',
     gurmukhi: 'ਨਾਮ ਸਿਮਰਨ',
     devanagari: 'नाम सिमरन',
@@ -59,7 +60,7 @@ const liveGroups = <LiveGroupDef>[
     id: 'mool-mantar',
     kind: LiveKind.meditation,
     scene: LiveScene.ikonkar,
-    length: Duration(milliseconds: 128650),
+    length: Duration(microseconds: 128649813),
     latin: 'Mool Mantar',
     gurmukhi: 'ਮੂਲ ਮੰਤਰ',
     devanagari: 'मूल मंत्र',
@@ -68,7 +69,7 @@ const liveGroups = <LiveGroupDef>[
     id: 'chaupai-sahib',
     kind: LiveKind.jaap,
     scene: LiveScene.jot,
-    length: Duration(milliseconds: 208037),
+    length: Duration(microseconds: 208050000),
     latin: 'Chaupai Sahib',
     gurmukhi: 'ਚੌਪਈ ਸਾਹਿਬ',
     devanagari: 'चौपई साहिब',

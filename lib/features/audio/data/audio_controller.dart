@@ -17,6 +17,8 @@ import '../../simran/domain/simran_track.dart';
 import '../domain/paath_player.dart';
 import '../domain/timings.dart';
 import 'audio_handler.dart';
+import 'recitation_downloads.dart';
+import '../ui/recitation_download_sheet.dart';
 import 'notification_access.dart';
 
 /// Set during bootstrap in `main.dart`. Null when the media session could not
@@ -90,15 +92,33 @@ class PlaybackController {
     await _ref.read(completionPathProvider).completeBani(bani, CompletionSource.audio);
   }
 
-  PaathTrack? _trackFor(Bani bani, Map<String, AudioTrackRow> tracks, String language) {
+  /// The track for [bani]: its bundled file, or for a recitation the app
+  /// downloads (Sukhmani Sahib) the kept copy. When that is not here yet
+  /// and [ask] is set (a press of play), the download sheet fetches it with
+  /// its progress; otherwise there is no track yet.
+  Future<PaathTrack?> _trackFor(
+    Bani bani,
+    Map<String, AudioTrackRow> tracks,
+    String language, {
+    bool ask = false,
+  }) async {
     final row = tracks[bani.id];
     if (row == null) return null;
+    final String path;
+    if (row.pack == 'download') {
+      var kept = await _ref.read(recitationDownloadsProvider.notifier).readyPath(row);
+      if (kept == null && ask) kept = await _ref.read(recitationPromptProvider)(row, bani.name(language));
+      if (kept == null) return null;
+      path = kept;
+    } else {
+      path = 'assets/audio/${row.file}';
+    }
     return PaathTrack(
       baniId: bani.id,
       slug: bani.slug,
       title: bani.name(language),
       nativeTitle: bani.nativeName,
-      assetPath: 'assets/audio/${row.file}',
+      assetPath: path,
       duration: Duration(milliseconds: row.durationMs ?? 0),
       route: Routes.reader(bani.slug),
     );
@@ -109,7 +129,7 @@ class PlaybackController {
   /// The reader calls this on open, which is what puts a real duration on the
   /// scrubber and lets the play button work. A player with no source accepts
   /// play() and silently does nothing.
-  Future<bool> prepare(Bani bani, {Duration? at, required String language}) async {
+  Future<bool> prepare(Bani bani, {Duration? at, required String language, bool ask = false}) async {
     final player = _ref.read(paathPlayerProvider);
     if (player == null) return false;
     if (player.currentSlug == bani.slug && player.isLoaded && player.queueLength == 1) {
@@ -117,7 +137,7 @@ class PlaybackController {
       return true;
     }
     final tracks = await _ref.read(audioTracksProvider.future);
-    final track = _trackFor(bani, tracks, language);
+    final track = await _trackFor(bani, tracks, language, ask: ask);
     if (track == null) return false;
     await player.setQueue([track], at: at);
     await player.setSpeed(_ref.read(settingsProvider).speed);
@@ -126,7 +146,7 @@ class PlaybackController {
 
   /// Plays one bani, optionally from a position.
   Future<bool> playBani(Bani bani, {Duration? at, required String language}) async {
-    if (!await prepare(bani, at: at, language: language)) return false;
+    if (!await prepare(bani, at: at, language: language, ask: true)) return false;
     _askForLockScreen();
     await _ref.read(paathPlayerProvider)!.play();
     return true;
@@ -164,10 +184,11 @@ class PlaybackController {
     if (player == null) return false;
     final banis = await _ref.read(contentRepositoryProvider).banis();
     final tracks = await _ref.read(audioTracksProvider.future);
+    // A recitation not downloaded yet is left out of Play all, not waited for.
     final found = <PaathTrack>[
       for (final b in banis)
         if (b.defaultSlot == slot)
-          if (_trackFor(b, tracks, language) case final t?) t,
+          if (await _trackFor(b, tracks, language) case final t?) t,
     ];
     if (found.isEmpty) return false;
     // Design 18: "Morning Nitnem · 1 of 5" under each bani's name.

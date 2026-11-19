@@ -2,8 +2,12 @@
 
 ## What is committed
 
-`assets/audio/*.m4a` — the files the app ships: mono AAC, 64 kbps,
-loudness-normalised to −16 LUFS. Japji Sahib is 9.0 MB for 19 minutes.
+`assets/audio/*.ogg` — the files the app ships: mono Opus, 48 kbps, in Ogg,
+loudness-normalised to −16 LUFS (owner, 2026-11-19, chosen by ear; they were
+AAC 64k). Japji Sahib is 7.2 MB for 19 minutes. **Sukhmani Sahib is in
+`public/audio/` instead** and downloaded by the app once
+(`tools/audio_pipeline/downloads.json`); after rebuilding it, deploy hosting
+and rebuild content.db, whose SHA-256 the app checks it against.
 
 `content/source/timings/*.json` — line and word timings, so the reader can
 follow the recitation.
@@ -23,7 +27,10 @@ gh release download audio-masters --pattern 'japji-sahib.mp3' --dir audio/source
 
 Name each master after the bani's slug in `content.db` (`japji-sahib.mp3`,
 `rehras-sahib.mp3`, …) so the pipeline can pair audio to bani without a lookup
-table.
+table. The release names some differently (`Anand-Sahib.mp3`,
+`SOHILA-SAHIB.mp3` for `kirtan-sohila`, `TWAPRASAD-SWAIYE.mp3` for
+`tav-prasad-savaiye`, `Jaap_-Sahib.mp3`), so download each under its slug.
+The live loops' masters are `naam-simran-live.mp3` and `mool-mantra.mp3`.
 
 ## Rebuilding
 
@@ -32,7 +39,7 @@ the `bani` table (`jaap-sahib`, `tav-prasad-savaiye`, `chaupai-sahib`,
 `anand-sahib`, `rehras-sahib`, `kirtan-sohila`, `ardas`, `sukhmani-sahib`).
 
 ```bash
-# master -> shipping AAC at -16 LUFS
+# master -> shipping Opus at -16 LUFS (public/audio/ if in downloads.json)
 python3 tools/audio_pipeline/build_audio.py japji-sahib
 
 # recitation -> line and word timings
@@ -256,7 +263,7 @@ would pass by construction:
 
 Android offers no way to read audio as it plays -- the player the app uses has
 no visualiser -- so the ring cannot react to the recitation at runtime. Instead
-`simran_envelope.py` measures the shipped `.m4a` once: its loudness 25 times a
+`simran_envelope.py` measured the shipped file once: its loudness 25 times a
 second, and the moment each Waheguru begins. Both ride in content.db, and the
 ring reads them against the session clock. A bloom in the app is a real
 utterance, not a timer.
@@ -266,13 +273,13 @@ exactly what will play.
 
 ## The live sangat loops
 
-`assets/live/*.m4a` are the three live groups' recordings
+`assets/live/*.ogg` are the three live groups' recordings
 (`docs/features/15-live-sangat.md` LS1b), each with its end crossfaded into
-its start so it repeats without a seam. `tools/live/build_loops.py` makes
-them; Chaupai Sahib's comes from the bundled `assets/audio/chaupai-sahib.m4a`,
-the other two from the owner's masters (`naam-simran.mp3`,
-`mool-mantar.mp3`, given 2026-11-18), which belong on the `audio-masters`
-release with the others. After a rebuild, the loop lengths in
+its start so it repeats without a seam, built sample-exactly in numpy and
+encoded as mono Opus 48k. `tools/live/build_loops.py` makes them from
+`audio/source/`; Chaupai Sahib's comes from the bundled
+`assets/audio/chaupai-sahib.ogg`, the other two from the owner's masters
+`naam-simran-live.mp3` and `mool-mantra.mp3` on the `audio-masters` release. After a rebuild, the loop lengths in
 `lib/features/live/domain/live_group.dart` must match `ffprobe`'s.
 
 ## Still to do

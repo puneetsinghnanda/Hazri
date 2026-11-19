@@ -31,7 +31,7 @@ anybody, not edited in the admin website, and never end:
 |---|---|---|---|
 | Naam Simran | Meditation | the owner's ਵਾਹਿਗੁਰੂ recording (`Waheguru_Naam_Simran.mp3`), 0-59 s, looped at 56 s | **The globe**: the world turning, a thread of light from every city with a listener up to ਵਾਹਿਗੁਰੂ |
 | Mool Mantar | Meditation | the owner's Mool Mantar recording (`Mool_Mantra_Final.mp3`), whole, looped at 128.65 s | **ੴ among the stars**: thirteen stars join into a circle round ੴ through the loop and let go |
-| Chaupai Sahib | Jaap | the app's own Chaupai Sahib recitation (`assets/audio/chaupai-sahib.m4a`, owner 2026-11-18), 0.45-211 s, looped at 208.04 s | **The jot in the shield**: a diya's flame under a turning dome of light |
+| Chaupai Sahib | Jaap | the app's own Chaupai Sahib recitation (`assets/audio/chaupai-sahib.ogg`, owner 2026-11-18), 0.45-211 s, looped at 208.04 s | **The jot in the shield**: a diya's flame under a turning dome of light |
 
 The recordings are the owner's, given to the app as files. None is generated,
 paraphrased or made by a machine (CLAUDE.md rule 3), and none is fetched: they

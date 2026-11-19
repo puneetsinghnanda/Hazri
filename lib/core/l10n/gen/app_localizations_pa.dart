@@ -1829,7 +1829,8 @@ class LPa extends L {
   String get privacyPhoneProgress => 'ਪੜ੍ਹਨ ਦੀ ਥਾਂ ਤੇ ਸੰਕਲਪ';
 
   @override
-  String get privacyPhoneContent => 'ਹਰ ਬਾਣੀ, ਉਸ ਦਾ ਪਾਠ ਤੇ ਕੈਲੰਡਰ';
+  String get privacyPhoneContent =>
+      'ਹਰ ਬਾਣੀ, ਉਸ ਦਾ ਪਾਠ ਤੇ ਕੈਲੰਡਰ (ਸੁਖਮਨੀ ਸਾਹਿਬ ਦਾ ਪਾਠ ਇੱਕ ਵਾਰ ਡਾਊਨਲੋਡ ਹੁੰਦਾ ਹੈ, ਤੁਹਾਡੇ ਬਾਰੇ ਕੁਝ ਭੇਜੇ ਬਿਨਾਂ, ਫਿਰ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦਾ ਹੈ)';
 
   @override
   String get privacyShowMyName => 'ਗਰੁੱਪਾਂ ਵਿੱਚ ਮੇਰਾ ਨਾਂ ਵਿਖਾਓ';
@@ -4362,4 +4363,20 @@ class LPa extends L {
 
   @override
   String get quizPlaceAllTime => 'ਹੁਣ ਤੱਕ';
+
+  @override
+  String get recitationDownloadOnce =>
+      'ਪਾਠ ਦੀ ਆਵਾਜ਼ ਇੱਕ ਵਾਰ ਡਾਊਨਲੋਡ ਹੁੰਦੀ ਹੈ। ਫਿਰ ਇਹ ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦੀ ਹੈ ਅਤੇ ਇੰਟਰਨੈੱਟ ਤੋਂ ਬਿਨਾਂ ਚੱਲਦੀ ਹੈ।';
+
+  @override
+  String recitationDownloading(String done, String total) {
+    return 'ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ · $total ਵਿੱਚੋਂ $done MB';
+  }
+
+  @override
+  String get recitationNoInternet =>
+      'ਇੰਟਰਨੈੱਟ ਨਹੀਂ ਹੈ। ਪਾਠ ਦੀ ਆਵਾਜ਼ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਇੱਕ ਵਾਰ ਜੁੜੋ; ਪਾਠ ਇਸ ਤੋਂ ਬਿਨਾਂ ਵੀ ਖੁੱਲ੍ਹਦਾ ਹੈ।';
+
+  @override
+  String get recitationDownloadFailed => 'ਡਾਊਨਲੋਡ ਪੂਰਾ ਨਹੀਂ ਹੋਇਆ।';
 }

@@ -21,6 +21,18 @@ SRC = os.path.join(ROOT, "content", "source")
 OUT = os.path.join(ROOT, "assets", "content", "content.db")
 REPORT = os.path.join(ROOT, "content", "build-report.json")
 AUDIO_DIR = os.path.join(ROOT, "assets", "audio")
+# Recitations downloaded once rather than shipped (tools/audio_pipeline/downloads.json).
+DOWNLOAD_DIR = os.path.join(ROOT, "public", "audio")
+with open(os.path.join(ROOT, "tools", "audio_pipeline", "downloads.json"), encoding="utf-8") as _fh:
+    DOWNLOADED = set(json.load(_fh)["downloads"])
+
+
+def sha256_of(path: str) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
 TIMINGS_DIR = os.path.join(ROOT, "content", "source", "timings")
 SIMRAN_DIR = os.path.join(ROOT, "content", "source", "simran")
 VERIFIED_FILE = os.path.join(TIMINGS_DIR, "verified.json")
@@ -35,7 +47,7 @@ QUIZ_BANK_OUT = os.path.join(ROOT, "functions", "src", "quiz-bank.json")
 # The order Today's row and the library show them in (owner, 2026-10-25).
 SAAKHI_ORDER = ["bhai-lalo-malik-bhago", "anand-bhaya-meri-maaye", "why-was-the-hut-broken", "the-saint-soldier"]
 
-CONTENT_VERSION = 12
+CONTENT_VERSION = 13
 
 # Must match ContentDb.schemaVersion in lib/core/db/content_db.dart.
 DRIFT_SCHEMA_VERSION = 1
@@ -84,7 +96,10 @@ CREATE TABLE voice(id TEXT PRIMARY KEY, name TEXT, credit_en TEXT, credit_pa TEX
 
 CREATE TABLE audio_track(
   id TEXT PRIMARY KEY, bani_version_id TEXT NOT NULL, voice_id TEXT,
-  pack TEXT NOT NULL, file TEXT NOT NULL, duration_ms INTEGER, bytes INTEGER);
+  pack TEXT NOT NULL, file TEXT NOT NULL, duration_ms INTEGER, bytes INTEGER,
+  sha256 TEXT);
+-- pack: 'bundled' (in the APK under assets/audio/) or 'download' (fetched
+-- once from <kSiteBase>/audio/<file> and checked against sha256, PRD §8).
 
 CREATE TABLE timing(audio_track_id TEXT PRIMARY KEY, json TEXT NOT NULL);
 
@@ -534,7 +549,8 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
     """
     built = []
     for bani_id, slug in con.execute("SELECT id, slug FROM bani").fetchall():
-        audio = os.path.join(AUDIO_DIR, f"{slug}.m4a")
+        downloaded = slug in DOWNLOADED
+        audio = os.path.join(DOWNLOAD_DIR if downloaded else AUDIO_DIR, f"{slug}.ogg")
         timings = os.path.join(TIMINGS_DIR, f"{slug}.json")
         if not os.path.exists(audio):
             continue
@@ -556,10 +572,10 @@ def build_audio(con: sqlite3.Connection, report: dict) -> None:
 
         track_id = f"{slug}_sgpc"
         con.execute(
-            "INSERT INTO audio_track(id,bani_version_id,voice_id,pack,file,duration_ms,bytes) "
-            "VALUES(?,?,?,?,?,?,?)",
-            (track_id, version_id, None, "nitnem_audio", f"{slug}.m4a",
-             duration_ms, os.path.getsize(audio)),
+            "INSERT INTO audio_track(id,bani_version_id,voice_id,pack,file,duration_ms,bytes,sha256) "
+            "VALUES(?,?,?,?,?,?,?,?)",
+            (track_id, version_id, None, "download" if downloaded else "bundled", f"{slug}.ogg",
+             duration_ms, os.path.getsize(audio), sha256_of(audio) if downloaded else None),
         )
         if timing_json:
             con.execute("INSERT INTO timing(audio_track_id,json) VALUES(?,?)",

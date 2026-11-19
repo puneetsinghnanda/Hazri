@@ -146,6 +146,10 @@ class AudioTracks extends Table {
   IntColumn get durationMs => integer().named('duration_ms').nullable()();
   IntColumn get bytes => integer().nullable()();
 
+  /// For a recitation the app downloads once (`pack` = `download`), the
+  /// file's SHA-256, checked before it is kept (PRD §8, 2026-11-19).
+  TextColumn get sha256 => text().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }
@@ -339,7 +343,7 @@ class ContentDb extends _$ContentDb {
   );
 
   /// The content version baked in by the pipeline.
-  static const int expectedVersion = 12;
+  static const int expectedVersion = 13;
 
   /// Copies `assets/content/content.db` into app storage if it is missing or
   /// out of date, and returns the opened database.

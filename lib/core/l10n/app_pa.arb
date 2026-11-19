@@ -574,7 +574,7 @@
   "privacyOnPhoneOnly": "ਸਿਰਫ਼ ਇਸੇ ਫ਼ੋਨ ਵਿੱਚ",
   "privacyPhoneDiary": "ਤੁਹਾਡੀ ਡਾਇਰੀ ਤੇ ਲਗਾਤਾਰਤਾ",
   "privacyPhoneProgress": "ਪੜ੍ਹਨ ਦੀ ਥਾਂ ਤੇ ਸੰਕਲਪ",
-  "privacyPhoneContent": "ਹਰ ਬਾਣੀ, ਉਸ ਦਾ ਪਾਠ ਤੇ ਕੈਲੰਡਰ",
+  "privacyPhoneContent": "ਹਰ ਬਾਣੀ, ਉਸ ਦਾ ਪਾਠ ਤੇ ਕੈਲੰਡਰ (ਸੁਖਮਨੀ ਸਾਹਿਬ ਦਾ ਪਾਠ ਇੱਕ ਵਾਰ ਡਾਊਨਲੋਡ ਹੁੰਦਾ ਹੈ, ਤੁਹਾਡੇ ਬਾਰੇ ਕੁਝ ਭੇਜੇ ਬਿਨਾਂ, ਫਿਰ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦਾ ਹੈ)",
   "privacyShowMyName": "ਗਰੁੱਪਾਂ ਵਿੱਚ ਮੇਰਾ ਨਾਂ ਵਿਖਾਓ",
   "privacyShowMyNameSub": "ਬੰਦ ਹੋਵੇ ਤਾਂ “ਇੱਕ ਜਣਾ” ਵਿਖਾਈ ਦਿੰਦਾ ਹੈ",
   "privacyDownload": "ਜੋ ਕੁਝ ਸਾਡੇ ਕੋਲ ਹੈ, ਸਭ ਡਾਊਨਲੋਡ ਕਰੋ",
@@ -1282,5 +1282,9 @@
   "quizPlayedAllTime": "ਪਹਿਲੇ 20 · {count} ਨੇ ਖੇਡੀ · ਕਦੇ ਨਵਾਂ ਨਹੀਂ ਹੁੰਦਾ",
   "quizBoardEmptyMonth": "ਇਸ ਮਹੀਨੇ ਹਾਲੇ ਕਿਸੇ ਨੇ ਇਹ ਕੁਇਜ਼ ਨਹੀਂ ਖੇਡਿਆ। ਪਹਿਲਾਂ ਦੇ ਕੁਇਜ਼ ਹੁਣ ਤੱਕ ਦੇ ਬੋਰਡ 'ਤੇ ਹਨ।",
   "quizSeeAllTime": "ਹੁਣ ਤੱਕ ਦਾ ਬੋਰਡ ਵੇਖੋ",
-  "quizPlaceAllTime": "ਹੁਣ ਤੱਕ"
+  "quizPlaceAllTime": "ਹੁਣ ਤੱਕ",
+  "recitationDownloadOnce": "ਪਾਠ ਦੀ ਆਵਾਜ਼ ਇੱਕ ਵਾਰ ਡਾਊਨਲੋਡ ਹੁੰਦੀ ਹੈ। ਫਿਰ ਇਹ ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦੀ ਹੈ ਅਤੇ ਇੰਟਰਨੈੱਟ ਤੋਂ ਬਿਨਾਂ ਚੱਲਦੀ ਹੈ।",
+  "recitationDownloading": "ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ · {total} ਵਿੱਚੋਂ {done} MB",
+  "recitationNoInternet": "ਇੰਟਰਨੈੱਟ ਨਹੀਂ ਹੈ। ਪਾਠ ਦੀ ਆਵਾਜ਼ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਇੱਕ ਵਾਰ ਜੁੜੋ; ਪਾਠ ਇਸ ਤੋਂ ਬਿਨਾਂ ਵੀ ਖੁੱਲ੍ਹਦਾ ਹੈ।",
+  "recitationDownloadFailed": "ਡਾਊਨਲੋਡ ਪੂਰਾ ਨਹੀਂ ਹੋਇਆ।"
 }

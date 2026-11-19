@@ -951,7 +951,7 @@
   "privacyOnPhoneOnly": "On this phone only",
   "privacyPhoneDiary": "Your diary and streaks",
   "privacyPhoneProgress": "Reading position and goals",
-  "privacyPhoneContent": "Every bani, its audio and the calendar",
+  "privacyPhoneContent": "Every bani, its audio and the calendar (Sukhmani Sahib's recitation is downloaded once, with nothing about you, then kept)",
   "privacyShowMyName": "Show my name in groups",
   "privacyShowMyNameSub": "Off shows you as “a member”",
   "privacyDownload": "Download everything we hold",
@@ -2504,5 +2504,10 @@
   "@quizPlayedAllTime": {"placeholders": {"count": {"type": "int"}}},
   "quizBoardEmptyMonth": "Nobody has played this one this month yet. Earlier quizzes are on All time.",
   "quizSeeAllTime": "See All time",
-  "quizPlaceAllTime": "all time"
+  "quizPlaceAllTime": "all time",
+  "recitationDownloadOnce": "The recitation is downloaded once. Then it stays on your phone and plays without internet.",
+  "recitationDownloading": "Downloading · {done} of {total} MB",
+  "@recitationDownloading": {"placeholders": {"done": {"type": "String"}, "total": {"type": "String"}}},
+  "recitationNoInternet": "No internet. Connect once to download the recitation; the text opens without it.",
+  "recitationDownloadFailed": "The download did not finish."
 }

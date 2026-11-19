@@ -72,7 +72,7 @@ void main() {
 
     test('every live group has its bundled loop', () {
       for (final d in liveGroups) {
-        expect(d.assetPath, 'assets/live/${d.id}.m4a');
+        expect(d.assetPath, 'assets/live/${d.id}.ogg');
       }
     });
   });
@@ -122,7 +122,7 @@ void main() {
       final def = liveGroupById('chaupai-sahib')!;
       await app.container.read(liveListenerProvider.notifier).listen(def, title: 'Chaupai Sahib');
       expect(player.looping, isTrue);
-      expect(player.queued.single.assetPath, 'assets/live/chaupai-sahib.m4a');
+      expect(player.queued.single.assetPath, 'assets/live/chaupai-sahib.ogg');
       expect(player.position, lessThan(def.length));
       expect(player.isPlaying, isTrue);
       expect(app.container.read(liveListenerProvider), 'chaupai-sahib');

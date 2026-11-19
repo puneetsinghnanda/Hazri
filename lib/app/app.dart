@@ -9,6 +9,8 @@ import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_theme.dart';
 import '../core/time/clock.dart';
 import '../features/audio/data/audio_controller.dart';
+import '../features/audio/data/recitation_downloads.dart';
+import '../core/db/content_repository.dart' show audioTracksProvider;
 import '../features/reminders/ui/exact_alarm_card.dart';
 import '../features/hazri/data/hazri_controller.dart';
 import '../features/hazri/ui/goal_complete_sheet.dart';
@@ -75,11 +77,26 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     });
     _online = Connectivity().onConnectivityChanged.listen((r) {
       if (!r.contains(ConnectivityResult.none)) unawaited(ref.read(outboxSenderProvider).send());
+      unawaited(_fetchRecitations(r));
     });
+    unawaited(_fetchRecitations());
     _replan();
   }
 
   StreamSubscription<List<ConnectivityResult>>? _online;
+
+  /// On Wi-Fi, the recitations the app downloads (Sukhmani Sahib) are
+  /// fetched quietly, so most people never see the download sheet (owner,
+  /// 2026-11-19). Nothing happens on mobile data.
+  Future<void> _fetchRecitations([List<ConnectivityResult>? network]) async {
+    try {
+      final net = network ?? await Connectivity().checkConnectivity();
+      final rows = (await ref.read(audioTracksProvider.future)).values;
+      await ref.read(recitationDownloadsProvider.notifier).fetchOnWifi(net, rows);
+    } on Object catch (e) {
+      debugPrint('Hazri: no recitation fetch ($e)');
+    }
+  }
 
   void _announceBadge() {
     final badge = ref.read(pendingBadgeProvider);

@@ -131,63 +131,63 @@
   "audio": [
     {
       "bani": "japji-sahib",
-      "bytes": 9405288,
+      "bytes": 7508224,
       "duration_ms": 1139314,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "jaap-sahib",
-      "bytes": 8430605,
+      "bytes": 6543248,
       "duration_ms": 1019298,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "tav-prasad-savaiye",
-      "bytes": 1495726,
+      "bytes": 1195138,
       "duration_ms": 181145,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "chaupai-sahib",
-      "bytes": 1755741,
+      "bytes": 1406251,
       "duration_ms": 212287,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "anand-sahib",
-      "bytes": 10797991,
+      "bytes": 10219114,
       "duration_ms": 1304174,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "rehras-sahib",
-      "bytes": 7080401,
+      "bytes": 5590495,
       "duration_ms": 858067,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "kirtan-sohila",
-      "bytes": 1569014,
+      "bytes": 1262519,
       "duration_ms": 189731,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "ardas",
-      "bytes": 1527384,
+      "bytes": 1170539,
       "duration_ms": 185066,
       "has_timings": true,
       "timings_verified": true
     },
     {
       "bani": "sukhmani-sahib",
-      "bytes": 38684343,
+      "bytes": 30417436,
       "duration_ms": 4674927,
       "has_timings": true,
       "timings_verified": true
@@ -196,7 +196,7 @@
   "simran": [
     {
       "track": "naam-simran",
-      "bytes": 2461955,
+      "bytes": 1812187,
       "duration_ms": 300002,
       "onsets": 363
     }
@@ -313,7 +313,7 @@
     "questions": 340,
     "days": 92
   },
-  "content_version": 12,
-  "source_digest": "7f4093375e182108",
+  "content_version": 13,
+  "source_digest": "1f8d713163aa8487",
   "bytes": 5038080
 }

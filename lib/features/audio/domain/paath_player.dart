@@ -19,7 +19,8 @@ class PaathTrack {
   final String title;
   final String nativeTitle;
 
-  /// The bundled asset key, e.g. `assets/audio/japji-sahib.m4a`.
+  /// The bundled asset key, e.g. `assets/audio/japji-sahib.ogg`, or the
+  /// absolute path of a downloaded recitation kept on the phone.
   final String assetPath;
   final Duration duration;
 

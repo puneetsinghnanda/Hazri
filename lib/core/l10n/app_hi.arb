@@ -574,7 +574,7 @@
   "privacyOnPhoneOnly": "सिर्फ़ इसी फ़ोन में",
   "privacyPhoneDiary": "आपकी डायरी और निरंतरता",
   "privacyPhoneProgress": "पढ़ने की जगह और संकल्प",
-  "privacyPhoneContent": "हर बाणी, उसका पाठ और कैलेंडर",
+  "privacyPhoneContent": "हर बाणी, उसका पाठ और कैलेंडर (सुखमनी साहिब का पाठ एक बार डाउनलोड होता है, आपके बारे में कुछ भेजे बिना, फिर फ़ोन में रहता है)",
   "privacyShowMyName": "ग्रुपों में मेरा नाम दिखाएँ",
   "privacyShowMyNameSub": "बंद हो तो “एक सदस्य” दिखाई देता है",
   "privacyDownload": "जो कुछ हमारे पास है, सब डाउनलोड करें",
@@ -1282,5 +1282,9 @@
   "quizPlayedAllTime": "शीर्ष 20 · {count} ने खेली · कभी नया नहीं होता",
   "quizBoardEmptyMonth": "इस महीने अभी किसी ने यह क्विज़ नहीं खेला। पहले के क्विज़ अब तक के बोर्ड पर हैं।",
   "quizSeeAllTime": "अब तक का बोर्ड देखें",
-  "quizPlaceAllTime": "अब तक"
+  "quizPlaceAllTime": "अब तक",
+  "recitationDownloadOnce": "पाठ की आवाज़ एक बार डाउनलोड होती है। फिर यह आपके फ़ोन में रहती है और इंटरनेट के बिना चलती है।",
+  "recitationDownloading": "डाउनलोड हो रहा है · {total} में से {done} MB",
+  "recitationNoInternet": "इंटरनेट नहीं है। पाठ की आवाज़ डाउनलोड करने के लिए एक बार जुड़ें; पाठ इसके बिना भी खुलता है।",
+  "recitationDownloadFailed": "डाउनलोड पूरा नहीं हुआ।"
 }

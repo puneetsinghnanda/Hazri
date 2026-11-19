@@ -1828,7 +1828,8 @@ class LHi extends L {
   String get privacyPhoneProgress => 'पढ़ने की जगह और संकल्प';
 
   @override
-  String get privacyPhoneContent => 'हर बाणी, उसका पाठ और कैलेंडर';
+  String get privacyPhoneContent =>
+      'हर बाणी, उसका पाठ और कैलेंडर (सुखमनी साहिब का पाठ एक बार डाउनलोड होता है, आपके बारे में कुछ भेजे बिना, फिर फ़ोन में रहता है)';
 
   @override
   String get privacyShowMyName => 'ग्रुपों में मेरा नाम दिखाएँ';
@@ -4355,4 +4356,20 @@ class LHi extends L {
 
   @override
   String get quizPlaceAllTime => 'अब तक';
+
+  @override
+  String get recitationDownloadOnce =>
+      'पाठ की आवाज़ एक बार डाउनलोड होती है। फिर यह आपके फ़ोन में रहती है और इंटरनेट के बिना चलती है।';
+
+  @override
+  String recitationDownloading(String done, String total) {
+    return 'डाउनलोड हो रहा है · $total में से $done MB';
+  }
+
+  @override
+  String get recitationNoInternet =>
+      'इंटरनेट नहीं है। पाठ की आवाज़ डाउनलोड करने के लिए एक बार जुड़ें; पाठ इसके बिना भी खुलता है।';
+
+  @override
+  String get recitationDownloadFailed => 'डाउनलोड पूरा नहीं हुआ।';
 }

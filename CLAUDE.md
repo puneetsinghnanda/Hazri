@@ -67,7 +67,10 @@ git history and is not a reference.
    Three things stay true across both phases and are not negotiable: **no
    password and no sign-in screen**; **no request is needed to read a bani,
    hear it, see the calendar or write the diary** — all of that is on the
-   phone and works with the radio off; and **the sangat is opt-in**, so
+   phone and works with the radio off, but for one download: **Sukhmani
+   Sahib's recitation is fetched once** from the website (on the first
+   Wi-Fi, or with a progress sheet at the first play) and then kept on the
+   phone for good (owner, 2026-11-19; Sehaj Paath will follow it); and **the sangat is opt-in**, so
    somebody who never joins it is reading, listening and keeping a diary
    entirely on their own phone.
 5. **All UI strings are localised** in `pa`, `hi` and `en` from day one. No
@@ -450,8 +453,22 @@ all.
 ## Audio
 
 Masters are **not** in git; they live on the `audio-masters` GitHub release.
-See `audio/README.md` for how to fetch one, rebuild the shipping AAC, generate
+See `audio/README.md` for how to fetch one, rebuild the shipping Opus, generate
 timings and verify the alignment acoustically.
+
+**The recitations are mono Opus, 48 kbps, in Ogg** (owner, 2026-11-19, chosen
+by ear over 32 and 64; they were AAC 64k): `tools/audio_pipeline/build_audio.py`
+from the masters, at −16 LUFS as before. The new files match the old to the
+millisecond (cross-correlated), so the locked timings stand. Eight banis and
+Naam Simran ship in `assets/audio/` (about 35 MB, was 80); **Sukhmani Sahib
+(29 MB) is in `public/audio/` and downloaded once** (`downloads.json`,
+`audio_track.pack` = `download` with its SHA-256,
+`lib/features/audio/data/recitation_downloads.dart`), so **a change to it
+needs `firebase deploy --only hosting:public`**, and the app checks the file
+against content.db's checksum before it keeps it. The live loops are mono
+Opus too, built sample-exactly in numpy (`tools/live/build_loops.py`; two
+ffmpeg inputs seeked into an MP3 were not sample-exact and clicked at the
+repeat).
 
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.

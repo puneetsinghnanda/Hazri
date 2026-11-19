@@ -293,7 +293,7 @@ class HazriAudioHandler extends BaseAudioHandler
 
     await _player.setAudioSource(
       ConcatenatingAudioSource(
-        children: [for (final t in tracks) AudioSource.asset(t.assetPath)],
+        children: [for (final t in tracks) _source(t.assetPath)],
       ),
       initialIndex: startIndex,
       initialPosition: at ?? Duration.zero,
@@ -313,9 +313,14 @@ class HazriAudioHandler extends BaseAudioHandler
     // The recording's seam is baked into the file (tools/live/build_loops.py),
     // so looping it whole is gapless.
     await _player.setLoopMode(LoopMode.one);
-    await _player.setAudioSource(AudioSource.asset(track.assetPath), initialPosition: at);
+    await _player.setAudioSource(_source(track.assetPath), initialPosition: at);
     mediaItem.add(_mediaItemFor(track));
   }
+
+  /// A bundled asset, or a downloaded recitation kept on the phone (an
+  /// absolute path, `recitation_downloads.dart`).
+  static AudioSource _source(String path) =>
+      path.startsWith('/') ? AudioSource.file(path) : AudioSource.asset(path);
 
   @override
   Future<void> play() => _player.play();

@@ -1831,7 +1831,8 @@ class LEn extends L {
   String get privacyPhoneProgress => 'Reading position and goals';
 
   @override
-  String get privacyPhoneContent => 'Every bani, its audio and the calendar';
+  String get privacyPhoneContent =>
+      'Every bani, its audio and the calendar (Sukhmani Sahib\'s recitation is downloaded once, with nothing about you, then kept)';
 
   @override
   String get privacyShowMyName => 'Show my name in groups';
@@ -4380,4 +4381,20 @@ class LEn extends L {
 
   @override
   String get quizPlaceAllTime => 'all time';
+
+  @override
+  String get recitationDownloadOnce =>
+      'The recitation is downloaded once. Then it stays on your phone and plays without internet.';
+
+  @override
+  String recitationDownloading(String done, String total) {
+    return 'Downloading · $done of $total MB';
+  }
+
+  @override
+  String get recitationNoInternet =>
+      'No internet. Connect once to download the recitation; the text opens without it.';
+
+  @override
+  String get recitationDownloadFailed => 'The download did not finish.';
 }

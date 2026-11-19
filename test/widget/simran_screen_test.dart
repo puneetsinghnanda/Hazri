@@ -62,6 +62,6 @@ void main() {
     final track = await app.container.read(simranTrackProvider.future);
     expect(track, isNotNull);
     expect(track!.onsets, isNotEmpty);
-    expect(track.assetPath, 'assets/audio/naam-simran.m4a');
+    expect(track.assetPath, 'assets/audio/naam-simran.ogg');
   });
 }

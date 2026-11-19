@@ -3360,7 +3360,7 @@ abstract class L {
   /// No description provided for @privacyPhoneContent.
   ///
   /// In en, this message translates to:
-  /// **'Every bani, its audio and the calendar'**
+  /// **'Every bani, its audio and the calendar (Sukhmani Sahib\'s recitation is downloaded once, with nothing about you, then kept)'**
   String get privacyPhoneContent;
 
   /// No description provided for @privacyShowMyName.
@@ -7617,6 +7617,30 @@ abstract class L {
   /// In en, this message translates to:
   /// **'all time'**
   String get quizPlaceAllTime;
+
+  /// No description provided for @recitationDownloadOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'The recitation is downloaded once. Then it stays on your phone and plays without internet.'**
+  String get recitationDownloadOnce;
+
+  /// No description provided for @recitationDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading · {done} of {total} MB'**
+  String recitationDownloading(String done, String total);
+
+  /// No description provided for @recitationNoInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet. Connect once to download the recitation; the text opens without it.'**
+  String get recitationNoInternet;
+
+  /// No description provided for @recitationDownloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The download did not finish.'**
+  String get recitationDownloadFailed;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

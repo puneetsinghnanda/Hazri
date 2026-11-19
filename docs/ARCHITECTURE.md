@@ -338,7 +338,7 @@ of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`
 | `line` | id, bani_version_id, idx, section_label_en/pa/hi?, kind, gurmukhi, devanagari, roman, visraam_json?, word_count, word_align, source_id?, source_ref?, pauri?, ends_pauri? | Every line in three scripts, with pause marks |
 | `meaning` | (line_id, lang, is_alt) PK, text, source_id?, kind, note? | Reviewed meanings; Hindi only for the four banis in Sri Guru Granth Sahib Ji; `kind` `commentary` for the Faridkot teeka |
 | `voice` | id, name?, credit_en/pa/hi? | Empty: the paathi is uncredited until a credit is agreed |
-| `audio_track` | id, bani_version_id, voice_id?, pack, file, duration_ms?, bytes? | One recitation per bani, a file under `assets/audio/` |
+| `audio_track` | id, bani_version_id, voice_id?, pack, file, duration_ms?, bytes?, sha256? | One recitation per bani: `pack` `bundled`, a file under `assets/audio/`, or `download`, fetched once from `<kSiteBase>/audio/<file>` and checked against `sha256` (content version 13, 2026-11-19) |
 | `timing` | audio_track_id PK, json | Line and word timings, verified by ear and locked |
 | `simran_track` | id, file, duration_ms?, bytes?, json | The 5-minute Naam Simran recitation, with its envelope and onsets |
 | `vichar` | idx, gurmukhi, meaning_pa, meaning_en | The 200 lines of ਅੱਜ ਦਾ ਵਿਚਾਰ |
@@ -352,9 +352,17 @@ of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`
 | `quiz_day` | event_name PK, label_en, label_pa, label_hi, topic_id, slug? | `days.json`: a calendar event's English name as in `calendar_event.name_en`, the card's short label, its topic, and its Vichar page (QZ8, QZ9, QZ11) |
 | `meta` | key, value | `content_version`, `source_digest`, `ik_onkar` |
 
-The audio itself is **bundled in the APK** under `assets/audio/` — AAC-LC,
-mono, 44.1 kHz, about 64 kbps, about 81 MB for the nine banis and the Simran
-recitation. There are no Play asset packs and nothing is streamed. Masters
+The audio is **mono Opus in Ogg, 48 kHz, 48 kbps** (2026-11-19; it was AAC
+64k, about 81 MB). Eight banis and the Simran recitation are **bundled in the
+APK** under `assets/audio/` (about 35 MB). **Sukhmani Sahib is downloaded
+once** (29 MB): `audio_track.pack` is `download`, `bytes` and `sha256` describe
+the file, and the app fetches `<kSiteBase>/audio/<file>` (Firebase Hosting,
+`public/audio/`, cached a day), checks the SHA-256, and keeps it in
+`<app support>/recitations/` for good; a `.part` is written first, so a file
+of the right size is a complete one. It is fetched quietly on Wi-Fi at start
+and when Wi-Fi comes back, or by the download sheet at the first play.
+`tools/audio_pipeline/downloads.json` lists what is downloaded. There are no
+Play asset packs and nothing is streamed. Masters
 live on the `audio-masters` GitHub release (`audio/README.md`).
 
 ### 3.3 `user.db`: goals, goal items, completions and sittings (schema 5)
