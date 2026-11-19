@@ -96,8 +96,9 @@ class SangatApi {
       _api.post('$_p/groups/$id/report', {'reason': reason, 'note': ?note});
 
   /// FT2: the push token, with a profile and a group.
-  Future<void> saveFcmToken({required String token, required String locale, required String tz}) =>
-      _api.post('/devices/fcm-token', {'token': token, 'locale': locale, 'tz': tz});
+  /// FT2; [announcements] is the Announcements switch (AN7).
+  Future<void> saveFcmToken({required String token, required String locale, required String tz, bool announcements = true}) =>
+      _api.post('/devices/fcm-token', {'token': token, 'locale': locale, 'tz': tz, 'announcements': announcements});
 
   Future<void> deleteFcmToken() => _api.delete('/devices/fcm-token');
 }

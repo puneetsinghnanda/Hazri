@@ -7695,6 +7695,42 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Not now'**
   String get keepAwakeLater;
+
+  /// No description provided for @announcementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message from Hazri'**
+  String get announcementTitle;
+
+  /// No description provided for @announcementOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'This message needs a connection to open. Try again when you are online.'**
+  String get announcementOffline;
+
+  /// No description provided for @notifChannelAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get notifChannelAnnouncements;
+
+  /// No description provided for @notifKindAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get notifKindAnnouncements;
+
+  /// No description provided for @notifKindAnnouncementsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Now and then, a message from Hazri'**
+  String get notifKindAnnouncementsSub;
+
+  /// No description provided for @privacyProfileAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone\'s notification address, language and time zone, so Hazri can send you announcements (switch them off under Notifications); when you open one, that you opened it'**
+  String get privacyProfileAnnouncements;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

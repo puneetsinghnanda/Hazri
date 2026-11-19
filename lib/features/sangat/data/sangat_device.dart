@@ -84,9 +84,31 @@ class FirebasePushTokens implements PushTokens {
 /// Overridden in `main()` with [FirebasePushTokens].
 final pushTokensProvider = Provider<PushTokens>((ref) => const NoPushTokens());
 
-/// Keeps the server's copy of the push token in step: saved with a profile
-/// and a group, deleted when the last group is left (FT1–FT3). Also shows a
-/// push that arrives with the app open.
+/// The Announcements switch on the Notifications page (02-notifications AN7):
+/// on unless switched off, kept in `announcements_on_v1` and sent with the
+/// push token so the server skips this install when it is off.
+final announcementsOnProvider = NotifierProvider<AnnouncementsOn, bool>(AnnouncementsOn.new);
+
+class AnnouncementsOn extends Notifier<bool> {
+  static const key = 'announcements_on_v1';
+
+  @override
+  bool build() => ref.read(sharedPreferencesProvider).getBool(key) ?? true;
+
+  Future<void> set(bool on) async {
+    state = on;
+    await ref.read(sharedPreferencesProvider).setBool(key, on);
+    await ref.read(sangatDeviceProvider).sync(force: true);
+  }
+}
+
+/// The Android channel announcements arrive on (AN8).
+const kAnnouncementsChannel = 'announcements_v1';
+
+/// Keeps the server's copy of the push token in step: saved with a profile,
+/// deleted when there is none (FT1-FT3; since 2026-11-19 with every profile,
+/// not only a group's, so announcements reach everyone with a profile, AN1).
+/// Also shows a push that arrives with the app open.
 class SangatDevice {
   SangatDevice(this._ref);
 
@@ -115,19 +137,27 @@ class SangatDevice {
       if (r != null) open(r);
     }));
     _refresh ??= push.onRefresh.listen((_) => unawaited(sync(force: true)));
+    unawaited(() async {
+      final l = await L.delegate.load(_ref.read(settingsProvider).locale);
+      await _ref.read(reminderServiceProvider).ensureChannel(kAnnouncementsChannel, l.notifChannelAnnouncements);
+    }());
     _foreground ??= push.onForeground.listen((m) async {
       final l = await L.delegate.load(_ref.read(settingsProvider).locale);
+      final announcement = m.$3?.startsWith('/announcement/') ?? false;
       await _ref.read(reminderServiceProvider).showPush(
             title: m.$1,
             body: m.$2,
             route: m.$3,
-            channelName: ReminderScheduler.channelNames(l)[NotificationKind.sangat] ?? 'Sangat',
+            channelId: announcement ? kAnnouncementsChannel : null,
+            channelName: announcement
+                ? l.notifChannelAnnouncements
+                : ReminderScheduler.channelNames(l)[NotificationKind.sangat] ?? 'Sangat',
           );
     });
   }
 
   Future<void> sync({bool force = false}) async {
-    final want = _ref.read(profileControllerProvider) is ProfileLoaded && _ref.read(sangatMemberProvider);
+    final want = _ref.read(profileControllerProvider) is ProfileLoaded;
     if (!force && _saved == want) return;
     final api = _ref.read(sangatApiProvider);
     try {
@@ -138,6 +168,7 @@ class SangatDevice {
           token: token,
           locale: _ref.read(settingsProvider).locale.languageCode,
           tz: await FlutterTimezone.getLocalTimezone(),
+          announcements: _ref.read(announcementsOnProvider),
         );
       } else if (_saved == true) {
         await api.deleteFcmToken();

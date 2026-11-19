@@ -4426,4 +4426,24 @@ class LEn extends L {
 
   @override
   String get keepAwakeLater => 'Not now';
+
+  @override
+  String get announcementTitle => 'Message from Hazri';
+
+  @override
+  String get announcementOffline =>
+      'This message needs a connection to open. Try again when you are online.';
+
+  @override
+  String get notifChannelAnnouncements => 'Announcements';
+
+  @override
+  String get notifKindAnnouncements => 'Announcements';
+
+  @override
+  String get notifKindAnnouncementsSub => 'Now and then, a message from Hazri';
+
+  @override
+  String get privacyProfileAnnouncements =>
+      'Your phone\'s notification address, language and time zone, so Hazri can send you announcements (switch them off under Notifications); when you open one, that you opened it';
 }

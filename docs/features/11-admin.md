@@ -70,6 +70,14 @@ Figures are counted with `count()` aggregations when the page opens and when the
 - **Set group limit** to a number from 5 to 100. Stored in `groupLimits/{profileId}` (`08-sangat.md` §6.5).
 - **Everyone registered** (owner, 2026-11-19): every profile, newest first, 50 at a time with *Load 50 more*, and how many in all: name, city, email with whether it is confirmed, phone, joined, the last day the app was opened, and the groups they are in. `GET /people/all?after=<profileId>`. Full details, because only the admin's Google account can open the page (AC2).
 
+### 4.5 Announcements (owner, 2026-11-19)
+
+- An editor with a tab per language (Punjabi, Hindi, English): Title, Notification text and Full message, each with its count against its limit (`02-notifications.md` AN2), and a toolbar for the message: Bold, Italic, List, Link.
+- A preview beside it: the notification as it shows on a phone, and the message as it opens in the app, in the language of the tab.
+- How many it reaches now, by language, and how many switched announcements off.
+- **Send** asks "Send ... to N people now?" (naming any language left empty) and sends at once; there is no scheduling and no taking back.
+- **Sent**: every announcement with delivered, failed and opened (and the share), and **Who opened**: name, city and when.
+
 ## 5. API
 
 > **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §6.6** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("11-admin §5"), so a reference to this section still finds it.
@@ -103,4 +111,5 @@ Figures are counted with `count()` aggregations when the page opens and when the
 - Any admin feature inside the mobile app.
 - More than one admin, or roles.
 - Editing users' goals, diaries or profiles beyond the group limit.
+- Scheduling an announcement, sending to some people only, or pictures in one.
 - Sending notifications or emails from the website.

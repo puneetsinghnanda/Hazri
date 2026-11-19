@@ -8,6 +8,7 @@ import { ADMIN_ORIGINS } from './config';
 import type { Deps } from './deps';
 import { ApiError, Errors } from './errors';
 import { adminRouter } from './routes/admin';
+import { announcementsRouter } from './routes/announcements';
 import { backupRouter } from './routes/backup';
 import { liveRouter } from './routes/live';
 import { miscRouter } from './routes/misc';
@@ -41,6 +42,7 @@ export function createApp(deps: Deps): express.Express {
   app.use(liveRouter(deps));
   app.use(miscRouter(deps));
   app.use(adminRouter(deps));
+  app.use(announcementsRouter(deps));
 
   app.use((_req: Request, _res: Response, next: NextFunction) => next(Errors.notFound('No such endpoint')));
 

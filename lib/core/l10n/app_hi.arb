@@ -1295,5 +1295,11 @@
   "keepAwakeBatterySub": "बैटरी में “कोई प्रतिबंध नहीं” या “बैकग्राउंड गतिविधि की अनुमति” चुनें",
   "keepAwakeOpen": "खोलें",
   "keepAwakeDone": "हो गया",
-  "keepAwakeLater": "अभी नहीं"
+  "keepAwakeLater": "अभी नहीं",
+  "announcementTitle": "हाज़री की ओर से संदेश",
+  "announcementOffline": "यह संदेश खोलने के लिए इंटरनेट चाहिए। जुड़ने पर फिर कोशिश करें।",
+  "notifChannelAnnouncements": "घोषणाएँ",
+  "notifKindAnnouncements": "घोषणाएँ",
+  "notifKindAnnouncementsSub": "कभी-कभी, हाज़री की ओर से एक संदेश",
+  "privacyProfileAnnouncements": "आपके फ़ोन का सूचना पता, भाषा और समय-क्षेत्र, ताकि हाज़री आपको घोषणाएँ भेज सके (सूचनाओं में बंद कर सकते हैं); जब आप कोई खोलते हैं, कि आपने उसे खोला"
 }

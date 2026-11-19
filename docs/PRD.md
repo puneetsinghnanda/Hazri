@@ -1004,7 +1004,8 @@ sends nothing without a profile. The closed list for Phase 2:
 | **Attendance** | Once a day, with a profile | That the profile opened the app on that IST day |
 | **Weekly backup** | With a profile | Goals, goal items, completions, sittings, earned badges |
 | **Sangat contributions** | For a member of a group | Each paath or sitting that could count, from the outbox |
-| **An FCM token** | With a profile **and** a group | The device's push token, its language and time zone |
+| **An FCM token** | With a profile (with a group too until 2026-11-19) | The device's push token, its language and time zone, and whether Announcements are on; for the Sangat's pushes and for announcements (`02-notifications.md` AN1) |
+| **An announcement opened** | With a profile, when the reader opens one (added 2026-11-19) | That this profile opened it; the admin sees the name and city with the time (AN5, AN6) |
 | **A quiz** | With a profile, when the reader starts a Gurmat Quiz online (added 2026-10-27) | The topic and the content version, then the five answers chosen; the server keeps the points under the profile |
 | **The leaderboards** | With a profile | Shown to every Hazri user on the boards a player has scored on: the profile's first name, the initial of its last name, its city and the points. Nothing else about the profile |
 | **A recitation download** | Once, when Sukhmani Sahib is first played or on the first Wi-Fi (added 2026-11-19) | A plain request for the file from the Hazri website (`/audio/sukhmani-sahib.ogg`), with nothing about the person; like any web request it carries the phone's IP address. Checked against its SHA-256 and kept on the phone |

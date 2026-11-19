@@ -8,7 +8,9 @@ import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../audio/data/notification_access.dart';
+import '../../profile/data/profile_controller.dart';
 import '../../sangat/data/sangat_controller.dart';
+import '../../sangat/data/sangat_device.dart';
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/notification_switches.dart';
 import '../data/reminders_controller.dart';
@@ -58,6 +60,16 @@ class NotificationsScreen extends ConsumerWidget {
             row(NotificationKind.calendar, l.notifKindCalendar, l.notifKindCalendarSub),
             row(NotificationKind.hazriNudge, l.notifKindHazri, l.notifKindHazriSub),
             if (member) row(NotificationKind.sangat, l.notifKindSangat, l.notifKindSangatSub),
+            // AN7: announcements reach a profile; the switch is there with one.
+            if (ref.watch(profileControllerProvider) is ProfileLoaded)
+              SettingsRow(
+                title: l.notifKindAnnouncements,
+                subtitle: l.notifKindAnnouncementsSub,
+                trailing: Switch(
+                  value: ref.watch(announcementsOnProvider),
+                  onChanged: (v) => ref.read(announcementsOnProvider.notifier).set(v),
+                ),
+              ),
           ],
         ),
         const ExactAlarmCard(padding: EdgeInsets.only(top: 12)),

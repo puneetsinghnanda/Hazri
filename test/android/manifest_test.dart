@@ -105,7 +105,14 @@ void main() {
       final messenger = File('functions/src/notifications/messenger.ts').readAsStringSync();
       expect(manifest, contains('android:value="sangat_v2"'),
           reason: 'the old "sangat" channel is deleted; a push naming it falls back to this one');
-      expect(messenger, contains("channelId: 'sangat_v2'"));
+      expect(messenger, contains("channelId: m.channelId ?? 'sangat_v2'"));
+    });
+
+    test('an announcement lands on the channel the app makes for it (AN8)', () {
+      final server = File('functions/src/routes/announcements.ts').readAsStringSync();
+      final app = File('lib/features/sangat/data/sangat_device.dart').readAsStringSync();
+      expect(server, contains("ANNOUNCE_CHANNEL = 'announcements_v1'"));
+      expect(app, contains("kAnnouncementsChannel = 'announcements_v1'"));
     });
   });
 

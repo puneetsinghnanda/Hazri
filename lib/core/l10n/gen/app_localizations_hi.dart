@@ -4402,4 +4402,24 @@ class LHi extends L {
 
   @override
   String get keepAwakeLater => 'अभी नहीं';
+
+  @override
+  String get announcementTitle => 'हाज़री की ओर से संदेश';
+
+  @override
+  String get announcementOffline =>
+      'यह संदेश खोलने के लिए इंटरनेट चाहिए। जुड़ने पर फिर कोशिश करें।';
+
+  @override
+  String get notifChannelAnnouncements => 'घोषणाएँ';
+
+  @override
+  String get notifKindAnnouncements => 'घोषणाएँ';
+
+  @override
+  String get notifKindAnnouncementsSub => 'कभी-कभी, हाज़री की ओर से एक संदेश';
+
+  @override
+  String get privacyProfileAnnouncements =>
+      'आपके फ़ोन का सूचना पता, भाषा और समय-क्षेत्र, ताकि हाज़री आपको घोषणाएँ भेज सके (सूचनाओं में बंद कर सकते हैं); जब आप कोई खोलते हैं, कि आपने उसे खोला';
 }

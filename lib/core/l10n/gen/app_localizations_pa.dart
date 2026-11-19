@@ -4409,4 +4409,24 @@ class LPa extends L {
 
   @override
   String get keepAwakeLater => 'ਹੁਣ ਨਹੀਂ';
+
+  @override
+  String get announcementTitle => 'ਹਾਜ਼ਰੀ ਵੱਲੋਂ ਸੁਨੇਹਾ';
+
+  @override
+  String get announcementOffline =>
+      'ਇਹ ਸੁਨੇਹਾ ਖੋਲ੍ਹਣ ਲਈ ਇੰਟਰਨੈੱਟ ਚਾਹੀਦਾ ਹੈ। ਜੁੜਨ \'ਤੇ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ।';
+
+  @override
+  String get notifChannelAnnouncements => 'ਐਲਾਨ';
+
+  @override
+  String get notifKindAnnouncements => 'ਐਲਾਨ';
+
+  @override
+  String get notifKindAnnouncementsSub => 'ਕਦੇ-ਕਦਾਈਂ, ਹਾਜ਼ਰੀ ਵੱਲੋਂ ਇੱਕ ਸੁਨੇਹਾ';
+
+  @override
+  String get privacyProfileAnnouncements =>
+      'ਤੁਹਾਡੇ ਫ਼ੋਨ ਦਾ ਸੂਚਨਾ ਪਤਾ, ਭਾਸ਼ਾ ਅਤੇ ਸਮਾਂ-ਖੇਤਰ, ਤਾਂ ਜੋ ਹਾਜ਼ਰੀ ਤੁਹਾਨੂੰ ਐਲਾਨ ਭੇਜ ਸਕੇ (ਸੂਚਨਾਵਾਂ ਵਿੱਚ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ); ਜਦੋਂ ਤੁਸੀਂ ਕੋਈ ਖੋਲ੍ਹਦੇ ਹੋ, ਕਿ ਤੁਸੀਂ ਉਹ ਖੋਲ੍ਹਿਆ';
 }

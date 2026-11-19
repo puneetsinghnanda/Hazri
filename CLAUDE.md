@@ -47,9 +47,10 @@ git history and is not a reference.
    with its verification and restore mail; with a profile, the **daily
    attendance mark**, the **weekly backup** and, while a live group plays,
    a **listening mark** every five minutes (on joining one, the first name,
-   initial and city show on its page, `15-live-sangat.md` LS8, LS15); for a
-   Sangat member, their
-   paath toward their groups and an FCM token; with a profile, a **Gurmat
+   initial and city show on its page, `15-live-sangat.md` LS8, LS15); with a
+   profile, an FCM token for **announcements** and the Sangat's pushes, and
+   which announcement was opened (`02-notifications.md` AN1-AN9, 2026-11-19);
+   for a Sangat member, their paath toward their groups; with a profile, a **Gurmat
    Quiz** started online (its topic and the five answers), and their first
    name, initial, city and quiz points on the leaderboards. Without a profile
    the quiz sends nothing and earns no points (`docs/features/14-quiz.md`,

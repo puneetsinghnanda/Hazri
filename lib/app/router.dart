@@ -6,6 +6,7 @@ import '../core/settings/settings_controller.dart';
 import '../features/about/ui/about_screen.dart';
 import '../features/about/ui/licences_screen.dart';
 import '../features/about/ui/privacy_screen.dart';
+import '../features/announcements/ui/announcement_screen.dart';
 import '../features/live/ui/live_screen.dart';
 import '../features/sangat/ui/sangat_screen.dart';
 import '../features/diary/ui/diary_day_screen.dart';
@@ -89,6 +90,9 @@ abstract final class Routes {
   static const sangatCreate = '/sangat-create';
   static String sangatJoin([String? code]) =>
       code == null ? '/sangat-join' : '/sangat-join?code=${Uri.encodeQueryComponent(code)}';
+  /// An announcement a push opened (02-notifications AN4).
+  static String announcement(String id) => '/announcement/$id';
+
   /// A live group (15-live-sangat LS5).
   static String live(String id) => '/live/$id';
   static String sangatGroup(String id, {bool share = false}) => '/sangat-group/$id${share ? '?share=1' : ''}';
@@ -192,6 +196,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           initialLine: int.tryParse(state.uri.queryParameters['line'] ?? ''),
           autoplay: state.uri.queryParameters['autoplay'] == '1',
         ),
+      ),
+      GoRoute(
+        path: '/announcement/:id',
+        parentNavigatorKey: _rootKey,
+        builder: (_, state) => AnnouncementScreen(id: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/live/:id',

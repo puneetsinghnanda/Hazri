@@ -1295,5 +1295,11 @@
   "keepAwakeBatterySub": "ਬੈਟਰੀ ਵਿੱਚ “ਕੋਈ ਪਾਬੰਦੀ ਨਹੀਂ” ਜਾਂ “ਪਿਛੋਕੜ ਗਤੀਵਿਧੀ ਦੀ ਆਗਿਆ” ਚੁਣੋ",
   "keepAwakeOpen": "ਖੋਲ੍ਹੋ",
   "keepAwakeDone": "ਹੋ ਗਿਆ",
-  "keepAwakeLater": "ਹੁਣ ਨਹੀਂ"
+  "keepAwakeLater": "ਹੁਣ ਨਹੀਂ",
+  "announcementTitle": "ਹਾਜ਼ਰੀ ਵੱਲੋਂ ਸੁਨੇਹਾ",
+  "announcementOffline": "ਇਹ ਸੁਨੇਹਾ ਖੋਲ੍ਹਣ ਲਈ ਇੰਟਰਨੈੱਟ ਚਾਹੀਦਾ ਹੈ। ਜੁੜਨ 'ਤੇ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+  "notifChannelAnnouncements": "ਐਲਾਨ",
+  "notifKindAnnouncements": "ਐਲਾਨ",
+  "notifKindAnnouncementsSub": "ਕਦੇ-ਕਦਾਈਂ, ਹਾਜ਼ਰੀ ਵੱਲੋਂ ਇੱਕ ਸੁਨੇਹਾ",
+  "privacyProfileAnnouncements": "ਤੁਹਾਡੇ ਫ਼ੋਨ ਦਾ ਸੂਚਨਾ ਪਤਾ, ਭਾਸ਼ਾ ਅਤੇ ਸਮਾਂ-ਖੇਤਰ, ਤਾਂ ਜੋ ਹਾਜ਼ਰੀ ਤੁਹਾਨੂੰ ਐਲਾਨ ਭੇਜ ਸਕੇ (ਸੂਚਨਾਵਾਂ ਵਿੱਚ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ); ਜਦੋਂ ਤੁਸੀਂ ਕੋਈ ਖੋਲ੍ਹਦੇ ਹੋ, ਕਿ ਤੁਸੀਂ ਉਹ ਖੋਲ੍ਹਿਆ"
 }

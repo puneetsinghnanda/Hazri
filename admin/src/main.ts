@@ -327,6 +327,235 @@ async function people(): Promise<void> {
   };
 }
 
+// ------------------------------------------------------------ announcements
+
+/** 02-notifications AN1-AN8 (owner, 2026-11-19): a message to every profile. */
+const LANGS = [
+  ['pa', 'Punjabi'],
+  ['hi', 'Hindi'],
+  ['en', 'English'],
+] as const;
+type Lang = (typeof LANGS)[number][0];
+type Texts = Record<Lang, string>;
+const MAX = { title: 65, body: 180, message: 5000 } as const;
+
+interface Announcement {
+  id: string;
+  title: Texts;
+  body: Texts;
+  message: Texts;
+  createdAt: string;
+  sent: number;
+  failed: number;
+  optedOut: number;
+  opened: number;
+  byLang: Record<Lang, number>;
+}
+
+/** The app's formatting (AnnouncementText): **bold**, *italic*, [text](https://...), "- " bullets. */
+function inline(s: string): string {
+  return esc(s)
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, (_m, t, u) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`)
+    .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+    .replace(/\*([^*]+)\*/g, '<i>$1</i>');
+}
+
+function formatted(text: string): string {
+  return text
+    .split(/\n\s*\n/)
+    .filter((p) => p.trim())
+    .map((p) => {
+      const lines = p.split('\n');
+      if (lines.every((l) => /^\s*- /.test(l))) return `<ul>${lines.map((l) => `<li>${inline(l.replace(/^\s*- /, ''))}</li>`).join('')}</ul>`;
+      return `<p>${lines.map(inline).join('<br>')}</p>`;
+    })
+    .join('');
+}
+
+const firstOf = (t: Texts) => t.en || t.pa || t.hi;
+
+async function announcements(): Promise<void> {
+  const draft: Record<'title' | 'body' | 'message', Texts> = {
+    title: { pa: '', hi: '', en: '' },
+    body: { pa: '', hi: '', en: '' },
+    message: { pa: '', hi: '', en: '' },
+  };
+  let lang: Lang = 'pa';
+  html(`<h2>Announcements</h2>
+    <div class="card">
+      <p class="muted" style="margin-top:0">Sent at once to everyone with a profile who has Announcements on, each in their app's language.
+        A language left empty gets the English, or whichever one is written.</p>
+      <div id="audience" class="muted">Counting who it reaches…</div>
+      <div class="tabs" id="tabs">${LANGS.map(([k, n]) => `<button data-lang="${k}" class="tab">${n}</button>`).join('')}</div>
+      <div class="editor">
+        <div>
+          <label><span>Title <em id="c-title"></em></span><input id="f-title" maxlength="${MAX.title}" style="width:100%"></label>
+          <label><span>Notification text — what shows in the notification <em id="c-body"></em></span>
+            <textarea id="f-body" rows="3" maxlength="${MAX.body}"></textarea></label>
+          <label><span>Full message — opens in the app when tapped (optional) <em id="c-message"></em></span></label>
+          <div class="toolbar">
+            <button type="button" class="quiet" data-fmt="bold" title="Bold"><b>B</b></button>
+            <button type="button" class="quiet" data-fmt="italic" title="Italic"><i>I</i></button>
+            <button type="button" class="quiet" data-fmt="bullet" title="Bullet list">• List</button>
+            <button type="button" class="quiet" data-fmt="link" title="Link">Link</button>
+          </div>
+          <textarea id="f-message" rows="12" maxlength="${MAX.message}"></textarea>
+          <p class="muted small">A blank line starts a new paragraph. Lines starting "- " are a list.</p>
+        </div>
+        <div>
+          <span class="muted small">Notification</span>
+          <div class="notif"><div class="notif-app">Hazri · now</div><b id="p-title"></b><div id="p-body"></div></div>
+          <span class="muted small">In the app</span>
+          <div class="phone"><h3 id="p-mtitle"></h3><div id="p-message"></div></div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px"><button id="send">Send</button><span id="sendnote" class="muted"></span></div>
+    </div>
+    <div class="card"><h3>Sent</h3><div id="history"><p class="muted">Loading…</p></div></div>`);
+
+  const field = (k: 'title' | 'body' | 'message') => document.getElementById(`f-${k}`) as HTMLInputElement | HTMLTextAreaElement;
+  let reach = 0;
+
+  const preview = () => {
+    for (const k of ['title', 'body', 'message'] as const) {
+      const n = draft[k][lang].length;
+      document.getElementById(`c-${k}`)!.textContent = `${n} / ${MAX[k]}`;
+    }
+    const pick = (t: Texts) => t[lang].trim() || t.en.trim() || t.pa.trim() || t.hi.trim();
+    document.getElementById('p-title')!.textContent = pick(draft.title) || 'Title';
+    document.getElementById('p-body')!.textContent = pick(draft.body) || 'Notification text';
+    document.getElementById('p-mtitle')!.textContent = pick(draft.title) || 'Title';
+    document.getElementById('p-message')!.innerHTML = formatted(pick(draft.message) || pick(draft.body));
+    LANGS.forEach(([k]) => {
+      const b = document.querySelector(`[data-lang="${k}"]`)!;
+      b.classList.toggle('on', k === lang);
+      b.classList.toggle('filled', !!(draft.title[k] || draft.body[k]));
+    });
+  };
+
+  const show = (l: Lang) => {
+    lang = l;
+    for (const k of ['title', 'body', 'message'] as const) field(k).value = draft[k][lang];
+    preview();
+  };
+  for (const k of ['title', 'body', 'message'] as const) {
+    field(k).addEventListener('input', () => {
+      draft[k][lang] = field(k).value;
+      preview();
+    });
+  }
+  document.getElementById('tabs')!.onclick = (e) => {
+    const l = (e.target as HTMLElement).closest('[data-lang]')?.getAttribute('data-lang') as Lang | undefined;
+    if (l) show(l);
+  };
+
+  const ta = field('message') as HTMLTextAreaElement;
+  document.querySelector('.toolbar')!.addEventListener('click', (e) => {
+    const fmt = (e.target as HTMLElement).closest('[data-fmt]')?.getAttribute('data-fmt');
+    if (!fmt) return;
+    const [a, b] = [ta.selectionStart, ta.selectionEnd];
+    const sel = ta.value.slice(a, b);
+    let out: string;
+    let caret: [number, number];
+    if (fmt === 'bold' || fmt === 'italic') {
+      const m = fmt === 'bold' ? '**' : '*';
+      const t = sel || (fmt === 'bold' ? 'bold text' : 'italic text');
+      out = `${m}${t}${m}`;
+      caret = [a + m.length, a + m.length + t.length];
+    } else if (fmt === 'bullet') {
+      const lines = (sel || 'item').split('\n').map((l) => (l.startsWith('- ') ? l : `- ${l}`));
+      const lead = a > 0 && ta.value[a - 1] !== '\n' ? '\n' : '';
+      out = lead + lines.join('\n');
+      caret = [a + out.length, a + out.length];
+    } else {
+      const url = prompt('Link address (https://…)', 'https://');
+      if (!url || !/^https?:\/\/\S+$/.test(url)) return;
+      const t = sel || 'link text';
+      out = `[${t}](${url})`;
+      caret = [a + 1, a + 1 + t.length];
+    }
+    ta.setRangeText(out, a, b, 'end');
+    ta.setSelectionRange(caret[0], caret[1]);
+    ta.focus();
+    draft.message[lang] = ta.value;
+    preview();
+  });
+
+  show('pa');
+
+  const loadAudience = async () => {
+    const a: { reach: number; optedOut: number; byLang: Record<Lang, number> } = await api('GET', '/announcements/audience');
+    reach = a.reach;
+    document.getElementById('audience')!.innerHTML = `Reaches <b>${a.reach.toLocaleString('en-IN')}</b> people now —
+      Punjabi ${a.byLang.pa}, Hindi ${a.byLang.hi}, English ${a.byLang.en}. ${a.optedOut} have turned announcements off.`;
+  };
+
+  const loadHistory = async () => {
+    const { announcements: list }: { announcements: Announcement[] } = await api('GET', '/announcements');
+    const out = document.getElementById('history')!;
+    if (!list.length) {
+      out.innerHTML = '<p class="muted">Nothing sent yet.</p>';
+      return;
+    }
+    out.innerHTML = `<table><thead><tr><th>Sent</th><th>Title</th><th>Delivered</th><th>Failed</th><th>Opened</th><th></th></tr></thead><tbody>${list
+      .map(
+        (a) => `<tr><td>${esc(new Date(a.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }))}</td>
+        <td><b>${esc(firstOf(a.title))}</b><div class="muted small">${esc(firstOf(a.body))}</div></td>
+        <td>${a.sent}</td><td>${a.failed}</td><td>${a.opened}${a.sent ? ` <span class="muted">(${Math.round((a.opened / a.sent) * 100)}%)</span>` : ''}</td>
+        <td><button class="quiet" data-opens="${esc(a.id)}">Who opened</button></td></tr>
+        <tr hidden id="opens-${esc(a.id)}"><td colspan="6"></td></tr>`,
+      )
+      .join('')}</tbody></table>`;
+    out.querySelectorAll<HTMLButtonElement>('[data-opens]').forEach((btn) => {
+      btn.onclick = async () => {
+        const id = btn.dataset.opens!;
+        const row = document.getElementById(`opens-${id}`)!;
+        if (!row.hidden) return void (row.hidden = true);
+        row.hidden = false;
+        const cell = row.firstElementChild!;
+        cell.innerHTML = '<span class="muted">Loading…</span>';
+        try {
+          const { opens }: { opens: { name: string; cityId: string | null; at: string }[] } = await api('GET', `/announcements/${encodeURIComponent(id)}/opens`);
+          cell.innerHTML = opens.length
+            ? `<table><thead><tr><th>Name</th><th>City</th><th>Opened</th></tr></thead><tbody>${opens
+                .map((o) => `<tr><td>${esc(o.name)}</td><td>${esc(o.cityId ? cityLabel(o.cityId) : '—')}</td>
+                  <td>${esc(new Date(o.at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }))}</td></tr>`)
+                .join('')}</tbody></table>`
+            : '<span class="muted">Nobody has opened it yet.</span>';
+        } catch (e) {
+          cell.innerHTML = '';
+          fail(e);
+        }
+      };
+    });
+  };
+
+  document.getElementById('send')!.onclick = async () => {
+    const empty = (t: Texts) => LANGS.every(([k]) => !t[k].trim());
+    if (empty(draft.title) || empty(draft.body)) return alert('Write a title and the notification text in at least one language.');
+    const missing = LANGS.filter(([k]) => !draft.title[k].trim() || !draft.body[k].trim()).map(([, n]) => n);
+    const note = missing.length ? `\n\n${missing.join(' and ')} is not written; those phones get the English (or the other language).` : '';
+    if (!confirm(`Send "${firstOf(draft.title)}" to ${reach.toLocaleString('en-IN')} people now? It cannot be taken back.${note}`)) return;
+    const btn = document.getElementById('send') as HTMLButtonElement;
+    btn.disabled = true;
+    document.getElementById('sendnote')!.textContent = 'Sending…';
+    try {
+      const { announcement: a }: { announcement: Announcement } = await api('POST', '/announcements', draft);
+      document.getElementById('sendnote')!.textContent = `Sent to ${a.sent}${a.failed ? `, ${a.failed} failed (uninstalled phones, now removed)` : ''}.`;
+      for (const k of ['title', 'body', 'message'] as const) draft[k] = { pa: '', hi: '', en: '' };
+      show(lang);
+      await Promise.all([loadHistory(), loadAudience()]);
+    } catch (e) {
+      document.getElementById('sendnote')!.textContent = '';
+      fail(e);
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  await Promise.all([loadAudience(), loadHistory()]);
+}
+
 // ------------------------------------------------------------------- routing
 
 async function route(): Promise<void> {
@@ -338,6 +567,7 @@ async function route(): Promise<void> {
     else if (hash.startsWith('#/groups')) await groups();
     else if (hash.startsWith('#/reports')) await reports();
     else if (hash.startsWith('#/people')) await people();
+    else if (hash.startsWith('#/announcements')) await announcements();
     else await dashboard();
   } catch (e) {
     fail(e);

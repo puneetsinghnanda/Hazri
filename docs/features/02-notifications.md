@@ -266,6 +266,20 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 
 > **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §7.3** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("02-notifications §8.4"), so a reference to this section still finds it.
 
+### 8.5 Announcements (owner, 2026-11-19, option B)
+
+A message the admin writes on the admin website and sends to everyone with a profile at once. Option B of two: **profiles only**, because the owner wants people to make one; sending to every install (option A) can come later.
+
+- **AN1. Who gets it.** Every install with a profile whose token is saved and whose Announcements switch is on. The token is now saved with **every profile**, not only a group member's (ARCHITECTURE §5.10 FT1). Without a profile nothing is saved and nothing arrives.
+- **AN2. What is written.** A title (at most 65 characters), the notification text (at most 180) and an optional full message (at most 5,000), each in Punjabi, Hindi and English. Title and text are needed in at least one language.
+- **AN3. Each in their language.** The server sends each phone the text of its app language (`locale`); a language left empty falls back to English, then to whichever is written. Sent at once with `sendEach`, 500 at a time; a dead token is deleted (FM4).
+- **AN4. Tapped, it opens in the app** at `/announcement/<id>`: the title, the date and the full message (the notification text when there is none), fetched with `GET /announcements/<id>?lang=`. Formatting is kept small: `**bold**`, `*italic*`, `[text](https://...)`, a line starting `- ` is a bullet, a blank line a new paragraph. No pictures. Offline it says so, with Retry.
+- **AN5. The tap report.** Opening it sends `POST /announcements/<id>/opened`, once per profile; the server records the profile's name and city with the time. Nothing else about the tap is sent, and Analytics stays off.
+- **AN6. What the admin sees.** Before sending: how many it reaches, by language, and how many switched it off. After: delivered (FCM accepted), failed, opened, and **who opened** -- name, city, time.
+- **AN7. The switch.** Notifications -> Announcements, shown with a profile, on by default (`announcements_on_v1`). Off is sent with the token (`announcements: false`) and the server skips that install.
+- **AN8. The channel.** `announcements_v1`, made by the app at start; the server names it in every announcement. In the foreground the app shows it itself on the same channel (FM3).
+- **AN9. Cost.** FCM is free. A send reads every token once and writes one document; each open is one write. Since tokens are now saved with every profile, the hourly Sangat dispatcher reads more of them (each token about once a day); a token with no group gets no Sangat push.
+
 ## 9. Notifications screen
 
 - One switch per kind of Section 3 (3a and 3b share one, "Gurpurab and Sikh events"). Sangat is shown only to group members.
@@ -337,4 +351,4 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 
 - Any notification not in Section 3.
 - Notifications on any platform but Android.
-- Analytics on notification opens.
+- Analytics on notification opens. (An announcement's open is reported by the app itself, AN5.)

@@ -300,7 +300,7 @@ beyond what the feature file says.
 | Simran tab open | Fetch the globe snapshot, then every 2 minutes | `07-simran.md` §4.3 |
 | Sunday 00:00 local + up to 60 min, with a profile and a network | WorkManager job `weekly-backup`; caught up at the next chance if missed | `10-backup.md` BK1–BK2, §8.1 |
 | Local midnight with the app open | Today rolls over: hazri, items in scope, the streak strip, the CTA | `05-today.md` T10 |
-| FCM token refresh, language or time-zone change, with a profile and a group | `POST /devices/fcm-token` | `02-notifications.md` FT2 |
+| FCM token refresh, language or time-zone change, or the Announcements switch, with a profile | `POST /devices/fcm-token` | `02-notifications.md` FT2 |
 
 
 ## 3. Storage on the phone
@@ -784,7 +784,8 @@ collection: camelCase fields, server timestamps, rules deny all
 | `profiles/{profileId}/backupGoals/{goalId}` | Backed-up goal and its items | §5.7 |
 | `profiles/{profileId}/backupWeeks/{weekId}` | Backed-up completions and sittings of a week | §5.7 |
 | `profiles/{profileId}/backupBadges/all` | Backed-up earned badges | §5.9 |
-| `fcmTokens/{uid}` | Device push token, Sangat members only | §5.10 |
+| `fcmTokens/{uid}` | Device push token, every profile (since 2026-11-19) | §5.10 |
+| `announcements/{id}`, `.../opens/{profileId}` | Announcements and who opened each | §5.15 |
 | `sangatNotices/{groupId}_{goalId}_{milestone}` | A milestone notice, sent once | §7.2 |
 | `adminAudit/{autoId}` | Every admin change | `11-admin.md` AC5 |
 | `quizSessions/{sessionId}` | One quiz: its five questions, then its choices and points | §5.13 |
@@ -1245,8 +1246,8 @@ Arrays of keys, not counters, so a retried write adds nothing twice.
 *Moved here from `docs/features/02-notifications.md` §8.1 on 2026-10-08, word for word. Section numbers and bare references inside it are that file's.*
 
 
-- **FT1.** The app uses `firebase_messaging`. It registers a token only when the person has a profile **and** belongs to at least one group, and removes it when they leave their last group, switch Sangat notifications off, or lose the profile (`markNone()`).
-- **FT2.** `POST /api/v1/devices/fcm-token` with `{ "token": "...", "locale": "pa", "tz": "Asia/Kolkata" }`, also called on `onTokenRefresh`, on a language change and on a time-zone change. `DELETE /api/v1/devices/fcm-token` removes it. Both follow `01-accounts.md` §6.0 and return `404 NO_PROFILE` without a profile.
+- **FT1.** The app uses `firebase_messaging`. It registers a token whenever the person has a profile (since 2026-11-19, for announcements, `02-notifications.md` AN1; until then only with a profile **and** a group), and removes it when they lose the profile (`markNone()`). A token with no group gets no Sangat push: those are picked by `groupIds`.
+- **FT2.** `POST /api/v1/devices/fcm-token` with `{ "token": "...", "locale": "pa", "tz": "Asia/Kolkata", "announcements": true }`, also called on `onTokenRefresh`, on a language change and on a time-zone change. `DELETE /api/v1/devices/fcm-token` removes it. Both follow `01-accounts.md` §6.0 and return `404 NO_PROFILE` without a profile.
 - **FT3.** A profile restore (`01-accounts.md` §6.5) deletes the old uid's token document, so the old phone stops receiving.
 
 `fcmTokens/{uid}`, written only by the `api` function:
@@ -1258,6 +1259,7 @@ Arrays of keys, not counters, so a retried write adds nothing twice.
 | `locale` | string | no | `pa`, `hi` or `en` |
 | `tz` | string | no | IANA time zone of the phone |
 | `utcOffsetMin` | number | no | The zone's current UTC offset in minutes, refreshed with each call, used to find who is at 21:00 |
+| `announcements` | boolean | no | The Announcements switch (AN7); `false` means skip this install. Absent on an older document, read as on |
 | `updatedAt` | timestamp | no | Server timestamp |
 
 Index: `utcOffsetMin` ascending, for the hourly dispatcher.
@@ -1426,6 +1428,24 @@ and older than the snapshot, so the app knows whether to add itself (LS7b).
 **Cost.** A thousand listeners: 12 marks an hour each, about 3 writes a
 mark, roughly 300,000 writes a day (LS16). Reading is one document per call
 while the snapshot is fresh.
+
+### 5.15 Announcements (`02-notifications.md` AN1-AN9, 2026-11-19)
+
+`announcements/{id}`, written only by the `api` function when the admin sends one:
+
+| Field | Type | Rule |
+| --- | --- | --- |
+| `title`, `body`, `message` | map `{pa, hi, en}` of string | As written; an empty language falls back (AN3) |
+| `createdAt` | timestamp | When it was sent |
+| `createdBy` | string | The admin's email |
+| `sent`, `failed` | number | FCM's answers at sending |
+| `optedOut` | number | Installs with a profile skipped because the switch is off |
+| `opened` | number | Incremented with each first open |
+| `byLang` | map `{pa, hi, en}` of number | How many were sent each language |
+
+`announcements/{id}/opens/{profileId}`: `name` (first name and initial), `fullName`, `cityId`, `at`. One per profile, written in a transaction with the increment, so a second tap counts nothing.
+
+Pref `announcements_on_v1` (bool, default true) on the phone holds the switch.
 
 ## 6. The API
 
@@ -1855,6 +1875,18 @@ profile** and answer `404 NO_PROFILE` without one; the app sends nothing then
 
 The app keeps the last `GET /live` in preferences under `live_cache_v1` and
 shows it at once, saying it is waiting when the refresh fails (LS7).
+
+
+### 6.9 Announcements (`02-notifications.md` AN1-AN9)
+
+| Method and path | Who | Does |
+| --- | --- | --- |
+| `GET /admin/announcements/audience` | Admin | `{ reach, optedOut, byLang }`, before sending |
+| `POST /admin/announcements` | Admin | `{ title, body, message }`, each `{ pa, hi, en }`; sends at once; `201 { announcement }`; `400 VALIDATION` over a limit or with no title or text in any language |
+| `GET /admin/announcements` | Admin | The last 50, newest first, with their counts |
+| `GET /admin/announcements/{id}/opens` | Admin | `{ opens: [{ name, cityId, at }] }`, newest first, up to 500 |
+| `GET /announcements/{id}?lang=` | Any signed-in install | `{ id, title, body, message, createdAt }` in that language |
+| `POST /announcements/{id}/opened` | With a profile | Records the open once; `{ result: "COUNTED" | "ALREADY" }` |
 
 ## 7. Scheduled and triggered Functions
 

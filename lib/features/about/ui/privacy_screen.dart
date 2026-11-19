@@ -53,6 +53,8 @@ class PrivacyScreen extends ConsumerWidget {
           // 15-live-sangat LS15, LS8: the listening mark, and joining.
           l.privacyProfileLive,
           l.privacyProfileLiveJoin,
+          // 02-notifications AN1, AN5: announcements and the open report.
+          l.privacyProfileAnnouncements,
         ]),
         _Section(title: l.privacyWithGroup, icon: HazriIconData.sangat, items: [
           l.privacyGroupCounts,

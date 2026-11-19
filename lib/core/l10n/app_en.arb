@@ -2518,5 +2518,11 @@
   "keepAwakeBatterySub": "Under Battery, choose “Unrestricted” or “Allow background activity”",
   "keepAwakeOpen": "Open",
   "keepAwakeDone": "Done",
-  "keepAwakeLater": "Not now"
+  "keepAwakeLater": "Not now",
+  "announcementTitle": "Message from Hazri",
+  "announcementOffline": "This message needs a connection to open. Try again when you are online.",
+  "notifChannelAnnouncements": "Announcements",
+  "notifKindAnnouncements": "Announcements",
+  "notifKindAnnouncementsSub": "Now and then, a message from Hazri",
+  "privacyProfileAnnouncements": "Your phone's notification address, language and time zone, so Hazri can send you announcements (switch them off under Notifications); when you open one, that you opened it"
 }
