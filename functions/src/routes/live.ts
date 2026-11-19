@@ -28,6 +28,8 @@ export const LIVE_WINDOW_SECONDS = 24 * 60 * 60;
 export const LIVE_SNAPSHOT_SECONDS = 120;
 const SHARDS = 10;
 const JOINS_KEPT = 5;
+/** How long a join stays in the feed (LS8). */
+export const JOINS_SHOWN_SECONDS = 24 * 60 * 60;
 const MEMBERS_SHOWN = 20;
 const MEMBERS_READ = 500;
 const CITIES_SHOWN = 60;
@@ -108,7 +110,14 @@ export function liveRouter(deps: Deps): Router {
       }
       res.status(200).json({
         builtAt: snap.builtAt,
-        groups: LIVE_GROUPS.map((id) => ({ id, ...snap.groups[id], ...(mine[id] ?? { joined: false, myMinutesMonth: null, youCounted: false }) })),
+        groups: LIVE_GROUPS.map((id) => ({
+          id,
+          ...snap.groups[id],
+          // "Joined from" shows only the last day's joins (owner, 2026-11-19),
+          // so old names do not sit there when nobody is listening.
+          joins: (snap.groups[id]?.joins ?? []).filter((j) => now.getTime() - Date.parse(j.at) < JOINS_SHOWN_SECONDS * 1000),
+          ...(mine[id] ?? { joined: false, myMinutesMonth: null, youCounted: false }),
+        })),
       });
     }),
   );

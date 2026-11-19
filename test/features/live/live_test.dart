@@ -308,4 +308,36 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(seconds: 1));
   });
+
+  testWidgets('with the screen off the page stops asking for counts, and asks again when it is back', (tester) async {
+    final player = FakePaathPlayer();
+    late TestApp app;
+    await tester.runAsync(() async {
+      app = await TestApp.create(
+        prefs: {'onboarding_done': true},
+        extra: [...server.overrides(), paathPlayerProvider.overrideWithValue(player)],
+      );
+    });
+    addTearDown(app.dispose);
+    usePhoneFrame(tester);
+    await tester.pumpWidget(app.wrapRouted(const LiveScreen(groupId: 'naam-simran')));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+    await settle(tester);
+    int asks() => server.requests.where((r) => r == 'GET /live').length;
+    final before = asks();
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    await tester.pump(const Duration(minutes: 7));
+    expect(asks(), before);
+    expect(player.isPlaying, isTrue); // the sound goes on
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+    await tester.pump();
+    expect(asks(), before + 1);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1));
+  });
 }

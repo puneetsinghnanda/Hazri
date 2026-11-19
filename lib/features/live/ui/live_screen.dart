@@ -37,7 +37,7 @@ class LiveScreen extends ConsumerStatefulWidget {
   ConsumerState<LiveScreen> createState() => _LiveScreenState();
 }
 
-class _LiveScreenState extends ConsumerState<LiveScreen> {
+class _LiveScreenState extends ConsumerState<LiveScreen> with WidgetsBindingObserver {
   late final LiveGroupDef def = liveGroupById(widget.groupId) ?? liveGroups.first;
   late final LiveListener _listener = ref.read(liveListenerProvider.notifier);
   late final SimranController _simran = ref.read(simranSessionProvider.notifier);
@@ -59,14 +59,35 @@ class _LiveScreenState extends ConsumerState<LiveScreen> {
       unawaited(_start());
       unawaited(ref.read(liveStatusProvider.notifier).refresh());
     });
-    // The counts are rebuilt by the server at most every two minutes.
+    WidgetsBinding.instance.addObserver(this);
+    _startRefreshing();
+  }
+
+  /// The counts are rebuilt by the server at most every two minutes, so the
+  /// page asks that often, and only while it can be seen: with the screen off
+  /// the sound plays on and the counting goes on, but nobody is looking at
+  /// the numbers (owner, 2026-11-19).
+  void _startRefreshing() {
+    _refresh?.cancel();
     _refresh = Timer.periodic(const Duration(minutes: 2), (_) {
       if (mounted) unawaited(ref.read(liveStatusProvider.notifier).refresh());
     });
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(ref.read(liveStatusProvider.notifier).refresh());
+      _startRefreshing();
+    } else if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
+      _refresh?.cancel();
+      _refresh = null;
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _refresh?.cancel();
     // LS6: the sound stops when you leave the page, unless a sitting is open.
     if (!_sessionActive) unawaited(_listener.stop());

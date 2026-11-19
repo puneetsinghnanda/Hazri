@@ -97,7 +97,10 @@ timer runs out. It needs no connection.
 page playing in the last **24 hours** (owner, 2026-11-19; it was ten
 minutes), counted by the server (§8) and shown as a number, never as names.
 Join and Leave show at once: they make the server count again on the next
-read. "N cities" is how many cities they are in.
+read. The page asks for the counts when it opens and every two minutes
+while it can be seen; with the screen off it stops asking (the sound and
+the counting go on) and asks again when the screen comes back (owner,
+2026-11-19). "N cities" is how many cities they are in.
 With no connection the page plays, and the count and cities say they are
 waiting.
 
@@ -117,7 +120,9 @@ connection. The sangat's are counted by the server from the listening marks
 listened are a figure to see, never a goal, a ranking, hazri or a badge.
 
 **LS8. Joined from.** When somebody with a profile joins a live group, the
-page shows "{first name} {initial}. joined from {city}" for a short while, as
+page shows "{first name} {initial}. joined from {city}" for 24 hours (owner,
+2026-11-19: only the last day's joins, at most three, so old names do not
+sit there when nobody is listening), as
 the quiz leaderboards show a name (`14-quiz.md`). Everybody with a profile is
 shown; there is no switch to hide (owner, 2026-11-18). Somebody without a
 profile joins without being shown.

@@ -38,6 +38,9 @@ describeEmu('live sangat', () => {
     expect(g.joins).toEqual([{ name: 'Harpreet K.', cityId: 'ludhiana', at: expect.any(String) }]);
     expect(g.memberRows).toEqual([{ name: 'Harpreet K.', cityId: 'ludhiana', minutesMonth: 0 }]);
     expect((await h.as('u1').post('/api/v1/live/nowhere/join')).status).toBe(404);
+    // A day later the name has left the feed; the member stays.
+    h.clock.advance(24 * 3600 + 1);
+    expect(await group('u1', 'mool-mantar')).toMatchObject({ joins: [], members: 1 });
   });
 
   it('a mark counts the listener for 24 hours and adds five minutes, but not twice in four (LS7, LS7a)', async () => {

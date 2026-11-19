@@ -1401,7 +1401,7 @@ joined, who is listening and the minutes. The group ids are fixed in
 | `liveMembers/{g}_{profileId}` | `groupId`, `profileId`, `name` (first name and initial), `cityId`, `joinedAt`, `minutes: { "YYYY-MM": n }` | Join (create), leave (delete), a counted mark (adds 5 to the month) |
 | `liveGroups/{g}/listens/{profileId}` | `groupId`, `cityId`, `lastAt` | Every mark |
 | `liveMinutes/{g}_{period}_{0-9}` | `groupId`, `period` (an IST day or month), `minutes` | A counted mark adds 5 to a random shard of the day and of the month |
-| `liveGroups/{g}` | `joins: [ { name, cityId, at } ]`, newest first, at most 5 | Join |
+| `liveGroups/{g}` | `joins: [ { name, cityId, at } ]`, newest first, at most 5; `GET /live` answers only those of the last 24 hours | Join |
 | `liveSnapshot/current` | `builtAt`, `groups: { g: { listening, cities, cityIds (≤ 60), members, minutesToday, minutesMonth, joins (3), memberRows (20, A to Z) } }` | `GET /live`, when older than 120 s |
 
 A mark counts the listener for **24 hours** (`LIVE_WINDOW_SECONDS`, owner
