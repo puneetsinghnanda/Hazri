@@ -350,6 +350,7 @@ interface Announcement {
   optedOut: number;
   opened: number;
   byLang: Record<Lang, number>;
+  testTo: string | null;
 }
 
 /** The app's formatting (AnnouncementText): **bold**, *italic*, [text](https://...), "- " bullets. */
@@ -409,7 +410,14 @@ async function announcements(): Promise<void> {
           <div class="phone"><h3 id="p-mtitle"></h3><div id="p-message"></div></div>
         </div>
       </div>
-      <div class="row" style="margin-top:12px"><button id="send">Send</button><span id="sendnote" class="muted"></span></div>
+      <div class="testbox">
+        <b>Send a test first</b>
+        <p class="muted small" style="margin:2px 0 8px">Only to the profile with this email, in the language of the open tab, even if its Announcements switch is off.
+          The phone needs the new app, opened once with that profile.</p>
+        <div class="row"><label style="margin:0"><span>Email of the profile</span><input id="testemail" type="email" size="30"></label>
+          <button id="sendtest" class="quiet">Send test in <span id="testlang">Punjabi</span></button><span id="testnote" class="muted"></span></div>
+      </div>
+      <div class="row" style="margin-top:12px"><button id="send">Send to everyone</button><span id="sendnote" class="muted"></span></div>
     </div>
     <div class="card"><h3>Sent</h3><div id="history"><p class="muted">Loading…</p></div></div>`);
 
@@ -426,6 +434,7 @@ async function announcements(): Promise<void> {
     document.getElementById('p-body')!.textContent = pick(draft.body) || 'Notification text';
     document.getElementById('p-mtitle')!.textContent = pick(draft.title) || 'Title';
     document.getElementById('p-message')!.innerHTML = formatted(pick(draft.message) || pick(draft.body));
+    document.getElementById('testlang')!.textContent = LANGS.find(([k]) => k === lang)![1];
     LANGS.forEach(([k]) => {
       const b = document.querySelector(`[data-lang="${k}"]`)!;
       b.classList.toggle('on', k === lang);
@@ -500,7 +509,7 @@ async function announcements(): Promise<void> {
     out.innerHTML = `<table><thead><tr><th>Sent</th><th>Title</th><th>Delivered</th><th>Failed</th><th>Opened</th><th></th></tr></thead><tbody>${list
       .map(
         (a) => `<tr><td>${esc(new Date(a.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }))}</td>
-        <td><b>${esc(firstOf(a.title))}</b><div class="muted small">${esc(firstOf(a.body))}</div></td>
+        <td>${a.testTo ? `<span class="pill">Test to ${esc(a.testTo)}</span> ` : ''}<b>${esc(firstOf(a.title))}</b><div class="muted small">${esc(firstOf(a.body))}</div></td>
         <td>${a.sent}</td><td>${a.failed}</td><td>${a.opened}${a.sent ? ` <span class="muted">(${Math.round((a.opened / a.sent) * 100)}%)</span>` : ''}</td>
         <td><button class="quiet" data-opens="${esc(a.id)}">Who opened</button></td></tr>
         <tr hidden id="opens-${esc(a.id)}"><td colspan="6"></td></tr>`,
@@ -528,6 +537,37 @@ async function announcements(): Promise<void> {
         }
       };
     });
+  };
+
+  const testEmail = document.getElementById('testemail') as HTMLInputElement;
+  try {
+    testEmail.value = localStorage.getItem('announceTestEmail') ?? '';
+  } catch {
+    /* no storage: type it each time */
+  }
+  document.getElementById('sendtest')!.onclick = async () => {
+    const email = testEmail.value.trim();
+    const pick = (t: Texts) => t[lang].trim() || t.en.trim() || t.pa.trim() || t.hi.trim();
+    if (!email) return alert('Enter the email of the profile to send the test to.');
+    if (!pick(draft.title) || !pick(draft.body)) return alert('Write a title and the notification text first.');
+    try {
+      localStorage.setItem('announceTestEmail', email);
+    } catch {
+      /* not kept */
+    }
+    const btn = document.getElementById('sendtest') as HTMLButtonElement;
+    const note = document.getElementById('testnote')!;
+    btn.disabled = true;
+    note.textContent = 'Sending…';
+    try {
+      const { announcement: a }: { announcement: Announcement } = await api('POST', '/announcements', { ...draft, testEmail: email, testLang: lang });
+      note.textContent = a.sent ? `Sent to ${a.sent} phone${a.sent > 1 ? 's' : ''}. The message stays in the editor.` : 'FCM refused it: that phone no longer has the app.';
+      await loadHistory();
+    } catch (e) {
+      note.textContent = e instanceof ApiError ? e.message : String(e);
+    } finally {
+      btn.disabled = false;
+    }
   };
 
   document.getElementById('send')!.onclick = async () => {

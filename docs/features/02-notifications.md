@@ -278,6 +278,7 @@ A message the admin writes on the admin website and sends to everyone with a pro
 - **AN6. What the admin sees.** Before sending: how many it reaches, by language, and how many switched it off. After: delivered (FCM accepted), failed, opened, and **who opened** -- name, city, time.
 - **AN7. The switch.** Notifications -> Announcements, shown with a profile, on by default (`announcements_on_v1`). Off is sent with the token (`announcements: false`) and the server skips that install.
 - **AN8. The channel.** `announcements_v1`, made by the app at start; the server names it in every announcement. In the foreground the app shows it itself on the same channel (FM3).
+- **AN10. A test first.** The admin can send the message to one profile only, found by its email, in the language of the open tab and whatever its switch says. It is kept in the list marked Test, with its own opens. With no such profile: `404`; with no phone ready (no token): `409 NO_DEVICE`.
 - **AN9. Cost.** FCM is free. A send reads every token once and writes one document; each open is one write. Since tokens are now saved with every profile, the hourly Sangat dispatcher reads more of them (each token about once a day); a token with no group gets no Sangat push.
 
 ## 9. Notifications screen

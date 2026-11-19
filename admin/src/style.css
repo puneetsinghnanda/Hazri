@@ -42,3 +42,5 @@ label em { font-style: normal; float: right; color: var(--muted); }
 .phone h3 { margin: 0 0 8px; }
 .phone ul { padding-left: 20px; }
 .phone a { color: var(--kesri); }
+.testbox { margin-top: 14px; padding: 12px; border: 1px dashed var(--rule); border-radius: 10px; background: #fdfaf5; }
+.pill { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; background: #eee6da; color: var(--muted); }

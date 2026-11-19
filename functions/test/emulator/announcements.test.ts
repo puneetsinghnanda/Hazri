@@ -76,4 +76,23 @@ describeEmu('announcements', () => {
     expect(long.body.error.fields).toEqual({ 'title.en': 'At most 65 characters' });
     expect((await h.as('u1').post('/api/v1/admin/announcements', texts)).status).toBe(403);
   });
+
+  it('a test goes only to the profile with that email, in the language asked, even with its switch off (AN10)', async () => {
+    await createProfile(h, 'me', { name: 'Puneet Singh', cityId: 'ludhiana', email: 'owner@example.com' });
+    await createProfile(h, 'u2', { name: 'Gurdeep Singh', cityId: 'amritsar', email: '' });
+    await token('me', 'tok-me', 'en', false);
+    await token('u2', 'tok-u2', 'pa');
+
+    const res = await h.admin().post('/api/v1/admin/announcements', { ...texts, testEmail: 'Owner@Example.com', testLang: 'pa' });
+    expect(res.status).toBe(201);
+    expect(res.body.announcement).toMatchObject({ sent: 1, testTo: 'owner@example.com' });
+    expect(h.messenger.sent.map((m) => m.token)).toEqual(['tok-me']);
+    expect(h.messenger.sent[0].title).toBe('ਗੁਰਪੁਰਬ ਦੀਆਂ ਵਧਾਈਆਂ');
+
+    const nobody = await h.admin().post('/api/v1/admin/announcements', { ...texts, testEmail: 'nobody@example.com' });
+    expect(nobody.status).toBe(404);
+    await createProfile(h, 'u3', { name: 'Simran Kaur', cityId: 'new_delhi', email: 'simran@example.com' });
+    const noPhone = await h.admin().post('/api/v1/admin/announcements', { ...texts, testEmail: 'simran@example.com' });
+    expect(noPhone.body.error.code).toBe('NO_DEVICE');
+  });
 });

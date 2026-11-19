@@ -1442,6 +1442,7 @@ while the snapshot is fresh.
 | `optedOut` | number | Installs with a profile skipped because the switch is off |
 | `opened` | number | Incremented with each first open |
 | `byLang` | map `{pa, hi, en}` of number | How many were sent each language |
+| `testTo` | string, absent | A test's email, lower case (AN10); absent for a real send |
 
 `announcements/{id}/opens/{profileId}`: `name` (first name and initial), `fullName`, `cityId`, `at`. One per profile, written in a transaction with the increment, so a second tap counts nothing.
 
@@ -1882,7 +1883,7 @@ shows it at once, saying it is waiting when the refresh fails (LS7).
 | Method and path | Who | Does |
 | --- | --- | --- |
 | `GET /admin/announcements/audience` | Admin | `{ reach, optedOut, byLang }`, before sending |
-| `POST /admin/announcements` | Admin | `{ title, body, message }`, each `{ pa, hi, en }`; sends at once; `201 { announcement }`; `400 VALIDATION` over a limit or with no title or text in any language |
+| `POST /admin/announcements` | Admin | `{ title, body, message }`, each `{ pa, hi, en }`, and for a test `testEmail` and `testLang` (AN10: `404` no such profile, `409 NO_DEVICE` no phone); sends at once; `201 { announcement }`; `400 VALIDATION` over a limit or with no title or text in any language |
 | `GET /admin/announcements` | Admin | The last 50, newest first, with their counts |
 | `GET /admin/announcements/{id}/opens` | Admin | `{ opens: [{ name, cityId, at }] }`, newest first, up to 500 |
 | `GET /announcements/{id}?lang=` | Any signed-in install | `{ id, title, body, message, createdAt }` in that language |

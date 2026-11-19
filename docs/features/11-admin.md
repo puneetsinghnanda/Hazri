@@ -75,7 +75,8 @@ Figures are counted with `count()` aggregations when the page opens and when the
 - An editor with a tab per language (Punjabi, Hindi, English): Title, Notification text and Full message, each with its count against its limit (`02-notifications.md` AN2), and a toolbar for the message: Bold, Italic, List, Link.
 - A preview beside it: the notification as it shows on a phone, and the message as it opens in the app, in the language of the tab.
 - How many it reaches now, by language, and how many switched announcements off.
-- **Send** asks "Send ... to N people now?" (naming any language left empty) and sends at once; there is no scheduling and no taking back.
+- **Send a test first**: an email box (remembered on that computer) and *Send test in {language}*, which sends only to that profile (`02-notifications.md` AN10); the message stays in the editor.
+- **Send to everyone** asks "Send ... to N people now?" (naming any language left empty) and sends at once; there is no scheduling and no taking back.
 - **Sent**: every announcement with delivered, failed and opened (and the share), and **Who opened**: name, city and when.
 
 ## 5. API

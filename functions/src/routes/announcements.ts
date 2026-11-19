@@ -12,9 +12,10 @@ import type { Deps, VerifiedToken } from '../deps';
 import { ApiError, Errors } from '../errors';
 import { bodyOf, h, param } from '../http';
 import { isDeadTokenError, PushMessage } from '../notifications/messenger';
-import { requireProfile } from '../profile/profile';
+import { ProfileDoc, requireProfile } from '../profile/profile';
 import { displayNameOf } from '../quiz/model';
 import { toIso } from '../time';
+import { emailHashOf, emailNormalizedOf, normalizeEmail } from '../validation';
 
 const LANGS = ['pa', 'hi', 'en'] as const;
 type Lang = (typeof LANGS)[number];
@@ -38,6 +39,8 @@ export interface AnnouncementDoc {
   optedOut: number;
   opened: number;
   byLang: Record<Lang, number>;
+  /** A test sent to one profile (AN10): its email; shown as Test in the list. */
+  testTo?: string;
 }
 
 interface TokenDoc {
@@ -66,6 +69,26 @@ function readTexts(b: Record<string, unknown>, key: string, max: number, require
   return out;
 }
 
+/**
+ * A test (AN10): the phones of the one profile with this email, whatever its
+ * switch says, so the admin can see a message before everybody does.
+ */
+async function testAudience(db: Firestore, raw: string): Promise<Array<{ id: string; t: TokenDoc }>> {
+  const email = normalizeEmail(raw);
+  if (email === '') throw Errors.validation({ testEmail: 'Please enter an email' });
+  const norm = emailNormalizedOf(email);
+  const idx = await db.doc(`emailIndex/${emailHashOf(norm)}`).get();
+  const profileId = idx.exists ? (idx.get('profileId') as string) : null;
+  const p = profileId ? ((await db.doc(`profiles/${profileId}`).get()).data() as ProfileDoc | undefined) : undefined;
+  if (!p || p.emailNormalized !== norm) throw new ApiError(404, 'NOT_FOUND', 'No profile has that email');
+  const snap = await db.collection('fcmTokens').where('profileId', '==', p.profileId).get();
+  const reach = snap.docs.map((d) => ({ id: d.id, t: d.data() as TokenDoc })).filter(({ t }) => !!t.token);
+  if (reach.length === 0) {
+    throw new ApiError(409, 'NO_DEVICE', 'That profile has no phone ready: open the new app once with the profile, then try again');
+  }
+  return reach;
+}
+
 /** Who an announcement would reach now: tokens with a profile, and those switched off. */
 async function audience(db: Firestore): Promise<{ reach: Array<{ id: string; t: TokenDoc }>; optedOut: number }> {
   const snap = await db.collection('fcmTokens').get();
@@ -92,6 +115,7 @@ function dto(id: string, a: AnnouncementDoc) {
     optedOut: a.optedOut,
     opened: a.opened,
     byLang: a.byLang,
+    testTo: a.testTo ?? null,
   };
 }
 
@@ -123,11 +147,14 @@ export function announcementsRouter(deps: Deps): Router {
       const message = readTexts(b, 'message', ANNOUNCE_MESSAGE_MAX, false, fields);
       if (Object.keys(fields).length > 0) throw Errors.validation(fields);
 
+      // AN10: { testEmail, testLang } sends to that one profile, in that language.
+      const testEmail = typeof b.testEmail === 'string' ? b.testEmail : null;
+      const testLang = typeof b.testLang === 'string' ? asLang(b.testLang) : null;
       const ref = db.collection('announcements').doc();
-      const { reach, optedOut } = await audience(db);
+      const { reach, optedOut } = testEmail !== null ? { reach: await testAudience(db, testEmail), optedOut: 0 } : await audience(db);
       const byLang: Record<Lang, number> = { pa: 0, hi: 0, en: 0 };
       const messages: PushMessage[] = reach.map(({ t }) => {
-        const lang = asLang(t.locale);
+        const lang = testLang ?? asLang(t.locale);
         byLang[lang]++;
         return {
           token: t.token,
@@ -161,6 +188,7 @@ export function announcementsRouter(deps: Deps): Router {
         optedOut,
         opened: 0,
         byLang,
+        ...(testEmail !== null ? { testTo: normalizeEmail(testEmail).toLowerCase() } : {}),
       };
       await ref.set(doc);
       res.status(201).json({ announcement: dto(ref.id, doc) });
