@@ -205,7 +205,7 @@ class _LeafButton extends StatelessWidget {
 
 /// Design D on Today (owner, 2026-10-28; 14-quiz.md QZ12): the quiz's own
 /// card. Gurmat Quiz with your points and All quizzes; today's topic as a
-/// highlighted tile with Start; then the other categories as drawn tiles,
+/// highlighted tile, Start underneath it (option B, 2026-11-19); then the other categories as drawn tiles,
 /// each opening the quiz page on that category. Nothing here fetches: the
 /// points are the ones the phone already holds (`quiz_me_v1`).
 class QuizPickCard extends ConsumerWidget {
@@ -277,37 +277,39 @@ class QuizPickCard extends ConsumerWidget {
                 border: Border.all(color: c.kesri, width: 2),
                 gradient: LinearGradient(colors: [c.kesriSoft, c.card]),
               ),
-              child: Row(
+              // Option B (owner, 2026-11-19): a small number beside the
+              // name, which gets the whole width, and Start underneath, full
+              // width, so a phone with large text keeps the name on one line.
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(color: c.card, shape: BoxShape.circle),
-                    alignment: Alignment.center,
-                    child: QuizTopicGlyph(quiz.topic, size: 48),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(l.quizPeriodToday.toUpperCase(), style: HazriText.eyebrow.copyWith(color: c.kesriInk)),
-                        Text(
-                          quiz.topic.name(language),
-                          style: HazriText.display22.copyWith(color: c.ink, fontSize: 19, height: 1.15),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      QuizTopicGlyph(quiz.topic, size: 34),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(l.quizPeriodToday.toUpperCase(), style: HazriText.eyebrow.copyWith(color: c.kesriInk)),
+                            Text(
+                              quiz.topic.name(language),
+                              style: HazriText.display22.copyWith(color: c.ink, fontSize: 19, height: 1.15),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              online ? l.quizCardLine : l.quizCardLineNoProfile,
+                              style: HazriText.caption.copyWith(color: c.ink2),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          online ? l.quizCardLine : l.quizCardLineNoProfile,
-                          style: HazriText.caption.copyWith(color: c.ink2),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(height: 10),
                   PrimaryButton(
                     label: l.quizStart,
-                    expanded: false,
                     minHeight: 44,
                     onPressed: () => context.push(Routes.quizPlay(quiz.topic.id)),
                   ),

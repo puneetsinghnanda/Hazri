@@ -138,6 +138,7 @@ class LiveGroupStatus {
     this.joins = const [],
     this.memberRows = const [],
     this.joined = false,
+    this.youCounted = false,
   });
 
   final String id;
@@ -153,6 +154,9 @@ class LiveGroupStatus {
   final List<LiveMember> memberRows;
   final bool joined;
 
+  /// The server's count already includes the caller (LS7b).
+  final bool youCounted;
+
   LiveGroupStatus copyWith({bool? joined, int? members}) => LiveGroupStatus(
         id: id,
         listening: listening,
@@ -164,6 +168,7 @@ class LiveGroupStatus {
         joins: joins,
         memberRows: memberRows,
         joined: joined ?? this.joined,
+        youCounted: youCounted,
       );
 
   factory LiveGroupStatus.fromJson(Map<String, Object?> j) {
@@ -180,6 +185,32 @@ class LiveGroupStatus {
       joins: [for (final e in list('joins')) LiveJoin.fromJson(e)],
       memberRows: [for (final e in list('memberRows')) LiveMember.fromJson(e)],
       joined: j['joined'] == true,
+      youCounted: j['youCounted'] == true,
     );
   }
+}
+
+/// How long a listener stays in a live group's count after they listened
+/// (owner, 2026-11-19): a day, on the phone as on the server.
+const liveCountedFor = Duration(hours: 24);
+
+/// A live group's count and cities as shown on this phone (LS7b): the
+/// server's, plus you when you listened in the last day and the server's
+/// count does not hold you yet. Without a profile the server never counts
+/// you, so you are added for as long as the day lasts; with one, only until
+/// the server's next count has your listening mark in it.
+({int listening, int cities, List<String> cityIds}) liveShown(
+  LiveGroupStatus g, {
+  required DateTime? heardAt,
+  required DateTime now,
+  String? yourCityId,
+}) {
+  final addMe = heardAt != null && now.difference(heardAt) < liveCountedFor && !g.youCounted;
+  if (!addMe) return (listening: g.listening, cities: g.cities, cityIds: g.cityIds);
+  final newCity = yourCityId != null && !g.cityIds.contains(yourCityId);
+  return (
+    listening: g.listening + 1,
+    cities: g.cities + (newCity ? 1 : 0),
+    cityIds: newCity ? [...g.cityIds, yourCityId] : g.cityIds,
+  );
 }

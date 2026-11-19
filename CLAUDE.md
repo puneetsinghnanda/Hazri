@@ -98,7 +98,7 @@ about a saakhi is counted, and there is no Diary link.
 owner's 340-question bank in `content.db`, five questions drawn by the server,
 ten points a right answer **with a profile only** (without one the quiz plays
 on the phone, sends nothing and earns nothing), and top-20 leaderboards for each quiz and for
-everyone, by day, week and month in IST. It is **the first points and the one
+everyone, by day and month in IST and of all time (All time replaced Week on 2026-11-19; the leaderboard opens on Month and Everyone). It is **the first points and the one
 ranking in the app**, for quiz answers only: PRD §1.3 was amended for it and
 for nothing else, and no question quotes Gurbani. **Built 2026-10-27**
 (content version 10, `lib/features/quiz/`, `functions/src/quiz/`) and
@@ -237,7 +237,7 @@ each:
 | Simran counts (2026-11-09) | 123, 124 | Option C of four: live today and here today as two figures, green and blue (here today keeps its meaning, everyone counted who has not opened the app today); during a sitting both stay, smaller, either side of the countdown (`07-simran.md` CT3; replace 88 and 89) |
 | Live sangat (2026-11-17, 2026-11-18) | 125-129 | **Built 2026-11-18.** The Sangat tab as two tabs, Discover first and My groups (the default once you are in a group, with Create and Join at the top); three live groups (Naam Simran, Mool Mantar, Chaupai Sahib) as option B's tall cards with their own scenes (the globe, ੴ among the stars, the jot in the shield, drawn by `tools/design/live_scenes.js`); the live page option A with the group in a sheet; a sitting option D (`15-live-sangat.md`; replace 102) |
 | First-run profile (2026-11-18) | 130, 131 | Option C of four: the profile is the last step of setup, Make your Hazri card, the identity card filling in as you type, email optional, Not now; Welcome, {name} after it (`03-first-run.md` F10) |
-| Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A, with Know more and Take the quiz since 2026-11-18 (option B), and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
+| Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A, with Know more and Quiz since 2026-11-18 (option B), and the quiz card D (2026-10-28, from four options; today's tile as option B since 2026-11-19, a small mark and Start full width under the name), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -604,7 +604,7 @@ is true of the code now, then what is live, then what is still open.
   at 0 still counts as played. **Without a profile the quiz plays on the
   phone, sends nothing and earns nothing** (QZ14). Today has two quiz cards
   (QZ9, 2026-10-28): the calendar leaf with the day's insight and, since
-  2026-11-18, Know more and Take the quiz (option B, QZ11), and
+  2026-11-18, Know more and Quiz (option B, QZ11), and
   `QuizPickCard`, design D: today's topic with Start, your points, All
   quizzes, and the other categories as tiles opening the quiz page on that
   category (`/quiz?category=`). Neither fetches anything. A shared link is

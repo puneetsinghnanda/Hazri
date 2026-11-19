@@ -85,6 +85,36 @@ class LiveStatusController extends Notifier<LiveView> {
   }
 }
 
+/// When this phone last played each live group (`live_heard_v1`), so it
+/// counts itself for a day (LS7b). Kept on the phone; never sent.
+final liveHeardProvider = NotifierProvider<LiveHeard, Map<String, DateTime>>(LiveHeard.new);
+
+class LiveHeard extends Notifier<Map<String, DateTime>> {
+  static const key = 'live_heard_v1';
+
+  @override
+  Map<String, DateTime> build() {
+    final raw = ref.read(sharedPreferencesProvider).getString(key);
+    if (raw == null) return const {};
+    try {
+      final j = jsonDecode(raw) as Map<String, Object?>;
+      return {
+        for (final e in j.entries)
+          if (DateTime.tryParse('${e.value}') case final at?) e.key: at,
+      };
+    } on Object {
+      return const {};
+    }
+  }
+
+  Future<void> heard(String groupId, DateTime at) async {
+    state = {...state, groupId: at};
+    await ref
+        .read(sharedPreferencesProvider)
+        .setString(key, jsonEncode({for (final e in state.entries) e.key: e.value.toIso8601String()}));
+  }
+}
+
 /// Seconds listened per group, today and this month, counted on the phone
 /// (LS7a).
 final liveSecondsProvider = StreamProvider<Map<String, ({int today, int month})>>(
@@ -146,6 +176,7 @@ class LiveListener extends Notifier<String?> {
     }
     await player.play();
     state = def.id;
+    await ref.read(liveHeardProvider.notifier).heard(def.id, DateTime.now());
     _lastTick = DateTime.now();
     _timer?.cancel();
     _timer = Timer.periodic(tick, (_) => unawaited(onTick()));

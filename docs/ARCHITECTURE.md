@@ -635,6 +635,7 @@ added. The *Phase 2* column is the target.
 | `notif_on_amrit_vela`, `notif_on_goal_reminders`, `notif_on_sikh_calendar`, `notif_on_hazri_nudge`, `notif_on_sangat` | bool | true | **New.** One switch per kind, keyed by its channel (`02-notifications.md` CM7) |
 | `hazri_banner_closed_v1` | String | — | **New** (2026-10-10). The local date the marked hazri banner was closed on (`05-today.md` T1a) |
 | `live_cache_v1` | String (JSON) | — | **New** (2026-11-18). The last `GET /live` reply (§6.8), shown first on the Sangat tab and a live page (`15-live-sangat.md` LS7) |
+| `live_heard_v1` | String (JSON) | — | **New** (2026-11-19). Group id to when this phone last played it, so it counts itself for a day (LS7b). Never sent |
 | `city_id` | String | `new_delhi` | **Removed.** One city, the profile's; none without a profile (`03-first-run.md` CY1–CY3) |
 | `simran_minutes` | int | 5 | **Removed.** The sitting is 5 minutes or the goal item's minutes (`07-simran.md` S-7) |
 | `exact_alarm_asked` | bool | false | **Removed.** Exact alarms are never asked (`02-notifications.md` DP2) |
@@ -782,7 +783,7 @@ collection: camelCase fields, server timestamps, rules deny all
 | `quizScores/{boardId}_{memberKey}` | A player's score on one board (a period and a topic, or everyone) | §5.13 |
 | `quizBoards/{boardId}` | One board's top twenty, rebuilt at most every 2 minutes | §5.13 |
 | `liveMembers/{groupId}_{profileId}` | A member of a live group: name as shown, city, joined at, minutes per month | §5.14 |
-| `liveListens/{groupId}_{profileId}` | The last listening mark: group, city, `lastAt` | §5.14 |
+| `liveGroups/{groupId}/listens/{profileId}` | The last listening mark: group, city, `lastAt` | §5.14 |
 | `liveMinutes/{groupId}_{period}_{shard}` | The sangat's minutes for a day or a month, in ten shards | §5.14 |
 | `liveGroups/{groupId}` | The last five joins, for the feed | §5.14 |
 | `liveSnapshot/current` | What `GET /live` answers, rebuilt at most every 2 minutes | §5.14 |
@@ -1302,8 +1303,17 @@ and an install without a profile sends nothing to the quiz. Days, weeks and
 months are IST (QZ21).
 
 **Board ids.** `{period}{key}_{scope}`: period `d` with `YYYY-MM-DD`, `w`
-with the ISO week `YYYY-Www`, `m` with `YYYY-MM`; scope `all` or a topic id.
-For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
+with the ISO week `YYYY-Www`, `m` with `YYYY-MM`, `a` (All time, 2026-11-19)
+with no key; scope `all` or a topic id. For example
+`d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`, `a_all`.
+The app shows Today, Month and All time; the week's boards are still written
+for apps from before 2026-11-19. An All time row's `deleteAt` is 2200-01-01.
+
+**`quizMeta/allTime`**: `{ startedAt, doneAt, rows }`. The first read of an
+All time board creates it and fills every player's `a_` rows once from the
+month boards (a month's rows are kept 400 days), each the sum of their month
+scores; from then on every submission raises the `a_` rows as it raises the
+others. Created with `create()`, so the fill runs once however many ask.
 
 #### `quizSessions/{sessionId}` (auto id)
 
@@ -1389,15 +1399,20 @@ joined, who is listening and the minutes. The group ids are fixed in
 | Collection | Fields | Written by |
 |---|---|---|
 | `liveMembers/{g}_{profileId}` | `groupId`, `profileId`, `name` (first name and initial), `cityId`, `joinedAt`, `minutes: { "YYYY-MM": n }` | Join (create), leave (delete), a counted mark (adds 5 to the month) |
-| `liveListens/{g}_{profileId}` | `groupId`, `cityId`, `lastAt` | Every mark |
+| `liveGroups/{g}/listens/{profileId}` | `groupId`, `cityId`, `lastAt` | Every mark |
 | `liveMinutes/{g}_{period}_{0-9}` | `groupId`, `period` (an IST day or month), `minutes` | A counted mark adds 5 to a random shard of the day and of the month |
 | `liveGroups/{g}` | `joins: [ { name, cityId, at } ]`, newest first, at most 5 | Join |
 | `liveSnapshot/current` | `builtAt`, `groups: { g: { listening, cities, cityIds (≤ 60), members, minutesToday, minutesMonth, joins (3), memberRows (20, A to Z) } }` | `GET /live`, when older than 120 s |
 
-A mark counts the listener for ten minutes (`LIVE_WINDOW_SECONDS`); a mark
-less than four minutes after the last refreshes `lastAt` and adds no
-minutes. **No composite index**: the snapshot reads `liveListens` with one
-range on `lastAt` and `liveMembers` with one equality on `groupId`.
+A mark counts the listener for **24 hours** (`LIVE_WINDOW_SECONDS`, owner
+2026-11-19); a mark less than four minutes after the last refreshes `lastAt`
+and adds no minutes. The marks live under their group, so the snapshot needs
+**no composite index**: per group, a `count()` of marks with `lastAt` in the
+last day (one read per thousand), and the newest 300 for the cities.
+**Join and leave set the snapshot's `builtAt` to 0**, so the next `GET /live`
+rebuilds and a new member shows at once. `GET /live` also answers
+`youCounted` per group: whether the caller's own mark is inside the window
+and older than the snapshot, so the app knows whether to add itself (LS7b).
 
 **Cost.** A thousand listeners: 12 marks an hour each, about 3 writes a
 mark, roughly 300,000 writes a day (LS16). Reading is one document per call
@@ -1806,7 +1821,7 @@ content pipeline with `content.db` (QZ4).
 |---|---|---|---|
 | `POST /sessions` | `{ topicId, bankVersion }` | Counts the session against the day (QZ22), draws five questions (QZ13) from the bank as of `bankVersion`, stores the session. Returns `{ sessionId, questionIds, expiresAt }` | `400 VALIDATION_ERROR` (unknown topic), `404 NO_PROFILE`, `429 QUIZ_DAILY_LIMIT` |
 | `POST /sessions/{id}/answers` | `{ choices: ["A", …] }`, five | Marks the choices, records the points (§5.13 "What writes them"). Returns `{ correct: [5 bools], points, totalPoints, placeToday }`, `placeToday` on the topic's day board. A second call returns the first answer and writes nothing | `404 SESSION_NOT_FOUND` (also another player's), `409 SESSION_TOO_FAST` (under 10 s), `409 SESSION_EXPIRED` (over 30 min), `400 VALIDATION_ERROR` |
-| `GET /board?period=day\|week\|month&scope=all\|{topicId}` | — | The current board, rebuilt first when older than 120 s (§5.13). Returns `{ boardId, builtAt, played, rows: [ { place, name, cityId, score, you } ], me: { score, place } }`; `you` marks the caller's row; `me` is null without a profile or a score | `400 VALIDATION_ERROR` |
+| `GET /board?period=day\|week\|month\|all&scope=all\|{topicId}` | — | The current board, rebuilt first when older than 120 s (§5.13). Returns `{ boardId, builtAt, played, rows: [ { place, name, cityId, score, you } ], me: { score, place } }`; `you` marks the caller's row; `me` is null without a profile or a score | `400 VALIDATION_ERROR` |
 | `GET /me` | — | `{ points, attempts, topics, days, places: { day, week, month } }`; `days` covers this month and last; `places` on the Everyone boards | `404 NO_PROFILE` |
 
 **Cost.** A session: 2 reads, 2 writes. A submission: 3 to 8 reads, 2 to 8
@@ -1823,7 +1838,7 @@ profile** and answer `404 NO_PROFILE` without one; the app sends nothing then
 
 | Method and path | Body | Does |
 |---|---|---|
-| `GET /live` | — | `{ builtAt, groups: [ { id, listening, cities, cityIds, members, minutesToday, minutesMonth, joins, memberRows, joined, myMinutesMonth } ] }`, the three groups in order from the snapshot (§5.14); `joined` and `myMinutesMonth` are the caller's (false and null without a profile) |
+| `GET /live` | — | `{ builtAt, groups: [ { id, listening, cities, cityIds, members, minutesToday, minutesMonth, joins, memberRows, joined, myMinutesMonth, youCounted } ] }`, the three groups in order from the snapshot (§5.14); `joined` and `myMinutesMonth` are the caller's (false and null without a profile) |
 | `POST /live/{id}/join` | — | Idempotent. Creates the member and puts the join at the head of the feed. `{ result: "JOINED" }` |
 | `POST /live/{id}/leave` | — | Deletes the member. `{ result: "LEFT" }` |
 | `POST /live/{id}/listen` | — | The listening mark, every five minutes while the page plays. `{ result: "COUNTED" \| "TOO_SOON", nextInSeconds: 300 }` |

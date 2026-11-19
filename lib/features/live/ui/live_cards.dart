@@ -7,6 +7,7 @@ import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
+import '../data/live_controller.dart';
 import '../domain/live_group.dart';
 import 'live_scene.dart';
 
@@ -23,11 +24,12 @@ class LiveCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = L.of(context);
+    final listening = _shownListening(ref, status);
     final name = def.nameFor(Localizations.localeOf(context).languageCode);
     const white = Colors.white;
     return Semantics(
       button: true,
-      label: '${l.liveTag}, $name, ${waiting ? l.liveWaiting : l.liveListening(status.listening)}',
+      label: '${l.liveTag}, $name, ${waiting ? l.liveWaiting : l.liveListening(listening)}',
       excludeSemantics: true,
       child: GestureDetector(
         onTap: () => context.push(Routes.live(def.id)),
@@ -75,7 +77,7 @@ class LiveCard extends ConsumerWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      waiting ? l.liveWaiting : l.liveListening(status.listening),
+                      waiting ? l.liveWaiting : l.liveListening(listening),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: HazriText.caption.copyWith(color: white.withValues(alpha: 0.8), fontSize: 11),
@@ -108,7 +110,7 @@ class LiveCard extends ConsumerWidget {
 
 /// A live group you are in, on My groups (LS4a, design 126): how many are
 /// listening, your minutes today and Listen.
-class LiveRow extends StatelessWidget {
+class LiveRow extends ConsumerWidget {
   const LiveRow({
     super.key,
     required this.def,
@@ -123,9 +125,10 @@ class LiveRow extends StatelessWidget {
   final bool waiting;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l = L.of(context);
+    final listening = _shownListening(ref, status);
     final name = def.nameFor(Localizations.localeOf(context).languageCode);
     return InkWell(
       onTap: () => context.push(Routes.live(def.id)),
@@ -152,7 +155,7 @@ class LiveRow extends StatelessWidget {
                       const SizedBox(width: 6),
                       Flexible(
                         child: Text(
-                          waiting ? l.liveWaiting : l.liveListening(status.listening),
+                          waiting ? l.liveWaiting : l.liveListening(listening),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: HazriText.caption.copyWith(color: c.ink2),
@@ -178,6 +181,13 @@ class LiveRow extends StatelessWidget {
     );
   }
 }
+
+/// The count with you in it for a day after you listened (LS7b).
+int _shownListening(WidgetRef ref, LiveGroupStatus status) => liveShown(
+      status,
+      heardAt: ref.watch(liveHeardProvider)[status.id],
+      now: DateTime.now(),
+    ).listening;
 
 /// The red LIVE tag.
 class LiveTagPill extends StatelessWidget {

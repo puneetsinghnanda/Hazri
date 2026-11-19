@@ -155,6 +155,50 @@ describeEmu('Gurmat Quiz', () => {
     expect(day.body.rows[0].score).toBe(10);
   });
 
+  it('All time adds every month\'s daily bests and never resets (owner, 2026-11-19)', async () => {
+    await createProfile(h, 'u1');
+    // Claimed by an earlier board read, so this test sees only new writes.
+    await h.db.doc('quizMeta/allTime').set({ doneAt: new Date() });
+    await play('u1', 3);
+    await play('u1', 4);
+    h.clock.set('2026-11-02T06:00:00Z');
+    await play('u1', 2);
+    const all = await h.as('u1').get('/api/v1/quiz/board?period=all&scope=all');
+    expect(all.body.boardId).toBe('a_all');
+    expect(all.body.rows).toEqual([{ place: 1, name: 'Harpreet K.', cityId: 'amritsar', score: 60, you: true }]);
+    const topic = await h.as('u1').get(`/api/v1/quiz/board?period=all&scope=${TOPIC}`);
+    expect(topic.body.me).toEqual({ score: 60, place: 1 });
+    const month = await h.as('u1').get('/api/v1/quiz/board?period=month&scope=all');
+    expect(month.body.rows[0].score).toBe(20);
+    expect((await h.as('u1').get('/api/v1/quiz/me')).body.places.all).toBe(1);
+  });
+
+  it('the first All time read fills it once from the month boards', async () => {
+    await createProfile(h, 'u1');
+    await createProfile(h, 'u2', { name: 'Gurdeep Singh', cityId: 'ludhiana', email: 'g@example.com' });
+    await play('u1', 3);
+    h.clock.set('2026-11-02T06:00:00Z');
+    await play('u1', 2);
+    await play('u2', 5);
+    // Played before All time existed: no a_ rows were written then.
+    for (const d of (await h.db.collection('quizScores').get()).docs) {
+      if ((d.get('boardId') as string).startsWith('a_')) await d.ref.delete();
+    }
+    const all = await h.as('u1').get('/api/v1/quiz/board?period=all&scope=all');
+    // Equal scores: the one who reached it first is first (QZ28).
+    expect(all.body.rows.map((r: { name: string; score: number }) => [r.name, r.score])).toEqual([
+      ['Harpreet K.', 50],
+      ['Gurdeep S.', 50],
+    ]);
+    // Once only: a later read does not fill it again.
+    // Two players, each on Everyone and on the topic.
+    expect((await h.db.doc('quizMeta/allTime').get()).get('rows')).toBe(4);
+    await h.db.doc('quizMeta/allTime').update({ rows: 99 });
+    h.clock.advance(200);
+    await h.as('u1').get('/api/v1/quiz/board?period=all&scope=all');
+    expect((await h.db.doc('quizMeta/allTime').get()).get('rows')).toBe(99);
+  });
+
   it('a quiz from yesterday is on this week\'s and month\'s boards, not today\'s (QZ21, owner 2026-10-28)', async () => {
     await createProfile(h, 'u1');
     await play('u1', 3);
@@ -222,7 +266,8 @@ describeEmu('Gurmat Quiz', () => {
     const p = await createProfile(h, 'u1');
     await play('u1', 3);
     const out = await runQuizProfileSync(h.db, p.profileId, { name: 'Harpreet Kaur', cityId: 'amritsar' }, { name: 'Harpreet Gill', cityId: 'delhi' }, h.clock.now());
-    expect(out.rowsUpdated).toBe(6);
+    // Day, week, month and all time, for the topic and for everyone.
+    expect(out.rowsUpdated).toBe(8);
     h.clock.advance(121);
     const board = await h.as('u1').get('/api/v1/quiz/board?period=month&scope=all');
     expect(board.body.rows[0]).toMatchObject({ name: 'Harpreet G.', cityId: 'delhi' });

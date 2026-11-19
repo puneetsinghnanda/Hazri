@@ -86,8 +86,8 @@ class QuizMeScreen extends ConsumerWidget {
               Row(
                 children: [
                   place(me.places['day'], l.quizPlaceToday),
-                  place(me.places['week'], l.quizPlaceWeek),
                   place(me.places['month'], l.quizPlaceMonth),
+                  place(me.places['all'], l.quizPlaceAllTime),
                 ],
               ),
             ],

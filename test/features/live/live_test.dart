@@ -77,6 +77,30 @@ void main() {
     });
   });
 
+  group('LS7b: you are in the count for a day after you listen', () {
+    const g = LiveGroupStatus(id: 'naam-simran', listening: 3, cities: 2, cityIds: ['ludhiana', 'amritsar']);
+    final now = DateTime(2026, 11, 19, 10);
+
+    test('the server count plus you, and your city once', () {
+      final s = liveShown(g, heardAt: now.subtract(const Duration(minutes: 1)), now: now, yourCityId: 'toronto');
+      expect((s.listening, s.cities), (4, 3));
+      expect(s.cityIds, contains('toronto'));
+      final same = liveShown(g, heardAt: now, now: now, yourCityId: 'ludhiana');
+      expect((same.listening, same.cities), (4, 2));
+    });
+
+    test('not twice once the server counts you', () {
+      const counted = LiveGroupStatus(id: 'naam-simran', listening: 3, cities: 2, youCounted: true);
+      expect(liveShown(counted, heardAt: now, now: now).listening, 3);
+    });
+
+    test('and no longer after 24 hours', () {
+      expect(liveShown(g, heardAt: now.subtract(const Duration(hours: 23, minutes: 59)), now: now).listening, 4);
+      expect(liveShown(g, heardAt: now.subtract(const Duration(hours: 24)), now: now).listening, 3);
+      expect(liveShown(g, heardAt: null, now: now).listening, 3);
+    });
+  });
+
   group('the listener', () {
     late TestApp app;
     late FakePaathPlayer player;
@@ -102,6 +126,8 @@ void main() {
       expect(player.position, lessThan(def.length));
       expect(player.isPlaying, isTrue);
       expect(app.container.read(liveListenerProvider), 'chaupai-sahib');
+      // Kept on the phone so it counts itself for a day (LS7b).
+      expect(app.container.read(liveHeardProvider)['chaupai-sahib'], isNotNull);
     });
 
     test('S-6: without a profile nothing is sent', () async {
@@ -244,7 +270,8 @@ void main() {
         expect(find.text(liveGroupById('mool-mantar')!.nameFor(locale.languageCode)), findsOneWidget);
         if (locale.languageCode == 'en') {
           expect(find.text(l.liveTag), findsOneWidget);
-          expect(find.text(l.liveListening(4)), findsOneWidget);
+          // The server's four and you, without a profile too (LS7b).
+          expect(find.text(l.liveListening(5)), findsOneWidget);
           expect(find.textContaining('Harpreet K. joined from'), findsOneWidget);
           expect(find.text(l.liveSwipeUp), findsOneWidget);
           // S-6: without a profile, Join asks for one.
@@ -257,5 +284,28 @@ void main() {
         await tester.pump(const Duration(seconds: 1));
       });
     }
+  });
+
+  testWidgets('a joined page has no Joined button, and the ⋮ sits at the right', (tester) async {
+    server.on('GET', '/live', 200, liveBody(joined: true));
+    final player = FakePaathPlayer();
+    late TestApp app;
+    await tester.runAsync(() async {
+      app = await TestApp.create(
+        prefs: {'onboarding_done': true},
+        extra: [...server.overrides(), paathPlayerProvider.overrideWithValue(player)],
+      );
+    });
+    addTearDown(app.dispose);
+    usePhoneFrame(tester);
+    await tester.pumpWidget(app.wrapRouted(const LiveScreen(groupId: 'naam-simran')));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+    await settle(tester);
+    expect(find.text(l.liveJoin), findsNothing);
+    expect(find.text(l.liveJoined), findsNothing);
+    final menu = tester.getRect(find.byType(PopupMenuButton<int>));
+    expect(menu.right, greaterThan(390 - 40));
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1));
   });
 }

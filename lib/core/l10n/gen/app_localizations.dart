@@ -6829,7 +6829,7 @@ abstract class L {
   /// No description provided for @quizTakeQuiz.
   ///
   /// In en, this message translates to:
-  /// **'Take the quiz'**
+  /// **'Quiz'**
   String get quizTakeQuiz;
 
   /// No description provided for @quizQuestionOf.
@@ -7030,12 +7030,6 @@ abstract class L {
   /// **'Today'**
   String get quizPeriodToday;
 
-  /// No description provided for @quizPeriodWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Week'**
-  String get quizPeriodWeek;
-
   /// No description provided for @quizPeriodMonth.
   ///
   /// In en, this message translates to:
@@ -7060,12 +7054,6 @@ abstract class L {
   /// **'Top 20 · {count} played today · resets at midnight IST'**
   String quizPlayedToday(int count);
 
-  /// No description provided for @quizPlayedWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Top 20 · {count} played this week · resets Monday at midnight IST'**
-  String quizPlayedWeek(int count);
-
   /// No description provided for @quizPlayedMonth.
   ///
   /// In en, this message translates to:
@@ -7087,20 +7075,8 @@ abstract class L {
   /// No description provided for @quizBoardEmptyToday.
   ///
   /// In en, this message translates to:
-  /// **'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on the week\'s and the month\'s.'**
+  /// **'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on this month\'s board and on All time.'**
   String get quizBoardEmptyToday;
-
-  /// No description provided for @quizBoardEmptyWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Nobody has played this one this week yet. Earlier quizzes are on the month\'s board.'**
-  String get quizBoardEmptyWeek;
-
-  /// No description provided for @quizSeeWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'See this week'**
-  String get quizSeeWeek;
 
   /// No description provided for @quizSeeMonth.
   ///
@@ -7263,12 +7239,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'today'**
   String get quizPlaceToday;
-
-  /// No description provided for @quizPlaceWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'this week'**
-  String get quizPlaceWeek;
 
   /// No description provided for @quizPlaceMonth.
   ///
@@ -7444,12 +7414,6 @@ abstract class L {
   /// **'Joined'**
   String get liveJoined;
 
-  /// No description provided for @liveJoinedListening.
-  ///
-  /// In en, this message translates to:
-  /// **'Joined · listening'**
-  String get liveJoinedListening;
-
   /// No description provided for @liveSwipeUp.
   ///
   /// In en, this message translates to:
@@ -7623,6 +7587,36 @@ abstract class L {
   /// In en, this message translates to:
   /// **'If you join a live group: your first name, the first letter of your last name and your city, shown to everybody on its page as having joined, with your minutes there this month'**
   String get privacyProfileLiveJoin;
+
+  /// No description provided for @quizPeriodAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get quizPeriodAllTime;
+
+  /// No description provided for @quizPlayedAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 20 · {count} have played · never resets'**
+  String quizPlayedAllTime(int count);
+
+  /// No description provided for @quizBoardEmptyMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has played this one this month yet. Earlier quizzes are on All time.'**
+  String get quizBoardEmptyMonth;
+
+  /// No description provided for @quizSeeAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'See All time'**
+  String get quizSeeAllTime;
+
+  /// No description provided for @quizPlaceAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'all time'**
+  String get quizPlaceAllTime;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

@@ -21,8 +21,9 @@ export type LiveGroupId = (typeof LIVE_GROUPS)[number];
 
 /** A listening mark every five minutes while a page plays (LS15). */
 export const LIVE_MARK_MINUTES = 5;
-/** A listener counts as listening for this long after a mark (LS7). */
-export const LIVE_WINDOW_SECONDS = 10 * 60;
+/** A listener counts as listening for this long after a mark (LS7; owner,
+ * 2026-11-19: a day, then they drop off the count). */
+export const LIVE_WINDOW_SECONDS = 24 * 60 * 60;
 /** GET /live rebuilds its snapshot at most this often. */
 export const LIVE_SNAPSHOT_SECONDS = 120;
 const SHARDS = 10;
@@ -30,6 +31,8 @@ const JOINS_KEPT = 5;
 const MEMBERS_SHOWN = 20;
 const MEMBERS_READ = 500;
 const CITIES_SHOWN = 60;
+/** The listening marks read for the cities; the count itself is a count(). */
+const LISTENS_READ = 300;
 
 const isLive = (id: string): id is LiveGroupId => (LIVE_GROUPS as readonly string[]).includes(id);
 const monthOf = (day: string) => day.slice(0, 7);
@@ -82,21 +85,30 @@ export function liveRouter(deps: Deps): Router {
       const now = clock.now();
       const snap = await readSnapshot(db, now);
       const profileId = await ownerProfileId(db, uid);
-      const mine: Record<string, { joined: boolean; myMinutesMonth: number }> = {};
+      const mine: Record<string, { joined: boolean; myMinutesMonth: number; youCounted: boolean }> = {};
       if (profileId) {
-        const refs = LIVE_GROUPS.map((g) => db.doc(`liveMembers/${g}_${profileId}`));
-        const docs = await db.getAll(...refs);
+        const members = LIVE_GROUPS.map((g) => db.doc(`liveMembers/${g}_${profileId}`));
+        const listens = LIVE_GROUPS.map((g) => listenRef(db, g, profileId));
+        const docs = await db.getAll(...members, ...listens);
         const month = monthOf(dayIst(now));
-        docs.forEach((d, i) => {
-          mine[LIVE_GROUPS[i]] = {
+        const builtAtMs = Date.parse(snap.builtAt);
+        LIVE_GROUPS.forEach((g, i) => {
+          const d = docs[i];
+          const l = docs[LIVE_GROUPS.length + i];
+          const lastAt = l.exists ? (l.get('lastAt') as Timestamp).toMillis() : 0;
+          mine[g] = {
             joined: d.exists,
             myMinutesMonth: d.exists ? ((d.get('minutes') as Record<string, number>)?.[month] ?? 0) : 0,
+            // The snapshot already counts the caller: their mark is inside the
+            // window and was there when it was built. The app adds itself
+            // otherwise (LS7b).
+            youCounted: lastAt > 0 && lastAt < builtAtMs && builtAtMs - lastAt < LIVE_WINDOW_SECONDS * 1000,
           };
         });
       }
       res.status(200).json({
         builtAt: snap.builtAt,
-        groups: LIVE_GROUPS.map((id) => ({ id, ...snap.groups[id], ...(mine[id] ?? { joined: false, myMinutesMonth: null }) })),
+        groups: LIVE_GROUPS.map((id) => ({ id, ...snap.groups[id], ...(mine[id] ?? { joined: false, myMinutesMonth: null, youCounted: false }) })),
       });
     }),
   );
@@ -127,6 +139,7 @@ export function liveRouter(deps: Deps): Router {
         } satisfies MemberDoc);
         tx.set(db.doc(`liveGroups/${id}`), { joins: [{ name, cityId: p.doc.cityId ?? null, at: now.toISOString() }, ...joins] }, { merge: true });
       });
+      await invalidateSnapshot(db);
       res.status(200).json({ result: 'JOINED' });
     }),
   );
@@ -140,6 +153,7 @@ export function liveRouter(deps: Deps): Router {
       if (!isLive(id)) throw NotLive();
       const p = await requireProfile(db, uid);
       await db.doc(`liveMembers/${id}_${p.doc.profileId}`).delete();
+      await invalidateSnapshot(db);
       res.status(200).json({ result: 'LEFT' });
     }),
   );
@@ -158,13 +172,13 @@ export function liveRouter(deps: Deps): Router {
       const now = clock.now();
       const day = dayIst(now);
       const month = monthOf(day);
-      const listenRef = db.doc(`liveListens/${id}_${p.doc.profileId}`);
+      const mark = listenRef(db, id, p.doc.profileId);
       const memberRef = db.doc(`liveMembers/${id}_${p.doc.profileId}`);
       let counted = false;
       await db.runTransaction(async (tx) => {
-        const [last, member] = await Promise.all([tx.get(listenRef), tx.get(memberRef)]);
+        const [last, member] = await Promise.all([tx.get(mark), tx.get(memberRef)]);
         const lastAt = last.exists ? (last.get('lastAt') as Timestamp).toMillis() : 0;
-        tx.set(listenRef, { groupId: id, cityId: p.doc.cityId ?? null, lastAt: Timestamp.fromDate(now) });
+        tx.set(mark, { groupId: id, cityId: p.doc.cityId ?? null, lastAt: Timestamp.fromDate(now) });
         if (now.getTime() - lastAt < (LIVE_MARK_MINUTES - 1) * 60_000) return;
         counted = true;
         const shard = Math.floor(Math.random() * SHARDS);
@@ -178,6 +192,17 @@ export function liveRouter(deps: Deps): Router {
   );
 
   return r;
+}
+
+/** A listener's last mark in a live group. */
+function listenRef(db: Firestore, groupId: string, profileId: string) {
+  return db.doc(`liveGroups/${groupId}/listens/${profileId}`);
+}
+
+/** Join and leave make the next GET /live rebuild, so a new member shows at
+ * once rather than up to two minutes later (owner, 2026-11-19). */
+async function invalidateSnapshot(db: Firestore): Promise<void> {
+  await db.doc('liveSnapshot/current').set({ builtAt: Timestamp.fromMillis(0) }, { merge: true });
 }
 
 /** The snapshot every reader shares, rebuilt when older than two minutes. */
@@ -197,10 +222,16 @@ export async function buildSnapshot(db: Firestore, now: Date): Promise<Record<Li
   const day = dayIst(now);
   const month = monthOf(day);
   const cutoff = Timestamp.fromMillis(now.getTime() - LIVE_WINDOW_SECONDS * 1000);
-  const listens = await db.collection('liveListens').where('lastAt', '>=', cutoff).get();
   const out = {} as Record<LiveGroupId, LiveGroupSnapshot>;
   for (const id of LIVE_GROUPS) {
-    const here = listens.docs.filter((d) => d.get('groupId') === id);
+    // One collection per group, so a range on lastAt needs no composite
+    // index: count() for the number (a read per thousand), and the newest
+    // few hundred marks for the cities.
+    const recent = db.collection(`liveGroups/${id}/listens`).where('lastAt', '>=', cutoff);
+    const [listening, here] = await Promise.all([
+      recent.count().get(),
+      recent.orderBy('lastAt', 'desc').limit(LISTENS_READ).get(),
+    ]);
     const shardRefs = [day, month].flatMap((period) =>
       Array.from({ length: SHARDS }, (_, s) => db.doc(`liveMinutes/${id}_${period}_${s}`)));
     const [shards, group, members, count] = await Promise.all([
@@ -211,9 +242,9 @@ export async function buildSnapshot(db: Firestore, now: Date): Promise<Record<Li
     ]);
     const sum = (period: string) =>
       shards.filter((s) => s.exists && s.get('period') === period).reduce((a, s) => a + ((s.get('minutes') as number) ?? 0), 0);
-    const cityIds = [...new Set(here.map((d) => d.get('cityId') as string | null).filter((c): c is string => !!c))];
+    const cityIds = [...new Set(here.docs.map((d) => d.get('cityId') as string | null).filter((c): c is string => !!c))];
     out[id] = {
-      listening: here.length,
+      listening: listening.data().count,
       cities: cityIds.length,
       cityIds: cityIds.slice(0, CITIES_SHOWN),
       members: count.data().count,

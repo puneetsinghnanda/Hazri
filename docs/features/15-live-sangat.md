@@ -82,8 +82,9 @@ today and one for its members (and "built-in"); then **Ended**, muted.
 **LS5. The page** (design 127, option A): the scene fills the screen. At the
 top: back, LIVE, the listening count and Share. Under them the group's kind
 and name, and "Live sangat · always on · N cities". Down the left side, the
-last three people who joined (LS8). At the foot: Join, or **Joined ·
-listening** once you are in; the sound; and a sleep timer. Below them the
+last three people who joined (LS8). At the foot: Join (nothing in its place
+once you are in, owner 2026-11-19); the sound; and a sleep timer, the moon,
+which stops the sound after 15, 30 or 60 minutes, a tap at a time. Below them the
 group as a sheet you pull up (LS9).
 
 **LS6. The sound.** Opening the page starts the recording, looped without a
@@ -93,10 +94,20 @@ recitation, and stops when you leave the page, press pause or the sleep
 timer runs out. It needs no connection.
 
 **LS7. Listening count** (`liveListening`): people who had a live group's
-page playing in the last ten minutes, counted by the server (§8) and shown
-as a number, never as names. "N cities" is how many cities they are in.
+page playing in the last **24 hours** (owner, 2026-11-19; it was ten
+minutes), counted by the server (§8) and shown as a number, never as names.
+Join and Leave show at once: they make the server count again on the next
+read. "N cities" is how many cities they are in.
 With no connection the page plays, and the count and cities say they are
 waiting.
+
+**LS7b. You are in the count at once** (owner, 2026-11-19). Opening a live
+group puts you in its count on your own phone straight away: the server's
+last count plus one, and your city if it is new, for 24 hours from when you
+listened, with or without a profile and joined or not. Once the server's
+count holds you (`youCounted`) the phone stops adding you, so you are never
+counted twice. When you listened is kept on the phone (`live_heard_v1`) and
+never sent.
 
 **LS7a. Minutes listened** (owner, 2026-11-18). Every minute a live group's
 page plays is counted, for you and for the sangat. Yours are counted on the
@@ -153,7 +164,6 @@ Neither is typed into Dart (CLAUDE.md rule 3).
 | `liveListening` | {count} listening |
 | `liveCities` | Live sangat · always on · {count} cities |
 | `liveJoinedFrom` | {name} joined from {city} |
-| `liveJoinedListening` | Joined · listening |
 | `liveSwipeUp` | Swipe up for the group |
 | `liveYouAreIn` | Live, you are in |
 | `liveListen` | Listen |

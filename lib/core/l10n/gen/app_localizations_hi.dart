@@ -3888,7 +3888,7 @@ class LHi extends L {
   String get quizKnowMore => 'और जानें';
 
   @override
-  String get quizTakeQuiz => 'क्विज़ दें';
+  String get quizTakeQuiz => 'क्विज़';
 
   @override
   String quizQuestionOf(int n, int total) {
@@ -4007,9 +4007,6 @@ class LHi extends L {
   String get quizPeriodToday => 'आज';
 
   @override
-  String get quizPeriodWeek => 'सप्ताह';
-
-  @override
   String get quizPeriodMonth => 'महीना';
 
   @override
@@ -4021,11 +4018,6 @@ class LHi extends L {
   @override
   String quizPlayedToday(int count) {
     return 'शीर्ष 20 · आज $count ने खेली · भारतीय समय आधी रात को नया';
-  }
-
-  @override
-  String quizPlayedWeek(int count) {
-    return 'शीर्ष 20 · इस सप्ताह $count ने खेली · सोमवार भारतीय समय आधी रात को नया';
   }
 
   @override
@@ -4041,14 +4033,7 @@ class LHi extends L {
 
   @override
   String get quizBoardEmptyToday =>
-      'आज अभी किसी ने यह क्विज़ नहीं खेला। आज का बोर्ड आधी रात (IST) को फिर से शुरू होता है; पहले के क्विज़ हफ़्ते और महीने के बोर्ड पर हैं।';
-
-  @override
-  String get quizBoardEmptyWeek =>
-      'इस हफ़्ते अभी किसी ने यह क्विज़ नहीं खेला। पहले के क्विज़ महीने के बोर्ड पर हैं।';
-
-  @override
-  String get quizSeeWeek => 'यह हफ़्ता देखें';
+      'आज अभी किसी ने यह क्विज़ नहीं खेला। आज का बोर्ड आधी रात (IST) को फिर से शुरू होता है; पहले के क्विज़ इस महीने के और अब तक के बोर्ड पर हैं।';
 
   @override
   String get quizSeeMonth => 'यह महीना देखें';
@@ -4139,9 +4124,6 @@ class LHi extends L {
 
   @override
   String get quizPlaceToday => 'आज';
-
-  @override
-  String get quizPlaceWeek => 'इस सप्ताह';
 
   @override
   String get quizPlaceMonth => 'इस महीने';
@@ -4254,9 +4236,6 @@ class LHi extends L {
   String get liveJoined => 'जुड़े हुए';
 
   @override
-  String get liveJoinedListening => 'जुड़े हुए · सुन रहे';
-
-  @override
   String get liveSwipeUp => 'समूह के लिए ऊपर स्वाइप करें';
 
   @override
@@ -4358,4 +4337,22 @@ class LHi extends L {
   @override
   String get privacyProfileLiveJoin =>
       'अगर आप लाइव समूह से जुड़ते हैं: आपका पहला नाम, आख़िरी नाम का पहला अक्षर और शहर, उसके पन्ने पर सबको जुड़े हुए के रूप में दिखते हैं, इस महीने वहाँ आपके मिनटों के साथ';
+
+  @override
+  String get quizPeriodAllTime => 'अब तक';
+
+  @override
+  String quizPlayedAllTime(int count) {
+    return 'शीर्ष 20 · $count ने खेली · कभी नया नहीं होता';
+  }
+
+  @override
+  String get quizBoardEmptyMonth =>
+      'इस महीने अभी किसी ने यह क्विज़ नहीं खेला। पहले के क्विज़ अब तक के बोर्ड पर हैं।';
+
+  @override
+  String get quizSeeAllTime => 'अब तक का बोर्ड देखें';
+
+  @override
+  String get quizPlaceAllTime => 'अब तक';
 }

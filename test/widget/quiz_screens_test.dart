@@ -168,30 +168,52 @@ void main() {
     expect(find.byType(QuizPickCard, skipOffstage: false), findsOneWidget);
   });
 
-  testWidgets('an empty Today board points to the week, where yesterday\'s quiz is (QZ28a)', (tester) async {
+  testWidgets('the board opens on Month and Everyone (owner, 2026-11-19)', (tester) async {
+    final asked = <(QuizPeriod, String)>[];
+    final l = await pumpAt(
+      tester,
+      '/quiz/board',
+      more: [
+        quizBoardProvider.overrideWith((ref, key) async {
+          asked.add(key);
+          return const QuizBoardView(QuizBoard(played: 1, rows: [QuizBoardRow(place: 1, name: 'Puneet S.', score: 30)]));
+        }),
+      ],
+    );
+    expect(asked.first, (QuizPeriod.month, 'all'));
+    // Today, Month and All time; no Week.
+    expect(find.text(l.quizPeriodToday), findsOneWidget);
+    expect(find.text(l.quizPeriodAllTime), findsOneWidget);
+    expect(find.text('Week'), findsNothing);
+    await tester.tap(find.text(l.quizPeriodAllTime));
+    await settle(tester);
+    expect(asked.last, (QuizPeriod.all, 'all'));
+    expect(find.text(l.quizPlayedAllTime(1)), findsOneWidget);
+  });
+
+  testWidgets('an empty Month board points to All time, where earlier quizzes are (QZ28a)', (tester) async {
     final asked = <QuizPeriod>[];
     final l = await pumpAt(
       tester,
       '/quiz/board?scope=guru-ram-das-ji',
-      now: DateTime(2026, 10, 28, 11),
+      now: DateTime(2026, 11, 1, 11),
       more: [
         quizBoardProvider.overrideWith((ref, key) async {
           asked.add(key.$1);
           return QuizBoardView(
-            key.$1 == QuizPeriod.day
+            key.$1 == QuizPeriod.month
                 ? const QuizBoard(played: 0, rows: [])
                 : const QuizBoard(played: 1, rows: [QuizBoardRow(place: 1, name: 'Puneet S.', score: 30)]),
           );
         }),
       ],
     );
-    expect(find.text(l.quizBoardEmptyToday), findsOneWidget);
+    expect(find.text(l.quizBoardEmptyMonth), findsOneWidget);
     expect(find.text('Puneet S.'), findsNothing);
-    await tester.tap(find.text(l.quizSeeWeek));
+    await tester.tap(find.text(l.quizSeeAllTime));
     await settle(tester);
-    expect(asked.last, QuizPeriod.week);
+    expect(asked.last, QuizPeriod.all);
     expect(find.text('Puneet S.'), findsOneWidget);
-    expect(find.text(l.quizBoardEmptyToday), findsNothing);
   });
 
   testWidgets('without a profile a quiz plays on the phone, marks each answer, and earns no points', (tester) async {

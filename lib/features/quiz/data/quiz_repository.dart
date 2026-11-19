@@ -219,7 +219,9 @@ class QuizMe {
   }
 }
 
-enum QuizPeriod { day, week, month }
+/// The board periods the app shows: Today, Month and All time (owner,
+/// 2026-11-19; the week's board is still kept by the server for older apps).
+enum QuizPeriod { day, month, all }
 
 /// Calls to `/api/v1/quiz`, and the last answers kept on the phone so the
 /// quiz page, Your numbers and a board open offline (ARCHITECTURE §3.9.4).

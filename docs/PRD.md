@@ -1007,7 +1007,7 @@ sends nothing without a profile. The closed list for Phase 2:
 | **An FCM token** | With a profile **and** a group | The device's push token, its language and time zone |
 | **A quiz** | With a profile, when the reader starts a Gurmat Quiz online (added 2026-10-27) | The topic and the content version, then the five answers chosen; the server keeps the points under the profile |
 | **The leaderboards** | With a profile | Shown to every Hazri user on the boards a player has scored on: the profile's first name, the initial of its last name, its city and the points. Nothing else about the profile |
-| **A listening mark** | With a profile, every five minutes while a live group's page plays (added 2026-11-18, `15-live-sangat.md` LS15) | The group; the server takes the city from the profile. It counts the listener for ten minutes and adds five minutes to the sangat's. Minutes listened are counted on the phone and never sent |
+| **A listening mark** | With a profile, every five minutes while a live group's page plays (added 2026-11-18, `15-live-sangat.md` LS15) | The group; the server takes the city from the profile. It counts the listener for 24 hours and adds five minutes to the sangat's. Minutes listened are counted on the phone and never sent |
 | **Joining a live group** | With a profile, when the reader joins one | Shown to everybody on that group's page: the first name, the initial of the last name, the city, and the minutes there this month (LS8, LS9) |
 | **Analytics** | Never in Phase 2 | Firebase Analytics ships with collection off (`setAnalyticsCollectionEnabled(false)` at start-up); the Settings switch is shown off and inert |
 
@@ -1391,7 +1391,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `85-TodayAppBar` | Today, with the app bar and streak | **new** | App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12 |
 | `120-TodayGoalFolded` | Today, a goal of seven, folded | **new** | Design 1A, chosen 29 Oct: more than three goal items fold to the one due now, the next and the earliest missed, with Show all. 04-goals.md 7.1 |
-| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with Know more and Take the quiz (option B, 18 Nov), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
+| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with Know more and Quiz (option B, 18 Nov), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
 | `86-TodayNoProfile` | Today, first day, no profile | **new** | The profile banner overlaps the app bar; no streak yet. 05-today.md T-a |
 | `61-GoalComplete` | All of today's goals are done | current | Shown once a day when the goal is met. 04-goals.md CE1 |
 | `58-TodayHazri` | Today, hazri marked | superseded | Replaced by 85 |

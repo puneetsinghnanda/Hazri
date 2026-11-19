@@ -175,6 +175,14 @@ class _LiveScreenState extends ConsumerState<LiveScreen> {
     final cities = ref.watch(citiesProvider).value ?? const <CityRow>[];
     final byId = {for (final c in cities) c.id: c};
     final yourCity = byId[ref.watch(profileProvider)?.cityId];
+    // LS7b: you are in the count for a day after you listen, even before
+    // the server's next count, and without a profile.
+    final shown = liveShown(
+      g,
+      heardAt: ref.watch(liveHeardProvider)[def.id],
+      now: DateTime.now(),
+      yourCityId: yourCity?.id,
+    );
     final ikOnkar = ref.watch(ikOnkarProvider).value ?? '';
 
     // When the sitting ends, the sangat goes on playing.
@@ -195,7 +203,7 @@ class _LiveScreenState extends ConsumerState<LiveScreen> {
         LiveScene.jot => '',
       },
       dots: [
-        for (final id in g.cityIds)
+        for (final id in shown.cityIds)
           if (byId[id] != null && id != yourCity?.id) (byId[id]!.lat, byId[id]!.lon),
       ],
       you: yourCity == null ? null : (yourCity.lat, yourCity.lon),
@@ -242,15 +250,16 @@ class _LiveScreenState extends ConsumerState<LiveScreen> {
                       ),
                       const LiveTagPill(),
                       const SizedBox(width: 8),
-                      Flexible(
+                      // Expanded, not Flexible beside a Spacer: the two would
+                      // share the width and leave the ⋮ in the middle.
+                      Expanded(
                         child: Text(
-                          waiting ? l.liveWaiting : l.liveListening(g.listening),
+                          waiting ? l.liveWaiting : l.liveListening(shown.listening),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: HazriText.captionStrong.copyWith(color: white),
                         ),
                       ),
-                      const Spacer(),
                       if (g.joined)
                         PopupMenuButton<int>(
                           icon: const AppIcon(HazriIconData.dots, size: 22, color: white),
@@ -272,7 +281,7 @@ class _LiveScreenState extends ConsumerState<LiveScreen> {
                         Text(_name, style: HazriText.display26.copyWith(color: white, fontSize: 30)),
                         const SizedBox(height: 2),
                         Text(
-                          waiting ? l.liveWaiting : l.liveCities(g.cities),
+                          waiting ? l.liveWaiting : l.liveCities(shown.cities),
                           style: HazriText.bodySmall.copyWith(color: dim),
                         ),
                       ],
@@ -288,22 +297,27 @@ class _LiveScreenState extends ConsumerState<LiveScreen> {
                   ],
                   const Spacer(),
                   if (sittingNow)
-                    _Sitting(session: session, listening: g.listening, waiting: waiting)
+                    _Sitting(session: session, listening: shown.listening, waiting: waiting)
                   else
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: Row(
+                        // Once joined there is no button saying so (owner,
+                        // 2026-11-19): the sound and the sleep timer only.
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: PrimaryButton(
-                              label: g.joined ? l.liveJoinedListening : l.liveJoin,
-                              icon: g.joined ? HazriIconData.check : HazriIconData.plus,
-                              background: g.joined ? const Color(0xFF2E7D5B) : const Color(0xFFF2A24E),
-                              foreground: g.joined ? white : const Color(0xFF2A1606),
-                              onPressed: g.joined ? () {} : (_busy ? null : () => _join(g)),
+                          if (!g.joined) ...[
+                            Expanded(
+                              child: PrimaryButton(
+                                label: l.liveJoin,
+                                icon: HazriIconData.plus,
+                                background: const Color(0xFFF2A24E),
+                                foreground: const Color(0xFF2A1606),
+                                onPressed: _busy ? null : () => _join(g),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
+                            const SizedBox(width: 10),
+                          ],
                           _RoundButton(
                             icon: playing ? HazriIconData.pause : HazriIconData.play,
                             label: playing ? l.liveSound : l.liveSoundOff,

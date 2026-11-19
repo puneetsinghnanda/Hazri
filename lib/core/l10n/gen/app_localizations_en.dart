@@ -3906,7 +3906,7 @@ class LEn extends L {
   String get quizKnowMore => 'Know more';
 
   @override
-  String get quizTakeQuiz => 'Take the quiz';
+  String get quizTakeQuiz => 'Quiz';
 
   @override
   String quizQuestionOf(int n, int total) {
@@ -4026,9 +4026,6 @@ class LEn extends L {
   String get quizPeriodToday => 'Today';
 
   @override
-  String get quizPeriodWeek => 'Week';
-
-  @override
   String get quizPeriodMonth => 'Month';
 
   @override
@@ -4040,11 +4037,6 @@ class LEn extends L {
   @override
   String quizPlayedToday(int count) {
     return 'Top 20 · $count played today · resets at midnight IST';
-  }
-
-  @override
-  String quizPlayedWeek(int count) {
-    return 'Top 20 · $count played this week · resets Monday at midnight IST';
   }
 
   @override
@@ -4060,14 +4052,7 @@ class LEn extends L {
 
   @override
   String get quizBoardEmptyToday =>
-      'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on the week\'s and the month\'s.';
-
-  @override
-  String get quizBoardEmptyWeek =>
-      'Nobody has played this one this week yet. Earlier quizzes are on the month\'s board.';
-
-  @override
-  String get quizSeeWeek => 'See this week';
+      'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on this month\'s board and on All time.';
 
   @override
   String get quizSeeMonth => 'See this month';
@@ -4164,9 +4149,6 @@ class LEn extends L {
 
   @override
   String get quizPlaceToday => 'today';
-
-  @override
-  String get quizPlaceWeek => 'this week';
 
   @override
   String get quizPlaceMonth => 'this month';
@@ -4279,9 +4261,6 @@ class LEn extends L {
   String get liveJoined => 'Joined';
 
   @override
-  String get liveJoinedListening => 'Joined · listening';
-
-  @override
   String get liveSwipeUp => 'Swipe up for the group';
 
   @override
@@ -4383,4 +4362,22 @@ class LEn extends L {
   @override
   String get privacyProfileLiveJoin =>
       'If you join a live group: your first name, the first letter of your last name and your city, shown to everybody on its page as having joined, with your minutes there this month';
+
+  @override
+  String get quizPeriodAllTime => 'All time';
+
+  @override
+  String quizPlayedAllTime(int count) {
+    return 'Top 20 · $count have played · never resets';
+  }
+
+  @override
+  String get quizBoardEmptyMonth =>
+      'Nobody has played this one this month yet. Earlier quizzes are on All time.';
+
+  @override
+  String get quizSeeAllTime => 'See All time';
+
+  @override
+  String get quizPlaceAllTime => 'all time';
 }
