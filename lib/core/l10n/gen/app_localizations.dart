@@ -7731,6 +7731,48 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Your phone\'s notification address, language and time zone, so Hazri can send you announcements (switch them off under Notifications); when you open one, that you opened it'**
   String get privacyProfileAnnouncements;
+
+  /// No description provided for @profileRestoreWaitingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for your link'**
+  String get profileRestoreWaitingTitle;
+
+  /// No description provided for @profileRestoreWaitingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a link to {email}. Open it on this phone to bring your profile back. Until you do, there is no profile on this phone.'**
+  String profileRestoreWaitingBody(String email);
+
+  /// No description provided for @profileRestoreLostTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring back your profile'**
+  String get profileRestoreLostTitle;
+
+  /// No description provided for @profileRestoreLostBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile was on this phone. We will send a link to {email}; open it here to bring it back.'**
+  String profileRestoreLostBody(String email);
+
+  /// No description provided for @profileRestoreNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up a new profile instead'**
+  String get profileRestoreNew;
+
+  /// No description provided for @profileRestoreGone.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no profile for that email any more. You can set up a new one.'**
+  String get profileRestoreGone;
+
+  /// No description provided for @emailSentRestoreUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Until you open it, there is no profile on this phone.'**
+  String get emailSentRestoreUntil;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

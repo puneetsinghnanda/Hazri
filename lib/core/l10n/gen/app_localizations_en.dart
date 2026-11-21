@@ -4446,4 +4446,31 @@ class LEn extends L {
   @override
   String get privacyProfileAnnouncements =>
       'Your phone\'s notification address, language and time zone, so Hazri can send you announcements (switch them off under Notifications); when you open one, that you opened it';
+
+  @override
+  String get profileRestoreWaitingTitle => 'Waiting for your link';
+
+  @override
+  String profileRestoreWaitingBody(String email) {
+    return 'We sent a link to $email. Open it on this phone to bring your profile back. Until you do, there is no profile on this phone.';
+  }
+
+  @override
+  String get profileRestoreLostTitle => 'Bring back your profile';
+
+  @override
+  String profileRestoreLostBody(String email) {
+    return 'Your profile was on this phone. We will send a link to $email; open it here to bring it back.';
+  }
+
+  @override
+  String get profileRestoreNew => 'Set up a new profile instead';
+
+  @override
+  String get profileRestoreGone =>
+      'There is no profile for that email any more. You can set up a new one.';
+
+  @override
+  String get emailSentRestoreUntil =>
+      'Until you open it, there is no profile on this phone.';
 }

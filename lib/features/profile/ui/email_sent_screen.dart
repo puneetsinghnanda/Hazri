@@ -70,7 +70,7 @@ class _EmailSentScreenState extends ConsumerState<EmailSentScreen> {
     try {
       final cooldown = widget.args.purpose == EmailPurpose.verifyEmail
           ? await api.sendVerification()
-          : await api.requestRestore(widget.args.email);
+          : await ref.read(profileControllerProvider.notifier).requestRestore(widget.args.email);
       if (mounted) _countdown(cooldown);
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -103,6 +103,11 @@ class _EmailSentScreenState extends ConsumerState<EmailSentScreen> {
           verify ? l.emailSentVerify(widget.args.email) : l.emailSentRestore(widget.args.email),
           style: HazriText.body.copyWith(color: c.ink),
         ),
+        if (!verify) ...[
+          const SizedBox(height: 8),
+          // R7: the profile is not back until the link is opened here.
+          Text(l.emailSentRestoreUntil, style: HazriText.bodySmall.copyWith(color: c.ink2)),
+        ],
         if (canChange)
           Align(
             alignment: AlignmentDirectional.centerStart,

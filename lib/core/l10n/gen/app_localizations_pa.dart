@@ -4429,4 +4429,31 @@ class LPa extends L {
   @override
   String get privacyProfileAnnouncements =>
       'ਤੁਹਾਡੇ ਫ਼ੋਨ ਦਾ ਸੂਚਨਾ ਪਤਾ, ਭਾਸ਼ਾ ਅਤੇ ਸਮਾਂ-ਖੇਤਰ, ਤਾਂ ਜੋ ਹਾਜ਼ਰੀ ਤੁਹਾਨੂੰ ਐਲਾਨ ਭੇਜ ਸਕੇ (ਸੂਚਨਾਵਾਂ ਵਿੱਚ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ); ਜਦੋਂ ਤੁਸੀਂ ਕੋਈ ਖੋਲ੍ਹਦੇ ਹੋ, ਕਿ ਤੁਸੀਂ ਉਹ ਖੋਲ੍ਹਿਆ';
+
+  @override
+  String get profileRestoreWaitingTitle => 'ਤੁਹਾਡੇ ਲਿੰਕ ਦੀ ਉਡੀਕ';
+
+  @override
+  String profileRestoreWaitingBody(String email) {
+    return 'ਅਸੀਂ $email ਉੱਤੇ ਇੱਕ ਲਿੰਕ ਭੇਜਿਆ ਹੈ। ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਵਾਪਸ ਲਿਆਉਣ ਲਈ ਇਸਨੂੰ ਇਸੇ ਫ਼ੋਨ ਉੱਤੇ ਖੋਲ੍ਹੋ। ਜਦੋਂ ਤੱਕ ਨਹੀਂ ਖੋਲ੍ਹਦੇ, ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਕੋਈ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਹੈ।';
+  }
+
+  @override
+  String get profileRestoreLostTitle => 'ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਵਾਪਸ ਲਿਆਓ';
+
+  @override
+  String profileRestoreLostBody(String email) {
+    return 'ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਸੀ। ਅਸੀਂ $email ਉੱਤੇ ਇੱਕ ਲਿੰਕ ਭੇਜਾਂਗੇ; ਇਸਨੂੰ ਵਾਪਸ ਲਿਆਉਣ ਲਈ ਇੱਥੇ ਖੋਲ੍ਹੋ।';
+  }
+
+  @override
+  String get profileRestoreNew => 'ਇਸਦੀ ਥਾਂ ਨਵੀਂ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ';
+
+  @override
+  String get profileRestoreGone =>
+      'ਉਸ ਈਮੇਲ ਦੀ ਹੁਣ ਕੋਈ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਹੈ। ਤੁਸੀਂ ਨਵੀਂ ਬਣਾ ਸਕਦੇ ਹੋ।';
+
+  @override
+  String get emailSentRestoreUntil =>
+      'ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਇਸਨੂੰ ਨਹੀਂ ਖੋਲ੍ਹਦੇ, ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਕੋਈ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਹੈ।';
 }

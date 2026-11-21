@@ -4422,4 +4422,31 @@ class LHi extends L {
   @override
   String get privacyProfileAnnouncements =>
       'आपके फ़ोन का सूचना पता, भाषा और समय-क्षेत्र, ताकि हाज़री आपको घोषणाएँ भेज सके (सूचनाओं में बंद कर सकते हैं); जब आप कोई खोलते हैं, कि आपने उसे खोला';
+
+  @override
+  String get profileRestoreWaitingTitle => 'आपके लिंक की प्रतीक्षा';
+
+  @override
+  String profileRestoreWaitingBody(String email) {
+    return 'हमने $email पर एक लिंक भेजा है। अपनी प्रोफ़ाइल वापस लाने के लिए इसे इसी फ़ोन पर खोलें। जब तक आप नहीं खोलते, इस फ़ोन पर कोई प्रोफ़ाइल नहीं है।';
+  }
+
+  @override
+  String get profileRestoreLostTitle => 'अपनी प्रोफ़ाइल वापस लाएँ';
+
+  @override
+  String profileRestoreLostBody(String email) {
+    return 'आपकी प्रोफ़ाइल इस फ़ोन पर थी। हम $email पर एक लिंक भेजेंगे; उसे वापस लाने के लिए इसे यहीं खोलें।';
+  }
+
+  @override
+  String get profileRestoreNew => 'इसके बजाय नई प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get profileRestoreGone =>
+      'उस ईमेल की अब कोई प्रोफ़ाइल नहीं है। आप नई बना सकते हैं।';
+
+  @override
+  String get emailSentRestoreUntil =>
+      'जब तक आप इसे नहीं खोलते, इस फ़ोन पर कोई प्रोफ़ाइल नहीं है।';
 }

@@ -11,6 +11,7 @@ import '../../../core/settings/settings_controller.dart';
 import '../domain/profile.dart';
 import 'profile_api.dart';
 import 'profile_cache.dart';
+import 'profile_recovery.dart';
 
 /// `01-accounts.md` §8.3.
 sealed class ProfileState {
@@ -76,6 +77,7 @@ class ProfileController extends Notifier<ProfileState> {
   ProfileCache get _cache => ref.read(profileCacheProvider);
   ProfileApi get _api => ref.read(profileApiProvider);
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
+  ProfileRecoveryNotifier get _recovery => ref.read(profileRecoveryProvider.notifier);
 
   @override
   ProfileState build() {
@@ -95,7 +97,14 @@ class ProfileController extends Notifier<ProfileState> {
       }
     }
     // 2. The cache shows the name at once.
-    final cached = _cache.read(currentUid: _auth.uid);
+    final cached = _cache.read(
+      currentUid: _auth.uid,
+      onOtherOwner: (p) {
+        // R6: the install's identity is not the one that had this profile.
+        debugPrint('Hazri: the cached profile belongs to an earlier sign-in');
+        unawaited(_recovery.rememberLost(name: p.name, email: p.email));
+      },
+    );
     if (cached != null) state = ProfileLoaded(cached, isStale: true);
     // 3. The server.
     await refresh();
@@ -156,6 +165,9 @@ class ProfileController extends Notifier<ProfileState> {
     } on ApiException catch (e) {
       if (mine != _version) return;
       if (e.statusCode == 404 && e.code == 'NO_PROFILE') {
+        // R6: a profile this phone was showing is offered back, not dropped.
+        final had = _cache.peek();
+        if (had != null) await _recovery.rememberLost(name: had.name, email: had.email);
         await _clear();
       } else {
         _keepOrUnavailable();
@@ -169,6 +181,14 @@ class ProfileController extends Notifier<ProfileState> {
       _inFlight--;
       ref.notifyListeners();
     }
+  }
+
+  /// POST /profile/restore-request, remembering that a link is waiting (R7).
+  /// Errors are the API's, for the caller.
+  Future<int> requestRestore(String email) async {
+    final cooldown = await _api.requestRestore(email);
+    await _recovery.linkSent(email);
+    return cooldown;
   }
 
   /// Another endpoint answered NO_PROFILE. That alone does not clear the
@@ -196,6 +216,7 @@ class ProfileController extends Notifier<ProfileState> {
 
   Future<void> _show(Profile p) async {
     await _cache.write(p, ownerUid: _auth.uid);
+    await _recovery.clear();
     state = ProfileLoaded(p, isStale: false);
   }
 

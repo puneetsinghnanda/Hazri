@@ -147,6 +147,9 @@ export function profileRouter(deps: Deps): Router {
         tx.create(db.doc(`owners/${uid}`), { profileId: profileRef.id, createdAt: now });
         if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, { name, cityId });
       });
+      // 01-accounts §8.3 R8: which install made which profile, so a phone that
+      // later says "No profile found" can be matched to it (anonymous ids only).
+      logger.info('profile: created', { uid, profileId: profileRef.id, withEmail: email !== null });
       res.status(201).json({ profile: await readProfileDto(db, profileRef.id) });
     }),
   );
@@ -276,6 +279,7 @@ export function profileRouter(deps: Deps): Router {
         });
       });
       if (sent.q) await deliver(mailer, sent.q);
+      logger.info('profile: restore link sent', { uid });
       res.status(200).json({ result: 'RESTORE_EMAIL_SENT', email, cooldownSeconds: COOLDOWN });
     }),
   );

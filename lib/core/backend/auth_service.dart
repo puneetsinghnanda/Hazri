@@ -22,23 +22,50 @@ abstract interface class AuthService {
   String? get uid;
 }
 
+/// Runs one sign-in at a time: every caller that arrives while one is in
+/// flight waits for that same one (01-accounts §8.3 R5, 2026-11-21).
+///
+/// Without it, the profile, the Sangat, the globe and the library could each
+/// find nobody signed in at the same moment and each call
+/// `signInAnonymously`, which makes a separate anonymous account per call.
+/// Whichever finished last became the install, and a profile made under one
+/// of the others looked gone: "No profile found".
+class SignInOnce {
+  Future<void>? _inFlight;
+
+  Future<void> run(Future<void> Function() signIn) {
+    final running = _inFlight;
+    if (running != null) return running;
+    final f = signIn();
+    _inFlight = f;
+    // Cleared when it ends, so a failed attempt (offline) can be tried again.
+    f.then((_) => _inFlight = null, onError: (Object _) => _inFlight = null);
+    return f;
+  }
+}
+
 /// Firebase's adapter (`01-accounts.md` §8.2).
 class FirebaseAuthService implements AuthService {
   FirebaseAuthService({FirebaseAuth? auth}) : _auth = auth ?? FirebaseAuth.instance;
 
   final FirebaseAuth _auth;
+  final _once = SignInOnce();
 
   @override
   String? get uid => _auth.currentUser?.uid;
 
   @override
-  Future<void> ensureSignedIn() async {
-    if (_auth.currentUser != null) return;
-    try {
-      await _auth.signInAnonymously();
-    } on FirebaseAuthException catch (e) {
-      throw NetworkException(e.code);
-    }
+  Future<void> ensureSignedIn() {
+    if (_auth.currentUser != null) return Future.value();
+    return _once.run(() async {
+      // Somebody may have signed in while this waited its turn.
+      if (_auth.currentUser != null) return;
+      try {
+        await _auth.signInAnonymously();
+      } on FirebaseAuthException catch (e) {
+        throw NetworkException(e.code);
+      }
+    });
   }
 
   @override

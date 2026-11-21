@@ -21,18 +21,34 @@ class ProfileCache {
   /// another uid. With no uid yet (signed out, or a background isolate before
   /// sign-in is known) it is null and the key is kept: nothing says the
   /// cache is not this install's (R3).
-  Profile? read({required String? currentUid}) {
+  ///
+  /// [onOtherOwner] hears about a cache that belonged to another uid before
+  /// it is dropped: the profile this phone had, under an earlier identity
+  /// (R6), which the Profile screen offers to bring back.
+  Profile? read({required String? currentUid, void Function(Profile)? onOtherOwner}) {
     final raw = _prefs.getString(key);
     if (raw == null || currentUid == null) return null;
     try {
       final j = jsonDecode(raw) as Map<String, Object?>;
       if (j['ownerUid'] != currentUid) {
+        if (j['ownerUid'] != null) onOtherOwner?.call(Profile.fromJson(j));
         _prefs.remove(key);
         return null;
       }
       return Profile.fromJson(j);
     } on Object {
       _prefs.remove(key);
+      return null;
+    }
+  }
+
+  /// The cached profile whoever owned it, or null.
+  Profile? peek() {
+    final raw = _prefs.getString(key);
+    if (raw == null) return null;
+    try {
+      return Profile.fromJson(jsonDecode(raw) as Map<String, Object?>);
+    } on Object {
       return null;
     }
   }

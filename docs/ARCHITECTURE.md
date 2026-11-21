@@ -698,6 +698,8 @@ No `user.db` table is added. Every backed-up row already has `id`, `updatedAt` a
 | Key | Meaning | Spec |
 |---|---|---|
 | `profile_cache_v1` | The profile DTO and the uid that owns it (§2.5) | `01-accounts.md` §8.2 |
+| `profile_lost_v1` | `{name, email}` of a profile this phone had and can no longer see; cleared when a profile loads | `01-accounts.md` §8.3 R6 |
+| `restore_pending_v1` | `{email, at}` of a restore link sent and not yet opened; cleared when a profile loads | `01-accounts.md` §8.3 R7 |
 | `snoozed:{reminderId}:{day}` | A goal reminder already snoozed once that day | `02-notifications.md` §6.3 |
 | `quiz_me_v1` | The last `GET /quiz/me` answer, so the quiz page and Your numbers open offline | `14-quiz.md` QZ35 |
 | `quiz_boards_v1` | The last copy of each board shown, keyed by board id, for "Not updated · no connection" | `14-quiz.md` QZ30 |

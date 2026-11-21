@@ -208,7 +208,7 @@ class _EmailExistsDialogState extends ConsumerState<_EmailExistsDialog> {
     final router = GoRouter.of(context);
     setState(() => _busy = true);
     try {
-      final cooldown = await ref.read(profileApiProvider).requestRestore(widget.email);
+      final cooldown = await ref.read(profileControllerProvider.notifier).requestRestore(widget.email);
       if (!mounted) return;
       Navigator.of(context).pop();
       router.pushReplacement(

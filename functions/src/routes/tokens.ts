@@ -1,6 +1,7 @@
 // POST /api/v1/tokens/verify (01-accounts §6.5, and the CHANGE_EMAIL purpose
 // of §13.8 step 3).
 import { Router } from 'express';
+import { logger } from 'firebase-functions';
 import type { Firestore } from 'firebase-admin/firestore';
 import { FieldValue } from 'firebase-admin/firestore';
 import { callerUid } from '../auth';
@@ -126,6 +127,7 @@ export function tokensRouter(deps: Deps): Router {
         useToken();
         for (const t of others) tx.update(t.ref, { status: 'SUPERSEDED' });
         if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, { name: p.name, cityId: p.cityId ?? null });
+        logger.info('profile: restored', { uid, fromUid: oldUid, profileId: p.profileId });
         return { result: 'PROFILE_RESTORED' as VerifyResult, purpose, isOwner: true, profileId: p.profileId };
       });
 
