@@ -71,6 +71,14 @@ class HazriAudioHandler extends BaseAudioHandler
   bool get isPlaying => _player.playing;
 
   @override
+  bool get isFinished {
+    if (!isLoaded || isLooping) return false;
+    if (_player.processingState == ProcessingState.completed) return true;
+    final d = _player.duration;
+    return d != null && d > Duration.zero && _player.position >= d - const Duration(seconds: 3);
+  }
+
+  @override
   int get queueLength => _tracks.length;
 
   @override

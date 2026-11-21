@@ -88,6 +88,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   /// The recitation is loaded once per visit to this screen.
   bool _prepared = false;
 
+  /// The last line is on screen (RS2): the end is not a resume point.
+  bool _atLastLine = false;
+
   /// Set by Start again: this screen is leaving for the first line, and must
   /// not write its own end-of-bani position back as it goes.
   bool _restarting = false;
@@ -216,6 +219,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
 
     // Reaching the last line is one of the ways a bani counts as complete.
     final last = positions.map((p) => p.index).fold<int>(0, (a, b) => a > b ? a : b);
+    final bani = ref.read(baniBySlugProvider(widget.slug)).value;
+    final count = bani?.versionId == null ? null : ref.read(baniLinesProvider(bani!.versionId!)).value?.length;
+    _atLastLine = count != null && count > 0 && last >= count - 1;
     _maybeLogCompletion(last, positions.length);
   }
 
@@ -248,9 +254,17 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     // The audio position moves even when the page does not, so progress is
     // written whenever either has changed.
     final player = _player;
-    final audioMs = player != null && player.currentSlug == widget.slug
-        ? player.position.inMilliseconds
-        : _lastSavedAudioMs;
+    final mine = player != null && player.currentSlug == widget.slug;
+    // RS2: read to the last line, or the recitation played to its end: the
+    // paath is finished, so there is nothing to resume.
+    if (_atLastLine || (mine && player.isFinished)) {
+      if (_lastSavedLine != -2) {
+        _lastSavedLine = -2;
+        unawaited(_repo.clearProgress(versionId));
+      }
+      return;
+    }
+    final audioMs = mine ? player.position.inMilliseconds : _lastSavedAudioMs;
     if (_topLine == _lastSavedLine && audioMs == _lastSavedAudioMs) return;
     _lastSavedLine = _topLine;
     _lastSavedAudioMs = audioMs;

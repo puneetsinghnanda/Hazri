@@ -11,6 +11,7 @@ import '../../../core/db/content_repository.dart';
 import '../../../core/db/user_db.dart' show CompletionSource;
 import '../../../core/l10n/gen/app_localizations.dart';
 import '../../../core/settings/settings_controller.dart';
+import '../../../core/time/clock.dart';
 import '../../nitnem/data/complete_bani.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../simran/domain/simran_track.dart';
@@ -85,6 +86,10 @@ class PlaybackController {
   final Ref _ref;
   StreamSubscription<String>? _completion;
 
+  /// The day the loaded recitation was loaded on (RS3), as yyyy-mm-dd.
+  String? _loadedOn;
+  String get _today => localDateKey(_ref.read(clockProvider).today());
+
   Future<void> _logCompletion(String baniId) async {
     final banis = await _ref.read(contentRepositoryProvider).banis();
     final bani = banis.where((b) => b.id == baniId).firstOrNull;
@@ -133,13 +138,20 @@ class PlaybackController {
     final player = _ref.read(paathPlayerProvider);
     if (player == null) return false;
     if (player.currentSlug == bani.slug && player.isLoaded && player.queueLength == 1) {
-      if (at != null) await player.seek(at);
+      if (at != null) {
+        await player.seek(at);
+      } else if (!player.isPlaying && (player.isFinished || _loadedOn != _today)) {
+        // RS3: a recitation still loaded at its end, or loaded on an earlier
+        // day, opens at 0:00, not where it stopped.
+        await player.seek(Duration.zero);
+      }
       return true;
     }
     final tracks = await _ref.read(audioTracksProvider.future);
     final track = await _trackFor(bani, tracks, language, ask: ask);
     if (track == null) return false;
     await player.setQueue([track], at: at);
+    _loadedOn = _today;
     await player.setSpeed(_ref.read(settingsProvider).speed);
     return true;
   }
@@ -216,6 +228,7 @@ class PlaybackController {
     ];
     _askForLockScreen();
     await player.setQueue(queue);
+    _loadedOn = _today;
     await player.setSpeed(_ref.read(settingsProvider).speed);
     await player.play();
     return true;

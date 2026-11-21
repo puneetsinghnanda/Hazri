@@ -190,13 +190,21 @@ class UserRepository {
 
   // ---------------------------------------------------------------- progress
 
-  Future<ReadingProgressData?> progressFor(String baniVersionId) =>
-      (_db.select(_db.readingProgress)
-            ..where((p) => p.baniVersionId.equals(baniVersionId)))
-          .getSingleOrNull();
+  /// Where a bani was left, only if that was today (06-nitnem RS1, owner
+  /// 2026-11-21): every new day each bani starts at its first line and 0:00,
+  /// even one stopped halfway the day before. Within the day it resumes.
+  Future<ReadingProgressData?> progressFor(String baniVersionId) async {
+    final row = await (_db.select(_db.readingProgress)
+          ..where((p) => p.baniVersionId.equals(baniVersionId)))
+        .getSingleOrNull();
+    return row != null && _savedToday(row) ? row : null;
+  }
 
+  /// Today's resume points only (RS1).
   Stream<List<ReadingProgressData>> watchAllProgress() =>
-      _db.select(_db.readingProgress).watch();
+      _db.select(_db.readingProgress).watch().map((rows) => rows.where(_savedToday).toList());
+
+  bool _savedToday(ReadingProgressData r) => localDateKey(r.updatedAt.toLocal()) == _today;
 
   Future<void> saveProgress(String baniVersionId, int lineIdx, {int audioPosMs = 0}) =>
       _db.into(_db.readingProgress).insertOnConflictUpdate(

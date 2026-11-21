@@ -65,6 +65,10 @@ abstract interface class PaathPlayer {
   /// True while what is loaded is a live group's loop.
   bool get isLooping;
 
+  /// True when the loaded recitation has played to its end and is parked
+  /// there (06-nitnem RS3): opening that bani again starts it from 0:00.
+  bool get isFinished;
+
   /// Starts playback and returns once it has started, not when it ends.
   Future<void> play();
 

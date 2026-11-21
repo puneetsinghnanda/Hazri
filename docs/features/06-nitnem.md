@@ -24,6 +24,20 @@ Latin, meanings where they exist, pause marks, Larivaar, adjustable text size,
 resume and keep-screen-on. `ReadingProgress` stores the line and audio position
 per bani version.
 
+**Where a paath resumes** (owner, 2026-11-21: Japji Sahib finished one day
+opened at its end the next):
+
+- **RS1. A resume point counts only on the day it was saved.** Within the day a
+  bani stopped halfway opens at its line and recitation position, and Nitnem
+  shows "2:04 in"; every new day each bani starts at its first line and 0:00,
+  even one stopped halfway the day before (`progressFor`, `watchAllProgress`).
+- **RS2. A finished paath leaves no resume point.** The completion path clears
+  it, and the reader writes none while the last line is on screen or the
+  recitation has played to its end.
+- **RS3. A recitation still loaded opens at 0:00** when it has played to its end
+  (`PaathPlayer.isFinished`) or was loaded on an earlier day; one paused
+  halfway today keeps its place, and one that is playing is never moved.
+
 **The player**: `audio_service` + `just_audio`, a foreground service, lock
 screen and Bluetooth controls, speed 0.75×–1.5× with pitch kept, ±10 s,
 previous and next bani, a sleep timer. Line highlighting comes from `timing`

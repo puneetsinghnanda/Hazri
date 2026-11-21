@@ -61,6 +61,12 @@ class FakePaathPlayer implements PaathPlayer {
   @override
   bool get isLooping => looping;
 
+  /// Set by a test: the loaded recitation has played to its end.
+  bool finished = false;
+
+  @override
+  bool get isFinished => finished;
+
   @override
   Future<void> setLoop(PaathTrack track, {required Duration at}) async {
     setQueueCalls++;

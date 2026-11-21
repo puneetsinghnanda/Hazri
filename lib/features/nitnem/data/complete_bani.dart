@@ -41,11 +41,15 @@ class CompletionPath {
       if (_completedOpenings.contains(opening)) return null;
       _completedOpenings.add(opening);
     }
-    return _ref.read(userRepositoryProvider).logCompletion(
-          baniId: bani.id,
-          slot: slotValue(bani.defaultSlot),
-          source: source,
-        );
+    final repo = _ref.read(userRepositoryProvider);
+    // RS2: a paath finished is not somewhere to come back to.
+    final versionId = bani.versionId;
+    if (versionId != null) await repo.clearProgress(versionId);
+    return repo.logCompletion(
+      baniId: bani.id,
+      slot: slotValue(bani.defaultSlot),
+      source: source,
+    );
   }
 
   static BaniSlotValue slotValue(BaniSlot slot) => switch (slot) {
