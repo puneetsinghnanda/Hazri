@@ -8,7 +8,7 @@ import { callerUid } from '../auth';
 import type { Deps } from '../deps';
 import { ApiError } from '../errors';
 import { bodyOf, h } from '../http';
-import { ProfileDoc, profileDto } from '../profile/profile';
+import { ownsLiveProfile, ProfileDoc, profileDto } from '../profile/profile';
 import { adoptionIsEmpty, readAdoption, writeAdoption } from '../sangat/adopt';
 import { isRawToken, TokenPurpose } from '../tokens';
 import { emailHashOf, sha256Hex } from '../validation';
@@ -107,15 +107,16 @@ export function tokensRouter(deps: Deps): Router {
         if (tok.requestingUid !== uid) {
           throw new ApiError(403, 'RESTORE_WRONG_DEVICE', 'Open this link on the phone where you requested the restore');
         }
-        const callerOwner = await tx.get(db.doc(`owners/${uid}`));
-        if (callerOwner.exists) throw new ApiError(409, 'DEVICE_HAS_PROFILE', 'A profile already exists on this device');
+        if ((await ownsLiveProfile(db, tx, uid)).live) {
+          throw new ApiError(409, 'DEVICE_HAS_PROFILE', 'A profile already exists on this device');
+        }
         const others = (await activeTokens(db, tx, p.profileId)).filter((d) => d.id !== tokenRef.id);
         // The memberships this phone made before restoring move to the profile (README decisions).
         const adoption = await readAdoption(db, tx, uid, p.profileId);
         const oldUid = p.ownerUid;
         tx.delete(db.doc(`owners/${oldUid}`));
         tx.delete(db.doc(`fcmTokens/${oldUid}`)); // FT3
-        tx.create(db.doc(`owners/${uid}`), { profileId: p.profileId, createdAt: now });
+        tx.set(db.doc(`owners/${uid}`), { profileId: p.profileId, createdAt: now });
         const update: Record<string, FirebaseFirestore.FieldValue | string | boolean | null> = {
           ownerUid: uid,
           emailVerified: true,

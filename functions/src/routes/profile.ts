@@ -10,7 +10,7 @@ import { deliver, queueMail, QueuedMail } from '../email/outbox';
 import { restoreProfileTemplate, verifyEmailTemplate } from '../email/templates';
 import { ApiError, Errors } from '../errors';
 import { bodyOf, h, localeOf } from '../http';
-import { ProfileDoc, profileDto, quotaDoc, quotaOf, requireProfile } from '../profile/profile';
+import { indexIsLive, ownsLiveProfile, ProfileDoc, profileDto, quotaDoc, quotaOf, requireProfile } from '../profile/profile';
 import { checkEmailQuota } from '../quota';
 import { adoptionIsEmpty, readAdoption, writeAdoption } from '../sangat/adopt';
 import { newToken, TokenPurpose } from '../tokens';
@@ -117,13 +117,17 @@ export function profileRouter(deps: Deps): Router {
       const emailHash = emailNormalized === null ? null : emailHashOf(emailNormalized);
       const profileRef = db.collection('profiles').doc();
       await db.runTransaction(async (tx) => {
-        const ownerSnap = await tx.get(db.doc(`owners/${uid}`));
-        const indexSnap = emailHash === null ? null : await tx.get(db.doc(`emailIndex/${emailHash}`));
+        // R9: leftovers of a profile removed by hand do not count.
+        const owner = await ownsLiveProfile(db, tx, uid);
+        const index = emailHash === null || emailNormalized === null ? null : await indexIsLive(db, tx, emailHash, emailNormalized);
         const adoption = await readAdoption(db, tx, uid, profileRef.id);
-        if (ownerSnap.exists) {
+        if (owner.live) {
           throw new ApiError(409, 'PROFILE_ALREADY_EXISTS', 'A profile already exists on this device');
         }
-        if (indexSnap?.exists) throw new ApiError(409, 'EMAIL_EXISTS', 'An account with this email already exists');
+        if (index?.live) throw new ApiError(409, 'EMAIL_EXISTS', 'An account with this email already exists');
+        if (owner.ownerDoc || index?.indexDoc) {
+          logger.warn('profile: leftovers replaced', { uid, owner: owner.ownerDoc, emailIndex: index?.indexDoc ?? false });
+        }
         const now = FieldValue.serverTimestamp();
         tx.create(profileRef, {
           profileId: profileRef.id,
@@ -143,8 +147,8 @@ export function profileRouter(deps: Deps): Router {
           pendingEmail: null,
           pendingEmailNormalized: null,
         });
-        if (emailHash !== null) tx.create(db.doc(`emailIndex/${emailHash}`), { profileId: profileRef.id, createdAt: now });
-        tx.create(db.doc(`owners/${uid}`), { profileId: profileRef.id, createdAt: now });
+        if (emailHash !== null) tx.set(db.doc(`emailIndex/${emailHash}`), { profileId: profileRef.id, createdAt: now });
+        tx.set(db.doc(`owners/${uid}`), { profileId: profileRef.id, createdAt: now });
         if (!adoptionIsEmpty(adoption)) writeAdoption(db, tx, adoption, { name, cityId });
       });
       // 01-accounts §8.3 R8: which install made which profile, so a phone that
@@ -247,8 +251,9 @@ export function profileRouter(deps: Deps): Router {
       const sent: { q: QueuedMail | null } = { q: null };
       let email = '';
       await db.runTransaction(async (tx) => {
-        const owner = await tx.get(db.doc(`owners/${uid}`));
-        if (owner.exists) throw new ApiError(409, 'DEVICE_HAS_PROFILE', 'A profile already exists on this device');
+        if ((await ownsLiveProfile(db, tx, uid)).live) {
+          throw new ApiError(409, 'DEVICE_HAS_PROFILE', 'A profile already exists on this device');
+        }
         const index = await tx.get(db.doc(`emailIndex/${emailHashOf(emailNormalized)}`));
         if (!index.exists) throw new ApiError(404, 'EMAIL_NOT_FOUND', 'No account found for this email');
         const profileRef = db.doc(`profiles/${index.get('profileId') as string}`);

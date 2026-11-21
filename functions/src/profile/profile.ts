@@ -109,3 +109,28 @@ export async function ownerProfileId(db: Firestore, uid: string, tx?: Transactio
   const snap = tx ? await tx.get(ref) : await ref.get();
   return snap.exists ? ((snap.get('profileId') as string) ?? null) : null;
 }
+
+/**
+ * 01-accounts §8.3 R9 (2026-11-21): whether owners/{uid} names a profile this
+ * uid still owns. A profile removed by hand (an account deleted on request,
+ * or in the console while testing) leaves owners/{uid} and its emailIndex
+ * behind; read as a profile they refused setup with PROFILE_ALREADY_EXISTS
+ * and restore with DEVICE_HAS_PROFILE, while GET /profile said NO_PROFILE.
+ */
+export async function ownsLiveProfile(db: Firestore, tx: Transaction, uid: string): Promise<{ ownerDoc: boolean; live: boolean }> {
+  const owner = await tx.get(db.doc(`owners/${uid}`));
+  if (!owner.exists) return { ownerDoc: false, live: false };
+  const p = await tx.get(db.doc(`profiles/${owner.get('profileId') as string}`));
+  return { ownerDoc: true, live: p.exists && p.get('ownerUid') === uid };
+}
+
+/** Whether an emailIndex document still names a profile with that email (R9). */
+export async function indexIsLive(db: Firestore, tx: Transaction, emailHash: string, emailNormalized: string): Promise<{ indexDoc: boolean; live: boolean }> {
+  const idx = await tx.get(db.doc(`emailIndex/${emailHash}`));
+  if (!idx.exists) return { indexDoc: false, live: false };
+  const p = await tx.get(db.doc(`profiles/${idx.get('profileId') as string}`));
+  const live =
+    p.exists && (p.get('emailNormalized') === emailNormalized || p.get('pendingEmailNormalized') === emailNormalized);
+  return { indexDoc: true, live };
+}
+
