@@ -12,7 +12,7 @@ import '../../../core/widgets/surfaces.dart';
 import '../data/profile_controller.dart';
 
 /// "Set up your profile" (`01-accounts.md` §8.4, `05-today.md` T2): only in
-/// ProfileNone or ProfileUnavailable; not dismissible; the whole banner opens
+/// ProfileNone only (R10); not dismissible; the whole banner opens
 /// Profile Setup.
 class ProfileBanner extends ConsumerWidget {
   const ProfileBanner({super.key});
@@ -20,7 +20,9 @@ class ProfileBanner extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(profileControllerProvider);
-    if (state is! ProfileNone && state is! ProfileUnavailable) return const SizedBox.shrink();
+    // 01-accounts R10: only when the server has said there is no profile;
+    // not reaching it is not the same as having none.
+    if (state is! ProfileNone) return const SizedBox.shrink();
     final c = context.colors;
     final l = L.of(context);
     return HazriCard(

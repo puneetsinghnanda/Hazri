@@ -49,7 +49,7 @@ class TodayScreen extends ConsumerWidget {
     final elder = ref.watch(settingsProvider.select((s) => s.elderMode));
     final c = context.colors;
     final profile = ref.watch(profileControllerProvider);
-    final hasBanner = profile is ProfileNone || profile is ProfileUnavailable;
+    final hasBanner = profile is ProfileNone; // R10
     final streak = ref.watch(hazriStreakProvider).value;
 
     return Scaffold(

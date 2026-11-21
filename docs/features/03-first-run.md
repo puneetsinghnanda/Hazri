@@ -237,7 +237,7 @@ already saved in Settings is dropped; the profile city takes over (CY4).
 | # | Decision | Status |
 | --- | --- | --- |
 | F-1 | Does Welcome survive, or go straight to Language? | **Default:** keep it; it is the only place the app introduces itself |
-| F-2 | Elder mode offered, or detected from the system font scale? | **Default:** offered, and pre-selected when the font scale is 1.3 or more. Never forced |
+| F-2 | Elder mode offered, or detected from the system font scale? | **Decided 2026-11-21 (owner):** offered on How you read and in Settings, never switched on by the font scale (it was pre-selected at 1.3 or more, and the tabs it hid surprised people) |
 | F-3 | Audio pack on Wi-Fi automatically? | **Default:** asked once at first play, then remembered. Never 80 MB unasked |
 | F-4 | The Settings city: keep it, or always use the profile city? | **Decided 2026-10-07:** the profile city only; without a profile, no city (3.6) |
 | F-5 | Notification permission: a sheet first, or Android's prompt at app start? | **Decided 2026-10-07:** Android's prompt at app start (F6) |

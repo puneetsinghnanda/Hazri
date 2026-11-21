@@ -58,10 +58,11 @@ void main() {
       testWidgets('Today renders in $label', (tester) async {
         await pumpScreen(tester, const TodayScreen(), locale: locale, dark: dark);
         final l = await L.delegate.load(locale);
-        // 05-today T8 and 01-accounts §8.4: the greeting, and with no
-        // profile (a test has no server: ProfileUnavailable) the banner.
+        // 05-today T8: the greeting. A test has no server
+        // (ProfileUnavailable), and not reaching it is not "Set up your
+        // profile" (01-accounts R10, 2026-11-21).
         expect(find.text(l.profileWelcome), findsOneWidget);
-        expect(find.text(l.profileBannerTitle), findsOneWidget);
+        expect(find.text(l.profileBannerTitle), findsNothing);
         expect(find.text(l.greeting), findsNothing);
       });
 

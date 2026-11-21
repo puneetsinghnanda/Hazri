@@ -235,7 +235,7 @@ First launch:  Android system splash → Welcome → Language → How you read �
 Every launch:  Android system splash → Today, or the deep-link target
 
 Bottom navigation:  Today · Nitnem · Simran · Sangat · Diary
-Elder mode:         Today · Nitnem · Diary   (Simran and Sangat stay reachable)
+Elder mode:         the same five tabs, larger (owner, 2026-11-21; it was three)
 
 Menu (menu button on each tab header; a left drawer, design 112, option A of
 2026-10-25, replacing the bottom sheet of design 99):
@@ -767,10 +767,12 @@ jantri, 147 events in 12 kinds, 52 flagged to remind.
 
 ### 4.17 Elder mode
 
-Offered in setup and in Settings. One app, larger: text at least 1.6× and
-the reader never below 30; touch targets at least 64 dp; three tabs (Today,
-Nitnem, Diary) with Simran and Sangat still reachable; Today is the same
-screen at larger sizes (`05-today.md` T5). It never hides content. The
+Offered in setup and in Settings, and **only ever the reader's choice**: a
+large system font no longer switches it on (owner, 2026-11-21). One app,
+larger: text at least 1.6× and the reader never below 30; touch targets at
+least 64 dp; **all five tabs** (owner, 2026-11-21: three tabs hid Simran and
+left the Sangat unreachable for the people it was switched on for); Today is
+the same screen at larger sizes (`05-today.md` T5). It never hides a tab. The
 system font scale is respected up to 1.3×.
 
 ### 4.18 Menu, Settings, About and privacy

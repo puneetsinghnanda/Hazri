@@ -78,7 +78,10 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
       }
     });
     _online = Connectivity().onConnectivityChanged.listen((r) {
-      if (!r.contains(ConnectivityResult.none)) unawaited(ref.read(outboxSenderProvider).send());
+      if (!r.contains(ConnectivityResult.none)) {
+        unawaited(ref.read(outboxSenderProvider).send());
+        _recheckProfile();
+      }
       unawaited(_fetchRecitations(r));
     });
     unawaited(_fetchRecitations());
@@ -99,6 +102,10 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
       debugPrint('Hazri: no recitation fetch ($e)');
     }
   }
+
+  /// 01-accounts R11: when the app comes back and when the phone is online
+  /// again.
+  void _recheckProfile() => unawaited(ref.read(profileControllerProvider.notifier).recheckIfUnsure());
 
   bool _keepAwakeTried = false;
 
@@ -141,6 +148,7 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     // Coming back to the app is the cheapest moment to notice that the day, the
     // time zone or the sunrise has moved on (PRD 1.10).
     if (state == AppLifecycleState.resumed) {
+      _recheckProfile();
       // Back from Android's "Alarms & reminders" (DP2): read it again, and
       // the re-plan below schedules exact alarms from now on.
       ref.invalidate(exactAlarmsAllowedProvider);

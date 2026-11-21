@@ -183,6 +183,16 @@ class ProfileController extends Notifier<ProfileState> {
     }
   }
 
+  /// R11: a profile the server could not be asked about (none saved and no
+  /// answer, or only the saved copy shown) is asked about again, so a failed
+  /// call mends itself without a restart. One the server has confirmed, or
+  /// said is not there, costs no read.
+  Future<void> recheckIfUnsure() async {
+    if (refreshing) return;
+    final s = state;
+    if (s is ProfileUnavailable || (s is ProfileLoaded && s.isStale)) await refresh();
+  }
+
   /// POST /profile/restore-request, remembering that a link is waiting (R7).
   /// Errors are the API's, for the caller.
   Future<int> requestRestore(String email) async {

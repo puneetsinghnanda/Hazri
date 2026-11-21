@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../../app/router.dart';
 import '../../../core/db/content_repository.dart';
 import '../../../core/l10n/gen/app_localizations.dart';
-import '../../../core/settings/settings_controller.dart';
 import '../../../core/theme/hazri_colors.dart';
 import '../../../core/theme/hazri_text.dart';
 import '../../../core/theme/icon_data.dart';
@@ -185,16 +184,10 @@ class WelcomeScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     PrimaryButton(
                       label: l.welcomeBegin,
-                      onPressed: () {
-                        // F-2: elder mode pre-selected at a large system font
-                        // scale, never forced; How you read can turn it off.
-                        if (MediaQuery.textScalerOf(context).scale(10) >= 13) {
-                          ref
-                              .read(settingsProvider.notifier)
-                              .setElderMode(true);
-                        }
-                        context.go(Routes.setup(1));
-                      },
+                      // F-2 (owner, 2026-11-21): elder mode is only ever the
+                      // reader's choice, on How you read or in Settings; a
+                      // large system font no longer switches it on.
+                      onPressed: () => context.go(Routes.setup(1)),
                     ),
                   ],
                 ),
