@@ -3,60 +3,80 @@
   "start": 0.7,
   "end": 4.6,
   "pa": "ਹਾਜ਼ਰੀ। ਤੁਹਾਡਾ ਰੂਹਾਨੀ ਸਾਥੀ।",
-  "en": "Hazri. Your spiritual companion."
+  "en": "Hazri. Your spiritual companion.",
+  "en_vo": "Hazri. Your spiritual companion.",
+  "en_say": "[Hazri](/hˈʌzɹi/). Your spiritual companion."
  },
  {
   "start": 5.6,
   "end": 11.0,
   "pa": "ਇੱਕ ਬਾਣੀ ਪੜ੍ਹੋ, ਜਾਂ ਪੰਜ ਮਿੰਟ ਨਾਮ ਸਿਮਰਨ ਕਰੋ, ਤੇ ਅੱਜ ਦੀ ਹਾਜ਼ਰੀ ਲੱਗ ਜਾਂਦੀ ਹੈ।",
-  "en": "Read a bani, or do five minutes of Naam Simran, and today's hazri is marked."
+  "en": "Read a bani, or do five minutes of Naam Simran, and today's hazri is marked.",
+  "en_vo": "Read a bani, or sit for five minutes of Naam Simran, and today's hazri is marked.",
+  "en_say": "Read a [bani](/bˈɑːni/), or sit for five minutes of [Naam](/nˈɑːm/) [Simran](/sˈɪmɹən/), and today's [hazri](/hˈʌzɹi/) is marked."
  },
  {
   "start": 12.0,
   "end": 18.2,
   "pa": "ਨੌਂ ਬਾਣੀਆਂ, ਗੁਰਮੁਖੀ, ਹਿੰਦੀ ਜਾਂ ਰੋਮਨ ਵਿੱਚ, ਅਰਥਾਂ ਸਮੇਤ, ਤੇ ਪਾਠ ਦੀ ਆਵਾਜ਼ ਦੇ ਨਾਲ ਨਾਲ।",
-  "en": "Nine banis, in Gurmukhi, Hindi or Roman, with meanings, alongside the recitation."
+  "en": "Nine banis, in Gurmukhi, Hindi or Roman, with meanings, alongside the recitation.",
+  "en_vo": "Your whole Nitnem: nine banis in Gurmukhi, Hindi or Roman, with meanings and recitation.",
+  "en_say": "Your whole [Nitnem](/nˈɪtnɛm/): nine [banis](/bˈɑːniz/) in [Gurmukhi](/ɡˈʊɹmʊki/), Hindi or Roman, with meanings and recitation."
  },
  {
   "start": 19.0,
   "end": 24.3,
   "pa": "ਆਪਣੇ ਰੋਜ਼ ਦੇ ਪਾਠ ਤੇ ਸਿਮਰਨ ਦੇ ਟੀਚੇ ਰੱਖੋ, ਹਰ ਇੱਕ ਦੀ ਯਾਦ ਆਪਣੇ ਵੇਲੇ।",
-  "en": "Set your daily paath and simran goals, each reminded at its own time."
+  "en": "Set your daily paath and simran goals, each reminded at its own time.",
+  "en_vo": "Set your daily paath and simran goals, each reminded at its own time.",
+  "en_say": "Set your daily [paath](/pˈɑːt/) and [simran](/sˈɪmɹən/) goals, each reminded at its own time."
  },
  {
   "start": 25.2,
   "end": 30.7,
   "pa": "ਸਿਮਰਨ ਕਰੋ, ਤੇ ਦੇਖੋ ਦੁਨੀਆਂ ਭਰ ਦੇ ਸ਼ਹਿਰਾਂ ਵਿੱਚ ਸੰਗਤ ਤੁਹਾਡੇ ਨਾਲ ਹੈ।",
-  "en": "Do simran, and see the sangat with you in cities across the world."
+  "en": "Do simran, and see the sangat with you in cities across the world.",
+  "en_vo": "Sit in simran, and see the sangat with you, city by city, across the world.",
+  "en_say": "Sit in [simran](/sˈɪmɹən/), and see the [sangat](/sˈʌŋɡət/) with you, city by city, across the world."
  },
  {
   "start": 31.5,
   "end": 36.4,
   "pa": "ਸੰਗਤ ਦੇ ਗਰੁੱਪ ਨਾਲ ਜੁੜੋ, ਤੇ ਰਲ ਕੇ ਸਾਂਝਾ ਟੀਚਾ ਪੂਰਾ ਕਰੋ।",
-  "en": "Join a sangat group, and complete a shared goal together."
+  "en": "Join a sangat group, and complete a shared goal together.",
+  "en_vo": "Join a sangat group, and reach one shared goal together.",
+  "en_say": "Join a [sangat](/sˈʌŋɡət/) group, and reach one shared goal together."
  },
  {
   "start": 37.2,
   "end": 41.8,
   "pa": "ਡਾਇਰੀ ਤੁਹਾਡਾ ਹਰ ਦਿਨ ਸਾਂਭਦੀ ਹੈ, ਤੇ ਤੁਹਾਡੀ ਲੜੀ ਗਿਣਦੀ ਹੈ।",
-  "en": "The diary keeps every day, and counts your streak."
+  "en": "The diary keeps every day, and counts your streak.",
+  "en_vo": "Your diary keeps every day, and counts your streak.",
+  "en_say": "Your diary keeps every day, and counts your streak."
  },
  {
   "start": 42.5,
   "end": 48.0,
   "pa": "ਤਸਵੀਰਾਂ ਨਾਲ ਸਾਖੀਆਂ, ਤੇ ਹਰ ਰੋਜ਼ ਗੁਰਬਾਣੀ ਦਾ ਇੱਕ ਵਿਚਾਰ।",
-  "en": "Saakhis in pictures, and a thought from Gurbani every day."
+  "en": "Saakhis in pictures, and a thought from Gurbani every day.",
+  "en_vo": "Illustrated saakhis, and a line of Gurbani wisdom every day.",
+  "en_say": "Illustrated [saakhis](/sˈɑːkiz/), and a line of [Gurbani](/ɡˈʊɹbɑːni/) wisdom every day."
  },
  {
   "start": 48.8,
   "end": 53.3,
   "pa": "ਹਰ ਰੋਜ਼ ਨਵਾਂ ਗੁਰਮਤਿ ਕੁਇਜ਼। ਖੇਡੋ, ਸਿੱਖੋ, ਤੇ ਅੱਗੇ ਵਧੋ।",
-  "en": "A new Gurmat quiz every day. Play, learn, and climb."
+  "en": "A new Gurmat quiz every day. Play, learn, and climb.",
+  "en_vo": "A new Gurmat quiz every day. Play, learn, and climb the leaderboard.",
+  "en_say": "A new [Gurmat](/ɡˈʊɹmət/) quiz every day. Play, learn, and climb the [leaderboard](/lˈidəɹbɔɹd/)."
  },
  {
   "start": 54.7,
   "end": 59.2,
   "pa": "ਹਰ ਦਿਨ ਨੂੰ ਹਾਜ਼ਰੀ ਬਣਾਓ। ਹਾਜ਼ਰੀ, ਹੁਣ ਗੂਗਲ ਪਲੇ ਉੱਤੇ।",
-  "en": "Make every day a Hazri. Hazri, now on Google Play."
+  "en": "Make every day a Hazri. Hazri, now on Google Play.",
+  "en_vo": "Make every day a Hazri. Download Hazri, on Google Play.",
+  "en_say": "Make every day a [Hazri](/hˈʌzɹi/). Download [Hazri](/hˈʌzɹi/), on Google Play."
  }
 ]

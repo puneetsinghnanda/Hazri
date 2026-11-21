@@ -25,10 +25,23 @@ for f in config.json model.safetensors special_tokens_map.json tokenizer_config.
   [ -s "$M/$f" ] || curl -sfL -o "$M/$f" "https://huggingface.co/facebook/mms-tts-pan/resolve/main/$f"; done
 cp "$P/narration.json" "$W/"
 python3 "$P/tts.py" "$W" 1.08 "$M"
-python3 "$P/voiceover.py" "$W"
+python3 "$P/voiceover.py" "$W" pa
 ffmpeg -y -framerate 30 -i "$W/frames/f%05d.jpg" -i "$W/mix_pa.wav" -i "$W/hazri-promo.pa.srt" -i "$W/hazri-promo.en.srt" \
   -filter_complex "[0:v]ass=$W/pa.ass:fontsdir=$ROOT/assets/fonts[v]" -map "[v]" -map 1:a -map 2 -map 3 \
   -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p -profile:v high -level 5.1 -c:a aac -b:a 256k -c:s mov_text \
   -metadata:s:a:0 language=pan -metadata:s:s:0 language=pan -metadata:s:s:1 language=eng -movflags +faststart -t 60 "$W/hazri-promo-pa-4k.mp4"
 ffmpeg -y -i "$W/hazri-promo-pa-4k.mp4" -map 0 -vf scale=1920:1080:flags=lanczos -c:v libx264 -preset slow -crf 18 \
   -pix_fmt yuv420p -c:a copy -c:s copy -movflags +faststart "$W/hazri-promo-pa-1080p.mp4"
+
+# The English voiced version: Kokoro-82M (Apache 2.0; needs huggingface.co), voice af_heart.
+K="$W/kokoro"; mkdir -p "$K/voices"
+for f in config.json kokoro-v1_0.pth voices/af_heart.pt; do
+  [ -s "$K/$f" ] || curl -sfL -o "$K/$f" "https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/$f"; done
+python3 "$P/tts_en.py" "$W" "$K" af_heart 1.05
+python3 "$P/voiceover.py" "$W" en
+ffmpeg -y -framerate 30 -i "$W/frames/f%05d.jpg" -i "$W/mix_en.wav" -i "$W/hazri-promo.vo-en.srt" \
+  -filter_complex "[0:v]ass=$W/en.ass:fontsdir=/usr/share/fonts/opentype/inter[v]" -map "[v]" -map 1:a -map 2 \
+  -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p -profile:v high -level 5.1 -c:a aac -b:a 256k -c:s mov_text \
+  -metadata:s:a:0 language=eng -metadata:s:s:0 language=eng -movflags +faststart -t 60 "$W/hazri-promo-en-4k.mp4"
+ffmpeg -y -i "$W/hazri-promo-en-4k.mp4" -map 0 -vf scale=1920:1080:flags=lanczos -c:v libx264 -preset slow -crf 18 \
+  -pix_fmt yuv420p -c:a copy -c:s copy -movflags +faststart "$W/hazri-promo-en-1080p.mp4"

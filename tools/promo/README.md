@@ -9,7 +9,8 @@ tools/promo/build.sh /some/work/dir
 ```
 
 which writes `hazri-promo-4k.mp4` and `hazri-promo-1080p.mp4`, and the Punjabi
-`hazri-promo-pa-4k.mp4` and `hazri-promo-pa-1080p.mp4`, into that directory. It takes about 25 minutes on four cores.
+`hazri-promo-pa-4k.mp4` and `hazri-promo-pa-1080p.mp4`, and the English voiced
+`hazri-promo-en-4k.mp4` and `hazri-promo-en-1080p.mp4`, into that directory. It takes about 25 minutes on four cores.
 
 | File | Does |
 |---|---|
@@ -73,6 +74,29 @@ mixes the voice over the score, which ducks under it.
 | 42.5 s | ਤਸਵੀਰਾਂ ਨਾਲ ਸਾਖੀਆਂ, ਤੇ ਹਰ ਰੋਜ਼ ਗੁਰਬਾਣੀ ਦਾ ਇੱਕ ਵਿਚਾਰ। | Saakhis in pictures, and a thought from Gurbani every day. |
 | 48.8 s | ਹਰ ਰੋਜ਼ ਨਵਾਂ ਗੁਰਮਤਿ ਕੁਇਜ਼। ਖੇਡੋ, ਸਿੱਖੋ, ਤੇ ਅੱਗੇ ਵਧੋ। | A new Gurmat quiz every day. Play, learn, and climb. |
 | 54.7 s | ਹਰ ਦਿਨ ਨੂੰ ਹਾਜ਼ਰੀ ਬਣਾਓ। ਹਾਜ਼ਰੀ, ਹੁਣ ਗੂਗਲ ਪਲੇ ਉੱਤੇ। | Make every day a Hazri. Hazri, now on Google Play. |
+
+## The English voiced version
+
+`hazri-promo-en-4k.mp4` and `-1080p.mp4` carry an English voice-over with
+English subtitles burned in (Inter) and as a track. The lines are `en_vo` in
+`narration.json`, spoken by `tts_en.py` with Kokoro-82M (voice `af_heart`),
+whose model and voices are **Apache 2.0**, so unlike the Punjabi placeholder
+it can be published. `en_say` is the same line with pronunciations for the
+Punjabi words (Hazri, bani, Nitnem, sangat, saakhis, Gurbani...), written in
+misaki's `[word](/ipa/)` form. `voiceover.py <work-dir> en` mixes it.
+
+| Starts | English voice-over |
+|---|---|
+| 0.7 s | Hazri. Your spiritual companion. |
+| 5.6 s | Read a bani, or sit for five minutes of Naam Simran, and today's hazri is marked. |
+| 12.0 s | Your whole Nitnem: nine banis in Gurmukhi, Hindi or Roman, with meanings and recitation. |
+| 19.0 s | Set your daily paath and simran goals, each reminded at its own time. |
+| 25.2 s | Sit in simran, and see the sangat with you, city by city, across the world. |
+| 31.5 s | Join a sangat group, and reach one shared goal together. |
+| 37.2 s | Your diary keeps every day, and counts your streak. |
+| 42.5 s | Illustrated saakhis, and a line of Gurbani wisdom every day. |
+| 48.8 s | A new Gurmat quiz every day. Play, learn, and climb the leaderboard. |
+| 54.7 s | Make every day a Hazri. Download Hazri, on Google Play. |
 
 ## Using it on Google Play
 
