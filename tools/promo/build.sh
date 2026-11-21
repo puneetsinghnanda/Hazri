@@ -17,3 +17,18 @@ ffmpeg -y -framerate 30 -i "$W/frames/f%05d.jpg" -i "$W/music.wav" -c:v libx264 
   -profile:v high -level 5.1 -movflags +faststart -c:a aac -b:a 256k -shortest "$W/hazri-promo-4k.mp4"
 ffmpeg -y -i "$W/hazri-promo-4k.mp4" -vf scale=1920:1080:flags=lanczos -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p \
   -movflags +faststart -c:a copy "$W/hazri-promo-1080p.mp4"
+
+# The Punjabi version: Meta's MMS Punjabi voice (facebook/mms-tts-pan, CC-BY-NC 4.0; needs huggingface.co),
+# subtitles burned in and carried as pa/en tracks.
+M="$W/mms-tts-pan"; mkdir -p "$M" "$W/vo"
+for f in config.json model.safetensors special_tokens_map.json tokenizer_config.json vocab.json; do
+  [ -s "$M/$f" ] || curl -sfL -o "$M/$f" "https://huggingface.co/facebook/mms-tts-pan/resolve/main/$f"; done
+cp "$P/narration.json" "$W/"
+python3 "$P/tts.py" "$W" 1.08 "$M"
+python3 "$P/voiceover.py" "$W"
+ffmpeg -y -framerate 30 -i "$W/frames/f%05d.jpg" -i "$W/mix_pa.wav" -i "$W/hazri-promo.pa.srt" -i "$W/hazri-promo.en.srt" \
+  -filter_complex "[0:v]ass=$W/pa.ass:fontsdir=$ROOT/assets/fonts[v]" -map "[v]" -map 1:a -map 2 -map 3 \
+  -c:v libx264 -preset slow -crf 16 -pix_fmt yuv420p -profile:v high -level 5.1 -c:a aac -b:a 256k -c:s mov_text \
+  -metadata:s:a:0 language=pan -metadata:s:s:0 language=pan -metadata:s:s:1 language=eng -movflags +faststart -t 60 "$W/hazri-promo-pa-4k.mp4"
+ffmpeg -y -i "$W/hazri-promo-pa-4k.mp4" -map 0 -vf scale=1920:1080:flags=lanczos -c:v libx264 -preset slow -crf 18 \
+  -pix_fmt yuv420p -c:a copy -c:s copy -movflags +faststart "$W/hazri-promo-pa-1080p.mp4"
