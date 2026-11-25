@@ -4796,6 +4796,355 @@ def profile_made() -> str:
 </div>"""
 
 
+
+# ------------------------------------------------- Sharing, 2026-11-25 (16-sharing.md)
+
+def _vichar_of(date_iso: str) -> dict:
+    """The day's ਅੱਜ ਦਾ ਵਿਚਾਰ, read from the reviewed source the content
+    pipeline reads, by the app's rule (days since 1970 modulo the count)."""
+    import datetime
+    with open(os.path.join(ROOT, "content", "source", "vichar", "gurbani-200.json"),
+              encoding="utf-8") as fh:
+        lines = json.load(fh)["gurbani_lines"]
+    e = lines[(datetime.date.fromisoformat(date_iso) - datetime.date(1970, 1, 1)).days % len(lines)]
+    return {"line": " ".join(x for x in (e["punjabi_line1"], e["punjabi_line2"]) if x),
+            "pa": e["punjabi_meaning"], "en": e["english_meaning"]}
+
+
+# The three days the designs show. Event names are the calendar's own
+# English names (02-notifications CE4: no Punjabi name exists for them yet).
+SHARE_DAYS = {
+    "shaheedi": {"date": "2026-12-23", "ns": "੮ ਪੋਹ ੫੫੮",
+                 "event": "Shaheedi – Sahibzada Baba Ajit Singh Ji (Saka Chamkaur)"},
+    "prakash": {"date": "2027-01-15", "ns": "੨ ਮਾਘ ੫੫੮",
+                "event": "Prakash Purab – Sri Guru Gobind Singh Sahib Ji"},
+    "plain": {"date": "2026-12-02", "ns": "੧੭ ਮੱਘਰ ੫੫੮", "event": ""},
+}
+
+# Each style: ground, frame, ink, accent, soft text. Its own palette, the same
+# in either theme (16-sharing.md VC13).
+CARD_STYLES = {
+    "folio": ("#F7F1E4", "double", "#2A2418", "#9A4F00", "#6B6152"),
+    "dawn": ("linear-gradient(180deg,#151838 0%,#3A2D5C 38%,#B85C4A 74%,#F2A24E 100%)", "sun", "#FFF7EC", "#FFC27E", "rgba(255,247,236,.82)"),
+    "night": ("radial-gradient(1.5px 1.5px at 18% 14%,#ffffff88,transparent),radial-gradient(1px 1px at 72% 9%,#ffffff99,transparent),radial-gradient(1.5px 1.5px at 85% 27%,#ffffff66,transparent),radial-gradient(1px 1px at 30% 33%,#ffffff77,transparent),radial-gradient(1px 1px at 10% 70%,#ffffff55,transparent),linear-gradient(180deg,#0A0D22,#161A37)", "", "#EDECF6", "#F2A24E", "#B9BAD3"),
+    "phulkari": ("repeating-conic-gradient(from 45deg,#B3245A 0 25%,#F2A24E 0 50%) 0 0/16px 16px", "phulkari", "#3A1020", "#B3245A", "#6E4A3A"),
+    "bold": ("#FFFFFF", "", "#111426", "#D9730D", "#4D5070"),
+    "photo": ("", "photo", "#FFFFFF", "#FFC27E", "rgba(255,255,255,.85)"),
+    "remembrance": ("linear-gradient(180deg,#120A0E,#2A1218)", "thin", "#F5E9E4", "#F2A24E", "#D9C6BF"),
+    "prakash": ("radial-gradient(circle at 50% 0%,#FFE3A6,#F5B04A 45%,#D9730D)", "white", "#3A1E00", "#7A2E00", "#5A3510"),
+}
+CARD_RATIO = {"status": 16 / 9, "post": 5 / 4, "square": 1.0}
+
+
+def _qr(size: int, colour: str, seed: int = 7) -> str:
+    """A stand-in for the QR code: finder squares and a fixed scatter."""
+    cells, s = [], seed
+    for i in range(121):
+        r, c = divmod(i, 11)
+        finder = (r < 3 and c < 3) or (r < 3 and c > 7) or (r > 7 and c < 3)
+        if finder:
+            on = not (r in (1, 9) and c in (1, 9)) and not (r == 1 and c == 1)
+        else:
+            s = (s * 9301 + 49297) % 233280
+            on = s / 233280 > .5
+        cells.append(f'<i style="background:{colour if on else "transparent"}"></i>')
+    return (f'<div style="display:grid;grid-template-columns:repeat(11,1fr);width:{size}px;'
+            f'height:{size}px;flex:none">{"".join(cells)}</div>')
+
+
+def share_card(style: str, size: str, w: int, day: str = "shaheedi", greet: str = "",
+               meaning: str = "pa", sender: str = "", date_line: bool = True) -> str:
+    """The ਅੱਜ ਦਾ ਵਿਚਾਰ picture of 16-sharing.md VC2-VC11, at width w."""
+    d = SHARE_DAYS[day]
+    v = _vichar_of(d["date"])
+    ground, frame, ink, acc, soft = CARD_STYLES[style]
+    h = round(w * CARD_RATIO[size])
+    u = w / 270  # every size below is for a 270-wide card
+    if style == "photo":
+        ground = f'url({_vichar_img("dawn.jpg")}) center/cover'
+    layers = ""
+    pad = f"{round(24*u)}px {round(24*u)}px {round(16*u)}px"
+    if frame == "double":
+        layers = (f'<div style="position:absolute;inset:{round(11*u)}px;border:1px solid rgba(154,79,0,.3);border-radius:6px"></div>'
+                  f'<div style="position:absolute;inset:{round(15*u)}px;border:1px solid rgba(154,79,0,.16);border-radius:3px"></div>'
+                  f'<div class="gur" style="position:absolute;right:{round(-14*u)}px;bottom:{round(-30*u)}px;font-size:{round(120*u)}px;line-height:1;color:rgba(154,79,0,.07)">ੴ</div>')
+    elif frame == "sun":
+        layers = (f'<div style="position:absolute;left:15%;width:70%;bottom:{-round(w*.13)}px;height:{round(w*.7)}px;'
+                  f'border-radius:50%;background:radial-gradient(circle,rgba(255,214,150,.75),rgba(255,214,150,0) 65%)"></div>')
+    elif frame == "phulkari":
+        layers = (f'<div style="position:absolute;inset:{round(15*u)}px;background:#FFF6E8;border-radius:4px;'
+                  f'box-shadow:0 0 0 3px #FFF6E8,0 0 0 5px #B3245A"></div>')
+        pad = f"{round(40*u)}px {round(36*u)}px {round(28*u)}px"
+    elif frame == "photo":
+        layers = '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,30,.15),rgba(10,12,30,.55) 40%,rgba(10,12,30,.85))"></div>'
+    elif frame == "thin":
+        layers = f'<div style="position:absolute;inset:{round(11*u)}px;border:1px solid rgba(242,162,78,.35)"></div>'
+    elif frame == "white":
+        layers = f'<div style="position:absolute;inset:{round(11*u)}px;border:1.5px solid rgba(255,255,255,.7);border-radius:8px"></div>'
+    left = style == "bold"
+    align = "flex-start" if left else "center"
+    ta = "left" if left else "center"
+    if left:
+        pad = f"{round(30*u)}px {round(27*u)}px {round(18*u)}px"
+    gsize = (25.6 if left else 20) * u * (0.9 if size == "square" else 1)
+    stamp = ""
+    if date_line:
+        stamp = (f'<div class="gur" style="font-size:{9.2*u:.1f}px;color:{soft};margin-top:{round(6*u)}px">{d["ns"]}</div>'
+                 + (f'<div style="font-size:{8.6*u:.1f}px;font-weight:700;color:{acc};background:rgba(242,162,78,.18);'
+                    f'border-radius:999px;padding:{round(2*u)}px {round(9*u)}px;margin-top:{round(5*u)}px;max-width:100%;'
+                    f'white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{d["event"]}</div>' if d["event"] else ""))
+    means = []
+    if meaning in ("pa", "both"):
+        means.append(f'<div class="gur" style="font-size:{11.6*u:.1f}px;line-height:1.5;color:{soft}">{v["pa"]}</div>')
+    if meaning in ("en", "both"):
+        means.append(f'<div style="font-size:{11*u:.1f}px;line-height:1.45;color:{soft}">{v["en"]}</div>')
+    rule = (f'<div style="width:{round(w*(.12 if left else .17))}px;height:{3 if left else 1}px;background:{acc};'
+            f'margin:{round(12*u)}px {"0" if left else "auto"}"></div>') if means else ""
+    foot_mark = (_qr(round(34*u), ink) if size == "status" else
+                 f'<div style="width:{round(19*u)}px;height:{round(10*u)}px;border:2px solid {acc};border-bottom:0;'
+                 f'border-radius:99px 99px 0 0;flex:none"></div>')
+    return f"""<div style="width:{w}px;height:{h}px;position:relative;overflow:hidden;background:{ground};color:{ink};flex:none">
+  {layers}
+  <div class="col" style="position:absolute;inset:0;padding:{pad};align-items:{align};text-align:{ta}">
+    <div class="gur" style="font-size:{9.6*u:.1f}px;letter-spacing:.12em;color:{acc}">ਅੱਜ ਦਾ ਵਿਚਾਰ</div>
+    {stamp}
+    <div style="flex:1"></div>
+    {f'<div class="disp" style="font-size:{14.5*u:.1f}px;font-weight:600;line-height:1.25;color:{acc};margin-bottom:{round(10*u)}px">{greet}</div>' if greet else ""}
+    <div class="gur" style="font-size:{gsize:.1f}px;font-weight:{600 if left else 500};line-height:1.7">{v["line"]}</div>
+    {rule}{"".join(f'<div style="margin-top:{round(5*u) if i else 0}px">{m}</div>' for i, m in enumerate(means))}
+    <div style="flex:1"></div>
+    {"" if size == "square" else f'<div class="gur" style="font-size:{9.4*u:.1f}px;color:{soft}">ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ</div>'}
+    {f'<div class="gur" style="font-size:{12*u:.1f}px;font-weight:600;color:{acc};margin-top:{round(6*u)}px">ਵੱਲੋਂ: {sender}</div>' if sender else ""}
+    <div class="row" style="gap:{round(8*u)}px;margin-top:{round(9*u)}px;font-size:{9.6*u:.1f}px;font-weight:600;color:{acc};text-align:left;line-height:1.3">
+      {foot_mark}<div><span class="gur">ਹਰ ਰੋਜ਼ ਹਾਜ਼ਰੀ ’ਤੇ ਪੜ੍ਹੋ</span><br>hazri.me</div></div>
+  </div>
+</div>"""
+
+
+def _card_top(sub: str) -> str:
+    """Make a card: back, the title with the day under it, As text."""
+    return f"""
+<div class="row" style="padding:18px 20px 10px;gap:12px">
+  <div style="width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:var(--card);box-shadow:var(--shadow)">{icon("back", 20)}</div>
+  <div class="col" style="flex:1"><div class="disp" style="font-size:22px;font-weight:700;line-height:1.15">Make a card</div>
+    <div style="font-size:12.5px;color:var(--muted);font-weight:500">{sub}</div></div>
+  <div class="chip" style="background:var(--card2);color:var(--ink2)">As text</div>
+</div>"""
+
+
+def _card_tabs(on: str) -> str:
+    return ('<div class="row" style="border-bottom:1px solid var(--rule);margin:0 20px">' + "".join(
+        f'<div style="flex:1;text-align:center;padding:11px 0;font-weight:700;font-size:14px;'
+        f'color:{"var(--primary)" if t == on else "var(--muted)"};'
+        f'{"box-shadow:inset 0 -2.5px 0 var(--primary)" if t == on else ""}">{t}</div>'
+        for t in ("Style", "Words", "Size")) + '</div>')
+
+
+def _card_send() -> str:
+    """WhatsApp and Share at the foot (VC14)."""
+    return f"""
+<div class="row" style="position:absolute;left:20px;right:20px;bottom:18px;gap:10px">
+  <div class="btn" style="flex:1.3;background:#1F8F4E;color:#fff">WhatsApp</div>
+  <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary)">{icon("share", 19)}Share</div>
+</div>"""
+
+
+def _card_stage(card: str, h: int) -> str:
+    return (f'<div class="row" style="justify-content:center;align-items:center;height:{h}px;'
+            f'background:var(--card2);margin:0 20px;border-radius:18px">{card}</div>')
+
+
+def vichar_card_style() -> str:
+    """V-C, the Style tab (VC3, VC4): on a Shaheedi day Of the day is the
+    Remembrance look; seven tiles, each a small preview of today's card."""
+    greet = "ਸ਼ਹੀਦਾਂ ਨੂੰ ਕੋਟਿ ਕੋਟਿ ਪ੍ਰਣਾਮ"
+    tiles = [("remembrance", "Of the day", True), ("folio", "Folio", False), ("dawn", "Amrit Vela", False),
+             ("night", "Raat", False), ("phulkari", "Phulkari", False), ("bold", "Bold", False),
+             ("photo", "Photo", False)]
+    grid = "".join(
+        f'<div class="col" style="align-items:center;gap:5px">'
+        f'<div style="border-radius:10px;overflow:hidden;height:88px;width:100%;display:flex;justify-content:center;'
+        f'{"outline:2.5px solid var(--kesri);outline-offset:2px" if on else "box-shadow:var(--shadow)"}">'
+        f'{share_card(st, "status", 76, "shaheedi", meaning="none", date_line=False)}</div>'
+        f'<div style="font-size:12px;font-weight:{700 if on else 600};color:{"var(--kesriInk)" if on else "var(--ink2)"}">{n}</div></div>'
+        for st, n, on in tiles)
+    return f"""
+{_card_top("23 December · 8 Poh")}
+{_card_stage(share_card("remembrance", "status", 172, "shaheedi", greet), 330)}
+<div style="height:8px"></div>
+{_card_tabs("Style")}
+<div style="padding:12px 20px 0;font-size:12.5px;color:var(--muted)">Of the day · today: <b style="color:var(--ink2)">Remembrance</b></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 10px;padding:8px 20px 0">{grid}</div>
+{_card_send()}
+"""
+
+
+def _share_seg(items, on: str) -> str:
+    return ('<div class="row" style="gap:6px;flex-wrap:wrap">' + "".join(
+        f'<div class="chip" style="background:{"var(--primary)" if i == on else "var(--card)"};'
+        f'color:{"var(--onPrimary)" if i == on else "var(--ink2)"};'
+        f'{"" if i == on else "box-shadow:inset 0 0 0 1px var(--rule);"}">{i}</div>' for i in items) + '</div>')
+
+
+def vichar_card_words() -> str:
+    """V-C, the Words tab (VC6-VC9): the greeting follows the day; meaning;
+    From, kept on the phone; the date line."""
+    lab = lambda t: f'<div class="eyebrow" style="font-size:11px">{t}</div>'
+    return f"""
+{_card_top("15 January · 2 Magh")}
+{_card_stage(share_card("prakash", "status", 150, "prakash", "ਗੁਰਪੁਰਬ ਦੀਆਂ ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ", "both", "Harpreet and family"), 290)}
+<div style="height:8px"></div>
+{_card_tabs("Words")}
+<div class="col" style="padding:12px 20px 0;gap:9px">
+  {lab("Greeting")}
+  {_share_seg(["None", '<span class="gur">ਗੁਰਪੁਰਬ ਦੀਆਂ ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ</span>', "Fateh"], '<span class="gur">ਗੁਰਪੁਰਬ ਦੀਆਂ ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ</span>')}
+  {lab("Meaning")}
+  {_share_seg(['<span class="gur">ਪੰਜਾਬੀ</span>', "English", "Both", "Line only"], "Both")}
+  {lab("From")}
+  <div class="col" style="gap:3px"><div style="background:var(--card);border:1.5px solid var(--kesri);border-radius:12px;padding:9px 12px;font-size:14px">Harpreet and family</div>
+    <div style="font-size:11.5px;color:var(--muted)">Your name, if you like. It stays on this phone.</div></div>
+  <div class="row" style="justify-content:space-between;padding-top:2px"><div style="font-weight:600;font-size:14px">Date and day</div>{toggle(True)}</div>
+</div>
+{_card_send()}
+"""
+
+
+def vichar_card_size() -> str:
+    """V-C, the Size tab (VC10): Status with the QR code, Post, Square; here
+    Square in Raat on an ordinary day, with no greeting."""
+    rows = [("Status", "9 : 16", "For WhatsApp Status and stories, with a QR code", 16 / 9, False),
+            ("Post", "4 : 5", "For a chat or a feed", 5 / 4, False),
+            ("Square", "1 : 1", "For a group's picture or a post", 1.0, True)]
+    opts = "".join(
+        f'<div class="row" style="gap:14px;padding:12px 14px;border-radius:14px;background:var(--card);'
+        f'{"box-shadow:inset 0 0 0 2px var(--kesri)" if on else "box-shadow:var(--shadow)"}">'
+        f'<div style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex:none">'
+        f'<div style="width:{round(30/r) if r > 1 else 30}px;height:{30 if r > 1 else 30}px;border:2px solid {"var(--kesri)" if on else "var(--muted)"};border-radius:4px"></div></div>'
+        f'<div class="col" style="flex:1"><div style="font-weight:700">{n} <span style="color:var(--muted);font-weight:600">{ratio}</span></div>'
+        f'<div style="font-size:12.5px;color:var(--muted)">{hint}</div></div>'
+        + (f'<div style="width:22px;height:22px;border-radius:11px;background:var(--kesri);color:#fff;display:flex;align-items:center;justify-content:center">{icon("check", 14)}</div>' if on else
+           '<div style="width:22px;height:22px;border-radius:11px;box-shadow:inset 0 0 0 2px var(--rule)"></div>')
+        + '</div>' for n, ratio, hint, r, on in rows)
+    return f"""
+{_card_top("2 December · 17 Maghar")}
+{_card_stage(share_card("night", "square", 230, "plain", "", "en"), 290)}
+<div style="height:8px"></div>
+{_card_tabs("Size")}
+<div class="col" style="padding:14px 20px 0;gap:10px">{opts}</div>
+{_card_send()}
+"""
+
+
+def invite_sheet() -> str:
+    """G-A (08-sangat IV4a, IV4b): the message exactly as sent, its language,
+    then Send on WhatsApp, Other apps, Copy code."""
+    behind = f"""
+<div class="col" style="background:var(--primary);color:#fff;padding:22px 20px 60px;gap:4px">
+  <div class="disp" style="font-size:24px;font-weight:700">Parivar di hazri</div>
+  <div style="font-size:13px;opacity:.75">40 Sukhmani Sahib · by 28 December</div>
+</div>"""
+    bubble = f"""
+<div style="align-self:stretch;background:#DCF8C6;color:#111B21;border-radius:14px 14px 4px 14px;padding:12px 14px;font-size:14.5px;line-height:1.5;box-shadow:0 1px 1px rgba(0,0,0,.08)">
+  <span class="gur">ਆਓ ਮਿਲ ਕੇ ਪਾਠ ਕਰੀਏ 🙏</span><br>
+  <span class="gur">ਹਾਜ਼ਰੀ ਉੱਤੇ "Parivar di hazri" ਵਿੱਚ ਜੁੜੋ: 28 ਦਸੰਬਰ ਤੱਕ ਮਿਲ ਕੇ 40 ਸੁਖਮਨੀ ਸਾਹਿਬ। </span><span style="color:#027EB5">hazri-dfcc1.web.app/j/K7Q2-M4</span><span class="gur"> ਖੋਲ੍ਹੋ ਜਾਂ ਐਪ ਵਿੱਚ ਕੋਡ </span><b>K7Q2-M4</b><span class="gur"> ਲਿਖੋ।</span>
+  <div style="text-align:right;font-size:11px;color:#667781;margin-top:2px">9:10 PM</div>
+</div>"""
+    inner = f"""
+<div class="disp" style="font-size:22px;font-weight:700;text-align:center">Invite your family</div>
+<div class="row" style="justify-content:center">{_share_seg(['<span class="gur">ਪੰਜਾਬੀ</span>', '<span class="dev">हिन्दी</span>', "English"], '<span class="gur">ਪੰਜਾਬੀ</span>')}</div>
+<div style="font-size:12.5px;color:var(--muted);text-align:center;margin-top:-4px">The message, exactly as it will be sent</div>
+{bubble}
+<div style="flex:1"></div>
+<div class="btn" style="background:#1F8F4E;color:#fff">Send on WhatsApp</div>
+<div class="row" style="gap:10px">
+  <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);min-height:48px;font-size:15px">{icon("share", 18)}Other apps</div>
+  <div class="btn" style="flex:1;background:var(--card2);color:var(--ink2);min-height:48px;font-size:15px">Copy code</div>
+</div>"""
+    return behind + sheet(inner, 560)
+
+
+def event_notification() -> str:
+    """P-A (02-notifications CE7): the evening-before notice with Share with
+    family before See calendar, in Android's shade."""
+    return f"""
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,#2B3A55,#11142B)"></div>
+<div class="col" style="position:relative;padding:14px 16px;gap:10px;color:#fff">
+  <div class="row" style="justify-content:space-between;font-size:13px;font-weight:600;padding:0 6px"><span>20:00</span><span>Tue, 22 Dec</span></div>
+  <div class="disp" style="font-size:44px;font-weight:600;padding:8px 6px 4px">20:00</div>
+  <div class="col" style="background:#F2F1F7;color:#1B1D3A;border-radius:24px;padding:14px 16px;gap:6px">
+    <div class="row" style="gap:8px;font-size:12px;color:#4D5070">
+      <div style="width:18px;height:18px;border-radius:6px;background:#262C63;display:flex;align-items:center;justify-content:center">{app_mark(14, "#fff", "#F2A24E")}</div>
+      Hazri · now</div>
+    <div style="font-weight:700;font-size:15px;line-height:1.35">Tomorrow we remember: Shaheedi – Sahibzada Baba Ajit Singh Ji (Saka Chamkaur)</div>
+    <div style="font-size:13.5px;color:#4D5070">Begin tomorrow with Nitnem and your Hazri.</div>
+    <div class="row" style="gap:10px;padding-top:6px">
+      <div style="background:#262C63;color:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:700">Share with family</div>
+      <div style="background:#E1E0EC;color:#262C63;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:700">See calendar</div>
+    </div>
+  </div>
+  <div class="col" style="background:rgba(242,241,247,.55);color:#1B1D3A;border-radius:24px;padding:12px 16px;gap:2px">
+    <div style="font-size:12px;color:#4D5070">WhatsApp · 19:48</div>
+    <div style="font-weight:700;font-size:14px">Family group</div>
+    <div style="font-size:13px;color:#4D5070">3 new messages</div>
+  </div>
+</div>
+"""
+
+
+def event_card_pic(kind: str, w: int) -> str:
+    """CE8: the event's picture, Remembrance or Prakash by its kind."""
+    style = "remembrance" if kind == "shaheedi" else "prakash"
+    ground, frame, ink, acc, soft = CARD_STYLES[style]
+    u = w / 270
+    h = round(w * 16 / 9)
+    sh = kind == "shaheedi"
+    d = SHARE_DAYS[kind]
+    border = (f'<div style="position:absolute;inset:{round(11*u)}px;border:1px solid rgba(242,162,78,.35)"></div>' if sh else
+              f'<div style="position:absolute;inset:{round(11*u)}px;border:1.5px solid rgba(255,255,255,.7);border-radius:8px"></div>')
+    name = ("Sahibzada Baba Ajit Singh Ji" if sh else "Sri Guru Gobind Singh Sahib Ji")
+    return f"""<div style="width:{w}px;height:{h}px;position:relative;overflow:hidden;background:{ground};color:{ink};flex:none">{border}
+  <div class="col" style="position:absolute;inset:0;padding:{round(34*u)}px {round(26*u)}px {round(18*u)}px;align-items:center;text-align:center">
+    <div class="gur" style="font-size:{11*u:.1f}px;letter-spacing:.12em;color:{acc}">{"ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ" if sh else "ਪ੍ਰਕਾਸ਼ ਪੁਰਬ"}</div>
+    <div class="gur" style="font-size:{10*u:.1f}px;color:{soft};margin-top:{round(6*u)}px">{d["ns"]} · {"23 December" if sh else "15 January"}</div>
+    <div style="flex:1"></div>
+    <div class="disp" style="font-size:{24*u:.1f}px;font-weight:700;line-height:1.2">{name}</div>
+    <div style="font-size:{12*u:.1f}px;color:{soft};margin-top:{round(6*u)}px">{"Saka Chamkaur Sahib" if sh else ""}</div>
+    <div style="width:{round(w*.17)}px;height:1px;background:{acc};margin:{round(14*u)}px auto"></div>
+    <div style="font-size:{12*u:.1f}px;line-height:1.5;color:{soft}">[The first sentence of the day's Vichar story, from the library on the phone]</div>
+    <div style="flex:1"></div>
+    <div class="gur" style="font-size:{14*u:.1f}px;font-weight:600;color:{acc}">{"ਸ਼ਹੀਦਾਂ ਨੂੰ ਕੋਟਿ ਕੋਟਿ ਪ੍ਰਣਾਮ" if sh else "ਗੁਰਪੁਰਬ ਦੀਆਂ ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ"}</div>
+    <div class="row" style="gap:{round(8*u)}px;margin-top:{round(10*u)}px;font-size:{9.6*u:.1f}px;font-weight:600;color:{acc};text-align:left;line-height:1.3">
+      <div style="width:{round(19*u)}px;height:{round(10*u)}px;border:2px solid {acc};border-bottom:0;border-radius:99px 99px 0 0"></div>
+      <div><span class="gur">ਪੂਰੀ ਕਹਾਣੀ ਹਾਜ਼ਰੀ ’ਤੇ ਪੜ੍ਹੋ</span><br>hazri.me</div></div>
+  </div>
+</div>"""
+
+
+def event_share() -> str:
+    """CE7, CE8: Share with family lands here, over the calendar, with the
+    picture made; the Prakash look is shown beside it for comparison."""
+    behind = f"""
+<div class="pad col" style="gap:14px">{header("Sikh calendar", "Poh 558")}
+  <div class="card row" style="padding:12px;gap:12px">
+    <div class="col" style="background:var(--primary);color:var(--onPrimary);border-radius:12px;padding:6px 12px;align-items:center;line-height:1.1">
+      <div class="disp" style="font-size:20px;font-weight:700">23</div><div style="font-size:11px;font-weight:600">DEC</div></div>
+    <div class="col" style="flex:1"><div style="font-weight:700;font-size:14px">Shaheedi – Sahibzada Baba Ajit Singh Ji</div>
+      <div style="font-size:12.5px;color:var(--muted)">8 Poh 558 · Tomorrow</div></div></div>
+</div>"""
+    inner = f"""
+<div class="disp" style="font-size:21px;font-weight:700;text-align:center">Share with family</div>
+<div class="row" style="justify-content:center;gap:14px;align-items:flex-end">
+  {event_card_pic("shaheedi", 200)}
+  <div class="col" style="gap:4px;align-items:center;opacity:.9">{event_card_pic("prakash", 84)}<div style="font-size:10.5px;color:var(--muted);text-align:center;width:84px">On a Prakash Purab</div></div>
+</div>
+<div style="flex:1"></div>
+<div class="row" style="gap:10px">
+  <div class="btn" style="flex:1.3;background:#1F8F4E;color:#fff">Send on WhatsApp</div>
+  <div class="btn" style="flex:1;background:var(--primary);color:var(--onPrimary)">{icon("share", 19)}Share</div>
+</div>"""
+    return behind + sheet(inner, 600)
+
+
 SCREENS = [
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
@@ -4876,6 +5225,12 @@ SCREENS = [
     ("129-LiveSitting", "A live group — sitting with the sangat", live_sitting),
     ("130-SetupProfile", "Setup — your profile, the Hazri card", setup_profile),
     ("131-ProfileMade", "Welcome, after a profile is made", profile_made),
+    ("132-VicharCardStyle", "Make a card — Style, on a Shaheedi day", vichar_card_style),
+    ("133-VicharCardWords", "Make a card — Words, on a Prakash Purab", vichar_card_words),
+    ("134-VicharCardSize", "Make a card — Size, Square in Raat", vichar_card_size),
+    ("135-InviteSheet", "Invite your family — the message as sent", invite_sheet),
+    ("136-EventNotification", "The evening notice — Share with family", event_notification),
+    ("137-EventShare", "Share with family — the event's card", event_share),
 ]
 
 

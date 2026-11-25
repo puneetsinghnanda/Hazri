@@ -165,7 +165,7 @@ There is no phase after 3.
 | 8 | Profile: setup, email verification, restore, edit | §4.11 | `01-accounts.md` |
 | 9 | Weekly backup and restore | §4.12 | `10-backup.md` |
 | 10 | Sangat | §4.13 | `08-sangat.md` |
-| 11 | ਅੱਜ ਦਾ ਵਿਚਾਰ and the Vichar library | §4.15 | — |
+| 11 | ਅੱਜ ਦਾ ਵਿਚਾਰ and the Vichar library; sharing (2026-11-25) | §4.15 | `16-sharing.md` (sharing only) |
 | 12 | Gurpurab and Nanakshahi calendar | §4.16 | — |
 | 13 | Elder mode | §4.17 | `05-today.md` T5 |
 | 14 | Menu, Settings, About, Privacy | §4.18 | — |
@@ -543,7 +543,7 @@ Data: ARCHITECTURE §4, §5.10, §7.2.*
 |---|---|---|---|
 | **Amrit Vela** | 04:00 | Every day; seven weekday messages; opens the first goal bani, else Japji Sahib; with a profile, the sunrise picture for the profile city | Phone |
 | **Goal bani** | The item's own reminder time, and an hour later if still not met (owner, 2026-11-09) | The item is in scope and not yet met; one 15-minute snooze of the first | Phone |
-| **Sikh calendar, evening before** | 20:00 the day before | Every event the calendar flags, or the reader switched on (owner, 2026-11-09) | Phone |
+| **Sikh calendar, evening before** | 20:00 the day before | Every event the calendar flags, or the reader switched on (owner, 2026-11-09); it and the day's notice carry **Share with family**, which opens the event's card ready to send (owner, 2026-11-25; `02-notifications.md` CE7, CE8) | Phone |
 | **Sikh calendar, on the day** | 06:30 on the day | The same events, every kind (owner, 2026-11-09; was Gurpurab 06:00, events 07:00) | Phone |
 | **Hazri nudge** | 07:00 | No active goal and no hazri yet today; seven messages; opens a 5-minute sitting | Phone |
 | **Sangat digest** | 21:00, the member's own time | Member of a group with an active goal and paath recorded that day; final-days wording on the last two | FCM |
@@ -737,9 +737,20 @@ numbers and none is invented.
   card opens the Vichar screen (the line, the Punjabi and English meanings,
   Share). There is no "More to read" on it: the library is reached from the
   menu (owner, 2026-10-10).
-- **Share:** as text (line, meaning, attribution, "Read daily on Hazri"), or as
-  an image (1080 × 1350, its own paper palette with a kesri border and ੴ, the
-  same in either theme).
+- **Share** (owner, 2026-11-25, option V-C; `16-sharing.md` VC1-VC16,
+  designs 132-134): opens **Make a card**, the card as it will be sent above
+  three tabs. **Style**: Of the day (default: Remembrance on a Shaheedi or
+  Joti Jot day, Prakash on a Prakash or Gurgaddi Purab, otherwise Amrit Vela),
+  Folio (the paper card with a kesri border and ੴ), Amrit Vela, Raat,
+  Phulkari, Bold, Photo. **Words**: a greeting from a fixed list that follows
+  the day (never a celebration on a day of remembrance), the meaning
+  (Punjabi, English, both, or the line only), From (the sender's name, kept
+  on the phone, never sent) and the date line (the Nanakshahi date and the
+  day's event). **Size**: Status 1080 × 1920 with a QR code, Post 1080 ×
+  1350, Square 1080 × 1080. Then WhatsApp or Share; **As text** still sends
+  the line, meaning, attribution and "Read daily on Hazri". The line and its
+  meaning are never editable. Every card is in its own palette, the same in
+  either theme, and the app sends nothing itself.
 
 **The Vichar library** (needs the network the first time; the last copy is kept on the phone and opens offline). Articles and reference entries
 on Gurdwaras, the Guru Sahiban, banis and Sikh days, with search and four
@@ -1484,7 +1495,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `31-GroupDetail` | Group, shared goal | superseded | Replaced by 104 for a custom group (2026-10-17) |
 | `39-CreateGroup` | Create a group | current |  |
 | `40-SetGoal` | Shared goal | current |  |
-| `41-Invite` | Invite | current |  |
+| `41-Invite` | Invite | current | Share the link opens the invite sheet, 135 (2026-11-25) |
 | `52-CodeProblems` | That code did not work | current |  |
 | `32-Profile` | Join the sangat | current |  |
 | `36-UnlockSheet` | Join the sangat, sheet | current |  |
@@ -1593,3 +1604,14 @@ anything earlier. The feature file named holds the detail.
 | 10-08 | Nitnemi counts the five morning banis; a badge is announced by an in-app sheet; designs 1C, 2A, 3B, 4B, 5C | `12-badges.md` BD-1, BD-11, BD-12 |
 | 10-08 | This PRD replaces v1.0; architecture, schema and storage live in `docs/ARCHITECTURE.md` | — |
 | 10-27 | The Gurmat Quiz: the first points and the one ranking in the app, for quiz answers only (§1.3 amended); five server-drawn questions, 10 points each; everyone with a profile on the top-20 boards (each quiz and everyone; day, week, month, IST); every attempt adds to your total, a board counts your best per topic per day; no points and nothing sent without a profile; the quiz card and the Saakhis row stay on Today in elder mode; designs 1A, 4B, 5A, 5B, 6A, 7A | `14-quiz.md` |
+
+**Sharing** — `16-sharing.md`
+
+| Screen | Title | Status | Note |
+|---|---|---|---|
+| `132-VicharCardStyle` | Make a card, Style | **new** | Option V-C, chosen 25 Nov: the card, then Style, Words and Size tabs; Of the day dresses itself for the day. 16-sharing.md VC1-VC5 |
+| `133-VicharCardWords` | Make a card, Words | **new** | Greeting by the day, meaning, From (on the phone only), the date line. VC6-VC9 |
+| `134-VicharCardSize` | Make a card, Size | **new** | Status with a QR code, Post, Square; choices remembered. VC10-VC12 |
+| `135-InviteSheet` | Invite your family | **new** | Option G-A: the message as sent, its language, Send on WhatsApp, Other apps, Copy code. 08-sangat.md IV4a-IV4c |
+| `136-EventNotification` | The evening notice, Share with family | **new** | Option P-A: Share with family on the calendar notices. 02-notifications.md CE7 |
+| `137-EventShare` | Share with family, the event card | **new** | The event's picture ready to send. 02-notifications.md CE8 |

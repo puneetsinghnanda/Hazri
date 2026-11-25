@@ -21,6 +21,7 @@ behaviour has to survive.
 | 13 | Saakhis | [`13-saakhi.md`](13-saakhi.md) |
 | 14 | The Gurmat Quiz | [`14-quiz.md`](14-quiz.md) |
 | 15 | Live sangat (designed, not built) | [`15-live-sangat.md`](15-live-sangat.md) |
+| 16 | Sharing: the ਅੱਜ ਦਾ ਵਿਚਾਰ card, invites, a calendar day, link previews | [`16-sharing.md`](16-sharing.md) |
 
 `00-platform.md` holds what they all share: the backend, the data model, and
 the testing rule that comes out of how this went wrong.
