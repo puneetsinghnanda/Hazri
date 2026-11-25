@@ -1,0 +1,569 @@
+<title>Hazri Sharing Designs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Baloo+Paaji+2:wght@500;600;700&family=Noto+Serif+Gurmukhi:wght@400;500;600&display=swap">
+<style>
+/* Layout: a review sheet. Five numbered proposals, each a row of phone screens
+   and the pictures they send, with a live share-card playground first.
+   Colours and type are Hazri's own (design/tokens.json). */
+:root{
+  --bg:#F4F3F8;--card:#FFFFFF;--card2:#ECEBF3;--ink:#1B1D3A;--ink2:#4D5070;--muted:#85879F;
+  --rule:#E1E1EA;--primary:#262C63;--onPrimary:#FFFFFF;--kesri:#D9730D;--kesriSoft:#FBE8D2;
+  --kesriInk:#9A4F00;--sage:#2E7A57;--sageSoft:#DCEFE5;--wa:#1F8F4E;
+  --shadow:0 1px 2px rgba(27,29,58,.06),0 10px 28px rgba(27,29,58,.07);
+  --ui:"Mukta",system-ui,sans-serif;--display:"Baloo Paaji 2","Mukta",system-ui,sans-serif;
+  --gb:"Noto Serif Gurmukhi","Mukta",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C0F24;--card:#161A37;--card2:#1F2447;--ink:#EDECF6;--ink2:#B9BAD3;--muted:#8084A6;
+  --rule:#2A2F55;--primary:#F2A24E;--onPrimary:#1C1206;--kesri:#F2A24E;--kesriSoft:#3A2A1A;
+  --kesriInk:#FFC27E;--sage:#6CCB9C;--sageSoft:#173327;--wa:#3FBF73;--shadow:0 0 0 1px rgba(255,255,255,.05);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C0F24;--card:#161A37;--card2:#1F2447;--ink:#EDECF6;--ink2:#B9BAD3;--muted:#8084A6;
+  --rule:#2A2F55;--primary:#F2A24E;--onPrimary:#1C1206;--kesri:#F2A24E;--kesriSoft:#3A2A1A;
+  --kesriInk:#FFC27E;--sage:#6CCB9C;--sageSoft:#173327;--wa:#3FBF73;--shadow:0 0 0 1px rgba(255,255,255,.05);color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1120px;margin:0 auto}
+header.top{padding-block:40px 24px;display:grid;gap:10px;max-width:720px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--kesriInk)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.2;margin:0;text-wrap:balance}
+h3{font-size:17px;font-weight:700;margin:0}
+p{margin:0}
+.lede{color:var(--ink2);font-size:17px;max-width:65ch}
+.howto{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--card2);color:var(--ink2)}
+.pill.k{background:var(--kesriSoft);color:var(--kesriInk)}
+.pill.g{background:var(--sageSoft);color:var(--sage)}
+section.prop{border-top:1px solid var(--rule);padding-block:36px;display:grid;gap:22px}
+.prop-head{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:start;max-width:820px}
+.num{font-family:var(--display);font-weight:700;font-size:15px;color:var(--onPrimary);background:var(--primary);
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;grid-row:span 2}
+.prop-head p{color:var(--ink2);grid-column:2}
+.notes{display:grid;gap:6px;max-width:820px;color:var(--ink2);font-size:14px;padding-left:18px;margin:0}
+.notes b{color:var(--ink)}
+.options{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.opt{display:grid;gap:10px;width:300px;max-width:100%}
+.opt-label{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.opt-id{font-family:var(--display);font-weight:700;color:var(--kesriInk);font-size:18px}
+.opt-cap{font-size:13.5px;color:var(--ink2)}
+.rec{font-size:12px;font-weight:700;color:var(--sage);background:var(--sageSoft);padding:1px 8px;border-radius:999px}
+
+/* ---- the phone ---- */
+.phone{width:300px;max-width:100%;height:620px;border-radius:34px;background:#0E1020;padding:8px;box-shadow:var(--shadow)}
+.screen{position:relative;height:100%;border-radius:27px;overflow:hidden;background:#F4F3F8;color:#1B1D3A;font-family:var(--ui);font-size:13px}
+.sbar{height:24px;display:flex;justify-content:space-between;align-items:center;padding:0 18px;font-size:11px;font-weight:600}
+.scrim{position:absolute;inset:0;background:rgba(20,22,45,.45)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;padding:10px 16px 16px;display:grid;gap:10px}
+.grab{width:36px;height:4px;border-radius:2px;background:#D5D5E0;margin:0 auto 2px}
+.sh-title{font-family:var(--display);font-weight:700;font-size:17px;text-align:center;line-height:1.2}
+.sh-sub{font-size:12px;color:#4D5070;text-align:center}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;height:42px;border-radius:12px;font-weight:600;font-size:14px;border:0;font-family:var(--ui)}
+.btn.wa{background:#1F8F4E;color:#fff}
+.btn.pri{background:#262C63;color:#fff}
+.btn.sec{background:#ECEBF3;color:#262C63}
+.btn.ghost{background:transparent;color:#262C63;height:30px}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.chips{display:flex;gap:6px;overflow:hidden;flex-wrap:wrap}
+.chip{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:#ECEBF3;color:#4D5070;white-space:nowrap}
+.chip.on{background:#262C63;color:#fff}
+.chip.k{background:#FBE8D2;color:#9A4F00}
+.navy{background:#262C63;color:#fff}
+.mini-head{display:flex;align-items:center;gap:10px;padding:8px 14px}
+.mini-head b{font-family:var(--display);font-size:16px}
+.mcard{background:#fff;border-radius:16px;margin:0 12px;padding:12px;display:grid;gap:6px;box-shadow:0 1px 2px rgba(27,29,58,.06)}
+.tiny{font-size:10.5px;color:#85879F}
+.dots{display:flex;gap:5px;justify-content:center}
+.dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4)}
+.dots i.on{background:#fff;width:16px;border-radius:3px}
+.tabs{display:flex;border-bottom:1px solid #E1E1EA}
+.tabs span{flex:1;text-align:center;font-size:12px;font-weight:600;padding:8px 0;color:#85879F}
+.tabs span.on{color:#262C63;box-shadow:inset 0 -2px 0 #262C63}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.thumb{height:74px;border-radius:8px;position:relative;overflow:hidden;outline-offset:2px}
+.thumb.on{outline:2px solid #D9730D}
+.thumb small{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-size:9.5px;font-weight:700}
+.field{border:1px solid #E1E1EA;border-radius:10px;padding:7px 10px;font-size:12px;color:#85879F;background:#fff}
+.lbl{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#85879F}
+.qr{display:grid;grid-template-columns:repeat(11,1fr);width:100%;aspect-ratio:1}
+.qr i{background:currentColor}
+.qr i.o{background:transparent}
+
+/* ---- the share card: 270 wide, ratio per size ---- */
+.sc{--w:270px;width:var(--w);position:relative;overflow:hidden;font-family:var(--ui);flex:none}
+.sc.r916{height:calc(var(--w)*16/9)} .sc.r45{height:calc(var(--w)*5/4)} .sc.r11{height:var(--w)}
+.sc .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:9% 9% 6%}
+.sc .grow{flex:1}
+.sc .kick{font-family:var(--gb);font-size:calc(var(--w)*.036);letter-spacing:.12em}
+.sc .stamp{font-size:calc(var(--w)*.034);margin-top:3%;line-height:1.35}
+.sc .greet{font-family:var(--display);font-weight:600;font-size:calc(var(--w)*.056);line-height:1.25;margin-bottom:6%}
+.sc .line{font-family:var(--gb);font-weight:500;font-size:calc(var(--w)*.074);line-height:1.75}
+.sc .rule{width:17%;height:1px;margin:5% auto}
+.sc .mean{font-size:calc(var(--w)*.045);line-height:1.45}
+.sc .mean+.mean{margin-top:3%;font-size:calc(var(--w)*.04)}
+.sc .src{font-size:calc(var(--w)*.036)}
+.sc .from{font-family:var(--display);font-size:calc(var(--w)*.046);font-weight:600;margin-top:3%}
+.sc .foot{display:flex;align-items:center;gap:8px;margin-top:4%;font-size:calc(var(--w)*.037);font-weight:600}
+.sc .foot .q{width:calc(var(--w)*.13);flex:none}
+.sc .mark{width:calc(var(--w)*.07);height:calc(var(--w)*.035);border-radius:999px 999px 0 0;border:2px solid currentColor;border-bottom:0;flex:none}
+.sc.r11 .in{padding:7% 8% 5%} .sc.r11 .line{font-size:calc(var(--w)*.066)} .sc.r11 .greet{margin-bottom:3%}
+/* styles */
+.s-folio{background:#F7F1E4;color:#2A2418}
+.s-folio::before{content:"";position:absolute;inset:4%;border:1px solid rgba(154,79,0,.3);border-radius:6px;box-shadow:inset 0 0 0 4px #F7F1E4,inset 0 0 0 5px rgba(154,79,0,.16)}
+.s-folio .kick,.s-folio .foot,.s-folio .greet{color:#9A4F00} .s-folio .mean,.s-folio .src,.s-folio .stamp{color:#6B6152} .s-folio .rule{background:rgba(154,79,0,.5)}
+.s-dawn{background:linear-gradient(180deg,#151838 0%,#3A2D5C 38%,#B85C4A 74%,#F2A24E 100%);color:#FFF7EC}
+.s-dawn::after{content:"";position:absolute;left:50%;bottom:-18%;width:70%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,214,150,.75),rgba(255,214,150,0) 65%)}
+.s-dawn .in{z-index:1} .s-dawn .kick,.s-dawn .stamp{color:#FFC27E} .s-dawn .mean,.s-dawn .src{color:rgba(255,247,236,.82)} .s-dawn .rule{background:#FFC27E}
+.s-raat{background:radial-gradient(1.5px 1.5px at 18% 14%,#fff8,transparent),radial-gradient(1px 1px at 72% 9%,#fff9,transparent),radial-gradient(1.5px 1.5px at 85% 27%,#fff6,transparent),radial-gradient(1px 1px at 30% 33%,#fff7,transparent),radial-gradient(1px 1px at 60% 22%,#fff5,transparent),radial-gradient(1.2px 1.2px at 10% 70%,#fff4,transparent),radial-gradient(1px 1px at 90% 80%,#fff5,transparent),linear-gradient(180deg,#0A0D22,#161A37);color:#EDECF6}
+.s-raat .kick,.s-raat .greet{color:#F2A24E} .s-raat .stamp,.s-raat .mean,.s-raat .src{color:#B9BAD3} .s-raat .rule{background:#F2A24E}
+.s-phul{background:repeating-conic-gradient(from 45deg,#B3245A 0 25%,#F2A24E 0 50%) 0 0/18px 18px;color:#3A1020}
+.s-phul::before{content:"";position:absolute;inset:5.5%;background:#FFF6E8;border-radius:4px;box-shadow:0 0 0 3px #FFF6E8,0 0 0 5px #B3245A}
+.s-phul .in{z-index:1;padding:15% 14% 11%} .s-phul .kick,.s-phul .greet{color:#B3245A} .s-phul .stamp,.s-phul .mean,.s-phul .src{color:#6E4A3A} .s-phul .rule{background:#B3245A}
+.s-plain{background:#FFFFFF;color:#111426}
+.s-plain .in{align-items:flex-start;text-align:left;padding:11% 10% 7%} .s-plain .line{font-size:calc(var(--w)*.095);line-height:1.6;font-weight:600} .s-plain .rule{margin:6% 0;width:12%;height:3px;background:#D9730D}
+.s-plain .kick,.s-plain .greet{color:#D9730D} .s-plain .mean,.s-plain .src,.s-plain .stamp{color:#4D5070}
+.s-photo{background:#1B1D3A url(data:image/jpeg;base64,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) center/cover;color:#fff}
+.s-photo::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,30,.15),rgba(10,12,30,.55) 40%,rgba(10,12,30,.85))}
+.s-photo .in{z-index:1} .s-photo .kick,.s-photo .stamp,.s-photo .greet{color:#FFC27E} .s-photo .mean,.s-photo .src{color:rgba(255,255,255,.85)} .s-photo .rule{background:#FFC27E}
+.s-shaheedi{background:linear-gradient(180deg,#120A0E,#2A1218);color:#F5E9E4}
+.s-shaheedi::before{content:"";position:absolute;inset:4%;border:1px solid rgba(242,162,78,.35)}
+.s-shaheedi .kick,.s-shaheedi .greet,.s-shaheedi .stamp{color:#F2A24E} .s-shaheedi .mean,.s-shaheedi .src{color:#D9C6BF} .s-shaheedi .rule{background:#F2A24E}
+.s-prakash{background:radial-gradient(circle at 50% 0%,#FFE3A6,#F5B04A 45%,#D9730D);color:#3A1E00}
+.s-prakash::before{content:"";position:absolute;inset:4%;border:1.5px solid rgba(255,255,255,.7);border-radius:8px}
+.s-prakash .kick,.s-prakash .greet{color:#7A2E00} .s-prakash .mean,.s-prakash .src,.s-prakash .stamp{color:#5A3510} .s-prakash .rule{background:#7A2E00}
+.ribbon{display:inline-block;font-size:calc(var(--w)*.034);font-weight:700;padding:2px 10px;border-radius:999px;margin-top:3%;background:rgba(242,162,78,.18)}
+
+/* ---- playground ---- */
+.play{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;background:var(--card);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+@media (max-width:760px){.play{grid-template-columns:1fr;padding:16px}}
+.stage{display:grid;place-items:center;background:var(--card2);border-radius:14px;padding:18px;min-height:300px}
+.stage .sc{--w:min(270px,70vw)}
+.ctrls{display:grid;gap:14px;min-width:0}
+.ctrl{display:grid;gap:6px}
+.ctrl>span{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:600 13px/1.2 var(--ui);padding:7px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--bg);color:var(--ink2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:var(--onPrimary)}
+.seg button:focus-visible,.ctrl input:focus-visible{outline:2px solid var(--kesri);outline-offset:2px}
+.seg button small{display:block;font-weight:500;font-size:11px;opacity:.8}
+.ctrl input[type=text]{font:500 14px var(--ui);padding:9px 12px;border-radius:10px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);width:100%;max-width:320px}
+.hint{font-size:12.5px;color:var(--muted)}
+.gallery{display:flex;flex-wrap:wrap;gap:14px}
+.gallery figure{margin:0;display:grid;gap:6px;justify-items:center}
+.gallery .sc{--w:150px}
+.gallery figcaption{font-size:12.5px;font-weight:600;color:var(--ink2);text-align:center;max-width:150px}
+.scaled{transform-origin:top left}
+
+/* notification + chat mocks */
+.notif{background:#fff;border-radius:16px;margin:10px;padding:10px 12px;display:grid;gap:6px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.notif .app{display:flex;gap:6px;align-items:center;font-size:10.5px;color:#4D5070}
+.notif .app i{width:14px;height:14px;border-radius:4px;background:#262C63}
+.notif b{font-size:13px}
+.notif .acts{display:flex;gap:16px;font-size:12px;font-weight:700;color:#262C63;padding-top:2px}
+.wall{background:#0B141A;height:100%;display:flex;flex-direction:column}
+.wa-top{background:#1F2C34;color:#E9EDEF;padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600}
+.wa-top i{width:28px;height:28px;border-radius:50%;background:#6B7C85}
+.wa-body{flex:1;padding:10px;display:flex;flex-direction:column;gap:8px;justify-content:flex-end;background:#0B141A}
+.bub{align-self:flex-end;background:#005C4B;color:#E9EDEF;border-radius:10px;padding:4px;max-width:88%;font-size:12px}
+.bub .pv{background:#025144;border-radius:7px;overflow:hidden}
+.bub .pv .img{height:118px;display:grid;place-items:center;text-align:center;padding:10px}
+.bub .pv .t{padding:6px 8px 7px;display:grid;gap:1px}
+.bub .pv .t b{font-size:12px} .bub .pv .t span{font-size:10.5px;color:#B5C7C2}
+.bub .msg{padding:5px 6px 2px;line-height:1.35}
+.bub .msg a{color:#53BDEB}
+.ogs{display:flex;flex-wrap:wrap;gap:14px}
+.og{width:300px;max-width:100%;aspect-ratio:1200/630;border-radius:10px;overflow:hidden;position:relative;box-shadow:var(--shadow);display:flex;color:#fff}
+.og .l{flex:1;padding:16px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.og .k{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FFC27E}
+.og .h{font-family:var(--display);font-weight:700;font-size:19px;line-height:1.15}
+.og .f{font-size:10.5px;opacity:.85;display:flex;gap:6px;align-items:center}
+.ring{width:84px;height:84px;border-radius:50%;flex:none;align-self:center;margin-right:16px;background:conic-gradient(#F2A24E 0 64%,rgba(255,255,255,.15) 0);display:grid;place-items:center}
+.ring::after{content:"";width:64px;height:64px;border-radius:50%;background:#262C63}
+.ring.x::after{background:#151838}
+.decide{background:var(--kesriSoft);color:var(--kesriInk);border-radius:14px;padding:14px 16px;display:grid;gap:4px;max-width:820px;font-size:14px}
+.decide b{font-size:15px}
+footer{border-top:1px solid var(--rule);padding-top:22px;color:var(--muted);font-size:13px;max-width:820px}
+@media (prefers-reduced-motion:no-preference){.seg button{transition:background .15s}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Hazri · design review · 25 Nov 2026</span>
+  <h1>Sharing: five designs to choose from</h1>
+  <p class="lede">Each proposal below has two or three options with an ID like <b>V-B</b>. Reply in chat with the IDs you pick and anything to change. Nothing is built until you choose.</p>
+  <div class="howto">
+    <span class="pill k">1 · ਅੱਜ ਦਾ ਵਿਚਾਰ share card (new: customisable)</span>
+    <span class="pill">2 · Group invite and family groups</span>
+    <span class="pill">3 · Share a Gurpurab</span>
+    <span class="pill g">4 · Quiz challenge (already built)</span>
+    <span class="pill">5 · Link previews in WhatsApp</span>
+  </div>
+</header>
+
+<!-- ============ 1. VICHAR ============ -->
+<section class="prop" id="vichar">
+  <div class="prop-head">
+    <span class="num">1</span>
+    <h2>ਅੱਜ ਦਾ ਵਿਚਾਰ: a card that changes every day, and that people can make their own</h2>
+    <p>Today the picture is the same cream folio every day; only the line changes. The proposal: the card <b>dresses itself for the day</b> (Nanakshahi date, the day's event, a Shaheedi or Prakash look), and the sender can pick a style, a size, a greeting and add their own name. The Gurbani line and its meaning always come from <code>content.db</code> and can never be edited.</p>
+  </div>
+
+  <h3>Try it: the card as the phone would make it</h3>
+  <div class="play">
+    <div class="stage"><div id="live"></div></div>
+    <div class="ctrls">
+      <div class="ctrl"><span>Day (to see how it changes)</span>
+        <div class="seg" id="c-day"></div></div>
+      <div class="ctrl"><span>Style</span>
+        <div class="seg" id="c-style"></div>
+        <p class="hint" id="style-hint"></p></div>
+      <div class="ctrl"><span>Size</span><div class="seg" id="c-size"></div></div>
+      <div class="ctrl"><span>Meaning</span><div class="seg" id="c-mean"></div></div>
+      <div class="ctrl"><span>Greeting (changes with the day)</span><div class="seg" id="c-greet"></div></div>
+      <div class="ctrl"><span>From</span>
+        <input type="text" id="c-from" maxlength="30" placeholder="e.g. Puneet and family" value="">
+        <p class="hint">Optional. Kept on the phone for next time, never sent anywhere.</p></div>
+      <div class="ctrl"><span>Date and event line</span><div class="seg" id="c-stamp"></div></div>
+    </div>
+  </div>
+
+  <h3>All the styles on one day (23 Dec, Saka Chamkaur Sahib)</h3>
+  <div class="gallery" id="gallery"></div>
+
+  <h3>How the person gets there: three options</h3>
+  <div class="options">
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">V-A</span><b>Swipe the styles</b></div>
+      <div class="phone"><div class="screen" style="background:#11142B;color:#fff">
+        <div class="sbar" style="color:#fff"><span>7:42</span><span>●●● 82%</span></div>
+        <div class="mini-head"><span style="font-size:18px">✕</span><b style="flex:1">Share today's Vichar</b></div>
+        <div style="display:grid;justify-items:center;gap:10px;padding-top:4px">
+          <div data-card='{"day":1,"style":"auto","size":"r916","w":200}'></div>
+          <div class="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="tiny" style="color:#B9BAD3">Swipe for another style</span>
+        </div>
+        <div class="sheet" style="background:#1F2447;color:#fff;gap:8px">
+          <div class="chips"><span class="chip on">Status 9:16</span><span class="chip">Post 4:5</span><span class="chip">Square</span></div>
+          <div class="chips"><span class="chip k">ਸ਼ਹੀਦਾਂ ਨੂੰ ਪ੍ਰਣਾਮ</span><span class="chip">+ From</span><span class="chip">Meaning: ਪੰਜਾਬੀ</span></div>
+          <div class="row"><span class="btn wa">WhatsApp</span><span class="btn sec" style="flex:.6">More</span></div>
+        </div>
+      </div></div>
+      <p class="opt-cap">Full-screen preview like an Instagram story editor. Quick and visual, but every choice is on screen at once, which is a lot for an elder.</p>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">V-B</span><b>Ready for the day, then Personalise</b><span class="rec">Recommended</span></div>
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>7:42</span><span>●●● 82%</span></div>
+        <div class="navy" style="height:120px;padding:10px 16px"><b style="font-family:var(--display);font-size:18px">Today</b></div>
+        <div class="scrim"></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="sh-title">Share today's Vichar</div>
+          <div class="sh-sub">Made for 8 Poh · Saka Chamkaur Sahib</div>
+          <div style="display:grid;justify-items:center"><div data-card='{"day":1,"style":"auto","size":"r45","w":170}'></div></div>
+          <span class="btn wa">Send on WhatsApp</span>
+          <div class="row"><span class="btn sec">✎ Personalise</span><span class="btn sec">As text</span></div>
+        </div>
+      </div></div>
+      <p class="opt-cap">One tap sends a card already dressed for the day. <b>Personalise</b> opens V-A's editor for those who want it. Simplest for elders, and every day's card looks different without any effort.</p>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">V-C</span><b>Studio with tabs</b></div>
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>7:42</span><span>●●● 82%</span></div>
+        <div class="mini-head"><span style="font-size:18px">←</span><b style="flex:1">Make a card</b><span class="chip on">Share</span></div>
+        <div style="display:grid;justify-items:center;padding:4px 0 10px;background:#ECEBF3"><div data-card='{"day":1,"style":"auto","size":"r45","w":150}'></div></div>
+        <div class="tabs"><span class="on">Style</span><span>Words</span><span>Size</span></div>
+        <div style="padding:12px;display:grid;gap:10px">
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+      </div></div>
+      <p class="opt-cap">Every choice laid out in tabs (Style, Words for greeting, meaning and from, Size). Thorough, but it feels like a tool rather than a quick share.</p>
+    </div>
+  </div>
+
+  <ul class="notes">
+    <li><b>What makes it different every day without anyone choosing:</b> the line (already), the Nanakshahi date, the day's event, and on event days the Shaheedi or Prakash style. The person's last choice of style and size is remembered.</li>
+    <li><b>Greetings follow the day.</b> A Shaheedi day never offers "ਵਧਾਈਆਂ" (congratulations); it offers ਸ਼ਹੀਦਾਂ ਨੂੰ ਕੋਟਿ ਕੋਟਿ ਪ੍ਰਣਾਮ. A Prakash Purab offers ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ. Greetings are fixed choices in pa, hi and en, never typed by the user, so nothing sits next to Gurbani that we have not checked. The Punjabi wording here is my draft and wants your ear.</li>
+    <li><b>Only "From" is free text</b> (30 characters, on the phone only). It sits at the foot, away from the line.</li>
+    <li><b>The Photo style</b> uses <code>assets/vichar/dawn.jpg</code>, one of your five pictures. Other pictures would need their rights checked first (CLAUDE.md notes this for the night painting).</li>
+    <li><b>Event names are English for now:</b> 137 of the 147 calendar events have no Punjabi name in <code>content.db</code> yet. Filling them is content work, needed before this ships.</li>
+    <li><b>The QR code</b> appears on the 9:16 Status size only, where there is room; every size carries "hazri.me".</li>
+  </ul>
+</section>
+
+<!-- ============ 2. INVITE ============ -->
+<section class="prop" id="invite">
+  <div class="prop-head">
+    <span class="num">2</span>
+    <h2>Group invite and family groups</h2>
+    <p>The invite message already exists; it goes out as one line of plain text. The proposal makes the invite something people want to open, and makes starting a family group one tap.</p>
+  </div>
+  <div class="options">
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">G-A</span><b>Invite sheet, message first</b></div>
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>9:10</span><span>●●● 64%</span></div>
+        <div class="navy" style="height:140px;padding:10px 16px"><b style="font-family:var(--display);font-size:18px">Parivar di hazri</b></div>
+        <div class="scrim"></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="sh-title">Invite your family</div>
+          <div class="chips" style="justify-content:center"><span class="chip on">ਪੰਜਾਬੀ</span><span class="chip">हिन्दी</span><span class="chip">English</span></div>
+          <div style="background:#DCF8C6;border-radius:10px 10px 2px 10px;padding:9px 10px;font-size:12px;line-height:1.45;color:#1B1D3A">
+            ਆਓ ਮਿਲ ਕੇ ਪਾਠ ਕਰੀਏ 🙏<br>“Parivar di hazri”: 40 Sukhmani Sahib paath by 28 Dec.<br>Join: <span style="color:#1F7A8C">hazri-dfcc1.web.app/j/…</span><br>Code: <b>K7Q2</b>
+          </div>
+          <span class="btn wa">Send on WhatsApp</span>
+          <div class="row"><span class="btn sec">Other apps</span><span class="btn sec">Copy code</span></div>
+        </div>
+      </div></div>
+      <p class="opt-cap">You see exactly what will be sent and pick its language (it can differ from your app language, since family abroad may read English).</p>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">G-B</span><b>Invite as a picture plus the link</b><span class="rec">Recommended</span></div>
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>9:10</span><span>●●● 64%</span></div>
+        <div class="scrim" style="background:rgba(20,22,45,.75)"></div>
+        <div style="position:absolute;inset:34px 0 auto;display:grid;justify-items:center">
+          <div style="width:196px;height:348px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#262C63,#151838);color:#fff;display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 16px 14px;gap:9px">
+            <span style="font-size:10px;letter-spacing:.12em;color:#FFC27E;font-weight:700">YOU'RE INVITED</span>
+            <b style="font-family:var(--display);font-size:20px;line-height:1.15">ਆਓ ਮਿਲ ਕੇ<br>ਪਾਠ ਕਰੀਏ</b>
+            <div class="ring" style="width:86px;height:86px"></div>
+            <b style="font-size:14px">Parivar di hazri</b>
+            <span style="font-size:11px;color:#B9BAD3">40 Sukhmani Sahib paath<br>together by 28 Dec · 26 done</span>
+            <div style="flex:1"></div>
+            <div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.08);border-radius:8px;padding:6px 8px;font-size:10px;text-align:left">
+              <div class="qr" style="width:38px;color:#fff" data-qr="3"></div><span>Scan or tap the link<br>Code <b style="color:#FFC27E">K7Q2</b> · hazri.me</span>
+            </div>
+          </div>
+        </div>
+        <div class="sheet"><div class="row"><span class="btn wa">Send on WhatsApp</span><span class="btn sec" style="flex:.55">More</span></div>
+          <span class="tiny" style="text-align:center">The picture goes with the message and link from G-A</span></div>
+      </div></div>
+      <p class="opt-cap">A picture gets opened in a family group where a line of text is scrolled past. It shows the ring filling, which is the reason to join. Works on WhatsApp Status too.</p>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">G-C</span><b>New group: who is it for?</b></div>
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>9:02</span><span>●●● 66%</span></div>
+        <div class="mini-head"><span style="font-size:18px">←</span><b>New group</b></div>
+        <div style="padding:4px 14px;display:grid;gap:10px">
+          <b style="font-family:var(--display);font-size:17px">Who is this group for?</b>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="mcard" style="margin:0;outline:2px solid #D9730D"><b>👪 Family</b><span class="tiny">ਪਰਿਵਾਰ ਦੀ ਹਜ਼ਰੀ · Sukhmani Sahib, 40 paath, 1 month</span></div>
+            <div class="mcard" style="margin:0"><b>🤝 Friends</b><span class="tiny">Japji Sahib together, 21 days</span></div>
+            <div class="mcard" style="margin:0"><b>🏛 Gurdwara sangat</b><span class="tiny">For your gurdwara's WhatsApp group</span></div>
+            <div class="mcard" style="margin:0"><b>🕯 In remembrance</b><span class="tiny">Paath in memory of a loved one, until the bhog</span></div>
+          </div>
+          <span class="lbl">Starts as</span>
+          <div class="field">Name: Parivar di hazri</div>
+          <div class="field">Goal: 40 × Sukhmani Sahib by 28 Dec</div>
+          <span class="btn pri">Create and invite</span>
+          <span class="tiny" style="text-align:center">You can change the name, bani, number and date</span>
+        </div>
+      </div></div>
+      <p class="opt-cap">Four starting points fill in a sensible name, bani and length. "In remembrance" uses gentle wording and no celebration. Pairs with G-A or G-B, it is not either/or.</p>
+    </div>
+  </div>
+  <ul class="notes">
+    <li><b>No change to what is sent to the server:</b> a template only pre-fills the existing group fields (one goal, an end date).</li>
+    <li><b>The picture in G-B</b> is made on the phone like the saakhi and quiz cards; the app sends nothing itself, Android's share sheet does.</li>
+    <li>The emoji on G-C are placeholders for Hazri's own icons.</li>
+  </ul>
+</section>
+
+<!-- ============ 3. GURPURAB ============ -->
+<section class="prop" id="gurpurab">
+  <div class="prop-head">
+    <span class="num">3</span>
+    <h2>Share a Gurpurab with family</h2>
+    <p>People already forward Gurpurab messages. Hazri can be the one that arrives first, at 20:00 the evening before, with a card that is right for the day.</p>
+  </div>
+  <div class="options">
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">P-A</span><b>A Share button on the evening notice</b><span class="rec">Recommended</span></div>
+      <div class="phone"><div class="screen" style="background:linear-gradient(180deg,#2B3A55,#11142B)">
+        <div class="sbar" style="color:#fff"><span>20:00</span><span>●●● 41%</span></div>
+        <div class="notif">
+          <div class="app"><i></i>Hazri · now</div>
+          <b>Tomorrow: Shaheedi of Sahibzada Baba Ajit Singh Ji and Baba Jujhar Singh Ji</b>
+          <span style="font-size:12px;color:#4D5070">Saka Chamkaur Sahib · 8 Poh. Read the story in Vichar.</span>
+          <div class="acts"><span>SHARE WITH FAMILY</span><span>READ</span></div>
+        </div>
+        <div class="notif" style="opacity:.55"><div class="app"><i style="background:#1F8F4E"></i>WhatsApp · 19:48</div><b>Family group</b><span style="font-size:12px">3 new messages</span></div>
+      </div></div>
+      <p class="opt-cap">Android lets a notification carry a button. "Share with family" opens the share sheet with the event's card ready, without opening the app first.</p>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">P-B</span><b>Share from the calendar</b></div>
+      <div class="phone"><div class="screen">
+        <div class="sbar"><span>20:01</span><span>●●● 41%</span></div>
+        <div class="mini-head"><span style="font-size:18px">←</span><b>Sikh calendar</b></div>
+        <div class="mcard" style="grid-template-columns:auto 1fr;align-items:center;gap:10px">
+          <div style="background:#262C63;color:#fff;border-radius:10px;padding:6px 10px;text-align:center;line-height:1.1"><b style="font-size:18px">23</b><br><span style="font-size:10px">DEC</span></div>
+          <div><b style="font-size:12.5px">Shaheedi of Sahibzada Baba Ajit Singh Ji and Baba Jujhar Singh Ji</b><div class="tiny">8 Poh · Tomorrow</div></div>
+        </div>
+        <div class="scrim" style="top:200px"></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="sh-title">Share this day</div>
+          <div style="display:grid;justify-items:center"><div data-ev="shaheedi" style="width:150px"></div></div>
+          <span class="btn wa">Send on WhatsApp</span>
+          <div class="row"><span class="btn sec">More</span><span class="btn sec">🔔 Remind me</span></div>
+        </div>
+      </div></div>
+      <p class="opt-cap">Every calendar row and the Today calendar card get a Share. Works for any day, not only the ones with a notification.</p>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">P-cards</span><b>The two event pictures</b></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div data-ev="shaheedi" style="width:140px"></div>
+        <div data-ev="prakash" style="width:140px"></div>
+      </div>
+      <p class="opt-cap">A Shaheedi day is quiet and dark, with ਕੋਟਿ ਕੋਟਿ ਪ੍ਰਣਾਮ; a Prakash Purab is warm gold, with ਵਧਾਈਆਂ. Each shows the event, the date, one line from its Vichar story, and "Read the full story on Hazri". No picture of a Guru, and no Gurbani on these cards.</p>
+    </div>
+  </div>
+  <ul class="notes">
+    <li><b>P-A and P-B go together</b>; the question is whether you want both or only the calendar.</li>
+    <li>The one-line summary comes from the Vichar story's own published text, never written in Dart.</li>
+  </ul>
+</section>
+
+<!-- ============ 4. QUIZ ============ -->
+<section class="prop" id="quiz">
+  <div class="prop-head">
+    <span class="num">4</span>
+    <h2>Quiz challenge: already built</h2>
+    <p>The result screen already makes a 1080 × 1920 card, "Can your family beat 4 out of 5?", with a link that opens the same quiz (design 115, <code>14-quiz.md</code> QZ24 and QZ25). No new design is needed. The only gap is the link preview, which is covered by proposal 5.</p>
+  </div>
+</section>
+
+<!-- ============ 5. LINK PREVIEWS ============ -->
+<section class="prop" id="previews">
+  <div class="prop-head">
+    <span class="num">5</span>
+    <h2>Link previews in WhatsApp</h2>
+    <p>The website's pages already have a title and description for previews, but no image, so a pasted link shows as a small grey box. These are the 1200 × 630 pictures WhatsApp would show.</p>
+  </div>
+  <div class="options">
+    <div class="opt">
+      <div class="opt-label"><span class="opt-id">L-chat</span><b>How it looks in a chat</b></div>
+      <div class="phone"><div class="screen"><div class="wall">
+        <div class="wa-top"><i></i>Family group</div>
+        <div class="wa-body">
+          <div class="bub"><div class="pv"><div class="img" style="background:linear-gradient(135deg,#262C63,#151838)"><div><div style="font-size:9px;letter-spacing:.1em;color:#FFC27E;font-weight:700">HAZRI SANGAT</div><b style="font-family:var(--display);font-size:17px">Join our paath</b></div></div>
+            <div class="t"><b>Join a sangat on Hazri</b><span>You have been invited to a Hazri sangat group.</span><span>hazri-dfcc1.web.app</span></div></div>
+            <div class="msg">ਆਓ ਮਿਲ ਕੇ ਪਾਠ ਕਰੀਏ 🙏 <a>hazri-dfcc1.web.app/j/K7Q2</a></div></div>
+          <div class="bub"><div class="pv"><div class="img" style="background:linear-gradient(180deg,#120A0E,#2A1218);color:#F5E9E4"><div><div style="font-size:9px;letter-spacing:.1em;color:#F2A24E;font-weight:700">SIKH DAYS · 8 POH</div><b style="font-family:var(--display);font-size:15px">Saka Chamkaur Sahib</b></div></div>
+            <div class="t"><b>Saka Chamkaur Sahib</b><span>The story of the elder Sahibzade…</span><span>hazri.me</span></div></div></div>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="opt" style="width:auto;flex:1 1 300px;min-width:0">
+      <div class="opt-label"><span class="opt-id">L-images</span><b>One picture per kind of link</b></div>
+      <div class="ogs">
+        <div class="og" style="background:linear-gradient(135deg,#262C63,#151838)"><div class="l"><span class="k">Hazri sangat</span><span class="h">Join our paath. Every reading counts.</span><span class="f"><span class="mark" style="width:16px;height:8px;border:2px solid #fff;border-bottom:0;border-radius:99px 99px 0 0"></span>Free · No ads · No login</span></div><div class="ring x"></div></div>
+        <div class="og" style="background:linear-gradient(135deg,#D9730D,#7A2E00)"><div class="l"><span class="k" style="color:#FFE3A6">Gurmat Quiz</span><span class="h">Can you beat my score? Five questions.</span><span class="f">Free in the Hazri app</span></div><div style="font-family:var(--display);font-size:44px;font-weight:700;align-self:center;margin-right:18px">4/5</div></div>
+        <div class="og" style="background:linear-gradient(180deg,#151838,#3A2D5C 50%,#F2A24E)"><div class="l"><span class="k">hazri.me</span><span class="h">Nitnem, Sukhmani Sahib and the Sikh calendar on your phone</span><span class="f">Free · No ads · Works offline</span></div></div>
+        <div class="og" style="background:linear-gradient(180deg,#120A0E,#2A1218)"><div class="l"><span class="k" style="color:#F2A24E">Sikh days · 8 Poh 558</span><span class="h">Saka Chamkaur Sahib</span><span class="f">Read the story on Hazri</span></div></div>
+      </div>
+      <p class="opt-cap" style="margin-top:8px">Four images: sangat invite (<code>/j/</code>), quiz (<code>/q/</code>), the home page, and one per Gurpurab story page (built with the other 102 pages by <code>tools/site/build.py</code>). Invite links share one picture, because each invite is made on the phone and the website cannot draw it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="prop">
+  <div class="decide">
+    <b>What I need from you</b>
+    <span>1 · Vichar flow: V-A, V-B or V-C, and which styles to keep. 2 · G-A or G-B, and whether to include G-C. 3 · P-A, P-B or both. 5 · Go ahead with the four preview pictures? Then I write the feature-file rules and the numbered designs in <code>tools/design/build_phase2.py</code>, and only after that the code.</span>
+  </div>
+</section>
+
+<footer>Draft for review, not yet in <code>design/canvas.html</code>. Punjabi greetings and button text are Claude's draft and want a native check. All Gurbani shown comes from <code>assets/content/content.db</code> (the ਅੱਜ ਦਾ ਵਿਚਾਰ lines for 2 Dec, 23 Dec and 15 Jan).</footer>
+</div>
+
+<script>
+(function(){
+const DAYS=[
+ {key:"2 Dec",kind:"none",ns:"੧੭ ਮੱਘਰ ੫੫੮",ev:"",line:"ਸਚੁ ਕਮਾਵੈ ਸੋ ਸਚਾ ਹੋਇ ॥",pa:"ਜੋ ਸੱਚ ਨੂੰ ਜੀਵਨ ਵਿੱਚ ਕਮਾਉਂਦਾ ਹੈ, ਉਹ ਸੱਚਾ ਮਨੁੱਖ ਬਣਦਾ ਹੈ।",en:"One who practices truth becomes truthful."},
+ {key:"23 Dec",kind:"shaheedi",ns:"੮ ਪੋਹ ੫੫੮",ev:"Saka Chamkaur Sahib",line:"ਹੁਕਮੀ ਹੋਵਨਿ ਆਕਾਰ ਹੁਕਮੁ ਨ ਕਹਿਆ ਜਾਈ ॥",pa:"ਸਾਰੇ ਜੀਵ ਅਤੇ ਰੂਪ ਉਸ ਦੇ ਹੁਕਮ ਨਾਲ ਬਣਦੇ ਹਨ, ਪਰ ਉਸ ਦੇ ਹੁਕਮ ਦੀ ਪੂਰੀ ਵਿਆਖਿਆ ਨਹੀਂ ਹੋ ਸਕਦੀ।",en:"All forms are created according to His Will, yet His Will cannot be fully described."},
+ {key:"15 Jan",kind:"prakash",ns:"੨ ਮਾਘ ੫੫੮",ev:"Prakash Purab, Sri Guru Gobind Singh Sahib Ji",line:"ਤੈਸਾ ਮਾਨੁ ਜੈਸਾ ਤੂ ਧਰਨਾ ॥",pa:"ਜਿਵੇਂ ਤੂੰ ਚਾਹੁੰਦਾ ਹੈਂ, ਮਨੁੱਖ ਨੂੰ ਉਸੇ ਅਨੁਸਾਰ ਆਪਣਾ ਜੀਵਨ ਬਣਾਉਣਾ ਚਾਹੀਦਾ ਹੈ।",en:"A person should shape life according to the Divine Will."}
+];
+const STYLES=[["auto","Of the day"],["folio","Folio"],["dawn","Amrit Vela"],["raat","Raat"],["phul","Phulkari"],["plain","Bold"],["photo","Photo"]];
+const SIZES=[["r916","Status","9:16"],["r45","Post","4:5"],["r11","Square","1:1"]];
+const MEANS=[["pa","ਪੰਜਾਬੀ"],["en","English"],["both","Both"],["none","Line only"]];
+const GREET={
+ none:[["","None"],["ਸ਼ੁਭ ਸਵੇਰ ਜੀ","Good morning ji"],["ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖ਼ਾਲਸਾ, ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਿਹ","Fateh"]],
+ shaheedi:[["","None"],["ਸ਼ਹੀਦਾਂ ਨੂੰ ਕੋਟਿ ਕੋਟਿ ਪ੍ਰਣਾਮ","Salute to the Shaheeds"],["ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖ਼ਾਲਸਾ, ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਿਹ","Fateh"]],
+ prakash:[["","None"],["ਪ੍ਰਕਾਸ਼ ਪੁਰਬ ਦੀਆਂ ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ","Prakash Purab greetings"],["ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖ਼ਾਲਸਾ, ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਿਹ","Fateh"]]
+};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function qr(seed,n){let s=seed*9301+49297,h="";for(let i=0;i<121;i++){const r=Math.floor(i/11),c=i%11;const f=(r<3&&c<3)||(r<3&&c>7)||(r>7&&c<3);
+  const fin=f?!((r==1||r==9)&&(c==1||c==9))&&!(r==1&&c==1):(s=(s*9301+49297)%233280)/233280>.5;h+='<i'+(fin?'':' class="o"')+'></i>';}return h;}
+function resolve(st,day){if(st!=="auto")return st;return day.kind==="shaheedi"?"shaheedi":day.kind==="prakash"?"prakash":"dawn";}
+function card(o){
+  const d=DAYS[o.day],st=resolve(o.style,d),w=o.w||270;
+  let mean="";if(o.mean!=="none"){if(o.mean==="pa"||o.mean==="both")mean+='<p class="mean">'+esc(d.pa)+'</p>';if(o.mean==="en"||o.mean==="both")mean+='<p class="mean">'+esc(d.en)+'</p>';}
+  const stamp=o.stamp?'<p class="stamp">'+esc(d.ns)+(d.ev?'<br><span class="ribbon">'+esc(d.ev)+'</span>':'')+'</p>':'';
+  const greet=o.greet?'<p class="greet">'+esc(o.greet)+'</p>':'';
+  const from=o.from?'<p class="from">ਵੱਲੋਂ: '+esc(o.from)+'</p>':'';
+  const q=o.size==="r916"?'<div class="qr q" style="color:currentColor">'+qr(7)+'</div>':'<span class="mark"></span>';
+  return '<div class="sc '+o.size+' s-'+st+'" style="--w:'+w+'px"><div class="in">'+
+    '<p class="kick">ਅੱਜ ਦਾ ਵਿਚਾਰ</p>'+stamp+'<div class="grow"></div>'+greet+
+    '<p class="line">'+esc(d.line)+'</p>'+(mean?'<div class="rule"></div>'+mean:'')+
+    '<div class="grow"></div>'+(o.size==="r11"?'':'<p class="src">ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ</p>')+from+
+    '<div class="foot">'+q+'<span>ਹਰ ਰੋਜ਼ Hazri ਤੇ ਪੜ੍ਹੋ<br>hazri.me</span></div></div></div>';
+}
+function evCard(kind){
+  const sh=kind==="shaheedi";const w=140;
+  return '<div class="sc r916 s-'+kind+'" style="--w:'+w+'px"><div class="in" style="padding:14% 10% 8%">'+
+   '<p class="kick">'+(sh?"ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ":"ਪ੍ਰਕਾਸ਼ ਪੁਰਬ")+'</p><p class="stamp">'+(sh?"੮ ਪੋਹ ੫੫੮ · 23 Dec":"੨ ਮਾਘ ੫੫੮ · 15 Jan")+'</p><div class="grow"></div>'+
+   '<p class="greet" style="font-size:'+(w*.085)+'px">'+(sh?"Sahibzada Baba Ajit Singh Ji<br>and Baba Jujhar Singh Ji":"Sri Guru Gobind<br>Singh Sahib Ji")+'</p>'+
+   '<div class="rule"></div><p class="mean">'+(sh?"Saka Chamkaur Sahib. One line from the day's Vichar story goes here.":"One line from the day's Vichar story goes here.")+'</p><div class="grow"></div>'+
+   '<p class="from" style="font-size:'+(w*.06)+'px">'+(sh?"ਸ਼ਹੀਦਾਂ ਨੂੰ ਕੋਟਿ ਕੋਟਿ ਪ੍ਰਣਾਮ":"ਲੱਖ ਲੱਖ ਵਧਾਈਆਂ")+'</p>'+
+   '<div class="foot"><span class="mark"></span><span>Read the full story on Hazri<br>hazri.me</span></div></div></div>';
+}
+// mini cards inside phones
+document.querySelectorAll("[data-card]").forEach(el=>{const c=JSON.parse(el.dataset.card);
+  const d=DAYS[c.day];el.innerHTML=card({day:c.day,style:c.style,size:c.size,w:c.w,mean:"pa",greet:GREET[d.kind][1][0],from:"",stamp:true});});
+document.querySelectorAll("[data-ev]").forEach(el=>{el.innerHTML=evCard(el.dataset.ev);});
+document.querySelectorAll("[data-qr]").forEach(el=>{el.innerHTML=qr(+el.dataset.qr);});
+// gallery
+const g=document.getElementById("gallery");
+[["folio","Folio (today's card)"],["dawn","Amrit Vela"],["raat","Raat"],["phul","Phulkari border"],["plain","Bold"],["photo","Photo (your dawn picture)"],["shaheedi","Shaheedi (automatic on the day)"],["prakash","Prakash Purab (automatic on the day)"]].forEach(([s,n],i)=>{
+  const day=s==="prakash"?2:1;const f=document.createElement("figure");
+  f.innerHTML=card({day,style:s,size:"r916",w:150,mean:"pa",greet:"",from:"",stamp:true})+'<figcaption>'+n+'</figcaption>';g.appendChild(f);});
+// thumbs for V-C
+const t=document.getElementById("thumbs");
+[["shaheedi","Of the day",1],["folio","Folio"],["dawn","Amrit Vela"],["raat","Raat"],["phul","Phulkari"],["plain","Bold"]].forEach(([s,n,on])=>{
+  const d=document.createElement("div");d.className="thumb s-"+s+(on?" on":"");d.innerHTML='<small>'+n+'</small>';t.appendChild(d);});
+// playground
+let S={day:1,style:"auto",size:"r916",mean:"pa",greet:GREET.shaheedi[1][0],from:"",stamp:true};
+try{const v=localStorage.getItem("hz-from");if(v)S.from=v;}catch(e){}
+const fromEl=document.getElementById("c-from");fromEl.value=S.from;
+function seg(id,items,key,onPick){const el=document.getElementById(id);el.innerHTML="";
+  items.forEach(it=>{const b=document.createElement("button");b.type="button";b.innerHTML=esc(it[1])+(it[2]?'<small>'+esc(it[2])+'</small>':'');
+    b.setAttribute("aria-pressed",String(S[key]===it[0]));b.onclick=()=>{S[key]=it[0];onPick&&onPick();draw();};el.appendChild(b);});}
+function draw(){
+  const d=DAYS[S.day];
+  seg("c-day",DAYS.map((x,i)=>[i,x.key,x.kind==="none"?"ordinary day":x.kind==="shaheedi"?"Shaheedi":"Prakash Purab"]),"day",()=>{S.greet=GREET[DAYS[S.day].kind][S.day===0?0:1][0];});
+  seg("c-style",STYLES,"style");seg("c-size",SIZES,"size");seg("c-mean",MEANS,"mean");
+  seg("c-greet",GREET[d.kind].map(x=>[x[0],x[0]||"None",x[0]?x[1]:""]),"greet");
+  seg("c-stamp",[[true,"Show"],[false,"Hide"]],"stamp");
+  const r=resolve(S.style,d);
+  document.getElementById("style-hint").textContent=S.style==="auto"?("Of the day picks "+(r==="dawn"?"Amrit Vela on an ordinary day":r==="shaheedi"?"the Shaheedi style today":"the Prakash Purab style today")+"."):"";
+  document.getElementById("live").innerHTML=card(Object.assign({},S,{w:Math.min(270,Math.round(window.innerWidth*.7))}));
+}
+fromEl.addEventListener("input",()=>{S.from=fromEl.value.trim();try{localStorage.setItem("hz-from",S.from);}catch(e){}draw();});
+window.addEventListener("resize",draw);
+draw();
+})();
+</script>
