@@ -2735,6 +2735,9 @@ class LEn extends L {
   String get todayStreakCaption => 'days of Hazri in a row';
 
   @override
+  String get todayStreakWeekCaption => 'of the last 7 days with Hazri';
+
+  @override
   String get actionAdd => 'Add';
 
   @override

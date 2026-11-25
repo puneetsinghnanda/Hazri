@@ -827,6 +827,7 @@
   "diaryStreakNow": "अब लगातार दिन",
   "diaryStreakLongest": "आपका सबसे लंबा",
   "todayStreakCaption": "लगातार हाज़िरी के दिन",
+  "todayStreakWeekCaption": "पिछले 7 दिनों में हाज़िरी वाले दिन",
   "actionAdd": "जोड़ें",
   "profileWelcome": "स्वागत है",
   "profileWelcomeName": "स्वागत है, {name}",

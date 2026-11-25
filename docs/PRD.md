@@ -325,8 +325,11 @@ Top to bottom:
    (T1).
 4. **The streak card** (option 3, chosen 2026-10-07): the number over *days
    of Nitnem in a row*, and the last seven days as weekday initials over dots,
-   saffron for a day that counts, today's ringed. **Shown only from 2 days**;
-   nothing is ever said when a streak ends; a grace day keeps the count and
+   saffron for a day that counts, today's ringed. **Shown while any of the
+   last seven days has hazri** (owner, 2026-11-25; was only from 2 days): with
+   a run of 2 or more it says the run, below that how many of the seven days
+   had hazri ("of the last 7 days with Hazri"); nothing is ever said when a
+   streak ends; a grace day keeps the count and
    its dot stays unlit. Tapping opens the Diary (T12).
 5. **The Set Goal card**, or **the goal widget**: items met of items in scope
    with a ring, a row per item (T3, `04-goals.md` §7.1).

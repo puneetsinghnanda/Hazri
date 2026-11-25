@@ -51,6 +51,7 @@ class TodayScreen extends ConsumerWidget {
     final profile = ref.watch(profileControllerProvider);
     final hasBanner = profile is ProfileNone; // R10
     final streak = ref.watch(hazriStreakProvider).value;
+    final streakView = streak == null ? null : streakCardView(streak, ref.watch(clockProvider).today());
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -69,9 +70,9 @@ class TodayScreen extends ConsumerWidget {
                   children: [
                     if (hasBanner) ...[const ProfileBanner(), const SizedBox(height: 12)],
                     const HazriBanner(),
-                    // T12: only at 2 days or more; nothing said below that.
-                    if (streak != null && streak.current >= 2) ...[
-                      _StreakCard(streak: streak),
+                    // T12: while any of the last seven days has hazri.
+                    if (streak != null && streakView != null) ...[
+                      _StreakCard(streak: streak, view: streakView),
                       const SizedBox(height: 12),
                     ],
                     const _GoalsCard(),
@@ -180,12 +181,30 @@ class _TodayAppBar extends ConsumerWidget {
   }
 }
 
+/// What the streak card says (T12, owner 2026-11-25), or null to hide it.
+///
+/// The card stays while any day of its strip -- today and the six before --
+/// has hazri, and goes once there has been none for seven days. With a run of
+/// two days or more it says the run (`run`); below that it says how many of
+/// the seven days had hazri, so a broken run is never shown as "0" or "1 in a
+/// row".
+@visibleForTesting
+({int count, bool run})? streakCardView(HazriStreak streak, DateTime today) {
+  if (streak.current >= 2) return (count: streak.current, run: true);
+  var lit = 0;
+  for (var i = 0; i < 7; i++) {
+    if (streak.days.contains(localDateKey(today.subtract(Duration(days: i))))) lit++;
+  }
+  return lit == 0 ? null : (count: lit, run: false);
+}
+
 /// T12, canvas option Streak 3: the number over its caption, and the last
 /// seven days, saffron for a day that counts, today ringed. Opens the Diary.
 class _StreakCard extends ConsumerWidget {
-  const _StreakCard({required this.streak});
+  const _StreakCard({required this.streak, required this.view});
 
   final HazriStreak streak;
+  final ({int count, bool run}) view;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -211,10 +230,10 @@ class _StreakCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  l.todayStreakDays(streak.current),
+                  l.todayStreakDays(view.count),
                   style: HazriText.display22.copyWith(color: c.kesri, fontSize: 30, height: 1.1),
                 ),
-                Text(l.todayStreakCaption, maxLines: 3, style: HazriText.caption.copyWith(color: c.muted)),
+                Text(view.run ? l.todayStreakCaption : l.todayStreakWeekCaption, maxLines: 3, style: HazriText.caption.copyWith(color: c.muted)),
               ],
             ),
           ),

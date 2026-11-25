@@ -43,7 +43,7 @@ call to action does not know about goals.
 | 1 | App bar: menu, the Hazri mark and name, a person icon opening `/profile`; under them the greeting (`Welcome, {name}` in `ProfileLoaded`, else `Welcome`) and the date | Always | T11, T8, `01-accounts.md` §8.4 |
 | 2 | `ProfileBanner`: "Set up your profile" | Only in `ProfileNone` or `ProfileUnavailable`. Not dismissible | `01-accounts.md` §8.4 |
 | 3 | Hazri banner | Always, unless marked and closed for the day | T1, T1a |
-| 4 | Streak card | When the hazri streak is 2 days or more | T12 |
+| 4 | Streak card | While any of the last 7 days has hazri (owner, 2026-11-25; was: a streak of 2 days or more) | T12 |
 | 5 | Set Goal card, or the goal widget | Always, one or the other | `04-goals.md` §7.1 |
 | 6 | Call to action | When `content.db` has a bani to offer | T4 |
 | 7 | Sikh calendar card: the next event within a week, else the Gurpurab calendar and today's Nanakshahi date. Tapping an event opens its Vichar page (`calendar_event.vichar_slug`); with no event, or none for it, the calendar (owner, 2026-11-18). The calendar also has its own row in the menu, after Vichar | Always; not in elder mode (T5) | 2026-11-18 |
@@ -138,11 +138,22 @@ days: a weekday initial over a dot, saffron for a day that counts toward the
 streak and unlit otherwise, today's dot ringed. Tapping it opens the Diary.
 
 - The number is `current` from `hazriStreak(today)` (`09-diary.md` D12), the same function the Diary uses.
-- The card is shown only when `current` is 2 or more. Below that it is not shown at all: no "0 days", no "1 day", and nothing said when a streak ends.
+- **The card is shown while any day of its strip, today and the six before, has hazri** (owner, 2026-11-25), and goes once there has been none for seven days. It used to go the day a run broke and come back with the next paath, which read as the card flickering. `streakCardView` in `lib/features/today/ui/today_screen.dart` is the rule.
+- With `current` at 2 or more, the number is the run and the caption `todayStreakCaption`. Below 2, the number is how many of the seven days had hazri and the caption is `todayStreakWeekCaption` ("of the last 7 days with Hazri" · "ਪਿਛਲੇ 7 ਦਿਨਾਂ ਵਿੱਚ ਹਾਜ਼ਰੀ ਵਾਲੇ ਦਿਨ" · "पिछले 7 दिनों में हाज़िरी वाले दिन", Claude's draft). So there is still no "0 days" and no "1 day in a row", and nothing is said when a streak ends.
 - A grace day keeps the count going and its dot is unlit, saying nothing (`09-diary.md` D8).
 - Today's dot lights the moment today's Nitnem is done; until then the count is the streak through yesterday.
 
 ## 5.5 Scenarios
+
+Streak card (T12, 2026-11-25; `test/features/streak_card_test.dart`):
+
+| # | Given | Then |
+| --- | --- | --- |
+| T-s1 | Hazri four days running, then yesterday missed | The card stays: "4 of the last 7 days with Hazri" |
+| T-s2 | One hazri, six days ago, none since | The card stays, "1", that dot lit |
+| T-s3 | No hazri for weeks, then a paath today | The card is back, "1", today's dot lit |
+| T-s4 | No hazri today or in the six days before | No card |
+
 
 | # | Given | When | Then |
 | --- | --- | --- | --- |
