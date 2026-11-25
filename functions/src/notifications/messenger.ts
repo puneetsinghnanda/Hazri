@@ -6,8 +6,10 @@ export interface PushMessage {
   token: string;
   title: string;
   body: string;
-  /** FM2 data: kind, groupId, route. */
-  data: { kind: string; groupId: string; route: string };
+  /** FM2 data: kind, groupId, route (and announcementId for an announcement). */
+  data: { kind: string; groupId: string; route: string; announcementId?: string };
+  /** The Android channel; the Sangat's unless said (announcements_v1, 2026-11-19). */
+  channelId?: string;
 }
 
 export interface PushResult {
@@ -34,8 +36,8 @@ export class FcmMessenger implements Messenger {
         chunk.map((m) => ({
           token: m.token,
           notification: { title: m.title, body: m.body },
-          android: { priority: 'normal' as const, notification: { channelId: 'sangat_v2' } },
-          data: m.data,
+          android: { priority: 'normal' as const, notification: { channelId: m.channelId ?? 'sangat_v2' } },
+          data: Object.fromEntries(Object.entries(m.data).filter(([, v]) => v !== undefined)) as Record<string, string>,
         })),
       );
       for (const r of res.responses) {

@@ -185,11 +185,21 @@ const kBaniSlugs = <String, String>{
   'SUKH': 'sukhmani-sahib',
 };
 
-/// Plans every local notification for the next 7 days, nearest first, at
-/// most 60 pending (CM2). Text is fixed at planning time (CM3).
+/// Plans every local notification for the next 30 days, nearest first
+/// (CM2). Android is handed all of them and holds at most [maxPending] as
+/// alarms at once, the nearest, arming the next as each fires
+/// (`android/.../Reminders.kt`), so reminders go on for 30 days without the
+/// app being opened (owner, 2026-11-19; it was 7 days, and with a goal of
+/// many items the 60 cap cut that to three). Text is fixed at planning time
+/// (CM3).
 abstract final class ReminderPlanner {
-  static const windowDays = 7;
+  static const windowDays = 30;
+
+  /// Alarms Android holds at once (the iOS-born cap, CLAUDE.md rule 6).
   static const maxPending = 60;
+
+  /// A plan's ceiling: 30 days of the largest goal fits well under it.
+  static const maxPlanned = 1500;
 
   static const amritVelaHour = 4;
 
@@ -254,7 +264,7 @@ abstract final class ReminderPlanner {
           // CM5: due during a sitting → moved to the moment it ends.
           if (quiet != null && n.at.isBefore(quiet)) _moved(n, quiet) else n,
     ]..sort((a, b) => a.at.compareTo(b.at));
-    return due.length <= maxPending ? due : due.sublist(0, maxPending);
+    return due.length <= maxPlanned ? due : due.sublist(0, maxPlanned);
   }
 
   static PlannedNotification _moved(PlannedNotification n, DateTime to) => PlannedNotification(

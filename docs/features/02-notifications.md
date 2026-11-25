@@ -107,7 +107,9 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 ### 4.6 Rules for every local notification
 
 - **CM1. Fallback.** A weekday message that needs data the app does not have when it plans the notification (a profile name, a streak, a live count, a profile) is replaced by the Sunday message of that rotation.
-- **CM2. Planning.** `ReminderScheduler.reschedule()` plans every local notification for the next 7 days, nearest first, within the existing cap of 60 pending. It runs at app start, on resume, after every completion, sitting, Diary edit and goal change, after a time-zone or clock change, and from the boot receiver.
+- **CM2. Planning.** `ReminderScheduler.reschedule()` plans every local notification for the next **30 days** (owner, 2026-11-19; it was 7), nearest first, and hands the whole plan to Hazri's Android scheduler in one call. Android holds **at most 60 as alarms at once**, the nearest (the cap stays); each time one fires, and after a reboot, an update or a clock change, the next stored one is armed (`Reminders.armNext`), so the reminders go on for 30 days with the app never opened. Before, they stopped 7 days after the last open, and sooner with a goal of many items, whose 60 alarms ran out in three days. A day's "met" check is made at planning, so a day the app is not opened plans as not met, which is right: nothing was marked. The plan is made again at app start, on resume, after every completion, sitting, Diary edit and goal change, and after a time-zone or clock change.
+- **KA1. Keep reminders coming** (owner, 2026-11-19). The Notifications page carries a card: why Android can stop reminders, and the two settings that keep them, each with **Open** or a tick once done. *Don't pause Hazri* opens Android's "Pause app activity if unused" for Hazri (Android 11 and later; without it, after about three months unused Android hibernates the app and cancels its alarms). *Let Hazri run in the background* opens Hazri's app page, where the phone maker's battery options are (Vivo, Oppo, Xiaomi, Realme stop a closed app's alarms). The app never asks for a battery exemption itself. The card reads both again when the app returns from settings.
+- **KA2. Asked once.** The first time the app opens to a tab after setup with one of those settings still to switch, the card shows as a sheet with **Not now**; never again after that, whatever is chosen (`keep_awake_asked_v1`). The Notifications page keeps the card.
 - **CM3. Data filled at planning.** Text is fixed when a notification is planned. A weekday message that needs data is used only when planned within 24 hours of firing; further ahead it is planned as the fallback and re-planned later.
 - **CM4. Streak.** The streak in 5.1 Wednesday is the hazri streak (`09-diary.md` D9, D12) through the day before the notification. If that day's hazri is not yet marked when planning, the fallback is used. (Owner, 2026-10-10: the streak counts hazri, and the message says Hazri, not Nitnem.)
 - **CM5. During a sitting.** A notification due while a Simran sitting is running is moved to the moment the sitting ends.
@@ -215,7 +217,7 @@ Action: "Open Sangat". The expanded A carries a progress bar of the group's perc
 
 ### 6.2 Planner
 
-`ReminderPlanner.plan` stays a pure function. Its input gains the goal items in scope, today's Hazri and goal state (`04-goals.md` §4.6), the calendar events of the next 7 days, the profile name and city, the streak, and the last globe snapshot. Its output is occurrences with title, body, actions and route already in the planned language. `reschedule()` seeds nothing any more: there are no stored reminder rows, every occurrence is derived (CM2).
+`ReminderPlanner.plan` stays a pure function. Its input gains the goal items in scope, today's Hazri and goal state (`04-goals.md` §4.6), the calendar events of the next 30 days, the profile name and city, the streak, and the last globe snapshot. Its output is occurrences with title, body, actions and route already in the planned language. `reschedule()` seeds nothing any more: there are no stored reminder rows, every occurrence is derived (CM2).
 
 ### 6.3 Snooze
 
@@ -263,6 +265,21 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 ### 8.4 Cost
 
 > **Moved to [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) §7.3** on 2026-10-08, word for word, as the one home for schema, storage and APIs. It keeps this file's numbering there ("02-notifications §8.4"), so a reference to this section still finds it.
+
+### 8.5 Announcements (owner, 2026-11-19, option B)
+
+A message the admin writes on the admin website and sends to everyone with a profile at once. Option B of two: **profiles only**, because the owner wants people to make one; sending to every install (option A) can come later.
+
+- **AN1. Who gets it.** Every install with a profile whose token is saved and whose Announcements switch is on. The token is now saved with **every profile**, not only a group member's (ARCHITECTURE §5.10 FT1). Without a profile nothing is saved and nothing arrives.
+- **AN2. What is written.** A title (at most 65 characters), the notification text (at most 180) and an optional full message (at most 5,000), each in Punjabi, Hindi and English. Title and text are needed in at least one language.
+- **AN3. Each in their language.** The server sends each phone the text of its app language (`locale`); a language left empty falls back to English, then to whichever is written. Sent at once with `sendEach`, 500 at a time; a dead token is deleted (FM4).
+- **AN4. Tapped, it opens in the app** at `/announcement/<id>`: the title, the date and the full message (the notification text when there is none), fetched with `GET /announcements/<id>?lang=`. Formatting is kept small: `**bold**`, `*italic*`, `[text](https://...)`, a line starting `- ` is a bullet, a blank line a new paragraph. No pictures. Offline it says so, with Retry.
+- **AN5. The tap report.** Opening it sends `POST /announcements/<id>/opened`, once per profile; the server records the profile's name and city with the time. Nothing else about the tap is sent, and Analytics stays off.
+- **AN6. What the admin sees.** Before sending: how many it reaches, by language, and how many switched it off. After: delivered (FCM accepted), failed, opened, and **who opened** -- name, city, time.
+- **AN7. The switch.** Notifications -> Announcements, shown with a profile, on by default (`announcements_on_v1`). Off is sent with the token (`announcements: false`) and the server skips that install.
+- **AN8. The channel.** `announcements_v1`, made by the app at start; the server names it in every announcement. In the foreground the app shows it itself on the same channel (FM3).
+- **AN10. A test first.** The admin can send the message to one profile only, found by its email, in the language of the open tab and whatever its switch says. It is kept in the list marked Test, with its own opens. With no such profile: `404`; with no phone ready (no token): `409 NO_DEVICE`.
+- **AN9. Cost.** FCM is free. A send reads every token once and writes one document; each open is one write. Since tokens are now saved with every profile, the hourly Sangat dispatcher reads more of them (each token about once a day); a token with no group gets no Sangat push.
 
 ## 9. Notifications screen
 
@@ -335,4 +352,4 @@ Six stages; a break in any one is total silence, and stages 1 and 6 are invisibl
 
 - Any notification not in Section 3.
 - Notifications on any platform but Android.
-- Analytics on notification opens.
+- Analytics on notification opens. (An announcement's open is reported by the app itself, AN5.)

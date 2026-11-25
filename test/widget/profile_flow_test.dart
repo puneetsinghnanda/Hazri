@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
+import 'package:hazri/features/profile/data/profile_cache.dart';
 import 'package:hazri/features/profile/data/profile_controller.dart';
+import 'package:hazri/features/profile/data/profile_recovery.dart';
 import 'package:hazri/features/profile/ui/link_result_screen.dart';
 import 'package:hazri/features/profile/ui/profile_screen.dart';
 import 'package:hazri/features/profile/ui/profile_setup_screen.dart';
@@ -17,8 +21,8 @@ void main() {
 
   setUpAll(() async => l = await L.delegate.load(const Locale('en')));
 
-  Future<void> boot(WidgetTester tester, Widget screen) async {
-    app = await TestApp.create(prefs: {'onboarding_done': true}, extra: server.overrides());
+  Future<void> boot(WidgetTester tester, Widget screen, {Map<String, Object> prefs = const {}}) async {
+    app = await TestApp.create(prefs: {'onboarding_done': true, ...prefs}, extra: server.overrides());
     addTearDown(app.dispose);
     usePhoneFrame(tester);
     await tester.pumpWidget(app.wrapRouted(screen));
@@ -42,7 +46,8 @@ void main() {
       await tester.tap(find.text(l.profileSave));
       await settle(tester);
       expect(find.text(l.profileErrNameEmpty), findsOneWidget);
-      expect(find.text(l.profileErrEmailEmpty), findsOneWidget);
+      // An email is optional since 2026-11-18: an empty one is not an error.
+      expect(find.text(l.profileErrEmailEmpty), findsNothing);
       expect(find.text(l.profileErrCityEmpty), findsOneWidget);
       expect(server.requests.where((r) => r.startsWith('POST')), isEmpty);
     });
@@ -105,6 +110,34 @@ void main() {
       await net(tester);
       expect(find.text(l.profileNone), findsOneWidget);
       expect(find.text(l.profileSetupTitle), findsWidgets);
+    });
+
+    testWidgets('R6: a profile this phone had under another sign-in is offered back, and the link is sent', (tester) async {
+      server.on('POST', '/profile/restore-request', 200, {'result': 'RESTORE_EMAIL_SENT', 'cooldownSeconds': 60});
+      final had = jsonEncode({...profileJson(name: 'Puneet Singh', email: 'owner@example.com'), 'ownerUid': 'old-uid'});
+      await boot(tester, const ProfileScreen(), prefs: {ProfileCache.key: had});
+      await net(tester);
+      expect(find.text(l.profileNone), findsNothing);
+      expect(find.text(l.profileRestoreLostTitle), findsOneWidget);
+      expect(find.text(l.profileRestoreLostBody('owner@example.com')), findsOneWidget);
+      expect(find.text(l.profileRestoreNew), findsOneWidget);
+
+      await tester.tap(find.text(l.profileSendLink));
+      await net(tester);
+      expect(server.requests, contains('POST /profile/restore-request'));
+      // The link is remembered as waiting (R7); this harness has no
+      // email-sent route, so the state is read rather than the next screen.
+      expect(app.container.read(profileRecoveryProvider).waiting(DateTime.now()), isTrue);
+    });
+
+    testWidgets('R7: a restore link not yet opened: Waiting for your link, with Resend', (tester) async {
+      final pending = jsonEncode({'email': 'owner@example.com', 'at': DateTime.now().millisecondsSinceEpoch});
+      await boot(tester, const ProfileScreen(), prefs: {ProfileRecoveryNotifier.kPending: pending});
+      await net(tester);
+      expect(find.text(l.profileRestoreWaitingTitle), findsOneWidget);
+      expect(find.text(l.profileRestoreWaitingBody('owner@example.com')), findsOneWidget);
+      expect(find.text(l.emailSentResend), findsOneWidget);
+      expect(find.text(l.profileNone), findsNothing);
     });
 
     testWidgets('unverified: the rows, Not verified, Change email and Confirm my email', (tester) async {

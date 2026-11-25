@@ -307,9 +307,15 @@ class ReminderService {
       await _nativeCall('cancel', {'id': id});
       await _nativeCall('dismiss', {'id': id});
     }
-    for (final n in planned) {
-      await _schedule(n, channelNames[n.kind] ?? 'Hazri');
-    }
+    // The whole plan in one call: Android stores it and arms the nearest
+    // ReminderPlanner.maxPending, the next as each fires (CM2).
+    final now = DateTime.now();
+    await _nativeCall('scheduleAll', {
+      'reminders': [
+        for (final n in planned)
+          if (n.at.isAfter(now)) _nativeReminder(n, channelNames[n.kind] ?? 'Hazri'),
+      ],
+    });
     lastPlan = planned;
   }
 
@@ -392,11 +398,6 @@ class ReminderService {
     };
   }
 
-  Future<void> _schedule(PlannedNotification n, String channelName) async {
-    if (!n.at.isAfter(DateTime.now())) return;
-    await _nativeCall('schedule', _nativeReminder(n, channelName));
-  }
-
   /// Diagnostics: shows [n] now, or in two minutes (DP4).
   Future<void> sendTest(PlannedNotification n, String channelName, {Duration? after}) async {
     if (!_ready) return;
@@ -413,18 +414,31 @@ class ReminderService {
   /// A Sangat push that arrived while the app was open: Android shows a
   /// notification message only in the background, so the app shows it here
   /// on the same channel (02-notifications §6.1).
-  Future<void> showPush({required String title, required String body, String? route, required String channelName}) async {
+  Future<void> showPush({
+    required String title,
+    required String body,
+    String? route,
+    required String channelName,
+    String? channelId,
+  }) async {
     if (!_ready) return;
     await _plugin.show(
       title.hashCode ^ body.hashCode,
       title,
       body,
       NotificationDetails(
-        android: AndroidNotificationDetails(NotificationKind.sangat.androidChannelId, channelName,
+        android: AndroidNotificationDetails(channelId ?? NotificationKind.sangat.androidChannelId, channelName,
             importance: _importance, priority: _priority, category: AndroidNotificationCategory.social),
       ),
       payload: NotificationPayload(route: route ?? '/sangat').encode(),
     );
+  }
+
+  /// A notification channel that is not a planned kind's: the announcements'
+  /// (AN8), made before the first push so Android shows it under its name.
+  Future<void> ensureChannel(String id, String name) async {
+    if (!_ready) return;
+    await _android?.createNotificationChannel(AndroidNotificationChannel(id, name, importance: _importance));
   }
 
   Future<void> cancelAll() async {

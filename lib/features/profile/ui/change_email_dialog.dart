@@ -60,7 +60,8 @@ class _ChangeEmailDialogState extends ConsumerState<_ChangeEmailDialog> {
     if (!_form.currentState!.validate()) return;
     final value = normalizeEmail(_email.text);
     final current = _profile;
-    if (current != null && emailKey(value) == emailKey(current.email)) {
+    final currentEmail = current?.email;
+    if (currentEmail != null && emailKey(value) == emailKey(currentEmail)) {
       setState(() => _error = l.changeEmailSame);
       return;
     }
@@ -118,7 +119,7 @@ class _ChangeEmailDialogState extends ConsumerState<_ChangeEmailDialog> {
   Widget build(BuildContext context) {
     final l = L.of(context);
     return AlertDialog(
-      title: Text(l.changeEmailTitle),
+      title: Text(_profile?.email == null ? l.profileAddEmail : l.changeEmailTitle),
       content: Form(
         key: _form,
         child: TextFormField(

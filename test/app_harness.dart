@@ -52,7 +52,27 @@ class FakePaathPlayer implements PaathPlayer {
   Future<void> setQueue(List<PaathTrack> tracks, {int startIndex = 0, Duration? at}) async {
     setQueueCalls++;
     queued = tracks;
+    looping = false;
     position = at ?? Duration.zero;
+  }
+
+  bool looping = false;
+
+  @override
+  bool get isLooping => looping;
+
+  /// Set by a test: the loaded recitation has played to its end.
+  bool finished = false;
+
+  @override
+  bool get isFinished => finished;
+
+  @override
+  Future<void> setLoop(PaathTrack track, {required Duration at}) async {
+    setQueueCalls++;
+    queued = [track];
+    looping = true;
+    position = at;
   }
 
   @override
@@ -71,6 +91,7 @@ class FakePaathPlayer implements PaathPlayer {
   @override
   Future<void> stop() async {
     stopCalls++;
+    looping = false;
     _playing = false;
     queued = [];
   }

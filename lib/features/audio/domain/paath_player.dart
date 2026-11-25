@@ -19,7 +19,8 @@ class PaathTrack {
   final String title;
   final String nativeTitle;
 
-  /// The bundled asset key, e.g. `assets/audio/japji-sahib.m4a`.
+  /// The bundled asset key, e.g. `assets/audio/japji-sahib.ogg`, or the
+  /// absolute path of a downloaded recitation kept on the phone.
   final String assetPath;
   final Duration duration;
 
@@ -57,6 +58,18 @@ abstract interface class PaathPlayer {
 
   Future<void> setQueue(List<PaathTrack> tracks, {int startIndex, Duration? at});
 
+  /// Loads [track] alone, looped without a gap and parked at [at], for a
+  /// live group (15-live-sangat LS6). A loop is never reported complete.
+  Future<void> setLoop(PaathTrack track, {required Duration at});
+
+  /// True while what is loaded is a live group's loop.
+  bool get isLooping;
+
+  /// True when the loaded recitation has played to its end and is parked
+  /// there (06-nitnem RS3): opening that bani again starts it from 0:00.
+  bool get isFinished;
+
+  /// Starts playback and returns once it has started, not when it ends.
   Future<void> play();
 
   Future<void> pause();

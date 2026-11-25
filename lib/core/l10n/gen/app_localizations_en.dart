@@ -1831,7 +1831,8 @@ class LEn extends L {
   String get privacyPhoneProgress => 'Reading position and goals';
 
   @override
-  String get privacyPhoneContent => 'Every bani, its audio and the calendar';
+  String get privacyPhoneContent =>
+      'Every bani, its audio and the calendar (Sukhmani Sahib\'s recitation is downloaded once, with nothing about you, then kept)';
 
   @override
   String get privacyShowMyName => 'Show my name in groups';
@@ -2758,7 +2759,60 @@ class LEn extends L {
   String get profileFieldName => 'Name *';
 
   @override
-  String get profileFieldEmail => 'Email *';
+  String get profileFieldEmail => 'Email (optional)';
+
+  @override
+  String get profileNoEmail => 'No email yet';
+
+  @override
+  String get profileAddEmail => 'Add email';
+
+  @override
+  String get profileNoEmailHint =>
+      'Add an email to keep your diary safe and bring it back on a new phone.';
+
+  @override
+  String get setupProfileTitle => 'Make your Hazri card';
+
+  @override
+  String get setupProfileLead =>
+      'Your name and city put you on the globe with the sangat. An email keeps your diary safe, if you add one.';
+
+  @override
+  String get setupProfileCreate => 'Create my profile';
+
+  @override
+  String get setupProfileKept =>
+      'No connection. Your details are kept on this phone, and your profile is made when you are back online.';
+
+  @override
+  String get cardYourName => 'Your name';
+
+  @override
+  String get cardYourCity => 'Your city';
+
+  @override
+  String get cardYourEmail => 'Your email';
+
+  @override
+  String profileMadeTitle(String name) {
+    return 'Welcome, $name';
+  }
+
+  @override
+  String profileMadeConfirmBody(String email) {
+    return 'Your profile is made. Would you like to confirm $email? It is optional, and you can do it later from your profile.';
+  }
+
+  @override
+  String get profileMadeNoEmailBody =>
+      'Your profile is made. You can add an email any time from your profile, to keep your diary safe.';
+
+  @override
+  String get profileMadeLater => 'Later, go to Today';
+
+  @override
+  String get profileMadeToday => 'Go to Today';
 
   @override
   String get profileFieldPhone => 'Phone (optional)';
@@ -3041,7 +3095,7 @@ class LEn extends L {
 
   @override
   String get privacyProfileDetails =>
-      'Your name, email and city, and your phone number if you give it';
+      'Your name and city, and your email and phone number if you give them';
 
   @override
   String get privacyProfileMail =>
@@ -3853,7 +3907,7 @@ class LEn extends L {
   String get quizKnowMore => 'Know more';
 
   @override
-  String get quizTakeQuiz => 'Take the quiz';
+  String get quizTakeQuiz => 'Quiz';
 
   @override
   String quizQuestionOf(int n, int total) {
@@ -3973,9 +4027,6 @@ class LEn extends L {
   String get quizPeriodToday => 'Today';
 
   @override
-  String get quizPeriodWeek => 'Week';
-
-  @override
   String get quizPeriodMonth => 'Month';
 
   @override
@@ -3987,11 +4038,6 @@ class LEn extends L {
   @override
   String quizPlayedToday(int count) {
     return 'Top 20 · $count played today · resets at midnight IST';
-  }
-
-  @override
-  String quizPlayedWeek(int count) {
-    return 'Top 20 · $count played this week · resets Monday at midnight IST';
   }
 
   @override
@@ -4007,14 +4053,7 @@ class LEn extends L {
 
   @override
   String get quizBoardEmptyToday =>
-      'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on the week\'s and the month\'s.';
-
-  @override
-  String get quizBoardEmptyWeek =>
-      'Nobody has played this one this week yet. Earlier quizzes are on the month\'s board.';
-
-  @override
-  String get quizSeeWeek => 'See this week';
+      'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on this month\'s board and on All time.';
 
   @override
   String get quizSeeMonth => 'See this month';
@@ -4113,9 +4152,6 @@ class LEn extends L {
   String get quizPlaceToday => 'today';
 
   @override
-  String get quizPlaceWeek => 'this week';
-
-  @override
   String get quizPlaceMonth => 'this month';
 
   @override
@@ -4182,4 +4218,259 @@ class LEn extends L {
   @override
   String get privacyDeleteNoBrowser =>
       'Could not open a browser. The page is hazri.me/delete-account';
+
+  @override
+  String get sangatTabDiscover => 'Discover';
+
+  @override
+  String sangatTabMine(int count) {
+    return 'My groups · $count';
+  }
+
+  @override
+  String get sangatRunningHeading => 'Running';
+
+  @override
+  String get sangatOwnGroup => 'Your own group';
+
+  @override
+  String get sangatOwnGroupSub =>
+      'Private, by invite only. Set one goal and an end date, and sit together.';
+
+  @override
+  String get liveTag => 'LIVE';
+
+  @override
+  String liveListening(int count) {
+    return '$count listening';
+  }
+
+  @override
+  String liveCities(int count) {
+    return 'Live sangat · always on · $count cities';
+  }
+
+  @override
+  String liveJoinedFrom(String name, String city) {
+    return '$name joined from $city';
+  }
+
+  @override
+  String get liveJoin => 'Join';
+
+  @override
+  String get liveJoined => 'Joined';
+
+  @override
+  String get liveSwipeUp => 'Swipe up for the group';
+
+  @override
+  String get liveYouAreIn => 'Live, you are in';
+
+  @override
+  String get liveListen => 'Listen';
+
+  @override
+  String liveYouListened(int minutes) {
+    return 'You listened $minutes min today';
+  }
+
+  @override
+  String get liveMinutesListened => 'Minutes listened';
+
+  @override
+  String get liveSangatToday => 'The sangat today';
+
+  @override
+  String get liveSangatMonth => 'The sangat this month';
+
+  @override
+  String get liveYoursToday => 'Yours today';
+
+  @override
+  String get liveYoursMonth => 'Yours this month';
+
+  @override
+  String get liveWaiting => 'Waiting for the sangat…';
+
+  @override
+  String get liveKindMeditation => 'Meditation';
+
+  @override
+  String get liveKindJaap => 'Jaap';
+
+  @override
+  String liveMembers(int count) {
+    return 'Members · $count';
+  }
+
+  @override
+  String get liveNoMembers => 'Nobody has joined yet.';
+
+  @override
+  String liveMinutesShort(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String liveLeaveConfirm(String group) {
+    return 'Leave $group? You can still listen, and join again at any time.';
+  }
+
+  @override
+  String get liveJoinNeedsProfile =>
+      'Make your Hazri card to join a live group. You can listen without one.';
+
+  @override
+  String get liveSit => 'Sit';
+
+  @override
+  String liveSitFor(int minutes) {
+    return 'Sit for $minutes min';
+  }
+
+  @override
+  String get liveSitCounts =>
+      'A sitting counts as Naam Simran, toward hazri and your goal. Listening alone counts toward nothing.';
+
+  @override
+  String get liveSound => 'Sound';
+
+  @override
+  String get liveSoundOff => 'Sound off';
+
+  @override
+  String liveSleepIn(int minutes) {
+    return 'Stops in $minutes min';
+  }
+
+  @override
+  String get liveSleepOff => 'No sleep timer';
+
+  @override
+  String get liveSittingLeft => 'left';
+
+  @override
+  String get liveListeningLabel => 'listening';
+
+  @override
+  String get liveSatLabel => 'sat';
+
+  @override
+  String get privacyProfileLive =>
+      'While a live group plays, a listening mark every five minutes: the group, and your profile\'s city. Your minutes listened are counted on this phone';
+
+  @override
+  String get privacyProfileLiveJoin =>
+      'If you join a live group: your first name, the first letter of your last name and your city, shown to everybody on its page as having joined, with your minutes there this month';
+
+  @override
+  String get quizPeriodAllTime => 'All time';
+
+  @override
+  String quizPlayedAllTime(int count) {
+    return 'Top 20 · $count have played · never resets';
+  }
+
+  @override
+  String get quizBoardEmptyMonth =>
+      'Nobody has played this one this month yet. Earlier quizzes are on All time.';
+
+  @override
+  String get quizSeeAllTime => 'See All time';
+
+  @override
+  String get quizPlaceAllTime => 'all time';
+
+  @override
+  String get recitationDownloadOnce =>
+      'The recitation is downloaded once. Then it stays on your phone and plays without internet.';
+
+  @override
+  String recitationDownloading(String done, String total) {
+    return 'Downloading · $done of $total MB';
+  }
+
+  @override
+  String get recitationNoInternet =>
+      'No internet. Connect once to download the recitation; the text opens without it.';
+
+  @override
+  String get recitationDownloadFailed => 'The download did not finish.';
+
+  @override
+  String get keepAwakeTitle => 'Keep reminders coming';
+
+  @override
+  String get keepAwakeBody =>
+      'Android quietly stops the reminders of apps it thinks are not used. These two settings keep Hazri\'s coming. A family member can do this once.';
+
+  @override
+  String get keepAwakeUnusedTitle => 'Don\'t pause Hazri';
+
+  @override
+  String get keepAwakeUnusedSub => 'Turn off “Pause app activity if unused”';
+
+  @override
+  String get keepAwakeBatteryTitle => 'Let Hazri run in the background';
+
+  @override
+  String get keepAwakeBatterySub =>
+      'Under Battery, choose “Unrestricted” or “Allow background activity”';
+
+  @override
+  String get keepAwakeOpen => 'Open';
+
+  @override
+  String get keepAwakeDone => 'Done';
+
+  @override
+  String get keepAwakeLater => 'Not now';
+
+  @override
+  String get announcementTitle => 'Message from Hazri';
+
+  @override
+  String get announcementOffline =>
+      'This message needs a connection to open. Try again when you are online.';
+
+  @override
+  String get notifChannelAnnouncements => 'Announcements';
+
+  @override
+  String get notifKindAnnouncements => 'Announcements';
+
+  @override
+  String get notifKindAnnouncementsSub => 'Now and then, a message from Hazri';
+
+  @override
+  String get privacyProfileAnnouncements =>
+      'Your phone\'s notification address, language and time zone, so Hazri can send you announcements (switch them off under Notifications); when you open one, that you opened it';
+
+  @override
+  String get profileRestoreWaitingTitle => 'Waiting for your link';
+
+  @override
+  String profileRestoreWaitingBody(String email) {
+    return 'We sent a link to $email. Open it on this phone to bring your profile back. Until you do, there is no profile on this phone.';
+  }
+
+  @override
+  String get profileRestoreLostTitle => 'Bring back your profile';
+
+  @override
+  String profileRestoreLostBody(String email) {
+    return 'Your profile was on this phone. We will send a link to $email; open it here to bring it back.';
+  }
+
+  @override
+  String get profileRestoreNew => 'Set up a new profile instead';
+
+  @override
+  String get profileRestoreGone =>
+      'There is no profile for that email any more. You can set up a new one.';
+
+  @override
+  String get emailSentRestoreUntil =>
+      'Until you open it, there is no profile on this phone.';
 }

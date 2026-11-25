@@ -17,9 +17,11 @@ import '../../../core/db/content_repository.dart';
 import '../../nitnem/domain/bani.dart';
 import '../../profile/data/incoming_link.dart';
 import '../../sangat/data/sangat_device.dart';
+import 'setup_profile_step.dart';
 
-/// Setup: language, then how you read (03-first-run F1). Nothing is required
-/// except the language. Reminders are on by default and Android's permission
+/// Setup: language, then how you read, then your profile (03-first-run F2,
+/// F10 since 2026-11-18). Nothing is required except the language: the
+/// profile step has Not now. Reminders are on by default and Android's permission
 /// prompt comes at app start (02-notifications), so there is no reminders step.
 class SetupScreen extends ConsumerWidget {
   const SetupScreen({super.key, required this.step});
@@ -39,6 +41,7 @@ class SetupScreen extends ConsumerWidget {
               Expanded(
                 child: switch (step) {
                   2 => const _StepReading(),
+                  3 => const SetupProfileStep(),
                   _ => const _StepLanguage(),
                 },
               ),
@@ -77,7 +80,7 @@ class _StepHeader extends StatelessWidget {
                 : null,
           ),
           const Spacer(),
-          for (var i = 1; i <= 2; i++)
+          for (var i = 1; i <= 3; i++)
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 3),
               height: 4,
@@ -89,9 +92,14 @@ class _StepHeader extends StatelessWidget {
             ),
           const Spacer(),
           // F8: Skip on How you read is Gurmukhi at the standard size.
+          // F10: Not now on the profile step ends setup with no profile.
           SizedBox(
             width: 64,
-            child: step == 2 ? const _SkipButton() : null,
+            child: switch (step) {
+              2 => const _SkipButton(),
+              3 => const _NotNowButton(),
+              _ => null,
+            },
           ),
         ],
       ),
@@ -352,7 +360,7 @@ class _StepReading extends ConsumerWidget {
         ),
         _StepFooter(
           label: l.actionContinue,
-          onPressed: () => _finish(context, ref),
+          onPressed: () => context.go(Routes.setup(3)),
         ),
       ],
     );
@@ -453,7 +461,7 @@ class _SkipButton extends ConsumerWidget {
         final n = ref.read(settingsProvider.notifier);
         await n.setScript(GurbaniScript.gurmukhi);
         await n.setReaderFontSize(ReaderType.gurmukhiDefault);
-        if (context.mounted) await _finish(context, ref);
+        if (context.mounted) context.go(Routes.setup(3));
       },
       child: Text(
         L.of(context).actionSkip,
@@ -463,10 +471,30 @@ class _SkipButton extends ConsumerWidget {
   }
 }
 
-/// Ends setup and opens Today, then whatever waited for it (F7): a link
-/// opened before setup, else an invite carried through the Play install.
-/// The notification prompt has already come at app start (F6).
-Future<void> _finish(BuildContext context, WidgetRef ref) async {
+class _NotNowButton extends ConsumerWidget {
+  const _NotNowButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.colors;
+    return TextButton(
+      onPressed: () => finishSetup(context, ref),
+      child: Text(
+        L.of(context).actionNotNow,
+        maxLines: 1,
+        softWrap: false,
+        overflow: TextOverflow.visible,
+        style: HazriText.bodyStrong.copyWith(color: c.muted),
+      ),
+    );
+  }
+}
+
+/// Ends setup and opens Today, then [then] if given (the Welcome screen after
+/// a profile is made, F10), then whatever waited for it (F7): a link opened
+/// before setup, else an invite carried through the Play install. The
+/// notification prompt has already come at app start (F6).
+Future<void> finishSetup(BuildContext context, WidgetRef ref, {String? then}) async {
   // Read before Today replaces this screen and its ref goes with it.
   final prefs = ref.read(sharedPreferencesProvider);
   final invite = ref.read(installInviteProvider);
@@ -474,6 +502,7 @@ Future<void> _finish(BuildContext context, WidgetRef ref) async {
   if (!context.mounted) return;
   final router = GoRouter.of(context);
   router.go(Routes.today);
+  if (then != null) router.push(then);
   final held = await takeHeldLink(prefs);
   final code = held == null ? await invite.take() : null;
   final next = held ?? (code == null ? null : Routes.sangatJoin(code));

@@ -109,7 +109,7 @@ The same rules run in the app (lib/validation/validators.dart) and on the server
 | Field | Required | Normalize                                        | Valid when                                           | Error message (exact)                                                                      |
 |-------|----------|--------------------------------------------------|------------------------------------------------------|--------------------------------------------------------------------------------------------|
 | Name  | Yes      | Trim; collapse runs of whitespace to one space   | 2–50 characters and matches NAME_REGEX               | Empty: Please enter your name · Invalid: Name must be 2–50 letters (spaces, . ' - allowed) |
-| Email | Yes      | Trim (store); trim + lowercase (emailNormalized) | ≤ 254 characters and matches EMAIL_REGEX             | Empty: Please enter your email · Invalid: Please enter a valid email address               |
+| Email | No (since 2026-11-18) | Trim (store); trim + lowercase (emailNormalized); empty → null | Empty, or ≤ 254 characters and matches EMAIL_REGEX | Invalid: Please enter a valid email address |
 | Phone | No       | Remove every character that is not a digit, keeping a leading + if typed; empty → null | Always valid (§13 D2) | none |
 | City  | Yes      | Chosen from the app's city list (§13 D9)          | A known city ID                                      | Empty: Please choose your city                                                             |
 
@@ -133,6 +133,17 @@ Rules:
 - Length checks count Unicode code points after normalization.
 
 - Unknown JSON fields in request bodies are ignored.
+
+- **An email is optional** (owner, 2026-11-18, with the profile step in setup,
+  `03-first-run.md` F10). A profile made without one has `email` and
+  `emailNormalized` null and no `emailIndex` entry, so it cannot be confirmed
+  (POST /profile/verification-email answers `409 NO_EMAIL`) or restored by
+  email until one is added. Adding one is Change email (§8.11, PATCH
+  /profile/email), which for a profile with none is "Add email" and takes the
+  unverified path (§6.6): set at once, with a confirmation link. The Profile
+  screen says "No email yet" with the line `profileNoEmailHint` and Add email
+  (§8.7); Profile Setup labels the field "Email (optional)" (§8.5); and the
+  Profile Saved dialog of §8.6 is replaced by the Welcome screen (design 131).
 
 ## 6. Backend REST API
 
@@ -228,6 +239,16 @@ Controller methods: refresh() (step 3 only, same rules), setProfile(Profile p) (
 - **R2. Only GET /profile can say the profile is gone.** A `NO_PROFILE` from any other endpoint (the backup, sending the verification mail, editing, changing the email, a link) calls confirmGone(), which asks GET /profile and clears only on its `NO_PROFILE`. The background backup worker does the same before it clears the cache.
 - **R3. No uid, no verdict.** Reading the cache before the uid is known (signed out, or the backup worker's isolate) returns nothing and keeps the cache; only a different uid drops it.
 - **R4. The server logs each `NO_PROFILE` with the uid that asked** (anonymous, no PII), and for GET /profile the profile it found and that profile's owner, so a phone that says "No profile found" can be matched against the profile in Cloud Logging.
+
+*Added 2026-11-21, after the owner made a profile and then saw "No profile found". The server, asked by one install, keeps the profile (tested); the screens he saw are exactly what a second anonymous identity on the same phone gets: `NO_PROFILE`, then `EMAIL_EXISTS` for the same email.*
+
+- **R5. One sign-in at a time.** Every caller that finds nobody signed in waits for the same `signInAnonymously` (`SignInOnce` in `auth_service.dart`). Two at once used to make two anonymous accounts, and a profile made under one looked gone under the other. A failed attempt (offline) is not kept, so the next caller tries again.
+- **R6. A profile this phone had is offered back, never just dropped.** When the cached profile belongs to another uid, or GET /profile answers `NO_PROFILE` while the phone was showing one, its name and email are kept (`profile_lost_v1`). The Profile screen then shows **Bring back your profile** -- "Your profile was on this phone. We will send a link to {email}; open it here to bring it back." -- with Send link, and *Set up a new profile instead* underneath. A profile without an email cannot be restored, so nothing is kept for it and the screen says No profile found as before.
+- **R7. A restore link waiting is said so.** Sending one (from the email-exists dialog, the card above or Resend) keeps the address and the time (`restore_pending_v1`). For the link's hour the Profile screen shows **Waiting for your link** -- "Open it on this phone to bring your profile back. Until you do, there is no profile on this phone." -- with Resend; after it, Bring back your profile again. The Check your email screen for a restore adds "Until you open it, there is no profile on this phone." Both keys are cleared the moment a profile loads; `EMAIL_NOT_FOUND` clears them and says there is no profile for that email any more.
+- **R8. The server logs which install made, asked to restore and restored which profile** (`profile: created`, `profile: restore link sent`, `profile: restored` with the uid it came from), anonymous ids only, so one search in Cloud Logging tells a changed identity from a lost profile.
+- **R9. Leftovers of a profile removed by hand never block setup or restore.** Nothing in the server deletes a profile, but one removed by hand (an account deleted on request, or in the console) leaves `owners/{uid}` and its `emailIndex` behind. Those used to refuse setup with `PROFILE_ALREADY_EXISTS` and a restore with `DEVICE_HAS_PROFILE` while GET /profile said `NO_PROFILE`, so entering your details went straight to "No profile found" (owner, 2026-11-21). Now only an `owners` document naming a profile that uid still owns, and only an `emailIndex` naming a profile that still has that email, count; a leftover is overwritten by the new profile and logged (`profile: leftovers replaced`). **Deleting an account by hand means deleting its `owners/{uid}` and `emailIndex/{hash}` documents too.**
+- **R10. "Set up your profile" means the server said there is none.** The Today banner and its menu row show for `ProfileNone` only; `ProfileUnavailable` (no saved copy and no answer) shows nothing on Today, and the Profile screen says it could not load, with Retry. A deploy or a bad signal had shown a profile-holder "Set up your profile" (owner, 2026-11-21).
+- **R11. An unsure profile is asked about again** when the app comes back to the front and when the phone is online again (`recheckIfUnsure`): `ProfileUnavailable`, or a profile shown from the saved copy only. One the server has confirmed, or said is not there, costs no read.
 
 | # | Given | When | Then |
 | --- | --- | --- | --- |

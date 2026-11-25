@@ -4257,6 +4257,274 @@ class SaakhiFavouritesCompanion extends UpdateCompanion<SaakhiFavourite> {
   }
 }
 
+class $LiveListeningTable extends LiveListening
+    with TableInfo<$LiveListeningTable, LiveListeningData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LiveListeningTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _groupIdMeta = const VerificationMeta(
+    'groupId',
+  );
+  @override
+  late final GeneratedColumn<String> groupId = GeneratedColumn<String>(
+    'group_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _localDateMeta = const VerificationMeta(
+    'localDate',
+  );
+  @override
+  late final GeneratedColumn<String> localDate = GeneratedColumn<String>(
+    'local_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _secondsMeta = const VerificationMeta(
+    'seconds',
+  );
+  @override
+  late final GeneratedColumn<int> seconds = GeneratedColumn<int>(
+    'seconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [groupId, localDate, seconds];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'live_listening';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LiveListeningData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('group_id')) {
+      context.handle(
+        _groupIdMeta,
+        groupId.isAcceptableOrUnknown(data['group_id']!, _groupIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_groupIdMeta);
+    }
+    if (data.containsKey('local_date')) {
+      context.handle(
+        _localDateMeta,
+        localDate.isAcceptableOrUnknown(data['local_date']!, _localDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_localDateMeta);
+    }
+    if (data.containsKey('seconds')) {
+      context.handle(
+        _secondsMeta,
+        seconds.isAcceptableOrUnknown(data['seconds']!, _secondsMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {groupId, localDate};
+  @override
+  LiveListeningData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LiveListeningData(
+      groupId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}group_id'],
+      )!,
+      localDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_date'],
+      )!,
+      seconds: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}seconds'],
+      )!,
+    );
+  }
+
+  @override
+  $LiveListeningTable createAlias(String alias) {
+    return $LiveListeningTable(attachedDatabase, alias);
+  }
+}
+
+class LiveListeningData extends DataClass
+    implements Insertable<LiveListeningData> {
+  final String groupId;
+  final String localDate;
+  final int seconds;
+  const LiveListeningData({
+    required this.groupId,
+    required this.localDate,
+    required this.seconds,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['group_id'] = Variable<String>(groupId);
+    map['local_date'] = Variable<String>(localDate);
+    map['seconds'] = Variable<int>(seconds);
+    return map;
+  }
+
+  LiveListeningCompanion toCompanion(bool nullToAbsent) {
+    return LiveListeningCompanion(
+      groupId: Value(groupId),
+      localDate: Value(localDate),
+      seconds: Value(seconds),
+    );
+  }
+
+  factory LiveListeningData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LiveListeningData(
+      groupId: serializer.fromJson<String>(json['groupId']),
+      localDate: serializer.fromJson<String>(json['localDate']),
+      seconds: serializer.fromJson<int>(json['seconds']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'groupId': serializer.toJson<String>(groupId),
+      'localDate': serializer.toJson<String>(localDate),
+      'seconds': serializer.toJson<int>(seconds),
+    };
+  }
+
+  LiveListeningData copyWith({
+    String? groupId,
+    String? localDate,
+    int? seconds,
+  }) => LiveListeningData(
+    groupId: groupId ?? this.groupId,
+    localDate: localDate ?? this.localDate,
+    seconds: seconds ?? this.seconds,
+  );
+  LiveListeningData copyWithCompanion(LiveListeningCompanion data) {
+    return LiveListeningData(
+      groupId: data.groupId.present ? data.groupId.value : this.groupId,
+      localDate: data.localDate.present ? data.localDate.value : this.localDate,
+      seconds: data.seconds.present ? data.seconds.value : this.seconds,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LiveListeningData(')
+          ..write('groupId: $groupId, ')
+          ..write('localDate: $localDate, ')
+          ..write('seconds: $seconds')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(groupId, localDate, seconds);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LiveListeningData &&
+          other.groupId == this.groupId &&
+          other.localDate == this.localDate &&
+          other.seconds == this.seconds);
+}
+
+class LiveListeningCompanion extends UpdateCompanion<LiveListeningData> {
+  final Value<String> groupId;
+  final Value<String> localDate;
+  final Value<int> seconds;
+  final Value<int> rowid;
+  const LiveListeningCompanion({
+    this.groupId = const Value.absent(),
+    this.localDate = const Value.absent(),
+    this.seconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  LiveListeningCompanion.insert({
+    required String groupId,
+    required String localDate,
+    this.seconds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : groupId = Value(groupId),
+       localDate = Value(localDate);
+  static Insertable<LiveListeningData> custom({
+    Expression<String>? groupId,
+    Expression<String>? localDate,
+    Expression<int>? seconds,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (groupId != null) 'group_id': groupId,
+      if (localDate != null) 'local_date': localDate,
+      if (seconds != null) 'seconds': seconds,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  LiveListeningCompanion copyWith({
+    Value<String>? groupId,
+    Value<String>? localDate,
+    Value<int>? seconds,
+    Value<int>? rowid,
+  }) {
+    return LiveListeningCompanion(
+      groupId: groupId ?? this.groupId,
+      localDate: localDate ?? this.localDate,
+      seconds: seconds ?? this.seconds,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (groupId.present) {
+      map['group_id'] = Variable<String>(groupId.value);
+    }
+    if (localDate.present) {
+      map['local_date'] = Variable<String>(localDate.value);
+    }
+    if (seconds.present) {
+      map['seconds'] = Variable<int>(seconds.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LiveListeningCompanion(')
+          ..write('groupId: $groupId, ')
+          ..write('localDate: $localDate, ')
+          ..write('seconds: $seconds, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDb extends GeneratedDatabase {
   _$UserDb(QueryExecutor e) : super(e);
   $UserDbManager get managers => $UserDbManager(this);
@@ -4275,6 +4543,7 @@ abstract class _$UserDb extends GeneratedDatabase {
   late final $SaakhiFavouritesTable saakhiFavourites = $SaakhiFavouritesTable(
     this,
   );
+  late final $LiveListeningTable liveListening = $LiveListeningTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4290,6 +4559,7 @@ abstract class _$UserDb extends GeneratedDatabase {
     eventReminderOverrides,
     badges,
     saakhiFavourites,
+    liveListening,
   ];
 }
 
@@ -6600,6 +6870,177 @@ typedef $$SaakhiFavouritesTableProcessedTableManager =
       SaakhiFavourite,
       PrefetchHooks Function()
     >;
+typedef $$LiveListeningTableCreateCompanionBuilder =
+    LiveListeningCompanion Function({
+      required String groupId,
+      required String localDate,
+      Value<int> seconds,
+      Value<int> rowid,
+    });
+typedef $$LiveListeningTableUpdateCompanionBuilder =
+    LiveListeningCompanion Function({
+      Value<String> groupId,
+      Value<String> localDate,
+      Value<int> seconds,
+      Value<int> rowid,
+    });
+
+class $$LiveListeningTableFilterComposer
+    extends Composer<_$UserDb, $LiveListeningTable> {
+  $$LiveListeningTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get groupId => $composableBuilder(
+    column: $table.groupId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get seconds => $composableBuilder(
+    column: $table.seconds,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LiveListeningTableOrderingComposer
+    extends Composer<_$UserDb, $LiveListeningTable> {
+  $$LiveListeningTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get groupId => $composableBuilder(
+    column: $table.groupId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get seconds => $composableBuilder(
+    column: $table.seconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LiveListeningTableAnnotationComposer
+    extends Composer<_$UserDb, $LiveListeningTable> {
+  $$LiveListeningTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get groupId =>
+      $composableBuilder(column: $table.groupId, builder: (column) => column);
+
+  GeneratedColumn<String> get localDate =>
+      $composableBuilder(column: $table.localDate, builder: (column) => column);
+
+  GeneratedColumn<int> get seconds =>
+      $composableBuilder(column: $table.seconds, builder: (column) => column);
+}
+
+class $$LiveListeningTableTableManager
+    extends
+        RootTableManager<
+          _$UserDb,
+          $LiveListeningTable,
+          LiveListeningData,
+          $$LiveListeningTableFilterComposer,
+          $$LiveListeningTableOrderingComposer,
+          $$LiveListeningTableAnnotationComposer,
+          $$LiveListeningTableCreateCompanionBuilder,
+          $$LiveListeningTableUpdateCompanionBuilder,
+          (
+            LiveListeningData,
+            BaseReferences<_$UserDb, $LiveListeningTable, LiveListeningData>,
+          ),
+          LiveListeningData,
+          PrefetchHooks Function()
+        > {
+  $$LiveListeningTableTableManager(_$UserDb db, $LiveListeningTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LiveListeningTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LiveListeningTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LiveListeningTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> groupId = const Value.absent(),
+                Value<String> localDate = const Value.absent(),
+                Value<int> seconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LiveListeningCompanion(
+                groupId: groupId,
+                localDate: localDate,
+                seconds: seconds,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String groupId,
+                required String localDate,
+                Value<int> seconds = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => LiveListeningCompanion.insert(
+                groupId: groupId,
+                localDate: localDate,
+                seconds: seconds,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LiveListeningTable, LiveListeningData>(table),
+                  BaseReferences<
+                    _$UserDb,
+                    $LiveListeningTable,
+                    LiveListeningData
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LiveListeningTableProcessedTableManager =
+    ProcessedTableManager<
+      _$UserDb,
+      $LiveListeningTable,
+      LiveListeningData,
+      $$LiveListeningTableFilterComposer,
+      $$LiveListeningTableOrderingComposer,
+      $$LiveListeningTableAnnotationComposer,
+      $$LiveListeningTableCreateCompanionBuilder,
+      $$LiveListeningTableUpdateCompanionBuilder,
+      (
+        LiveListeningData,
+        BaseReferences<_$UserDb, $LiveListeningTable, LiveListeningData>,
+      ),
+      LiveListeningData,
+      PrefetchHooks Function()
+    >;
 
 class $UserDbManager {
   final _$UserDb _db;
@@ -6627,4 +7068,6 @@ class $UserDbManager {
       $$BadgesTableTableManager(_db, _db.badges);
   $$SaakhiFavouritesTableTableManager get saakhiFavourites =>
       $$SaakhiFavouritesTableTableManager(_db, _db.saakhiFavourites);
+  $$LiveListeningTableTableManager get liveListening =>
+      $$LiveListeningTableTableManager(_db, _db.liveListening);
 }

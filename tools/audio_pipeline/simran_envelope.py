@@ -14,7 +14,7 @@ Two things come out of it:
 * **onsets**, the moment each Waheguru begins, which is what actually pumps the
   wave. A bloom in the app is a real utterance, not a timer.
 
-It reads the *shipped* .m4a rather than the master, so what was measured is
+It reads the *shipped* file rather than the master, so what was measured is
 exactly what will play.
 
 Usage:
@@ -86,7 +86,7 @@ def main() -> int:
     ap.add_argument("track", help="track slug, e.g. naam-simran")
     args = ap.parse_args()
 
-    audio = os.path.join(AUDIO, f"{args.track}.m4a")
+    audio = os.path.join(AUDIO, f"{args.track}.ogg")
     if not os.path.exists(audio):
         raise SystemExit(f"missing {audio}: run build_audio.py first")
 
@@ -94,10 +94,10 @@ def main() -> int:
     onsets = onsets_of(env)
     doc = {
         "track": args.track,
-        "file": f"{args.track}.m4a",
+        "file": f"{args.track}.ogg",
         "durationMs": int(round(seconds * 1000)),
         "rateHz": RATE_HZ,
-        "method": "RMS envelope of the shipped m4a, onsets on the rise",
+        "method": "RMS envelope of the shipped recording, onsets on the rise",
         "envelope": base64.b64encode((env * 255).astype(np.uint8).tobytes()).decode(),
         "onsets": onsets,
     }

@@ -42,6 +42,12 @@ class HazriAudioHandler extends BaseAudioHandler
 
   DateTime? get sleepEndsAt => _sleepEndsAt;
 
+  /// A live group's loop is loaded (15-live-sangat LS6).
+  bool _looping = false;
+
+  @override
+  bool get isLooping => _looping;
+
   /// True once a bani has been reported complete, so the 95% rule fires once.
   final Set<int> _reportedComplete = {};
 
@@ -63,6 +69,14 @@ class HazriAudioHandler extends BaseAudioHandler
 
   @override
   bool get isPlaying => _player.playing;
+
+  @override
+  bool get isFinished {
+    if (!isLoaded || isLooping) return false;
+    if (_player.processingState == ProcessingState.completed) return true;
+    final d = _player.duration;
+    return d != null && d > Duration.zero && _player.position >= d - const Duration(seconds: 3);
+  }
 
   @override
   int get queueLength => _tracks.length;
@@ -158,7 +172,7 @@ class HazriAudioHandler extends BaseAudioHandler
       final index = _player.currentIndex;
       final total = _player.duration;
       if (index == null || total == null || total == Duration.zero) return;
-      if (_reportedComplete.contains(index)) return;
+      if (_looping || _reportedComplete.contains(index)) return;
       if (pos.inMilliseconds >= total.inMilliseconds * 0.95) {
         _reportedComplete.add(index);
         if (index < _tracks.length) _completed.add(_tracks[index].baniId);
@@ -281,11 +295,13 @@ class HazriAudioHandler extends BaseAudioHandler
       ..addAll(tracks);
     _saying = null;
     _reportedComplete.clear();
+    _looping = false;
+    await _player.setLoopMode(LoopMode.off);
     queue.add([for (final t in tracks) _mediaItemFor(t)]);
 
     await _player.setAudioSource(
       ConcatenatingAudioSource(
-        children: [for (final t in tracks) AudioSource.asset(t.assetPath)],
+        children: [for (final t in tracks) _source(t.assetPath)],
       ),
       initialIndex: startIndex,
       initialPosition: at ?? Duration.zero,
@@ -294,7 +310,34 @@ class HazriAudioHandler extends BaseAudioHandler
   }
 
   @override
-  Future<void> play() => _player.play();
+  Future<void> setLoop(PaathTrack track, {required Duration at}) async {
+    _tracks
+      ..clear()
+      ..add(track);
+    _saying = null;
+    _reportedComplete.clear();
+    _looping = true;
+    queue.add([_mediaItemFor(track)]);
+    // The recording's seam is baked into the file (tools/live/build_loops.py),
+    // so looping it whole is gapless.
+    await _player.setLoopMode(LoopMode.one);
+    await _player.setAudioSource(_source(track.assetPath), initialPosition: at);
+    mediaItem.add(_mediaItemFor(track));
+  }
+
+  /// A bundled asset, or a downloaded recitation kept on the phone (an
+  /// absolute path, `recitation_downloads.dart`).
+  static AudioSource _source(String path) =>
+      path.startsWith('/') ? AudioSource.file(path) : AudioSource.asset(path);
+
+  /// Starts playback and returns once it has started. just_audio's own
+  /// `play()` completes only when playback stops, so awaiting it held every
+  /// caller for as long as the sound went on: the live page never counted
+  /// its listener or sent a mark while it played (2026-11-19).
+  @override
+  Future<void> play() async {
+    unawaited(_player.play().catchError((Object e) => debugPrint('Hazri audio: play failed ($e)')));
+  }
 
   @override
   Future<void> pause() => _player.pause();
@@ -331,6 +374,7 @@ class HazriAudioHandler extends BaseAudioHandler
   @override
   Future<void> stop() async {
     _stopSleepTimer();
+    _looping = false;
     await _player.stop();
     await super.stop();
   }

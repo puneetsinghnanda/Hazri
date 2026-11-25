@@ -1829,7 +1829,8 @@ class LPa extends L {
   String get privacyPhoneProgress => 'ਪੜ੍ਹਨ ਦੀ ਥਾਂ ਤੇ ਸੰਕਲਪ';
 
   @override
-  String get privacyPhoneContent => 'ਹਰ ਬਾਣੀ, ਉਸ ਦਾ ਪਾਠ ਤੇ ਕੈਲੰਡਰ';
+  String get privacyPhoneContent =>
+      'ਹਰ ਬਾਣੀ, ਉਸ ਦਾ ਪਾਠ ਤੇ ਕੈਲੰਡਰ (ਸੁਖਮਨੀ ਸਾਹਿਬ ਦਾ ਪਾਠ ਇੱਕ ਵਾਰ ਡਾਊਨਲੋਡ ਹੁੰਦਾ ਹੈ, ਤੁਹਾਡੇ ਬਾਰੇ ਕੁਝ ਭੇਜੇ ਬਿਨਾਂ, ਫਿਰ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦਾ ਹੈ)';
 
   @override
   String get privacyShowMyName => 'ਗਰੁੱਪਾਂ ਵਿੱਚ ਮੇਰਾ ਨਾਂ ਵਿਖਾਓ';
@@ -2752,7 +2753,60 @@ class LPa extends L {
   String get profileFieldName => 'ਨਾਮ *';
 
   @override
-  String get profileFieldEmail => 'ਈਮੇਲ *';
+  String get profileFieldEmail => 'ਈਮੇਲ (ਮਰਜ਼ੀ ਨਾਲ)';
+
+  @override
+  String get profileNoEmail => 'ਹਾਲੇ ਕੋਈ ਈਮੇਲ ਨਹੀਂ';
+
+  @override
+  String get profileAddEmail => 'ਈਮੇਲ ਜੋੜੋ';
+
+  @override
+  String get profileNoEmailHint =>
+      'ਈਮੇਲ ਜੋੜੋ ਤਾਂ ਜੋ ਤੁਹਾਡੀ ਡਾਇਰੀ ਸੁਰੱਖਿਅਤ ਰਹੇ ਅਤੇ ਨਵੇਂ ਫ਼ੋਨ ਉੱਤੇ ਵਾਪਸ ਆ ਸਕੇ।';
+
+  @override
+  String get setupProfileTitle => 'ਆਪਣਾ ਹਾਜ਼ਰੀ ਕਾਰਡ ਬਣਾਓ';
+
+  @override
+  String get setupProfileLead =>
+      'ਤੁਹਾਡਾ ਨਾਮ ਅਤੇ ਸ਼ਹਿਰ ਤੁਹਾਨੂੰ ਸੰਗਤ ਨਾਲ ਗਲੋਬ ਉੱਤੇ ਲੈ ਆਉਂਦੇ ਹਨ। ਈਮੇਲ ਜੋੜੋ ਤਾਂ ਤੁਹਾਡੀ ਡਾਇਰੀ ਸੁਰੱਖਿਅਤ ਰਹਿੰਦੀ ਹੈ।';
+
+  @override
+  String get setupProfileCreate => 'ਮੇਰੀ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ';
+
+  @override
+  String get setupProfileKept =>
+      'ਕਨੈਕਸ਼ਨ ਨਹੀਂ ਹੈ। ਤੁਹਾਡੇ ਵੇਰਵੇ ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਰੱਖੇ ਗਏ ਹਨ, ਅਤੇ ਔਨਲਾਈਨ ਹੁੰਦਿਆਂ ਹੀ ਪ੍ਰੋਫਾਈਲ ਬਣ ਜਾਵੇਗੀ।';
+
+  @override
+  String get cardYourName => 'ਤੁਹਾਡਾ ਨਾਮ';
+
+  @override
+  String get cardYourCity => 'ਤੁਹਾਡਾ ਸ਼ਹਿਰ';
+
+  @override
+  String get cardYourEmail => 'ਤੁਹਾਡੀ ਈਮੇਲ';
+
+  @override
+  String profileMadeTitle(String name) {
+    return 'ਜੀ ਆਇਆਂ ਨੂੰ, $name';
+  }
+
+  @override
+  String profileMadeConfirmBody(String email) {
+    return 'ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਬਣ ਗਈ ਹੈ। ਕੀ ਤੁਸੀਂ $email ਦੀ ਪੁਸ਼ਟੀ ਕਰਨਾ ਚਾਹੋਗੇ? ਇਹ ਲੋੜੀਂਦਾ ਨਹੀਂ, ਅਤੇ ਬਾਅਦ ਵਿੱਚ ਪ੍ਰੋਫਾਈਲ ਤੋਂ ਵੀ ਹੋ ਸਕਦਾ ਹੈ।';
+  }
+
+  @override
+  String get profileMadeNoEmailBody =>
+      'ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਬਣ ਗਈ ਹੈ। ਡਾਇਰੀ ਸੁਰੱਖਿਅਤ ਰੱਖਣ ਲਈ ਤੁਸੀਂ ਕਦੇ ਵੀ ਪ੍ਰੋਫਾਈਲ ਤੋਂ ਈਮੇਲ ਜੋੜ ਸਕਦੇ ਹੋ।';
+
+  @override
+  String get profileMadeLater => 'ਬਾਅਦ ਵਿੱਚ, ਅੱਜ ਵੱਲ ਚੱਲੋ';
+
+  @override
+  String get profileMadeToday => 'ਅੱਜ ਵੱਲ ਚੱਲੋ';
 
   @override
   String get profileFieldPhone => 'ਫ਼ੋਨ (ਲੋੜ ਨਹੀਂ)';
@@ -3037,7 +3091,7 @@ class LPa extends L {
 
   @override
   String get privacyProfileDetails =>
-      'ਤੁਹਾਡਾ ਨਾਮ, ਈਮੇਲ ਅਤੇ ਸ਼ਹਿਰ, ਅਤੇ ਫ਼ੋਨ ਨੰਬਰ ਜੇ ਤੁਸੀਂ ਦਿੰਦੇ ਹੋ';
+      'ਤੁਹਾਡਾ ਨਾਮ ਅਤੇ ਸ਼ਹਿਰ, ਅਤੇ ਈਮੇਲ ਤੇ ਫ਼ੋਨ ਨੰਬਰ ਜੇ ਤੁਸੀਂ ਦਿੰਦੇ ਹੋ';
 
   @override
   String get privacyProfileMail =>
@@ -3842,7 +3896,7 @@ class LPa extends L {
   String get quizKnowMore => 'ਹੋਰ ਜਾਣੋ';
 
   @override
-  String get quizTakeQuiz => 'ਕੁਇਜ਼ ਦਿਓ';
+  String get quizTakeQuiz => 'ਕੁਇਜ਼';
 
   @override
   String quizQuestionOf(int n, int total) {
@@ -3961,9 +4015,6 @@ class LPa extends L {
   String get quizPeriodToday => 'ਅੱਜ';
 
   @override
-  String get quizPeriodWeek => 'ਹਫ਼ਤਾ';
-
-  @override
   String get quizPeriodMonth => 'ਮਹੀਨਾ';
 
   @override
@@ -3975,11 +4026,6 @@ class LPa extends L {
   @override
   String quizPlayedToday(int count) {
     return 'ਪਹਿਲੇ 20 · ਅੱਜ $count ਨੇ ਖੇਡੀ · ਭਾਰਤੀ ਸਮੇਂ ਅੱਧੀ ਰਾਤ ਨੂੰ ਨਵਾਂ';
-  }
-
-  @override
-  String quizPlayedWeek(int count) {
-    return 'ਪਹਿਲੇ 20 · ਇਸ ਹਫ਼ਤੇ $count ਨੇ ਖੇਡੀ · ਸੋਮਵਾਰ ਭਾਰਤੀ ਸਮੇਂ ਅੱਧੀ ਰਾਤ ਨੂੰ ਨਵਾਂ';
   }
 
   @override
@@ -3995,14 +4041,7 @@ class LPa extends L {
 
   @override
   String get quizBoardEmptyToday =>
-      'ਅੱਜ ਹਾਲੇ ਕਿਸੇ ਨੇ ਇਹ ਕੁਇਜ਼ ਨਹੀਂ ਖੇਡਿਆ। ਅੱਜ ਦਾ ਬੋਰਡ ਅੱਧੀ ਰਾਤ (IST) ਨੂੰ ਨਵਾਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ; ਪਹਿਲਾਂ ਦੇ ਕੁਇਜ਼ ਹਫ਼ਤੇ ਅਤੇ ਮਹੀਨੇ ਦੇ ਬੋਰਡ \'ਤੇ ਹਨ।';
-
-  @override
-  String get quizBoardEmptyWeek =>
-      'ਇਸ ਹਫ਼ਤੇ ਹਾਲੇ ਕਿਸੇ ਨੇ ਇਹ ਕੁਇਜ਼ ਨਹੀਂ ਖੇਡਿਆ। ਪਹਿਲਾਂ ਦੇ ਕੁਇਜ਼ ਮਹੀਨੇ ਦੇ ਬੋਰਡ \'ਤੇ ਹਨ।';
-
-  @override
-  String get quizSeeWeek => 'ਇਹ ਹਫ਼ਤਾ ਵੇਖੋ';
+      'ਅੱਜ ਹਾਲੇ ਕਿਸੇ ਨੇ ਇਹ ਕੁਇਜ਼ ਨਹੀਂ ਖੇਡਿਆ। ਅੱਜ ਦਾ ਬੋਰਡ ਅੱਧੀ ਰਾਤ (IST) ਨੂੰ ਨਵਾਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ; ਪਹਿਲਾਂ ਦੇ ਕੁਇਜ਼ ਇਸ ਮਹੀਨੇ ਦੇ ਅਤੇ ਹੁਣ ਤੱਕ ਦੇ ਬੋਰਡ \'ਤੇ ਹਨ।';
 
   @override
   String get quizSeeMonth => 'ਇਹ ਮਹੀਨਾ ਵੇਖੋ';
@@ -4095,9 +4134,6 @@ class LPa extends L {
   String get quizPlaceToday => 'ਅੱਜ';
 
   @override
-  String get quizPlaceWeek => 'ਇਸ ਹਫ਼ਤੇ';
-
-  @override
   String get quizPlaceMonth => 'ਇਸ ਮਹੀਨੇ';
 
   @override
@@ -4164,4 +4200,260 @@ class LPa extends L {
   @override
   String get privacyDeleteNoBrowser =>
       'ਬ੍ਰਾਊਜ਼ਰ ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕਿਆ। ਪੰਨਾ ਹੈ hazri.me/delete-account';
+
+  @override
+  String get sangatTabDiscover => 'ਖੋਜੋ';
+
+  @override
+  String sangatTabMine(int count) {
+    return 'ਮੇਰੇ ਗਰੁੱਪ · $count';
+  }
+
+  @override
+  String get sangatRunningHeading => 'ਚੱਲ ਰਹੇ';
+
+  @override
+  String get sangatOwnGroup => 'ਆਪਣਾ ਗਰੁੱਪ';
+
+  @override
+  String get sangatOwnGroupSub =>
+      'ਨਿੱਜੀ, ਸਿਰਫ਼ ਸੱਦੇ ਨਾਲ। ਇੱਕ ਟੀਚਾ ਅਤੇ ਅੰਤ ਦੀ ਤਾਰੀਖ਼ ਰੱਖੋ, ਅਤੇ ਇਕੱਠੇ ਬੈਠੋ।';
+
+  @override
+  String get liveTag => 'ਲਾਈਵ';
+
+  @override
+  String liveListening(int count) {
+    return '$count ਸੁਣ ਰਹੇ';
+  }
+
+  @override
+  String liveCities(int count) {
+    return 'ਲਾਈਵ ਸੰਗਤ · ਸਦਾ ਚੱਲਦੀ · $count ਸ਼ਹਿਰ';
+  }
+
+  @override
+  String liveJoinedFrom(String name, String city) {
+    return '$name $city ਤੋਂ ਜੁੜੇ';
+  }
+
+  @override
+  String get liveJoin => 'ਜੁੜੋ';
+
+  @override
+  String get liveJoined => 'ਜੁੜੇ ਹੋਏ';
+
+  @override
+  String get liveSwipeUp => 'ਗਰੁੱਪ ਲਈ ਉੱਪਰ ਸਵਾਈਪ ਕਰੋ';
+
+  @override
+  String get liveYouAreIn => 'ਲਾਈਵ, ਜਿਨ੍ਹਾਂ ਵਿੱਚ ਤੁਸੀਂ ਹੋ';
+
+  @override
+  String get liveListen => 'ਸੁਣੋ';
+
+  @override
+  String liveYouListened(int minutes) {
+    return 'ਅੱਜ ਤੁਸੀਂ $minutes ਮਿੰਟ ਸੁਣਿਆ';
+  }
+
+  @override
+  String get liveMinutesListened => 'ਸੁਣੇ ਮਿੰਟ';
+
+  @override
+  String get liveSangatToday => 'ਅੱਜ ਸੰਗਤ';
+
+  @override
+  String get liveSangatMonth => 'ਇਸ ਮਹੀਨੇ ਸੰਗਤ';
+
+  @override
+  String get liveYoursToday => 'ਤੁਹਾਡੇ ਅੱਜ';
+
+  @override
+  String get liveYoursMonth => 'ਤੁਹਾਡੇ ਇਸ ਮਹੀਨੇ';
+
+  @override
+  String get liveWaiting => 'ਸੰਗਤ ਦੀ ਉਡੀਕ…';
+
+  @override
+  String get liveKindMeditation => 'ਧਿਆਨ';
+
+  @override
+  String get liveKindJaap => 'ਜਾਪ';
+
+  @override
+  String liveMembers(int count) {
+    return 'ਮੈਂਬਰ · $count';
+  }
+
+  @override
+  String get liveNoMembers => 'ਹਾਲੇ ਕੋਈ ਨਹੀਂ ਜੁੜਿਆ।';
+
+  @override
+  String liveMinutesShort(int minutes) {
+    return '$minutes ਮਿੰਟ';
+  }
+
+  @override
+  String liveLeaveConfirm(String group) {
+    return '$group ਛੱਡਣਾ ਹੈ? ਤੁਸੀਂ ਫਿਰ ਵੀ ਸੁਣ ਸਕਦੇ ਹੋ, ਅਤੇ ਕਦੇ ਵੀ ਮੁੜ ਜੁੜ ਸਕਦੇ ਹੋ।';
+  }
+
+  @override
+  String get liveJoinNeedsProfile =>
+      'ਲਾਈਵ ਗਰੁੱਪ ਨਾਲ ਜੁੜਨ ਲਈ ਆਪਣਾ ਹਾਜ਼ਰੀ ਕਾਰਡ ਬਣਾਓ। ਸੁਣਨ ਲਈ ਇਸ ਦੀ ਲੋੜ ਨਹੀਂ।';
+
+  @override
+  String get liveSit => 'ਬੈਠੋ';
+
+  @override
+  String liveSitFor(int minutes) {
+    return '$minutes ਮਿੰਟ ਬੈਠੋ';
+  }
+
+  @override
+  String get liveSitCounts =>
+      'ਬੈਠਣਾ ਨਾਮ ਸਿਮਰਨ ਵਜੋਂ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ, ਹਾਜ਼ਰੀ ਅਤੇ ਤੁਹਾਡੇ ਟੀਚੇ ਵੱਲ। ਸਿਰਫ਼ ਸੁਣਨਾ ਕਿਸੇ ਵੱਲ ਨਹੀਂ ਗਿਣਿਆ ਜਾਂਦਾ।';
+
+  @override
+  String get liveSound => 'ਆਵਾਜ਼';
+
+  @override
+  String get liveSoundOff => 'ਆਵਾਜ਼ ਬੰਦ';
+
+  @override
+  String liveSleepIn(int minutes) {
+    return '$minutes ਮਿੰਟ ਵਿੱਚ ਰੁਕੇਗਾ';
+  }
+
+  @override
+  String get liveSleepOff => 'ਕੋਈ ਸਲੀਪ ਟਾਈਮਰ ਨਹੀਂ';
+
+  @override
+  String get liveSittingLeft => 'ਬਾਕੀ';
+
+  @override
+  String get liveListeningLabel => 'ਸੁਣ ਰਹੇ';
+
+  @override
+  String get liveSatLabel => 'ਬੈਠੇ';
+
+  @override
+  String get privacyProfileLive =>
+      'ਜਦੋਂ ਕੋਈ ਲਾਈਵ ਗਰੁੱਪ ਚੱਲਦਾ ਹੈ, ਹਰ ਪੰਜ ਮਿੰਟ ਸੁਣਨ ਦਾ ਨਿਸ਼ਾਨ: ਗਰੁੱਪ, ਅਤੇ ਤੁਹਾਡੀ ਪ੍ਰੋਫ਼ਾਈਲ ਦਾ ਸ਼ਹਿਰ। ਤੁਹਾਡੇ ਸੁਣੇ ਮਿੰਟ ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਗਿਣੇ ਜਾਂਦੇ ਹਨ';
+
+  @override
+  String get privacyProfileLiveJoin =>
+      'ਜੇ ਤੁਸੀਂ ਲਾਈਵ ਗਰੁੱਪ ਨਾਲ ਜੁੜਦੇ ਹੋ: ਤੁਹਾਡਾ ਪਹਿਲਾ ਨਾਮ, ਆਖ਼ਰੀ ਨਾਮ ਦਾ ਪਹਿਲਾ ਅੱਖਰ ਅਤੇ ਸ਼ਹਿਰ, ਇਸ ਦੇ ਪੰਨੇ ਉੱਤੇ ਸਭ ਨੂੰ ਜੁੜੇ ਵਜੋਂ ਦਿਸਦੇ ਹਨ, ਇਸ ਮਹੀਨੇ ਉੱਥੇ ਤੁਹਾਡੇ ਮਿੰਟਾਂ ਨਾਲ';
+
+  @override
+  String get quizPeriodAllTime => 'ਹੁਣ ਤੱਕ';
+
+  @override
+  String quizPlayedAllTime(int count) {
+    return 'ਪਹਿਲੇ 20 · $count ਨੇ ਖੇਡੀ · ਕਦੇ ਨਵਾਂ ਨਹੀਂ ਹੁੰਦਾ';
+  }
+
+  @override
+  String get quizBoardEmptyMonth =>
+      'ਇਸ ਮਹੀਨੇ ਹਾਲੇ ਕਿਸੇ ਨੇ ਇਹ ਕੁਇਜ਼ ਨਹੀਂ ਖੇਡਿਆ। ਪਹਿਲਾਂ ਦੇ ਕੁਇਜ਼ ਹੁਣ ਤੱਕ ਦੇ ਬੋਰਡ \'ਤੇ ਹਨ।';
+
+  @override
+  String get quizSeeAllTime => 'ਹੁਣ ਤੱਕ ਦਾ ਬੋਰਡ ਵੇਖੋ';
+
+  @override
+  String get quizPlaceAllTime => 'ਹੁਣ ਤੱਕ';
+
+  @override
+  String get recitationDownloadOnce =>
+      'ਪਾਠ ਦੀ ਆਵਾਜ਼ ਇੱਕ ਵਾਰ ਡਾਊਨਲੋਡ ਹੁੰਦੀ ਹੈ। ਫਿਰ ਇਹ ਤੁਹਾਡੇ ਫ਼ੋਨ ਵਿੱਚ ਰਹਿੰਦੀ ਹੈ ਅਤੇ ਇੰਟਰਨੈੱਟ ਤੋਂ ਬਿਨਾਂ ਚੱਲਦੀ ਹੈ।';
+
+  @override
+  String recitationDownloading(String done, String total) {
+    return 'ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ · $total ਵਿੱਚੋਂ $done MB';
+  }
+
+  @override
+  String get recitationNoInternet =>
+      'ਇੰਟਰਨੈੱਟ ਨਹੀਂ ਹੈ। ਪਾਠ ਦੀ ਆਵਾਜ਼ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਇੱਕ ਵਾਰ ਜੁੜੋ; ਪਾਠ ਇਸ ਤੋਂ ਬਿਨਾਂ ਵੀ ਖੁੱਲ੍ਹਦਾ ਹੈ।';
+
+  @override
+  String get recitationDownloadFailed => 'ਡਾਊਨਲੋਡ ਪੂਰਾ ਨਹੀਂ ਹੋਇਆ।';
+
+  @override
+  String get keepAwakeTitle => 'ਯਾਦ-ਸੂਚਨਾਵਾਂ ਆਉਂਦੀਆਂ ਰਹਿਣ';
+
+  @override
+  String get keepAwakeBody =>
+      'Android ਉਹਨਾਂ ਐਪਾਂ ਦੀਆਂ ਯਾਦ-ਸੂਚਨਾਵਾਂ ਚੁੱਪਚਾਪ ਬੰਦ ਕਰ ਦਿੰਦਾ ਹੈ ਜੋ ਉਸ ਨੂੰ ਵਰਤੋਂ ਵਿੱਚ ਨਹੀਂ ਲੱਗਦੀਆਂ। ਇਹ ਦੋ ਸੈਟਿੰਗਾਂ ਹਾਜ਼ਰੀ ਦੀਆਂ ਸੂਚਨਾਵਾਂ ਜਾਰੀ ਰੱਖਦੀਆਂ ਹਨ। ਪਰਿਵਾਰ ਦਾ ਕੋਈ ਜੀਅ ਇੱਕ ਵਾਰ ਇਹ ਕਰ ਸਕਦਾ ਹੈ।';
+
+  @override
+  String get keepAwakeUnusedTitle => 'ਹਾਜ਼ਰੀ ਨੂੰ ਨਾ ਰੋਕੋ';
+
+  @override
+  String get keepAwakeUnusedSub =>
+      '“ਵਰਤੋਂ ਨਾ ਹੋਣ \'ਤੇ ਐਪ ਗਤੀਵਿਧੀ ਰੋਕੋ” ਬੰਦ ਕਰੋ';
+
+  @override
+  String get keepAwakeBatteryTitle => 'ਹਾਜ਼ਰੀ ਨੂੰ ਪਿਛੋਕੜ ਵਿੱਚ ਚੱਲਣ ਦਿਓ';
+
+  @override
+  String get keepAwakeBatterySub =>
+      'ਬੈਟਰੀ ਵਿੱਚ “ਕੋਈ ਪਾਬੰਦੀ ਨਹੀਂ” ਜਾਂ “ਪਿਛੋਕੜ ਗਤੀਵਿਧੀ ਦੀ ਆਗਿਆ” ਚੁਣੋ';
+
+  @override
+  String get keepAwakeOpen => 'ਖੋਲ੍ਹੋ';
+
+  @override
+  String get keepAwakeDone => 'ਹੋ ਗਿਆ';
+
+  @override
+  String get keepAwakeLater => 'ਹੁਣ ਨਹੀਂ';
+
+  @override
+  String get announcementTitle => 'ਹਾਜ਼ਰੀ ਵੱਲੋਂ ਸੁਨੇਹਾ';
+
+  @override
+  String get announcementOffline =>
+      'ਇਹ ਸੁਨੇਹਾ ਖੋਲ੍ਹਣ ਲਈ ਇੰਟਰਨੈੱਟ ਚਾਹੀਦਾ ਹੈ। ਜੁੜਨ \'ਤੇ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ।';
+
+  @override
+  String get notifChannelAnnouncements => 'ਐਲਾਨ';
+
+  @override
+  String get notifKindAnnouncements => 'ਐਲਾਨ';
+
+  @override
+  String get notifKindAnnouncementsSub => 'ਕਦੇ-ਕਦਾਈਂ, ਹਾਜ਼ਰੀ ਵੱਲੋਂ ਇੱਕ ਸੁਨੇਹਾ';
+
+  @override
+  String get privacyProfileAnnouncements =>
+      'ਤੁਹਾਡੇ ਫ਼ੋਨ ਦਾ ਸੂਚਨਾ ਪਤਾ, ਭਾਸ਼ਾ ਅਤੇ ਸਮਾਂ-ਖੇਤਰ, ਤਾਂ ਜੋ ਹਾਜ਼ਰੀ ਤੁਹਾਨੂੰ ਐਲਾਨ ਭੇਜ ਸਕੇ (ਸੂਚਨਾਵਾਂ ਵਿੱਚ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ); ਜਦੋਂ ਤੁਸੀਂ ਕੋਈ ਖੋਲ੍ਹਦੇ ਹੋ, ਕਿ ਤੁਸੀਂ ਉਹ ਖੋਲ੍ਹਿਆ';
+
+  @override
+  String get profileRestoreWaitingTitle => 'ਤੁਹਾਡੇ ਲਿੰਕ ਦੀ ਉਡੀਕ';
+
+  @override
+  String profileRestoreWaitingBody(String email) {
+    return 'ਅਸੀਂ $email ਉੱਤੇ ਇੱਕ ਲਿੰਕ ਭੇਜਿਆ ਹੈ। ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਵਾਪਸ ਲਿਆਉਣ ਲਈ ਇਸਨੂੰ ਇਸੇ ਫ਼ੋਨ ਉੱਤੇ ਖੋਲ੍ਹੋ। ਜਦੋਂ ਤੱਕ ਨਹੀਂ ਖੋਲ੍ਹਦੇ, ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਕੋਈ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਹੈ।';
+  }
+
+  @override
+  String get profileRestoreLostTitle => 'ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਵਾਪਸ ਲਿਆਓ';
+
+  @override
+  String profileRestoreLostBody(String email) {
+    return 'ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਸੀ। ਅਸੀਂ $email ਉੱਤੇ ਇੱਕ ਲਿੰਕ ਭੇਜਾਂਗੇ; ਇਸਨੂੰ ਵਾਪਸ ਲਿਆਉਣ ਲਈ ਇੱਥੇ ਖੋਲ੍ਹੋ।';
+  }
+
+  @override
+  String get profileRestoreNew => 'ਇਸਦੀ ਥਾਂ ਨਵੀਂ ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ';
+
+  @override
+  String get profileRestoreGone =>
+      'ਉਸ ਈਮੇਲ ਦੀ ਹੁਣ ਕੋਈ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਹੈ। ਤੁਸੀਂ ਨਵੀਂ ਬਣਾ ਸਕਦੇ ਹੋ।';
+
+  @override
+  String get emailSentRestoreUntil =>
+      'ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਇਸਨੂੰ ਨਹੀਂ ਖੋਲ੍ਹਦੇ, ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਕੋਈ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਹੈ।';
 }

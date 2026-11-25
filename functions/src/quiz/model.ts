@@ -2,8 +2,10 @@
 // Days, weeks and months are IST (14-quiz.md QZ21).
 import { addDays } from '../time';
 
-export type Period = 'day' | 'week' | 'month';
-export const PERIODS: Period[] = ['day', 'week', 'month'];
+/** `all` is the All time board (owner, 2026-11-19): it never resets. Week is
+ * still written for apps from before it, which still ask for it. */
+export type Period = 'day' | 'week' | 'month' | 'all';
+export const PERIODS: Period[] = ['day', 'week', 'month', 'all'];
 export const ALL = 'all';
 
 const DAY_MS = 86_400_000;
@@ -33,10 +35,11 @@ export function weekStartOf(day: string): string {
 export function periodKey(period: Period, day: string): string {
   if (period === 'day') return day;
   if (period === 'week') return isoWeekOf(day);
+  if (period === 'all') return '';
   return day.slice(0, 7);
 }
 
-/** `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`. */
+/** `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`, `a_all`. */
 export function boardId(period: Period, day: string, scope: string): string {
   return `${period[0]}${periodKey(period, day)}_${scope}`;
 }
@@ -45,6 +48,7 @@ export function boardId(period: Period, day: string, scope: string): string {
 export function deleteAtOf(period: Period, day: string): Date {
   if (period === 'day') return utc(addDays(day, 35));
   if (period === 'week') return utc(addDays(weekStartOf(day), 70));
+  if (period === 'all') return utc('2200-01-01');
   return utc(addDays(`${day.slice(0, 7)}-01`, 400));
 }
 

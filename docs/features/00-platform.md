@@ -22,7 +22,9 @@ built and where its data lives:
 
 What still holds from 0.1, unchanged: the project is `hazri-dfcc1` on Blaze;
 Blaze closed D13; rule 4 holds in full; nothing a reader needs to read a
-bani, hear it, see the calendar or keep the diary may require the network.
+bani, hear it, see the calendar or keep the diary may require the network,
+but for one download: Sukhmani Sahib's recitation, fetched once and kept
+(owner, 2026-11-19; PRD §0.3 rule 4).
 
 ## 0.5 How we stop shipping broken things
 

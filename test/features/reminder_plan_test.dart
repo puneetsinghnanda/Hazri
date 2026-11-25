@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hazri/core/time/clock.dart' show localDateKey;
 import 'package:hazri/core/db/user_db.dart';
 import 'package:hazri/core/l10n/gen/app_localizations.dart';
 import 'package:hazri/features/reminders/domain/reminder_plan.dart';
@@ -66,8 +67,8 @@ void main() {
 
   test('T-1: Amrit Vela at 04:00 every day, Sunday\'s message on Sunday', () {
     final av = ofKind(plan(), NotificationKind.amritVela).toList();
-    // Today's (Saturday's) 04:00 has passed; the window is today and six more.
-    expect(av, hasLength(6));
+    // Today's (Saturday's) 04:00 has passed; the window is today and 29 more.
+    expect(av, hasLength(ReminderPlanner.windowDays - 1));
     expect(av.every((n) => n.at.hour == 4 && n.at.minute == 0), isTrue);
     expect(av.first.at, DateTime(2026, 10, 4, 4));
     expect(av.first.title, l.notifAv1Title);
@@ -233,14 +234,31 @@ void main() {
     expect(ofKind(p, NotificationKind.hazriNudge), isEmpty);
   });
 
-  test('CM2: never more than 60 pending, nearest first, nothing in the past', () {
+  test('CM2: 30 days planned, nearest first, nothing in the past; Android arms the nearest 60', () {
     final items = [for (var i = 0; i < 12; i++) bani('i$i', 'JAPJ$i', at: '${(5 + i).toString().padLeft(2, '0')}:00')];
     final p = plan(items: items);
-    expect(p.length, lessThanOrEqualTo(ReminderPlanner.maxPending));
+    expect(p.length, lessThanOrEqualTo(ReminderPlanner.maxPlanned));
     for (var i = 1; i < p.length; i++) {
       expect(p[i].at.isBefore(p[i - 1].at), isFalse);
     }
     expect(p.every((n) => n.at.isAfter(sat)), isTrue);
+    // A goal of twelve items still reaches the 30th day: the 60 cap is on
+    // what Android holds at once, not on the plan (owner, 2026-11-19).
+    expect(p.last.at.difference(sat).inDays, greaterThanOrEqualTo(28));
+    expect(ReminderPlanner.maxPending, 60);
+  });
+
+  test('a person who never opens the app still has Amrit Vela for 30 days', () {
+    final p = plan();
+    final days = {for (final n in ofKind(p, NotificationKind.amritVela)) localDateKey(n.at)};
+    expect(days.length, ReminderPlanner.windowDays - 1);
+  });
+
+  test('every planned id in 30 days is distinct', () {
+    final items = [for (var i = 0; i < 12; i++) bani('i$i', 'JAPJ$i', at: '${(5 + i).toString().padLeft(2, '0')}:00')];
+    final p = plan(items: items);
+    expect({for (final n in p) n.notificationId}.length, p.length);
+    expect(p.every((n) => ReminderPlanner.isPlannedId(n.notificationId)), isTrue);
   });
 
   test('notification ids are stable and distinct across a week', () {

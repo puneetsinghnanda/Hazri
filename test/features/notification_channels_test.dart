@@ -102,9 +102,12 @@ void main() {
 
     expect(calls.map((c) => c.method), isNot(contains('zonedSchedule')),
         reason: 'the plugin\'s scheduled path never showed a reminder on the owner\'s phone');
+    // One call with the whole plan; Android stores it and arms the nearest
+    // 60 (Reminders.kt armNext, 2026-11-19).
+    final batches = [for (final c in nativeCalls) if (c.method == 'scheduleAll') c];
+    expect(batches, hasLength(1));
     final scheduled = [
-      for (final c in nativeCalls)
-        if (c.method == 'schedule') args(c),
+      for (final r in (args(batches.single)['reminders'] as List)) (r as Map).cast<String, Object?>(),
     ];
     expect(scheduled, hasLength(NotificationKind.values.length));
     for (final r in scheduled) {

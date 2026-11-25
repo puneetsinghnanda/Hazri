@@ -130,6 +130,8 @@ export function miscRouter(deps: Deps): Router {
         locale: b.locale,
         tz,
         utcOffsetMin: offset,
+        // AN7: the app's Announcements switch; on unless it says off.
+        announcements: b.announcements !== false,
         updatedAt: FieldValue.serverTimestamp(),
       });
       res.json({ result: 'TOKEN_SAVED' });

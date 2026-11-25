@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/backend/api_exception.dart';
 import '../../../core/backend/auth_service.dart';
@@ -9,6 +11,7 @@ import '../../../core/settings/settings_controller.dart';
 import '../domain/profile.dart';
 import 'profile_api.dart';
 import 'profile_cache.dart';
+import 'profile_recovery.dart';
 
 /// `01-accounts.md` §8.3.
 sealed class ProfileState {
@@ -36,6 +39,22 @@ class ProfileUnavailable extends ProfileState {
   const ProfileUnavailable();
 }
 
+/// What [ProfileController.create] did: made the profile, or, with no
+/// connection, kept the details on the phone to send at the next start
+/// (03-first-run F10, 2026-11-18).
+sealed class CreateOutcome {
+  const CreateOutcome();
+}
+
+class ProfileCreated extends CreateOutcome {
+  const ProfileCreated(this.profile);
+  final Profile profile;
+}
+
+class ProfileKept extends CreateOutcome {
+  const ProfileKept();
+}
+
 final profileCacheProvider =
     Provider<ProfileCache>((ref) => ProfileCache(ref.watch(sharedPreferencesProvider)));
 
@@ -57,6 +76,8 @@ class ProfileController extends Notifier<ProfileState> {
   AuthService get _auth => ref.read(authServiceProvider);
   ProfileCache get _cache => ref.read(profileCacheProvider);
   ProfileApi get _api => ref.read(profileApiProvider);
+  SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
+  ProfileRecoveryNotifier get _recovery => ref.read(profileRecoveryProvider.notifier);
 
   @override
   ProfileState build() {
@@ -76,10 +97,58 @@ class ProfileController extends Notifier<ProfileState> {
       }
     }
     // 2. The cache shows the name at once.
-    final cached = _cache.read(currentUid: _auth.uid);
+    final cached = _cache.read(
+      currentUid: _auth.uid,
+      onOtherOwner: (p) {
+        // R6: the install's identity is not the one that had this profile.
+        debugPrint('Hazri: the cached profile belongs to an earlier sign-in');
+        unawaited(_recovery.rememberLost(name: p.name, email: p.email));
+      },
+    );
     if (cached != null) state = ProfileLoaded(cached, isStale: true);
     // 3. The server.
     await refresh();
+    // 4. Details kept while offline at first run (F10) are sent now.
+    if (state is ProfileNone) await _submitPending();
+  }
+
+  /// Details typed with no connection, waiting to be sent (F10).
+  static const kPending = 'pending_profile_v1';
+
+  /// POST /profile, or, with no connection, keep the details to send at the
+  /// next start (F10). An [ApiException] (a wrong field, an email that exists)
+  /// is left to the caller.
+  Future<CreateOutcome> create({required String name, String? email, String? phone, required String cityId}) async {
+    try {
+      final p = await _api.create(name: name, email: email, phone: phone, cityId: cityId);
+      await _prefs.remove(kPending);
+      await setProfile(p);
+      return ProfileCreated(p);
+    } on NetworkException {
+      await _prefs.setString(kPending, jsonEncode({'name': name, 'email': email, 'phone': phone, 'cityId': cityId}));
+      return const ProfileKept();
+    }
+  }
+
+  Future<void> _submitPending() async {
+    final raw = _prefs.getString(kPending);
+    if (raw == null) return;
+    final j = jsonDecode(raw) as Map<String, Object?>;
+    try {
+      await create(
+        name: j['name']! as String,
+        email: j['email'] as String?,
+        phone: j['phone'] as String?,
+        cityId: j['cityId']! as String,
+      );
+    } on ApiException catch (e) {
+      // The details were refused (an email already in use, say): drop them,
+      // and the Profile banner offers setup as for anybody without one.
+      debugPrint('Hazri: the kept profile was refused (${e.code})');
+      await _prefs.remove(kPending);
+    } on Object catch (e) {
+      debugPrint('Hazri: the kept profile could not be sent ($e)');
+    }
   }
 
   /// GET /profile with the rules of §8.3 step 3. Only the newest answer
@@ -96,6 +165,9 @@ class ProfileController extends Notifier<ProfileState> {
     } on ApiException catch (e) {
       if (mine != _version) return;
       if (e.statusCode == 404 && e.code == 'NO_PROFILE') {
+        // R6: a profile this phone was showing is offered back, not dropped.
+        final had = _cache.peek();
+        if (had != null) await _recovery.rememberLost(name: had.name, email: had.email);
         await _clear();
       } else {
         _keepOrUnavailable();
@@ -109,6 +181,24 @@ class ProfileController extends Notifier<ProfileState> {
       _inFlight--;
       ref.notifyListeners();
     }
+  }
+
+  /// R11: a profile the server could not be asked about (none saved and no
+  /// answer, or only the saved copy shown) is asked about again, so a failed
+  /// call mends itself without a restart. One the server has confirmed, or
+  /// said is not there, costs no read.
+  Future<void> recheckIfUnsure() async {
+    if (refreshing) return;
+    final s = state;
+    if (s is ProfileUnavailable || (s is ProfileLoaded && s.isStale)) await refresh();
+  }
+
+  /// POST /profile/restore-request, remembering that a link is waiting (R7).
+  /// Errors are the API's, for the caller.
+  Future<int> requestRestore(String email) async {
+    final cooldown = await _api.requestRestore(email);
+    await _recovery.linkSent(email);
+    return cooldown;
   }
 
   /// Another endpoint answered NO_PROFILE. That alone does not clear the
@@ -136,6 +226,7 @@ class ProfileController extends Notifier<ProfileState> {
 
   Future<void> _show(Profile p) async {
     await _cache.write(p, ownerUid: _auth.uid);
+    await _recovery.clear();
     state = ProfileLoaded(p, isStale: false);
   }
 

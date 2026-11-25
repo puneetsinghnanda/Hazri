@@ -21,6 +21,7 @@ import '../../diary/ui/diary_screen.dart' show hazriStreakProvider;
 import '../../settings/ui/screen_scaffold.dart';
 import '../data/profile_api.dart';
 import '../data/profile_controller.dart';
+import '../data/profile_recovery.dart';
 import '../domain/profile.dart';
 import 'change_email_dialog.dart';
 import 'city_picker_sheet.dart';
@@ -60,7 +61,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     setState(() => _sending = true);
     try {
       final cooldown = await ref.read(profileApiProvider).sendVerification();
-      if (mounted) await _push(Routes.emailSent, extra: EmailSentArgs(EmailPurpose.verifyEmail, p.email, cooldown));
+      if (mounted) await _push(Routes.emailSent, extra: EmailSentArgs(EmailPurpose.verifyEmail, p.email ?? '', cooldown));
     } on ApiException catch (e) {
       if (!mounted) return;
       switch (e.code) {
@@ -96,10 +97,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               padding: EdgeInsets.symmetric(vertical: 60),
               child: Center(child: CircularProgressIndicator()),
             ),
-          ProfileNone() => _Empty(
-              text: l.profileNone,
-              buttons: [PrimaryButton(label: l.profileSetupTitle, onPressed: () => _push(Routes.profileSetup))],
-            ),
+          ProfileNone() => ref.watch(profileRecoveryProvider).email != null
+              ? _Recover(onSetUp: () => _push(Routes.profileSetup))
+              : _Empty(
+                  text: l.profileNone,
+                  buttons: [PrimaryButton(label: l.profileSetupTitle, onPressed: () => _push(Routes.profileSetup))],
+                ),
           ProfileUnavailable() => _Empty(
               text: l.profileUnavailable,
               buttons: [
@@ -157,6 +160,97 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ],
             ),
         },
+      ],
+    );
+  }
+}
+
+/// No profile on this phone, but one to bring back (01-accounts §8.3 R6,
+/// R7): a link sent and not yet opened ("Waiting for your link", Resend), or
+/// a profile this phone had ("Bring back your profile", Send link). Set up a
+/// new profile stays underneath.
+class _Recover extends ConsumerStatefulWidget {
+  const _Recover({required this.onSetUp});
+
+  final VoidCallback onSetUp;
+
+  @override
+  ConsumerState<_Recover> createState() => _RecoverState();
+}
+
+class _RecoverState extends ConsumerState<_Recover> {
+  bool _busy = false;
+
+  Future<void> _send(String email) async {
+    final l = L.of(context);
+    final router = GoRouter.of(context);
+    final controller = ref.read(profileControllerProvider.notifier);
+    setState(() => _busy = true);
+    try {
+      final cooldown = await controller.requestRestore(email);
+      if (mounted) await router.push(Routes.emailSent, extra: EmailSentArgs(EmailPurpose.restoreProfile, email, cooldown));
+      if (mounted) await controller.refresh();
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      switch (e.code) {
+        case 'EMAIL_NOT_FOUND':
+          // Nothing left to bring back under that address.
+          await ref.read(profileRecoveryProvider.notifier).clear();
+          if (mounted) ProfileMessages.snack(context, l.profileRestoreGone);
+        case 'DEVICE_HAS_PROFILE':
+          await controller.refresh();
+        default:
+          ProfileMessages.snack(context, ProfileMessages.of(l, e));
+      }
+    } on NetworkException {
+      if (mounted) ProfileMessages.snack(context, l.msgNetwork);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l = L.of(context);
+    final r = ref.watch(profileRecoveryProvider);
+    final email = r.email!;
+    final waiting = r.waiting(DateTime.now());
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 12),
+        HazriCard(
+          colour: c.kesriSoft,
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                waiting ? l.profileRestoreWaitingTitle : l.profileRestoreLostTitle,
+                style: HazriText.bodyStrong.copyWith(color: c.kesriInk),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                waiting ? l.profileRestoreWaitingBody(email) : l.profileRestoreLostBody(email),
+                style: HazriText.bodySmall.copyWith(color: c.ink),
+              ),
+              const SizedBox(height: 14),
+              _busy
+                  ? const SizedBox(
+                      height: 52,
+                      child: Center(child: SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.4))),
+                    )
+                  : PrimaryButton(
+                      label: waiting ? l.emailSentResend : l.profileSendLink,
+                      icon: HazriIconData.mail,
+                      onPressed: () => _send(email),
+                    ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        TextButton(onPressed: _busy ? null : widget.onSetUp, child: Text(l.profileRestoreNew)),
       ],
     );
   }
@@ -273,19 +367,23 @@ class _IdentityCard extends ConsumerWidget {
                   iconLine(HazriIconData.pin, Text(city == null ? profile.cityId : cityName(city, lang), style: line)),
                   iconLine(
                     HazriIconData.mail,
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: profile.email),
-                          const TextSpan(text: '  '),
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: _EmailMark(verified: profile.emailVerified),
+                    profile.email == null
+                        // No email (optional since 2026-11-18): say so, and
+                        // offer to add one below.
+                        ? Text(l.profileNoEmail, style: line.copyWith(color: white.withValues(alpha: 0.7)))
+                        : Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(text: profile.email),
+                                const TextSpan(text: '  '),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: _EmailMark(verified: profile.emailVerified),
+                                ),
+                              ],
+                            ),
+                            style: line,
                           ),
-                        ],
-                      ),
-                      style: line,
-                    ),
                   ),
                   if (profile.pendingEmail != null)
                     Padding(
@@ -297,7 +395,19 @@ class _IdentityCard extends ConsumerWidget {
                     ),
                   // §8.7: an unverified email can be confirmed or corrected
                   // from here; a verified one is changed in Edit profile.
-                  if (!profile.emailVerified) ...[
+                  if (profile.email == null) ...[
+                    const SizedBox(height: 12),
+                    Text(l.profileNoEmailHint, style: HazriText.caption.copyWith(fontSize: 12.5, color: white.withValues(alpha: 0.8))),
+                    const SizedBox(height: 8),
+                    PrimaryButton(
+                      label: l.profileAddEmail,
+                      expanded: false,
+                      minHeight: 44,
+                      background: white,
+                      foreground: const Color(0xFF262C63),
+                      onPressed: () => showChangeEmailDialog(context),
+                    ),
+                  ] else if (!profile.emailVerified) ...[
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,

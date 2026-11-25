@@ -42,7 +42,7 @@ These are also in `CLAUDE.md` and apply to every session.
 1. **Designs are the visual spec, not code to port.** `design/html/NN-*.{light,dark}.html` are 390 × 844 CSS px = 390 × 844 dp. Match layout, spacing, radii, colours and type; build with Flutter widgets. `design/tokens.json` is the source of colour, type and shape.
 2. **Never create, paraphrase, auto-translate or AI-generate Gurbani text, Gurbani audio, meanings, or images of the Gurus' faces.** A saakhi and the Gurmat Quiz's Gurus drawing may show a Guru's figure with only light where the face would be (`13-saakhi.md` SK2, `14-quiz.md` QZ3). Every line of Gurbani and every meaning comes from `content/source/` through `tools/content_pipeline/build_content_db.py`. Nothing Gurbani-related is typed into Dart. The same holds for everything the app says about Sikhi (the Vichar library).
 3. **No ad SDKs, no tracking or attribution SDKs, no advertising ID, no password and no sign-in screen, ever.** What Phase 2 may send is the closed list of §8.
-4. **Nothing needed to read a bani, hear it, see the calendar, keep the diary, set goals or mark hazri may need the network.**
+4. **Nothing needed to read a bani, hear it, see the calendar, keep the diary, set goals or mark hazri may need the network.** The one exception (owner, 2026-11-19): **Sukhmani Sahib's recitation** is downloaded once from the Hazri website, the first time it is played or quietly on the first Wi-Fi, and then kept on the phone for good; its text, meanings and timings are in the app as for every bani. Sehaj Paath will take the same path.
 5. **Every user-facing string is localised** in Punjabi, Hindi and English from the first commit; `test/core/l10n_test.dart` fails on a missing key.
 6. **Platform-specific code sits behind an interface.**
 7. **Every change ends with `flutter analyze` clean and `flutter test` passing**, and a feature is done only when its feature file's acceptance checklist passes.
@@ -76,7 +76,7 @@ Around it:
 - **Badges** for days kept, never points.
 - **Notifications** at Amrit Vela, for each goal, for Gurpurabs and Sikh
   events, and for the Sangat.
-- **An optional profile** — name, email, city — that puts the reader on the
+- **An optional profile** — name, city and, if given, email — offered as the last step of setup, that puts the reader on the
   globe, lets them create groups, and keeps a weekly backup they can restore
   on a new phone. There is never a password or a sign-in screen.
 - **ਅੱਜ ਦਾ ਵਿਚਾਰ**, one line of Gurbani a day, and the **Gurpurab and
@@ -235,7 +235,7 @@ First launch:  Android system splash → Welcome → Language → How you read �
 Every launch:  Android system splash → Today, or the deep-link target
 
 Bottom navigation:  Today · Nitnem · Simran · Sangat · Diary
-Elder mode:         Today · Nitnem · Diary   (Simran and Sangat stay reachable)
+Elder mode:         the same five tabs, larger (owner, 2026-11-21; it was three)
 
 Menu (menu button on each tab header; a left drawer, design 112, option A of
 2026-10-25, replacing the bottom sheet of design 99):
@@ -767,10 +767,12 @@ jantri, 147 events in 12 kinds, 52 flagged to remind.
 
 ### 4.17 Elder mode
 
-Offered in setup and in Settings. One app, larger: text at least 1.6× and
-the reader never below 30; touch targets at least 64 dp; three tabs (Today,
-Nitnem, Diary) with Simran and Sangat still reachable; Today is the same
-screen at larger sizes (`05-today.md` T5). It never hides content. The
+Offered in setup and in Settings, and **only ever the reader's choice**: a
+large system font no longer switches it on (owner, 2026-11-21). One app,
+larger: text at least 1.6× and the reader never below 30; touch targets at
+least 64 dp; **all five tabs** (owner, 2026-11-21: three tabs hid Simran and
+left the Sangat unreachable for the people it was switched on for); Today is
+the same screen at larger sizes (`05-today.md` T5). It never hides a tab. The
 system font scale is respected up to 1.3×.
 
 ### 4.18 Menu, Settings, About and privacy
@@ -880,6 +882,27 @@ ARCHITECTURE §3.2, §5.13, §6.7.*
   numbers** (7A): the total, the places, and the month.
 - Not a Diary row, not hazri, not a goal, no badge, no notification.
 
+### 4.22 Live sangat
+
+Designed 2026-11-17 and 2026-11-18 with the owner; **built 2026-11-18**.
+*Rules: `15-live-sangat.md`. Designs 125-129.*
+
+- **Three live groups, always on:** Naam Simran, Mool Mantar and Chaupai
+  Sahib, each with the owner's own recording bundled in the app, played in a
+  loop at the same second on every phone, and its own scene: the globe, ੴ
+  among the stars, the jot in the shield.
+- **The Sangat tab becomes two tabs**, Discover first and My groups; it opens
+  on My groups once you are in any group.
+- **A live group** fills the screen with its scene, LIVE, how many are
+  listening and who joined (everybody with a profile, no switch to hide); in
+  a sheet, **minutes listened** by the sangat and by you, today and this
+  month, and the members. **No goal** (owner, 2026-11-18). Sit counts as Naam
+  Simran.
+- **The recordings**: the owner's Naam Simran and Mool Mantar, and the app's
+  own Chaupai Sahib, each looped with its seam crossfaded into the file.
+- **Adds two lines to §8**: a listening mark every five minutes while a live
+  page plays, and what joining shows, with a profile only.
+
 ---
 
 ## 5. Content and audio
@@ -891,7 +914,7 @@ paraphrased, translated or generated by the app or by anybody building it.
 |---|---|---|
 | **Text** | All nine banis, SGPC versions, Gurmukhi, Devanagari, Roman, with pause marks | Shabad OS database and `gurmukhi-utils`, through the pipeline. Japji is schema 1.0; the other eight schema 2.0 (`build_bani_v2()`). Schema-2.0 banis carry no section labels and none is invented |
 | **Meanings** | English for every bani; Punjabi for all but Ardas (9 of 27 lines); Hindi only for the four banis in Sri Guru Granth Sahib Ji (the Faridkot teeka) | The reader shows what exists; nothing is machine-translated |
-| **Recitations** | One per bani and one for Naam Simran, bundled in the app (about 81 MB of AAC) | Masters on the `audio-masters` release; `audio/README.md` rebuilds them |
+| **Recitations** | One per bani and one for Naam Simran: mono Opus 48 kbps since 2026-11-19 (it was AAC 64k, about 81 MB). Eight banis and Naam Simran are bundled in the app (about 35 MB); Sukhmani Sahib (29 MB) is downloaded once (§0.3 rule 4) | Masters on the `audio-masters` release; `audio/README.md` rebuilds them |
 | **Timings** | Line and word timings for all nine, **checked by ear and locked** | Never re-align; a correction is a `pin` and `--repin`, and the bani goes back to unverified until listened to again (`timings/verified.json`) |
 | **ਅੱਜ ਦਾ ਵਿਚਾਰ** | 200 lines with Punjabi and English meanings | `content/source/vichar/gurbani-200.json` |
 | **Calendar** | Nanakshahi 558, 147 events | `calendar-558.json`, `gurpurab-558.json`; **559 due before March 2027**; event names need Punjabi (10 of 147 done) and Hindi (none) |
@@ -979,20 +1002,25 @@ sends nothing without a profile. The closed list for Phase 2:
 | What | When | Sent |
 |---|---|---|
 | Anonymous sign-in | At launch | An install id, by Firebase Auth |
-| **A profile** | Only when the reader makes one | Name, email, city (from the list), phone if given; verification and restore mail to that email |
+| **A profile** | Only when the reader makes one (offered as the last step of setup, with Not now, since 2026-11-18) | Name and city (from the list); email and phone if given (email optional since 2026-11-18); verification and restore mail to that email |
 | **Attendance** | Once a day, with a profile | That the profile opened the app on that IST day |
 | **Weekly backup** | With a profile | Goals, goal items, completions, sittings, earned badges |
 | **Sangat contributions** | For a member of a group | Each paath or sitting that could count, from the outbox |
-| **An FCM token** | With a profile **and** a group | The device's push token, its language and time zone |
+| **An FCM token** | With a profile (with a group too until 2026-11-19) | The device's push token, its language and time zone, and whether Announcements are on; for the Sangat's pushes and for announcements (`02-notifications.md` AN1) |
+| **An announcement opened** | With a profile, when the reader opens one (added 2026-11-19) | That this profile opened it; the admin sees the name and city with the time (AN5, AN6) |
 | **A quiz** | With a profile, when the reader starts a Gurmat Quiz online (added 2026-10-27) | The topic and the content version, then the five answers chosen; the server keeps the points under the profile |
 | **The leaderboards** | With a profile | Shown to every Hazri user on the boards a player has scored on: the profile's first name, the initial of its last name, its city and the points. Nothing else about the profile |
+| **A recitation download** | Once, when Sukhmani Sahib is first played or on the first Wi-Fi (added 2026-11-19) | A plain request for the file from the Hazri website (`/audio/sukhmani-sahib.ogg`), with nothing about the person; like any web request it carries the phone's IP address. Checked against its SHA-256 and kept on the phone |
+| **A listening mark** | With a profile, every five minutes while a live group's page plays (added 2026-11-18, `15-live-sangat.md` LS15) | The group; the server takes the city from the profile. It counts the listener for 24 hours and adds five minutes to the sangat's. Minutes listened are counted on the phone and never sent |
+| **Joining a live group** | With a profile, when the reader joins one | Shown to everybody on that group's page: the first name, the initial of the last name, the city, and the minutes there this month (LS8, LS9) |
 | **Analytics** | Never in Phase 2 | Firebase Analytics ships with collection off (`setAnalyticsCollectionEnabled(false)` at start-up); the Settings switch is shown off and inert |
 
 **Never, in any phase:** an advertising ID (`AD_ID` removed from the merged
 manifest), ad personalisation, location (the city is chosen from a list),
 free text in analytics, anything sold or shared. The globe shows a city and
-a count, never a name; the quiz's leaderboards are the one place a name is
-shown beyond a group, and only a first name and an initial; a group's globe shows its members the same, counted
+a count, never a name; the quiz's leaderboards and a live group's page are
+the places a name is shown beyond a group, and only a first name and an
+initial; a group's globe shows its members the same, counted
 per city (`08-sangat.md` GG7); the Sangat shows a member's name only to the
 members of their group.
 
@@ -1014,7 +1042,9 @@ make a profile or join a group; what each of those sends; that analytics are
 not collected; that the globe shows your city and never your name. It is
 rewritten again in the change that ships the Gurmat Quiz: that with a
 profile, starting a quiz online sends its answers, and that with a profile your first name,
-initial, city and quiz points are on the leaderboards. In Phase 3
+initial, city and quiz points are on the leaderboards. It is rewritten
+again in the change that ships the live sangat (2026-11-18): the listening
+mark, and what joining a live group shows. In Phase 3
 it names analytics as a fourth category and points at the switch. It must
 match Google Play's Data safety form exactly. Since 2026-10-30 it ends with
 **Delete my account and data**, which opens the website's deletion request
@@ -1346,6 +1376,7 @@ blocks anything (Phase 3 item 3.3).
 | Y-3 | Export the diary | Not built | `09-diary.md` |
 | SK-1–SK-7 | The first saakhi's images, Punjabi text, pankti check, share link, recording end | Fix before it ships | `13-saakhi.md` §4 |
 | QZ-1, QZ-3 | The quiz: the 54 noted questions; Punjabi and Hindi questions | They ship; English until reviewed | `14-quiz.md` §12 |
+| LS-1, LS-5 | Live sangat: the recordings; translations | Waiting for the owner's recordings; drafts the owner will check (LS-2 to LS-4 decided 2026-11-18) | `15-live-sangat.md` §10 |
 
 **Closed:** D13 (Blaze with Cloud Functions, 2026-09-26); D11's names and D14
 (badges, no points, 2026-10-08); P5 (diary sync replaced by the weekly
@@ -1364,7 +1395,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `85-TodayAppBar` | Today, with the app bar and streak | **new** | App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12 |
 | `120-TodayGoalFolded` | Today, a goal of seven, folded | **new** | Design 1A, chosen 29 Oct: more than three goal items fold to the one due now, the next and the earliest missed, with Show all. 04-goals.md 7.1 |
-| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with no buttons (on an event day it opens the Vichar page), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
+| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with Know more and Quiz (option B, 18 Nov), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
 | `86-TodayNoProfile` | Today, first day, no profile | **new** | The profile banner overlaps the app bar; no streak yet. 05-today.md T-a |
 | `61-GoalComplete` | All of today's goals are done | current | Shown once a day when the goal is met. 04-goals.md CE1 |
 | `58-TodayHazri` | Today, hazri marked | superseded | Replaced by 85 |
@@ -1440,7 +1471,12 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `102-SangatHome` | Sangat, dashboard tiles | **new** | Option C: dashboard tiles (owner, 2026-10-10). Create group and Join group tiles, my groups as 2 x 2 tiles with a ring each, then the built-in groups full width with Join or Leave. 08-sangat.md 8.1, VS1, VS2 |
+| `125-SangatDiscover` | Sangat, Discover | **new** | Two tabs, Discover first, 18 Nov: the live groups as tall cards with their scenes, then the built-in groups. Not built yet. 15-live-sangat.md |
+| `126-SangatMyGroups` | Sangat, My groups | **new** | The default once you are in a group: Create and Join at the top, the live group you are in, running, ended. Not built yet. 15-live-sangat.md |
+| `127-LiveGroup` | A live group | **new** | Option A, 17 Nov: the scene full screen, joins down the side, the group in a sheet. Not built yet. 15-live-sangat.md |
+| `128-LiveGroupSheet` | A live group, the group pulled up | **new** | The sheet of 127 open: minutes listened, no goal. Not built yet. 15-live-sangat.md |
+| `129-LiveSitting` | Sitting with a live group | **new** | Option D: the countdown with live today and here today. Not built yet. 15-live-sangat.md |
+| `102-SangatHome` | Sangat, dashboard tiles | superseded | Replaced by 125 and 126 (18 Nov); ships until they are built |
 | `104-GroupGlobe` | A private group, with its globe | **new** | Option C (owner, 2026-10-17): the goal ring wraps the group's globe, members as counts per city (green today, blue not yet, you orange), threads and arcs as the Simran globe, and every dot tied to the ring's leading edge by a dashed line in its own colour (GG4a, 2026-10-18); total, percentage and the key under the ring; paath of the last hour arriving as light into the ring, and the line below the band. The rest is 103. 08-sangat.md GG1-GG10 |
 | `105-BuiltInGroupGlobe` | A built-in group, with its globe | **new** | Option C for built-in groups too (owner, 2026-10-17): as 104, for Simran Sangat; minutes of Naam Simran in the last hour. 08-sangat.md GG1-GG10 |
 | `103-BuiltInGroup` | A built-in group | superseded | Replaced by 104 and 105, the globe in the ring (2026-10-17); the band below the ring, the timeline, the figures, Sit for and the members are unchanged |
@@ -1506,6 +1542,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
+| `130-SetupProfile` | Setup, your profile | **new** | Option C, chosen 18 Nov: the Hazri card filling in as you type, then name, city and an optional email; Not now. 03-first-run.md F10 |
+| `131-ProfileMade` | Welcome, after a profile is made | **new** | Confirm my email or Later; without an email, Go to Today. Replaces the Profile Saved dialog. 03-first-run.md F10, 01-accounts.md 8.6 |
 | `100-Profile` | Your profile, identity card and badge shelf | **new** | Option D: identity card and badge shelf (owner, 2026-10-10). Name, city, verified email and three figures on a navy card; all ten badges on two shelves, See all opens 96; Edit profile and Back up now. 01-accounts.md 8.7, 12-badges.md UI5 |
 | `101-EditProfile` | Edit profile | **new** | Option C: outlined fields with sunrise preview (owner, 2026-10-10). Today in the chosen city with sunrise and sunset, then Name, City and Email with Change email in the card; Save changes. 01-accounts.md 13.8 |
 | `37-SettingsMenu` | Menu | superseded | Replaced by 99 |

@@ -3583,6 +3583,15 @@ class $AudioTracksTable extends AudioTracks
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _sha256Meta = const VerificationMeta('sha256');
+  @override
+  late final GeneratedColumn<String> sha256 = GeneratedColumn<String>(
+    'sha256',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -3592,6 +3601,7 @@ class $AudioTracksTable extends AudioTracks
     file,
     durationMs,
     bytes,
+    sha256,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3655,6 +3665,12 @@ class $AudioTracksTable extends AudioTracks
         bytes.isAcceptableOrUnknown(data['bytes']!, _bytesMeta),
       );
     }
+    if (data.containsKey('sha256')) {
+      context.handle(
+        _sha256Meta,
+        sha256.isAcceptableOrUnknown(data['sha256']!, _sha256Meta),
+      );
+    }
     return context;
   }
 
@@ -3692,6 +3708,10 @@ class $AudioTracksTable extends AudioTracks
         DriftSqlType.int,
         data['${effectivePrefix}bytes'],
       ),
+      sha256: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sha256'],
+      ),
     );
   }
 
@@ -3709,6 +3729,10 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
   final String file;
   final int? durationMs;
   final int? bytes;
+
+  /// For a recitation the app downloads once (`pack` = `download`), the
+  /// file's SHA-256, checked before it is kept (PRD §8, 2026-11-19).
+  final String? sha256;
   const AudioTrackRow({
     required this.id,
     required this.baniVersionId,
@@ -3717,6 +3741,7 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
     required this.file,
     this.durationMs,
     this.bytes,
+    this.sha256,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3733,6 +3758,9 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
     }
     if (!nullToAbsent || bytes != null) {
       map['bytes'] = Variable<int>(bytes);
+    }
+    if (!nullToAbsent || sha256 != null) {
+      map['sha256'] = Variable<String>(sha256);
     }
     return map;
   }
@@ -3752,6 +3780,9 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
       bytes: bytes == null && nullToAbsent
           ? const Value.absent()
           : Value(bytes),
+      sha256: sha256 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sha256),
     );
   }
 
@@ -3768,6 +3799,7 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
       file: serializer.fromJson<String>(json['file']),
       durationMs: serializer.fromJson<int?>(json['durationMs']),
       bytes: serializer.fromJson<int?>(json['bytes']),
+      sha256: serializer.fromJson<String?>(json['sha256']),
     );
   }
   @override
@@ -3781,6 +3813,7 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
       'file': serializer.toJson<String>(file),
       'durationMs': serializer.toJson<int?>(durationMs),
       'bytes': serializer.toJson<int?>(bytes),
+      'sha256': serializer.toJson<String?>(sha256),
     };
   }
 
@@ -3792,6 +3825,7 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
     String? file,
     Value<int?> durationMs = const Value.absent(),
     Value<int?> bytes = const Value.absent(),
+    Value<String?> sha256 = const Value.absent(),
   }) => AudioTrackRow(
     id: id ?? this.id,
     baniVersionId: baniVersionId ?? this.baniVersionId,
@@ -3800,6 +3834,7 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
     file: file ?? this.file,
     durationMs: durationMs.present ? durationMs.value : this.durationMs,
     bytes: bytes.present ? bytes.value : this.bytes,
+    sha256: sha256.present ? sha256.value : this.sha256,
   );
   AudioTrackRow copyWithCompanion(AudioTracksCompanion data) {
     return AudioTrackRow(
@@ -3814,6 +3849,7 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
           ? data.durationMs.value
           : this.durationMs,
       bytes: data.bytes.present ? data.bytes.value : this.bytes,
+      sha256: data.sha256.present ? data.sha256.value : this.sha256,
     );
   }
 
@@ -3826,14 +3862,23 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
           ..write('pack: $pack, ')
           ..write('file: $file, ')
           ..write('durationMs: $durationMs, ')
-          ..write('bytes: $bytes')
+          ..write('bytes: $bytes, ')
+          ..write('sha256: $sha256')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, baniVersionId, voiceId, pack, file, durationMs, bytes);
+  int get hashCode => Object.hash(
+    id,
+    baniVersionId,
+    voiceId,
+    pack,
+    file,
+    durationMs,
+    bytes,
+    sha256,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3844,7 +3889,8 @@ class AudioTrackRow extends DataClass implements Insertable<AudioTrackRow> {
           other.pack == this.pack &&
           other.file == this.file &&
           other.durationMs == this.durationMs &&
-          other.bytes == this.bytes);
+          other.bytes == this.bytes &&
+          other.sha256 == this.sha256);
 }
 
 class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
@@ -3855,6 +3901,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
   final Value<String> file;
   final Value<int?> durationMs;
   final Value<int?> bytes;
+  final Value<String?> sha256;
   final Value<int> rowid;
   const AudioTracksCompanion({
     this.id = const Value.absent(),
@@ -3864,6 +3911,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
     this.file = const Value.absent(),
     this.durationMs = const Value.absent(),
     this.bytes = const Value.absent(),
+    this.sha256 = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AudioTracksCompanion.insert({
@@ -3874,6 +3922,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
     required String file,
     this.durationMs = const Value.absent(),
     this.bytes = const Value.absent(),
+    this.sha256 = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        baniVersionId = Value(baniVersionId),
@@ -3887,6 +3936,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
     Expression<String>? file,
     Expression<int>? durationMs,
     Expression<int>? bytes,
+    Expression<String>? sha256,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -3897,6 +3947,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
       if (file != null) 'file': file,
       if (durationMs != null) 'duration_ms': durationMs,
       if (bytes != null) 'bytes': bytes,
+      if (sha256 != null) 'sha256': sha256,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -3909,6 +3960,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
     Value<String>? file,
     Value<int?>? durationMs,
     Value<int?>? bytes,
+    Value<String?>? sha256,
     Value<int>? rowid,
   }) {
     return AudioTracksCompanion(
@@ -3919,6 +3971,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
       file: file ?? this.file,
       durationMs: durationMs ?? this.durationMs,
       bytes: bytes ?? this.bytes,
+      sha256: sha256 ?? this.sha256,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3947,6 +4000,9 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
     if (bytes.present) {
       map['bytes'] = Variable<int>(bytes.value);
     }
+    if (sha256.present) {
+      map['sha256'] = Variable<String>(sha256.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -3963,6 +4019,7 @@ class AudioTracksCompanion extends UpdateCompanion<AudioTrackRow> {
           ..write('file: $file, ')
           ..write('durationMs: $durationMs, ')
           ..write('bytes: $bytes, ')
+          ..write('sha256: $sha256, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5399,6 +5456,17 @@ class $CalendarEventsTable extends CalendarEvents
       'CHECK ("supplementary" IN (0, 1))',
     ),
   );
+  static const VerificationMeta _vicharSlugMeta = const VerificationMeta(
+    'vicharSlug',
+  );
+  @override
+  late final GeneratedColumn<String> vicharSlug = GeneratedColumn<String>(
+    'vichar_slug',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -5411,6 +5479,7 @@ class $CalendarEventsTable extends CalendarEvents
     nsLabel,
     defaultRemind,
     supplementary,
+    vicharSlug,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5501,6 +5570,12 @@ class $CalendarEventsTable extends CalendarEvents
     } else if (isInserting) {
       context.missing(_supplementaryMeta);
     }
+    if (data.containsKey('vichar_slug')) {
+      context.handle(
+        _vicharSlugMeta,
+        vicharSlug.isAcceptableOrUnknown(data['vichar_slug']!, _vicharSlugMeta),
+      );
+    }
     return context;
   }
 
@@ -5550,6 +5625,10 @@ class $CalendarEventsTable extends CalendarEvents
         DriftSqlType.bool,
         data['${effectivePrefix}supplementary'],
       )!,
+      vicharSlug: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}vichar_slug'],
+      ),
     );
   }
 
@@ -5580,6 +5659,11 @@ class CalendarEventRow extends DataClass
   /// The source marks this entry as its own cross-check rather than something
   /// the SGPC jantri confirms, so the app says so instead of implying it.
   final bool supplementary;
+
+  /// The Vichar page that tells this event's story, opened from Today's
+  /// calendar card (content version 12, 2026-11-18). Null when no page
+  /// names the event; the card then opens the calendar.
+  final String? vicharSlug;
   const CalendarEventRow({
     required this.id,
     required this.nsYear,
@@ -5591,6 +5675,7 @@ class CalendarEventRow extends DataClass
     this.nsLabel,
     required this.defaultRemind,
     required this.supplementary,
+    this.vicharSlug,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -5611,6 +5696,9 @@ class CalendarEventRow extends DataClass
     }
     map['default_remind'] = Variable<bool>(defaultRemind);
     map['supplementary'] = Variable<bool>(supplementary);
+    if (!nullToAbsent || vicharSlug != null) {
+      map['vichar_slug'] = Variable<String>(vicharSlug);
+    }
     return map;
   }
 
@@ -5632,6 +5720,9 @@ class CalendarEventRow extends DataClass
           : Value(nsLabel),
       defaultRemind: Value(defaultRemind),
       supplementary: Value(supplementary),
+      vicharSlug: vicharSlug == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vicharSlug),
     );
   }
 
@@ -5651,6 +5742,7 @@ class CalendarEventRow extends DataClass
       nsLabel: serializer.fromJson<String?>(json['nsLabel']),
       defaultRemind: serializer.fromJson<bool>(json['defaultRemind']),
       supplementary: serializer.fromJson<bool>(json['supplementary']),
+      vicharSlug: serializer.fromJson<String?>(json['vicharSlug']),
     );
   }
   @override
@@ -5667,6 +5759,7 @@ class CalendarEventRow extends DataClass
       'nsLabel': serializer.toJson<String?>(nsLabel),
       'defaultRemind': serializer.toJson<bool>(defaultRemind),
       'supplementary': serializer.toJson<bool>(supplementary),
+      'vicharSlug': serializer.toJson<String?>(vicharSlug),
     };
   }
 
@@ -5681,6 +5774,7 @@ class CalendarEventRow extends DataClass
     Value<String?> nsLabel = const Value.absent(),
     bool? defaultRemind,
     bool? supplementary,
+    Value<String?> vicharSlug = const Value.absent(),
   }) => CalendarEventRow(
     id: id ?? this.id,
     nsYear: nsYear ?? this.nsYear,
@@ -5692,6 +5786,7 @@ class CalendarEventRow extends DataClass
     nsLabel: nsLabel.present ? nsLabel.value : this.nsLabel,
     defaultRemind: defaultRemind ?? this.defaultRemind,
     supplementary: supplementary ?? this.supplementary,
+    vicharSlug: vicharSlug.present ? vicharSlug.value : this.vicharSlug,
   );
   CalendarEventRow copyWithCompanion(CalendarEventsCompanion data) {
     return CalendarEventRow(
@@ -5709,6 +5804,9 @@ class CalendarEventRow extends DataClass
       supplementary: data.supplementary.present
           ? data.supplementary.value
           : this.supplementary,
+      vicharSlug: data.vicharSlug.present
+          ? data.vicharSlug.value
+          : this.vicharSlug,
     );
   }
 
@@ -5724,7 +5822,8 @@ class CalendarEventRow extends DataClass
           ..write('nameHi: $nameHi, ')
           ..write('nsLabel: $nsLabel, ')
           ..write('defaultRemind: $defaultRemind, ')
-          ..write('supplementary: $supplementary')
+          ..write('supplementary: $supplementary, ')
+          ..write('vicharSlug: $vicharSlug')
           ..write(')'))
         .toString();
   }
@@ -5741,6 +5840,7 @@ class CalendarEventRow extends DataClass
     nsLabel,
     defaultRemind,
     supplementary,
+    vicharSlug,
   );
   @override
   bool operator ==(Object other) =>
@@ -5755,7 +5855,8 @@ class CalendarEventRow extends DataClass
           other.nameHi == this.nameHi &&
           other.nsLabel == this.nsLabel &&
           other.defaultRemind == this.defaultRemind &&
-          other.supplementary == this.supplementary);
+          other.supplementary == this.supplementary &&
+          other.vicharSlug == this.vicharSlug);
 }
 
 class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
@@ -5769,6 +5870,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
   final Value<String?> nsLabel;
   final Value<bool> defaultRemind;
   final Value<bool> supplementary;
+  final Value<String?> vicharSlug;
   final Value<int> rowid;
   const CalendarEventsCompanion({
     this.id = const Value.absent(),
@@ -5781,6 +5883,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     this.nsLabel = const Value.absent(),
     this.defaultRemind = const Value.absent(),
     this.supplementary = const Value.absent(),
+    this.vicharSlug = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CalendarEventsCompanion.insert({
@@ -5794,6 +5897,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     this.nsLabel = const Value.absent(),
     required bool defaultRemind,
     required bool supplementary,
+    this.vicharSlug = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        nsYear = Value(nsYear),
@@ -5813,6 +5917,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     Expression<String>? nsLabel,
     Expression<bool>? defaultRemind,
     Expression<bool>? supplementary,
+    Expression<String>? vicharSlug,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -5826,6 +5931,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
       if (nsLabel != null) 'ns_label': nsLabel,
       if (defaultRemind != null) 'default_remind': defaultRemind,
       if (supplementary != null) 'supplementary': supplementary,
+      if (vicharSlug != null) 'vichar_slug': vicharSlug,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -5841,6 +5947,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     Value<String?>? nsLabel,
     Value<bool>? defaultRemind,
     Value<bool>? supplementary,
+    Value<String?>? vicharSlug,
     Value<int>? rowid,
   }) {
     return CalendarEventsCompanion(
@@ -5854,6 +5961,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
       nsLabel: nsLabel ?? this.nsLabel,
       defaultRemind: defaultRemind ?? this.defaultRemind,
       supplementary: supplementary ?? this.supplementary,
+      vicharSlug: vicharSlug ?? this.vicharSlug,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -5891,6 +5999,9 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
     if (supplementary.present) {
       map['supplementary'] = Variable<bool>(supplementary.value);
     }
+    if (vicharSlug.present) {
+      map['vichar_slug'] = Variable<String>(vicharSlug.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -5910,6 +6021,7 @@ class CalendarEventsCompanion extends UpdateCompanion<CalendarEventRow> {
           ..write('nsLabel: $nsLabel, ')
           ..write('defaultRemind: $defaultRemind, ')
           ..write('supplementary: $supplementary, ')
+          ..write('vicharSlug: $vicharSlug, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -8944,6 +9056,7 @@ typedef $$AudioTracksTableCreateCompanionBuilder =
       required String file,
       Value<int?> durationMs,
       Value<int?> bytes,
+      Value<String?> sha256,
       Value<int> rowid,
     });
 typedef $$AudioTracksTableUpdateCompanionBuilder =
@@ -8955,6 +9068,7 @@ typedef $$AudioTracksTableUpdateCompanionBuilder =
       Value<String> file,
       Value<int?> durationMs,
       Value<int?> bytes,
+      Value<String?> sha256,
       Value<int> rowid,
     });
 
@@ -8999,6 +9113,11 @@ class $$AudioTracksTableFilterComposer
 
   ColumnFilters<int> get bytes => $composableBuilder(
     column: $table.bytes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sha256 => $composableBuilder(
+    column: $table.sha256,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -9046,6 +9165,11 @@ class $$AudioTracksTableOrderingComposer
     column: $table.bytes,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get sha256 => $composableBuilder(
+    column: $table.sha256,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AudioTracksTableAnnotationComposer
@@ -9081,6 +9205,9 @@ class $$AudioTracksTableAnnotationComposer
 
   GeneratedColumn<int> get bytes =>
       $composableBuilder(column: $table.bytes, builder: (column) => column);
+
+  GeneratedColumn<String> get sha256 =>
+      $composableBuilder(column: $table.sha256, builder: (column) => column);
 }
 
 class $$AudioTracksTableTableManager
@@ -9121,6 +9248,7 @@ class $$AudioTracksTableTableManager
                 Value<String> file = const Value.absent(),
                 Value<int?> durationMs = const Value.absent(),
                 Value<int?> bytes = const Value.absent(),
+                Value<String?> sha256 = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AudioTracksCompanion(
                 id: id,
@@ -9130,6 +9258,7 @@ class $$AudioTracksTableTableManager
                 file: file,
                 durationMs: durationMs,
                 bytes: bytes,
+                sha256: sha256,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -9141,6 +9270,7 @@ class $$AudioTracksTableTableManager
                 required String file,
                 Value<int?> durationMs = const Value.absent(),
                 Value<int?> bytes = const Value.absent(),
+                Value<String?> sha256 = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AudioTracksCompanion.insert(
                 id: id,
@@ -9150,6 +9280,7 @@ class $$AudioTracksTableTableManager
                 file: file,
                 durationMs: durationMs,
                 bytes: bytes,
+                sha256: sha256,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -9990,6 +10121,7 @@ typedef $$CalendarEventsTableCreateCompanionBuilder =
       Value<String?> nsLabel,
       required bool defaultRemind,
       required bool supplementary,
+      Value<String?> vicharSlug,
       Value<int> rowid,
     });
 typedef $$CalendarEventsTableUpdateCompanionBuilder =
@@ -10004,6 +10136,7 @@ typedef $$CalendarEventsTableUpdateCompanionBuilder =
       Value<String?> nsLabel,
       Value<bool> defaultRemind,
       Value<bool> supplementary,
+      Value<String?> vicharSlug,
       Value<int> rowid,
     });
 
@@ -10063,6 +10196,11 @@ class $$CalendarEventsTableFilterComposer
 
   ColumnFilters<bool> get supplementary => $composableBuilder(
     column: $table.supplementary,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get vicharSlug => $composableBuilder(
+    column: $table.vicharSlug,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -10125,6 +10263,11 @@ class $$CalendarEventsTableOrderingComposer
     column: $table.supplementary,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get vicharSlug => $composableBuilder(
+    column: $table.vicharSlug,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CalendarEventsTableAnnotationComposer
@@ -10167,6 +10310,11 @@ class $$CalendarEventsTableAnnotationComposer
 
   GeneratedColumn<bool> get supplementary => $composableBuilder(
     column: $table.supplementary,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get vicharSlug => $composableBuilder(
+    column: $table.vicharSlug,
     builder: (column) => column,
   );
 }
@@ -10212,6 +10360,7 @@ class $$CalendarEventsTableTableManager
                 Value<String?> nsLabel = const Value.absent(),
                 Value<bool> defaultRemind = const Value.absent(),
                 Value<bool> supplementary = const Value.absent(),
+                Value<String?> vicharSlug = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion(
                 id: id,
@@ -10224,6 +10373,7 @@ class $$CalendarEventsTableTableManager
                 nsLabel: nsLabel,
                 defaultRemind: defaultRemind,
                 supplementary: supplementary,
+                vicharSlug: vicharSlug,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -10238,6 +10388,7 @@ class $$CalendarEventsTableTableManager
                 Value<String?> nsLabel = const Value.absent(),
                 required bool defaultRemind,
                 required bool supplementary,
+                Value<String?> vicharSlug = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CalendarEventsCompanion.insert(
                 id: id,
@@ -10250,6 +10401,7 @@ class $$CalendarEventsTableTableManager
                 nsLabel: nsLabel,
                 defaultRemind: defaultRemind,
                 supplementary: supplementary,
+                vicharSlug: vicharSlug,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

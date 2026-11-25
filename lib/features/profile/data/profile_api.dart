@@ -15,13 +15,13 @@ class ProfileApi {
 
   Future<Profile> create({
     required String name,
-    required String email,
+    String? email,
     String? phone,
     required String cityId,
   }) async =>
       _profile(await _api.post('/profile', {
         'name': name,
-        'email': email,
+        'email': ?email,
         'phone': ?phone,
         'cityId': cityId,
       }));

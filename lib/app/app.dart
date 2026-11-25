@@ -9,6 +9,9 @@ import '../core/settings/settings_controller.dart';
 import '../core/theme/hazri_theme.dart';
 import '../core/time/clock.dart';
 import '../features/audio/data/audio_controller.dart';
+import '../features/audio/data/recitation_downloads.dart';
+import '../features/reminders/ui/keep_reminders_card.dart';
+import '../core/db/content_repository.dart' show audioTracksProvider;
 import '../features/reminders/ui/exact_alarm_card.dart';
 import '../features/hazri/data/hazri_controller.dart';
 import '../features/hazri/ui/goal_complete_sheet.dart';
@@ -42,6 +45,7 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     // screen, never over the reader or a running Simran sitting.
     final router = ref.read(routerProvider);
     router.routerDelegate.addListener(_announceBadge);
+    router.routerDelegate.addListener(_askKeepAwake);
     ref.listenManual(pendingBadgeProvider, (_, _) => _announceBadge());
     ref.listenManual(simranSessionProvider, (_, s) {
       if (!s.active) _announceBadge();
@@ -74,12 +78,49 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
       }
     });
     _online = Connectivity().onConnectivityChanged.listen((r) {
-      if (!r.contains(ConnectivityResult.none)) unawaited(ref.read(outboxSenderProvider).send());
+      if (!r.contains(ConnectivityResult.none)) {
+        unawaited(ref.read(outboxSenderProvider).send());
+        _recheckProfile();
+      }
+      unawaited(_fetchRecitations(r));
     });
+    unawaited(_fetchRecitations());
     _replan();
   }
 
   StreamSubscription<List<ConnectivityResult>>? _online;
+
+  /// On Wi-Fi, the recitations the app downloads (Sukhmani Sahib) are
+  /// fetched quietly, so most people never see the download sheet (owner,
+  /// 2026-11-19). Nothing happens on mobile data.
+  Future<void> _fetchRecitations([List<ConnectivityResult>? network]) async {
+    try {
+      final net = network ?? await Connectivity().checkConnectivity();
+      final rows = (await ref.read(audioTracksProvider.future)).values;
+      await ref.read(recitationDownloadsProvider.notifier).fetchOnWifi(net, rows);
+    } on Object catch (e) {
+      debugPrint('Hazri: no recitation fetch ($e)');
+    }
+  }
+
+  /// 01-accounts R11: when the app comes back and when the phone is online
+  /// again.
+  void _recheckProfile() => unawaited(ref.read(profileControllerProvider.notifier).recheckIfUnsure());
+
+  bool _keepAwakeTried = false;
+
+  /// KA2: once, on the first tab after setup, the settings that keep
+  /// reminders coming, when one of them is still to switch.
+  void _askKeepAwake() {
+    if (_keepAwakeTried) return;
+    final path = ref.read(routerProvider).routerDelegate.currentConfiguration.uri.path;
+    if (!Routes.tabs.contains(path) || !ref.read(settingsProvider).onboardingDone) return;
+    _keepAwakeTried = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = rootNavigatorKey.currentContext;
+      if (context != null && context.mounted) unawaited(maybeShowKeepAwakeSheet(context, ref));
+    });
+  }
 
   void _announceBadge() {
     final badge = ref.read(pendingBadgeProvider);
@@ -107,6 +148,7 @@ class _HazriAppState extends ConsumerState<HazriApp> with WidgetsBindingObserver
     // Coming back to the app is the cheapest moment to notice that the day, the
     // time zone or the sunrise has moved on (PRD 1.10).
     if (state == AppLifecycleState.resumed) {
+      _recheckProfile();
       // Back from Android's "Alarms & reminders" (DP2): read it again, and
       // the re-plan below schedules exact alarms from now on.
       ref.invalidate(exactAlarmsAllowedProvider);

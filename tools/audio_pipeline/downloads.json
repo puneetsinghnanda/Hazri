@@ -1,0 +1,4 @@
+{
+  "_": "Recitations the app downloads once from Firebase Hosting rather than ships in the APK (owner, 2026-11-19; PRD §8). build_audio.py writes these to public/audio/, build_content_db.py marks them pack 'download' with their size and sha256.",
+  "downloads": ["sukhmani-sahib"]
+}

@@ -62,6 +62,15 @@ class MainActivity : AudioServiceActivity() {
                             Reminders.schedule(this@MainActivity, json)
                             result.success(null)
                         }
+                        "scheduleAll" -> {
+                            val list = (call.argument<List<Map<*, *>>>("reminders") ?: emptyList()).map { m ->
+                                val json = org.json.JSONObject()
+                                for ((k, v) in m) json.put(k as String, if (v is Number && k == "at") v.toLong() else v)
+                                json
+                            }
+                            Reminders.scheduleAll(this@MainActivity, list)
+                            result.success(null)
+                        }
                         "cancel" -> {
                             Reminders.cancel(this@MainActivity, (call.argument<Number>("id") ?: 0).toInt())
                             result.success(null)
@@ -112,6 +121,34 @@ class MainActivity : AudioServiceActivity() {
                         result.success(at)
                     }
                     "probeResults" -> result.success(AlarmProbeReceiver.results(this))
+                    // Keep reminders coming (owner, 2026-11-19): whether Android
+                    // will leave Hazri alone when it goes unused for months
+                    // ("Pause app activity if unused" off), or null before
+                    // Android 11, which has no such setting.
+                    "unusedAppExempt" -> result.success(
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) packageManager.isAutoRevokeWhitelisted else null,
+                    )
+                    // That setting's own page for Hazri; the app's page if
+                    // the phone has no such screen.
+                    "openUnusedAppSettings" -> {
+                        val pkg = android.net.Uri.fromParts("package", packageName, null)
+                        try {
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) throw IllegalStateException()
+                            startActivity(Intent(Intent.ACTION_AUTO_REVOKE_PERMISSIONS, pkg))
+                        } catch (_: Exception) {
+                            startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkg))
+                        }
+                        result.success(true)
+                    }
+                    // Hazri's own app page, where a phone maker's battery
+                    // options for it live (Vivo, Oppo, Xiaomi, Realme).
+                    "openAppSettings" -> {
+                        startActivity(
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                .setData(android.net.Uri.parse("package:$packageName")),
+                        )
+                        result.success(true)
+                    }
                     // DP6: the system list where Hazri's battery
                     // optimisation is switched off. The list, not the one-tap
                     // request, which Play reserves for a few kinds of app.

@@ -42,10 +42,15 @@ git history and is not a reference.
    `INTERNET` is removed from the merged manifest. **Phase 2 restores
    `INTERNET`** and adds Firebase. What it may then send is a closed list,
    each item named by a feature file (PRD §8): the anonymous sign-in; **a
-   profile the person chooses to make** (name, email, city, phone if given)
+   profile the person chooses to make** (name and city; email and phone if
+   given; offered as the last step of setup with Not now since 2026-11-18)
    with its verification and restore mail; with a profile, the **daily
-   attendance mark** and the **weekly backup**; for a Sangat member, their
-   paath toward their groups and an FCM token; with a profile, a **Gurmat
+   attendance mark**, the **weekly backup** and, while a live group plays,
+   a **listening mark** every five minutes (on joining one, the first name,
+   initial and city show on its page, `15-live-sangat.md` LS8, LS15); with a
+   profile, an FCM token for **announcements** and the Sangat's pushes, and
+   which announcement was opened (`02-notifications.md` AN1-AN9, 2026-11-19);
+   for a Sangat member, their paath toward their groups; with a profile, a **Gurmat
    Quiz** started online (its topic and the five answers), and their first
    name, initial, city and quiz points on the leaderboards. Without a profile
    the quiz sends nothing and earns no points (`docs/features/14-quiz.md`,
@@ -63,7 +68,10 @@ git history and is not a reference.
    Three things stay true across both phases and are not negotiable: **no
    password and no sign-in screen**; **no request is needed to read a bani,
    hear it, see the calendar or write the diary** — all of that is on the
-   phone and works with the radio off; and **the sangat is opt-in**, so
+   phone and works with the radio off, but for one download: **Sukhmani
+   Sahib's recitation is fetched once** from the website (on the first
+   Wi-Fi, or with a progress sheet at the first play) and then kept on the
+   phone for good (owner, 2026-11-19; Sehaj Paath will follow it); and **the sangat is opt-in**, so
    somebody who never joins it is reading, listening and keeping a diary
    entirely on their own phone.
 5. **All UI strings are localised** in `pa`, `hi` and `en` from day one. No
@@ -94,13 +102,27 @@ about a saakhi is counted, and there is no Diary link.
 owner's 340-question bank in `content.db`, five questions drawn by the server,
 ten points a right answer **with a profile only** (without one the quiz plays
 on the phone, sends nothing and earns nothing), and top-20 leaderboards for each quiz and for
-everyone, by day, week and month in IST. It is **the first points and the one
+everyone, by day and month in IST and of all time (All time replaced Week on 2026-11-19; the leaderboard opens on Month and Everyone). It is **the first points and the one
 ranking in the app**, for quiz answers only: PRD §1.3 was amended for it and
 for nothing else, and no question quotes Gurbani. **Built 2026-10-27**
 (content version 10, `lib/features/quiz/`, `functions/src/quiz/`) and
 **live the same day**: the owner deployed the Functions and the two
 `quizScores` indexes, created the three TTL policies, and earned the first
 points. Its screens are designs 113-119.
+
+**Live sangat was designed on 2026-11-17 and 2026-11-18 and built on
+2026-11-18** (`docs/features/15-live-sangat.md`, PRD §4.22, designs
+125-129): three always-on groups (Naam Simran and Mool Mantar from the
+owner's recordings, Chaupai Sahib from the app's own recitation) bundled in
+`assets/live/` with the seam crossfaded into each file by
+`tools/live/build_loops.py`, and played on repeat at `(seconds since 00:00
+IST) mod length` on every phone; real listening counts and joins from
+`functions/src/routes/live.ts` (ARCHITECTURE §5.14, §6.8); minutes listened
+counted on the phone (`user.db` schema 8, `live_listening`); the Sangat tab
+as two tabs, Discover and My groups. It added the listening mark and "joined
+from" to PRD §8 and the privacy screen. **It needs `firebase deploy --only
+functions` before an APK with it goes out**, or every live page says it is
+waiting. The masters are not in git.
 
 **The 23-screen Phase 3 design set is superseded — do not merge it.**
 `claude/eloquent-edison-qsjll0` carries 46 files, `design/html/62-*` to
@@ -217,7 +239,9 @@ each:
 | Today's order (2026-11-09) | 113 | The Sikh calendar above "Did you know?", Today's Vichar under it, then the quiz card and the saakhis (`05-today.md` §5.3) |
 | Vichar library (2026-11-09) | 122 | Option 1, from the owner's mock-up: the dawn header with ੴ, search, four picture tiles (Sikh days, Gurdwaras, Guru Sahibans, Banis), each entry an article card with a kind-and-date pill, headline, three lines, minutes and a picture by kind of day from `assets/vichar/` (replaces 43, `docs/vichar-content.md` Library) |
 | Simran counts (2026-11-09) | 123, 124 | Option C of four: live today and here today as two figures, green and blue (here today keeps its meaning, everyone counted who has not opened the app today); during a sitting both stay, smaller, either side of the countdown (`07-simran.md` CT3; replace 88 and 89) |
-| Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A with no buttons and the quiz card D (2026-10-28, from four options), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
+| Live sangat (2026-11-17, 2026-11-18) | 125-129 | **Built 2026-11-18.** The Sangat tab as two tabs, Discover first and My groups (the default once you are in a group, with Create and Join at the top); three live groups (Naam Simran, Mool Mantar, Chaupai Sahib) as option B's tall cards with their own scenes (the globe, ੴ among the stars, the jot in the shield, drawn by `tools/design/live_scenes.js`); the live page option A with the group in a sheet; a sitting option D (`15-live-sangat.md`; replace 102) |
+| First-run profile (2026-11-18) | 130, 131 | Option C of four: the profile is the last step of setup, Make your Hazri card, the identity card filling in as you type, email optional, Not now; Welcome, {name} after it (`03-first-run.md` F10) |
+| Gurmat Quiz (2026-10-27) | 113-119 | Today: the calendar leaf 1A, with Know more and Quiz since 2026-11-18 (option B), and the quiz card D (2026-10-28, from four options; today's tile as option B since 2026-11-19, a small mark and Start full width under the name), above the Saakhis card (113, with the saakhis' option C), a question (114), result 4B (115), leaderboard 5A and 5B (116, 117), quiz page 6A (118), Your quiz 7A (119); the category drawings are read from `lib/features/quiz/ui/quiz_drawings.dart` (`14-quiz.md`) |
 
 Screens drawn before their feature file (goals, sangat, account) are marked
 current with a note that the file wins where they differ.
@@ -430,8 +454,22 @@ all.
 ## Audio
 
 Masters are **not** in git; they live on the `audio-masters` GitHub release.
-See `audio/README.md` for how to fetch one, rebuild the shipping AAC, generate
+See `audio/README.md` for how to fetch one, rebuild the shipping Opus, generate
 timings and verify the alignment acoustically.
+
+**The recitations are mono Opus, 48 kbps, in Ogg** (owner, 2026-11-19, chosen
+by ear over 32 and 64; they were AAC 64k): `tools/audio_pipeline/build_audio.py`
+from the masters, at −16 LUFS as before. The new files match the old to the
+millisecond (cross-correlated), so the locked timings stand. Eight banis and
+Naam Simran ship in `assets/audio/` (about 35 MB, was 80); **Sukhmani Sahib
+(29 MB) is in `public/audio/` and downloaded once** (`downloads.json`,
+`audio_track.pack` = `download` with its SHA-256,
+`lib/features/audio/data/recitation_downloads.dart`), so **a change to it
+needs `firebase deploy --only hosting:public`**, and the app checks the file
+against content.db's checksum before it keeps it. The live loops are mono
+Opus too, built sample-exactly in numpy (`tools/live/build_loops.py`; two
+ffmpeg inputs seeked into an MP3 were not sample-exact and clicked at the
+repeat).
 
 The paathi is deliberately uncredited: there is no name placeholder anywhere in
 the app. Add the credit to `voice` in the content pipeline when one is agreed.
@@ -466,8 +504,13 @@ is true of the code now, then what is live, then what is still open.
 - **Notifications** (`02-notifications.md`): five local kinds --
   `amritVela`, `goalBani` (one per goal item at its own time), `calendar`
   (every event 20:00 the evening before and 06:30 on the day), `hazriNudge`, `sangat` --
-  planned by the pure `ReminderPlanner.plan` for 7 days every time anything
-  is written (`UserRepository.onChanged`). They are **scheduled and posted by
+  planned by the pure `ReminderPlanner.plan` for **30 days** every time anything
+  is written (`UserRepository.onChanged`), of which Android holds the nearest
+  60 as alarms and arms the next as each fires (`Reminders.armNext`), so
+  they go on for 30 days with the app closed (2026-11-19; they used to stop
+  after 3-7 days). The Notifications page's **Keep reminders coming** card
+  (KA1, KA2) sends people to "Pause app activity if unused" and the phone
+  maker's battery options. They are **scheduled and posted by
   Hazri's own Android code** (`android/.../Reminders.kt`, DP7, 2026-10-11),
   not by `flutter_local_notifications`: on the owner's phone not one reminder
   the plugin scheduled ever showed, while an alarm set straight through
@@ -477,7 +520,8 @@ is true of the code now, then what is live, then what is still open.
   creator, a group ending) are sent by the `sangatDispatch` Function. A badge
   or a met goal is an in-app sheet, never a notification.
 - **Profile** (step 4): anonymous sign-in, Setup / Profile / Edit / Email
-  sent / Link result, `/verify` links through the router's redirect, the
+  sent / Link result; **the email is optional since 2026-11-18** (`01-accounts.md`
+  §5: no email, no index, `409 NO_EMAIL` to confirm, Add email later), `/verify` links through the router's redirect, the
   profile's city as the only city (without a profile, sunrise times fall
   back to fixed ones). Verification and restore mail is sent by the `api`
   Function through **Brevo** (`BREVO_API_KEY` is a Functions secret, never
@@ -507,7 +551,7 @@ is true of the code now, then what is live, then what is still open.
   referrer is read in `MainActivity.kt` with Google's `installreferrer`
   library directly: the Flutter plugin uses the `kotlinOptions` block Kotlin
   2.4 rejects.
-- **Admin website** (`admin/`, `11-admin.md`): `https://hazri-admin-d4b72.web.app`,
+- **Admin website** (`admin/`, `11-admin.md`): `https://hazri-admin-d4b72.web.app`, and `https://admin.hazri.me` once its domain is connected (`docs/domain-setup.md` §4a; a People page lists everyone registered since 2026-11-19),
   Google sign-in for the one admin address only. Editing a built-in group's
   template changes the **running** goal's target and length at once, and
   its bani from the next goal (owner, 2026-10-18).
@@ -546,8 +590,12 @@ is true of the code now, then what is live, then what is still open.
   after the Sangat facts and silently after a restore; the sheet waits until
   a tab is showing and never interrupts a sitting (UI7). Badge names live in
   `BadgeId` as proper nouns by script; everything else is in the ARB files.
-- **First run** (step 10): Android's splash, Welcome, Language, How you read;
-  `/` is a redirect, not a screen.
+- **First run** (step 10): Android's splash, Welcome, Language, How you read
+  and, since 2026-11-18, **your profile** (`03-first-run.md` F10, design 130):
+  the Hazri card filling in as you type, name, city and an optional email,
+  Not now; then Welcome, {name} (design 131). With no connection the details
+  are kept (`pending_profile_v1`) and sent at the next start. `/` is a
+  redirect, not a screen.
 - **Saakhis** (`13-saakhi.md`, built 2026-10-25): four saakhis on the phone,
   `content.db` table `saakhi` (content version 9) from
   `content/source/saakhi/*.json` (content version 11 adds the owner's
@@ -578,8 +626,8 @@ is true of the code now, then what is live, then what is still open.
   total, a board counts your best per topic per IST day, and a first attempt
   at 0 still counts as played. **Without a profile the quiz plays on the
   phone, sends nothing and earns nothing** (QZ14). Today has two quiz cards
-  (QZ9, 2026-10-28): the calendar leaf with the day's insight and no buttons,
-  which on a day with an event opens its Vichar page (Know more, QZ11), and
+  (QZ9, 2026-10-28): the calendar leaf with the day's insight and, since
+  2026-11-18, Know more and Quiz (option B, QZ11), and
   `QuizPickCard`, design D: today's topic with Start, your points, All
   quizzes, and the other categories as tiles opening the quiz page on that
   category (`/quiz?category=`). Neither fetches anything. A shared link is

@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Convert a recitation master into the file the app ships.
 
-Per the PRD (§8): mono AAC in an .m4a container, 64 kbps, loudness-normalised
-to -16 LUFS, no music. The master stays out of the repository -- it lives on a
+Mono Opus in an Ogg container, 48 kbps, loudness-normalised to -16 LUFS, no
+music (owner, 2026-11-19: Opus 48k chosen by ear over 32k and 64k; it
+replaced AAC 64k, a quarter smaller and no worse). A recitation listed in
+`downloads.json` is written to `public/audio/` and downloaded by the app once
+(PRD §8); every other one ships in the APK under `assets/audio/`. The master stays out of the repository -- it lives on a
 GitHub release -- and only this output is committed.
 
 Usage:
@@ -18,14 +21,16 @@ import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SRC = os.path.join(ROOT, "audio", "source")
-# Sideloaded builds read from here. A Play build moves these into the
-# nitnem_audio asset pack instead; the app looks in both.
 OUT = os.path.join(ROOT, "assets", "audio")
+# Recitations the app downloads once rather than ships (Firebase Hosting).
+DOWNLOAD_OUT = os.path.join(ROOT, "public", "audio")
+DOWNLOADS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "downloads.json")
 
 TARGET_LUFS = -16.0
 TARGET_TRUE_PEAK = -1.5
 TARGET_LRA = 11.0
-BITRATE = "64k"
+BITRATE = "48k"
+EXT = "ogg"
 
 
 def measure(path: str) -> dict:
@@ -60,8 +65,16 @@ def main() -> int:
     src = args.source or os.path.join(SRC, f"{args.bani}.mp3")
     if not os.path.exists(src):
         raise SystemExit(f"missing master: {src}")
-    os.makedirs(OUT, exist_ok=True)
-    dst = os.path.join(OUT, f"{args.bani}.m4a")
+    with open(DOWNLOADS, encoding="utf-8") as fh:
+        downloaded = set(json.load(fh)["downloads"])
+    out = DOWNLOAD_OUT if args.bani in downloaded else OUT
+    os.makedirs(out, exist_ok=True)
+    dst = os.path.join(out, f"{args.bani}.{EXT}")
+    # One home per recitation: an older build of it in the other place goes.
+    for old in (os.path.join(OUT, f"{args.bani}.m4a"), os.path.join(OUT, f"{args.bani}.{EXT}"),
+                os.path.join(DOWNLOAD_OUT, f"{args.bani}.{EXT}")):
+        if old != dst and os.path.exists(old):
+            os.remove(old)
 
     print(f"measuring {os.path.basename(src)} ...")
     m = measure(src)
@@ -83,13 +96,13 @@ def main() -> int:
         fade = f",afade=t=out:st={args.seconds - args.fade}:d={args.fade}"
     else:
         fade = ""
-    print(f"encoding mono AAC {BITRATE}"
+    print(f"encoding mono Opus {BITRATE}"
           + (f", first {args.seconds:.0f}s" if args.seconds else "")
           + (f", {args.fade:.0f}s fade" if fade else "") + " ...")
     subprocess.run(
         ["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", src, *trim,
-         "-af", loudnorm + fade, "-ac", "1", "-ar", "44100",
-         "-c:a", "aac", "-b:a", BITRATE, "-movflags", "+faststart",
+         "-af", loudnorm + fade, "-ac", "1", "-ar", "48000",
+         "-c:a", "libopus", "-b:a", BITRATE, "-application", "audio",
          "-map_metadata", "-1", "-y", dst],
         check=True,
     )

@@ -3360,7 +3360,7 @@ abstract class L {
   /// No description provided for @privacyPhoneContent.
   ///
   /// In en, this message translates to:
-  /// **'Every bani, its audio and the calendar'**
+  /// **'Every bani, its audio and the calendar (Sukhmani Sahib\'s recitation is downloaded once, with nothing about you, then kept)'**
   String get privacyPhoneContent;
 
   /// No description provided for @privacyShowMyName.
@@ -4920,8 +4920,98 @@ abstract class L {
   /// No description provided for @profileFieldEmail.
   ///
   /// In en, this message translates to:
-  /// **'Email *'**
+  /// **'Email (optional)'**
   String get profileFieldEmail;
+
+  /// No description provided for @profileNoEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'No email yet'**
+  String get profileNoEmail;
+
+  /// No description provided for @profileAddEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Add email'**
+  String get profileAddEmail;
+
+  /// No description provided for @profileNoEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an email to keep your diary safe and bring it back on a new phone.'**
+  String get profileNoEmailHint;
+
+  /// No description provided for @setupProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Make your Hazri card'**
+  String get setupProfileTitle;
+
+  /// No description provided for @setupProfileLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name and city put you on the globe with the sangat. An email keeps your diary safe, if you add one.'**
+  String get setupProfileLead;
+
+  /// No description provided for @setupProfileCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create my profile'**
+  String get setupProfileCreate;
+
+  /// No description provided for @setupProfileKept.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection. Your details are kept on this phone, and your profile is made when you are back online.'**
+  String get setupProfileKept;
+
+  /// No description provided for @cardYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get cardYourName;
+
+  /// No description provided for @cardYourCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Your city'**
+  String get cardYourCity;
+
+  /// No description provided for @cardYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email'**
+  String get cardYourEmail;
+
+  /// No description provided for @profileMadeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {name}'**
+  String profileMadeTitle(String name);
+
+  /// No description provided for @profileMadeConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is made. Would you like to confirm {email}? It is optional, and you can do it later from your profile.'**
+  String profileMadeConfirmBody(String email);
+
+  /// No description provided for @profileMadeNoEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is made. You can add an email any time from your profile, to keep your diary safe.'**
+  String get profileMadeNoEmailBody;
+
+  /// No description provided for @profileMadeLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later, go to Today'**
+  String get profileMadeLater;
+
+  /// No description provided for @profileMadeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Today'**
+  String get profileMadeToday;
 
   /// No description provided for @profileFieldPhone.
   ///
@@ -5424,7 +5514,7 @@ abstract class L {
   /// No description provided for @privacyProfileDetails.
   ///
   /// In en, this message translates to:
-  /// **'Your name, email and city, and your phone number if you give it'**
+  /// **'Your name and city, and your email and phone number if you give them'**
   String get privacyProfileDetails;
 
   /// No description provided for @privacyProfileMail.
@@ -6739,7 +6829,7 @@ abstract class L {
   /// No description provided for @quizTakeQuiz.
   ///
   /// In en, this message translates to:
-  /// **'Take the quiz'**
+  /// **'Quiz'**
   String get quizTakeQuiz;
 
   /// No description provided for @quizQuestionOf.
@@ -6940,12 +7030,6 @@ abstract class L {
   /// **'Today'**
   String get quizPeriodToday;
 
-  /// No description provided for @quizPeriodWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Week'**
-  String get quizPeriodWeek;
-
   /// No description provided for @quizPeriodMonth.
   ///
   /// In en, this message translates to:
@@ -6970,12 +7054,6 @@ abstract class L {
   /// **'Top 20 · {count} played today · resets at midnight IST'**
   String quizPlayedToday(int count);
 
-  /// No description provided for @quizPlayedWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Top 20 · {count} played this week · resets Monday at midnight IST'**
-  String quizPlayedWeek(int count);
-
   /// No description provided for @quizPlayedMonth.
   ///
   /// In en, this message translates to:
@@ -6997,20 +7075,8 @@ abstract class L {
   /// No description provided for @quizBoardEmptyToday.
   ///
   /// In en, this message translates to:
-  /// **'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on the week\'s and the month\'s.'**
+  /// **'Nobody has played this one today yet. Today\'s board starts again at midnight IST; earlier quizzes are on this month\'s board and on All time.'**
   String get quizBoardEmptyToday;
-
-  /// No description provided for @quizBoardEmptyWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'Nobody has played this one this week yet. Earlier quizzes are on the month\'s board.'**
-  String get quizBoardEmptyWeek;
-
-  /// No description provided for @quizSeeWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'See this week'**
-  String get quizSeeWeek;
 
   /// No description provided for @quizSeeMonth.
   ///
@@ -7174,12 +7240,6 @@ abstract class L {
   /// **'today'**
   String get quizPlaceToday;
 
-  /// No description provided for @quizPlaceWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'this week'**
-  String get quizPlaceWeek;
-
   /// No description provided for @quizPlaceMonth.
   ///
   /// In en, this message translates to:
@@ -7287,6 +7347,432 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Could not open a browser. The page is hazri.me/delete-account'**
   String get privacyDeleteNoBrowser;
+
+  /// No description provided for @sangatTabDiscover.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get sangatTabDiscover;
+
+  /// No description provided for @sangatTabMine.
+  ///
+  /// In en, this message translates to:
+  /// **'My groups · {count}'**
+  String sangatTabMine(int count);
+
+  /// No description provided for @sangatRunningHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get sangatRunningHeading;
+
+  /// No description provided for @sangatOwnGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own group'**
+  String get sangatOwnGroup;
+
+  /// No description provided for @sangatOwnGroupSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Private, by invite only. Set one goal and an end date, and sit together.'**
+  String get sangatOwnGroupSub;
+
+  /// No description provided for @liveTag.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE'**
+  String get liveTag;
+
+  /// No description provided for @liveListening.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} listening'**
+  String liveListening(int count);
+
+  /// No description provided for @liveCities.
+  ///
+  /// In en, this message translates to:
+  /// **'Live sangat · always on · {count} cities'**
+  String liveCities(int count);
+
+  /// No description provided for @liveJoinedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} joined from {city}'**
+  String liveJoinedFrom(String name, String city);
+
+  /// No description provided for @liveJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get liveJoin;
+
+  /// No description provided for @liveJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get liveJoined;
+
+  /// No description provided for @liveSwipeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe up for the group'**
+  String get liveSwipeUp;
+
+  /// No description provided for @liveYouAreIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Live, you are in'**
+  String get liveYouAreIn;
+
+  /// No description provided for @liveListen.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get liveListen;
+
+  /// No description provided for @liveYouListened.
+  ///
+  /// In en, this message translates to:
+  /// **'You listened {minutes} min today'**
+  String liveYouListened(int minutes);
+
+  /// No description provided for @liveMinutesListened.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes listened'**
+  String get liveMinutesListened;
+
+  /// No description provided for @liveSangatToday.
+  ///
+  /// In en, this message translates to:
+  /// **'The sangat today'**
+  String get liveSangatToday;
+
+  /// No description provided for @liveSangatMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'The sangat this month'**
+  String get liveSangatMonth;
+
+  /// No description provided for @liveYoursToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours today'**
+  String get liveYoursToday;
+
+  /// No description provided for @liveYoursMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours this month'**
+  String get liveYoursMonth;
+
+  /// No description provided for @liveWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the sangat…'**
+  String get liveWaiting;
+
+  /// No description provided for @liveKindMeditation.
+  ///
+  /// In en, this message translates to:
+  /// **'Meditation'**
+  String get liveKindMeditation;
+
+  /// No description provided for @liveKindJaap.
+  ///
+  /// In en, this message translates to:
+  /// **'Jaap'**
+  String get liveKindJaap;
+
+  /// No description provided for @liveMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members · {count}'**
+  String liveMembers(int count);
+
+  /// No description provided for @liveNoMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has joined yet.'**
+  String get liveNoMembers;
+
+  /// No description provided for @liveMinutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String liveMinutesShort(int minutes);
+
+  /// No description provided for @liveLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave {group}? You can still listen, and join again at any time.'**
+  String liveLeaveConfirm(String group);
+
+  /// No description provided for @liveJoinNeedsProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Make your Hazri card to join a live group. You can listen without one.'**
+  String get liveJoinNeedsProfile;
+
+  /// No description provided for @liveSit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sit'**
+  String get liveSit;
+
+  /// No description provided for @liveSitFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Sit for {minutes} min'**
+  String liveSitFor(int minutes);
+
+  /// No description provided for @liveSitCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'A sitting counts as Naam Simran, toward hazri and your goal. Listening alone counts toward nothing.'**
+  String get liveSitCounts;
+
+  /// No description provided for @liveSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get liveSound;
+
+  /// No description provided for @liveSoundOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound off'**
+  String get liveSoundOff;
+
+  /// No description provided for @liveSleepIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops in {minutes} min'**
+  String liveSleepIn(int minutes);
+
+  /// No description provided for @liveSleepOff.
+  ///
+  /// In en, this message translates to:
+  /// **'No sleep timer'**
+  String get liveSleepOff;
+
+  /// No description provided for @liveSittingLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'left'**
+  String get liveSittingLeft;
+
+  /// No description provided for @liveListeningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'listening'**
+  String get liveListeningLabel;
+
+  /// No description provided for @liveSatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'sat'**
+  String get liveSatLabel;
+
+  /// No description provided for @privacyProfileLive.
+  ///
+  /// In en, this message translates to:
+  /// **'While a live group plays, a listening mark every five minutes: the group, and your profile\'s city. Your minutes listened are counted on this phone'**
+  String get privacyProfileLive;
+
+  /// No description provided for @privacyProfileLiveJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'If you join a live group: your first name, the first letter of your last name and your city, shown to everybody on its page as having joined, with your minutes there this month'**
+  String get privacyProfileLiveJoin;
+
+  /// No description provided for @quizPeriodAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get quizPeriodAllTime;
+
+  /// No description provided for @quizPlayedAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 20 · {count} have played · never resets'**
+  String quizPlayedAllTime(int count);
+
+  /// No description provided for @quizBoardEmptyMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has played this one this month yet. Earlier quizzes are on All time.'**
+  String get quizBoardEmptyMonth;
+
+  /// No description provided for @quizSeeAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'See All time'**
+  String get quizSeeAllTime;
+
+  /// No description provided for @quizPlaceAllTime.
+  ///
+  /// In en, this message translates to:
+  /// **'all time'**
+  String get quizPlaceAllTime;
+
+  /// No description provided for @recitationDownloadOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'The recitation is downloaded once. Then it stays on your phone and plays without internet.'**
+  String get recitationDownloadOnce;
+
+  /// No description provided for @recitationDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading · {done} of {total} MB'**
+  String recitationDownloading(String done, String total);
+
+  /// No description provided for @recitationNoInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet. Connect once to download the recitation; the text opens without it.'**
+  String get recitationNoInternet;
+
+  /// No description provided for @recitationDownloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The download did not finish.'**
+  String get recitationDownloadFailed;
+
+  /// No description provided for @keepAwakeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep reminders coming'**
+  String get keepAwakeTitle;
+
+  /// No description provided for @keepAwakeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Android quietly stops the reminders of apps it thinks are not used. These two settings keep Hazri\'s coming. A family member can do this once.'**
+  String get keepAwakeBody;
+
+  /// No description provided for @keepAwakeUnusedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t pause Hazri'**
+  String get keepAwakeUnusedTitle;
+
+  /// No description provided for @keepAwakeUnusedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off “Pause app activity if unused”'**
+  String get keepAwakeUnusedSub;
+
+  /// No description provided for @keepAwakeBatteryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let Hazri run in the background'**
+  String get keepAwakeBatteryTitle;
+
+  /// No description provided for @keepAwakeBatterySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Battery, choose “Unrestricted” or “Allow background activity”'**
+  String get keepAwakeBatterySub;
+
+  /// No description provided for @keepAwakeOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get keepAwakeOpen;
+
+  /// No description provided for @keepAwakeDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get keepAwakeDone;
+
+  /// No description provided for @keepAwakeLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get keepAwakeLater;
+
+  /// No description provided for @announcementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message from Hazri'**
+  String get announcementTitle;
+
+  /// No description provided for @announcementOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'This message needs a connection to open. Try again when you are online.'**
+  String get announcementOffline;
+
+  /// No description provided for @notifChannelAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get notifChannelAnnouncements;
+
+  /// No description provided for @notifKindAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get notifKindAnnouncements;
+
+  /// No description provided for @notifKindAnnouncementsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Now and then, a message from Hazri'**
+  String get notifKindAnnouncementsSub;
+
+  /// No description provided for @privacyProfileAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone\'s notification address, language and time zone, so Hazri can send you announcements (switch them off under Notifications); when you open one, that you opened it'**
+  String get privacyProfileAnnouncements;
+
+  /// No description provided for @profileRestoreWaitingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for your link'**
+  String get profileRestoreWaitingTitle;
+
+  /// No description provided for @profileRestoreWaitingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a link to {email}. Open it on this phone to bring your profile back. Until you do, there is no profile on this phone.'**
+  String profileRestoreWaitingBody(String email);
+
+  /// No description provided for @profileRestoreLostTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring back your profile'**
+  String get profileRestoreLostTitle;
+
+  /// No description provided for @profileRestoreLostBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile was on this phone. We will send a link to {email}; open it here to bring it back.'**
+  String profileRestoreLostBody(String email);
+
+  /// No description provided for @profileRestoreNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up a new profile instead'**
+  String get profileRestoreNew;
+
+  /// No description provided for @profileRestoreGone.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no profile for that email any more. You can set up a new one.'**
+  String get profileRestoreGone;
+
+  /// No description provided for @emailSentRestoreUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Until you open it, there is no profile on this phone.'**
+  String get emailSentRestoreUntil;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

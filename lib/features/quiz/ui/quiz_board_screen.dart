@@ -25,7 +25,8 @@ class QuizBoardScreen extends ConsumerStatefulWidget {
 }
 
 class _QuizBoardScreenState extends ConsumerState<QuizBoardScreen> {
-  QuizPeriod _period = QuizPeriod.day;
+  // Month and Everyone first (owner, 2026-11-19).
+  QuizPeriod _period = QuizPeriod.month;
   late String _scope = widget.scope ?? 'all';
 
   @override
@@ -59,8 +60,8 @@ class _QuizBoardScreenState extends ConsumerState<QuizBoardScreen> {
           children: [
             for (final (p, label) in [
               (QuizPeriod.day, l.quizPeriodToday),
-              (QuizPeriod.week, l.quizPeriodWeek),
               (QuizPeriod.month, l.quizPeriodMonth),
+              (QuizPeriod.all, l.quizPeriodAllTime),
             ])
               chip(label, _period == p, () => setState(() => _period = p)),
           ],
@@ -115,9 +116,9 @@ class _QuizBoardScreenState extends ConsumerState<QuizBoardScreen> {
       // Today's board starts empty at midnight IST, so an earlier quiz is
       // only on the week's and the month's (QZ28a, owner 2026-10-28).
       final next = switch (_period) {
-        QuizPeriod.day => (l.quizBoardEmptyToday, l.quizSeeWeek, QuizPeriod.week),
-        QuizPeriod.week => (l.quizBoardEmptyWeek, l.quizSeeMonth, QuizPeriod.month),
-        QuizPeriod.month => null,
+        QuizPeriod.day => (l.quizBoardEmptyToday, l.quizSeeMonth, QuizPeriod.month),
+        QuizPeriod.month => (l.quizBoardEmptyMonth, l.quizSeeAllTime, QuizPeriod.all),
+        QuizPeriod.all => null,
       };
       if (next == null) return [_note(context, l.quizBoardEmpty)];
       return [
@@ -163,8 +164,8 @@ class _QuizBoardScreenState extends ConsumerState<QuizBoardScreen> {
       Text(
         switch (_period) {
           QuizPeriod.day => l.quizPlayedToday(board.played),
-          QuizPeriod.week => l.quizPlayedWeek(board.played),
           QuizPeriod.month => l.quizPlayedMonth(board.played),
+          QuizPeriod.all => l.quizPlayedAllTime(board.played),
         },
         textAlign: TextAlign.center,
         style: HazriText.caption.copyWith(color: c.muted),

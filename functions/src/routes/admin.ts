@@ -61,6 +61,9 @@ async function currentGoal(db: Firestore, groupId: string, g: GroupDoc) {
   return s.exists ? { id: s.id, doc: s.data() as GoalDoc } : null;
 }
 
+/** People listed a page at a time (GET /people/all). */
+const PEOPLE_PAGE = 50;
+
 export function adminRouter(deps: Deps): Router {
   const { db, clock } = deps;
   const r = Router();
@@ -390,6 +393,51 @@ export function adminRouter(deps: Deps): Router {
       await ref.update({ status });
       await audit(db, by(res), 'UPDATE_REPORT', `groupReports/${id}`, { status: snap.get('status') }, { status });
       res.json({ result: 'REPORT_UPDATED', reportId: id, status });
+    }),
+  );
+
+  // GET /people/all?after=<profileId>: every registered person, newest
+  // first, 50 a page (owner, 2026-11-19: "see all the users who registered").
+  // Full details, for the one admin only: name, city, email and whether it
+  // is confirmed, phone, joined, the last IST day the app was opened, and the
+  // groups they are in. No index: a single orderBy on createdAt.
+  r.get(
+    `${P}/people/all`,
+    h(async (req, res) => {
+      const after = queryString(req, 'after');
+      let q = db.collection('profiles').orderBy('createdAt', 'desc').limit(PEOPLE_PAGE);
+      if (after) {
+        const cursor = await db.doc(`profiles/${after}`).get();
+        if (!cursor.exists) throw Errors.validation({ after: 'Not a profile' });
+        q = q.startAfter(cursor);
+      }
+      const [page, total] = await Promise.all([q.get(), db.collection('profiles').count().get()]);
+      const profiles = page.docs.map((d) => d.data() as ProfileDoc);
+      const memberships = profiles.length
+        ? await db.getAll(...profiles.map((p) => db.doc(`memberships/p_${p.profileId}`)))
+        : [];
+      const groupIds = [...new Set(memberships.flatMap((m) => (m.exists ? ((m.get('groupIds') as string[]) ?? []) : [])))];
+      const groupDocs = groupIds.length ? await db.getAll(...groupIds.map((id) => db.doc(`groups/${id}`))) : [];
+      const groupName = new Map(
+        groupDocs.filter((g) => g.exists).map((g) => [g.id, ((g.get('names') as { en?: string } | undefined)?.en ?? (g.get('name') as string)) ?? g.id]),
+      );
+      res.json({
+        total: total.data().count,
+        people: profiles.map((p, i) => ({
+          profileId: p.profileId,
+          name: p.name,
+          cityId: p.cityId,
+          email: p.email ?? null,
+          emailVerified: p.emailVerified === true,
+          phone: p.phone ?? null,
+          createdAt: toIso(p.createdAt),
+          lastSeenDay: p.lastSeenDay ?? null,
+          groups: (memberships[i]?.exists ? ((memberships[i].get('groupIds') as string[]) ?? []) : []).map(
+            (id) => groupName.get(id) ?? id,
+          ),
+        })),
+        next: profiles.length === PEOPLE_PAGE ? profiles[profiles.length - 1].profileId : null,
+      });
     }),
   );
 

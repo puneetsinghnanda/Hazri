@@ -21,8 +21,7 @@ import 'router.dart';
 enum HomeTab { today, nitnem, simran, sangat, diary }
 
 /// A branch's own route. `shell.currentIndex` is the branch index, which is
-/// `HomeTab.index` — not a position in the visible tab list, which is three
-/// entries long in elder mode.
+/// `HomeTab.index`.
 String routeForTab(HomeTab tab) => switch (tab) {
   HomeTab.today => Routes.today,
   HomeTab.nitnem => Routes.nitnem,
@@ -33,23 +32,18 @@ String routeForTab(HomeTab tab) => switch (tab) {
 
 /// The bottom-navigation shell.
 ///
-/// Elder mode shows three tabs rather than five (PRD 1.12); the hidden tabs
-/// stay routable, so Simran and the Diary are still reachable from Today and
-/// Settings.
+/// Every tab in every mode (PRD §4.17 as amended 2026-11-21): elder mode
+/// makes the app larger, never smaller. It used to show three tabs, which hid
+/// Simran and left the Sangat unreachable for the people it switched on for.
 class HomeShell extends ConsumerWidget {
   const HomeShell({super.key, required this.shell});
 
   final StatefulNavigationShell shell;
 
-  /// Elder mode shows three (PRD 1.12). Settings is not among them any more
-  /// because it is not a branch at all; it is one tap away in the brand bar,
-  /// which is larger and closer than a fifth of a nav row.
-  static const _elderTabs = [HomeTab.today, HomeTab.nitnem, HomeTab.diary];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final elder = ref.watch(settingsProvider).elderMode;
-    final tabs = elder ? _elderTabs : HomeTab.values;
+    const tabs = HomeTab.values;
     final c = context.colors;
 
     final onToday = shell.currentIndex == HomeTab.today.index;
@@ -192,7 +186,7 @@ class _NavItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: elder ? 72 : HazriSize.navPill.width,
+                width: elder ? 60 : HazriSize.navPill.width,
                 height: elder ? 40 : HazriSize.navPill.height,
                 decoration: BoxDecoration(
                   color: selected ? c.kesriSoft : Colors.transparent,

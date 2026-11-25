@@ -190,6 +190,17 @@ class SaakhiFavourites extends Table {
   Set<Column> get primaryKey => {saakhiId};
 }
 
+/// Seconds a live group's page played, per group per local day
+/// (15-live-sangat LS7a). Kept on the phone; never sent, never backed up.
+class LiveListening extends Table {
+  TextColumn get groupId => text()();
+  TextColumn get localDate => text()();
+  IntColumn get seconds => integer().withDefault(const Constant(0))();
+
+  @override
+  Set<Column> get primaryKey => {groupId, localDate};
+}
+
 class GraceDays extends Table {
   TextColumn get localDate => text()();
   TextColumn get monthKey => text()();
@@ -221,6 +232,7 @@ class EventReminderOverrides extends Table {
     EventReminderOverrides,
     Badges,
     SaakhiFavourites,
+    LiveListening,
   ],
 )
 class UserDb extends _$UserDb {
@@ -230,7 +242,7 @@ class UserDb extends _$UserDb {
   UserDb.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -247,6 +259,8 @@ class UserDb extends _$UserDb {
           if (from < 6) await m.createTable(badges);
           // 13-saakhi SK12: the hearts, empty.
           if (from < 7) await m.createTable(saakhiFavourites);
+          // 15-live-sangat LS7a: minutes listened, empty.
+          if (from < 8) await m.createTable(liveListening);
         },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');

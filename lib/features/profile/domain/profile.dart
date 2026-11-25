@@ -17,7 +17,10 @@ class Profile {
 
   final String profileId;
   final String name;
-  final String email;
+
+  /// Optional since 2026-11-18 (owner): null for a profile made without one.
+  /// Without an email there is nothing to confirm and nothing to restore by.
+  final String? email;
   final String? phone;
   final String cityId;
   final bool emailVerified;
@@ -29,7 +32,7 @@ class Profile {
   factory Profile.fromJson(Map<String, Object?> j) => Profile(
         profileId: j['profileId']! as String,
         name: j['name']! as String,
-        email: j['email']! as String,
+        email: j['email'] as String?,
         phone: j['phone'] as String?,
         cityId: j['cityId']! as String,
         emailVerified: j['emailVerified'] == true,

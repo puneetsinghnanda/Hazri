@@ -58,7 +58,7 @@ function emptyPlayer(displayName: string, cityId: string | null): PlayerDoc {
   return { displayName, cityId, points: 0, attempts: 0, topics: {}, days: {}, recent: {}, today: { day: '', sessions: 0 } };
 }
 
-/** The scores an attempt feeds: its topic's and everyone's, for its day, week and month. */
+/** The scores an attempt feeds: its topic's and everyone's, for its day, week, month and all time. */
 function scoreIds(day: string, topic: string, memberKey: string): Array<{ id: string; period: Period; scope: string }> {
   const out = [];
   for (const scope of [topic, ALL]) for (const period of PERIODS) out.push({ id: `${boardId(period, day, scope)}_${memberKey}`, period, scope });
@@ -219,7 +219,7 @@ export function quizRouter(deps: Deps): Router {
       const period = req.query.period;
       const scope = req.query.scope;
       const fields: Record<string, string> = {};
-      if (period !== 'day' && period !== 'week' && period !== 'month') fields.period = 'day, week or month';
+      if (period !== 'day' && period !== 'week' && period !== 'month' && period !== 'all') fields.period = 'day, week, month or all';
       if (scope !== ALL && !isTopic(scope)) fields.scope = 'all or a topic';
       if (Object.keys(fields).length > 0) throw Errors.validation(fields);
       const now = clock.now();
@@ -267,7 +267,7 @@ export function quizRouter(deps: Deps): Router {
       const lastMonth = addDays(`${today.slice(0, 7)}-01`, -1).slice(0, 7);
       const days: Record<string, number> = {};
       for (const [d, n] of Object.entries(p.days ?? {})) if (d.startsWith(today.slice(0, 7)) || d.startsWith(lastMonth)) days[d] = n;
-      const places: Record<Period, number | null> = { day: null, week: null, month: null };
+      const places: Record<Period, number | null> = { day: null, week: null, month: null, all: null };
       await Promise.all(
         PERIODS.map(async (period) => {
           const id = boardId(period, today, ALL);

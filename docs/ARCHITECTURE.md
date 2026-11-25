@@ -300,7 +300,7 @@ beyond what the feature file says.
 | Simran tab open | Fetch the globe snapshot, then every 2 minutes | `07-simran.md` §4.3 |
 | Sunday 00:00 local + up to 60 min, with a profile and a network | WorkManager job `weekly-backup`; caught up at the next chance if missed | `10-backup.md` BK1–BK2, §8.1 |
 | Local midnight with the app open | Today rolls over: hazri, items in scope, the streak strip, the CTA | `05-today.md` T10 |
-| FCM token refresh, language or time-zone change, with a profile and a group | `POST /devices/fcm-token` | `02-notifications.md` FT2 |
+| FCM token refresh, language or time-zone change, or the Announcements switch, with a profile | `POST /devices/fcm-token` | `02-notifications.md` FT2 |
 
 
 ## 3. Storage on the phone
@@ -327,8 +327,8 @@ Built by `tools/content_pipeline/build_content_db.py` from `content/source/`
 and bundled at `assets/content/content.db`. On first run, and whenever
 `meta.content_version` differs from the stamp file `content.version`, it is
 copied to `getApplicationSupportDirectory()/content.db` and opened read-only
-(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 11 at the time
-of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`, 2026-10-27; 11 the saakhis' Punjabi narration). **Nothing in it is ever written by the app** (rule 3).
+(`PRAGMA query_only`). Drift `schemaVersion` 1; content version 12 at the time
+of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`, 2026-10-27; 11 the saakhis' Punjabi narration; 12 `calendar_event.vichar_slug`, 2026-11-18). **Nothing in it is ever written by the app** (rule 3).
 
 | Table | Columns | Holds |
 |---|---|---|
@@ -338,12 +338,12 @@ of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`
 | `line` | id, bani_version_id, idx, section_label_en/pa/hi?, kind, gurmukhi, devanagari, roman, visraam_json?, word_count, word_align, source_id?, source_ref?, pauri?, ends_pauri? | Every line in three scripts, with pause marks |
 | `meaning` | (line_id, lang, is_alt) PK, text, source_id?, kind, note? | Reviewed meanings; Hindi only for the four banis in Sri Guru Granth Sahib Ji; `kind` `commentary` for the Faridkot teeka |
 | `voice` | id, name?, credit_en/pa/hi? | Empty: the paathi is uncredited until a credit is agreed |
-| `audio_track` | id, bani_version_id, voice_id?, pack, file, duration_ms?, bytes? | One recitation per bani, a file under `assets/audio/` |
+| `audio_track` | id, bani_version_id, voice_id?, pack, file, duration_ms?, bytes?, sha256? | One recitation per bani: `pack` `bundled`, a file under `assets/audio/`, or `download`, fetched once from `<kSiteBase>/audio/<file>` and checked against `sha256` (content version 13, 2026-11-19) |
 | `timing` | audio_track_id PK, json | Line and word timings, verified by ear and locked |
 | `simran_track` | id, file, duration_ms?, bytes?, json | The 5-minute Naam Simran recitation, with its envelope and onsets |
 | `vichar` | idx, gurmukhi, meaning_pa, meaning_en | The 200 lines of ਅੱਜ ਦਾ ਵਿਚਾਰ |
 | `nanakshahi_month` | (ns_year, idx) PK, name_en/pa/hi, start_date, days | Nanakshahi 558 and the first month of 559 |
-| `calendar_event` | id, ns_year, date, kind, name_en, name_pa?, name_hi?, ns_label?, default_remind, supplementary | 147 events, 52 flagged to remind |
+| `calendar_event` | id, ns_year, date, kind, name_en, name_pa?, name_hi?, ns_label?, default_remind, supplementary, vichar_slug? | 147 events, 52 flagged to remind; `vichar_slug` (content version 12, 2026-11-18) is the Vichar page that tells the event's story, from the `events` each article in `tools/site/articles/` names, and is what Today's calendar card opens |
 | `city` | id, name_en/pa/hi, country_code, lat, lon, tz, **state_code** (added by `07-simran.md` §5.1, here §5.5) | 92 cities; the list a profile's city is chosen from |
 | `quote` | id, gurmukhi, devanagari, roman, attribution_en/pa/hi?, source_id? | Quotations shown in the app |
 | `saakhi` | id PK, sort, json | One row per saakhi (`13-saakhi.md`), resolved by the pipeline from `content/source/saakhi/<id>.json`: titles, pages, lesson, the asset paths, the narration's page starts and meaning cue, and any Gurbani, read from its bani's source file by `ref` or carried with a `checked` record naming the source it was checked against (SK3); a shabad with neither is left out. Read whole with a raw query (`SaakhiRepository`), so drift declares no table for it. `sort` is the order Today and the library show |
@@ -352,9 +352,17 @@ of writing (9 added `saakhi`, 2026-10-25; 10 added the quiz tables, `14-quiz.md`
 | `quiz_day` | event_name PK, label_en, label_pa, label_hi, topic_id, slug? | `days.json`: a calendar event's English name as in `calendar_event.name_en`, the card's short label, its topic, and its Vichar page (QZ8, QZ9, QZ11) |
 | `meta` | key, value | `content_version`, `source_digest`, `ik_onkar` |
 
-The audio itself is **bundled in the APK** under `assets/audio/` — AAC-LC,
-mono, 44.1 kHz, about 64 kbps, about 81 MB for the nine banis and the Simran
-recitation. There are no Play asset packs and nothing is streamed. Masters
+The audio is **mono Opus in Ogg, 48 kHz, 48 kbps** (2026-11-19; it was AAC
+64k, about 81 MB). Eight banis and the Simran recitation are **bundled in the
+APK** under `assets/audio/` (about 35 MB). **Sukhmani Sahib is downloaded
+once** (29 MB): `audio_track.pack` is `download`, `bytes` and `sha256` describe
+the file, and the app fetches `<kSiteBase>/audio/<file>` (Firebase Hosting,
+`public/audio/`, cached a day), checks the SHA-256, and keeps it in
+`<app support>/recitations/` for good; a `.part` is written first, so a file
+of the right size is a complete one. It is fetched quietly on Wi-Fi at start
+and when Wi-Fi comes back, or by the download sheet at the first play.
+`tools/audio_pipeline/downloads.json` lists what is downloaded. There are no
+Play asset packs and nothing is streamed. Masters
 live on the `audio-masters` GitHub release (`audio/README.md`).
 
 ### 3.3 `user.db`: goals, goal items, completions and sittings (schema 5)
@@ -568,6 +576,20 @@ empty. Kept on the phone only: it is not in the weekly backup, because
 nothing about a saakhi is counted (SK7).
 
 
+### 3.6b `user.db`: `live_listening` (schema 8, 2026-11-18)
+
+| Field | Type | Nullable | Rule |
+| --- | --- | --- | --- |
+| `groupId` | TEXT (PK with `localDate`) | no | A live group id: `naam-simran`, `mool-mantar`, `chaupai-sahib` |
+| `localDate` | TEXT | no | The phone's local day, `YYYY-MM-DD` |
+| `seconds` | INTEGER | no | Seconds the group's loop played that day, added every 15 s while it sounds |
+
+Minutes listened, yours (`15-live-sangat.md` LS7a): written straight to the
+table by `UserRepository.addLiveSeconds`, without `onChanged`, because
+listening is not hazri, a goal or a badge and nothing has to be re-planned.
+Migration 7 → 8 creates it empty. Kept on the phone only: never sent and not
+in the weekly backup.
+
 ### 3.7 `user.db`: the other tables, and the schema versions
 
 Drift, file `getApplicationDocumentsDirectory()/user.db`. Version 4 on the
@@ -589,6 +611,8 @@ branch today. Besides the tables of §3.3–3.6:
 | 5 | `goals` rebuilt and `goalItems` added; `completions` and `simranSessions` gain `source`, `updatedAt`, `deletedAt`; `goalTicks` folded into completions and sittings and dropped | `04-goals.md` §5.8 (here §3.3) |
 | 5 | `sangatOutbox` | `08-sangat.md` §5.1 (here §3.5) |
 | 6 | `badges` | `12-badges.md` §4.1 (here §3.6) |
+| 7 | `saakhi_favourites` | `13-saakhi.md` SK12 (here §3.6a) |
+| 8 | `live_listening` | `15-live-sangat.md` LS7a (here §3.6b) |
 
 Every migration runs in one transaction and has a test that opens a database
 of the previous version with real-shaped rows and checks them afterwards.
@@ -618,6 +642,9 @@ added. The *Phase 2* column is the target.
 | `goal_complete_sheet_shown_on` | date | — | Kept (`04-goals.md` CE1) |
 | `notif_on_amrit_vela`, `notif_on_goal_reminders`, `notif_on_sikh_calendar`, `notif_on_hazri_nudge`, `notif_on_sangat` | bool | true | **New.** One switch per kind, keyed by its channel (`02-notifications.md` CM7) |
 | `hazri_banner_closed_v1` | String | — | **New** (2026-10-10). The local date the marked hazri banner was closed on (`05-today.md` T1a) |
+| `live_cache_v1` | String (JSON) | — | **New** (2026-11-18). The last `GET /live` reply (§6.8), shown first on the Sangat tab and a live page (`15-live-sangat.md` LS7) |
+| `live_heard_v1` | String (JSON) | — | **New** (2026-11-19). Group id to when this phone last played it, so it counts itself for a day (LS7b). Never sent |
+| `keep_awake_asked_v1` | bool | false | **New** (2026-11-19). The Keep reminders coming sheet was shown once (`02-notifications.md` KA2) |
 | `city_id` | String | `new_delhi` | **Removed.** One city, the profile's; none without a profile (`03-first-run.md` CY1–CY3) |
 | `simran_minutes` | int | 5 | **Removed.** The sitting is 5 minutes or the goal item's minutes (`07-simran.md` S-7) |
 | `exact_alarm_asked` | bool | false | **Removed.** Exact alarms are never asked (`02-notifications.md` DP2) |
@@ -671,6 +698,8 @@ No `user.db` table is added. Every backed-up row already has `id`, `updatedAt` a
 | Key | Meaning | Spec |
 |---|---|---|
 | `profile_cache_v1` | The profile DTO and the uid that owns it (§2.5) | `01-accounts.md` §8.2 |
+| `profile_lost_v1` | `{name, email}` of a profile this phone had and can no longer see; cleared when a profile loads | `01-accounts.md` §8.3 R6 |
+| `restore_pending_v1` | `{email, at}` of a restore link sent and not yet opened; cleared when a profile loads | `01-accounts.md` §8.3 R7 |
 | `snoozed:{reminderId}:{day}` | A goal reminder already snoozed once that day | `02-notifications.md` §6.3 |
 | `quiz_me_v1` | The last `GET /quiz/me` answer, so the quiz page and Your numbers open offline | `14-quiz.md` QZ35 |
 | `quiz_boards_v1` | The last copy of each board shown, keyed by board id, for "Not updated · no connection" | `14-quiz.md` QZ30 |
@@ -757,13 +786,19 @@ collection: camelCase fields, server timestamps, rules deny all
 | `profiles/{profileId}/backupGoals/{goalId}` | Backed-up goal and its items | §5.7 |
 | `profiles/{profileId}/backupWeeks/{weekId}` | Backed-up completions and sittings of a week | §5.7 |
 | `profiles/{profileId}/backupBadges/all` | Backed-up earned badges | §5.9 |
-| `fcmTokens/{uid}` | Device push token, Sangat members only | §5.10 |
+| `fcmTokens/{uid}` | Device push token, every profile (since 2026-11-19) | §5.10 |
+| `announcements/{id}`, `.../opens/{profileId}` | Announcements and who opened each | §5.15 |
 | `sangatNotices/{groupId}_{goalId}_{milestone}` | A milestone notice, sent once | §7.2 |
 | `adminAudit/{autoId}` | Every admin change | `11-admin.md` AC5 |
 | `quizSessions/{sessionId}` | One quiz: its five questions, then its choices and points | §5.13 |
 | `quizPlayers/{memberKey}` | A player's own totals, recent questions and daily count | §5.13 |
 | `quizScores/{boardId}_{memberKey}` | A player's score on one board (a period and a topic, or everyone) | §5.13 |
 | `quizBoards/{boardId}` | One board's top twenty, rebuilt at most every 2 minutes | §5.13 |
+| `liveMembers/{groupId}_{profileId}` | A member of a live group: name as shown, city, joined at, minutes per month | §5.14 |
+| `liveGroups/{groupId}/listens/{profileId}` | The last listening mark: group, city, `lastAt` | §5.14 |
+| `liveMinutes/{groupId}_{period}_{shard}` | The sangat's minutes for a day or a month, in ten shards | §5.14 |
+| `liveGroups/{groupId}` | The last five joins, for the feed | §5.14 |
+| `liveSnapshot/current` | What `GET /live` answers, rebuilt at most every 2 minutes | §5.14 |
 
 **Retired** (in the earlier design, deployed for test data only, and not to be
 used): `users/{uid}` and its `diary`, the old `groups` member shape with
@@ -894,6 +929,8 @@ profileId = Firestore auto-generated ID.
 | emailQuota.lastSentAt    | timestamp | yes      | Last verification or restore email queued     |
 | emailQuota.windowStartAt | timestamp | yes      | Start of current 24 h window                  |
 | emailQuota.countInWindow | number    | no       | 0 on create                                   |
+
+*Amended 2026-11-18 (owner): a profile's `email` and `emailNormalized` may be **null** (an email is optional, `01-accounts.md` §5). Such a profile has no `emailIndex` entry; POST /profile/verification-email answers `409 NO_EMAIL`; restore by email cannot find it; and PATCH /profile/email adds one along the unverified path. `ProfileDto.email` is nullable.*
 
 #### 01-accounts §4.2 emailIndex/{emailHash}
 
@@ -1211,8 +1248,8 @@ Arrays of keys, not counters, so a retried write adds nothing twice.
 *Moved here from `docs/features/02-notifications.md` §8.1 on 2026-10-08, word for word. Section numbers and bare references inside it are that file's.*
 
 
-- **FT1.** The app uses `firebase_messaging`. It registers a token only when the person has a profile **and** belongs to at least one group, and removes it when they leave their last group, switch Sangat notifications off, or lose the profile (`markNone()`).
-- **FT2.** `POST /api/v1/devices/fcm-token` with `{ "token": "...", "locale": "pa", "tz": "Asia/Kolkata" }`, also called on `onTokenRefresh`, on a language change and on a time-zone change. `DELETE /api/v1/devices/fcm-token` removes it. Both follow `01-accounts.md` §6.0 and return `404 NO_PROFILE` without a profile.
+- **FT1.** The app uses `firebase_messaging`. It registers a token whenever the person has a profile (since 2026-11-19, for announcements, `02-notifications.md` AN1; until then only with a profile **and** a group), and removes it when they lose the profile (`markNone()`). A token with no group gets no Sangat push: those are picked by `groupIds`.
+- **FT2.** `POST /api/v1/devices/fcm-token` with `{ "token": "...", "locale": "pa", "tz": "Asia/Kolkata", "announcements": true }`, also called on `onTokenRefresh`, on a language change and on a time-zone change. `DELETE /api/v1/devices/fcm-token` removes it. Both follow `01-accounts.md` §6.0 and return `404 NO_PROFILE` without a profile.
 - **FT3.** A profile restore (`01-accounts.md` §6.5) deletes the old uid's token document, so the old phone stops receiving.
 
 `fcmTokens/{uid}`, written only by the `api` function:
@@ -1224,6 +1261,7 @@ Arrays of keys, not counters, so a retried write adds nothing twice.
 | `locale` | string | no | `pa`, `hi` or `en` |
 | `tz` | string | no | IANA time zone of the phone |
 | `utcOffsetMin` | number | no | The zone's current UTC offset in minutes, refreshed with each call, used to find who is at 21:00 |
+| `announcements` | boolean | no | The Announcements switch (AN7); `false` means skip this install. Absent on an older document, read as on |
 | `updatedAt` | timestamp | no | Server timestamp |
 
 Index: `utcOffsetMin` ascending, for the hourly dispatcher.
@@ -1278,8 +1316,17 @@ and an install without a profile sends nothing to the quiz. Days, weeks and
 months are IST (QZ21).
 
 **Board ids.** `{period}{key}_{scope}`: period `d` with `YYYY-MM-DD`, `w`
-with the ISO week `YYYY-Www`, `m` with `YYYY-MM`; scope `all` or a topic id.
-For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
+with the ISO week `YYYY-Www`, `m` with `YYYY-MM`, `a` (All time, 2026-11-19)
+with no key; scope `all` or a topic id. For example
+`d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`, `a_all`.
+The app shows Today, Month and All time; the week's boards are still written
+for apps from before 2026-11-19. An All time row's `deleteAt` is 2200-01-01.
+
+**`quizMeta/allTime`**: `{ startedAt, doneAt, rows }`. The first read of an
+All time board creates it and fills every player's `a_` rows once from the
+month boards (a month's rows are kept 400 days), each the sum of their month
+scores; from then on every submission raises the `a_` rows as it raises the
+others. Created with `create()`, so the fill runs once however many ask.
 
 #### `quizSessions/{sessionId}` (auto id)
 
@@ -1351,6 +1398,57 @@ For example `d2026-10-27_guru-ram-das-ji`, `w2026-W44_all`, `m2026-10_all`.
 - **`sangatProfileSync`**, on a profile's name or city change, also updates
   `quizPlayers/p_{profileId}` and that member's scores on the current
   boards.
+
+### 5.14 Live sangat (`15-live-sangat.md`, 2026-11-18)
+
+Three always-on groups whose recordings are bundled in the app
+(`assets/live/`, built by `tools/live/build_loops.py` with the seam
+crossfaded into the file) and played at `(seconds since 00:00 IST) mod
+length` on every phone (LS6). The server streams nothing: it keeps who
+joined, who is listening and the minutes. The group ids are fixed in
+`functions/src/routes/live.ts` (`LIVE_GROUPS`) and in
+`lib/features/live/domain/live_group.dart`.
+
+| Collection | Fields | Written by |
+|---|---|---|
+| `liveMembers/{g}_{profileId}` | `groupId`, `profileId`, `name` (first name and initial), `cityId`, `joinedAt`, `minutes: { "YYYY-MM": n }` | Join (create), leave (delete), a counted mark (adds 5 to the month) |
+| `liveGroups/{g}/listens/{profileId}` | `groupId`, `cityId`, `lastAt` | Every mark |
+| `liveMinutes/{g}_{period}_{0-9}` | `groupId`, `period` (an IST day or month), `minutes` | A counted mark adds 5 to a random shard of the day and of the month |
+| `liveGroups/{g}` | `joins: [ { name, cityId, at } ]`, newest first, at most 5; `GET /live` answers only those of the last 24 hours | Join |
+| `liveSnapshot/current` | `builtAt`, `groups: { g: { listening, cities, cityIds (≤ 60), members, minutesToday, minutesMonth, joins (3), memberRows (20, A to Z) } }` | `GET /live`, when older than 120 s |
+
+A mark counts the listener for **24 hours** (`LIVE_WINDOW_SECONDS`, owner
+2026-11-19); a mark less than four minutes after the last refreshes `lastAt`
+and adds no minutes. The marks live under their group, so the snapshot needs
+**no composite index**: per group, a `count()` of marks with `lastAt` in the
+last day (one read per thousand), and the newest 300 for the cities.
+**Join and leave set the snapshot's `builtAt` to 0**, so the next `GET /live`
+rebuilds and a new member shows at once. `GET /live` also answers
+`youCounted` per group: whether the caller's own mark is inside the window
+and older than the snapshot, so the app knows whether to add itself (LS7b).
+
+**Cost.** A thousand listeners: 12 marks an hour each, about 3 writes a
+mark, roughly 300,000 writes a day (LS16). Reading is one document per call
+while the snapshot is fresh.
+
+### 5.15 Announcements (`02-notifications.md` AN1-AN9, 2026-11-19)
+
+`announcements/{id}`, written only by the `api` function when the admin sends one:
+
+| Field | Type | Rule |
+| --- | --- | --- |
+| `title`, `body`, `message` | map `{pa, hi, en}` of string | As written; an empty language falls back (AN3) |
+| `createdAt` | timestamp | When it was sent |
+| `createdBy` | string | The admin's email |
+| `sent`, `failed` | number | FCM's answers at sending |
+| `optedOut` | number | Installs with a profile skipped because the switch is off |
+| `opened` | number | Incremented with each first open |
+| `byLang` | map `{pa, hi, en}` of number | How many were sent each language |
+| `testTo` | string, absent | A test's email, lower case (AN10); absent for a real send |
+
+`announcements/{id}/opens/{profileId}`: `name` (first name and initial), `fullName`, `cityId`, `at`. One per profile, written in a transaction with the increment, so a second tap counts nothing.
+
+Pref `announcements_on_v1` (bool, default true) on the phone holds the switch.
 
 ## 6. The API
 
@@ -1737,6 +1835,7 @@ All under `/api/v1/admin`, admin-only (AC3), following `01-accounts.md` §6.0.
 | `GET /reports?status=` | Reports, newest first |
 | `PATCH /reports/{reportId}` | `{ status: "DISMISSED" \| "ACTIONED" }` |
 | `GET /people?email=` | The profile of 4.4 |
+| `GET /people/all?after=` | Every profile, newest first, 50 a page: `{ total, people: [ { profileId, name, cityId, email, emailVerified, phone, createdAt, lastSeenDay, groups } ], next }` (11-admin 4.4) |
 | `PUT /people/{profileId}/group-limit` | `{ limit }` |
 | `GET /banis` | Bani IDs and names for the goal form |
 
@@ -1755,7 +1854,7 @@ content pipeline with `content.db` (QZ4).
 |---|---|---|---|
 | `POST /sessions` | `{ topicId, bankVersion }` | Counts the session against the day (QZ22), draws five questions (QZ13) from the bank as of `bankVersion`, stores the session. Returns `{ sessionId, questionIds, expiresAt }` | `400 VALIDATION_ERROR` (unknown topic), `404 NO_PROFILE`, `429 QUIZ_DAILY_LIMIT` |
 | `POST /sessions/{id}/answers` | `{ choices: ["A", …] }`, five | Marks the choices, records the points (§5.13 "What writes them"). Returns `{ correct: [5 bools], points, totalPoints, placeToday }`, `placeToday` on the topic's day board. A second call returns the first answer and writes nothing | `404 SESSION_NOT_FOUND` (also another player's), `409 SESSION_TOO_FAST` (under 10 s), `409 SESSION_EXPIRED` (over 30 min), `400 VALIDATION_ERROR` |
-| `GET /board?period=day\|week\|month&scope=all\|{topicId}` | — | The current board, rebuilt first when older than 120 s (§5.13). Returns `{ boardId, builtAt, played, rows: [ { place, name, cityId, score, you } ], me: { score, place } }`; `you` marks the caller's row; `me` is null without a profile or a score | `400 VALIDATION_ERROR` |
+| `GET /board?period=day\|week\|month\|all&scope=all\|{topicId}` | — | The current board, rebuilt first when older than 120 s (§5.13). Returns `{ boardId, builtAt, played, rows: [ { place, name, cityId, score, you } ], me: { score, place } }`; `you` marks the caller's row; `me` is null without a profile or a score | `400 VALIDATION_ERROR` |
 | `GET /me` | — | `{ points, attempts, topics, days, places: { day, week, month } }`; `days` covers this month and last; `places` on the Everyone boards | `404 NO_PROFILE` |
 
 **Cost.** A session: 2 reads, 2 writes. A submission: 3 to 8 reads, 2 to 8
@@ -1763,6 +1862,34 @@ writes, plus one `count()` for `placeToday`. A board: 1 read while it is
 fresh; a rebuild is one query of 20 and one `count()`; the caller's place is
 1 read and one `count()`. `/me`: 1 read and three `count()`s. A thousand
 players taking three quizzes a day is about 30,000 writes a day.
+
+### 6.8 Live sangat (`15-live-sangat.md`)
+
+Under `/api/v1/live`, following `01-accounts.md` §6.0. Writes **need a
+profile** and answer `404 NO_PROFILE` without one; the app sends nothing then
+(LS15, S-6). An unknown group answers `404 NOT_FOUND`.
+
+| Method and path | Body | Does |
+|---|---|---|
+| `GET /live` | — | `{ builtAt, groups: [ { id, listening, cities, cityIds, members, minutesToday, minutesMonth, joins, memberRows, joined, myMinutesMonth, youCounted } ] }`, the three groups in order from the snapshot (§5.14); `joined` and `myMinutesMonth` are the caller's (false and null without a profile) |
+| `POST /live/{id}/join` | — | Idempotent. Creates the member and puts the join at the head of the feed. `{ result: "JOINED" }` |
+| `POST /live/{id}/leave` | — | Deletes the member. `{ result: "LEFT" }` |
+| `POST /live/{id}/listen` | — | The listening mark, every five minutes while the page plays. `{ result: "COUNTED" \| "TOO_SOON", nextInSeconds: 300 }` |
+
+The app keeps the last `GET /live` in preferences under `live_cache_v1` and
+shows it at once, saying it is waiting when the refresh fails (LS7).
+
+
+### 6.9 Announcements (`02-notifications.md` AN1-AN9)
+
+| Method and path | Who | Does |
+| --- | --- | --- |
+| `GET /admin/announcements/audience` | Admin | `{ reach, optedOut, byLang }`, before sending |
+| `POST /admin/announcements` | Admin | `{ title, body, message }`, each `{ pa, hi, en }`, and for a test `testEmail` and `testLang` (AN10: `404` no such profile, `409 NO_DEVICE` no phone); sends at once; `201 { announcement }`; `400 VALIDATION` over a limit or with no title or text in any language |
+| `GET /admin/announcements` | Admin | The last 50, newest first, with their counts |
+| `GET /admin/announcements/{id}/opens` | Admin | `{ opens: [{ name, cityId, at }] }`, newest first, up to 500 |
+| `GET /announcements/{id}?lang=` | Any signed-in install | `{ id, title, body, message, createdAt }` in that language |
+| `POST /announcements/{id}/opened` | With a profile | Records the open once; `{ result: "COUNTED" | "ALREADY" }` |
 
 ## 7. Scheduled and triggered Functions
 

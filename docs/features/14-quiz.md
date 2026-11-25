@@ -16,7 +16,7 @@ amended for it on the same day, and only for it (§2, QZ1).
 A short quiz on Sikh history and practice, offered by the day of the Sikh
 calendar, that a family can take together and compare: five questions, ten
 points for each right answer for somebody with a profile, and a leaderboard
-for each quiz, today, this week and this month.
+for each quiz, today, this month and of all time.
 
 ## 2. What it is not
 
@@ -108,15 +108,20 @@ and the quiz card (`05-today.md` §5.3).
 *The calendar leaf* (design 1A): the weekday, the day and the month, the
 Nanakshahi day and month, then the event's short label from `days.json` as the
 eyebrow (or **Did you know?** on a day without one), the topic's name and one
-insight. **It has no buttons** (owner, 2026-10-28: "this card is fine without
-a button").
+insight, then **Know more** and **Quiz** side by side (owner, 2026-11-18,
+option B; it had no buttons from 2026-10-28; the button said Take the quiz
+until 2026-11-19, which did not fit with large text). Quiz starts
+the leaf's own topic, the Guru or event it is about, as Start does (QZ12).
 
 *The quiz card* (design D, owner 2026-10-28, from four options drawn at
 <https://claude.ai/artifact/JcMB8TS6bEBCDnY6trRXKL>): **Gurmat Quiz** with,
 with a profile, your points (or **+N today** once you have earned some today)
 and **All quizzes**, which opens the quiz page; then today's topic as a
-highlighted tile, its mark, **Today**, its name, "5 questions · 10 points
-each" (without a profile "5 questions · plays on this phone") and **Start**;
+highlighted tile: its mark small (34) beside **Today**, its name and "5
+questions · 10 points each" (without a profile "5 questions · plays on this
+phone"), which take the tile's whole width, then **Start** full width under
+them (option B, owner 2026-11-19: with large text the mark at 60 and Start
+beside the name had wrapped the Guru's name to two lines);
 then **Or pick another** and the other categories as drawn tiles (the five
 that are not today's topic's, then All), each opening the quiz page on that
 category. Nothing on it fetches: the points are those the phone already holds
@@ -126,12 +131,11 @@ category. Nothing on it fetches: the points are those the phone already holds
 word for word**, never written for the card. It is chosen by the date from
 the topic's easy questions that carry no reviewer's note, in id order.
 
-**QZ11. Know more is the calendar leaf itself, on a day with an event**
-(owner, 2026-10-28): when the day's event in `days.json` names a Vichar page,
-a tap anywhere on the leaf opens it (`/library/<slug>`, design 107) and a small
-arrow beside the eyebrow says so. On a day with no event the leaf is still: a
-tap on it does nothing. (Until 2026-10-28 it was a Know more button, shown on
-every day with a page, the topic's on a day with no event.)
+**QZ11. Know more is a button on the leaf** (owner, 2026-11-18): it opens the
+day's event's Vichar page, or the topic's on a day with no event
+(`/library/<slug>`, design 107), and is left out when there is neither. The
+leaf itself no longer opens anything; only its two buttons act. (From
+2026-10-28 to 2026-11-18 the whole leaf opened the page, on event days only.)
 
 **QZ12. Start goes straight into the first question** (owner, 2026-10-26),
 with no intermediate screen.
@@ -242,8 +246,13 @@ users will be in by default"). There is no opt-in and no switch. A player
 without a profile has no points and is never listed (QZ31).
 
 **QZ28. A board is the top twenty** (owner, 2026-10-26), design 5A: chips for
-**Today**, **Week** and **Month**, then chips for **Everyone** and each
-topic (today's topic first); each row the place, initials, the first name
+**Today**, **Month** and **All time**, then chips for **Everyone** and each
+topic (today's topic first). It opens on **Month** and **Everyone** (owner,
+2026-11-19), or on Month and that quiz when opened from a quiz's result.
+**All time** never resets; it counts what every other board counts, the
+best per quiz per day, added up, from the quiz's first day (2026-11-19
+replaced Week with it; the server still keeps the week's board for apps
+from before); each row the place, initials, the first name
 and the surname's initial ("Manpreet S."), the city, and the points. The
 player's own row is highlighted as **You**, and shown below the twenty with
 its place when it is not among them. Under the list: "Top 20 · {n} played
@@ -251,13 +260,12 @@ today · resets at midnight IST". Equal points share a place; within it, who
 reached the score first is listed first.
 
 **QZ28a. An empty board points to the next one** (owner, 2026-10-28: a quiz
-taken yesterday was nowhere on the board). The board opens on Today, and
-Today's starts empty at midnight IST, so an earlier quiz is only on the
-week's and the month's. An empty Today board says "Nobody has played this
-one today yet. Today's board starts again at midnight IST; earlier quizzes
-are on the week's and the month's." with **See this week**; an empty Week
-board says so with **See this month**; an empty Month board says "Nobody has
-scored yet. Be the first."
+taken yesterday was nowhere on the board). Today's board starts empty at
+midnight IST and the month's on the 1st. An empty Today board says "Nobody
+has played this one today yet. Today's board starts again at midnight IST;
+earlier quizzes are on this month's board and on All time." with **See this
+month**; an empty Month board says so with **See All time**; an empty All
+time board says "Nobody has scored yet. Be the first."
 
 **QZ29. Without a profile the board is design 5B**: the same board, with a
 card above it, **Make a profile to be on the leaderboard**, "Your quiz points
@@ -301,8 +309,8 @@ Coming up (with a profile: the points and today's place); a board icon in the
 header opens the leaderboard.
 
 **QZ34. Your numbers is design 7A**: a navy card with the initials, the name
-and city, the total points, and the player's place today, this week and this
-month on the Everyone board; then the month as a calendar, each day with the
+and city, the total points, and the player's place today, this month and of
+all time on the Everyone board; then the month as a calendar, each day with the
 points earned that day, and the month's total. Without a profile the screen
 is the Make a profile card (QZ29) alone.
 

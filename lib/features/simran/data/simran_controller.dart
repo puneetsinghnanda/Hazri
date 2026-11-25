@@ -92,7 +92,11 @@ class SimranController extends Notifier<SimranSession> {
   /// [length] is what makes a simran goal mean anything: the goal carries the
   /// minutes somebody chose for it, and starting from the goal used to hand
   /// the screen's five-minute default to the timer regardless.
-  Future<void> start({required String title, Duration? length}) async {
+  ///
+  /// [playAudio], when given, plays instead of the Naam Simran recitation:
+  /// a sitting in a live group sits with that group's loop (15-live-sangat
+  /// LS10) and is counted exactly as any other sitting.
+  Future<void> start({required String title, Duration? length, Future<void> Function()? playAudio}) async {
     if (state.active) return;
     _logged = false;
     state = SimranSession(
@@ -111,6 +115,10 @@ class SimranController extends Notifier<SimranSession> {
     // the person taps, so the clock begins then too.
     _start();
 
+    if (playAudio != null) {
+      await playAudio();
+      return;
+    }
     final track = await ref.read(simranTrackProvider.future);
     if (track != null && state.running) {
       await ref.read(playbackControllerProvider).playSimran(track, title: title);

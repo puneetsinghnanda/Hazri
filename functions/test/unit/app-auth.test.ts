@@ -58,7 +58,8 @@ describe('authentication (§6.0, A2)', () => {
     const res = await request(app).post('/api/v1/profile').set('Authorization', 'Bearer anon').send({ name: 'A' });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('VALIDATION_ERROR');
-    expect(Object.keys(res.body.error.fields).sort()).toEqual(['cityId', 'email', 'name']);
+    // An email is optional since 2026-11-18, so only the name and the city fail.
+    expect(Object.keys(res.body.error.fields).sort()).toEqual(['cityId', 'name']);
   });
   it('an unexpected exception → 500 INTERNAL "Something went wrong" (A3)', async () => {
     // {} as Firestore has no .doc(): the route throws a TypeError.
@@ -92,6 +93,15 @@ describe('admin access (11-admin AC3, §8)', () => {
       .set('Access-Control-Request-Headers', 'authorization');
     expect(res.status).toBe(204);
     expect(res.headers['access-control-allow-origin']).toBe('https://hazri-admin-d4b72.web.app');
+  });
+  it('and for admin.hazri.me, the admin address since 2026-11-19', async () => {
+    const res = await request(app)
+      .options('/api/v1/admin/people/all')
+      .set('Origin', 'https://admin.hazri.me')
+      .set('Access-Control-Request-Method', 'GET')
+      .set('Access-Control-Request-Headers', 'authorization');
+    expect(res.status).toBe(204);
+    expect(res.headers['access-control-allow-origin']).toBe('https://admin.hazri.me');
   });
   it('isAdminToken', () => {
     expect(isAdminToken(tokens.admin)).toBe(true);

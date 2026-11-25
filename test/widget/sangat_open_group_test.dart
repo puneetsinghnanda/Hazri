@@ -80,6 +80,9 @@ void main() {
 
   testWidgets('a joined built-in group opens from its row', (tester) async {
     await boot(tester);
+    // A member opens on My groups (15-live-sangat LS2); the row is on Discover.
+    await tester.tap(find.text(l.sangatTabDiscover));
+    await settle(tester);
     await tester.tap(find.descendant(of: find.byType(BuiltInGroupRow), matching: find.text('Simran Sangat')));
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
     await settle(tester);
