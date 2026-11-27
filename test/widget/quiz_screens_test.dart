@@ -111,7 +111,12 @@ void main() {
     await tester.tap(take);
     await settle(tester);
     expect(find.byType(QuizScreen), findsOneWidget);
-    expect(find.textContaining('Guru Ram Das Ji'), findsWidgets);
+    // The quiz is the day's topic: its name heads the question, in capitals.
+    // (It looked for the name in a question's own text, and the first
+    // question is drawn at random, so it failed about one run in three,
+    // 2026-11-27.) The screen reads content.db for real, so wait for it.
+    await settleUntil(tester, find.text('GURU RAM DAS JI'));
+    expect(find.text('GURU RAM DAS JI'), findsOneWidget);
   });
 
   testWidgets('a tap on the leaf itself does nothing; only its buttons act', (tester) async {
@@ -158,6 +163,7 @@ void main() {
     await tester.tap(find.descendant(of: pick, matching: find.text(l.quizCatGurdwaras)));
     await settle(tester);
     expect(find.byType(QuizHomeScreen), findsOneWidget);
+    await settleUntil(tester, find.text('Five Takhts'));
     expect(find.text('Five Takhts'), findsWidgets);
     expect(find.text('Guru Nanak Dev Ji'), findsNothing);
   });

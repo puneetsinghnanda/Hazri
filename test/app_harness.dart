@@ -300,6 +300,20 @@ Future<void> settle(WidgetTester tester) async {
   }
 }
 
+/// Pumps until [finder] finds something, letting real time pass between
+/// frames, for up to [timeout] of real time.
+///
+/// [settle] advances only the test's fake clock. A screen that reads
+/// content.db (drift runs its queries for real) can still be loading when the
+/// fake 800 ms are up.
+Future<void> settleUntil(WidgetTester tester, Finder finder, {Duration timeout = const Duration(seconds: 5)}) async {
+  final end = DateTime.now().add(timeout);
+  while (finder.evaluate().isEmpty && DateTime.now().isBefore(end)) {
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 20)));
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+}
+
 /// Sizes the test surface to the design frame: 390 x 844 dp (tokens.json ->
 /// size.designFrame). Widget tests default to 800 x 600, which is wider than
 /// any phone and hides real overflows.
