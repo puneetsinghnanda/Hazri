@@ -4812,7 +4812,7 @@ def profile_made() -> str:
 
 
 def announcement() -> str:
-    """132: a message from Hazri, opened from its notification (02-notifications
+    """138: a message from Hazri, opened from its notification (02-notifications
     AN4): its title and date, then the message with the admin's small
     formatting (bold, italic, a list, a link)."""
     return f"""
@@ -4836,7 +4836,7 @@ def announcement() -> str:
 
 
 def recitation_download() -> str:
-    """133: Sukhmani Sahib's recitation, fetched once at the first play
+    """139: Sukhmani Sahib's recitation, fetched once at the first play
     (owner, 2026-11-19): a sheet over the reader with its progress."""
     return f"""
 <div class="pad col" style="gap:14px;filter:brightness(.55)">
@@ -4880,19 +4880,19 @@ def _profile_recover(waiting: bool) -> str:
 
 
 def profile_bring_back() -> str:
-    """134: no profile on this phone, but one it had (01-accounts R6): its email
+    """140: no profile on this phone, but one it had (01-accounts R6): its email
     is offered to bring it back, never only "No profile found"."""
     return _profile_recover(False)
 
 
 def profile_waiting() -> str:
-    """135: a restore link sent and not yet opened (01-accounts R7), for the
+    """141: a restore link sent and not yet opened (01-accounts R7), for the
     link's hour, with Resend."""
     return _profile_recover(True)
 
 
 def today_elder() -> str:
-    """136: Today in elder mode (PRD 4.17 as amended 2026-11-21): the same
+    """142: Today in elder mode (PRD 4.17 as amended 2026-11-21): the same
     screen, larger, and all five tabs, larger, never three."""
     tabs = list(zip(["today", "nitnem", "simran", "sangat", "diary"], EN["nav"]))
     bar = ('<div style="position:absolute;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--rule);'
@@ -5003,11 +5003,11 @@ SCREENS = [
     ("129-LiveSitting", "A live group — sitting with the sangat", live_sitting),
     ("130-SetupProfile", "Setup — your profile, the Hazri card", setup_profile),
     ("131-ProfileMade", "Welcome, after a profile is made", profile_made),
-    ("132-Announcement", "A message from Hazri, opened", announcement),
-    ("133-RecitationDownload", "Sukhmani Sahib, the one download", recitation_download),
-    ("134-ProfileBringBack", "Your profile — bring it back", profile_bring_back),
-    ("135-ProfileWaiting", "Your profile — waiting for your link", profile_waiting),
-    ("136-TodayElder", "Today in elder mode, five tabs", today_elder),
+    ("138-Announcement", "A message from Hazri, opened", announcement),
+    ("139-RecitationDownload", "Sukhmani Sahib, the one download", recitation_download),
+    ("140-ProfileBringBack", "Your profile — bring it back", profile_bring_back),
+    ("141-ProfileWaiting", "Your profile — waiting for your link", profile_waiting),
+    ("142-TodayElder", "Today in elder mode, five tabs", today_elder),
 ]
 
 

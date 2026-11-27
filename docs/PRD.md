@@ -1394,7 +1394,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `85-TodayAppBar` | Today, with the app bar and streak | **new** | App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12 |
-| `136-TodayElder` | Today in elder mode | **new** | The same screen, larger, with all five tabs (21 Nov). PRD 4.17, 05-today.md T5 |
+| `142-TodayElder` | Today in elder mode | **new** | The same screen, larger, with all five tabs (21 Nov). PRD 4.17, 05-today.md T5 |
 | `120-TodayGoalFolded` | Today, a goal of seven, folded | **new** | Design 1A, chosen 29 Oct: more than three goal items fold to the one due now, the next and the earliest missed, with Show all. 04-goals.md 7.1 |
 | `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with Know more and Quiz (option B, 18 Nov), the quiz card D (today's topic as option B, 19 Nov: the mark small, Start full width; the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
 | `86-TodayNoProfile` | Today, first day, no profile | **new** | The profile banner overlaps the app bar; no streak yet. 05-today.md T-a |
@@ -1437,7 +1437,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `121-NitnemTinted` | Nitnem, each part of the day in its light | **new** | Design 2A, chosen 29 Oct: one card per part of the day tinted dawn, sunset and soft lavender. 06-nitnem.md B9 |
-| `133-RecitationDownload` | Sukhmani Sahib, the one download | **new** | A sheet at the first play: downloaded once, then it stays; progress and Cancel (19 Nov) |
+| `139-RecitationDownload` | Sukhmani Sahib, the one download | **new** | A sheet at the first play: downloaded once, then it stays; progress and Cancel (19 Nov) |
 | `12-NitnemList` | Nitnem list | superseded | Replaced by 121 |
 | `13-ReaderFollowing` | Reader, following the audio | current |  |
 | `14-ReaderMeanings` | Reader, meanings and pause marks | current |  |
@@ -1527,7 +1527,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `22-GurpurabCalendar` | Gurpurab and Nanakshahi calendar | current |  |
 | `50-Notifications` | Notifications screen | current | One switch per kind with its time, Announcements with a profile, Keep reminders coming, Diagnostics (redrawn 27 Nov). 02-notifications.md section 9, KA1, AN7 |
-| `132-Announcement` | A message from Hazri | **new** | The title, the date and the message with its small formatting. 02-notifications.md AN4 |
+| `138-Announcement` | A message from Hazri | **new** | The title, the date and the message with its small formatting. 02-notifications.md AN4 |
 | `23-Notifications` | Reminder notifications, Phase 1 | superseded | Messages are 02-notifications.md section 5 |
 
 **Badges** — `12-badges.md`
@@ -1548,8 +1548,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `130-SetupProfile` | Setup, your profile | **new** | Option C, chosen 18 Nov: the Hazri card filling in as you type, then name, city and an optional email; Not now. 03-first-run.md F10 |
 | `131-ProfileMade` | Welcome, after a profile is made | **new** | Confirm my email or Later; without an email, Go to Today. Replaces the Profile Saved dialog. 03-first-run.md F10, 01-accounts.md 8.6 |
 | `100-Profile` | Your profile, identity card and badge shelf | **new** | Option D: identity card and badge shelf (owner, 2026-10-10). Name, city, verified email and three figures on a navy card; all ten badges on two shelves, See all opens 96; Edit profile and Back up now. 01-accounts.md 8.7, 12-badges.md UI5 |
-| `134-ProfileBringBack` | Your profile, bring it back | **new** | A profile this phone had, offered back by its email, never only No profile found. 01-accounts.md R6 |
-| `135-ProfileWaiting` | Your profile, waiting for your link | **new** | A restore link sent and not yet opened, with Resend. 01-accounts.md R7 |
+| `140-ProfileBringBack` | Your profile, bring it back | **new** | A profile this phone had, offered back by its email, never only No profile found. 01-accounts.md R6 |
+| `141-ProfileWaiting` | Your profile, waiting for your link | **new** | A restore link sent and not yet opened, with Resend. 01-accounts.md R7 |
 | `101-EditProfile` | Edit profile | **new** | Option C: outlined fields with sunrise preview (owner, 2026-10-10). Today in the chosen city with sunrise and sunset, then Name, City and Email with Change email in the card; Save changes. 01-accounts.md 13.8 |
 | `37-SettingsMenu` | Menu | superseded | Replaced by 99 |
 | `27-Settings` | Settings | current |  |
