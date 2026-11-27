@@ -2730,6 +2730,9 @@ class LPa extends L {
   String get todayStreakCaption => 'ਲਗਾਤਾਰ ਹਾਜ਼ਰੀ ਦੇ ਦਿਨ';
 
   @override
+  String get todayStreakWeekCaption => 'ਪਿਛਲੇ 7 ਦਿਨਾਂ ਵਿੱਚ ਹਾਜ਼ਰੀ ਵਾਲੇ ਦਿਨ';
+
+  @override
   String get actionAdd => 'ਜੋੜੋ';
 
   @override

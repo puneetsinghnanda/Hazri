@@ -83,6 +83,8 @@ There is **no daily cap** (owner, 2026-10-07): each kind sends at most its own a
 - **CE6.** Every reminded event is also announced at 20:00 the evening before (owner, 2026-11-09): `notifEveRememberTitle` for `joti-jot` and `shaheedi`, `notifEveTitle` for every other kind, with `notifEveBody`. An evening already past when the plan is made sends nothing; the day's notice still does.
 - **CE3.** Wording by kind (5.3): `prakash` and `gurgaddi` use the celebration text; `joti-jot` and `shaheedi` use the remembrance text; every other kind uses the plain event text. Never "Happy".
 - **CE4.** `{event}` is the event's name in the reader's language. When that name is missing the English name is used and nothing is machine-translated. Only 10 of 147 events have a Punjabi name and none has Hindi; filling them in is content work, not code.
+- **CE7. Share with family** (owner, 2026-11-25, option P-A; `16-sharing.md` §4). The evening-before notice (CE6) and the on-the-day notice (CE2) carry a second action, `notifActionShareFamily`, before See calendar. It opens Hazri on that event's card (design 137) with the picture already made, over the calendar; **Send on WhatsApp** or **Share** sends it in one tap, and Back leaves the calendar on that day. Nothing is sent by the app itself.
+- **CE8. The event card** is 1080 × 1920, made on the phone like the Vichar card (`16-sharing.md` VC13): for `shaheedi` and `joti-jot` the Remembrance look, for `prakash` and `gurgaddi` the Prakash look, for every other kind Amrit Vela (`16-sharing.md` VC4). On it: the kind as a kicker (`eventCardKickerShaheedi`, `eventCardKickerJotiJot`, `eventCardKickerPrakash`, `eventCardKickerGurgaddi`, else `eventCardKickerDay`), the Nanakshahi and the Gregorian date, the event's name (CE4), the first sentence of its Vichar story when the library is on the phone (nothing otherwise; never written in Dart), the greeting of `16-sharing.md` VC7 for that kind, and at the foot `eventCardFoot` with `hazri.me`. Its caption is `eventCardCaption` with the Play link of `16-sharing.md` VC15 (`event_card`). No picture of a Guru and no Gurbani on it.
 - **CE5.** Tap opens the calendar on that day. When the calendar has no data for a date (after 13 Mar 2027 until Nanakshahi 559 is added), nothing is sent.
 
 ### 4.4 Hazri nudge
@@ -159,7 +161,7 @@ Actions: A "Open {bani}" and "In 15 min"; B "Begin {minutes} min" and "In 15 min
 | `notifEveTitle` | CE6, the evening before, 20:00, every kind but `joti-jot` and `shaheedi` | **Tomorrow: {event}** / Begin tomorrow with Nitnem and your Hazri. | **ਕੱਲ੍ਹ: {event}** / ਕੱਲ੍ਹ ਦਾ ਦਿਨ ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਸ਼ੁਰੂ ਕਰੋ। | **कल: {event}** / कल का दिन नितनेम और हाज़री के साथ शुरू करें। |
 | `notifEveRememberTitle` | CE6, the evening before, 20:00, `joti-jot` and `shaheedi` | **Tomorrow we remember: {event}** / Begin tomorrow with Nitnem and your Hazri. | **ਕੱਲ੍ਹ ਅਸੀਂ ਯਾਦ ਕਰਾਂਗੇ: {event}** / ਕੱਲ੍ਹ ਦਾ ਦਿਨ ਨਿਤਨੇਮ ਅਤੇ ਹਾਜ਼ਰੀ ਨਾਲ ਸ਼ੁਰੂ ਕਰੋ। | **कल हम याद करेंगे: {event}** / कल का दिन नितनेम और हाज़री के साथ शुरू करें। |
 
-Action: "See calendar".
+Actions: "Share with family" (CE7), then "See calendar".
 
 ### 5.4 Hazri nudge (07:00, no goal, no Hazri yet)
 
@@ -205,6 +207,14 @@ Action: "Open Sangat". The expanded A carries a progress bar of the group's perc
 | `notifActionSnooze` | In 15 min | 15 ਮਿੰਟ ਬਾਅਦ | 15 मिनट बाद |
 | `notifActionLater` | Later | ਬਾਅਦ ਵਿੱਚ | बाद में |
 | `notifActionSeeCalendar` | See calendar | ਕੈਲੰਡਰ ਵੇਖੋ | कैलेंडर देखें |
+| `notifActionShareFamily` | Share with family | ਪਰਿਵਾਰ ਨਾਲ ਸਾਂਝਾ ਕਰੋ | परिवार के साथ शेयर करें |
+| `eventCardKickerShaheedi` | Shaheedi day | ਸ਼ਹੀਦੀ ਦਿਹਾੜਾ | शहीदी दिवस |
+| `eventCardKickerJotiJot` | Joti Jot day | ਜੋਤੀ ਜੋਤ ਦਿਹਾੜਾ | ज्योति ज्योत दिवस |
+| `eventCardKickerPrakash` | Prakash Purab | ਪ੍ਰਕਾਸ਼ ਪੁਰਬ | प्रकाश पर्व |
+| `eventCardKickerGurgaddi` | Gurgaddi Purab | ਗੁਰਗੱਦੀ ਪੁਰਬ | गुरगद्दी पर्व |
+| `eventCardKickerDay` | In the Sikh calendar | ਸਿੱਖ ਕੈਲੰਡਰ ਵਿੱਚ | सिख कैलेंडर में |
+| `eventCardFoot` | Read the full story on Hazri | ਪੂਰੀ ਕਹਾਣੀ ਹਾਜ਼ਰੀ ’ਤੇ ਪੜ੍ਹੋ | पूरी कहानी हाज़री पर पढ़ें |
+| `eventCardCaption` | {event}. Remember the day with the sangat on Hazri: {link} | {event}। ਹਾਜ਼ਰੀ ’ਤੇ ਸੰਗਤ ਨਾਲ ਦਿਹਾੜਾ ਯਾਦ ਕਰੋ: {link} | {event}। हाज़री पर संगत के साथ दिन याद करें: {link} |
 | `notifActionSetGoal` | Set a goal | ਟੀਚਾ ਬਣਾਓ | लक्ष्य बनाएँ |
 | `notifActionOpenHazri` | Open Hazri | ਹਾਜ਼ਰੀ ਖੋਲ੍ਹੋ | हाज़री खोलें |
 | `notifActionOpenSangat` | Open Sangat | ਸੰਗਤ ਖੋਲ੍ਹੋ | संगत खोलें |

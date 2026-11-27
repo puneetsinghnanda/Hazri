@@ -645,6 +645,11 @@ added. The *Phase 2* column is the target.
 | `live_cache_v1` | String (JSON) | — | **New** (2026-11-18). The last `GET /live` reply (§6.8), shown first on the Sangat tab and a live page (`15-live-sangat.md` LS7) |
 | `live_heard_v1` | String (JSON) | — | **New** (2026-11-19). Group id to when this phone last played it, so it counts itself for a day (LS7b). Never sent |
 | `keep_awake_asked_v1` | bool | false | **New** (2026-11-19). The Keep reminders coming sheet was shown once (`02-notifications.md` KA2) |
+| `vichar_card_style` | of_day / folio / dawn / night / phulkari / bold / photo | of_day | **New** (2026-11-25). The last style sent (`16-sharing.md` VC3, VC12) |
+| `vichar_card_size` | status / post / square | status | **New** (2026-11-25). VC10 |
+| `vichar_card_meaning` | pa / en / both / none | By app language (VC9) | **New** (2026-11-25) |
+| `vichar_card_date_line` | bool | true | **New** (2026-11-25). VC6 |
+| `vichar_card_from` | String, at most 30 characters | empty | **New** (2026-11-25). The sender's name for From; never sent (VC8) |
 | `city_id` | String | `new_delhi` | **Removed.** One city, the profile's; none without a profile (`03-first-run.md` CY1–CY3) |
 | `simran_minutes` | int | 5 | **Removed.** The sitting is 5 minutes or the goal item's minutes (`07-simran.md` S-7) |
 | `exact_alarm_asked` | bool | false | **Removed.** Exact alarms are never asked (`02-notifications.md` DP2) |

@@ -104,7 +104,10 @@ A Sangat group is a set of people working together toward one shared goal with a
 - **IV1. Any member** of an active custom group can share its invite.
 - **IV2. The code** belongs to the group and is valid for 30 days from when it was made. Sharing reuses the current code while it is valid; when it has expired, sharing makes a new one. The creator can also make a new one at any time ("Reset invite code"), which ends the old one at once.
 - **IV3. Joining by link or code needs no approval** (owner, 2026-10-07).
-- **IV4. The share** uses Android's share sheet, so the person chooses the app. Text: `sangatInviteMessage` (8.3) with the group name, the link `https://hazri-dfcc1.web.app/j/{code}` and the code.
+- **IV4. The share** goes out through Android, so the person chooses the app; the app sends nothing itself. Text: `sangatInviteMessage` (8.3) with the group name, the link `https://hazri-dfcc1.web.app/j/{code}` and the code.
+- **IV4a. The invite sheet** (design 135, option G-A, owner 2026-11-25; `16-sharing.md` §3). Invite opens a bottom sheet: **Invite your family**, chips for the message's language (ਪੰਜਾਬੀ, हिन्दी, English, the app language first and chosen), then the message exactly as it will be sent, in a chat bubble: `sangatInviteOpening` on its own line, then `sangatInviteMessage` in that language, with the bani's name and the date in that language too. The language applies to this message only and is not kept.
+- **IV4b. Its buttons:** **Send on WhatsApp** (`sangatInviteWhatsApp`) sends the text straight to WhatsApp (`com.whatsapp`, else `com.whatsapp.w4b`); where neither is installed it is not shown. **Other apps** (`sangatInviteOtherApps`) opens Android's share sheet with the same text. **Copy code** (`sangatInviteCopyCode`) copies the code alone and says `groupInviteCopied`. A button that needs a code waits until IV2 has one; offline it says so with the usual offline message.
+- **IV4c. The link stays `/j/{code}`.** The invite does not use the Play link of `16-sharing.md` VC15: the `/j/` page sends a person without the app to Play with `sangat_code` in the referrer (IV5, IV6), which is how they land in the group after installing.
 - **IV5. The link page** (`public/j/index.html`):
     - With the app installed, the link is an App Link and opens the app on the Join screen with the code filled in (the same mechanism as `/verify`, `01-accounts.md` §7.3; the `/j` path is added to the intent filter).
     - Without the app, the page shows the code large with a Copy button, and a "Get Hazri" button to `https://play.google.com/store/apps/details?id={{ANDROID_PACKAGE_NAME}}&referrer=sangat_code%3D{code}`. The page carries Open Graph tags so the link previews in chat apps.
@@ -226,6 +229,11 @@ The tab follows **design 102** ("dashboard tiles", owner, 2026-10-10).
 | `sangatCreatorLabel` | Started this group |
 | `sangatShareInvite` | Share invite |
 | `sangatInviteMessage` | Join "{group}" on Hazri: {target} {goal} together by {date}. Tap {link} or enter code {code} in the app. |
+| `sangatInviteTitle` | Invite your family (ਪਰਿਵਾਰ ਨੂੰ ਸੱਦਾ ਦਿਓ · परिवार को बुलाएँ) |
+| `sangatInviteOpening` | Let's do paath together 🙏 (ਆਓ ਮਿਲ ਕੇ ਪਾਠ ਕਰੀਏ 🙏 · आइए मिलकर पाठ करें 🙏) |
+| `sangatInviteWhatsApp` | Send on WhatsApp (WhatsApp ’ਤੇ ਭੇਜੋ · WhatsApp पर भेजें) |
+| `sangatInviteOtherApps` | Other apps (ਹੋਰ ਐਪਾਂ · अन्य ऐप) |
+| `sangatInviteCopyCode` | Copy code (ਕੋਡ ਕਾਪੀ ਕਰੋ · कोड कॉपी करें) |
 | `sangatResetCode` | Reset invite code |
 | `sangatPasteCode` | Paste code |
 | `sangatCodeInvalid` | This code isn't valid. Ask for a new invite. |

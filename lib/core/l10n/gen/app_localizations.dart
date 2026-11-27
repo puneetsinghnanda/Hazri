@@ -4875,6 +4875,12 @@ abstract class L {
   /// **'days of Hazri in a row'**
   String get todayStreakCaption;
 
+  /// 05-today T12: under the count of hazri days in the strip, when there is no run of two or more.
+  ///
+  /// In en, this message translates to:
+  /// **'of the last 7 days with Hazri'**
+  String get todayStreakWeekCaption;
+
   /// No description provided for @actionAdd.
   ///
   /// In en, this message translates to:

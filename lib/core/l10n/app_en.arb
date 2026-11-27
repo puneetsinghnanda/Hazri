@@ -1501,6 +1501,8 @@
   "diaryStreakNow": "days in a row now",
   "diaryStreakLongest": "your longest",
   "todayStreakCaption": "days of Hazri in a row",
+  "todayStreakWeekCaption": "of the last 7 days with Hazri",
+  "@todayStreakWeekCaption": {"description": "05-today T12: under the count of hazri days in the strip, when there is no run of two or more."},
   "actionAdd": "Add",
   "profileWelcome": "Welcome",
   "profileWelcomeName": "Welcome, {name}",

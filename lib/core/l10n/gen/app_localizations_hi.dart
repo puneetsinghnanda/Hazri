@@ -2726,6 +2726,9 @@ class LHi extends L {
   String get todayStreakCaption => 'लगातार हाज़िरी के दिन';
 
   @override
+  String get todayStreakWeekCaption => 'पिछले 7 दिनों में हाज़िरी वाले दिन';
+
+  @override
   String get actionAdd => 'जोड़ें';
 
   @override
