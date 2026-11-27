@@ -1394,8 +1394,9 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `85-TodayAppBar` | Today, with the app bar and streak | **new** | App bar D and streak option 3, chosen 7 Oct. 05-today.md T11, T12 |
+| `136-TodayElder` | Today in elder mode | **new** | The same screen, larger, with all five tabs (21 Nov). PRD 4.17, 05-today.md T5 |
 | `120-TodayGoalFolded` | Today, a goal of seven, folded | **new** | Design 1A, chosen 29 Oct: more than three goal items fold to the one due now, the next and the earliest missed, with Show all. 04-goals.md 7.1 |
-| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with Know more and Quiz (option B, 18 Nov), the quiz card D (today's topic with Start, the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
+| `113-TodayQuiz` | Today, scrolled to the quiz and the saakhis | **new** | The calendar leaf 1A with Know more and Quiz (option B, 18 Nov), the quiz card D (today's topic as option B, 19 Nov: the mark small, Start full width; the other categories as tiles, chosen 28 Oct), then the Saakhis card in option C, chosen 27 Oct. In elder mode too. 05-today.md 6a, 6b; 14-quiz.md QZ9-QZ12; 13-saakhi.md SK11 |
 | `86-TodayNoProfile` | Today, first day, no profile | **new** | The profile banner overlaps the app bar; no streak yet. 05-today.md T-a |
 | `61-GoalComplete` | All of today's goals are done | current | Shown once a day when the goal is met. 04-goals.md CE1 |
 | `58-TodayHazri` | Today, hazri marked | superseded | Replaced by 85 |
@@ -1436,6 +1437,7 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `121-NitnemTinted` | Nitnem, each part of the day in its light | **new** | Design 2A, chosen 29 Oct: one card per part of the day tinted dawn, sunset and soft lavender. 06-nitnem.md B9 |
+| `133-RecitationDownload` | Sukhmani Sahib, the one download | **new** | A sheet at the first play: downloaded once, then it stays; progress and Cancel (19 Nov) |
 | `12-NitnemList` | Nitnem list | superseded | Replaced by 121 |
 | `13-ReaderFollowing` | Reader, following the audio | current |  |
 | `14-ReaderMeanings` | Reader, meanings and pause marks | current |  |
@@ -1471,11 +1473,11 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 
 | Screen | Title | Status | Note |
 |---|---|---|---|
-| `125-SangatDiscover` | Sangat, Discover | **new** | Two tabs, Discover first, 18 Nov: the live groups as tall cards with their scenes, then the built-in groups. Not built yet. 15-live-sangat.md |
-| `126-SangatMyGroups` | Sangat, My groups | **new** | The default once you are in a group: Create and Join at the top, the live group you are in, running, ended. Not built yet. 15-live-sangat.md |
-| `127-LiveGroup` | A live group | **new** | Option A, 17 Nov: the scene full screen, joins down the side, the group in a sheet. Not built yet. 15-live-sangat.md |
-| `128-LiveGroupSheet` | A live group, the group pulled up | **new** | The sheet of 127 open: minutes listened, no goal. Not built yet. 15-live-sangat.md |
-| `129-LiveSitting` | Sitting with a live group | **new** | Option D: the countdown with live today and here today. Not built yet. 15-live-sangat.md |
+| `125-SangatDiscover` | Sangat, Discover | **new** | Two tabs, Discover first, 18 Nov: the live groups as tall cards with their scenes, then the built-in groups. Built 18 Nov. 15-live-sangat.md |
+| `126-SangatMyGroups` | Sangat, My groups | **new** | The default once you are in a group: Create and Join at the top, the live group you are in, running, ended. Built 18 Nov. 15-live-sangat.md |
+| `127-LiveGroup` | A live group | **new** | Option A, 17 Nov: the scene full screen, joins of the last day down the side, Join, then only the sound and the sleep timer; Leave in the ⋮ (19 Nov). Built 18 Nov, redrawn 27 Nov. 15-live-sangat.md |
+| `128-LiveGroupSheet` | A live group, the group pulled up | **new** | The sheet of 127 open: minutes listened, no goal. Built 18 Nov. 15-live-sangat.md |
+| `129-LiveSitting` | Sitting with a live group | **new** | Option D: the countdown with live today and here today. Built 18 Nov. 15-live-sangat.md |
 | `102-SangatHome` | Sangat, dashboard tiles | superseded | Replaced by 125 and 126 (18 Nov); ships until they are built |
 | `104-GroupGlobe` | A private group, with its globe | **new** | Option C (owner, 2026-10-17): the goal ring wraps the group's globe, members as counts per city (green today, blue not yet, you orange), threads and arcs as the Simran globe, and every dot tied to the ring's leading edge by a dashed line in its own colour (GG4a, 2026-10-18); total, percentage and the key under the ring; paath of the last hour arriving as light into the ring, and the line below the band. The rest is 103. 08-sangat.md GG1-GG10 |
 | `105-BuiltInGroupGlobe` | A built-in group, with its globe | **new** | Option C for built-in groups too (owner, 2026-10-17): as 104, for Simran Sangat; minutes of Naam Simran in the last hour. 08-sangat.md GG1-GG10 |
@@ -1514,8 +1516,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 |---|---|---|---|
 | `114-QuizQuestion` | A question, answered wrong | **new** | Design A, chosen 28 Oct: the question on a navy stage with the topic's drawing and five bars; the options as white cards over its foot, marked at once; the explanation word for word, then Next question. QZ7, QZ12, QZ15 |
 | `115-QuizResult` | Your answers | **new** | Result 4B, chosen 27 Oct: the score and points (or why none), the five answers, the challenge and Share the quiz, then See the leaderboard and Done. QZ23-QZ26 |
-| `116-QuizBoard` | One quiz's leaderboard | **new** | Leaderboard 5A: Today, Week, Month; Everyone, then today's topic, then the rest; the top twenty, your row marked. QZ27-QZ30 |
-| `117-QuizBoardNoProfile` | Everyone, without a profile | **new** | Leaderboard 5B: the same board with Make a profile above it. QZ14, QZ29 |
+| `116-QuizBoard` | One quiz's leaderboard | **new** | Leaderboard 5A: Today, Month and All time (All time replaced Week, 19 Nov); Everyone, then today's topic, then the rest; the top twenty, your row marked. QZ27-QZ30 |
+| `117-QuizBoardNoProfile` | Everyone, without a profile | **new** | Leaderboard 5B: the board as it opens, Month and Everyone, with Make a profile above it. QZ14, QZ29 |
 | `118-QuizHome` | The quiz page | **new** | Design 6A: points and the leaderboard in the header, Coming up on the calendar, Your quiz, the featured categories as drawn tiles, the chosen category's quizzes. QZ33 |
 | `119-QuizMe` | Your quiz | **new** | Design 7A: name, city, total and places on a navy card; the month as a calendar of points. With a profile only. QZ34 |
 
@@ -1524,7 +1526,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | Screen | Title | Status | Note |
 |---|---|---|---|
 | `22-GurpurabCalendar` | Gurpurab and Nanakshahi calendar | current |  |
-| `50-Notifications` | Notifications screen | current | One switch per kind. 02-notifications.md section 9 |
+| `50-Notifications` | Notifications screen | current | One switch per kind with its time, Announcements with a profile, Keep reminders coming, Diagnostics (redrawn 27 Nov). 02-notifications.md section 9, KA1, AN7 |
+| `132-Announcement` | A message from Hazri | **new** | The title, the date and the message with its small formatting. 02-notifications.md AN4 |
 | `23-Notifications` | Reminder notifications, Phase 1 | superseded | Messages are 02-notifications.md section 5 |
 
 **Badges** — `12-badges.md`
@@ -1545,6 +1548,8 @@ Generated from `design/canvas.html`. **Only *new* and *current* screens are the 
 | `130-SetupProfile` | Setup, your profile | **new** | Option C, chosen 18 Nov: the Hazri card filling in as you type, then name, city and an optional email; Not now. 03-first-run.md F10 |
 | `131-ProfileMade` | Welcome, after a profile is made | **new** | Confirm my email or Later; without an email, Go to Today. Replaces the Profile Saved dialog. 03-first-run.md F10, 01-accounts.md 8.6 |
 | `100-Profile` | Your profile, identity card and badge shelf | **new** | Option D: identity card and badge shelf (owner, 2026-10-10). Name, city, verified email and three figures on a navy card; all ten badges on two shelves, See all opens 96; Edit profile and Back up now. 01-accounts.md 8.7, 12-badges.md UI5 |
+| `134-ProfileBringBack` | Your profile, bring it back | **new** | A profile this phone had, offered back by its email, never only No profile found. 01-accounts.md R6 |
+| `135-ProfileWaiting` | Your profile, waiting for your link | **new** | A restore link sent and not yet opened, with Resend. 01-accounts.md R7 |
 | `101-EditProfile` | Edit profile | **new** | Option C: outlined fields with sunrise preview (owner, 2026-10-10). Today in the chosen city with sunrise and sunset, then Name, City and Email with Change email in the card; Save changes. 01-accounts.md 13.8 |
 | `37-SettingsMenu` | Menu | superseded | Replaced by 99 |
 | `27-Settings` | Settings | current |  |

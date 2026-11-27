@@ -58,6 +58,9 @@ svg.i{{stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;strok
 TAIL = "</div>\n</body></html>\n"
 
 ICONS = {
+    "moon": '<path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/>',
+    "dots": '<circle cx="12" cy="5" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="19" r="1.4" fill="currentColor"/>',
+    "pause": '<path d="M9 5v14M15 5v14"/>',
     "today": '<path d="M3 18h18"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 5v3M5.2 9.2l1.8 1.8M18.8 9.2L17 11M3 14h1.5M19.5 14H21"/>',
     "nitnem": '<path d="M12 6.5C10.5 5.2 8 4.5 4 4.5v13c4 0 6.5.7 8 2 1.5-1.3 4-2 8-2v-13c-4 0-6.5.7-8 2z"/><path d="M12 6.5v13"/>',
     "simran": '<circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="3.8" r="1.4" fill="currentColor"/><circle cx="17.8" cy="6.2" r="1.4" fill="currentColor"/><circle cx="20.2" cy="12" r="1.4" fill="currentColor"/><circle cx="17.8" cy="17.8" r="1.4" fill="currentColor"/><circle cx="12" cy="20.2" r="1.4" fill="currentColor"/><circle cx="6.2" cy="17.8" r="1.4" fill="currentColor"/><circle cx="3.8" cy="12" r="1.4" fill="currentColor"/><circle cx="6.2" cy="6.2" r="1.4" fill="currentColor"/>',
@@ -3558,38 +3561,44 @@ def sync_states() -> str:
 
 
 def notifications() -> str:
-    groups = [
-        ("Your own practice", [
-            ("Nitnem reminders", "At your goal times", True),
-            ("Simran reminder", "5:15 AM", True),
-            ("Gurpurab", "The evening before and the morning of", True)]),
-        ("Your groups", [
-            ("A goal is close", "When the group passes 90%", True),
-            ("Someone joined", "New members in your groups", False),
-            ("Daily group summary", "One message, at 9 PM", False)]),
-        ("Global Simran", [
-            ("Large gatherings", "When thousands are sitting together", False)]),
-    ]
-    out = ""
-    for title, items in groups:
-        rows = ""
-        for idx, (t, s, on) in enumerate(items):
-            rows += (f'<div class="row" style="gap:12px;padding:13px 0">'
-                     f'<div class="col" style="flex:1">'
-                     f'<div style="font-size:14px;font-weight:600">{t}</div>'
-                     f'<div style="font-size:12px;color:var(--muted)">{s}</div></div>'
-                     f'{toggle(on)}</div>')
-            if idx < len(items) - 1:
-                rows += '<div style="height:1px;background:var(--rule)"></div>'
-        out += (f'<div class="col" style="gap:8px">'
-                f'<div class="eyebrow">{title}</div>'
-                f'<div class="card col" style="padding:4px 16px">{rows}</div></div>')
+    """50: Notifications as built (02-notifications.md section 9, KA1, AN7):
+    one switch per kind with its time, Announcements with a profile, the Keep
+    reminders coming card, then Diagnostics."""
+    kinds = [("Amrit Vela", "Every day at 4:00 AM"),
+             ("Goal reminders", "At each paath’s time, and an hour later if it is not done"),
+             ("Gurpurab and Sikh events", "The evening before at 8:00 PM, and on the day at 6:30 AM"),
+             ("Hazri reminder", "At 7:00 AM, only with no goal and no Hazri yet"),
+             ("Sangat", "Your groups at 9:00 PM, and their milestones"),
+             ("Announcements", "Now and then, a message from Hazri")]
+    rows = '<div style="height:1px;background:var(--rule)"></div>'.join(
+        f'<div class="row" style="gap:12px;padding:11px 0"><div class="col" style="flex:1">'
+        f'<div style="font-size:14.5px;font-weight:600">{t}</div>'
+        f'<div style="font-size:12px;color:var(--muted);line-height:1.35">{sub}</div></div>{toggle(True)}</div>'
+        for t, sub in kinds)
+    keep = "".join(
+        f'<div class="row" style="gap:10px;padding:9px 0;{"border-top:1px solid var(--rule)" if i else ""}">'
+        f'<div class="col" style="flex:1"><div style="font-size:14px;font-weight:700">{t}</div>'
+        f'<div style="font-size:12px;color:var(--ink2);line-height:1.35">{sub}</div></div>'
+        + (f'<div style="width:28px;height:28px;border-radius:14px;background:var(--sage);color:#fff;display:flex;'
+           f'align-items:center;justify-content:center">{icon("check", 16)}</div>' if done else
+           '<div class="chip" style="background:var(--primary);color:var(--onPrimary);padding:6px 14px">Open</div>')
+        + '</div>'
+        for i, (t, sub, done) in enumerate([
+            ("Don't pause Hazri", "Turn off “Pause app activity if unused”", True),
+            ("Let Hazri run in the background", "Under Battery, choose “Unrestricted” or “Allow background activity”", False)]))
     return f"""
-<div class="pad col" style="gap:14px">
+<div class="pad col" style="gap:12px">
   {header("Notifications")}
-  {out}
-  <div style="font-size:11.5px;color:var(--muted);line-height:1.5;text-align:center">
-    Hazri never sends anything you did not ask for, and never an advertisement.</div>
+  <div class="eyebrow">What Hazri sends</div>
+  <div class="card col" style="padding:2px 16px">{rows}</div>
+  <div class="card col" style="padding:14px 16px 6px;gap:4px;background:var(--kesriSoft);box-shadow:none">
+    <div style="font-size:15px;font-weight:700;color:var(--kesriInk)">Keep reminders coming</div>
+    <div style="font-size:12.5px;color:var(--ink2);line-height:1.4">Android quietly stops the reminders of apps it thinks
+      are not used. These two settings keep Hazri's coming. A family member can do this once</div>
+    {keep}</div>
+  <div class="card row" style="padding:12px 16px;gap:10px"><div class="col" style="flex:1">
+    <div style="font-size:14.5px;font-weight:600">Diagnostics</div>
+    <div style="font-size:12px;color:var(--muted)">What this phone says about reminders</div></div>{chev(16)}</div>
 </div>
 """
 
@@ -4009,7 +4018,8 @@ def _numeral(glyph: str, size: int = 46) -> str:
 def quiz_card() -> str:
     """The calendar leaf on Today (14-quiz.md QZ9-QZ11, design 1A): the date,
     the day's event, the topic and one explanation word for word; then Know
-    more and Take the quiz side by side (owner, 2026-11-18, option B)."""
+    more and Quiz side by side (owner, 2026-11-18, option B; the button said
+    Take the quiz until 2026-11-19, which did not fit with large text)."""
     small = "font-size:11px;font-weight:700;letter-spacing:.1em"
     arrow = ('<svg class="i" width="16" height="16" viewBox="0 0 24 24" style="color:var(--kesriInk)">'
              '<path d="M9 6l6 6-6 6"/></svg>')
@@ -4033,7 +4043,7 @@ def quiz_card() -> str:
         <div class="row" style="flex:1;min-height:44px;justify-content:center;border-radius:999px;background:var(--card2);
           color:var(--ink2);font-weight:700;font-size:13.5px">Know more</div>
         <div class="row" style="flex:1;gap:6px;min-height:44px;justify-content:center;border-radius:999px;
-          background:var(--primary);color:var(--onPrimary);font-weight:700;font-size:13.5px">{icon("play", 14)}Take the quiz</div>
+          background:var(--primary);color:var(--onPrimary);font-weight:700;font-size:13.5px">{icon("play", 14)}Quiz</div>
       </div>
     </div>
   </div>"""
@@ -4042,7 +4052,9 @@ def quiz_card() -> str:
 def quiz_pick_card() -> str:
     """The quiz's own card on Today, design D (owner, 2026-10-28; QZ9, QZ12):
     Gurmat Quiz with your points and All quizzes, today's topic highlighted
-    with Start, then the other categories as drawn tiles."""
+    with Start, then the other categories as drawn tiles. Today's tile is
+    option B (owner, 2026-11-19): the mark small beside Today, the name and the
+    line across the whole tile, Start full width under them."""
     tiles = "".join(
         f'<div class="col" style="width:76px;flex:none;align-items:center;gap:4px">'
         f'<div style="width:64px;height:64px;border-radius:20px;background:var(--kesriSoft);display:flex;'
@@ -4057,16 +4069,15 @@ def quiz_pick_card() -> str:
       <div class="chip" style="background:var(--kesriSoft);color:var(--kesriInk);padding:3px 10px">120 pts</div>
       <div class="row" style="font-size:13px;font-weight:700;color:var(--kesriInk)">All quizzes{chev(14).replace("var(--muted)", "var(--kesriInk)")}</div>
     </div>
-    <div class="row" style="gap:12px;margin:8px 16px 0 0;padding:12px;border-radius:18px;border:2px solid var(--kesri);
+    <div class="col" style="gap:6px;margin:8px 16px 0 0;padding:12px;border-radius:18px;border:2px solid var(--kesri);
       background:linear-gradient(90deg,var(--kesriSoft),var(--card))">
-      <div style="width:60px;height:60px;border-radius:30px;background:var(--card);display:flex;align-items:center;
-        justify-content:center;flex:none">{_numeral("੪", 48)}</div>
-      <div class="col" style="flex:1;min-width:0">
-        <div class="eyebrow" style="color:var(--kesriInk)">Today</div>
-        <div class="disp" style="font-size:19px;font-weight:700;line-height:1.15">Guru Ram Das Ji</div>
-        <div style="font-size:12.5px;color:var(--ink2)">5 questions · 10 points each</div>
-      </div>
-      <div class="btn" style="min-height:44px;padding:0 16px;font-size:14.5px;border-radius:14px;
+      <div class="row" style="gap:8px">
+        <div style="width:34px;height:34px;border-radius:17px;background:var(--card);display:flex;align-items:center;
+          justify-content:center;flex:none">{_numeral("੪", 28)}</div>
+        <div class="eyebrow" style="color:var(--kesriInk)">Today</div></div>
+      <div class="disp" style="font-size:19px;font-weight:700;line-height:1.15">Guru Ram Das Ji</div>
+      <div style="font-size:12.5px;color:var(--ink2)">5 questions · 10 points each</div>
+      <div class="btn" style="min-height:44px;font-size:14.5px;border-radius:14px;margin-top:4px;
         background:var(--primary);color:var(--onPrimary)">Start</div>
     </div>
     <div class="eyebrow" style="margin-top:12px">Or pick another</div>
@@ -4261,28 +4272,31 @@ def _chips(items, on: str) -> str:
 
 
 def quiz_board() -> str:
-    """Leaderboard 5A (QZ27-QZ30): one quiz, today; the top twenty, you marked."""
+    """Leaderboard 5A (QZ27-QZ30): one quiz, this month; the top twenty, you
+    marked. Today, Month and All time (All time replaced Week, owner
+    2026-11-19)."""
     return f"""
 {_quiz_top("Leaderboard", left="back")}
 <div class="col" style="padding:0 20px;gap:8px">
-  <div class="row" style="gap:8px">{_chips(["Today", "Week", "Month"], "Today")}</div>
+  <div class="row" style="gap:8px">{_chips(["Today", "Month", "All time"], "Month")}</div>
   <div class="row" style="gap:8px;overflow:hidden;margin-right:-20px">
     {_chips(["Everyone", "Guru Ram Das Ji", "Guru Nanak Dev Ji", "Sikh Banis"], "Guru Ram Das Ji")}</div>
   <div style="height:4px"></div>
   {_board("Harpreet")}
   <div style="text-align:center;font-size:12.5px;color:var(--muted);margin-top:2px">
-    Top 20 · 46 played today · resets at midnight IST</div>
+    Top 20 · 286 played this month · resets on the 1st at midnight IST</div>
 </div>
 """
 
 
 def quiz_board_no_profile() -> str:
-    """Leaderboard 5B (QZ29): everyone, this week, seen without a profile; the
-    board is the same, with Make a profile above it."""
+    """Leaderboard 5B (QZ29): everyone, this month, as the board opens (owner,
+    2026-11-19), seen without a profile; the board is the same, with Make a
+    profile above it."""
     return f"""
 {_quiz_top("Leaderboard", left="back")}
 <div class="col" style="padding:0 20px;gap:8px">
-  <div class="row" style="gap:8px">{_chips(["Today", "Week", "Month"], "Week")}</div>
+  <div class="row" style="gap:8px">{_chips(["Today", "Month", "All time"], "Month")}</div>
   <div class="row" style="gap:8px;overflow:hidden;margin-right:-20px">
     {_chips(["Everyone", "Guru Ram Das Ji", "Guru Nanak Dev Ji", "Sikh Banis"], "Everyone")}</div>
   <div class="card col" style="padding:14px 16px;gap:4px;margin-top:4px">
@@ -4293,7 +4307,7 @@ def quiz_board_no_profile() -> str:
   </div>
   {_board(None)}
   <div style="text-align:center;font-size:12.5px;color:var(--muted);margin-top:2px">
-    Top 20 · 312 played this week · resets Monday at midnight IST</div>
+    Top 20 · 1,312 played this month · resets on the 1st at midnight IST</div>
 </div>
 """
 
@@ -4697,21 +4711,22 @@ def _live_page(sheet_open: bool) -> str:
   <div class="row" style="position:absolute;left:16px;right:16px;top:16px;gap:8px;color:#fff">
     <div style="{_ONB}">{icon("back", 20)}</div>{LIVE_PILL}
     <div style="padding:3px 9px;border-radius:7px;background:rgba(0,0,0,.42);font-size:12px;font-weight:700">{n} listening</div>
-    <div style="flex:1"></div><div style="{_ONB}">{icon("share", 20)}</div></div>
+    <div style="flex:1"></div><div style="{_ONB};background:none">{icon("dots", 22)}</div></div>
   <div class="col" style="position:absolute;left:18px;right:18px;top:70px;color:#fff;gap:1px">
     <div class="disp" style="font-size:22px;font-weight:700;line-height:1.15;text-shadow:0 1px 8px rgba(0,0,0,.6)">{kind} · {name}</div>
     <div style="font-size:12.5px;opacity:.82">Live sangat · always on · {cities} cities</div></div>
   <div class="col" style="position:absolute;left:14px;top:300px;gap:6px;color:#fff">{feed}</div>
-  <div class="row" style="position:absolute;left:16px;right:16px;bottom:90px;gap:10px;color:#fff">
-    <div class="row" style="flex:1;justify-content:center;gap:8px;min-height:48px;border-radius:16px;background:rgba(61,190,123,.22);color:#9FF0C4;font-weight:700;font-size:15px">✓ Joined · listening</div>
-    <div style="{_ONB};width:48px;height:48px;border-radius:16px">{icon("bell", 20)}</div>
-    <div style="{_ONB};width:48px;height:48px;border-radius:16px">{icon("clock", 20)}</div></div>
+  <div class="row" style="position:absolute;left:16px;right:16px;bottom:84px;gap:28px;color:#fff;justify-content:center">
+    {"".join(f'<div class="col" style="align-items:center;gap:5px"><div style="{_ONB};width:52px;height:52px;border-radius:26px">{icon(ic, 22)}</div><div style="font-size:12px;font-weight:600;opacity:.85">{lb}</div></div>'
+             for ic, lb in [("pause", "Sound"), ("moon", "Stops in 30 min")])}</div>
   {sheet}''')}
 {_live_script()}"""
 
 
 def live_group() -> str:
-    """127: a live group, option A: the scene full screen, the group in a sheet (LS5-LS9)."""
+    """127: a live group, option A: the scene full screen, the group in a sheet
+    (LS5-LS9). Joined: nothing says so at the foot, only the sound and the
+    sleep timer, and Leave is in the ⋮ at the top right (owner, 2026-11-19)."""
     return _live_page(False)
 
 
@@ -4796,6 +4811,118 @@ def profile_made() -> str:
 </div>"""
 
 
+def announcement() -> str:
+    """132: a message from Hazri, opened from its notification (02-notifications
+    AN4): its title and date, then the message with the admin's small
+    formatting (bold, italic, a list, a link)."""
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Message from Hazri")}
+  <div class="card col" style="padding:16px 18px 20px;gap:4px">
+    <div class="disp" style="font-size:22px;font-weight:700;line-height:1.2">Gurpurab greetings</div>
+    <div style="font-size:12.5px;color:var(--muted)">27 November 2026</div>
+    <div class="col" style="gap:12px;margin-top:12px;font-size:15px;line-height:1.55">
+      <div>Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh. On the <b>Prakash Purab of Guru Nanak Dev Ji</b>, the sangat is
+        doing paath together all day.</div>
+      <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+        <li>Live sangat plays Naam Simran around the clock</li>
+        <li>Today’s quiz is on <i>Guru Nanak Dev Ji</i></li>
+        <li>The story of the day is in Vichar</li></ul>
+      <div>Read more on <span style="color:var(--kesriInk);text-decoration:underline">hazri.me</span>.</div>
+    </div>
+  </div>
+</div>
+"""
+
+
+def recitation_download() -> str:
+    """133: Sukhmani Sahib's recitation, fetched once at the first play
+    (owner, 2026-11-19): a sheet over the reader with its progress."""
+    return f"""
+<div class="pad col" style="gap:14px;filter:brightness(.55)">
+  {header("Sukhmani Sahib")}
+  {"".join('<div style="height:14px;border-radius:7px;background:var(--card2);margin:6px 0"></div>' for _ in range(14))}
+</div>
+<div class="col" style="position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:26px 26px 0 0;
+  padding:20px 24px 30px;gap:6px;box-shadow:0 -10px 30px rgba(0,0,0,.2)">
+  <div style="width:40px;height:5px;border-radius:3px;background:var(--rule);align-self:center;margin-bottom:8px"></div>
+  <div class="disp" style="font-size:22px;font-weight:700">Sukhmani Sahib</div>
+  <div style="font-size:14px;color:var(--ink2);line-height:1.45">The recitation is downloaded once. Then it stays on your
+    phone and plays without internet.</div>
+  <div class="row" style="gap:14px;margin-top:16px">
+    <div style="width:48px;height:48px;border-radius:24px;flex:none;background:conic-gradient(var(--kesri) 0 38%, var(--kesriSoft) 38% 100%);
+      display:flex;align-items:center;justify-content:center"><div style="width:40px;height:40px;border-radius:20px;background:var(--card)"></div></div>
+    <div style="font-size:15px">Downloading · 11 of 29 MB</div></div>
+  <div style="text-align:center;font-weight:600;color:var(--primary);padding:12px 0 0">Cancel</div>
+</div>
+"""
+
+
+def _profile_recover(waiting: bool) -> str:
+    title, body, button = (
+        ("Waiting for your link",
+         "We sent a link to harpreet@example.com. Open it on this phone to bring your profile back. Until you do, "
+         "there is no profile on this phone.", "Resend link") if waiting else
+        ("Bring back your profile",
+         "Your profile was on this phone. We will send a link to harpreet@example.com; open it here to bring it back.",
+         "Send link"))
+    return f"""
+<div class="pad col" style="gap:14px">
+  {header("Your profile")}
+  <div class="card col" style="background:var(--kesriSoft);box-shadow:none;padding:16px;gap:6px;margin-top:8px">
+    <div style="font-size:16px;font-weight:700;color:var(--kesriInk)">{title}</div>
+    <div style="font-size:14px;line-height:1.45">{body}</div>
+    <div style="margin-top:10px">{primary(button, "mail")}</div>
+  </div>
+  <div style="text-align:center;font-weight:600;color:var(--primary);padding:6px">Set up a new profile instead</div>
+</div>
+"""
+
+
+def profile_bring_back() -> str:
+    """134: no profile on this phone, but one it had (01-accounts R6): its email
+    is offered to bring it back, never only "No profile found"."""
+    return _profile_recover(False)
+
+
+def profile_waiting() -> str:
+    """135: a restore link sent and not yet opened (01-accounts R7), for the
+    link's hour, with Resend."""
+    return _profile_recover(True)
+
+
+def today_elder() -> str:
+    """136: Today in elder mode (PRD 4.17 as amended 2026-11-21): the same
+    screen, larger, and all five tabs, larger, never three."""
+    tabs = list(zip(["today", "nitnem", "simran", "sangat", "diary"], EN["nav"]))
+    bar = ('<div style="position:absolute;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--rule);'
+           'display:flex;padding:10px 2px 22px">' + "".join(
+               f'<div class="col" style="align-items:center;gap:5px;flex:1"><div style="width:60px;height:40px;border-radius:20px;'
+               f'display:flex;align-items:center;justify-content:center;'
+               f'{"background:var(--kesriSoft);color:var(--kesriInk)" if k == "today" else "color:var(--muted)"}">{icon(k, 26)}</div>'
+               f'<div style="font-size:14px;{"font-weight:700;color:var(--ink)" if k == "today" else "font-weight:500;color:var(--muted)"}">{lb}</div></div>'
+               for k, lb in tabs) + '</div>')
+    return f"""
+<div style="background:var(--primary);color:#fff;padding:22px 20px 34px;border-radius:0 0 28px 28px">
+  <div class="disp" style="font-size:32px;font-weight:700;line-height:1.15">Welcome, Harpreet</div>
+  <div style="font-size:17px;opacity:.8;margin-top:4px">Friday, 27 November</div>
+</div>
+<div class="col" style="gap:14px;padding:0 18px;margin-top:-18px">
+  <div class="card row" style="gap:14px;padding:18px;background:linear-gradient(90deg,#D9730D,#B85C08);color:#fff">
+    <div style="width:52px;height:52px;border-radius:26px;background:rgba(255,255,255,.2);display:flex;align-items:center;
+      justify-content:center">{icon("today", 28)}</div>
+    <div class="col"><div style="font-size:21px;font-weight:700">Today’s hazri is marked</div>
+      <div style="font-size:16px;opacity:.9">With Japji Sahib, 5:10 AM</div></div></div>
+  <div class="card col" style="padding:18px;gap:6px"><div style="font-size:15px;color:var(--muted);font-weight:700;letter-spacing:.06em">TODAY’S GOAL</div>
+    <div class="disp" style="font-size:26px;font-weight:700">1 of 2 done</div>
+    <div style="font-size:18px;color:var(--ink2)">Next: Naam Simran at 05:30</div></div>
+  <div class="btn" style="min-height:64px;font-size:19px;background:var(--primary);color:var(--onPrimary)">
+    {icon("nitnem", 24)}<div>Start your Nitnem</div></div>
+</div>
+{bar}
+"""
+
+
 SCREENS = [
     ("29-Simran", "Simran", simran_tab),
     ("30-Today", "Today", today),
@@ -4876,6 +5003,11 @@ SCREENS = [
     ("129-LiveSitting", "A live group — sitting with the sangat", live_sitting),
     ("130-SetupProfile", "Setup — your profile, the Hazri card", setup_profile),
     ("131-ProfileMade", "Welcome, after a profile is made", profile_made),
+    ("132-Announcement", "A message from Hazri, opened", announcement),
+    ("133-RecitationDownload", "Sukhmani Sahib, the one download", recitation_download),
+    ("134-ProfileBringBack", "Your profile — bring it back", profile_bring_back),
+    ("135-ProfileWaiting", "Your profile — waiting for your link", profile_waiting),
+    ("136-TodayElder", "Today in elder mode, five tabs", today_elder),
 ]
 
 
