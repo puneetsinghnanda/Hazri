@@ -2502,14 +2502,15 @@ class LHi extends L {
   String get notifKindGoals => 'लक्ष्य के रिमाइंडर';
 
   @override
-  String get notifKindGoalsSub => 'हर लक्ष्य पर आपके रखे समय पर';
+  String get notifKindGoalsSub =>
+      'हर पाठ के समय पर, और न हुआ हो तो एक घंटे बाद फिर';
 
   @override
   String get notifKindCalendar => 'गुरपुरब और सिख दिवस';
 
   @override
   String get notifKindCalendarSub =>
-      'उसी दिन: गुरपुरब सुबह 6:00, अन्य दिवस सुबह 7:00';
+      'एक दिन पहले शाम 8:00 बजे, और उसी दिन सुबह 6:30 बजे';
 
   @override
   String get notifKindHazri => 'हाज़री की याद';
@@ -2740,7 +2741,7 @@ class LHi extends L {
 
   @override
   String get profileBannerSubtitle =>
-      'ऐप को अपना बनाने के लिए अपना नाम और ईमेल जोड़ें।';
+      'संगत के साथ ग्लोब पर आने के लिए अपना नाम और शहर जोड़ें।';
 
   @override
   String get profileSetupTitle => 'प्रोफ़ाइल बनाएँ';

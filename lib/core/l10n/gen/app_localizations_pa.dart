@@ -2505,14 +2505,15 @@ class LPa extends L {
   String get notifKindGoals => 'ਟੀਚੇ ਦੀਆਂ ਯਾਦ-ਦਹਾਨੀਆਂ';
 
   @override
-  String get notifKindGoalsSub => 'ਹਰ ਟੀਚੇ ’ਤੇ ਤੁਹਾਡੇ ਰੱਖੇ ਸਮੇਂ ’ਤੇ';
+  String get notifKindGoalsSub =>
+      'ਹਰ ਪਾਠ ਦੇ ਸਮੇਂ ’ਤੇ, ਅਤੇ ਨਾ ਹੋਇਆ ਹੋਵੇ ਤਾਂ ਇੱਕ ਘੰਟੇ ਬਾਅਦ ਫਿਰ';
 
   @override
   String get notifKindCalendar => 'ਗੁਰਪੁਰਬ ਅਤੇ ਸਿੱਖ ਦਿਹਾੜੇ';
 
   @override
   String get notifKindCalendarSub =>
-      'ਉਸੇ ਦਿਨ: ਗੁਰਪੁਰਬ ਸਵੇਰੇ 6:00, ਹੋਰ ਦਿਹਾੜੇ ਸਵੇਰੇ 7:00';
+      'ਇੱਕ ਦਿਨ ਪਹਿਲਾਂ ਸ਼ਾਮ 8:00 ਵਜੇ, ਅਤੇ ਉਸੇ ਦਿਨ ਸਵੇਰੇ 6:30 ਵਜੇ';
 
   @override
   String get notifKindHazri => 'ਹਾਜ਼ਰੀ ਦੀ ਯਾਦ';
@@ -2744,7 +2745,7 @@ class LPa extends L {
 
   @override
   String get profileBannerSubtitle =>
-      'ਐਪ ਨੂੰ ਆਪਣਾ ਬਣਾਉਣ ਲਈ ਆਪਣਾ ਨਾਮ ਅਤੇ ਈਮੇਲ ਜੋੜੋ।';
+      'ਸੰਗਤ ਨਾਲ ਗਲੋਬ ’ਤੇ ਆਉਣ ਲਈ ਆਪਣਾ ਨਾਮ ਅਤੇ ਸ਼ਹਿਰ ਜੋੜੋ।';
 
   @override
   String get profileSetupTitle => 'ਪ੍ਰੋਫਾਈਲ ਬਣਾਓ';

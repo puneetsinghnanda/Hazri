@@ -4500,7 +4500,7 @@ abstract class L {
   /// No description provided for @notifKindGoalsSub.
   ///
   /// In en, this message translates to:
-  /// **'At the time you set on each goal'**
+  /// **'At each paath’s time, and an hour later if it is not done'**
   String get notifKindGoalsSub;
 
   /// No description provided for @notifKindCalendar.
@@ -4512,7 +4512,7 @@ abstract class L {
   /// No description provided for @notifKindCalendarSub.
   ///
   /// In en, this message translates to:
-  /// **'On the day: Gurpurabs at 6:00 AM, other days at 7:00 AM'**
+  /// **'The evening before at 8:00 PM, and on the day at 6:30 AM'**
   String get notifKindCalendarSub;
 
   /// No description provided for @notifKindHazri.
@@ -4902,7 +4902,7 @@ abstract class L {
   /// No description provided for @profileBannerSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Add your name and email to personalise the app.'**
+  /// **'Add your name and city to be on the globe with the sangat.'**
   String get profileBannerSubtitle;
 
   /// No description provided for @profileSetupTitle.

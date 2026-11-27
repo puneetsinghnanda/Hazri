@@ -2511,14 +2511,15 @@ class LEn extends L {
   String get notifKindGoals => 'Goal reminders';
 
   @override
-  String get notifKindGoalsSub => 'At the time you set on each goal';
+  String get notifKindGoalsSub =>
+      'At each paath’s time, and an hour later if it is not done';
 
   @override
   String get notifKindCalendar => 'Gurpurab and Sikh events';
 
   @override
   String get notifKindCalendarSub =>
-      'On the day: Gurpurabs at 6:00 AM, other days at 7:00 AM';
+      'The evening before at 8:00 PM, and on the day at 6:30 AM';
 
   @override
   String get notifKindHazri => 'Hazri reminder';
@@ -2750,7 +2751,7 @@ class LEn extends L {
 
   @override
   String get profileBannerSubtitle =>
-      'Add your name and email to personalise the app.';
+      'Add your name and city to be on the globe with the sangat.';
 
   @override
   String get profileSetupTitle => 'Set up profile';
